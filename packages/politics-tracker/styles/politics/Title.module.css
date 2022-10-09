@@ -1,6 +1,0 @@
-.title-main-text {
-  @apply font-black text-title-main md:text-title-main-md;
-}
-.title-sub-text {
-  @apply font-bold text-title-sub md:text-title-sub-md;
-}

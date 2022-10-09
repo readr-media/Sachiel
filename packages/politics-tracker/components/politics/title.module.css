@@ -1,0 +1,77 @@
+.main-text {
+  @apply font-black text-title-main md:text-title-main-md;
+}
+.sub-text {
+  @apply font-bold text-title-sub md:text-title-sub-md;
+}
+.single-line-block {
+  @apply overflow-hidden text-ellipsis;
+}
+.multi-line-block-large {
+  @apply hidden lg:block;
+}
+.multi-line-block-small {
+  @apply block lg:hidden;
+}
+.container {
+  @apply flex flex-col px-4 py-2;
+  @apply md:justify-around md:px-5 md:py-3;
+}
+.text-group {
+  @apply text-left md:text-center;
+}
+.title {
+  @apply sub-text;
+  @apply md:mb-2 md:inline-block md:w-[54px];
+}
+.content {
+  @apply main-text overflow-hidden text-ellipsis;
+}
+.main-container {
+  @apply mt-header flex flex-row flex-wrap text-white;
+  @apply md:mt-header-md;
+  @apply lg:h-40 lg:max-h-40 lg:flex-nowrap;
+}
+.profile-block {
+  @apply relative flex min-h-[100px] w-full items-center bg-title-person px-4 py-5 shadow-title-bottom;
+  @apply md:min-h-[120px] md:pl-10 md:pr-20;
+  @apply lg:h-full lg:w-1/2 lg:py-0 lg:shadow-title-bottom-and-right;
+}
+.avatar-large {
+  @apply hidden md:inline;
+}
+.avatar-small {
+  @apply inline md:hidden;
+}
+.name {
+  @apply flex grow flex-col pl-3;
+}
+.party {
+  @apply mt-2 flex items-center pr-[60px] md:pr-0;
+}
+.party-name {
+  @apply name;
+}
+.tab {
+  @apply text-[20px] absolute right-0 bottom-0 inline-block bg-control px-3 py-2;
+  @apply font-bold leading-sub text-control shadow-title-both-y-and-left;
+  @apply md:hidden;
+  @apply lg:text-[24px] lg:top-0 lg:bottom-auto lg:inline-block lg:pt-1 lg:shadow-title-bottom-and-both-x;
+}
+.data-block {
+  @apply flex w-full flex-row flex-wrap;
+  @apply lg:w-1/2;
+}
+.campaign-block {
+  @apply min-h-[70px] w-full bg-title-campaign shadow-title-bottom;
+  @apply md:min-h-[124px] md:w-1/2 md:shadow-title-bottom-and-right;
+}
+.statistic-block {
+  @apply h-[70px] w-1/2 md:h-auto md:w-1/4;
+}
+.already-block {
+  @apply statistic-block bg-title-completed shadow-title-bottom-and-right;
+}
+.waiting-block {
+  @apply statistic-block bg-title-waiting shadow-title-bottom;
+}
