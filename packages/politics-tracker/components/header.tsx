@@ -5,6 +5,7 @@ import Logo from '../assets/READr-logo.svg'
 import ShareButton from '../assets/share-button.svg'
 import Facebook from '../assets/facebook.svg'
 import Line from '../assets/line.svg'
+import s from './header.module.css'
 
 type ButtonConfig = {
   index: number
@@ -42,16 +43,7 @@ export default function Header(): JSX.Element {
     },
   ]
   const shareButtons: JSX.Element[] = buttonConfigs.map((cfg) => {
-    const style = classNames(
-      'absolute',
-      'top-0',
-      'left-0',
-      'transition-all',
-      'ease-in-out',
-      { [`${cfg.class}`]: show },
-      { 'visible duration-200': show },
-      { 'invisible duration-0 translate-y-[45px]': !show }
-    )
+    const style = show ? classNames(s['link-show'], cfg.class) : s['link-hide']
 
     return (
       <a
@@ -66,42 +58,17 @@ export default function Header(): JSX.Element {
     )
   })
 
-  const style = {
-    header: classNames(
-      'fixed',
-      'top-0',
-      'left-0',
-      'z-50',
-      'flex',
-      'h-header',
-      'w-full',
-      'flex-row',
-      'justify-between',
-      'bg-white',
-      'px-4',
-      'md:h-header-md',
-      'md:px-6'
-    ),
-    logo: classNames('inline-block', 'self-center'),
-    button: classNames(
-      'relative',
-      'inline-block',
-      'cursor-pointer',
-      'self-center'
-    ),
-  }
-
   return (
-    <header className={style.header}>
+    <header className={s.header}>
       <a
-        className={style.logo}
+        className={s.logo}
         href="https://www.readr.tw/"
         target="_blank"
         rel="noopener noreferrer"
       >
         <Image src={Logo} alt="READr" width={40} height={40} />
       </a>
-      <div className={style.button} onClick={toggleShareIcons}>
+      <div className={s.button} onClick={toggleShareIcons}>
         <Image src={ShareButton} alt="分享" width={40} height={40} />
         {shareButtons}
       </div>
