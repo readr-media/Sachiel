@@ -1,0 +1,66 @@
+.container {
+  @apply inline-block w-full;
+}
+
+.toggle-base {
+  --button-height: 10px;
+  --padding-shift: 5.5px;
+  --active-button-height: 0px;
+  --active-padding-shift: 0px;
+  --press-diff: calc(var(--button-height) - var(--active-button-height));
+  @apply relative flex flex-nowrap bg-control px-4 py-3 items-center;
+  @apply text-[22px] font-bold leading-sub text-control no-underline shadow-control transition-all duration-150 cursor-pointer;
+  @apply md:text-[28px];
+
+  &::before, &::after {
+    @apply absolute transition-all duration-150 content-[''];
+  }
+  &::before {
+    @apply w-full bg-control-sub shadow-control-before skew-x-[45deg];
+  }
+  &::after {
+    @apply h-full bg-control-sub shadow-control-after skew-y-[45deg];
+  }
+}
+
+.toggle-active {
+  @apply toggle-base;
+  @apply mx-0 mb-0 mt-[var(--button-height)];
+
+  &::before {
+    @apply hidden;
+  }
+  &::after {
+    @apply hidden;
+  }
+}
+
+.toggle {
+  @apply toggle-base;
+  @apply mr-[var(--button-height)] mb-[var(--button-height)];
+
+  &::before {
+    @apply -bottom-[var(--button-height)] left-[var(--padding-shift)] h-[var(--button-height)];
+  }
+  &::after {
+    @apply -right-[var(--button-height)] -bottom-[var(--padding-shift)] w-[var(--button-height)];
+  }
+  &:active {
+    @apply mt-[var(--press-diff)] ml-[var(--press-diff)] mr-[var(--active-button-height)] mb-[var(--active-button-height)];
+
+    &::before {
+      @apply -bottom-[var(--active-button-height)] left-[var(--active-padding-shift)] h-[var(--active-button-height)];
+    }
+    &::after {
+      @apply -right-[var(--active-button-height)] -bottom-[var(--active-padding-shift)] w-[var(--active-button-height)];
+    }
+  }
+}
+
+.text {
+  @apply grow mr-[6px];
+}
+
+.icon {
+  @apply shrink-0;
+}

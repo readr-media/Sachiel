@@ -9,14 +9,19 @@ module.exports = {
       screens: {
         lg: '1200px',
       },
-      colors: {
-        'default-icon': '#838383',
+      backgroundColor: {
         politics: '#FFFCF3',
+        'default-icon': '#838383',
         // politics/title
         'title-person': '#8379F8',
         'title-campaign': '#F58439',
         'title-completed': '#2FB7BF',
         'title-waiting': '#DB4C65',
+        control: '#F7BA31',
+        'control-sub': '#B2800D',
+      },
+      textColor: {
+        control: '#0F2D35',
       },
       boxShadow: {
         // politics/title
@@ -31,6 +36,12 @@ module.exports = {
           'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
         'title-both-y-and-left':
           'inset 0px -4px 0px #000000, inset 0px 4px 0px #000000, inset 4px 0px 0px #000000',
+        control:
+          'inset 0px 4px 0px #000000, inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
+        'control-before':
+          'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -2px 0px 0px #000000',
+        'control-after':
+          'inset 0px 4px 0px #000000, inset 0px -4px 0px #000000, inset -4px 0px 0px #000000',
       },
       lineHeight: {
         main: '1.2',
