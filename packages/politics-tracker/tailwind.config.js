@@ -15,7 +15,6 @@ module.exports = {
       },
       backgroundColor: {
         politics: '#FFFCF3',
-        'default-icon': '#838383',
         // politics/title
         'title-person': '#8379F8',
         'title-campaign': '#F58439',
