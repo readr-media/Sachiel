@@ -1,0 +1,8 @@
+.form {
+  @apply -mt-1 flex flex-col flex-nowrap w-full px-4 py-5 shadow-politics-top;
+  @apply md:px-5;
+}
+.title {
+  @apply my-1 mb-1 text-title-sub font-bold;
+  @apply md:text-title-sub-md;
+}
