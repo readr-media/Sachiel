@@ -1,0 +1,28 @@
+@import "./share.css";
+
+.politic {
+  @apply mt-3 flex flex-col;
+}
+.politic-input {
+  @apply input-base grow px-2 py-1 text-[16px] font-medium leading-[1.8] text-control;
+  @apply md:text-[18px];
+}
+.btn-add-source {
+  @apply flex cursor-pointer flex-row flex-nowrap items-center justify-center mt-2 py-3 text-[16px] leading-[1.8] text-control-sub font-medium md:text-[18px];
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='rgba(0, 0, 0, 0.1)' stroke-width='1' stroke-dasharray='10%2c 10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
+  &:hover {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='rgba(0, 0, 0, 1)' stroke-width='1' stroke-dasharray='10%2c 10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+}
+.plus {
+  @apply ml-[1px];
+}
+.reminder {
+  @apply mt-2 text-[14px] font-medium leading-6 text-control opacity-50 md:text-[16px];
+}
+.control-group {
+  @apply mt-4 flex flex-row flex-nowrap items-center justify-between;
+}
+.cancel {
+  @apply cursor-pointer text-[16px] font-medium leading-[1.8] text-default hover:text-control-sub md:text-[18px];
+}
