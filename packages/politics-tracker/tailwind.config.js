@@ -65,6 +65,15 @@ module.exports = {
       transitionDuration: {
         0: '0ms',
       },
+      keyframes: {
+        lightUp: {
+          '0%, 100%': { filter: 'opacity(0%)' },
+          '50%': { filter: 'opacity(100%)' },
+        },
+      },
+      animation: {
+        lightUp: 'lightUp 1.5s ease-in-out infinite',
+      },
     },
   },
   plugins: [require('tailwind-clip-path')],
