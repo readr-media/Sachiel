@@ -1,0 +1,5 @@
+.section-list {
+  @apply flex flex-col my-10;
+  @apply lg:my-[60px];
+  width: min(668px, calc(100vw - 24px));
+}
