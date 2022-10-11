@@ -1,6 +1,6 @@
-import s from './section-toggle.module.css'
 import ArrowDown from '../icons/arrow-down'
 import ArrowUp from '../icons/arrow-up'
+import s from './section-toggle.module.css'
 
 type SectionToggleProps = {
   content: string

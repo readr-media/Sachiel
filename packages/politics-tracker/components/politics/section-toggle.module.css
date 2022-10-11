@@ -62,5 +62,5 @@
 }
 
 .icon {
-  @apply shrink-0;
+  @apply shrink-0 text-control;
 }
