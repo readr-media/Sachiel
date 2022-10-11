@@ -9,6 +9,10 @@ module.exports = {
       screens: {
         lg: '1200px',
       },
+      colors: {
+        'control-sub': '#B3800D',
+        default: '#838383',
+      },
       backgroundColor: {
         politics: '#FFFCF3',
         'default-icon': '#838383',
@@ -18,10 +22,10 @@ module.exports = {
         'title-completed': '#2FB7BF',
         'title-waiting': '#DB4C65',
         control: '#F7BA31',
-        'control-sub': '#B2800D',
       },
       textColor: {
         control: '#0F2D35',
+        error: '#C0374F',
       },
       boxShadow: {
         // politics/title

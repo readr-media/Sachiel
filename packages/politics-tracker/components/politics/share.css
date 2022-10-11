@@ -1,0 +1,16 @@
+.input-base {
+  @apply border-black border-opacity-10 border border-solid;
+  @apply grow shrink resize-none rounded-none shadow-none outline-none;
+
+  &:hover, &:focus {
+    @apply border-opacity-100;
+  }
+
+  &::placeholder {
+    @apply text-control opacity-30;
+  }
+}
+
+.error-text {
+  @apply mt-1 text-[14px] font-medium leading-6 text-error md:text-[16px];
+}
