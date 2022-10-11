@@ -47,6 +47,8 @@ module.exports = {
         'control-after':
           'inset 0px 4px 0px #000000, inset 0px -4px 0px #000000, inset -4px 0px 0px #000000',
         'politics-top': 'inset 0px 4px 0px #000000',
+        'politics-bottom-and-both-x':
+          'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
       },
       lineHeight: {
         main: '1.2',
