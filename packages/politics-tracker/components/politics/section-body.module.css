@@ -1,0 +1,3 @@
+.section-body {
+  @apply flex flex-col flex-nowrap bg-white shadow-politics-bottom-and-both-x;
+}

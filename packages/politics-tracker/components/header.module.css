@@ -1,0 +1,19 @@
+.header {
+  @apply fixed top-0 left-0 z-50 flex h-header w-full flex-row justify-between bg-white px-4;
+  @apply md:h-header-md md:px-6;
+}
+.logo {
+  @apply inline-block self-center;
+}
+.button {
+  @apply relative inline-block cursor-pointer self-center;
+}
+.link {
+  @apply absolute top-0 left-0 transition-all ease-in-out;
+}
+.link-show {
+  @apply link visible duration-200;
+}
+.link-hide {
+  @apply link invisible duration-0 translate-y-[45px];
+}

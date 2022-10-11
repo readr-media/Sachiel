@@ -1,0 +1,9 @@
+.container {
+  @apply relative flex shrink-0 justify-center rounded-full bg-default clip-path-circle-[50%_at_center];
+}
+.default-icon {
+  @apply absolute top-1/2 left-1/2 h-4/5 w-4/5 -translate-x-1/2 -translate-y-1/2;
+}
+.icon {
+  @apply absolute rounded-full object-cover;
+}
