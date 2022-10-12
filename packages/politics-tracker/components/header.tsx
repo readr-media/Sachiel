@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import Image from 'next/future/image'
-import Logo from '../assets/READr-logo.svg'
-import ShareButton from '../assets/share-button.svg'
-import Facebook from '../assets/facebook.svg'
-import Line from '../assets/line.svg'
+import Logo from '~/assets/READr-logo.svg'
+import ShareButton from '~/assets/share-button.svg'
+import Facebook from '~/assets/facebook.svg'
+import Line from '~/assets/line.svg'
 import s from './header.module.css'
 
 type ButtonConfig = {

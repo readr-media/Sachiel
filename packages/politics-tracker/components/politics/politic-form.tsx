@@ -1,25 +1,27 @@
-import type { Source, Politic } from '../../types/politics'
-import { useWindowSize } from '../../utils/hooks'
-import { getTailwindConfig, getNewSource } from '../../utils/utils'
+import type { Politic } from '~/types/politics'
+import { useWindowSize } from '~/utils/hooks'
+import { getTailwindConfig } from '~/utils/utils'
 import { useEffect, useMemo, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { SOURCE_DELIMITER } from '~/constants/politics'
 import SourceInput from './source-input'
 import Button from './button'
-import Plus from '../icons/plus'
-import ArrorRight from '../icons/arrow-right'
+import Plus from '~/components/icons/plus'
+import ArrorRight from '~/components/icons/arrow-right'
 import s from './politic-form.module.css'
 
 const fullConfig = getTailwindConfig()
 
-type ReturnValue = {
-  politic: Politic
-  sources: Source[]
-}
-
 type PoliticFormProps = {
   politic: Politic
-  sources: Source[]
   closeForm: () => void
-  submitForm: (data: ReturnValue) => void
+  submitForm: (politic: Politic) => void
+}
+
+type Source = {
+  id: string
+  value: string
+  error: string
 }
 
 export default function PoliticForm(props: PoliticFormProps): JSX.Element {
@@ -33,10 +35,35 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     return windowSize.width <= boundary
   }
 
-  const [politic, setPolitic] = useState<Politic>(props.politic)
-  const [sources, setSources] = useState<Source[]>(props.sources)
+  function stringToSources(str: string): Source[] {
+    return str.split(SOURCE_DELIMITER).map((s) => ({
+      id: uuidv4(),
+      value: s,
+      error: '',
+    }))
+  }
+
+  function sourcesToString(sources: Source[]): string {
+    return sources.map((s) => s.value).join(SOURCE_DELIMITER)
+  }
+
+  const [politic, setPolitic] = useState<Politic>({
+    ...props.politic,
+    error: '',
+  })
+  const [sources, setSources] = useState<Source[]>(
+    stringToSources(props.politic.source)
+  )
   const [isValid, setIsValid] = useState<boolean>(false)
   const [showError, setShowError] = useState<boolean>(false)
+
+  function getNewSource(): Source {
+    return {
+      id: uuidv4(),
+      value: '',
+      error: '',
+    }
+  }
 
   function updateSource(id: string, value: string) {
     const updated = sources.map((source) => {
@@ -71,7 +98,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
   ))
 
   function checkPolitic(politic: Politic) {
-    if (!politic.value || !politic.value.trim()) {
+    if (!politic.desc || !politic.desc.trim()) {
       if (!politic.error) {
         setPolitic({
           ...politic,
@@ -142,12 +169,12 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
   }, [isPoliticValid, isSourcesValid])
 
   function submitHandler() {
-    setShowError(true)
     if (!isValid) return
+    setShowError(true)
 
     props.submitForm({
-      politic,
-      sources,
+      ...politic,
+      source: sourcesToString(sources),
     })
   }
 
@@ -158,9 +185,9 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
           rows={isMobile() ? 6 : 3}
           className={s['politic-input']}
           placeholder="請輸入候選人政見..."
-          value={politic.value}
+          value={politic.desc}
           onChange={(e) => {
-            setPolitic({ ...politic, value: e.target.value })
+            setPolitic({ ...politic, desc: e.target.value })
           }}
         />
         {politic.error && showError && (

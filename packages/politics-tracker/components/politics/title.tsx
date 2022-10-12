@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
 import classNames from 'classnames'
-import { getLineBreaks, getTailwindConfig } from '../../utils/utils'
-import Icon from '../icon'
+import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
+import Icon from '~/components/icon'
 import s from './title.module.css'
 const fullConfig = getTailwindConfig()
 

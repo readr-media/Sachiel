@@ -53,8 +53,8 @@
   @apply name;
 }
 .tab {
-  @apply text-[20px] absolute right-0 bottom-0 inline-block bg-control px-3 py-2;
-  @apply font-bold leading-sub text-control shadow-title-both-y-and-left;
+  @apply text-[20px] absolute right-0 bottom-0 inline-block bg-button px-3 py-2;
+  @apply font-bold leading-sub text-main shadow-title-both-y-and-left;
   @apply md:hidden;
   @apply lg:text-[24px] lg:top-0 lg:bottom-auto lg:inline-block lg:pt-1 lg:shadow-title-bottom-and-both-x;
 }

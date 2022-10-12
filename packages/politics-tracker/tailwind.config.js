@@ -9,22 +9,24 @@ module.exports = {
       screens: {
         lg: '1200px',
       },
-      colors: {
-        'control-sub': '#B3800D',
-        default: '#838383',
-      },
       backgroundColor: {
+        button: '#F7BA31',
+        'button-2': '#B3800D',
+        'button-3': '#FFFCF3',
+        label: '#0F2D35',
+        default: '#838383',
         politics: '#FFFCF3',
         // politics/title
         'title-person': '#8379F8',
         'title-campaign': '#F58439',
         'title-completed': '#2FB7BF',
         'title-waiting': '#DB4C65',
-        control: '#F7BA31',
       },
       textColor: {
-        control: '#0F2D35',
+        main: '#0F2D35',
         error: '#C0374F',
+        control: '#B3800D',
+        default: '#838383',
       },
       boxShadow: {
         // politics/title

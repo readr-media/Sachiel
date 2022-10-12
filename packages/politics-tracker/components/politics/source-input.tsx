@@ -1,4 +1,4 @@
-import Minus from '../icons/minus'
+import Minus from '~/components/icons/minus'
 import s from './source-input.module.css'
 
 type SourceInputProps = {

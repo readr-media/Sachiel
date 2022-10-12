@@ -18,6 +18,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "paths": {
+      "~/*": ["./*"]
+    },
     "checkJs": true
   },
   "include": [

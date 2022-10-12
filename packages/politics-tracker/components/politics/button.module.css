@@ -1,5 +1,5 @@
 .button {
-  @apply relative inline-block border-2 rounded-[24px] border-solid border-black bg-control;
+  @apply relative inline-block border-2 rounded-[24px] border-solid border-black bg-button;
 
   .dots-container {
     @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 invisible;
@@ -10,7 +10,8 @@
   }
 
   .content {
-    @apply flex flex-row flex-nowrap items-center ml-[18px] mr-[11px] my-[6px] md:ml-[30px] md:mr-[23px] text-control visible;
+    @apply flex flex-row flex-nowrap items-center text-main visible ml-[18px] mr-[11px] my-[6px];
+    @apply md:ml-[30px] md:mr-[23px];
   }
 
   .text {
@@ -23,7 +24,7 @@
   }
 
   &:hover, &:active {
-    @apply bg-control-sub cursor-pointer;
+    @apply bg-button-2 cursor-pointer;
     
     .content {
       @apply text-white;
@@ -35,7 +36,7 @@
     border-color: rgba(0, 0, 0, 0.1);
 
     .content {
-      @apply text-control opacity-30;
+      @apply text-main opacity-30;
     }
   }
 

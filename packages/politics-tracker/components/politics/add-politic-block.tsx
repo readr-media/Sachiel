@@ -1,6 +1,6 @@
 import AddPoliticForm from './add-politic-form'
 import Button from './button'
-import Plus from '../icons/plus'
+import Plus from '~/components/icons/plus'
 import { useState } from 'react'
 import s from './add-politic-block.module.css'
 
