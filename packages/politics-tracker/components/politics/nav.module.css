@@ -21,7 +21,7 @@
   }
 }
 .next {
-  @apply block-common order-1 items-end bg-election;
+  @apply block-common order-1 items-end bg-campaign;
   @apply md:shadow-top-and-left;
   @apply lg:flex-row-reverse;
 

@@ -33,7 +33,7 @@
   @apply lg:h-40 lg:max-h-40 lg:flex-nowrap;
 }
 .profile-block {
-  @apply relative flex min-h-[100px] w-full items-center bg-title-person px-4 py-5 shadow-bottom;
+  @apply relative flex min-h-[100px] w-full items-center bg-person px-4 py-5 shadow-bottom;
   @apply md:min-h-[120px] md:pl-10 md:pr-20;
   @apply lg:h-full lg:w-1/2 lg:py-0 lg:shadow-bottom-and-right;
 }
@@ -63,15 +63,15 @@
   @apply lg:w-1/2;
 }
 .campaign-block {
-  @apply min-h-[70px] w-full bg-title-campaign shadow-bottom;
+  @apply min-h-[70px] w-full bg-campaign shadow-bottom;
   @apply md:min-h-[124px] md:w-1/2 md:shadow-bottom-and-right;
 }
 .statistic-block {
   @apply h-[70px] w-1/2 md:h-auto md:w-1/4;
 }
 .already-block {
-  @apply statistic-block bg-title-completed shadow-bottom-and-right;
+  @apply statistic-block bg-politic-completed shadow-bottom-and-right;
 }
 .waiting-block {
-  @apply statistic-block bg-title-waiting shadow-bottom;
+  @apply statistic-block bg-politic-waiting shadow-bottom;
 }
