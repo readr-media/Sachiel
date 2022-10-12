@@ -1,0 +1,19 @@
+.content {
+  @apply line-clamp-3;
+  &.expanded {
+    @apply line-clamp-none;
+
+    & ~ .mask {
+      @apply relative pt-0;
+    }
+  }
+}
+.mask {
+  @apply absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-b from-transparent to-white pt-3;
+}
+.control {
+  @apply cursor-pointer rounded-full border border-black border-opacity-10 bg-white px-3 text-main text-opacity-50;
+  &:hover, &.active {
+    @apply bg-default text-white;
+  }
+}

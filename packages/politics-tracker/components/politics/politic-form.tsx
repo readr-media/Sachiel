@@ -7,7 +7,7 @@ import { SOURCE_DELIMITER } from '~/constants/politics'
 import SourceInput from './source-input'
 import Button from './button'
 import Plus from '~/components/icons/plus'
-import ArrorRight from '~/components/icons/arrow-right'
+import ArrowRight from '~/components/icons/arrow-right'
 import s from './politic-form.module.css'
 
 const fullConfig = getTailwindConfig()
@@ -197,7 +197,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
       {sourceList}
       <div className={s['btn-add-source']} onClick={addSource}>
         <span>新增來源</span>
-        <span className={s['plus']}>
+        <span className={s['icon-add-source']}>
           <Plus />
         </span>
       </div>
@@ -208,7 +208,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
         </span>
         <Button
           text="送出審核"
-          icon={ArrorRight()}
+          icon={ArrowRight()}
           disable={!isValid}
           onClick={submitHandler}
         />

@@ -33,9 +33,9 @@
   @apply lg:h-40 lg:max-h-40 lg:flex-nowrap;
 }
 .profile-block {
-  @apply relative flex min-h-[100px] w-full items-center bg-title-person px-4 py-5 shadow-title-bottom;
+  @apply relative flex min-h-[100px] w-full items-center bg-person px-4 py-5 shadow-bottom;
   @apply md:min-h-[120px] md:pl-10 md:pr-20;
-  @apply lg:h-full lg:w-1/2 lg:py-0 lg:shadow-title-bottom-and-right;
+  @apply lg:h-full lg:w-1/2 lg:py-0 lg:shadow-bottom-and-right;
 }
 .avatar-large {
   @apply hidden md:inline;
@@ -54,24 +54,24 @@
 }
 .tab {
   @apply text-[20px] absolute right-0 bottom-0 inline-block bg-button px-3 py-2;
-  @apply font-bold leading-sub text-main shadow-title-both-y-and-left;
+  @apply font-bold leading-sub text-main shadow-y-and-left;
   @apply md:hidden;
-  @apply lg:text-[24px] lg:top-0 lg:bottom-auto lg:inline-block lg:pt-1 lg:shadow-title-bottom-and-both-x;
+  @apply lg:text-[24px] lg:top-0 lg:bottom-auto lg:inline-block lg:pt-1 lg:shadow-bottom-and-x;
 }
 .data-block {
   @apply flex w-full flex-row flex-wrap;
   @apply lg:w-1/2;
 }
 .campaign-block {
-  @apply min-h-[70px] w-full bg-title-campaign shadow-title-bottom;
-  @apply md:min-h-[124px] md:w-1/2 md:shadow-title-bottom-and-right;
+  @apply min-h-[70px] w-full bg-campaign shadow-bottom;
+  @apply md:min-h-[124px] md:w-1/2 md:shadow-bottom-and-right;
 }
 .statistic-block {
   @apply h-[70px] w-1/2 md:h-auto md:w-1/4;
 }
 .already-block {
-  @apply statistic-block bg-title-completed shadow-title-bottom-and-right;
+  @apply statistic-block bg-politic-completed shadow-bottom-and-right;
 }
 .waiting-block {
-  @apply statistic-block bg-title-waiting shadow-title-bottom;
+  @apply statistic-block bg-politic-waiting shadow-bottom;
 }

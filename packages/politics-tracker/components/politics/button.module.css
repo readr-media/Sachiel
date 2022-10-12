@@ -20,7 +20,7 @@
   }
 
   .icon {
-    @apply ml-[5px];
+    @apply ml-[5px] h-5 w-5;
   }
 
   &:hover, &:active {

@@ -1,0 +1,41 @@
+.container {
+  @apply flex w-full flex-col flex-nowrap text-[24px] font-black leading-[1.2] text-white;
+  @apply md:flex-row;
+  @apply lg:text-[32px];
+}
+
+.block-common {
+  @apply flex grow basis-1/2 flex-col gap-3 px-4 pt-3 pb-4 shadow-top cursor-pointer;
+  @apply md:order-none;
+  @apply lg:flex-nowrap lg:items-center lg:px-10 lg:py-5;
+}
+.back {
+  @apply block-common order-2 items-start bg-person;
+  @apply md:shadow-top-and-right;
+  @apply lg:flex-row;
+
+  &:hover {
+    .icon {
+      @apply -translate-x-1;
+    }
+  }
+}
+.next {
+  @apply block-common order-1 items-end bg-campaign;
+  @apply md:shadow-top-and-left;
+  @apply lg:flex-row-reverse;
+
+  &:hover {
+    .icon {
+      @apply translate-x-1;
+    }
+  }
+}
+
+.icon {
+  @apply inline-block h-12 w-12 duration-150;
+}
+
+.text {
+  @apply inline-block;
+}

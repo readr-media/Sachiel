@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import DefaultLayout from '~/components/layout/default'
 import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
+import Nav from '~/components/politics/nav'
 
 const Politics: NextPage = () => {
   const person = {
@@ -25,6 +26,7 @@ const Politics: NextPage = () => {
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...person} />
         <SectionList />
+        <Nav />
       </main>
     </DefaultLayout>
   )

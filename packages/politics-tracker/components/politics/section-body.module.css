@@ -1,5 +1,5 @@
 .section-body {
-  @apply flex flex-col flex-nowrap bg-white shadow-politics-bottom-and-both-x;
+  @apply flex flex-col flex-nowrap bg-white shadow-bottom-and-x;
 }
 .default {
   @apply mb-5 mt-10 whitespace-nowrap text-center text-[16px] font-medium text-main opacity-30 md:text-[18px];

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import SourceItem from './source-item'
+import PoliticContent from './politic-content'
 import PoliticForm from './politic-form'
 import Edit from '~/components/icons/edit'
 import s from './politic-body.module.css'
@@ -31,7 +32,9 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           />
         ) : (
           <>
-            <div className={s['content']}>{props.desc}</div>
+            <div className={s['content']}>
+              <PoliticContent>{props.desc}</PoliticContent>
+            </div>
             <div className={s['source-group']}>
               <div className={s['source-label']}>來源</div>
               <div className={s['source-list']}>{sourceList}</div>
@@ -39,7 +42,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
             <div className={s['button-edit']} onClick={() => setEditing(true)}>
               <div className={s['button-inner']}>
                 <span>編輯</span>
-                <span>
+                <span className={s['button-icon']}>
                   <Edit />
                 </span>
               </div>

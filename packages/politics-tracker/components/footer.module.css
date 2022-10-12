@@ -1,0 +1,27 @@
+.footer {
+  @apply flex justify-center py-6 shadow-top;
+}
+.container {
+  @apply flex flex-col flex-nowrap items-center;
+}
+.icon-link-group {
+  @apply flex flex-row gap-x-6 py-2;
+}
+.text-link-group {
+  @apply flex flex-row gap-x-10 pt-6 text-[16px] font-normal leading-[23px] text-black;
+  @apply md:gap-x-[60px] lg:gap-x-[66px];
+}
+.text-group {
+  @apply flex flex-col flex-nowrap items-center gap-y-2 pt-8;
+  @apply text-[14px] font-normal leading-[20px] text-black text-opacity-50;
+  @apply md:flex-row
+}
+.text {
+  @apply inline-block whitespace-nowrap px-2;
+  * + & {
+    @apply md:border-l border-black border-opacity-10;
+  }
+}
+.copyright {
+  @apply mt-3 text-xs font-normal leading-[17px] text-black text-opacity-30;
+}
