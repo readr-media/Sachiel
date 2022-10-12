@@ -7,10 +7,11 @@
   }
 
   &::placeholder {
-    @apply text-control opacity-30;
+    @apply text-main opacity-30;
   }
 }
 
 .error-text {
-  @apply mt-1 text-[14px] font-medium leading-6 text-error md:text-[16px];
+  @apply mt-1 text-[14px] font-medium leading-6 text-error;
+  @apply md:text-[16px];
 }

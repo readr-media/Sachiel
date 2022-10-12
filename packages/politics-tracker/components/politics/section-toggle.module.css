@@ -8,18 +8,18 @@
   --active-button-height: 0px;
   --active-padding-shift: 0px;
   --press-diff: calc(var(--button-height) - var(--active-button-height));
-  @apply relative flex flex-nowrap bg-control px-4 py-3 items-center;
-  @apply text-[22px] font-bold leading-sub text-control no-underline shadow-control transition-all duration-150 cursor-pointer;
+  @apply relative flex flex-nowrap bg-button px-4 py-3 items-center;
+  @apply text-[22px] font-bold leading-sub text-main no-underline shadow-control transition-all duration-150 cursor-pointer;
   @apply md:text-[28px];
 
   &::before, &::after {
     @apply absolute transition-all duration-150 content-[''];
   }
   &::before {
-    @apply w-full bg-control-sub shadow-control-before skew-x-[45deg];
+    @apply w-full bg-button-2 shadow-control-before skew-x-[45deg];
   }
   &::after {
-    @apply h-full bg-control-sub shadow-control-after skew-y-[45deg];
+    @apply h-full bg-button-2 shadow-control-after skew-y-[45deg];
   }
 }
 
@@ -62,5 +62,5 @@
 }
 
 .icon {
-  @apply shrink-0 text-control;
+  @apply shrink-0 text-main;
 }
