@@ -83,5 +83,6 @@ module.exports = {
   plugins: [
     // @ts-ignore: no definition
     require('tailwind-clip-path'),
+    require('@tailwindcss/line-clamp'),
   ],
 }

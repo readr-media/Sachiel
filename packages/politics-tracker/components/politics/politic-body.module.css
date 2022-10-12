@@ -16,7 +16,7 @@
   @apply politic-base mr-2 mb-2 shrink-0;
 }
 .content {
-  @apply politic-base;
+  @apply politic-base relative;
 }
 .source-group {
   @apply mt-2 flex flex-row flex-nowrap;
