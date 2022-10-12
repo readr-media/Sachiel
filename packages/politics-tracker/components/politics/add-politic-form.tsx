@@ -1,5 +1,4 @@
-import type { Source, Politic } from '../../types/politics'
-import { getNewSource } from '../../utils/utils'
+import type { Politic } from '~/types/politics'
 import PoliticForm from './politic-form'
 import s from './add-politic-form.module.css'
 
@@ -11,18 +10,15 @@ export default function AddPoliticForm(
   props: AddPoliticFormProps
 ): JSX.Element {
   const politic: Politic = {
-    value: '',
-    error: '',
+    desc: '',
+    source: '',
   }
-
-  const sources: Source[] = [getNewSource()]
 
   return (
     <form className={s['form']} method="POST">
       <span className={s['title']}>新增政見</span>
       <PoliticForm
         politic={politic}
-        sources={sources}
         closeForm={props.closeForm}
         submitForm={(data) => {}}
       />

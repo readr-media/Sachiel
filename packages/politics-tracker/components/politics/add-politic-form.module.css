@@ -3,6 +3,6 @@
   @apply md:px-5;
 }
 .title {
-  @apply my-1 mb-1 text-title-sub font-bold;
+  @apply mt-1 mb-5 text-title-sub font-bold;
   @apply md:text-title-sub-md;
 }
