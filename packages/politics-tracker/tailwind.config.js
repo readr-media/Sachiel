@@ -80,5 +80,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwind-clip-path')],
+  plugins: [
+    // @ts-ignore: no definition
+    require('tailwind-clip-path'),
+  ],
 }
