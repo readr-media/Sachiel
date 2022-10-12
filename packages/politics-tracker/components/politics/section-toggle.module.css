@@ -1,5 +1,8 @@
 .container {
   @apply inline-block w-full;
+  * + & {
+    @apply mt-10;
+  }
 }
 
 .toggle-base {
