@@ -1,0 +1,15 @@
+.text {
+  @apply whitespace-nowrap text-[12px] font-medium leading-[14px] text-main opacity-50 px-2;
+  @apply md:text-[14px] md:leading-[16px];
+  * + & {
+    @apply border-l border-solid border-black border-opacity-10;
+  }
+}
+
+.link {
+  @apply text;
+
+  &:hover, &:active {
+    @apply text-main opacity-100;
+  }
+}

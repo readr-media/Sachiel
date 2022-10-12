@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import type { Source } from '../types/politics'
+import type { Source } from '~/types/politics'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import { v4 as uuidv4 } from 'uuid'
 import tailwindConfig from '~/tailwind.config'
@@ -54,4 +54,18 @@ function getNewSource(): Source {
   }
 }
 
-export { getLineBreaks, getTailwindConfig, getNewSource }
+function isURL(urlString: string): boolean {
+  try {
+    let url = new URL(urlString)
+
+    if (url.origin === 'null') {
+      // prevent `javascript:void(0)` from being a valid url
+      return false
+    }
+  } catch (err) {
+    return false
+  }
+  return true
+}
+
+export { getLineBreaks, getTailwindConfig, getNewSource, isURL }
