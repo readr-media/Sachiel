@@ -1,8 +1,8 @@
 import type { Config } from 'tailwindcss'
 import type { Source } from '../types/politics'
 import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '../tailwind.config'
 import { v4 as uuidv4 } from 'uuid'
+import tailwindConfig from '~/tailwind.config'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
