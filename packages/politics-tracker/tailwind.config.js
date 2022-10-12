@@ -16,6 +16,8 @@ module.exports = {
         label: '#0F2D35',
         default: '#838383',
         politics: '#FFFCF3',
+        election: '#F58439',
+        person: '#8379F8',
         // politics/title
         'title-person': '#8379F8',
         'title-campaign': '#F58439',
