@@ -1,0 +1,39 @@
+.container {
+  @apply flex flex-row flex-nowrap mx-5 py-5;
+  &.editing {
+    @apply flex-col md:flex-row;
+    box-shadow: inset 0px -2px 0px #000000;
+  }
+}
+.content-group {
+  @apply flex flex-col grow overflow-hidden;
+}
+.politic-base {
+  @apply text-[16px] font-medium leading-[1.8] text-main;
+  @apply md:text-[18px];
+}
+.index {
+  @apply politic-base mr-2 mb-2 shrink-0;
+}
+.content {
+  @apply politic-base;
+}
+.source-group {
+  @apply mt-2 flex flex-row flex-nowrap;
+}
+.source-label {
+  @apply inline-block shrink-0  bg-label p-2 text-[12px] font-medium leading-[14px] text-white opacity-50;
+  @apply md:text-[14px] md:leading-[16px];
+}
+.source-list {
+  @apply flex grow flex-row flex-nowrap items-center overflow-hidden bg-label bg-opacity-5;
+}
+.button-edit {
+  @apply mt-2 flex flex-row py-1;
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1), inset 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+.button-inner {
+  @apply flex w-full cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
+  @apply text-[16px] leading-[1.8] text-control;
+  @apply hover:bg-button-3 active:bg-button-3 md:text-[18px];
+}
