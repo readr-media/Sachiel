@@ -29,27 +29,23 @@ module.exports = {
         default: '#838383',
       },
       boxShadow: {
-        // politics/title
-        'title-bottom': 'inset 0px -4px 0px #000000',
-        'title-bottom-and-right':
+        top: 'inset 0px 4px 0px #000000',
+        'top-and-left': 'inset 0px 4px 0px #000000, inset 4px 0px 0px #000000',
+        'top-and-right':
+          'inset 0px 4px 0px #000000, inset -4px 0px 0px #000000',
+        bottom: 'inset 0px -4px 0px #000000',
+        'bottom-and-right':
           'inset 0px -4px 0px #000000, inset -4px 0px 0px #000000',
-        'title-bottom-and-left':
+        'bottom-and-left':
           'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000',
-        'title-top-and-left':
-          'inset 0px 4px 0px #000000, inset 4px 0px 0px #000000',
-        'title-bottom-and-both-x':
+        'bottom-and-x':
           'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
-        'title-both-y-and-left':
+        'y-and-left':
           'inset 0px -4px 0px #000000, inset 0px 4px 0px #000000, inset 4px 0px 0px #000000',
-        control:
+        'y-and-right':
+          'inset 0px -4px 0px #000000, inset 0px 4px 0px #000000, inset -4px 0px 0px #000000',
+        around:
           'inset 0px 4px 0px #000000, inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
-        'control-before':
-          'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -2px 0px 0px #000000',
-        'control-after':
-          'inset 0px 4px 0px #000000, inset 0px -4px 0px #000000, inset -4px 0px 0px #000000',
-        'politics-top': 'inset 0px 4px 0px #000000',
-        'politics-bottom-and-both-x':
-          'inset 0px -4px 0px #000000, inset 4px 0px 0px #000000, inset -4px 0px 0px #000000',
       },
       lineHeight: {
         main: '1.2',

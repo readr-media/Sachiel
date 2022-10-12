@@ -1,5 +1,5 @@
 .form {
-  @apply -mt-1 flex flex-col flex-nowrap w-full px-4 py-5 shadow-politics-top;
+  @apply -mt-1 flex flex-col flex-nowrap w-full px-4 py-5 shadow-top;
   @apply md:px-5;
 }
 .title {
