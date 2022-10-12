@@ -42,7 +42,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
             <div className={s['button-edit']} onClick={() => setEditing(true)}>
               <div className={s['button-inner']}>
                 <span>編輯</span>
-                <span>
+                <span className={s['button-icon']}>
                   <Edit />
                 </span>
               </div>

@@ -61,9 +61,9 @@
 }
 
 .text {
-  @apply grow mr-[6px];
+  @apply grow;
 }
 
 .icon {
-  @apply shrink-0 text-main;
+  @apply shrink-0 text-main w-9 h-9;
 }

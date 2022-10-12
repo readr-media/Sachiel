@@ -37,3 +37,6 @@
   @apply text-[16px] leading-[1.8] text-control;
   @apply hover:bg-button-3 active:bg-button-3 md:text-[18px];
 }
+.button-icon {
+  @apply w-5 h-5;
+}
