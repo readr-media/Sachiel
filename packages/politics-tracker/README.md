@@ -1,3 +1,5 @@
+# Politics Tracker (政見追蹤平台)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -32,3 +34,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+- - -
+
+## Project Directory Explanation (專案目錄結構說明)
+```
+/                       - 根目錄
+  /components           - React 元件
+    /icons              - SVG icon 類型的 React 元件
+    /layout             - 頁面布局元件
+    /*                  - 單一頁面與其相關的元件，會放置在以頁面為名稱的子資料夾底下
+    *                   - 共用類型的元件會放在 components/ 底下
+  /pages                - 頁面檔
+    /api                - 後端 API
+  /constants            - 常數、設定
+  /styles               - CSS 檔案
+  /types                - TypeScript 使用的型別定義
+  /utils                - 工具類 function
+  /assets               - SVG、靜態檔案
+  /public               - 公開資源
+```
+
+- - -
+
+## Environment Variables (環境變數)
+## Environment Variables
+| 變數名稱 | 資料型態 | 初始值 | 變數說明 |
+| --- | --- | --- | --- |
+| NEXT_PUBLIC_CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
+
+## Feature Toggle (功能開關，暫時性)
+| 變數名稱 | 資料型態 | 初始值 | 變數說明 |
+| --- | --- | --- | --- |
+
+
+環境變數設定與使用請參閱： [Basic Features: Environment Variables | Next.js](https://nextjs.org/docs/basic-features/environment-variables)
