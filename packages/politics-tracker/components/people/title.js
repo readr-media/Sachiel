@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import theme from '~/styles/theme'
 
@@ -15,7 +15,7 @@ const TitleInfo = styled.div`
   padding: 20px 16px;
   justify-content: flex-start;
   align-items: center;
-  background-color: ${({ theme }) => theme.backgroundColor.purple};
+  background-color: ${({ theme }) => theme.backgroundColor.blue};
   ${({ theme }) => theme.breakpoint.md} {
     justify-content: center;
   }

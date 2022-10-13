@@ -10,7 +10,6 @@ const mediaSize = {
 }
 const sharedColor = {
   gray: '#838383',
-  blue: '#544AC9',
   black: '#000000',
   white: '#FFFFFF',
   green: '#2FB7BF',
@@ -18,22 +17,22 @@ const sharedColor = {
 
 export const theme = {
   backgroundColor: {
-    purple: '#8379F8',
-    blue: sharedColor.blue,
+    blue: '#8379F8',
     gray: sharedColor.gray,
     orange: '#F58439',
     yellow: '#F6BA31',
     green: sharedColor.green,
+    white: sharedColor.white,
   },
   textColor: {
-    blue: sharedColor.blue,
+    blue: '#544AC9', //different with backgroundColor.blue
     gray: sharedColor.gray,
     green: '#208F96', //different with backgroundColor.green
     yellow: '#B2800D', //different with backgroundColor.yellow
     red: '#C0374F',
-
+    orange: '#D6610C', //different with backgroundColor.orange
     black: '#0F2D35',
-    white: '#FFFFFF',
+    white: sharedColor.white,
   },
   borderColor: {
     black: sharedColor.black,
