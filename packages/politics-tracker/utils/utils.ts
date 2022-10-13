@@ -1,6 +1,8 @@
 import type { Config } from 'tailwindcss'
+import type { withKeyObject } from '~/types/common'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '~/tailwind.config'
+import axios from 'axios'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -58,4 +60,24 @@ function isURL(urlString: string): boolean {
   return true
 }
 
-export { getLineBreaks, getTailwindConfig, isURL }
+async function fireGqlRequest<T>(
+  query: string,
+  variables: withKeyObject<T>,
+  apiUrl: string = 'http://localhost:3000/api/data'
+) {
+  const { data: result } = await axios({
+    url: apiUrl,
+    method: 'post',
+    data: {
+      query,
+      variables,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+    },
+  })
+  return result
+}
+
+export { getLineBreaks, getTailwindConfig, isURL, fireGqlRequest }
