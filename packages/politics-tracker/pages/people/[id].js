@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
 import Title from '~/components/people/title'
+import SectionList from '~/components/people/section-list'
 const CustomDiv = styled.div`
   width: 100px;
   height: 100px;
@@ -24,7 +25,7 @@ export default function People() {
   return (
     <ThemeProvider theme={theme}>
       <Title titleData={MOCK_PEOPLE_DATA} />
-      <CustomDiv />
+      <SectionList />
     </ThemeProvider>
   )
 }
