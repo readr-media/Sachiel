@@ -36,7 +36,9 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
               <PoliticContent>{props.desc}</PoliticContent>
             </div>
             <div className={s['source-group']}>
-              <div className={s['source-label']}>來源</div>
+              <div className={s['source-label']}>
+                <span>來源</span>
+              </div>
               <div className={s['source-list']}>{sourceList}</div>
             </div>
             <div className={s['button-edit']} onClick={() => setEditing(true)}>
