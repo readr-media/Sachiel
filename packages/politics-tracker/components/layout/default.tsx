@@ -1,5 +1,6 @@
 import Header from '~/components/header'
 import Footer from '~/components/footer'
+import ToastProvider from '~/components/toast/toast-provider'
 
 type DefaultLayoutProps = {
   children: React.ReactNode
@@ -10,9 +11,13 @@ export default function DefaultLayout({
 }: DefaultLayoutProps): JSX.Element {
   return (
     <>
-      <Header />
-      {children}
-      <Footer />
+      <ToastProvider>
+        <>
+          <Header />
+          {children}
+          <Footer />
+        </>
+      </ToastProvider>
     </>
   )
 }
