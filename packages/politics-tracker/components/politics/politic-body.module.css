@@ -22,11 +22,11 @@
   @apply mt-2 flex flex-row flex-nowrap;
 }
 .source-label {
-  @apply inline-block shrink-0  bg-label p-2 text-[12px] font-medium leading-[14px] text-white opacity-50;
+  @apply inline-flex items-center shrink-0 bg-label p-2 text-[12px] font-medium leading-[14px] text-white opacity-50;
   @apply md:text-[14px] md:leading-[16px];
 }
 .source-list {
-  @apply flex grow flex-row flex-nowrap items-center overflow-hidden bg-label bg-opacity-5;
+  @apply flex grow flex-row flex-wrap items-center bg-label bg-opacity-5 gap-2 p-2 pl-0;
 }
 .button-edit {
   @apply mt-2 flex flex-row py-1;
