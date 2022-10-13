@@ -1,5 +1,5 @@
 .main-text {
-  @apply font-black text-title-main md:text-title-main-md;
+  @apply font-bold text-title-main md:text-title-main-md;
 }
 .sub-text {
   @apply font-bold text-title-sub md:text-title-sub-md;
