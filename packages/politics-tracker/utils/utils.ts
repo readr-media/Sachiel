@@ -62,7 +62,7 @@ function isURL(urlString: string): boolean {
 
 async function fireGqlRequest<T>(
   query: string,
-  variables: withKeyObject<T>,
+  variables: undefined | withKeyObject<T>,
   apiUrl: string = 'http://localhost:3000/api/data'
 ) {
   const { data: result } = await axios({

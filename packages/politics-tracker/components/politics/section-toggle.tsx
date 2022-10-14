@@ -6,16 +6,16 @@ type SectionToggleProps = {
   id: string
   content: string
   isActive: boolean
-  setActive: (id: string) => void
+  setActive: () => void
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   const toggleClass = props.isActive ? s['toggle-active'] : s['toggle']
 
   function toggle() {
     if (props.isActive) {
-      props.setActive('')
+      props.setActive()
     } else {
-      props.setActive(props.id)
+      props.setActive()
     }
   }
 
