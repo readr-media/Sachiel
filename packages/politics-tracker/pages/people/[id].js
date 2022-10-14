@@ -4,14 +4,13 @@ import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
 import Title from '~/components/people/title'
 import SectionList from '~/components/people/section-list'
-const CustomDiv = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: black;
-  ${({ theme }) => theme.breakpoint.md} {
-    background-color: green;
-  }
+
+const Main = styled.main`
+  background-color: #f3f4ff;
+  height: 100%;
+  min-height: 100vh;
 `
+
 const MOCK_PEOPLE_DATA = {
   name: '高潞．以用．巴魕剌 Kawlo．Iyun．Pacidal 高潞．以用．巴魕剌 Kawlo．Iyun．Pacidal ',
   image:
@@ -24,8 +23,10 @@ const MOCK_PEOPLE_DATA = {
 export default function People() {
   return (
     <ThemeProvider theme={theme}>
-      <Title titleData={MOCK_PEOPLE_DATA} />
-      <SectionList />
+      <Main>
+        <Title titleData={MOCK_PEOPLE_DATA} />
+        <SectionList />
+      </Main>
     </ThemeProvider>
   )
 }
