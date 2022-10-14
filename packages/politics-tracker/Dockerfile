@@ -8,7 +8,6 @@ ADD . /build/
 
 RUN yarn install && yarn build && yarn next build
 
-
 FROM node:${NODE_VERSION}
 
 WORKDIR /app
