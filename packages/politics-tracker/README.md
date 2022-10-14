@@ -51,6 +51,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   /styles               - CSS 檔案
   /types                - TypeScript 使用的型別定義
   /utils                - 工具類 function
+  /graphql              - GraphQL query/mutation
+    /query              - query
+    /mutation           - mutation
   /assets               - SVG、靜態檔案
   /public               - 公開資源
 ```

@@ -1,0 +1,20 @@
+
+query GetOverview($personId: ID!) {
+  politics(orderBy: {id: desc}, where: {person: {person_id: { id: { equals: $personId }}}}) {
+    id
+    person {
+      person_id {
+        name
+        image
+      }
+      election {
+        id
+      }
+    }
+    thread_parent {
+      id
+    }
+    desc
+    source
+  }
+}
