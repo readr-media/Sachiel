@@ -1,12 +1,13 @@
 import { useState, Fragment } from 'react'
 
-import SectionToggle from '../people/section-toggle'
+import SectionToggle from './section-toggle'
+import SectionBody from './section-body'
 
 import styled from 'styled-components'
 const SectionListWrapper = styled.div`
   max-width: 688px;
   margin: 0 auto;
-  /* background-color: ${({ theme }) => theme.backgroundColor.blue}; */
+  padding: 0 26px 0 16px;
 `
 export default function SectionList() {
   const [activeId, setActiveId] = useState('')
@@ -76,23 +77,19 @@ export default function SectionList() {
   ]
   const electionList = elections.map((e) => {
     return (
-      <SectionToggle
-        key={e.id}
-        id={e.id}
-        isActive={activeId === e.id}
-        setActive={(/** @type {import("react").SetStateAction<string>} */ id) =>
-          setActiveId(id)
-        }
-        color={'orange'}
-      />
+      <Fragment key={e.id}>
+        <SectionToggle
+          id={e.id}
+          isActive={activeId === e.id}
+          setActive={(
+            /** @type {import("react").SetStateAction<string>} */ id
+          ) => setActiveId(id)}
+          color={'orange'}
+        />
+        <SectionBody isActive={activeId === e.id}></SectionBody>
+      </Fragment>
     )
   })
 
-  return (
-    <SectionListWrapper>
-      {electionList}
-      {electionList}
-      {electionList}
-    </SectionListWrapper>
-  )
+  return <SectionListWrapper>{electionList}</SectionListWrapper>
 }

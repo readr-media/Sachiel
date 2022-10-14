@@ -42,12 +42,6 @@ const TitleImage = styled.img`
   object-fit: cover;
 `
 
-const TitleBottom = styled.div`
-  display: flex;
-  ${({ theme }) => theme.breakpoint.xl} {
-    display: none;
-  }
-`
 const ColorBlock = styled.div`
   border-color: ${({ theme }) => theme.borderColor.black};
   background-color: ${({ color }) => color};
