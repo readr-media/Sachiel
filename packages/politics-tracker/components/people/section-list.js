@@ -4,7 +4,9 @@ import SectionToggle from '../people/section-toggle'
 
 import styled from 'styled-components'
 const SectionListWrapper = styled.div`
-  padding: 100px;
+  max-width: 688px;
+  margin: 0 auto;
+  /* background-color: ${({ theme }) => theme.backgroundColor.blue}; */
 `
 export default function SectionList() {
   const [activeId, setActiveId] = useState('')
@@ -86,5 +88,11 @@ export default function SectionList() {
     )
   })
 
-  return <SectionListWrapper>{electionList}</SectionListWrapper>
+  return (
+    <SectionListWrapper>
+      {electionList}
+      {electionList}
+      {electionList}
+    </SectionListWrapper>
+  )
 }
