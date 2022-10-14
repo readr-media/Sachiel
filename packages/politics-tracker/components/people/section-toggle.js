@@ -4,11 +4,12 @@ import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
 
 const ToggleWrapper = styled.div`
-  padding: 20px;
+  padding: 20px 26px 30px 16px;
+  width: 100%;
 `
 const ToggleButton = styled.button`
   transition: all 0.3s ease-in-out;
-  width: 300px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
