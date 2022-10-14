@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import List from './list'
+import Content from './content'
 const SectionBodyContainer = styled.div`
   //adjust position for fitting place when section-toggle is pressed
   margin-left: 10px;
@@ -34,7 +34,7 @@ const SectionBodyContainer = styled.div`
 export default function SectionBody({ isActive = false }) {
   return (
     <SectionBodyContainer shouldShowSectionBody={isActive}>
-      <List></List>
+      <Content></Content>
     </SectionBodyContainer>
   )
 }
