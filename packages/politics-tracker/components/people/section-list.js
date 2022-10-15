@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 
 import SectionToggle from './section-toggle'
 import SectionBody from './section-body'
@@ -9,7 +9,14 @@ const SectionListWrapper = styled.div`
   margin: 0 auto;
   padding: 0 26px 0 16px;
 `
-export default function SectionList() {
+
+/**
+ * @param {Object} props
+ * @param {import('../../types/person').Person} props.peopleData
+ * @param {import('../../types/politics').PersonElection[]} props.personElectionsData
+ * @returns {React.ReactElement}
+ */
+export default function SectionList({ peopleData, personElectionsData }) {
   const [activeId, setActiveId] = useState('')
   const elections = [
     {

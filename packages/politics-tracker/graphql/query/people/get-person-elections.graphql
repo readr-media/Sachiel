@@ -1,0 +1,14 @@
+query GetPersonElections($Id: ID!) {
+  personElections(where: { person_id: { id: { equals: $Id } } }) {
+    id
+    person_id {
+      id,
+      name
+    }
+    election {
+      id
+      name
+      description
+    }
+  }
+}
