@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import theme from '~/styles/theme'
-
+import ProfileImage from './profile-image'
 const TitleWrapper = styled.div`
   width: 100%;
 `
@@ -33,21 +33,13 @@ const Name = styled.h1`
   ${({ theme }) => theme.fontSize['title-main']};
 `
 
-const TitleImage = styled.img`
-  border-radius: 50%;
-  border-color: ${({ theme }) => theme.borderColor.white};
-  border-width: 2px;
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-`
-
-const TitleBottom = styled.div`
-  display: flex;
-  ${({ theme }) => theme.breakpoint.xl} {
-    display: none;
+const TitleProfileImage = styled(ProfileImage)`
+  ${({ theme }) => theme.breakpoint.md} {
+    width: 80px;
+    height: 80px;
   }
 `
+
 const ColorBlock = styled.div`
   border-color: ${({ theme }) => theme.borderColor.black};
   background-color: ${({ color }) => color};
@@ -105,7 +97,9 @@ export default function Title({ titleData = {} }) {
           <ColorBlockDesktop color={theme.backgroundColor.yellow} />
         </TitleDecorationDesktop>
         <TitleInfo>
-          <TitleImage src={image ? image : '/images/default-head-photo.png'} />
+          <TitleProfileImage
+            src={image ? image : '/images/default-head-photo.png'}
+          />
           <Name>{name}</Name>
         </TitleInfo>
         <TitleDecorationDesktop>

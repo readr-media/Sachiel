@@ -23,6 +23,7 @@ export const theme = {
     yellow: '#F6BA31',
     green: sharedColor.green,
     white: sharedColor.white,
+    black5: 'rgba(15, 45, 53, 0.05)',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
