@@ -286,7 +286,7 @@ const Politics = (props: PoliticsPageProps) => {
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} />
         {sections}
-        <Nav />
+        <Nav person={props.person} election={props.latestElection} />
       </main>
     </DefaultLayout>
   )
