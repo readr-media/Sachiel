@@ -7,7 +7,7 @@ export type Politic = {
 
 export type PersonElection = {
   id: string
-  party: string | null | undefined
+  party: string
   partyIcon: string
   name: string
   year: number

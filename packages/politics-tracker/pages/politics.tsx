@@ -12,7 +12,7 @@ import type {
 
 import moment from 'moment'
 import { print } from 'graphql'
-import { fireGqlRequest, hasOwnByArray } from '~/utils/utils'
+import { fireGqlRequest, hasOwnByArray, partyName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
@@ -99,7 +99,7 @@ export const getServerSideProps: GetServerSideProps<
             electionMap[eId] = {
               id: String(election.id),
               name: String(election.name),
-              party: party?.name ?? null,
+              party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
@@ -143,7 +143,7 @@ export const getServerSideProps: GetServerSideProps<
       const party = latestPersonElection.party
       profile.name = person?.name ?? ''
       profile.avatar = person?.image ?? ''
-      profile.party = party?.name ?? null
+      profile.party = partyName(party?.name)
       profile.partyIcon = party?.image ?? ''
       profile.campaign = election?.type ?? ''
       latestPerson = person
