@@ -80,4 +80,17 @@ async function fireGqlRequest<T>(
   return result
 }
 
-export { getLineBreaks, getTailwindConfig, isURL, fireGqlRequest }
+function hasOwnByArray(obj: withKeyObject<any>, keys: string[]): boolean {
+  return keys.reduce((isPass: boolean, current: string) => {
+    if (!obj.hasOwnProperty(current)) isPass = false
+    return isPass
+  }, true)
+}
+
+export {
+  getLineBreaks,
+  getTailwindConfig,
+  isURL,
+  fireGqlRequest,
+  hasOwnByArray,
+}

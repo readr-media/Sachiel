@@ -1,0 +1,20 @@
+query GetPolticsRelatedToPersonElections($ids: [ID!]) {
+  politics(where: {person: {id: {in: $ids}}}) {
+    id
+    desc
+    source
+    status
+    thread_parent {
+      id
+      desc
+      source
+			status
+    }
+    person {
+      id
+      election {
+        id
+      }
+    }
+  }
+}
