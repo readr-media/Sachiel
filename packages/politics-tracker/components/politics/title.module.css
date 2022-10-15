@@ -28,7 +28,7 @@
   @apply main-text overflow-hidden text-ellipsis;
 }
 .main-container {
-  @apply mt-header flex flex-row flex-wrap text-white;
+  @apply w-screen mt-header flex flex-row flex-wrap text-white;
   @apply md:mt-header-md;
   @apply lg:h-40 lg:max-h-40 lg:flex-nowrap;
 }

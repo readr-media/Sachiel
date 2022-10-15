@@ -93,10 +93,10 @@ const PoliticsBlock = (props: PoliticsBlockProps) => {
   )
 }
 
-type TitleProps = {
+export type TitleProps = {
   name: string
   avatar: string
-  party: string
+  party: string | null | undefined
   partyIcon: string
   campaign: string
   completed: number
@@ -147,7 +147,7 @@ export default function Title(props: TitleProps): JSX.Element {
     customClass: subTextClass,
   }
 
-  function partyName(party: string | undefined): string {
+  function partyName(party: string | null | undefined): string {
     return !party ? '無黨籍' : party
   }
 

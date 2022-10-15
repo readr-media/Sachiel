@@ -1,99 +1,290 @@
+import type { GetServerSideProps } from 'next'
 import type { PersonElection } from '~/types/politics'
+import type {
+  withKeyObject,
+  GenericGQLData,
+  RawPersonElection,
+  RawPerson,
+  RawPolitic,
+  RawElection,
+  StatusOptionsB,
+} from '~/types/common'
+
+import moment from 'moment'
+import { print } from 'graphql'
+import { fireGqlRequest, hasOwnByArray } from '~/utils/utils'
+import { cmsApiUrl } from '~/constants/config'
+// @ts-ignore: no definition
+import errors from '@twreporter/errors'
 import DefaultLayout from '~/components/layout/default'
-import Title from '~/components/politics/title'
+import Title, { type TitleProps } from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
 import Nav from '~/components/politics/nav'
+import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
+import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
-const Politics: NextPage = () => {
-  const person = {
-    name: '高潞．以用．巴魕剌 Kawlo．Iyun．Pacidal',
-    // avatar: '',
-    avatar:
-      'https://museum.acgn-stock.com/assets/images/455f612657f3d2decf2b.webp',
-    party: '歡樂無法黨歡樂無法黨歡樂無法黨歡樂無法黨歡樂無法黨',
-    // partyIcon: '',
-    partyIcon:
-      'https://upload.wikimedia.org/wikipedia/zh/thumb/c/c1/Emblem_of_Democratic_Progressive_Party_%28new%29.svg/1200px-Emblem_of_Democratic_Progressive_Party_%28new%29.svg.png',
-    campaign: '台東縣太麻里鄉鄉民代表之類的很長很長很長很長很長很長很長職位',
-    // campaign: '台東縣太麻里鄉鄉民',
-    // campaign: '台東縣太麻里',
-    completed: 100000000000000,
-    waiting: 0,
+type PoliticsPageProps = {
+  titleProps: TitleProps
+  elections: PersonElection[]
+  person: RawPerson
+  latestElection: PersonElection
+}
+
+export const getServerSideProps: GetServerSideProps<
+  PoliticsPageProps
+> = async ({ query }) => {
+  const { name, year } = query
+
+  try {
+    const profile: TitleProps = {
+      name: '',
+      avatar: '',
+      party: '',
+      partyIcon: '',
+      campaign: '',
+      waiting: 0,
+      completed: 0,
+    }
+    const elections: PersonElection[] = []
+    const electionMap: withKeyObject<PersonElection> = {}
+    const personElectionIds: number[] = []
+    let latestPersonElection: RawPersonElection
+    let latestPerson: RawPerson
+
+    {
+      // get latest election, person and party,
+      // also generate personElectionIds for query politics
+      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
+        await fireGqlRequest(
+          print(GetPersonOverView),
+          {
+            name: name,
+            year: Number(year),
+          },
+          cmsApiUrl
+        )
+
+      const gqlErrors = rawData.errors
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `GetPersonOverView` query'),
+          'GraphQLError',
+          'failed to complete `GetPersonOverView`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      const personElections = rawData.data?.personElections
+      if (!personElections || personElections.length === 0) {
+        return {
+          notFound: true,
+        }
+      }
+
+      // sorted by election date
+      latestPersonElection = personElections.reduce(
+        (previous: RawPersonElection, current: RawPersonElection) => {
+          const id = Number(current.id)
+          personElectionIds.push(id)
+
+          const latest = previous.election
+          const election = current.election
+          const party = current.party
+
+          if (election) {
+            const eId = election.id as string
+            electionMap[eId] = {
+              id: String(election.id),
+              name: String(election.name),
+              party: party?.name ?? null,
+              partyIcon: party?.image ?? '',
+              year: Number(election.election_year_year),
+              month: Number(election.election_year_month),
+              day: Number(election.election_year_day),
+              politics: [],
+            }
+          }
+
+          if (election && latest) {
+            if (
+              hasOwnByArray(latest, [
+                'election_year_year',
+                'election_year_month',
+                'election_year_day',
+              ])
+            ) {
+              const latestTime = moment()
+                .year(Number(latest.election_year_year))
+                .month(Number(latest.election_year_month) - 1)
+                .date(Number(latest.election_year_day))
+                .unix()
+              const currentTime = moment()
+                .year(Number(election.election_year_year))
+                .month(Number(election.election_year_month) - 1)
+                .date(Number(election.election_year_day))
+                .unix()
+              if (currentTime > latestTime) {
+                return current
+              }
+            } else {
+              return current
+            }
+          }
+          return previous
+        },
+        { election: {} }
+      )
+
+      const person = latestPersonElection.person_id as RawPerson
+      const election = latestPersonElection.election as RawElection
+      const party = latestPersonElection.party
+      profile.name = person?.name ?? ''
+      profile.avatar = person?.image ?? ''
+      profile.party = party?.name ?? null
+      profile.partyIcon = party?.image ?? ''
+      profile.campaign = election?.type ?? ''
+      latestPerson = person
+    }
+
+    {
+      // get related politics
+      const rawData: GenericGQLData<RawPolitic[], 'politics'> =
+        await fireGqlRequest(
+          print(GetPolticsRelatedToPersonElections),
+          {
+            ids: personElectionIds,
+          },
+          cmsApiUrl
+        )
+
+      const gqlErrors = rawData.errors
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `GetPersonOverView` query'),
+          'GraphQLError',
+          'failed to complete `GetPersonOverView`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      const attributeMap: {
+        [T in StatusOptionsB]: keyof Pick<TitleProps, 'waiting' | 'completed'>
+      } = {
+        verified: 'completed',
+        notverified: 'waiting',
+      }
+      const politicList = rawData.data?.politics || []
+      const polticGroup: withKeyObject<{
+        latestId: string
+        politic: RawPolitic
+      }> = {}
+      // keep latest politc of each politic thread
+      for (const politic of politicList) {
+        const status = politic.status as StatusOptionsB
+        const attribute: keyof TitleProps = attributeMap[status]
+        profile[attribute] += 1
+
+        if (status === 'verified') {
+          const selfId = politic.id as string
+          const commonId = politic.thread_parent?.id ?? selfId
+          if (polticGroup.hasOwnProperty(commonId)) {
+            const latestId = polticGroup[commonId].latestId
+            if (Number(selfId) - Number(latestId) > 0) {
+              polticGroup[commonId] = {
+                latestId: selfId,
+                politic,
+              }
+            }
+          } else {
+            polticGroup[commonId] = {
+              latestId: selfId,
+              politic,
+            }
+          }
+        }
+      }
+
+      const verifiedLatestPoliticList: RawPolitic[] = Object.keys(
+        polticGroup
+      ).map((key) => polticGroup[key].politic)
+      for (const politic of verifiedLatestPoliticList) {
+        const eId = politic.person?.election?.id as string
+        electionMap[eId].politics.push({
+          id: String(politic.thread_parent?.id ?? politic.id),
+          desc: String(politic.desc),
+          source: String(politic.source),
+        })
+      }
+
+      // sort politics in an election by Id in ascending order
+      Object.keys(electionMap).forEach((eId) => {
+        electionMap[eId].politics.sort((a, b) => Number(a) - Number(b))
+        elections.push(electionMap[eId])
+      })
+
+      elections.sort((a, b) => {
+        const prev = moment()
+          .year(Number(a.year))
+          .month(Number(a.month) - 1)
+          .date(Number(a.day))
+          .unix()
+        const next = moment()
+          .year(Number(b.year))
+          .month(Number(b.month) - 1)
+          .date(Number(b.day))
+          .unix()
+        return next - prev
+      })
+    }
+
+    return {
+      props: {
+        titleProps: profile,
+        elections,
+        person: latestPerson ?? null,
+        latestElection: elections[0],
+      },
+    }
+  } catch (err) {
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+
+    return {
+      notFound: true,
+    }
   }
+}
 
-  const elections: PersonElection[] = [
-    {
-      id: '1',
-      name: '2014 臺北市議員選舉如果這行很長居然有一行以上會這樣排版',
-      year: '2014',
-      month: '08',
-      day: '08',
-      politics: [
-        {
-          id: '1',
-          desc: '便捷交通：推動綠色軌道運輸，爭取東部快鐵、鐵路高架捷運化；打通南(蘇澳)、北(礁溪)交通瓶頸； 建構縣內四縱六橫交通骨幹，銜接烏石港、礁溪、宜蘭、羅東、蘇澳五大轉運站，串聯aaaaaaaaaaaaaaaaaaaaaaaaa縣內公共運輸；並規劃跨縣市太平洋藍色公路及旅遊系統，建置智慧交通管理系統（ITS）， 以建構速捷交通網絡，打造北宜便捷生活圈。',
-          source:
-            'https://wwww.google.com\r\n選舉公報\r\n測試\r\njavascript:void(0)\r\nhttp://javascript:void(0)\r\nhttps://plurk.com',
-        },
-        {
-          id: '2',
-          desc: '建構縣內四縱六橫交通骨幹，銜接烏石港、礁溪、宜蘭、羅東、蘇澳五大轉運站，串聯aaaaaaaaaaaaaaaaaaaaaaaaa縣內公共運輸；並規劃跨縣市太平洋藍色公路及旅遊系統，建置智慧交通管理系統（ITS）， 以建構速捷交通網絡，打造北宜便捷生活圈。',
-          source:
-            'https://wwww.google.com\r\n選舉公報\r\n測試\r\njavascript:void(0)\r\nhttp://javascript:void(0)\r\nhttps://plurk.com',
-        },
-        {
-          id: '3',
-          desc: '便捷交通：推動綠色軌道運輸，爭取東部快鐵、鐵路高架捷運化',
-          source:
-            'https://wwww.google.com\r\n測試\r\njavascript:void(0)https://plurk.com\r\nhttps://twitter.com',
-        },
-      ],
-    },
-    {
-      id: '2',
-      name: '2014 臺北市議員選舉',
-      year: '2014',
-      month: '08',
-      day: '08',
-      politics: [
-        {
-          id: '1',
-          desc: '便捷交通：推動綠色軌道運輸，爭取東部快鐵、鐵路高架捷運化；打通南(蘇澳)、北(礁溪)交通瓶頸； 建構縣內四縱六橫交通骨幹，銜接烏石港、礁溪、宜蘭、羅東、蘇澳五大轉運站，串聯aaaaaaaaaaaaaaaaaaaaaaaaa縣內公共運輸；並規劃跨縣市太平洋藍色公路及旅遊系統，建置智慧交通管理系統（ITS）， 以建構速捷交通網絡，打造北宜便捷生活圈。',
-          source:
-            'https://wwww.google.com\r\n選舉公報\r\n測試\r\njavascript:void(0)\r\nhttp://javascript:void(0)\r\nhttps://plurk.com',
-        },
-        {
-          id: '2',
-          desc: '建構縣內四縱六橫交通骨幹，銜接烏石港、礁溪、宜蘭、羅東、蘇澳五大轉運站，串聯aaaaaaaaaaaaaaaaaaaaaaaaa縣內公共運輸；並規劃跨縣市太平洋藍色公路及旅遊系統，建置智慧交通管理系統（ITS）， 以建構速捷交通網絡，打造北宜便捷生活圈。',
-          source:
-            'https://wwww.google.com\r\n選舉公報\r\n測試\r\njavascript:void(0)\r\nhttp://javascript:void(0)\r\nhttps://plurk.com',
-        },
-        {
-          id: '3',
-          desc: '便捷交通：推動綠色軌道運輸，爭取東部快鐵、鐵路高架捷運化；打通南(蘇澳)、北(礁溪)交通瓶頸； 建構縣內四縱六橫交通骨幹，銜接烏石港、礁溪、宜蘭、羅東、蘇澳五大轉運站，串聯aaaaaaaaaaaaaaaaaaaaaaaaa縣內公共運輸；並規劃跨縣市太平洋藍色公路及旅遊系統，建置智慧交通管理系統（ITS）， 以建構速捷交通網絡，打造北宜便捷生活圈。',
-          source:
-            'https://wwww.google.com\r\n測試\r\njavascript:void(0)https://plurk.com\r\nhttps://twitter.com',
-        },
-      ],
-    },
-    {
-      id: '3',
-      name: '2014 臺北市議員選舉',
-      year: '2014',
-      month: '08',
-      day: '08',
-      politics: [],
-    },
-  ]
-
-  const sections = elections.map((e, index) => (
+const Politics = (props: PoliticsPageProps) => {
+  const sections = props.elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
 
   return (
     <DefaultLayout>
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...person} />
+        <Title {...props.titleProps} />
         {sections}
         <Nav />
       </main>

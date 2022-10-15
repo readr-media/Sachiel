@@ -1,20 +1,23 @@
-
-query GetOverview($personId: ID!) {
-  politics(orderBy: {id: desc}, where: {person: {person_id: { id: { equals: $personId }}}}) {
+query GetPersonOverView($name: String!, $year: Int!) {
+  personElections(where: {person_id: {name: { equals: $name }, birth_date_year: { equals: $year}}}) {
     id
-    person {
-      person_id {
-        name
-        image
-      }
-      election {
-        id
-      }
-    }
-    thread_parent {
+    person_id {
       id
+      name
+      image
     }
-    desc
-    source
+    election {
+      id
+      name
+      election_year_year
+      election_year_month
+      election_year_day
+      level
+      type
+    }
+    party {
+      name
+      image
+    }
   }
 }
