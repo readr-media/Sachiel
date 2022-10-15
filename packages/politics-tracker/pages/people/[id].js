@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 
@@ -30,7 +30,7 @@ export default function People({ peopleData }) {
   return (
     <ThemeProvider theme={theme}>
       <Main>
-        <Title titleData={MOCK_PEOPLE_DATA} />
+        <Title name={peopleData.name} image={peopleData.image} />
         <SectionList />
       </Main>
     </ThemeProvider>
