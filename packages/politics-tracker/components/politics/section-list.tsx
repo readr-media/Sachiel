@@ -12,7 +12,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
   return (
     <div className={s['section-list']}>
       <SectionToggle
-        id={props.id}
+        {...props}
         content={props.name}
         isActive={isActive}
         setActive={() => setIsActive(!isActive)}

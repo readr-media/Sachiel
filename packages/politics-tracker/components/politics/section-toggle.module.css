@@ -60,10 +60,18 @@
   }
 }
 
-.text {
-  @apply grow;
+.content {
+  @apply grow flex flex-col;
 }
 
-.icon {
+.party-group {
+  @apply mt-2 flex flex-row flex-nowrap items-center;
+}
+
+.party {
+  @apply ml-2 text-title-sub font-bold text-main;
+}
+
+.control {
   @apply shrink-0 text-main w-9 h-9;
 }

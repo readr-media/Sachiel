@@ -1,10 +1,13 @@
 import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
+import Icon from '~/components/icon'
 import s from './section-toggle.module.css'
 
 type SectionToggleProps = {
   id: string
   content: string
+  party: string
+  partyIcon: string
   isActive: boolean
   setActive: () => void
 }
@@ -22,8 +25,19 @@ export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   return (
     <div className={s['container']}>
       <div className={toggleClass} onClick={toggle}>
-        <div className={s['text']}>{props.content}</div>
-        <span className={s['icon']}>
+        <div className={s['content']}>
+          <div className={s['text']}>{props.content}</div>
+          <div className={s['party-group']}>
+            <Icon
+              src={props.partyIcon}
+              width={20}
+              height={20}
+              borderWidth={1}
+            />
+            <div className={s['party']}>{props.party}</div>
+          </div>
+        </div>
+        <span className={s['control']}>
           {props.isActive ? <ArrowUp /> : <ArrowDown />}
         </span>
       </div>
