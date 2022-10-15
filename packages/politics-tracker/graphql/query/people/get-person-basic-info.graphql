@@ -1,4 +1,4 @@
-query FetchPeople ($Id: ID!) {
+query GetPersonBasicInfo ($Id: ID!) {
   people(
     where: {
       id: { equals: $Id } }) {

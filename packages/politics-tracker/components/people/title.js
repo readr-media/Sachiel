@@ -81,14 +81,11 @@ const TitleDecorationDesktop = styled(TitleDecoration)`
 /**
  *
  * @param {Object} props
- * @param {Object} [props.titleData={}]
- * @param {null|string} [props.titleData.name]
- * @param {null|string} [props.titleData.image]
+ * @param {import('../../types/person').Person['name']} props.name
+ * @param {import('../../types/person').Person['image']} props.image
  * @returns {React.ReactElement}
  */
-export default function Title({ titleData = {} }) {
-  const { name, image } = titleData
-
+export default function Title({ name, image }) {
   return (
     <TitleWrapper>
       <TitleTop>
