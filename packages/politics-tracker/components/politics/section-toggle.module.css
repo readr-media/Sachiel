@@ -28,7 +28,7 @@
 
 .toggle-active {
   @apply toggle-base;
-  @apply mx-0 mb-0 mt-[var(--button-height)];
+  @apply ml-[var(--button-height)] mr-0 mb-0 mt-[var(--button-height)];
 
   &::before {
     @apply hidden;
