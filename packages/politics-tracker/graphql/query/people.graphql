@@ -1,0 +1,21 @@
+query FetchPeople ($Id: ID!) {
+  people(
+    where: {
+      id: { equals: $Id } }) {
+    id
+    name
+    image
+    alternative
+    other_names
+    biography
+    birth_date_year
+    birth_date_month
+    birth_date_day
+    death_date_year
+    death_date_month
+    death_date_day
+    gender
+    national_identity
+  }
+}
+
