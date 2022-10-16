@@ -10,7 +10,7 @@
   @apply lg:flex-nowrap lg:items-center lg:px-10 lg:py-5;
 }
 .back {
-  @apply block-common order-2 items-start bg-person;
+  @apply block-common order-2 items-start;
   @apply md:shadow-top-and-right;
   @apply lg:flex-row;
 
@@ -21,7 +21,7 @@
   }
 }
 .next {
-  @apply block-common order-1 items-end bg-campaign;
+  @apply block-common order-1 items-end;
   @apply md:shadow-top-and-left;
   @apply lg:flex-row-reverse;
 
@@ -39,3 +39,16 @@
 .text {
   @apply inline-block;
 }
+
+.home {
+  @apply order-3 flex shrink-0 items-center justify-center bg-white px-10 py-5;
+  @apply text-black shadow-top md:order-none;
+
+  &.default-hidden {
+    @apply hidden md:flex;
+  }
+}
+.icon-home {
+  @apply h-12 w-12;
+}
+

@@ -14,7 +14,7 @@ import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 import DefaultLayout from '~/components/layout/default'
-import Nav from '~/components/election/nav'
+import Nav, { type LinkMember } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
@@ -159,11 +159,31 @@ export const getServerSideProps: GetServerSideProps<
   }
 }
 
+function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
+  const search = new URLSearchParams({
+    electionId: item?.electionId ?? '',
+    areaId: item?.electionAreaId ?? '',
+  }).toString()
+  const baseUrl = '/election'
+  return item
+    ? {
+        content: item.name,
+        href: `${baseUrl}?${search}`,
+        backgroundColor: 'bg-campaign',
+      }
+    : undefined
+}
+
 const Election = (props: ElectionPageProps) => {
+  const navProps = {
+    prev: getConfigItme(props.prev),
+    next: getConfigItme(props.next),
+  }
+
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
-        <Nav />
+        <Nav {...navProps} />
       </main>
     </DefaultLayout>
   )

@@ -25,7 +25,8 @@ import errors from '@twreporter/errors'
 import DefaultLayout from '~/components/layout/default'
 import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
-import Nav from '~/components/politics/nav'
+// import Nav from '~/components/politics/nav'
+import Nav, { type LinkMember } from '~/components/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
@@ -299,6 +300,27 @@ const Politics = (props: PoliticsPageProps) => {
     setPoliticAmounts(amount)
   }
 
+  const prevLink = ['/people', props.person.id].join('/')
+  const nextLink = [
+    '/election',
+    new URLSearchParams({
+      electionId: props.latestElection.electionId,
+      areaId: props.latestElection.electionAreaId,
+    }).toString(),
+  ].join('?')
+  const navProps: withKeyObject<LinkMember | undefined> = {
+    prev: {
+      content: '回上層',
+      href: prevLink,
+      backgroundColor: 'bg-person',
+    },
+    next: {
+      content: props.latestElection.name,
+      href: nextLink,
+      backgroundColor: 'bg-campaign',
+    },
+  }
+
   const sections = props.elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
@@ -312,7 +334,7 @@ const Politics = (props: PoliticsPageProps) => {
         >
           {sections}
         </PoliticAmountContext.Provider>
-        <Nav person={props.person} election={props.latestElection} />
+        <Nav {...navProps} />
       </main>
     </DefaultLayout>
   )
