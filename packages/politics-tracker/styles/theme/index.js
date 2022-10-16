@@ -31,6 +31,7 @@ export const theme = {
     brown: '#B3800D',
     black: sharedColor.black,
     skinColor: '#FFF5E7',
+    disable: '#C5CBCD',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
@@ -42,6 +43,7 @@ export const theme = {
     black: '#0F2D35',
     white: sharedColor.white,
     pink: '#FFF1E8',
+    disable: sharedColor.gray,
   },
   borderColor: {
     black: sharedColor.black,

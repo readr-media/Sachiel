@@ -5,12 +5,12 @@ import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
 import Title from '~/components/people/title'
 import SectionList from '~/components/people/section-list'
+import Section from '~/components/people/section'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import GetPersonBasicInfo from '~/graphql/query/people/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/people/get-person-elections.graphql'
-
 const Main = styled.main`
   background-color: #f3f4ff;
   height: 100%;
@@ -28,7 +28,7 @@ export default function People({ peopleData, personElectionsData }) {
     <ThemeProvider theme={theme}>
       <Main>
         <Title name={peopleData.name} image={peopleData.image} />
-        <SectionList
+        <Section
           peopleData={peopleData}
           personElectionsData={personElectionsData}
         />
