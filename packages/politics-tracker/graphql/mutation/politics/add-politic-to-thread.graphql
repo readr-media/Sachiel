@@ -1,0 +1,23 @@
+mutation AddPoliticToThread($data: PoliticCreateInput!) {
+  createPolitic(data: $data) {
+    desc
+    source
+    person {
+      id
+      person_id {
+        name
+      }
+      election {
+        name
+      }
+      party {
+        name
+      }
+    }
+    thread_parent {
+      id
+      desc
+      source
+    }
+  }
+}
