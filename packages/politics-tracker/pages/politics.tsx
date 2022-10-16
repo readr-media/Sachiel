@@ -178,9 +178,11 @@ export const getServerSideProps: GetServerSideProps<
 
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `GetPersonOverView` query'),
+          new Error(
+            'Errors returned in `GetPolticsRelatedToPersonElections` query'
+          ),
           'GraphQLError',
-          'failed to complete `GetPersonOverView`',
+          'failed to complete `GetPolticsRelatedToPersonElections`',
           { errors: gqlErrors }
         )
 
