@@ -23,11 +23,13 @@
     @apply ml-[5px] h-5 w-5;
   }
 
-  &:hover, &:active {
-    @apply bg-button-2 cursor-pointer;
-    
-    .content {
-      @apply text-white;
+  &:not(.loading):not(.disable) {
+    &:hover, &:active {
+      @apply bg-button-2 cursor-pointer;
+      
+      .content {
+        @apply text-white;
+      }
     }
   }
 
@@ -41,6 +43,8 @@
   }
 
   &.loading {
+    @apply cursor-not-allowed;
+
     .dots-container {
       @apply visible;
     }

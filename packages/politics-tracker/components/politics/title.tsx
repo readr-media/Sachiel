@@ -1,3 +1,4 @@
+import type { PersonOverview } from '~/types/politics'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
 import classNames from 'classnames'
@@ -93,15 +94,6 @@ const PoliticsBlock = (props: PoliticsBlockProps) => {
   )
 }
 
-export type TitleProps = {
-  name: string
-  avatar: string
-  party: string | null | undefined
-  partyIcon: string
-  campaign: string
-  completed: number
-  waiting: number
-}
 type IconConfig = {
   width: number
   height: number
@@ -113,7 +105,7 @@ type TextConfig = {
   customClass: string
 }
 
-export default function Title(props: TitleProps): JSX.Element {
+export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
     width: 80,
     height: 80,
@@ -147,10 +139,6 @@ export default function Title(props: TitleProps): JSX.Element {
     customClass: subTextClass,
   }
 
-  function partyName(party: string | null | undefined): string {
-    return !party ? '無黨籍' : party
-  }
-
   return (
     <div className={s['main-container']}>
       <div className={s['profile-block']}>
@@ -167,9 +155,9 @@ export default function Title(props: TitleProps): JSX.Element {
           <div className={s.party}>
             <Icon src={props.partyIcon} {...party} />
             <div className={s['party-name']}>
-              <MultipleLineBlock content={partyName(props.party)} {...subText}>
+              <MultipleLineBlock content={props.party} {...subText}>
                 <SingleLineBlock
-                  content={partyName(props.party)}
+                  content={props.party}
                   customClass={subTextClass}
                 />
               </MultipleLineBlock>

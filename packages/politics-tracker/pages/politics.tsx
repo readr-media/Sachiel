@@ -1,5 +1,9 @@
 import type { GetServerSideProps } from 'next'
-import type { PersonElection } from '~/types/politics'
+import type {
+  PersonElection,
+  PersonOverview,
+  PoliticAmount,
+} from '~/types/politics'
 import type {
   withKeyObject,
   GenericGQLData,
@@ -10,21 +14,23 @@ import type {
   StatusOptionsB,
 } from '~/types/common'
 
+import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
-import { fireGqlRequest, hasOwnByArray } from '~/utils/utils'
+import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
+import { fireGqlRequest, hasOwnByArray, partyName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import DefaultLayout from '~/components/layout/default'
-import Title, { type TitleProps } from '~/components/politics/title'
+import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
 import Nav from '~/components/politics/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
 type PoliticsPageProps = {
-  titleProps: TitleProps
+  titleProps: PersonOverview
   elections: PersonElection[]
   person: RawPerson
   latestElection: PersonElection
@@ -36,7 +42,7 @@ export const getServerSideProps: GetServerSideProps<
   const { name, year } = query
 
   try {
-    const profile: TitleProps = {
+    const profile: PersonOverview = {
       name: '',
       avatar: '',
       party: '',
@@ -97,9 +103,9 @@ export const getServerSideProps: GetServerSideProps<
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
-              id: String(election.id),
+              id: String(current.id),
               name: String(election.name),
-              party: party?.name ?? null,
+              party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
@@ -143,7 +149,7 @@ export const getServerSideProps: GetServerSideProps<
       const party = latestPersonElection.party
       profile.name = person?.name ?? ''
       profile.avatar = person?.image ?? ''
-      profile.party = party?.name ?? null
+      profile.party = partyName(party?.name)
       profile.partyIcon = party?.image ?? ''
       profile.campaign = election?.type ?? ''
       latestPerson = person
@@ -174,7 +180,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const attributeMap: {
-        [T in StatusOptionsB]: keyof Pick<TitleProps, 'waiting' | 'completed'>
+        [T in StatusOptionsB]: keyof PoliticAmount
       } = {
         verified: 'completed',
         notverified: 'waiting',
@@ -187,7 +193,7 @@ export const getServerSideProps: GetServerSideProps<
       // keep latest politc of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
-        const attribute: keyof TitleProps = attributeMap[status]
+        const attribute: keyof PoliticAmount = attributeMap[status]
         profile[attribute] += 1
 
         if (status === 'verified') {
@@ -277,6 +283,15 @@ export const getServerSideProps: GetServerSideProps<
 }
 
 const Politics = (props: PoliticsPageProps) => {
+  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
+    waiting: props.titleProps.waiting,
+    completed: props.titleProps.completed,
+  })
+
+  function setAmount(amount: PoliticAmount) {
+    setPoliticAmounts(amount)
+  }
+
   const sections = props.elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
@@ -284,8 +299,12 @@ const Politics = (props: PoliticsPageProps) => {
   return (
     <DefaultLayout>
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} />
-        {sections}
+        <Title {...props.titleProps} {...politicAmounts} />
+        <PoliticAmountContext.Provider
+          value={{ amount: politicAmounts, setAmount: setAmount }}
+        >
+          {sections}
+        </PoliticAmountContext.Provider>
         <Nav person={props.person} election={props.latestElection} />
       </main>
     </DefaultLayout>

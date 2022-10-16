@@ -1,3 +1,15 @@
+export type PersonOverview = {
+  name: string
+  avatar: string
+  party: string
+  partyIcon: string
+  campaign: string
+  completed: number
+  waiting: number
+}
+
+export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>
+
 export type Politic = {
   id?: string
   desc: string
@@ -7,7 +19,7 @@ export type Politic = {
 
 export type PersonElection = {
   id: string
-  party: string | null | undefined
+  party: string
   partyIcon: string
   name: string
   year: number

@@ -87,10 +87,15 @@ function hasOwnByArray(obj: withKeyObject<any>, keys: string[]): boolean {
   }, true)
 }
 
+function partyName(party: string | null | undefined): string {
+  return !party ? '無黨籍' : party
+}
+
 export {
   getLineBreaks,
   getTailwindConfig,
   isURL,
   fireGqlRequest,
   hasOwnByArray,
+  partyName,
 }

@@ -28,7 +28,7 @@
 
 .toggle-active {
   @apply toggle-base;
-  @apply mx-0 mb-0 mt-[var(--button-height)];
+  @apply ml-[var(--button-height)] mr-0 mb-0 mt-[var(--button-height)];
 
   &::before {
     @apply hidden;
@@ -60,10 +60,18 @@
   }
 }
 
-.text {
-  @apply grow;
+.content {
+  @apply grow flex flex-col;
 }
 
-.icon {
+.party-group {
+  @apply mt-2 flex flex-row flex-nowrap items-center;
+}
+
+.party {
+  @apply ml-2 text-title-sub font-bold text-main;
+}
+
+.control {
   @apply shrink-0 text-main w-9 h-9;
 }
