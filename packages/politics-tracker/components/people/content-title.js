@@ -5,6 +5,7 @@ const ContentTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   h3 {
     ${({ theme }) => theme.fontSize['title-sub']};
     font-weight: 700;

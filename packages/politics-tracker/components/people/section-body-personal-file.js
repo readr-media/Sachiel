@@ -4,6 +4,8 @@ import EditButton from './edit-button'
 import ContentItem from './content-item'
 import ProfileImage from './profile-image'
 import SectionBody from './section-body'
+import Content from './content'
+import ContentList from './content-list'
 import { useMemo } from 'react'
 import moment from 'moment'
 const SectionBodyContainer = styled.div`
@@ -27,7 +29,8 @@ const SectionBodyContainer = styled.div`
   border-width: 0 4px 4px;
   background-color: ${({ theme }) => theme.backgroundColor.white};
   * {
-    display: ${({ shouldShowSectionBody }) => !shouldShowSectionBody && 'none'};
+    display: ${({ shouldShowSectionBody }) =>
+      !shouldShowSectionBody && 'none '};
   }
 `
 
@@ -61,6 +64,7 @@ export default function SectionBodyPersonalFile({
     death_date_day,
     gender,
     national_identity,
+    biography,
   } = peopleData
 
   /**
@@ -158,20 +162,22 @@ export default function SectionBodyPersonalFile({
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   return (
     <SectionBody shouldShowSectionBody={isActive}>
-      <ContentTitle title="基本資料">
-        <EditButton />
-      </ContentTitle>
-      <ContentItem title="姓名" content={name}>
-        <ContentPersonImage
-          src={image ? image : '/images/default-head-photo.png'}
-        />
-      </ContentItem>
-      <ContentItem title="別名" content={alternative} />
-      <ContentItem title="舊名" content={other_names} />
-      <ContentItem title="出生日期" content={`${dateOfBirth}${age}`} />
-      <ContentItem title="死亡日期" content={`${dateOfDeath}${lifespan}`} />
-      <ContentItem title="生理性別" content={displayedGender} />
-      <ContentItem title="國籍" content={national_identity} />
+      <Content title="基本資料">
+        <ContentItem title="姓名" content={name}>
+          <ContentPersonImage
+            src={image ? image : '/images/default-head-photo.png'}
+          />
+        </ContentItem>
+        <ContentItem title="別名" content={alternative} />
+        <ContentItem title="舊名" content={other_names} />
+        <ContentItem title="出生日期" content={`${dateOfBirth}${age}`} />
+        <ContentItem title="死亡日期" content={`${dateOfDeath}${lifespan}`} />
+        <ContentItem title="生理性別" content={displayedGender} />
+        <ContentItem title="國籍" content={national_identity} />
+      </Content>
+      <Content title="經歷">
+        <ContentList biography={biography} />
+      </Content>
     </SectionBody>
   )
 }
