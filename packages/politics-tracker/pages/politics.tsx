@@ -18,14 +18,20 @@ import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
-import { fireGqlRequest, hasOwnByArray, partyName } from '~/utils/utils'
+import {
+  fireGqlRequest,
+  hasOwnByArray,
+  partyName,
+  electionName,
+} from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import DefaultLayout from '~/components/layout/default'
 import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
-import Nav from '~/components/politics/nav'
+// import Nav from '~/components/politics/nav'
+import Nav, { type LinkMember } from '~/components/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
@@ -107,11 +113,11 @@ export const getServerSideProps: GetServerSideProps<
               electionId: eId,
               electionAreaId: String(electionArea?.id),
               id: String(current.id),
-              name: [
+              name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
-                electionArea?.name,
-              ].join(' '),
+                electionArea?.name
+              ),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),
@@ -177,9 +183,11 @@ export const getServerSideProps: GetServerSideProps<
 
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `GetPersonOverView` query'),
+          new Error(
+            'Errors returned in `GetPolticsRelatedToPersonElections` query'
+          ),
           'GraphQLError',
-          'failed to complete `GetPersonOverView`',
+          'failed to complete `GetPolticsRelatedToPersonElections`',
           { errors: gqlErrors }
         )
 
@@ -299,6 +307,27 @@ const Politics = (props: PoliticsPageProps) => {
     setPoliticAmounts(amount)
   }
 
+  const prevLink = ['/people', props.person.id].join('/')
+  const nextLink = [
+    '/election',
+    new URLSearchParams({
+      electionId: props.latestElection.electionId,
+      areaId: props.latestElection.electionAreaId,
+    }).toString(),
+  ].join('?')
+  const navProps: withKeyObject<LinkMember | undefined> = {
+    prev: {
+      content: '回上層',
+      href: prevLink,
+      backgroundColor: 'bg-person',
+    },
+    next: {
+      content: props.latestElection.name,
+      href: nextLink,
+      backgroundColor: 'bg-campaign',
+    },
+  }
+
   const sections = props.elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
@@ -312,7 +341,7 @@ const Politics = (props: PoliticsPageProps) => {
         >
           {sections}
         </PoliticAmountContext.Provider>
-        <Nav person={props.person} election={props.latestElection} />
+        <Nav {...navProps} />
       </main>
     </DefaultLayout>
   )

@@ -1,0 +1,19 @@
+query GetElectionHistoryOfArea($type: String!, $areaId: ID!) {
+  personElections(where: {
+    election: {type: { equals: $type}},
+    electoral_district: { id: { equals: $areaId }}
+  }) {
+    id
+    election {
+    	id
+      name
+      election_year_year
+    	election_year_month
+    	election_year_day
+  	},
+    electoral_district {
+      id
+      name
+    }
+  }
+}

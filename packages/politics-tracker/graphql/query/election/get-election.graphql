@@ -1,0 +1,10 @@
+query GetElection($electionId: ID!) {
+  election (where: {id: $electionId}) {
+    id
+    name
+    type
+    election_year_year
+    election_year_month
+    election_year_day
+  }
+}
