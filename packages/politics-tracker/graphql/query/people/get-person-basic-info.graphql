@@ -1,7 +1,5 @@
 query GetPersonBasicInfo ($Id: ID!) {
-  people(
-    where: {
-      id: { equals: $Id } }) {
+  person(where: { id: $Id }) {
     id
     name
     image
@@ -18,4 +16,3 @@ query GetPersonBasicInfo ($Id: ID!) {
     national_identity
   }
 }
-

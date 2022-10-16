@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ListTitleContainer = styled.div`
+const ContentTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   h3 {
     ${({ theme }) => theme.fontSize['title-sub']};
     font-weight: 700;
@@ -26,11 +27,11 @@ const ListTitleContainer = styled.div`
  * @param {React.ReactElement} [props.children]
  * @returns {React.ReactElement}
  */
-export default function ListTitle({ title = 'list title', children }) {
+export default function ContentTitle({ title = 'list title', children }) {
   return (
-    <ListTitleContainer>
+    <ContentTitleContainer>
       <h3>{title}</h3>
       {children}
-    </ListTitleContainer>
+    </ContentTitleContainer>
   )
 }

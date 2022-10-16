@@ -45,12 +45,12 @@ export default function People({ peopleData, personElectionsData }) {
 export async function getServerSideProps(context) {
   const id = context?.query?.id
   const {
-    data: { people },
+    data: { person },
   } = await fireGqlRequest(print(GetPersonBasicInfo), { Id: id }, cmsApiUrl)
   const {
     data: { personElections },
   } = await fireGqlRequest(print(GetPersonElections), { Id: id }, cmsApiUrl)
   return {
-    props: { peopleData: people[0], personElectionsData: personElections }, // will be passed to the page component as props
+    props: { peopleData: person, personElectionsData: personElections }, // will be passed to the page component as props
   }
 }

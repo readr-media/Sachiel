@@ -1,8 +1,8 @@
-export type Person = {
+type PersonType = {
   id: string
   name: string
-  alternative: string | null
-  other_names: string | null
+  alternative?: string
+  other_names?: string
   image: string | null
   gender: string | null
   biography: string | null
@@ -14,3 +14,5 @@ export type Person = {
   death_date_day: number | null
   national_identity: string | null
 }
+
+export const Person: PersonType | Record<string, never> = {}

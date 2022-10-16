@@ -1,5 +1,5 @@
+import React from 'react'
 import styled from 'styled-components'
-import Content from './content'
 const SectionBodyContainer = styled.div`
   //adjust position for fitting place when section-toggle is pressed
   margin-left: 10px;
@@ -15,12 +15,14 @@ const SectionBodyContainer = styled.div`
   min-height: ${({ shouldShowSectionBody }) =>
     shouldShowSectionBody ? '200px' : '0px'};
   padding: ${({ shouldShowSectionBody }) =>
-    shouldShowSectionBody ? '20px' : '0px'};
+    shouldShowSectionBody ? '0 20px' : '0px'};
 
   border-color: ${({ theme }) => theme.borderColor.black};
   border-width: 0 4px 4px;
   background-color: ${({ theme }) => theme.backgroundColor.white};
-  * {
+
+  *,
+  * + * {
     display: ${({ shouldShowSectionBody }) => !shouldShowSectionBody && 'none'};
   }
 `
@@ -28,13 +30,17 @@ const SectionBodyContainer = styled.div`
 /**
  *
  * @param {Object} props
- * @param {boolean} [props.isActive]
- * @returns
+ * @param {boolean} [props.shouldShowSectionBody]
+ * @param {React.ReactElement |React.ReactElement[]} [props.children]
+ * @returns {React.ReactElement}
  */
-export default function SectionBody({ isActive = false }) {
+export default function SectionBody({
+  shouldShowSectionBody = false,
+  children,
+}) {
   return (
-    <SectionBodyContainer shouldShowSectionBody={isActive}>
-      <Content></Content>
+    <SectionBodyContainer shouldShowSectionBody={shouldShowSectionBody}>
+      {children}
     </SectionBodyContainer>
   )
 }
