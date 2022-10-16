@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import SectionList from './section-list'
 import SectionBody from './section-body'
+import SectionBodyPersonalFile from './section-body-personal-file'
 const SectionContainer = styled.div`
   max-width: 688px;
   margin: 0 auto;
@@ -23,16 +24,17 @@ export default function Section({ peopleData, personElectionsData }) {
         setActive={setActiveId}
         color={'blue'}
       >
-        <SectionBody isActive={activeId === '0'}></SectionBody>
+        <SectionBodyPersonalFile
+          isActive={activeId === '0'}
+          peopleData={peopleData}
+        ></SectionBodyPersonalFile>
       </SectionList>
       <SectionList
         id={'1'}
         isActive={activeId === '1'}
         setActive={setActiveId}
         color={'orange'}
-      >
-        <SectionBody isActive={activeId === '1'}></SectionBody>
-      </SectionList>
+      ></SectionList>
       <SectionList
         id={null}
         color={'disable'}
