@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import Content from './content'
 const SectionBodyContainer = styled.div`
@@ -28,13 +29,17 @@ const SectionBodyContainer = styled.div`
 /**
  *
  * @param {Object} props
- * @param {boolean} [props.isActive]
- * @returns
+ * @param {boolean} [props.shouldShowSectionBody]
+ * @param {React.ReactElement |React.ReactElement[]} [props.children]
+ * @returns {React.ReactElement}
  */
-export default function SectionBody({ isActive = false }) {
+export default function SectionBody({
+  shouldShowSectionBody = false,
+  children,
+}) {
   return (
-    <SectionBodyContainer shouldShowSectionBody={isActive}>
-      <Content></Content>
+    <SectionBodyContainer shouldShowSectionBody={shouldShowSectionBody}>
+      {children}
     </SectionBodyContainer>
   )
 }
