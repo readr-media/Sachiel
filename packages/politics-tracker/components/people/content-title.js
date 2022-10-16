@@ -9,6 +9,9 @@ const ListTitleContainer = styled.div`
     ${({ theme }) => theme.fontSize['title-sub']};
     font-weight: 700;
     padding: 5px 0px;
+    ${({ theme }) => theme.breakpoint.md} {
+      ${({ theme }) => theme.fontSize['title-sub-md']};
+    }
   }
   border-color: ${({ theme }) => theme.borderColor.black};
   border-style: solid;

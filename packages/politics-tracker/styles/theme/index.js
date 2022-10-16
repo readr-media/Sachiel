@@ -24,6 +24,14 @@ export const theme = {
     green: sharedColor.green,
     white: sharedColor.white,
     black5: 'rgba(15, 45, 53, 0.05)',
+    highlightRed: '#DB4C65',
+    greenLake: '#E9FBFF',
+    landingYellow: '#F7BA31',
+    pink: '#FFF8F3',
+    brown: '#B3800D',
+    black: sharedColor.black,
+    skinColor: '#FFF5E7',
+    disable: '#C5CBCD',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
@@ -34,6 +42,8 @@ export const theme = {
     orange: '#D6610C', //different with backgroundColor.orange
     black: '#0F2D35',
     white: sharedColor.white,
+    pink: '#FFF1E8',
+    disable: sharedColor.gray,
   },
   borderColor: {
     black: sharedColor.black,
