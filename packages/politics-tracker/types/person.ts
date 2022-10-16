@@ -13,6 +13,9 @@ type PersonType = {
   death_date_month: number | null
   death_date_day: number | null
   national_identity: string | null
+  email: string | null
+  contact_details: string | null
+  links?: string
 }
 
 export const Person: PersonType | Record<string, never> = {}
