@@ -19,5 +19,9 @@ query GetPersonOverView($name: String!, $year: Int!) {
       name
       image
     }
+    electoral_district {
+      id
+      name
+    }
   }
 }
