@@ -103,6 +103,7 @@ export const getServerSideProps: GetServerSideProps<
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
+              electionId: eId,
               id: String(current.id),
               name: String(election.name),
               party: partyName(party?.name),
