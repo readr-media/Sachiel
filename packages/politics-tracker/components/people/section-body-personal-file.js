@@ -129,16 +129,21 @@ export default function SectionBodyPersonalFile({
     () => formatDate(death_date_year, death_date_month, death_date_day),
     [death_date_year, death_date_month, death_date_day]
   )
-  const age = useMemo(() => {
+  const lifespan = useMemo(() => {
     if (
-      validateDate(birth_date_year) &&
-      validateDate(death_date_year) &&
       birth_date_year &&
-      death_date_year
+      death_date_year &&
+      validateDate(birth_date_year) &&
+      validateDate(death_date_year)
     ) {
       return `（${death_date_year - birth_date_year}歲）`
-    } else return null
+    } else return ''
   }, [birth_date_year, death_date_year])
+  const age = useMemo(() => {
+    if (birth_date_year && validateDate(birth_date_year) && !dateOfDeath) {
+      return `（${moment().year() - birth_date_year}歲）`
+    } else return ''
+  }, [birth_date_year, dateOfDeath])
   /**
    * @param {import('~/types/person').Person["gender"]} gender
    * @returns {import('~/types/person').Person["gender"]}
@@ -163,8 +168,8 @@ export default function SectionBodyPersonalFile({
       </ContentItem>
       <ContentItem title="別名" content={alternative} />
       <ContentItem title="舊名" content={other_names} />
-      <ContentItem title="出生日期" content={dateOfBirth} />
-      <ContentItem title="死亡日期" content={`${dateOfDeath}${age}`} />
+      <ContentItem title="出生日期" content={`${dateOfBirth}${age}`} />
+      <ContentItem title="死亡日期" content={`${dateOfDeath}${lifespan}`} />
       <ContentItem title="生理性別" content={displayedGender} />
       <ContentItem title="國籍" content={national_identity} />
     </SectionBody>
