@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react'
 
 import SectionToggle from './section-toggle'
 import SectionBody from './section-body'
-
 import styled from 'styled-components'
 const SectionListWrapper = styled.div`
   max-width: 688px;
@@ -98,5 +97,5 @@ export default function SectionList({ peopleData, personElectionsData }) {
     )
   })
 
-  return <SectionListWrapper>{electionList}</SectionListWrapper>
+  return <>{electionList}</>
 }
