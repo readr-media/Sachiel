@@ -6,6 +6,7 @@ import ProfileImage from './profile-image'
 import SectionBody from './section-body'
 import Content from './content'
 import ContentList from './content-list'
+import ContentLink from './content-link'
 import { useMemo } from 'react'
 import moment from 'moment'
 const SectionBodyContainer = styled.div`
@@ -65,6 +66,9 @@ export default function SectionBodyPersonalFile({
     gender,
     national_identity,
     biography,
+    email,
+    contact_details,
+    links,
   } = peopleData
 
   /**
@@ -177,6 +181,12 @@ export default function SectionBodyPersonalFile({
       </Content>
       <Content title="經歷">
         <ContentList biography={biography} />
+      </Content>
+      {/* TODO: show multiple line */}
+      <Content title="聯絡方式">
+        <ContentItem title="電子信箱" content={email} />
+        <ContentItem title="電話/地址" content={contact_details} />
+        <ContentLink title="網站" links={links} />
       </Content>
     </SectionBody>
   )

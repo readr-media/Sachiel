@@ -14,5 +14,8 @@ query GetPersonBasicInfo ($Id: ID!) {
     death_date_day
     gender
     national_identity
+    email
+    contact_details    
+    links
   }
 }

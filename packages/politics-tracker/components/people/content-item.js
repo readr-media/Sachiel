@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const ListItemContainer = styled.div`
+const ContentItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -15,7 +15,7 @@ const ListItemContainer = styled.div`
     ${({ theme }) => theme.fontSize['title-sub-md']};
   }
 `
-const ListItemTitle = styled.div`
+const ContentItemTitle = styled.div`
   font-weight: 700;
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -26,7 +26,7 @@ const ListItemTitle = styled.div`
     margin-right: 40px;
   }
 `
-const ListItemContent = styled.div`
+const ContentItemContent = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
@@ -36,7 +36,7 @@ const ListItemContent = styled.div`
     margin-top: 0;
   }
 `
-
+export { ContentItemContainer, ContentItemTitle, ContentItemContent }
 /**
  * @param {Object} props
  * @param {String} [props.title]
@@ -46,14 +46,14 @@ const ListItemContent = styled.div`
  */
 export default function ContentItem({ title = '', content = '', children }) {
   return (
-    <ListItemContainer>
-      <ListItemTitle>{title}</ListItemTitle>
+    <ContentItemContainer>
+      <ContentItemTitle>{title}</ContentItemTitle>
       {content && (
-        <ListItemContent>
+        <ContentItemContent>
           {children}
           {content}
-        </ListItemContent>
+        </ContentItemContent>
       )}
-    </ListItemContainer>
+    </ContentItemContainer>
   )
 }
