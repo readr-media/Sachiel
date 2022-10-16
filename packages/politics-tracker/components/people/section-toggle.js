@@ -108,15 +108,17 @@ const ToggleIcon = styled.span`
  * @param {string} props.color
  * @param {boolean} props.isActive
  * @param {Function} props.setActive
- * @param {string} props.id
+ * @param {null|string} props.id
  * @returns {React.ReactElement}
  */
 export default function SectionToggle({ color, isActive, setActive, id }) {
   function toggle() {
-    if (isActive) {
-      setActive('')
-    } else {
-      setActive(id)
+    if (id) {
+      if (isActive) {
+        setActive('')
+      } else {
+        setActive(id)
+      }
     }
   }
 
