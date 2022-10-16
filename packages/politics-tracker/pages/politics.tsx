@@ -14,8 +14,10 @@ import type {
   StatusOptionsB,
 } from '~/types/common'
 
+import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
+import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
 import { fireGqlRequest, hasOwnByArray, partyName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
@@ -101,7 +103,7 @@ export const getServerSideProps: GetServerSideProps<
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
-              id: String(election.id),
+              id: String(current.id),
               name: String(election.name),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
@@ -281,6 +283,15 @@ export const getServerSideProps: GetServerSideProps<
 }
 
 const Politics = (props: PoliticsPageProps) => {
+  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
+    waiting: props.titleProps.waiting,
+    completed: props.titleProps.completed,
+  })
+
+  function setAmount(amount: PoliticAmount) {
+    setPoliticAmounts(amount)
+  }
+
   const sections = props.elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
@@ -288,8 +299,12 @@ const Politics = (props: PoliticsPageProps) => {
   return (
     <DefaultLayout>
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} />
-        {sections}
+        <Title {...props.titleProps} {...politicAmounts} />
+        <PoliticAmountContext.Provider
+          value={{ amount: politicAmounts, setAmount: setAmount }}
+        >
+          {sections}
+        </PoliticAmountContext.Provider>
         <Nav person={props.person} election={props.latestElection} />
       </main>
     </DefaultLayout>

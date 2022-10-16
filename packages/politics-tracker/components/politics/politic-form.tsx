@@ -15,7 +15,7 @@ const fullConfig = getTailwindConfig()
 type PoliticFormProps = {
   politic: Politic
   closeForm: () => void
-  submitForm: (politic: Politic) => void
+  submitForm: (politic: Politic) => Promise<boolean>
 }
 
 type Source = {
@@ -56,6 +56,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
   )
   const [isValid, setIsValid] = useState<boolean>(false)
   const [showError, setShowError] = useState<boolean>(false)
+  const [isProcessing, setIsProcessing] = useState<boolean>(false)
 
   function getNewSource(): Source {
     return {
@@ -168,14 +169,17 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     setIsValid(isPoliticValid && isSourcesValid)
   }, [isPoliticValid, isSourcesValid])
 
-  function submitHandler() {
-    if (!isValid) return
+  async function submitHandler() {
+    if (!isValid || isProcessing) return
+    setIsProcessing(true)
     setShowError(true)
 
-    props.submitForm({
+    await props.submitForm({
       ...politic,
       source: sourcesToString(sources),
     })
+
+    setIsProcessing(false)
   }
 
   return (
@@ -210,6 +214,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
           text="送出審核"
           icon={ArrowRight()}
           disable={!isValid}
+          loading={isProcessing}
           onClick={submitHandler}
         />
       </section>

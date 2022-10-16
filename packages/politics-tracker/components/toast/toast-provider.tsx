@@ -16,7 +16,6 @@ export default function ToastProvider(props: ToastProviderProps): JSX.Element {
   const [mounted, setMounted] = useState<boolean>(false)
 
   const open = (props: ToastData) => {
-    console.log(props)
     return setToasts((currentToasts) => [
       ...currentToasts,
       { id: uuidv4(), ...props },
