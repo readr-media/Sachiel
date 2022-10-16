@@ -19,6 +19,7 @@ export type Politic = {
 
 export type PersonElection = {
   electionId: string
+  electionAreaId: string
   id: string
   party: string
   partyIcon: string

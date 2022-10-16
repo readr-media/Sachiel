@@ -99,13 +99,19 @@ export const getServerSideProps: GetServerSideProps<
           const latest = previous.election
           const election = current.election
           const party = current.party
+          const electionArea = current.electoral_district
 
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
               electionId: eId,
+              electionAreaId: String(electionArea?.id),
               id: String(current.id),
-              name: String(election.name),
+              name: [
+                election.election_year_year,
+                election.name,
+                electionArea?.name,
+              ].join(' '),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),

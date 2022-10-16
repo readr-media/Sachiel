@@ -38,9 +38,10 @@ export default function Nav(props: NavProps): JSX.Element {
       </div>
       <Link
         href={{
-          pathname: '/election/[id]',
+          pathname: '/election',
           query: {
-            id: props.election.electionId,
+            electionId: props.election.electionId,
+            areaId: props.election.electionAreaId,
           },
         }}
       >
