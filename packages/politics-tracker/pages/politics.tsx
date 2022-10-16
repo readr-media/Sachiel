@@ -1,5 +1,9 @@
 import type { GetServerSideProps } from 'next'
-import type { PersonElection } from '~/types/politics'
+import type {
+  PersonElection,
+  PersonOverview,
+  PoliticAmount,
+} from '~/types/politics'
 import type {
   withKeyObject,
   GenericGQLData,
@@ -17,14 +21,14 @@ import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import DefaultLayout from '~/components/layout/default'
-import Title, { type TitleProps } from '~/components/politics/title'
+import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
 import Nav from '~/components/politics/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
 type PoliticsPageProps = {
-  titleProps: TitleProps
+  titleProps: PersonOverview
   elections: PersonElection[]
   person: RawPerson
   latestElection: PersonElection
@@ -36,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<
   const { name, year } = query
 
   try {
-    const profile: TitleProps = {
+    const profile: PersonOverview = {
       name: '',
       avatar: '',
       party: '',
@@ -174,7 +178,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const attributeMap: {
-        [T in StatusOptionsB]: keyof Pick<TitleProps, 'waiting' | 'completed'>
+        [T in StatusOptionsB]: keyof PoliticAmount
       } = {
         verified: 'completed',
         notverified: 'waiting',
@@ -187,7 +191,7 @@ export const getServerSideProps: GetServerSideProps<
       // keep latest politc of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
-        const attribute: keyof TitleProps = attributeMap[status]
+        const attribute: keyof PoliticAmount = attributeMap[status]
         profile[attribute] += 1
 
         if (status === 'verified') {

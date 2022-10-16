@@ -1,3 +1,4 @@
+import type { PersonOverview } from '~/types/politics'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
 import classNames from 'classnames'
@@ -93,15 +94,6 @@ const PoliticsBlock = (props: PoliticsBlockProps) => {
   )
 }
 
-export type TitleProps = {
-  name: string
-  avatar: string
-  party: string
-  partyIcon: string
-  campaign: string
-  completed: number
-  waiting: number
-}
 type IconConfig = {
   width: number
   height: number
@@ -113,7 +105,7 @@ type TextConfig = {
   customClass: string
 }
 
-export default function Title(props: TitleProps): JSX.Element {
+export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
     width: 80,
     height: 80,
