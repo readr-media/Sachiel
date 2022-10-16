@@ -11,7 +11,7 @@ import moment from 'moment'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
-import { fireGqlRequest } from '~/utils/utils'
+import { fireGqlRequest, electionName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 import DefaultLayout from '~/components/layout/default'
 import Nav, { type LinkMember } from '~/components/nav'
@@ -104,7 +104,11 @@ export const getServerSideProps: GetServerSideProps<
         elections.push({
           electionId: String(e.id),
           electionAreaId: String(areaId),
-          name: [e.election_year_year, e.name, area?.name].join(' '),
+          name: electionName<string | number | undefined>(
+            e.election_year_year,
+            e.name,
+            area?.name
+          ),
           year: Number(e.election_year_year),
           month: Number(e.election_year_month),
           day: Number(e.election_year_day),

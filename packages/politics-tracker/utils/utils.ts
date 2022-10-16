@@ -91,6 +91,14 @@ function partyName(party: string | null | undefined): string {
   return !party ? '無黨籍' : party
 }
 
+function electionName<T extends string | number | undefined>(
+  year: T,
+  name: T,
+  area: T
+): string {
+  return [year, name, area].join(' ')
+}
+
 export {
   getLineBreaks,
   getTailwindConfig,
@@ -98,4 +106,5 @@ export {
   fireGqlRequest,
   hasOwnByArray,
   partyName,
+  electionName,
 }

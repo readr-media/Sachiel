@@ -18,7 +18,12 @@ import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
-import { fireGqlRequest, hasOwnByArray, partyName } from '~/utils/utils'
+import {
+  fireGqlRequest,
+  hasOwnByArray,
+  partyName,
+  electionName,
+} from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
@@ -108,11 +113,11 @@ export const getServerSideProps: GetServerSideProps<
               electionId: eId,
               electionAreaId: String(electionArea?.id),
               id: String(current.id),
-              name: [
+              name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
-                electionArea?.name,
-              ].join(' '),
+                electionArea?.name
+              ),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),
