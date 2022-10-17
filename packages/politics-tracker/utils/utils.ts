@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss'
 import type { withKeyObject } from '~/types/common'
-import resolveConfig from 'tailwindcss/resolveConfig'
+const resolveConfig = require('tailwindcss/resolveConfig')
 import tailwindConfig from '~/tailwind.config'
 import axios from 'axios'
 

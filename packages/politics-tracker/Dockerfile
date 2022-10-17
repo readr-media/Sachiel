@@ -6,7 +6,7 @@ WORKDIR /build
 
 ADD . /build/
 
-RUN yarn install && yarn build && yarn next build
+RUN yarn install && yarn build
 
 FROM node:${NODE_VERSION}
 
