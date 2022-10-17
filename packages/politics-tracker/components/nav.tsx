@@ -1,3 +1,4 @@
+import type { LinkProps } from 'next/link'
 import classNames from 'classnames'
 import Link from 'next/link'
 import Home from '~/components/icons/home'
@@ -5,9 +6,11 @@ import ArrowLeft from '~/components/icons/arrow-left'
 import ArrowRight from '~/components/icons/arrow-right'
 import s from './nav.module.css'
 
+type LinkHref = LinkProps['href']
+
 export type LinkMember = {
   content: string
-  href: string
+  href: LinkHref
   backgroundColor: string
 }
 

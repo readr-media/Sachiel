@@ -1,5 +1,5 @@
 .header {
-  @apply fixed top-0 left-0 z-50 flex h-header w-full flex-row justify-between bg-white px-4;
+  @apply fixed top-0 left-0 z-50 flex h-header w-full flex-row justify-between bg-white px-4 shadow-bottom;
   @apply md:h-header-md md:px-6;
 }
 .logo {

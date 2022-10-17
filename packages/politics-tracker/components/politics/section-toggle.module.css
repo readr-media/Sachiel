@@ -73,5 +73,5 @@
 }
 
 .control {
-  @apply shrink-0 text-main w-9 h-9;
+  @apply shrink-0 text-main w-9 h-9 self-baseline;
 }
