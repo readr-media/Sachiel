@@ -29,6 +29,20 @@ const nextConfig = {
 
     return config
   },
+  async rewrites() {
+    return [
+      // only for index
+      {
+        source: '/politics-tracker',
+        destination: '/',
+      },
+      // for other page under /politics-tracker
+      {
+        source: '/politics-tracker/:path*',
+        destination: '/:path*',
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
