@@ -1,3 +1,5 @@
+export type ThemeType = typeof theme
+
 const mediaSize = {
   xs: 0,
   sm: 576,
@@ -14,7 +16,6 @@ const sharedColor = {
   white: '#FFFFFF',
   green: '#2FB7BF',
 }
-
 export const theme = {
   backgroundColor: {
     blue: '#8379F8',
