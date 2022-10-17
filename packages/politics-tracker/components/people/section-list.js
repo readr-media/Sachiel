@@ -9,6 +9,7 @@ import SectionToggle from './section-toggle'
  * @param {boolean} props.isActive
  * @param {Function} props.setActive
  * @param {string} props.color
+ * @param {string} props.title
  * @param {React.ReactElement} [props.children]
  * @returns {React.ReactElement}
  */
@@ -18,6 +19,7 @@ export default function SectionList2({
   setActive,
   color,
   children,
+  title,
 }) {
   return (
     <Fragment>
@@ -26,6 +28,7 @@ export default function SectionList2({
         isActive={isActive}
         setActive={(/** @type {null|string} id */ id) => setActive(id)}
         color={color}
+        title={title}
       />
       {children}
     </Fragment>
