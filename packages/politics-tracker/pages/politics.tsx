@@ -307,24 +307,27 @@ const Politics = (props: PoliticsPageProps) => {
     setPoliticAmounts(amount)
   }
 
-  const prevLink = ['/people', props.person.id].join('/')
-  const nextLink = [
-    '/election',
-    new URLSearchParams({
-      electionId: props.latestElection.electionId,
-      areaId: props.latestElection.electionAreaId,
-    }).toString(),
-  ].join('?')
   const navProps: withKeyObject<LinkMember | undefined> = {
     prev: {
-      content: '回上層',
-      href: prevLink,
       backgroundColor: 'bg-person',
+      content: '回上層',
+      href: {
+        pathname: '/person/[id]',
+        query: {
+          id: props.person.id,
+        },
+      },
     },
     next: {
-      content: props.latestElection.name,
-      href: nextLink,
       backgroundColor: 'bg-campaign',
+      content: props.latestElection.name,
+      href: {
+        pathname: '/election',
+        query: {
+          electionId: props.latestElection.electionId,
+          areaId: props.latestElection.electionAreaId,
+        },
+      },
     },
   }
 

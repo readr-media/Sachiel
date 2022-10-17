@@ -164,16 +164,17 @@ export const getServerSideProps: GetServerSideProps<
 }
 
 function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
-  const search = new URLSearchParams({
-    electionId: item?.electionId ?? '',
-    areaId: item?.electionAreaId ?? '',
-  }).toString()
-  const baseUrl = '/election'
   return item
     ? {
-        content: item.name,
-        href: `${baseUrl}?${search}`,
         backgroundColor: 'bg-campaign',
+        content: item.name,
+        href: {
+          pathname: '/election',
+          query: {
+            electionId: item.electionId,
+            areaId: item.electionAreaId,
+          },
+        },
       }
     : undefined
 }
