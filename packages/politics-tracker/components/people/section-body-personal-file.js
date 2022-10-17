@@ -7,9 +7,9 @@ import SectionBody from './section-body'
 import Content from './content'
 import ContentList from './content-list'
 import ContentLink from './content-link'
-import EditContent from './edit-content'
 import { useState, useMemo } from 'react'
 import moment from 'moment'
+import EditContentBasic from './edit-content-basic'
 
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
@@ -141,7 +141,7 @@ export default function SectionBodyPersonalFile({
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   return (
     <SectionBody shouldShowSectionBody={isActive}>
-      <Content title="基本資料" editContent={<EditContent></EditContent>}>
+      <Content title="基本資料" editContent={<EditContentBasic />}>
         <ContentItem title="姓名" content={name}>
           <ContentPersonImage
             src={image ? image : '/images/default-head-photo.png'}
@@ -161,11 +161,11 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="國籍" content={national_identity} />
       </Content>
 
-      <Content title="經歷" editContent={<EditContent></EditContent>}>
+      <Content title="經歷">
         <ContentList biography={biography} />
       </Content>
       {/* TODO: show multiple line */}
-      <Content title="聯絡方式" editContent={<EditContent></EditContent>}>
+      <Content title="聯絡方式">
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
