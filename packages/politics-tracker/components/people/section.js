@@ -23,7 +23,8 @@ export default function Section({ peopleData, personElectionsData }) {
         id={'0'}
         isActive={activeId === '0'}
         setActive={setActiveId}
-        color={'blue'}
+        color="blue"
+        title="個人檔案"
       >
         <SectionBodyPersonalFile
           isActive={activeId === '0'}
@@ -34,7 +35,8 @@ export default function Section({ peopleData, personElectionsData }) {
         id={'1'}
         isActive={activeId === '1'}
         setActive={setActiveId}
-        color={'orange'}
+        color="orange"
+        title="參與過的選舉"
       >
         <SectionBodyElection
           personElectionsData={personElectionsData}
@@ -43,9 +45,24 @@ export default function Section({ peopleData, personElectionsData }) {
       </SectionList>
       <SectionList
         id={null}
-        color={'disable'}
+        color="disable"
         isActive={false}
         setActive={setActiveId}
+        title="資產（即將開放）"
+      ></SectionList>
+      <SectionList
+        id={null}
+        color="disable"
+        isActive={false}
+        setActive={setActiveId}
+        title="政治獻金（即將開放）"
+      ></SectionList>
+      <SectionList
+        id={null}
+        color="disable"
+        isActive={false}
+        setActive={setActiveId}
+        title="犯罪記錄（即將開放）"
       ></SectionList>
     </SectionContainer>
   )

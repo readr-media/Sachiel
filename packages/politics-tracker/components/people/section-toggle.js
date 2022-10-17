@@ -91,14 +91,18 @@ const ToggleButton = styled.button`
 const ToggleText = styled.div`
   font-size: 28px;
   line-height: 1.3;
-  color: ${({ theme }) => theme.textColor.white};
+  color: ${({ color, theme }) =>
+    color === 'disable' ? theme.textColor.black30 : theme.textColor.white};
 `
 const ToggleIcon = styled.span`
   flex-shrink: 0;
   width: 24px;
   height: 20px;
   path {
-    fill: ${({ theme }) => theme.backgroundColor.black};
+    fill: ${({ color, theme }) =>
+      color === 'disable'
+        ? theme.textColor.black30
+        : theme.backgroundColor.black};
   }
 `
 
@@ -106,12 +110,19 @@ const ToggleIcon = styled.span`
  *
  * @param {Object} props
  * @param {string} props.color
+ * @param {string} props.title
  * @param {boolean} props.isActive
  * @param {Function} props.setActive
  * @param {null|string} props.id
  * @returns {React.ReactElement}
  */
-export default function SectionToggle({ color, isActive, setActive, id }) {
+export default function SectionToggle({
+  color,
+  isActive,
+  setActive,
+  id,
+  title,
+}) {
   function toggle() {
     if (id) {
       if (isActive) {
@@ -121,12 +132,13 @@ export default function SectionToggle({ color, isActive, setActive, id }) {
       }
     }
   }
-
   return (
     <ToggleWrapper>
       <ToggleButton isActive={isActive} color={color} onClick={toggle}>
-        <ToggleText>個人檔案</ToggleText>
-        <ToggleIcon>{isActive ? <ArrowUp /> : <ArrowDown />}</ToggleIcon>
+        <ToggleText color={color}>{title}</ToggleText>
+        <ToggleIcon color={color}>
+          {isActive ? <ArrowUp /> : <ArrowDown />}
+        </ToggleIcon>
       </ToggleButton>
     </ToggleWrapper>
   )
