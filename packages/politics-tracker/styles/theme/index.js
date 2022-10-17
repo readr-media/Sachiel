@@ -44,6 +44,7 @@ export const theme = {
     white: sharedColor.white,
     pink: '#FFF1E8',
     disable: sharedColor.gray,
+    black30: 'rgba(15, 45, 53, 0.3)',
   },
   borderColor: {
     black: sharedColor.black,
