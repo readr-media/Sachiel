@@ -7,33 +7,9 @@ import SectionBody from './section-body'
 import Content from './content'
 import ContentList from './content-list'
 import ContentLink from './content-link'
-import { useMemo } from 'react'
+import EditContent from './edit-content'
+import { useState, useMemo } from 'react'
 import moment from 'moment'
-const SectionBodyContainer = styled.div`
-  //adjust position for fitting place when section-toggle is pressed
-  margin-left: 10px;
-  transition: all 0.3s ease-in-out;
-  width: 100%;
-  max-height: ${
-    /**
-     * @param {Object} props
-     * @param {boolean} props.shouldShowSectionBody
-     */
-    ({ shouldShowSectionBody }) => (shouldShowSectionBody ? 'unset' : '0px')
-  };
-  min-height: ${({ shouldShowSectionBody }) =>
-    shouldShowSectionBody ? '200px' : '0px'};
-  padding: ${({ shouldShowSectionBody }) =>
-    shouldShowSectionBody ? '20px' : '0px'};
-
-  border-color: ${({ theme }) => theme.borderColor.black};
-  border-width: 0 4px 4px;
-  background-color: ${({ theme }) => theme.backgroundColor.white};
-  * {
-    display: ${({ shouldShowSectionBody }) =>
-      !shouldShowSectionBody && 'none '};
-  }
-`
 
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
@@ -70,7 +46,6 @@ export default function SectionBodyPersonalFile({
     contact_details,
     links,
   } = peopleData
-
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
@@ -166,7 +141,7 @@ export default function SectionBodyPersonalFile({
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   return (
     <SectionBody shouldShowSectionBody={isActive}>
-      <Content title="基本資料">
+      <Content title="基本資料" editContent={<EditContent></EditContent>}>
         <ContentItem title="姓名" content={name}>
           <ContentPersonImage
             src={image ? image : '/images/default-head-photo.png'}
@@ -185,11 +160,12 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
       </Content>
-      <Content title="經歷">
+
+      <Content title="經歷" editContent={<EditContent></EditContent>}>
         <ContentList biography={biography} />
       </Content>
       {/* TODO: show multiple line */}
-      <Content title="聯絡方式">
+      <Content title="聯絡方式" editContent={<EditContent></EditContent>}>
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
