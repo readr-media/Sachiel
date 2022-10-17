@@ -174,8 +174,14 @@ export default function SectionBodyPersonalFile({
         </ContentItem>
         <ContentItem title="別名" content={alternative} />
         <ContentItem title="舊名" content={other_names} />
-        <ContentItem title="出生日期" content={`${dateOfBirth}${age}`} />
-        <ContentItem title="死亡日期" content={`${dateOfDeath}${lifespan}`} />
+        <ContentItem
+          title="出生日期"
+          content={dateOfBirth ? `${dateOfBirth}${age}` : null}
+        />
+        <ContentItem
+          title="死亡日期"
+          content={dateOfDeath ? `${dateOfDeath}${lifespan}` : null}
+        />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
       </Content>

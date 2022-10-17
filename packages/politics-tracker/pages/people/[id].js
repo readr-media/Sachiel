@@ -20,7 +20,7 @@ const Main = styled.main`
 /**
  * @param {Object} props
  * @param {import('../../types/person').Person} props.peopleData
- * @param {import('../../types/politics').PersonElection[]} props.personElectionsData
+ * @param {import('../../types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
 export default function People({ peopleData, personElectionsData }) {

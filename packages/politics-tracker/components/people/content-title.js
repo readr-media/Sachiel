@@ -18,6 +18,7 @@ const ContentTitleContainer = styled.div`
   border-style: solid;
   border-width: 0 0 2px;
   padding-bottom: 5px;
+  margin-bottom: 20px;
 `
 
 /**
