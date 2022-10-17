@@ -3,6 +3,7 @@ import { useState } from 'react'
 import SectionList from './section-list'
 import SectionBody from './section-body'
 import SectionBodyPersonalFile from './section-body-personal-file'
+import SectionBodyElection from './section-body-election'
 const SectionContainer = styled.div`
   max-width: 688px;
   margin: 0 auto;
@@ -11,7 +12,7 @@ const SectionContainer = styled.div`
 /**
  * @param {Object} props
  * @param {import('../../types/person').Person} props.peopleData
- * @param {import('../../types/politics').PersonElection[]} props.personElectionsData
+ * @param {import('~/types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
 export default function Section({ peopleData, personElectionsData }) {
@@ -34,7 +35,12 @@ export default function Section({ peopleData, personElectionsData }) {
         isActive={activeId === '1'}
         setActive={setActiveId}
         color={'orange'}
-      ></SectionList>
+      >
+        <SectionBodyElection
+          personElectionsData={personElectionsData}
+          isActive={activeId === '1'}
+        ></SectionBodyElection>
+      </SectionList>
       <SectionList
         id={null}
         color={'disable'}
