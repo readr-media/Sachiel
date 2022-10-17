@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const UnorderedList = styled.ul`
   list-style: none;
-  margin: 20px 0;
+  margin: 0;
 `
 const ListItem = styled.li`
   position: relative;
@@ -18,6 +18,7 @@ const ListItem = styled.li`
     background-color: ${({ theme }) => theme.backgroundColor.blue};
   }
 `
+export { UnorderedList, ListItem }
 
 /**
  *

@@ -5,7 +5,7 @@ import EditButton from './edit-button'
 import ContentItem from './content-item'
 import styled from 'styled-components'
 const ContentContainer = styled.div`
-  padding: 20px 0;
+  padding: 0 0 20px;
 `
 /**
  *

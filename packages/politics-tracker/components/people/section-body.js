@@ -15,7 +15,7 @@ const SectionBodyContainer = styled.div`
   min-height: ${({ shouldShowSectionBody }) =>
     shouldShowSectionBody ? '200px' : '0px'};
   padding: ${({ shouldShowSectionBody }) =>
-    shouldShowSectionBody ? '0 20px' : '0px'};
+    shouldShowSectionBody ? '20px' : '0px'};
 
   border-color: ${({ theme }) => theme.borderColor.black};
   border-width: 0 4px 4px;
