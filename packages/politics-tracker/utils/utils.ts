@@ -80,6 +80,14 @@ async function fireGqlRequest<T>(
   return result
 }
 
+// ref: https://fettblog.eu/typescript-hasownproperty/
+function typedHasOwnProperty<X extends {}, Y extends PropertyKey>(
+  obj: X,
+  prop: Y
+): obj is X & Record<Y, any> {
+  return obj.hasOwnProperty(prop)
+}
+
 function hasOwnByArray(obj: withKeyObject<any>, keys: string[]): boolean {
   return keys.reduce((isPass: boolean, current: string) => {
     if (!obj.hasOwnProperty(current)) isPass = false
@@ -107,4 +115,5 @@ export {
   hasOwnByArray,
   partyName,
   electionName,
+  typedHasOwnProperty,
 }

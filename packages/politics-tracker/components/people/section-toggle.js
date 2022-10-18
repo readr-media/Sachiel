@@ -1,4 +1,5 @@
 import React from 'react'
+import { typedHasOwnProperty } from '~/utils/utils'
 import styled from 'styled-components'
 import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
@@ -14,7 +15,9 @@ const ToggleButton = styled.button`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.blue};
+    color && typedHasOwnProperty(theme.backgroundColor, color)
+      ? theme.backgroundColor[color]
+      : theme.backgroundColor.blue};
   font-weight: 700;
   padding: 20px;
   border-color: ${({ theme }) => theme.borderColor.black};
@@ -28,7 +31,9 @@ const ToggleButton = styled.button`
     content: '';
     transition: all 0.3s ease-in-out;
     background-color: ${({ color, theme }) =>
-      color ? theme.textColor[color] : theme.textColor.blue};
+      color && typedHasOwnProperty(theme.textColor, color)
+        ? theme.textColor[color]
+        : theme.textColor.blue};
   }
   &::before {
     bottom: -14px;
