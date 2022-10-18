@@ -15,6 +15,7 @@ import EditContentBiography from './edit-content-biography'
 import EditContentContact from './edit-content-contact'
 import Sources from './sources'
 import Tag from './tag'
+import EditTags from './edit-tags'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
   height: 40px;
@@ -204,17 +205,7 @@ export default function SectionBodyPersonalFile({
         <ContentLink title="網站" links={links} />
         <Sources sources={source} />
       </Content>
-      <Content
-        title="標籤"
-        editContent={
-          <EditContentContact
-            emails={email}
-            contactDetails={contact_details}
-            links={links}
-            sources={source}
-          />
-        }
-      >
+      <Content title="標籤" editContent={<EditTags tags={tags}></EditTags>}>
         <TagContainer>
           {tags.map((item) => (
             <Tag key={item.id} id={item.id} name={item.name}></Tag>

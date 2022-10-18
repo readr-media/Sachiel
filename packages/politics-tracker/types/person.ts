@@ -17,10 +17,10 @@ type PersonType = {
   contact_details: string
   links: string
   source: string
-  tags: tag[] | []
+  tags: Tag[] | []
 }
 
-type tag = {
+type Tag = {
   id: string
   name: string
 }
