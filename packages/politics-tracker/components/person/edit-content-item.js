@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { ContentItemContainer, ContentItemTitle } from './content-item'
 
 const EditContentItemContainer = styled(ContentItemContainer)`
+  margin-bottom: 32px;
   ${({ theme }) => theme.breakpoint.md} {
     flex-direction: column;
   }

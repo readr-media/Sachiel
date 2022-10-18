@@ -4,6 +4,7 @@ import ContentTitle from './content-title'
 import EditButton from './edit-button'
 import ContentItem from './content-item'
 import styled from 'styled-components'
+import EditSendOrCancel from './edit-send-or-cancel'
 const ContentContainer = styled.div`
   padding: 0 0 20px;
 `
@@ -27,7 +28,14 @@ export default function Content({ title, children, editContent }) {
           )}
         </Fragment>
       </ContentTitle>
-      {shouldShowEditMode ? editContent : children}
+      {shouldShowEditMode ? (
+        <Fragment>
+          {editContent}
+          <EditSendOrCancel onClick={() => setShouldShowEditMode(false)} />
+        </Fragment>
+      ) : (
+        children
+      )}
     </ContentContainer>
   )
 }
