@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import SourceItem from '../politics/source-item'
 import SourcesButton from './sources-button'
@@ -26,15 +26,18 @@ const SourcesTitle = styled.div`
 `
 
 export default function Sources() {
+  const [isOpen, setIsOpen] = useState(false)
   return (
     <Fragment>
-      <SourcesContainer>
-        <SourcesTitle>來源</SourcesTitle>
-        <SourceItem no={1} content={'資料'}></SourceItem>
-        <SourceItem no={2} content={'資料2'}></SourceItem>
-      </SourcesContainer>
+      {isOpen && (
+        <SourcesContainer>
+          <SourcesTitle>來源</SourcesTitle>
+          <SourceItem no={1} content={'資料'}></SourceItem>
+          <SourceItem no={2} content={'資料2'}></SourceItem>
+        </SourcesContainer>
+      )}
       <Hr className="hr" />
-      <SourcesButton />
+      <SourcesButton isOpen={isOpen} setIsOpen={setIsOpen} />
     </Fragment>
   )
 }

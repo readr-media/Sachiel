@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { EditButtonContainer, EditIcon } from './edit-button'
+import { EditButtonContainer } from './edit-button'
 
 const SourcesButtonContainer = styled(EditButtonContainer)`
   margin-left: auto;
@@ -20,13 +20,18 @@ const SourcesButtonContainer = styled(EditButtonContainer)`
     }
   }
 `
-
-export default function SourcesButton() {
+/**
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setIsOpen
+ * @returns {React.ReactElement}
+ */
+export default function SourcesButton({ isOpen, setIsOpen }) {
   return (
-    <SourcesButtonContainer>
-      <span>展開來源</span>
-      <i className="arrow up"></i>
-      <i className="arrow down"></i>
+    <SourcesButtonContainer onClick={() => setIsOpen(!isOpen)}>
+      <span>{isOpen ? '收合' : '展開'}來源</span>
+      {isOpen ? <i className="arrow up"></i> : <i className="arrow down"></i>}
     </SourcesButtonContainer>
   )
 }
