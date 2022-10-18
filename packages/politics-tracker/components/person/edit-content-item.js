@@ -93,6 +93,8 @@ const RadioButton = styled.input`
     }
   }
 `
+
+export { EditContentItemTitle }
 /**
  *
  * @param {Object} props

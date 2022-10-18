@@ -1,7 +1,9 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import SourceItem from '../politics/source-item'
 import SourcesButton from './sources-button'
+import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
+
 const SourcesContainer = styled.div`
   margin-top: 20px;
   display: flex;
@@ -27,19 +29,23 @@ const SourcesTitle = styled.div`
 /**
  *
  * @param {Object} props
- * @param {string[]} [props.sources]
+ * @param {string} props.sources
  * @returns
  */
 export default function Sources({ sources }) {
-  console.log(sources)
   const [isOpen, setIsOpen] = useState(false)
+  const sourceList = useMemo(() => stringToSources(sources, '\n'), [sources])
   return (
     <Fragment>
       {isOpen && sources && (
         <SourcesContainer>
           <SourcesTitle>來源</SourcesTitle>
-          {sources.map((item, index) => (
-            <SourceItem key={index} no={index} content={item}></SourceItem>
+          {sourceList.map((item, index) => (
+            <SourceItem
+              key={item.id}
+              no={index}
+              content={item.value}
+            ></SourceItem>
           ))}
         </SourcesContainer>
       )}

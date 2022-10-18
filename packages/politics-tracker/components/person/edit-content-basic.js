@@ -1,6 +1,15 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import EditContentItem from './edit-content-item'
 import SourceInput from '../politics/source-input'
+import { EditContentItemTitle } from './edit-content-item'
+import AddInputButton from './add-input-button'
+import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
+import styled from 'styled-components'
+const SourceInputWrapper = styled.div`
+  path {
+    fill: ${({ theme }) => theme.textColor.blue};
+  }
+`
 /**
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -79,8 +88,37 @@ const EDIT_CONTENT_BASIC = [
     isRequired: false,
   },
 ]
+/**
+ *
+ * @param {Object} props
+ * @param {string} props.sources
+ * @returns
+ */
+export default function EditContentBasic({ sources }) {
+  const [sourceList, setSourceList] = useState(stringToSources(sources, '\n'))
 
-export default function EditContentBasic() {
+  /**
+   *
+   * @param {string} id
+   * @param {string} value
+   */
+  function updateSource(id, value) {
+    const updated = sourceList.map((source) => {
+      if (id === source.id) {
+        return { ...source, value }
+      }
+      return source
+    })
+    setSourceList(updated)
+  }
+  /**
+   * @param {string} id
+   */
+  function deleteSource(id) {
+    const remain = sourceList.filter((source) => id !== source.id)
+    setSourceList(remain)
+  }
+
   return (
     <Fragment>
       {EDIT_CONTENT_BASIC.map(
@@ -105,16 +143,25 @@ export default function EditContentBasic() {
           ></EditContentItem>
         )
       )}
-      <SourceInput
-        id={'0'}
-        no={0}
-        value={'來源一'}
-        error={'錯誤'}
-        showError={false}
-        removable={false}
-        onChange={() => {}}
-        onDelete={() => {}}
-      />
+      <EditContentItemTitle>
+        來源 <span className="required">（必填）</span>
+      </EditContentItemTitle>
+      {sourceList.map((source, index) => (
+        //TODO: add error and show error
+        <SourceInputWrapper key={source.id}>
+          <SourceInput
+            id={source.id}
+            no={index + 1}
+            value={source.value}
+            error={source.error}
+            showError={false}
+            removable={index !== 0}
+            onChange={updateSource}
+            onDelete={deleteSource}
+          />
+        </SourceInputWrapper>
+      ))}
+      <AddInputButton addTarget="來源"></AddInputButton>
     </Fragment>
   )
 }

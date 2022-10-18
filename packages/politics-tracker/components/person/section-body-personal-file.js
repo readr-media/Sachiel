@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+
+import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import ContentTitle from './content-title'
 import EditButton from './edit-button'
 import ContentItem from './content-item'
@@ -45,7 +47,7 @@ export default function SectionBodyPersonalFile({
     email,
     contact_details,
     links,
-    source,
+    source = '',
   } = personData
 
   /**
@@ -114,8 +116,19 @@ export default function SectionBodyPersonalFile({
     () => formatDate(death_date_year, death_date_month, death_date_day),
     [death_date_year, death_date_month, death_date_day]
   )
-  const sourceList = useMemo(() => source?.split('\n'), [source])
-  console.log(sourceList)
+  /**
+   *
+   * @param {string} source
+   * @returns  {import('~/types/common').Source[]}
+   */
+  const getSource = (source) => {
+    if (source) {
+      return stringToSources(source, '\n')
+    } else {
+      return []
+    }
+  }
+  const sourceList = useMemo(() => getSource(source), [source])
   const lifespan = useMemo(() => {
     if (
       birth_date_year &&
@@ -145,7 +158,10 @@ export default function SectionBodyPersonalFile({
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   return (
     <SectionBody shouldShowSectionBody={isActive}>
-      <Content title="基本資料" editContent={<EditContentBasic />}>
+      <Content
+        title="基本資料"
+        editContent={<EditContentBasic sources={source} />}
+      >
         <ContentItem title="姓名" content={name}>
           <ContentPersonImage
             src={image ? image : '/images/default-head-photo.png'}
@@ -163,19 +179,19 @@ export default function SectionBodyPersonalFile({
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
 
       <Content title="經歷">
         <ContentList biography={biography} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
       {/* TODO: show multiple line */}
       <Content title="聯絡方式">
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
     </SectionBody>
   )

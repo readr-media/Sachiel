@@ -117,16 +117,22 @@ function getNewSource(): Source {
   }
 }
 
-function stringToSources(str: string): Source[] {
-  return str.split(SOURCE_DELIMITER).map((s) => ({
+function stringToSources(
+  str: string,
+  delimiter: string = SOURCE_DELIMITER
+): Source[] {
+  return str.split(delimiter).map((s) => ({
     id: uuidv4(),
     value: s,
     error: '',
   }))
 }
 
-function sourcesToString(sources: Source[]): string {
-  return sources.map((s) => s.value).join(SOURCE_DELIMITER)
+function sourcesToString(
+  sources: Source[],
+  delimiter: string = SOURCE_DELIMITER
+): string {
+  return sources.map((s) => s.value).join(delimiter)
 }
 export {
   getLineBreaks,

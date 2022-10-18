@@ -17,8 +17,11 @@ const ContentItemContainer = styled.div`
 `
 const ContentItemTitle = styled.div`
   font-weight: 700;
+  ${({ theme }) => theme.fontSize['title-sub']};
 
   ${({ theme }) => theme.breakpoint.md} {
+    ${({ theme }) => theme.fontSize['title-sub-md']};
+
     display: flex;
     justify-content: start;
     align-items: center;
