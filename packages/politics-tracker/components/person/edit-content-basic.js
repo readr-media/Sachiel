@@ -97,6 +97,11 @@ const EDIT_CONTENT_BASIC = [
 export default function EditContentBasic({ sources }) {
   const [sourceList, setSourceList] = useState(stringToSources(sources, '\n'))
 
+  function addSource() {
+    const extended = [...sourceList, getNewSource()]
+    setSourceList(extended)
+  }
+
   /**
    *
    * @param {string} id
@@ -161,7 +166,10 @@ export default function EditContentBasic({ sources }) {
           />
         </SourceInputWrapper>
       ))}
-      <AddInputButton addTarget="來源"></AddInputButton>
+      <AddInputButton
+        addTarget="來源"
+        onClick={() => addSource()}
+      ></AddInputButton>
     </Fragment>
   )
 }

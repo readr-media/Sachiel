@@ -37,12 +37,13 @@ const AddInputButtonWrapper = styled.button`
  *
  * @param {Object} props
  * @param {string} props.addTarget
+ * @param {function} props.onClick
  * @returns {React.ReactElement}
  */
 
-export default function AddInputButton({ addTarget = '來源' }) {
+export default function AddInputButton({ addTarget = '來源', onClick }) {
   return (
-    <AddInputButtonWrapper>
+    <AddInputButtonWrapper onClick={() => onClick()}>
       新增{addTarget}
       <EditIcon>
         <Plus />
