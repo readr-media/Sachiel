@@ -37,7 +37,7 @@ export default function Sources({ sources }) {
   const sourceList = useMemo(() => stringToSources(sources, '\n'), [sources])
   return (
     <Fragment>
-      {isOpen && sources && (
+      {isOpen && (
         <SourcesContainer>
           <SourcesTitle>來源</SourcesTitle>
           {sourceList.map((item, index) => (

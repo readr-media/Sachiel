@@ -5,7 +5,7 @@ type PersonType = {
   other_names?: string
   image: string | null
   gender: string | null
-  biography: string | null
+  biography: string
   birth_date_year: number | null
   birth_date_month: number | null
   birth_date_day: number | null

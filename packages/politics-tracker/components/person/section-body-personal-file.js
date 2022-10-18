@@ -43,7 +43,7 @@ export default function SectionBodyPersonalFile({
     death_date_day,
     gender,
     national_identity,
-    biography,
+    biography = '',
     email,
     contact_details,
     links,
