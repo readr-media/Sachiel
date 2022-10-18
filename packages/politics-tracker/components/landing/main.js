@@ -9,6 +9,8 @@ import Footer from '~/components/footer'
 import FrontPage from '~/components/landing/frontpage-main'
 import How from '~/components/landing/how-main'
 import TeamIntro from '~/components/landing/team-intro'
+import Mayor from '~/components/landing/mayor-main'
+import Council from '~/components/landing/council-main'
 
 //FIXME: 可以最後再來評估是否需要Main?
 const Main = styled.main`
@@ -34,6 +36,8 @@ export default function Person() {
       <Main>
         <FrontPage />
         <How />
+        <Mayor />
+        <Council />
         <TeamIntro />
       </Main>
       <Footer />
