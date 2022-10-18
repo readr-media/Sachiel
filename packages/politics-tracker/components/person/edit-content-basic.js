@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react'
 import EditContentItem from './edit-content-item'
 import SourceInput from '../politics/source-input'
 import { EditContentItemTitle } from './edit-content-item'
-
+import AddInputButton from './add-input-button'
 import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import styled from 'styled-components'
 const SourceInputWrapper = styled.div`
@@ -10,7 +10,6 @@ const SourceInputWrapper = styled.div`
     fill: ${({ theme }) => theme.textColor.blue};
   }
 `
-
 /**
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -162,6 +161,7 @@ export default function EditContentBasic({ sources }) {
           />
         </SourceInputWrapper>
       ))}
+      <AddInputButton addTarget="來源"></AddInputButton>
     </Fragment>
   )
 }
