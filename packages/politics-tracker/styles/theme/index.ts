@@ -25,6 +25,7 @@ export const theme = {
     green: sharedColor.green,
     white: sharedColor.white,
     black5: 'rgba(15, 45, 53, 0.05)',
+    black50: 'rgba(15, 45, 53, 0.5)',
     highlightRed: '#DB4C65',
     greenLake: '#E9FBFF',
     landingYellow: '#F7BA31',
@@ -57,6 +58,8 @@ export const theme = {
     'title-main-md': 'font-size:32px; line-height: 1.2',
     'title-sub': 'font-size:16px; line-height: 1.3',
     'title-sub-md': 'font-size:18px; line-height: 1.3',
+    button: 'font-size:14px; line-height: 1.5',
+    'button-md': 'font-size:16px; line-height: 1.5',
   },
   breakpoint: {
     xs: `@media (min-width: ${mediaSize.xs}px)`,
