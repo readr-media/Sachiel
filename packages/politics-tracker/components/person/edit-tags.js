@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useMemo } from 'react'
 import { stringToSources, getNewSource } from '~/utils/utils'
 import { SourceInputWrapper } from './edit-source'
 import SourceInput from '../politics/source-input'
@@ -14,16 +14,21 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
 /**
  *
  * @param {Object} props
- * @param {string} props.listData
- * @param {string} props.sources
+ * @param {import("~/types/person").Person["tags"]} props.tags
  * @returns {React.ReactElement}
  */
-export default function EditContentBiography({ listData, sources }) {
-  const [list, setList] = useState(stringToSources(listData, '\n'))
-
+export default function EditTags(props) {
+  const tags = useMemo(
+    () =>
+      props.tags.map((item) => {
+        return Object.assign({}, { id: item.id, value: item.name, error: '' })
+      }),
+    [props.tags]
+  )
+  const [tagList, setTagList] = useState(tags)
   function addSource() {
-    const extended = [...list, getNewSource()]
-    setList(extended)
+    const extended = [...tagList, getNewSource()]
+    setTagList(extended)
   }
 
   /**
@@ -32,28 +37,28 @@ export default function EditContentBiography({ listData, sources }) {
    * @param {string} value
    */
   function updateSource(id, value) {
-    const updated = list.map((item) => {
+    const updated = tagList.map((item) => {
       if (id === item.id) {
         return { ...item, value }
       }
       return item
     })
-    setList(updated)
+    setTagList(updated)
   }
   /**
    * @param {string} id
    */
   function deleteSource(id) {
-    const remain = list.filter((item) => id !== item.id)
-    setList(remain)
+    const remain = tagList.filter((item) => id !== item.id)
+    setTagList(remain)
   }
   return (
     <Fragment>
-      {list?.map((item, index) => (
+      {tagList?.map((item, index) => (
         //TODO: add error and show error
         <InputWrapperNoLabel key={item.id}>
           <SourceInput
-            placeholder={'經歷'}
+            placeholder={'輸入標籤'}
             id={item.id}
             no={index + 1}
             value={item.value}
@@ -65,9 +70,7 @@ export default function EditContentBiography({ listData, sources }) {
           />
         </InputWrapperNoLabel>
       ))}
-      <AddInputButton addTarget="經歷" onClick={addSource}></AddInputButton>
-
-      <EditSource sources={sources} />
+      <AddInputButton addTarget="標籤" onClick={addSource}></AddInputButton>
     </Fragment>
   )
 }

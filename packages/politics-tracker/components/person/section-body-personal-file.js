@@ -14,12 +14,19 @@ import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
 import EditContentContact from './edit-content-contact'
 import Sources from './sources'
+import Tag from './tag'
+import EditTags from './edit-tags'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
   height: 40px;
   margin-right: 8px;
 `
-
+const TagContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+`
 /**
  *
  * @param {Object} props
@@ -49,6 +56,7 @@ export default function SectionBodyPersonalFile({
     contact_details = '',
     links = '',
     source = '',
+    tags = [],
   } = personData
   console.log(alternative, other_names)
   /**
@@ -173,7 +181,9 @@ export default function SectionBodyPersonalFile({
 
       <Content
         title="經歷"
-        editContent={<EditContentBiography listData={biography} />}
+        editContent={
+          <EditContentBiography listData={biography} sources={source} />
+        }
       >
         <ContentList listData={biography} />
         <Sources sources={source} />
@@ -186,6 +196,7 @@ export default function SectionBodyPersonalFile({
             emails={email}
             contactDetails={contact_details}
             links={links}
+            sources={source}
           />
         }
       >
@@ -193,6 +204,13 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
         <Sources sources={source} />
+      </Content>
+      <Content title="標籤" editContent={<EditTags tags={tags}></EditTags>}>
+        <TagContainer>
+          {tags.map((item) => (
+            <Tag key={item.id} id={item.id} name={item.name}></Tag>
+          ))}
+        </TagContainer>
       </Content>
     </SectionBody>
   )

@@ -4,15 +4,22 @@ import { stringToSources, getNewSource } from '~/utils/utils'
 import SourceInput from '../politics/source-input'
 import { InputWrapperNoLabel } from './edit-content-biography'
 import AddInputButton from './add-input-button'
+import EditSource from './edit-source'
 /**
  *
  * @param {Object} props
  * @param {string} [props.emails]
  * @param {string} [props.links]
  * @param {string} [props.contactDetails]
+ * @param {string} [props.sources]
  * @returns {React.ReactElement}
  */
-export default function EditContentContact({ emails, links, contactDetails }) {
+export default function EditContentContact({
+  emails,
+  links,
+  contactDetails,
+  sources,
+}) {
   const [emailList, setEmailList] = useState(
     emails ? stringToSources(emails, '\n') : [getNewSource()]
   )
@@ -136,6 +143,7 @@ export default function EditContentContact({ emails, links, contactDetails }) {
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
+      <EditSource sources={sources} />
     </Fragment>
   )
 }

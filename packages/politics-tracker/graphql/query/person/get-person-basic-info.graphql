@@ -18,5 +18,9 @@ query GetPersonBasicInfo ($Id: ID!) {
     contact_details    
     links
     source
+    tags {
+      id
+      name
+    }
   }
 }
