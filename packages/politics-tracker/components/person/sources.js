@@ -27,7 +27,7 @@ const SourcesTitle = styled.div`
 /**
  *
  * @param {Object} props
- * @param {string[]} [props.sources]
+ * @param {import('~/types/common').Source[]} props.sources
  * @returns
  */
 export default function Sources({ sources }) {
@@ -39,7 +39,11 @@ export default function Sources({ sources }) {
         <SourcesContainer>
           <SourcesTitle>來源</SourcesTitle>
           {sources.map((item, index) => (
-            <SourceItem key={index} no={index} content={item}></SourceItem>
+            <SourceItem
+              key={index}
+              no={index}
+              content={item.value}
+            ></SourceItem>
           ))}
         </SourcesContainer>
       )}

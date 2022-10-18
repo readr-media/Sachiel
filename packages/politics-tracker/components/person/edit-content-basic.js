@@ -79,8 +79,13 @@ const EDIT_CONTENT_BASIC = [
     isRequired: false,
   },
 ]
-
-export default function EditContentBasic() {
+/**
+ *
+ * @param {Object} props
+ * @param {Object[]} props.sources
+ * @returns
+ */
+export default function EditContentBasic({ sources }) {
   return (
     <Fragment>
       {EDIT_CONTENT_BASIC.map(

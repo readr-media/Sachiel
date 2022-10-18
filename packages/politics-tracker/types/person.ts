@@ -16,7 +16,7 @@ type PersonType = {
   email: string | null
   contact_details: string | null
   links?: string
-  source?: string | null
+  source: string
 }
 
 export const Person: PersonType | Record<string, never> = {}
