@@ -11,11 +11,11 @@ const SectionContainer = styled.div`
 `
 /**
  * @param {Object} props
- * @param {import('../../types/person').Person} props.peopleData
+ * @param {import('../../types/person').Person} props.personData
  * @param {import('~/types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
-export default function Section({ peopleData, personElectionsData }) {
+export default function Section({ personData, personElectionsData }) {
   const [activeId, setActiveId] = useState('')
   return (
     <SectionContainer>
@@ -28,7 +28,7 @@ export default function Section({ peopleData, personElectionsData }) {
       >
         <SectionBodyPersonalFile
           isActive={activeId === '0'}
-          peopleData={peopleData}
+          personData={personData}
         ></SectionBodyPersonalFile>
       </SectionList>
       <SectionList

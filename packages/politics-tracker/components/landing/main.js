@@ -25,7 +25,7 @@ const HeaderWrap = styled.div`
  * @property {Object} titleData
  * @returns {React.ReactElement}
  */
-export default function People() {
+export default function Person() {
   return (
     <ThemeProvider theme={theme}>
       <HeaderWrap>
