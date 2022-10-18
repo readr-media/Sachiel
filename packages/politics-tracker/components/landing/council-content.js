@@ -243,19 +243,19 @@ export default function CouncilContent(areaPersonData) {
                   </SubtitleButtonDesk>
                   <ListWrapDesk>
                     <div>
-                    <Link href="#">
+                      <Link href="#">
                         <span>張家豪</span>
-                    </Link>
+                      </Link>
                     </div>
                     <div>
-                    <Link href="#">
-                      <span>張家豪</span>
-                    </Link>
+                      <Link href="#">
+                        <span>張家豪</span>
+                      </Link>
                     </div>
                     <div>
-                    <Link href="#">
-                      <span>張家豪</span>
-                    </Link>
+                      <Link href="#">
+                        <span>張家豪</span>
+                      </Link>
                     </div>
                   </ListWrapDesk>
                 </DeskList>
