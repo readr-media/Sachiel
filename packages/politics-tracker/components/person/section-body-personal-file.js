@@ -10,7 +10,7 @@ import ContentLink from './content-link'
 import { useState, useMemo } from 'react'
 import moment from 'moment'
 import EditContentBasic from './edit-content-basic'
-
+import Sources from './sources'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
   height: 40px;
@@ -159,16 +159,19 @@ export default function SectionBodyPersonalFile({
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
+        <Sources />
       </Content>
 
       <Content title="經歷">
         <ContentList biography={biography} />
+        <Sources />
       </Content>
       {/* TODO: show multiple line */}
       <Content title="聯絡方式">
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
+        <Sources />
       </Content>
     </SectionBody>
   )

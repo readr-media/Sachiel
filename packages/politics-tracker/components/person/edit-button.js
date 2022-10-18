@@ -11,8 +11,10 @@ const EditButtonContainer = styled.button`
   align-items: center;
   user-select: none;
   color: ${({ theme }) => theme.textColor.blue};
-  font-size: 16px;
-  line-height: 150%;
+  ${({ theme }) => theme.fontSize.button};
+  ${({ theme }) => theme.breakpoint.md} {
+    ${({ theme }) => theme.fontSize['button-md']};
+  }
   padding: 2.5px 5px;
   span {
     margin-right: 4px;
@@ -30,6 +32,7 @@ const EditIcon = styled.div`
     fill: ${({ theme }) => theme.textColor.blue};
   }
 `
+export { EditButtonContainer, EditIcon }
 
 /**
  *
