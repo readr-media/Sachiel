@@ -88,6 +88,8 @@ const EDIT_CONTENT_BASIC = [
     isRequired: false,
   },
 ]
+export { SourceInputWrapper }
+
 /**
  *
  * @param {Object} props
