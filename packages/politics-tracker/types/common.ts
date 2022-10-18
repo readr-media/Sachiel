@@ -142,3 +142,9 @@ export type RawPolitic = Partial<{
   createdBy: string
   updatedBy: string
 }>
+
+export type Source = {
+  id: string
+  value: string
+  error: string
+}
