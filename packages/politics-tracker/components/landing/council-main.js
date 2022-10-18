@@ -123,7 +123,7 @@ const ButtonGroup = styled.div`
     background: ${({ theme }) => theme.backgroundColor.lightPurple};
   }
 
-  ul li a.active {
+  .active {
     cursor: pointer;
     color: ${({ theme }) => theme.textColor.white};
     background: ${({ theme }) => theme.textColor.blue};
@@ -188,6 +188,10 @@ export default function CouncilMain() {
     '嘉義市',
   ]
 
+  /**
+   *
+   * @param {Object[]} cityItems
+   */
   const initState = (cityItems) => {
     const menuItems = []
     for (let i = 0; i < cityItems.length; i++) {
@@ -234,9 +238,9 @@ export default function CouncilMain() {
                           setmenuItems(newMenuItems)
                         }}
                       >
-                        <a href="#/" className={v.active ? 'active' : ''}>
+                        {/* <a href="#/" className={v.active ? 'active' : ''}>
                           {v.name} <span>(999/999)</span>
-                        </a>
+                        </a> */}
                       </li>
                     )
                   })}

@@ -174,8 +174,11 @@ export default function CouncilMain() {
 
   //TODO: 先模擬縣市庫
   const cityItems = ['北部', '中部', '南部', '東部', '離島']
+  /**
+   *
+   * @param {Object[]} cityItems
+   */
 
-  // @ts-ignore
   const initState = (cityItems) => {
     const menuItems = []
     for (let i = 0; i < cityItems.length; i++) {
@@ -224,9 +227,9 @@ export default function CouncilMain() {
                           setmenuItems(newMenuItems)
                         }}
                       >
-                        <a href="#/" className={v.active ? 'active' : ''}>
+                        {/* <a href="#/" className={v.active ? 'active' : ''}>
                           {v.name} <span>(999/999)</span>
-                        </a>
+                        </a> */}
                       </li>
                     )
                   })}

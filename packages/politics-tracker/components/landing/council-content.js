@@ -166,7 +166,6 @@ const CouncilWrap = styled.div`
   margin: auto;
 `
 /**
- *
  * @returns {React.ReactElement}
  */
 
@@ -181,15 +180,19 @@ export default function CouncilContent() {
     '第05選舉區',
   ]
 
-  // @ts-ignore
-  function toggle(e) {
-    console.log(e.currentTarget.children[1].style.transform)
-    if (e.currentTarget.nextElementSibling.style.display === 'none') {
-      e.currentTarget.nextElementSibling.style.display = 'block'
-    } else {
-      e.currentTarget.nextElementSibling.style.display = 'none'
-    }
-  }
+  /**
+   * Log data on input
+   *
+   * @param {Event & { target: HTMLInputElement }} e
+   */
+  // function toggle(e) {
+  //   console.log(e.currentTarget.children[1].style.transform)
+  //   if (e.currentTarget.nextElementSibling.style.display === 'none') {
+  //     e.currentTarget.nextElementSibling.style.display = 'block'
+  //   } else {
+  //     e.currentTarget.nextElementSibling.style.display = 'none'
+  //   }
+  // }
 
   return (
     <CouncilWrap>
@@ -211,7 +214,7 @@ export default function CouncilContent() {
       {district.map((district) => {
         return (
           <ItemWrap key={district}>
-            <DistrictTitle onClick={toggle}>
+            <DistrictTitle>
               <Title>
                 <h4>{district}</h4>
                 <TitleImg>
