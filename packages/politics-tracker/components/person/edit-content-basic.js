@@ -1,6 +1,8 @@
 import { Fragment, useState } from 'react'
 import EditContentItem from './edit-content-item'
 import SourceInput from '../politics/source-input'
+import { EditContentItemTitle } from './edit-content-item'
+
 import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import styled from 'styled-components'
 const SourceInputWrapper = styled.div`
@@ -8,6 +10,7 @@ const SourceInputWrapper = styled.div`
     fill: ${({ theme }) => theme.textColor.blue};
   }
 `
+
 /**
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -141,6 +144,9 @@ export default function EditContentBasic({ sources }) {
           ></EditContentItem>
         )
       )}
+      <EditContentItemTitle>
+        來源 <span className="required">（必填）</span>
+      </EditContentItemTitle>
       {sourceList.map((source, index) => (
         //TODO: add error and show error
         <SourceInputWrapper key={source.id}>
