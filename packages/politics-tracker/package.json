@@ -10,8 +10,10 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
+    "chinese-numbers-converter": "^2.3.1",
     "classnames": "^2.3.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
@@ -21,11 +23,10 @@
     "react-dom": "18.2.0",
     "react-resize-detector": "^7.1.2",
     "styled-components": "^5.3.6",
-    "use-fit-text": "^2.4.0",
-    "uuid": "^9.0.0",
-    "@tailwindcss/line-clamp": "^0.4.2",
     "tailwind-clip-path": "^1.0.0",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.1.8",
+    "use-fit-text": "^2.4.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

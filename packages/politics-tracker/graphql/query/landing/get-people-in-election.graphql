@@ -1,0 +1,26 @@
+query GetPeopleInElection($year: Int!, $type: [String!]) {
+  personElections(where: {
+    election: {
+      election_year_year:{ equals: $year },
+      type: { in: $type }
+    }
+  }) {
+    id
+    person_id {
+      id
+      name
+      birth_date_year
+    }
+    election {
+      id
+      name
+      election_year_year
+      type
+    }
+    electoral_district {
+      id
+      name
+      city
+    }
+  }
+}

@@ -30,6 +30,7 @@ export type RawElection = Partial<{
 export type RawElectionArea = Partial<{
   id: string
   name: string
+  city: string
   level: string
   type: string
   aboriginal: string
