@@ -31,7 +31,6 @@ const SourcesTitle = styled.div`
  * @returns
  */
 export default function Sources({ sources }) {
-  console.log(sources)
   const [isOpen, setIsOpen] = useState(false)
   return (
     <Fragment>
@@ -40,7 +39,7 @@ export default function Sources({ sources }) {
           <SourcesTitle>來源</SourcesTitle>
           {sources.map((item, index) => (
             <SourceItem
-              key={index}
+              key={item.value}
               no={index}
               content={item.value}
             ></SourceItem>

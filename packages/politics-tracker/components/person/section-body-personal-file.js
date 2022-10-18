@@ -123,7 +123,7 @@ export default function SectionBodyPersonalFile({
    */
   const getSource = (source) => {
     if (source) {
-      return stringToSources(source)
+      return stringToSources(source, '\n')
     } else {
       return []
     }
