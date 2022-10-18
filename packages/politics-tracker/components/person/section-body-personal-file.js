@@ -160,7 +160,7 @@ export default function SectionBodyPersonalFile({
     <SectionBody shouldShowSectionBody={isActive}>
       <Content
         title="基本資料"
-        editContent={<EditContentBasic sources={sourceList} />}
+        editContent={<EditContentBasic sources={source} />}
       >
         <ContentItem title="姓名" content={name}>
           <ContentPersonImage
@@ -179,19 +179,19 @@ export default function SectionBodyPersonalFile({
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
 
       <Content title="經歷">
         <ContentList biography={biography} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
       {/* TODO: show multiple line */}
       <Content title="聯絡方式">
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
-        <Sources sources={sourceList} />
+        <Sources sources={source} />
       </Content>
     </SectionBody>
   )
