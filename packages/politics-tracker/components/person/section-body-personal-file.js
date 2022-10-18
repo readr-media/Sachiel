@@ -12,6 +12,7 @@ import ContentLink from './content-link'
 import { useState, useMemo } from 'react'
 import moment from 'moment'
 import EditContentBasic from './edit-content-basic'
+import EditContentBiography from './edit-content-biography'
 import Sources from './sources'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
@@ -182,8 +183,11 @@ export default function SectionBodyPersonalFile({
         <Sources sources={source} />
       </Content>
 
-      <Content title="經歷">
-        <ContentList biography={biography} />
+      <Content
+        title="經歷"
+        editContent={<EditContentBiography listData={biography} />}
+      >
+        <ContentList listData={biography} />
         <Sources sources={source} />
       </Content>
       {/* TODO: show multiple line */}

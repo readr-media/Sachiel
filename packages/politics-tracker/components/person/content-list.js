@@ -24,13 +24,13 @@ export { UnorderedList, ListItem }
 /**
  *
  * @param {Object} props
- * @param {string} props.biography
+ * @param {string} props.listData
  * @returns {React.ReactElement}
  */
-export default function ContentList({ biography }) {
+export default function ContentList({ listData }) {
   const biographyList = useMemo(
-    () => stringToSources(biography, '\n'),
-    [biography]
+    () => stringToSources(listData, '\n'),
+    [listData]
   )
   return (
     <UnorderedList>
