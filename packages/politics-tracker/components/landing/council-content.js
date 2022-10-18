@@ -125,8 +125,7 @@ const FilterBar = styled.div`
 `
 const SubtitleButton = styled.button`
   padding: 4px 10px;
-  background-color: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.highlightRed};
+  background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
   border-radius: 32px;
   color: ${({ theme }) => theme.backgroundColor.white};
   font-weight: 500;
@@ -146,8 +145,7 @@ const SubtitleButtonDesk = styled.div`
   min-width: 86px;
   border-radius: 32px;
   margin-right: 10px;
-  background-color: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.highlightRed};
+  background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
 `
 
 const DistrictContentDesk = styled.div`
@@ -173,7 +171,7 @@ const CouncilWrap = styled.div`
  */
 
 //FIXME: areaPersonData正確用法應該是要{}
-export default function CouncilContent(areaPersonData) {
+export default function CouncilContent() {
   //TODO: 這邊放暫時的資料
   const district = [
     '第01選舉區',
@@ -183,6 +181,7 @@ export default function CouncilContent(areaPersonData) {
     '第05選舉區',
   ]
 
+  // @ts-ignore
   function toggle(e) {
     console.log(e.currentTarget.children[1].style.transform)
     if (e.currentTarget.nextElementSibling.style.display === 'none') {

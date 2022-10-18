@@ -125,8 +125,7 @@ const FilterBar = styled.div`
 `
 const SubtitleButton = styled.button`
   padding: 4px 10px;
-  background-color: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.highlightRed};
+  background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
   border-radius: 32px;
   color: ${({ theme }) => theme.backgroundColor.white};
   font-weight: 500;
@@ -146,8 +145,7 @@ const SubtitleButtonDesk = styled.div`
   min-width: 86px;
   border-radius: 32px;
   margin-right: 10px;
-  background-color: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.highlightRed};
+  background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
 `
 
 const DistrictContentDesk = styled.div`
@@ -183,6 +181,7 @@ export default function CouncilContent() {
     '第05選舉區',
   ]
 
+  // @ts-ignore
   function toggle(e) {
     console.log(e.currentTarget.children[1].style.transform)
     if (e.currentTarget.nextElementSibling.style.display === 'none') {
@@ -284,7 +283,7 @@ export default function CouncilContent() {
               </DistrictContentDesk>
             </DistrictTitle>
             <DistrictContent style={{ display: 'none' }}>
-              <SubtitleButton color={'highlightRed'}>還沒有政見</SubtitleButton>
+              <SubtitleButton>還沒有政見</SubtitleButton>
               <ListWrap>
                 <div>
                   <Link href="#">
@@ -318,7 +317,7 @@ export default function CouncilContent() {
                 </div>
               </ListWrap>
 
-              <SubtitleButton color={'orange'}>政見還很少</SubtitleButton>
+              <SubtitleButton>政見還很少</SubtitleButton>
               <ListWrap>
                 <div>
                   <Link href="#">
@@ -342,7 +341,7 @@ export default function CouncilContent() {
                 </div>
               </ListWrap>
 
-              <SubtitleButton color={'green'}>超過20條政見</SubtitleButton>
+              <SubtitleButton>超過20條政見</SubtitleButton>
               <ListWrap>
                 <div>
                   <Link href="#">
