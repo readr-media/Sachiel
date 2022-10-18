@@ -11,9 +11,8 @@ const EditButtonContainer = styled.button`
   align-items: center;
   user-select: none;
   color: ${({ theme }) => theme.textColor.blue};
-  ${({ theme }) =>
-    // @ts-ignore: the key here is not existed in config, should be fixed
-    theme.fontSize['main-sub']};
+  font-size: 16px;
+  line-height: 150%;
   padding: 2.5px 5px;
   span {
     margin-right: 4px;
