@@ -173,7 +173,9 @@ export default function SectionBodyPersonalFile({
 
       <Content
         title="經歷"
-        editContent={<EditContentBiography listData={biography} />}
+        editContent={
+          <EditContentBiography listData={biography} sources={source} />
+        }
       >
         <ContentList listData={biography} />
         <Sources sources={source} />
@@ -186,6 +188,7 @@ export default function SectionBodyPersonalFile({
             emails={email}
             contactDetails={contact_details}
             links={links}
+            sources={source}
           />
         }
       >

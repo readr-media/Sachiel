@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { stringToSources, getNewSource } from '~/utils/utils'
-import { SourceInputWrapper } from './edit-content-basic'
+import { SourceInputWrapper } from './edit-source'
 import SourceInput from '../politics/source-input'
 import styled from 'styled-components'
-
+import EditSource from './edit-source'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
@@ -14,9 +14,10 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
  *
  * @param {Object} props
  * @param {string} props.listData
+ * @param {string} props.sources
  * @returns {React.ReactElement}
  */
-export default function EditContentBiography({ listData }) {
+export default function EditContentBiography({ listData, sources }) {
   const [list, setList] = useState(stringToSources(listData, '\n'))
 
   function addSource() {
@@ -46,7 +47,7 @@ export default function EditContentBiography({ listData }) {
     setList(remain)
   }
   return (
-    <div>
+    <Fragment>
       {list?.map((item, index) => (
         //TODO: add error and show error
         <InputWrapperNoLabel key={item.id}>
@@ -63,6 +64,7 @@ export default function EditContentBiography({ listData }) {
           />
         </InputWrapperNoLabel>
       ))}
-    </div>
+      <EditSource sources={sources} />
+    </Fragment>
   )
 }
