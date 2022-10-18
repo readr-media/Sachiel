@@ -12,7 +12,6 @@ import TeamIntro from '~/components/landing/team-intro'
 import Mayor from '~/components/landing/mayor-main'
 import Council from '~/components/landing/council-main'
 
-//FIXME: 可以最後再來評估是否需要Main?
 const Main = styled.main`
   width: 100%;
   padding-top: 64px;
