@@ -1,8 +1,10 @@
 import type { Config } from 'tailwindcss'
-import type { withKeyObject } from '~/types/common'
+import type { withKeyObject, Source } from '~/types/common'
 const resolveConfig = require('tailwindcss/resolveConfig')
 import tailwindConfig from '~/tailwind.config'
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+import { SOURCE_DELIMITER } from '~/constants/politics'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -107,6 +109,25 @@ function electionName<T extends string | number | undefined>(
   return [year, name, area].join(' ')
 }
 
+function getNewSource(): Source {
+  return {
+    id: uuidv4(),
+    value: '',
+    error: '',
+  }
+}
+
+function stringToSources(str: string): Source[] {
+  return str.split(SOURCE_DELIMITER).map((s) => ({
+    id: uuidv4(),
+    value: s,
+    error: '',
+  }))
+}
+
+function sourcesToString(sources: Source[]): string {
+  return sources.map((s) => s.value).join(SOURCE_DELIMITER)
+}
 export {
   getLineBreaks,
   getTailwindConfig,
@@ -116,4 +137,7 @@ export {
   partyName,
   electionName,
   typedHasOwnProperty,
+  getNewSource,
+  sourcesToString,
+  stringToSources,
 }
