@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 
 import theme from '~/styles/theme'
-import Title from '~/components/people/title'
-import SectionList from '~/components/people/section-list'
-import Section from '~/components/people/section'
+import Title from '~/components/person/title'
+import SectionList from '~/components/person/section-list'
+import Section from '~/components/person/section'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
-import GetPersonBasicInfo from '~/graphql/query/people/get-person-basic-info.graphql'
-import GetPersonElections from '~/graphql/query/people/get-person-elections.graphql'
+import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
+import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 const Main = styled.main`
   background-color: #f3f4ff;
   height: 100%;
@@ -19,17 +19,17 @@ const Main = styled.main`
 
 /**
  * @param {Object} props
- * @param {import('../../types/person').Person} props.peopleData
+ * @param {import('../../types/person').Person} props.personData
  * @param {import('../../types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
-export default function People({ peopleData, personElectionsData }) {
+export default function People({ personData, personElectionsData }) {
   return (
     <ThemeProvider theme={theme}>
       <Main>
-        <Title name={peopleData.name} image={peopleData.image} />
+        <Title name={personData.name} image={personData.image} />
         <Section
-          peopleData={peopleData}
+          personData={personData}
           personElectionsData={personElectionsData}
         />
       </Main>
@@ -51,6 +51,6 @@ export async function getServerSideProps(context) {
     data: { personElections },
   } = await fireGqlRequest(print(GetPersonElections), { Id: id }, cmsApiUrl)
   return {
-    props: { peopleData: person, personElectionsData: personElections }, // will be passed to the page component as props
+    props: { personData: person, personElectionsData: personElections }, // will be passed to the page component as props
   }
 }

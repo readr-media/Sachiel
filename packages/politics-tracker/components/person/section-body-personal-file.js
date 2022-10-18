@@ -21,12 +21,12 @@ const ContentPersonImage = styled(ProfileImage)`
  *
  * @param {Object} props
  * @param {boolean} [props.isActive]
- * @param {import('../../types/person').Person} props.peopleData
+ * @param {import('../../types/person').Person} props.personData
  * @returns {React.ReactElement}
  */
 export default function SectionBodyPersonalFile({
   isActive = false,
-  peopleData = {},
+  personData = {},
 }) {
   const {
     name,
@@ -45,7 +45,7 @@ export default function SectionBodyPersonalFile({
     email,
     contact_details,
     links,
-  } = peopleData
+  } = personData
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
