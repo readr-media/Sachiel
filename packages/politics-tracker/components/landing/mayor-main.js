@@ -67,10 +67,6 @@ const SideBar = styled.div`
 const CouncilContent = styled.div`
   width: 100%;
   display: flex;
-  /* margin-bottom: 15px; */
-  /* ${({ theme }) => theme.breakpoint.md} {
-    padding: 0px 40px;
-  } */
 `
 
 const ButtonWrap = styled.div`
@@ -178,6 +174,10 @@ export default function CouncilMain() {
 
   //TODO: 先模擬縣市庫
   const cityItems = ['北部', '中部', '南部', '東部', '離島']
+  /**
+   *
+   * @param {Object[]} cityItems
+   */
 
   const initState = (cityItems) => {
     const menuItems = []
@@ -227,9 +227,9 @@ export default function CouncilMain() {
                           setmenuItems(newMenuItems)
                         }}
                       >
-                        <a href="#/" className={v.active ? 'active' : ''}>
+                        {/* <a href="#/" className={v.active ? 'active' : ''}>
                           {v.name} <span>(999/999)</span>
-                        </a>
+                        </a> */}
                       </li>
                     )
                   })}
