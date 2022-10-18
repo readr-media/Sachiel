@@ -14,12 +14,18 @@ import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
 import EditContentContact from './edit-content-contact'
 import Sources from './sources'
+import Tag from './tag'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
   height: 40px;
   margin-right: 8px;
 `
-
+const TagContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+`
 /**
  *
  * @param {Object} props
@@ -196,6 +202,23 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
         <Sources sources={source} />
+      </Content>
+      <Content
+        title="標籤"
+        editContent={
+          <EditContentContact
+            emails={email}
+            contactDetails={contact_details}
+            links={links}
+            sources={source}
+          />
+        }
+      >
+        <TagContainer>
+          <Tag></Tag>
+          <Tag></Tag>
+          <Tag></Tag>
+        </TagContainer>
       </Content>
     </SectionBody>
   )
