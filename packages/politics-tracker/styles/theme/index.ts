@@ -34,6 +34,9 @@ export const theme = {
     black: sharedColor.black,
     skinColor: '#FFF5E7',
     disable: '#C5CBCD',
+    landingGreen: '#F3FDFF',
+    landingPurple: '#ECEDFF',
+    lightPurple: '#F3F4FF',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
