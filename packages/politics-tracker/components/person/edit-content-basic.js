@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import EditContentItem from './edit-content-item'
-
+import SourceInput from '../politics/source-input'
 /**
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -105,6 +105,16 @@ export default function EditContentBasic() {
           ></EditContentItem>
         )
       )}
+      <SourceInput
+        id={'0'}
+        no={0}
+        value={'來源一'}
+        error={'錯誤'}
+        showError={false}
+        removable={false}
+        onChange={() => {}}
+        onDelete={() => {}}
+      />
     </Fragment>
   )
 }

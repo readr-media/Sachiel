@@ -24,16 +24,23 @@ const SourcesTitle = styled.div`
     line-height: 16px;
   } ;
 `
-
-export default function Sources() {
+/**
+ *
+ * @param {Object} props
+ * @param {string[]} [props.sources]
+ * @returns
+ */
+export default function Sources({ sources }) {
+  console.log(sources)
   const [isOpen, setIsOpen] = useState(false)
   return (
     <Fragment>
-      {isOpen && (
+      {isOpen && sources && (
         <SourcesContainer>
           <SourcesTitle>來源</SourcesTitle>
-          <SourceItem no={1} content={'資料'}></SourceItem>
-          <SourceItem no={2} content={'資料2'}></SourceItem>
+          {sources.map((item, index) => (
+            <SourceItem key={index} no={index} content={item}></SourceItem>
+          ))}
         </SourcesContainer>
       )}
       <Hr className="hr" />

@@ -45,7 +45,9 @@ export default function SectionBodyPersonalFile({
     email,
     contact_details,
     links,
+    source,
   } = personData
+
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
@@ -89,7 +91,7 @@ export default function SectionBodyPersonalFile({
    * only accept four format: year/month/day, year/month, year, month/day
    * @param {import('~/types/person').Person["birth_date_year"]} year
    * @param {import('~/types/person').Person["birth_date_month"]} month
-   * @param {import('~/types/person').Person["birth_date_day"]} day
+   * @param {import('~/types/person').Person["birth_date_day"]}  day
    * @returns {String | null}
    */
   const formatDate = (year = null, month = null, day = null) => {
@@ -112,6 +114,8 @@ export default function SectionBodyPersonalFile({
     () => formatDate(death_date_year, death_date_month, death_date_day),
     [death_date_year, death_date_month, death_date_day]
   )
+  const sourceList = useMemo(() => source?.split('\n'), [source])
+  console.log(sourceList)
   const lifespan = useMemo(() => {
     if (
       birth_date_year &&
@@ -159,19 +163,19 @@ export default function SectionBodyPersonalFile({
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
-        <Sources />
+        <Sources sources={sourceList} />
       </Content>
 
       <Content title="經歷">
         <ContentList biography={biography} />
-        <Sources />
+        <Sources sources={sourceList} />
       </Content>
       {/* TODO: show multiple line */}
       <Content title="聯絡方式">
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
-        <Sources />
+        <Sources sources={sourceList} />
       </Content>
     </SectionBody>
   )
