@@ -4,11 +4,12 @@ import { SourceInputWrapper } from './edit-content-basic'
 import SourceInput from '../politics/source-input'
 import styled from 'styled-components'
 
-const InputWrapperNoLabel = styled(SourceInputWrapper)`
+export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
   }
 `
+
 /**
  *
  * @param {Object} props
@@ -46,7 +47,7 @@ export default function EditContentBiography({ listData }) {
   }
   return (
     <div>
-      {list.map((item, index) => (
+      {list?.map((item, index) => (
         //TODO: add error and show error
         <InputWrapperNoLabel key={item.id}>
           <SourceInput

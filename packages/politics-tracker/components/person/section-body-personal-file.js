@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
+import { stringToSources } from '~/utils/utils'
 
 import ContentItem from './content-item'
 import ProfileImage from './profile-image'
@@ -12,6 +12,7 @@ import { useMemo } from 'react'
 import moment from 'moment'
 import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
+import EditContentContact from './edit-content-contact'
 import Sources from './sources'
 const ContentPersonImage = styled(ProfileImage)`
   width: 40px;
@@ -116,19 +117,7 @@ export default function SectionBodyPersonalFile({
     () => formatDate(death_date_year, death_date_month, death_date_day),
     [death_date_year, death_date_month, death_date_day]
   )
-  /**
-   *
-   * @param {string} source
-   * @returns  {import('~/types/common').Source[]}
-   */
-  const getSource = (source) => {
-    if (source) {
-      return stringToSources(source, '\n')
-    } else {
-      return []
-    }
-  }
-  const sourceList = useMemo(() => getSource(source), [source])
+
   const lifespan = useMemo(() => {
     if (
       birth_date_year &&
@@ -190,7 +179,16 @@ export default function SectionBodyPersonalFile({
         <Sources sources={source} />
       </Content>
       {/* TODO: show multiple line */}
-      <Content title="聯絡方式">
+      <Content
+        title="聯絡方式"
+        editContent={
+          <EditContentContact
+            emails={email}
+            contactDetails={contact_details}
+            links={links}
+          />
+        }
+      >
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
