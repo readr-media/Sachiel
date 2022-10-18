@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
+import { typedHasOwnProperty } from '~/utils/utils'
 
 const BoardContainer = styled.div`
   width: 100%;
@@ -27,7 +28,9 @@ const BoardContent = styled.div`
   align-items: center;
   justify-content: center;
   background: ${({ color, theme }) =>
-    color ? theme.backgroundColor[color] : theme.backgroundColor.green};
+    color && typedHasOwnProperty(theme.backgroundColor, color)
+      ? theme.backgroundColor[color]
+      : theme.backgroundColor.green};
   ${({ theme }) => theme.breakpoint.md} {
     height: 211px;
   }
@@ -58,7 +61,9 @@ const ContentSubtitle = styled.div`
   margin-bottom: 20px;
   color: ${({ theme }) => theme.textColor.white};
   background: ${({ color, theme }) =>
-    color ? theme.textColor[color] : theme.textColor.green};
+    color && typedHasOwnProperty(theme.textColor, color)
+      ? theme.textColor[color]
+      : theme.textColor.green};
   font-weight: 700;
   /* TODO: 建檔成theme variable */
   font-size: 20px;
@@ -69,7 +74,9 @@ const ContentSubtitle = styled.div`
 `
 const CalNum = styled.div`
   background: ${({ color, theme }) =>
-    color ? theme.textColor[color] : theme.textColor.green};
+    color && typedHasOwnProperty(theme.textColor, color)
+      ? theme.textColor[color]
+      : theme.textColor.green};
   color: ${({ theme }) => theme.textColor.white};
   width: 240px;
   height: 24px;
@@ -101,7 +108,9 @@ const BoardButton = styled.div`
   width: 100%;
   height: 80px;
   background: ${({ color, theme }) =>
-    color ? theme.textColor[color] : theme.textColor.green};
+    color && typedHasOwnProperty(theme.textColor, color)
+      ? theme.textColor[color]
+      : theme.textColor.green};
   box-shadow: inset 0px -4px 0px #000000;
   display: flex;
   align-items: center;
