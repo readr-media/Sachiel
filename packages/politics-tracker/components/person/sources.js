@@ -29,18 +29,21 @@ const SourcesTitle = styled.div`
 /**
  *
  * @param {Object} props
- * @param {string} props.sources
+ * @param {string} [props.sources]
  * @returns
  */
 export default function Sources({ sources }) {
   const [isOpen, setIsOpen] = useState(false)
-  const sourceList = useMemo(() => stringToSources(sources, '\n'), [sources])
+  const sourceList = useMemo(
+    () => (sources ? stringToSources(sources, '\n') : []),
+    [sources]
+  )
   return (
     <Fragment>
       {isOpen && (
         <SourcesContainer>
           <SourcesTitle>來源</SourcesTitle>
-          {sourceList.map((item, index) => (
+          {sourceList?.map((item, index) => (
             <SourceItem
               key={item.id}
               no={index}

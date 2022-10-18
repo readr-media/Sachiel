@@ -1,15 +1,14 @@
 import styled from 'styled-components'
 
 import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
-import ContentTitle from './content-title'
-import EditButton from './edit-button'
+
 import ContentItem from './content-item'
 import ProfileImage from './profile-image'
 import SectionBody from './section-body'
 import Content from './content'
 import ContentList from './content-list'
 import ContentLink from './content-link'
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import moment from 'moment'
 import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
@@ -32,25 +31,25 @@ export default function SectionBodyPersonalFile({
   personData = {},
 }) {
   const {
-    name,
-    image,
-    alternative,
-    other_names,
+    name = '',
+    image = '',
+    alternative = '',
+    other_names = '',
     birth_date_year,
     birth_date_month,
     birth_date_day,
     death_date_year,
     death_date_month,
     death_date_day,
-    gender,
-    national_identity,
+    gender = '',
+    national_identity = '',
     biography = '',
-    email,
-    contact_details,
-    links,
+    email = '',
+    contact_details = '',
+    links = '',
     source = '',
   } = personData
-
+  console.log(alternative, other_names)
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
@@ -95,11 +94,11 @@ export default function SectionBodyPersonalFile({
    * @param {import('~/types/person').Person["birth_date_year"]} year
    * @param {import('~/types/person').Person["birth_date_month"]} month
    * @param {import('~/types/person').Person["birth_date_day"]}  day
-   * @returns {String | null}
+   * @returns {String}
    */
   const formatDate = (year = null, month = null, day = null) => {
     if (!validateDate(year, month, day)) {
-      return null
+      return ''
     } else if (year && month && !day) {
       return `${year}-${month}`
     } else if (year && !month && !day) return `${year}`
@@ -154,7 +153,7 @@ export default function SectionBodyPersonalFile({
       return '男'
     } else if (gender === 'F' || gender === '女') {
       return '女'
-    } else return null
+    } else return ''
   }
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   return (
@@ -172,11 +171,11 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="舊名" content={other_names} />
         <ContentItem
           title="出生日期"
-          content={dateOfBirth ? `${dateOfBirth}${age}` : null}
+          content={dateOfBirth ? `${dateOfBirth}${age}` : ''}
         />
         <ContentItem
           title="死亡日期"
-          content={dateOfDeath ? `${dateOfDeath}${lifespan}` : null}
+          content={dateOfDeath ? `${dateOfDeath}${lifespan}` : ''}
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />

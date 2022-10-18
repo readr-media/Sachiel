@@ -35,7 +35,7 @@ export default function ContentList({ listData }) {
   return (
     <UnorderedList>
       {biographyList &&
-        biographyList.map((item) => (
+        biographyList?.map((item) => (
           <ListItem key={item.id}>{item.value}</ListItem>
         ))}
     </UnorderedList>
