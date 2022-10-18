@@ -55,6 +55,7 @@ export default function SectionBodyPersonalFile({
     contact_details = '',
     links = '',
     source = '',
+    tags = [],
   } = personData
   console.log(alternative, other_names)
   /**
@@ -215,9 +216,9 @@ export default function SectionBodyPersonalFile({
         }
       >
         <TagContainer>
-          <Tag></Tag>
-          <Tag></Tag>
-          <Tag></Tag>
+          {tags.map((item) => (
+            <Tag key={item.id} id={item.id} name={item.name}></Tag>
+          ))}
         </TagContainer>
       </Content>
     </SectionBody>

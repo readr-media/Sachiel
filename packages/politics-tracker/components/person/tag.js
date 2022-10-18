@@ -11,6 +11,13 @@ const TagItem = styled.div`
     font-size: ${({ theme }) => theme.fontSize['button-md']};
   }
 `
-export default function Tag() {
-  return <TagItem>#123123</TagItem>
+/**
+ *
+ * @param {Object} props
+ * @param {string} props.id
+ * @param {string} props.name
+ * @returns
+ */
+export default function Tag({ id, name }) {
+  return <TagItem>#{name}</TagItem>
 }

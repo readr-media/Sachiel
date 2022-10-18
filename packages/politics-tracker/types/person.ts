@@ -17,6 +17,12 @@ type PersonType = {
   contact_details: string
   links: string
   source: string
+  tags: tag[] | []
+}
+
+type tag = {
+  id: string
+  name: string
 }
 
 export const Person: PersonType | Record<string, never> = {}
