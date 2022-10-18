@@ -65,6 +65,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
+| NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID | 字串 | '' | Google Analytics Tracking ID |
 
 ## Feature Toggle (功能開關，暫時性)
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
