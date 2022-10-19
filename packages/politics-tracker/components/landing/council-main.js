@@ -193,32 +193,39 @@ export default function CouncilMain({ propsData }) {
             <ButtonWrap>
               <ButtonGroup>
                 <ul>
-                  {propsData['councilorAndPolitics'].map((v, i) => {
-                    return (
-                      <li
-                        key={i}
-                        onClick={() => {
-                          const newMenuItems = defaultCouncilPolitics.map(
-                            (v, index) => {
-                              if (i === index) return { ...v, active: true }
+                  {propsData['councilorAndPolitics'].map(
+                    (
+                      // @ts-ignore
+                      v,
+                      // @ts-ignore
+                      i
+                    ) => {
+                      return (
+                        <li
+                          key={i}
+                          onClick={() => {
+                            const newMenuItems = defaultCouncilPolitics.map(
+                              (v, index) => {
+                                if (i === index) return { ...v, active: true }
 
-                              return v
-                            }
-                          )
+                                return v
+                              }
+                            )
 
-                          setMenuItems(newMenuItems)
-                          setCouncilRegion(i)
-                        }}
-                      >
-                        <a href="#/" className={v.active ? 'active' : ''}>
-                          {v.name}{' '}
-                          <span>
-                            ( {v.amount} / {v.total} )
-                        </span>
+                            setMenuItems(newMenuItems)
+                            setCouncilRegion(i)
+                          }}
+                        >
+                          <a href="#/" className={v.active ? 'active' : ''}>
+                            {v.name}{' '}
+                            <span>
+                              ( {v.amount} / {v.total} )
+                            </span>
                           </a>
-                      </li>
-                    )
-                  })}
+                        </li>
+                      )
+                    }
+                  )}
                 </ul>
               </ButtonGroup>
             </ButtonWrap>
