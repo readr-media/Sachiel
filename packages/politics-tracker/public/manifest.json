@@ -1,0 +1,33 @@
+{
+  "name": "READr open relationship site",
+  "short_name": "open relationship",
+  "icons": [{
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }, {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }, {
+      "src": "/favicon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }, {
+      "src": "/favicon-120x120.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    }, {
+      "src": "/favicon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },{
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }],
+  "start_url": "/",
+  "background_color": "#f2f3f5",
+  "display": "standalone",
+  "theme_color": "#f60"
+}
