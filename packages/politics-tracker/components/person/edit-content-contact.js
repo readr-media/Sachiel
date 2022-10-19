@@ -198,7 +198,7 @@ export default function EditContentContact({
       <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
         onClick={() => setShouldShowEditMode(false)}
-        submitHandler={() => {}}
+        submitHandler={() => submitHandler()}
       />
     </Fragment>
   )

@@ -61,7 +61,7 @@ export default function ContentItem({ title = '', content, children }) {
         {contentList?.map((item) => (
           <ContentItemContent key={item.id}>
             {children}
-            {item.value}{' '}
+            {item.value}
           </ContentItemContent>
         ))}
       </div>
