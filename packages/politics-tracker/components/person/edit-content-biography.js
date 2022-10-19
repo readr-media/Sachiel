@@ -5,6 +5,7 @@ import SourceInput from '../politics/source-input'
 import styled from 'styled-components'
 import EditSource from './edit-source'
 import AddInputButton from './add-input-button'
+import EditSendOrCancel from './edit-send-or-cancel'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
@@ -16,9 +17,14 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
  * @param {Object} props
  * @param {string} props.listData
  * @param {string} props.sources
+ * @param {function} props.setShouldShowEditMode
  * @returns {React.ReactElement}
  */
-export default function EditContentBiography({ listData, sources }) {
+export default function EditContentBiography({
+  listData,
+  sources,
+  setShouldShowEditMode,
+}) {
   const [list, setList] = useState(stringToSources(listData, '\n'))
 
   function addSource() {
@@ -68,6 +74,10 @@ export default function EditContentBiography({ listData, sources }) {
       <AddInputButton addTarget="經歷" onClick={addSource}></AddInputButton>
 
       <EditSource sources={sources} />
+      <EditSendOrCancel
+        onClick={() => setShouldShowEditMode(false)}
+        submitHandler={() => {}}
+      />
     </Fragment>
   )
 }

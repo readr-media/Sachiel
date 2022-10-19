@@ -5,6 +5,8 @@ import SourceInput from '../politics/source-input'
 import { InputWrapperNoLabel } from './edit-content-biography'
 import AddInputButton from './add-input-button'
 import EditSource from './edit-source'
+import EditSendOrCancel from './edit-send-or-cancel'
+
 /**
  *
  * @param {Object} props
@@ -12,6 +14,7 @@ import EditSource from './edit-source'
  * @param {string} [props.links]
  * @param {string} [props.contactDetails]
  * @param {string} [props.sources]
+ * @param {function} props.setShouldShowEditMode
  * @returns {React.ReactElement}
  */
 export default function EditContentContact({
@@ -19,6 +22,7 @@ export default function EditContentContact({
   links,
   contactDetails,
   sources,
+  setShouldShowEditMode,
 }) {
   const [emailList, setEmailList] = useState(
     emails ? stringToSources(emails, '\n') : [getNewSource()]
@@ -144,6 +148,10 @@ export default function EditContentContact({
       ))}
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
       <EditSource sources={sources} />
+      <EditSendOrCancel
+        onClick={() => setShouldShowEditMode(false)}
+        submitHandler={() => {}}
+      />
     </Fragment>
   )
 }
