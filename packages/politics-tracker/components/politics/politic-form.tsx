@@ -133,6 +133,13 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     return isValid
   }
 
+  function checkModified(politic: Politic, sources: Source[]) {
+    return !(
+      politic.desc === props.politic.desc &&
+      sourcesToString(sources) === props.politic.source
+    )
+  }
+
   // use JSON.stringify to compare objects
   const isPoliticValid = useMemo(
     () => checkPolitic(politic),
@@ -142,10 +149,14 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     () => checkSources(sources),
     [JSON.stringify(sources)]
   )
+  const isModified = useMemo(
+    () => checkModified(politic, sources),
+    [JSON.stringify(politic), JSON.stringify(sources)]
+  )
 
   useEffect(() => {
-    setIsValid(isPoliticValid && isSourcesValid)
-  }, [isPoliticValid, isSourcesValid])
+    setIsValid(isModified && isPoliticValid && isSourcesValid)
+  }, [isPoliticValid, isSourcesValid, isModified])
 
   async function submitHandler() {
     if (!isValid || isProcessing) return
