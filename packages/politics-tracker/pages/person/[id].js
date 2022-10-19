@@ -9,6 +9,8 @@ import Section from '~/components/person/section'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
+import DefaultLayout from '~/components/layout/default'
+import Nav from '~/components/nav'
 import CustomHead from '~/components/custom-head'
 import GAScript from '~/components/ga-script'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
@@ -20,24 +22,34 @@ const Main = styled.main`
 `
 
 /**
+ * @typedef {import('~/components/nav').LinkMember } LinkMember
+ *
  * @param {Object} props
  * @param {import('../../types/person').Person} props.personData
  * @param {import('../../types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
 export default function People({ personData, personElectionsData }) {
+  /** @type {LinkMember} */
+  const navProps = {
+    content: '回首頁',
+    href: '/',
+    backgroundColor: 'bg-person',
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <CustomHead />
-      <GAScript />
-      <Main>
-        <Title name={personData.name} image={personData.image} />
-        <Section
-          personData={personData}
-          personElectionsData={personElectionsData}
-        />
-      </Main>
-    </ThemeProvider>
+    <DefaultLayout>
+      <ThemeProvider theme={theme}>
+        <Main>
+          <Title name={personData.name} image={personData.image} />
+          <Section
+            personData={personData}
+            personElectionsData={personElectionsData}
+          />
+        </Main>
+        <Nav prev={navProps} />
+      </ThemeProvider>
+    </DefaultLayout>
   )
 }
 
