@@ -94,7 +94,7 @@ export default function CustomHead(): JSX.Element {
         href="/favicon-16x16.png"
       />
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#04295e" />
-      <link rel="manifest" href="/manifest.json" />
+      <link rel="manifest" href="/site.webmanifest" />
       <meta name="application-name" content={siteInformation.title} />
       <meta name="msapplication-TileColor" content="#04295e" />
       <meta name="theme-color" content="#04295e" />
