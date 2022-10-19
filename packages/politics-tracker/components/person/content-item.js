@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import { stringToSources, getNewSource } from '~/utils/utils'
 
 const ContentItemContainer = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ const ContentItemContainer = styled.div`
   width: 100%;
   margin-top: 20px;
   justify-content: start;
+  align-items: start;
   min-height: 40px;
   ${({ theme }) => theme.fontSize['title-sub']};
   ${({ theme }) => theme.breakpoint.md} {
@@ -21,7 +23,6 @@ const ContentItemTitle = styled.div`
 
   ${({ theme }) => theme.breakpoint.md} {
     ${({ theme }) => theme.fontSize['title-sub-md']};
-
     display: flex;
     justify-content: start;
     align-items: center;
@@ -37,26 +38,33 @@ const ContentItemContent = styled.div`
   margin-top: 8px;
   ${({ theme }) => theme.breakpoint.md} {
     margin-top: 0;
+    margin-bottom: 8px;
   }
 `
 export { ContentItemContainer, ContentItemTitle, ContentItemContent }
 /**
  * @param {Object} props
  * @param {String} [props.title]
- * @param {?(String|number)} [props.content]
+ * @param {String} props.content
  * @param {React.ReactElement} [props.children]
  * @returns  {React.ReactElement}
  */
-export default function ContentItem({ title = '', content = '', children }) {
+export default function ContentItem({ title = '', content, children }) {
+  const contentList = useMemo(
+    () => (content ? stringToSources(content, '\n') : []),
+    [content]
+  )
   return (
     <ContentItemContainer>
       <ContentItemTitle>{title}</ContentItemTitle>
-      {content && (
-        <ContentItemContent>
-          {children}
-          {content}
-        </ContentItemContent>
-      )}
+      <div>
+        {contentList?.map((item) => (
+          <ContentItemContent key={item.id}>
+            {children}
+            {item.value}{' '}
+          </ContentItemContent>
+        ))}
+      </div>
     </ContentItemContainer>
   )
 }
