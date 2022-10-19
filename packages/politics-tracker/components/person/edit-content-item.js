@@ -95,29 +95,6 @@ const RadioButton = styled.input`
 `
 
 export { EditContentItemTitle }
-/**
- *
- * @param {Object} props
- * @param {import('./edit-content-basic').EditContentBasic["options"]} props.options
- * @returns {React.ReactElement}
- */
-const EditContentItemRadio = ({ options }) => {
-  return (
-    <Fragment>
-      {options && (
-        <EditContentItemRadioContainer>
-          {options.map((item, index) => (
-            <Item key={index}>
-              <RadioButton type="radio" name="radio" value={item} />
-              <RadioButtonLabel />
-              <div>{item}</div>
-            </Item>
-          ))}
-        </EditContentItemRadioContainer>
-      )}
-    </Fragment>
-  )
-}
 
 /**
  * @param {import('./edit-content-basic').EditContentBasic} props
@@ -131,6 +108,8 @@ export default function EditContentItem({
   placeholder,
   type,
   options,
+  value,
+  onChange,
 }) {
   return (
     <EditContentItemContainer>
@@ -144,11 +123,44 @@ export default function EditContentItem({
         </EditContentItemDescription>
       ))}
       {type === 'input' && (
-        <EditContentItemInput id={name} placeholder={placeholder} />
+        <EditContentItemInput
+          id={name}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          defaultValue={value ? `${value}` : ''}
+        ></EditContentItemInput>
       )}
-
-      {type === 'radio' && (
-        <EditContentItemRadio options={options}></EditContentItemRadio>
+      {type === 'input-date' && (
+        <EditContentItemInput
+          id={name}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          defaultValue={
+            value
+              ? `${value[0] ? value[0] : '0000'}-${
+                  value[1] ? value[1] : '00'
+                }-${value[2] ? value[2] : '00'}`
+              : ''
+          }
+        ></EditContentItemInput>
+      )}
+      {type === 'radio' && options && (
+        <EditContentItemRadioContainer>
+          {options.map((item, index) => (
+            <Item key={index}>
+              <RadioButton
+                type="radio"
+                name="radio"
+                value={item}
+                defaultChecked={item === value}
+                // @ts-ignore
+                onClick={(e) => onChange(e.target.value)}
+              />
+              <RadioButtonLabel />
+              <div>{item === 'F' ? '女' : '男'}</div>
+            </Item>
+          ))}
+        </EditContentItemRadioContainer>
       )}
     </EditContentItemContainer>
   )
