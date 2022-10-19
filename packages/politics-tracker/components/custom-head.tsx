@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { siteUrl } from '~/constants/config'
 
 export type OGProperties = {
   locale?: 'zh_TW'
@@ -71,13 +72,13 @@ export default function CustomHead(): JSX.Element {
     description:
       '政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr 協作平台邀請你一起追蹤候選人選舉時提出的政見，並監督他是否在任期內達成。',
     site_name: '政見不失憶：臺灣 2022 選舉政見協作平台',
-    url: 'https://whoareyou.readr.tw',
+    url: siteUrl,
     type: 'website',
     image: {
       width: '1200',
       height: '630',
       type: 'images/jpeg',
-      url: 'https://whoareyou.readr.tw/og.jpg',
+      url: `${siteUrl}/og.jpg`,
     },
     card: 'summary_large_image',
   }
