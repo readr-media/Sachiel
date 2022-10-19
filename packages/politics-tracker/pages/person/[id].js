@@ -9,6 +9,7 @@ import Section from '~/components/person/section'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
+import CustomHead from '~/components/custom-head'
 import GAScript from '~/components/ga-script'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
@@ -27,6 +28,7 @@ const Main = styled.main`
 export default function People({ personData, personElectionsData }) {
   return (
     <ThemeProvider theme={theme}>
+      <CustomHead />
       <GAScript />
       <Main>
         <Title name={personData.name} image={personData.image} />
