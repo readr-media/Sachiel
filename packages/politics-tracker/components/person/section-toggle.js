@@ -5,7 +5,7 @@ import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
 
 const ToggleWrapper = styled.div`
-  padding: 20px 0 0;
+  padding: 40px 0 0;
   width: 100%;
 `
 const ToggleButton = styled.button`

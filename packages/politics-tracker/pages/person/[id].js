@@ -19,6 +19,11 @@ const Main = styled.main`
   background-color: #f3f4ff;
   height: 100%;
   min-height: 100vh;
+  margin-top: 64px;
+  padding-bottom: 40px;
+  ${({ theme }) => theme.breakpoint.md} {
+    margin-top: 80px;
+  }
 `
 
 /**
