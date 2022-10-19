@@ -98,6 +98,7 @@ type IconConfig = {
   width: number
   height: number
   borderWidth: number
+  unoptimized?: boolean
 }
 type TextConfig = {
   fontSize: number
@@ -110,16 +111,19 @@ export default function Title(props: PersonOverview): JSX.Element {
     width: 80,
     height: 80,
     borderWidth: 2,
+    unoptimized: true,
   }
   const personSmall: IconConfig = {
     width: 60,
     height: 60,
     borderWidth: 2,
+    unoptimized: true,
   }
   const party: IconConfig = {
     width: 20,
     height: 20,
     borderWidth: 1,
+    unoptimized: true,
   }
 
   const fontSizeGroup = fullConfig?.theme?.fontSize
