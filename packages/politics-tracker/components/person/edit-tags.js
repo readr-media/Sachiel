@@ -5,6 +5,7 @@ import SourceInput from '../politics/source-input'
 import styled from 'styled-components'
 import EditSource from './edit-source'
 import AddInputButton from './add-input-button'
+import EditSendOrCancel from './edit-send-or-cancel'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
@@ -15,6 +16,7 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
  *
  * @param {Object} props
  * @param {import("~/types/person").Person["tags"]} props.tags
+ * @param {function} props.setShouldShowEditMode
  * @returns {React.ReactElement}
  */
 export default function EditTags(props) {
@@ -71,6 +73,10 @@ export default function EditTags(props) {
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="標籤" onClick={addSource}></AddInputButton>
+      <EditSendOrCancel
+        onClick={() => props.setShouldShowEditMode(false)}
+        submitHandler={() => {}}
+      />
     </Fragment>
   )
 }

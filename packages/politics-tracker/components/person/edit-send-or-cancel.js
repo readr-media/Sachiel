@@ -35,13 +35,14 @@ const ArrowIcon = styled(EditIcon)`
  *
  * @param {Object} props
  * @param {function} props.onClick
+ * @param {function} props.submitHandler
  * @returns {React.ReactElement}
  */
-export default function EditSendOrCancel({ onClick }) {
+export default function EditSendOrCancel({ onClick, submitHandler }) {
   return (
     <EditSendOrCancelContainer>
       <EditCancel onClick={() => onClick()}>取消</EditCancel>
-      <EditSend>
+      <EditSend onClick={() => submitHandler()}>
         送出審核
         <ArrowIcon>
           <ArrowRight />
