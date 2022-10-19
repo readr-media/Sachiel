@@ -167,13 +167,9 @@ const Content = styled.div`
  * @returns {React.ReactElement}
  */
 
-//FIXME: areaPersonData正確用法應該是要{}
-export default function CouncilMain() {
-  //TODO: 這邊放暫時的資料
-  const district = ['新北市', '台北市', '基隆市']
-
-  //TODO: 先模擬縣市庫
-  const cityItems = ['北部', '中部', '南部', '東部', '離島']
+// @ts-ignore
+export default function MayorMain({ propsData }) {
+  // console.log(propsData)
   /**
    *
    * @param {Object[]} cityItems
@@ -191,9 +187,10 @@ export default function CouncilMain() {
     return menuItems
   }
 
-  const defaultMenuItems = initState(cityItems)
+  const defaultMayorPolitics = initState(propsData['mayorAndPolitics'])
   // 一開始沒有被按的項目, active全為false
-  const [menuItems, setmenuItems] = useState(defaultMenuItems)
+  const [menuItems, setmenuItems] = useState(defaultMayorPolitics)
+  const [mayorRegion, setMayorReion] = useState(0)
 
   return (
     <CouncilContainer id="councilTitle">
@@ -211,32 +208,42 @@ export default function CouncilMain() {
               <ButtonGroup>
                 {/* onclick後再觸發一次fetch */}
                 <ul>
-                  {menuItems.map((v, i, array) => {
-                    return (
-                      <li
-                        key={i}
-                        onClick={() => {
-                          const newMenuItems = defaultMenuItems.map(
-                            (v, index) => {
-                              if (i === index) return { ...v, active: true }
+                  {propsData['mayorAndPolitics'].map(
+                    (
+                      // @ts-ignore
+                      v,
+                      // @ts-ignore
+                      i
+                    ) => {
+                      return (
+                        <li
+                          key={i}
+                          onClick={() => {
+                            const newMayorAndPolitics =
+                              defaultMayorPolitics.map((v, index) => {
+                                if (i === index) return { ...v, active: true }
 
-                              return v
-                            }
-                          )
+                                return v
+                              })
 
-                          setmenuItems(newMenuItems)
-                        }}
-                      >
-                        {/* <a href="#/" className={v.active ? 'active' : ''}>
-                          {v.name} <span>(999/999)</span>
-                        </a> */}
-                      </li>
-                    )
-                  })}
+                            setmenuItems(newMayorAndPolitics)
+                            setMayorReion(i)
+                          }}
+                        >
+                          <a href="#/" className={v.active ? 'active' : ''}>
+                            {v.name}{' '}
+                            <span>
+                              ( {v.amount} / {v.total} )
+                            </span>
+                          </a>
+                        </li>
+                      )
+                    }
+                  )}
                 </ul>
               </ButtonGroup>
             </ButtonWrap>
-            <MayorList />
+            <MayorList mayorRegion={mayorRegion} propsData={propsData} />
           </Content>
         </CouncilContent>
       </CouncilContentWrap>
