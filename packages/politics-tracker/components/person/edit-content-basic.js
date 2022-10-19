@@ -272,12 +272,6 @@ export default function EditContentBasic({
 
   return (
     <Fragment>
-      <div>
-        {JSON.stringify({
-          name: personInfo.name,
-          image: personInfo.image,
-        })}
-      </div>
       {editBasicInfo.map(
         ({
           name,
