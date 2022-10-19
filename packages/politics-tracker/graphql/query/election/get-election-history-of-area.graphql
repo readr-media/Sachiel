@@ -1,7 +1,7 @@
-query GetElectionHistoryOfArea($type: String!, $areaId: ID!) {
+query GetElectionHistoryOfArea($type: String!, $area: String!) {
   personElections(where: {
     election: {type: { equals: $type}},
-    electoral_district: { id: { equals: $areaId }}
+    electoral_district: { name: { contains: $area }}
   }) {
     id
     election {
@@ -14,6 +14,7 @@ query GetElectionHistoryOfArea($type: String!, $areaId: ID!) {
     electoral_district {
       id
       name
+      city
     }
   }
 }

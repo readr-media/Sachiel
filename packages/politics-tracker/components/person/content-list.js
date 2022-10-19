@@ -1,5 +1,6 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
-
+import { stringToSources } from '~/utils/utils'
 const UnorderedList = styled.ul`
   list-style: none;
   margin: 0;
@@ -23,16 +24,20 @@ export { UnorderedList, ListItem }
 /**
  *
  * @param {Object} props
- * @param {import('~/types/person').Person["biography"]} props.biography
+ * @param {string} props.listData
  * @returns {React.ReactElement}
  */
-export default function ContentList({ biography }) {
+export default function ContentList({ listData }) {
+  const biographyList = useMemo(
+    () => stringToSources(listData, '\n'),
+    [listData]
+  )
   return (
     <UnorderedList>
-      {biography &&
-        biography
-          ?.split('\n')
-          .map((item, index) => <ListItem key={index}>{item}</ListItem>)}
+      {biographyList &&
+        biographyList?.map((item) => (
+          <ListItem key={item.id}>{item.value}</ListItem>
+        ))}
     </UnorderedList>
   )
 }

@@ -1,5 +1,5 @@
-query GetElection($electionId: ID!) {
-  election (where: {id: $electionId}) {
+query GetElection($type: String!, $year: Int!) {
+  elections (where: {type: { equals: $type }, election_year_year: { equals: $year }}) {
     id
     name
     type

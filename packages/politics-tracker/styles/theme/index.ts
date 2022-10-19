@@ -50,11 +50,13 @@ export const theme = {
     pink: '#FFF1E8',
     disable: sharedColor.gray,
     black30: 'rgba(15, 45, 53, 0.3)',
+    black50: 'rgba(15, 45, 53, 0.5)',
   },
   borderColor: {
     black: sharedColor.black,
     white: sharedColor.white,
     yellow: '#B2800D',
+    black5: 'rgba(15, 45, 53, 0.05)',
   },
   fontSize: {
     'title-main': 'font-size:24px; line-height: 1.2',

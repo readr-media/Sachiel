@@ -45,7 +45,7 @@ type PoliticsPageProps = {
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
 > = async ({ query }) => {
-  const { name, year } = query
+  const { personId } = query
 
   try {
     const profile: PersonOverview = {
@@ -70,8 +70,7 @@ export const getServerSideProps: GetServerSideProps<
         await fireGqlRequest(
           print(GetPersonOverView),
           {
-            name: name,
-            year: Number(year),
+            personId,
           },
           cmsApiUrl
         )
@@ -110,13 +109,13 @@ export const getServerSideProps: GetServerSideProps<
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
-              electionId: eId,
-              electionAreaId: String(electionArea?.id),
+              electionType: String(election.type),
+              electionArea: String(electionArea?.city),
               id: String(current.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
-                electionArea?.name
+                electionArea?.city
               ),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
@@ -324,8 +323,9 @@ const Politics = (props: PoliticsPageProps) => {
       href: {
         pathname: '/election',
         query: {
-          electionId: props.latestElection.electionId,
-          areaId: props.latestElection.electionAreaId,
+          year: props.latestElection.year,
+          area: props.latestElection.electionArea,
+          type: props.latestElection.electionType,
         },
       },
     },

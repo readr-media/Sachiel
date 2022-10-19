@@ -8,6 +8,7 @@ type SourceInputProps = {
   error: string
   showError: boolean
   removable: boolean
+  placeholder?: string
   onChange: (id: string, value: string) => void
   onDelete: (id: string) => void
 }
@@ -21,7 +22,9 @@ export default function SourceInput(props: SourceInputProps): JSX.Element {
         </label>
         <input
           className={s['input']}
-          placeholder="網址, 選舉公報..."
+          placeholder={
+            props.placeholder ? props.placeholder : '網址, 選舉公報...'
+          }
           value={props.value}
           onChange={(e) => {
             props.onChange(props.id, e.target.value)
