@@ -1,12 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import { EditContentItemTitle } from './edit-content-item'
-import { stringToSources, getNewSource } from '~/utils/utils'
+import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import SourceInput from '../politics/source-input'
 import { InputWrapperNoLabel } from './edit-content-biography'
 import AddInputButton from './add-input-button'
 import EditSource from './edit-source'
 import EditSendOrCancel from './edit-send-or-cancel'
-
+import { print } from 'graphql'
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import { fireGqlRequest } from '~/utils/utils'
 /**
  *
  * @param {Object} props
@@ -15,6 +17,8 @@ import EditSendOrCancel from './edit-send-or-cancel'
  * @param {string} [props.contactDetails]
  * @param {string} [props.sources]
  * @param {function} props.setShouldShowEditMode
+ * @param {import('~/types/person').Person["id"]} props.personId
+ * @param {import('~/types/person').Person["name"]} props.personName
  * @returns {React.ReactElement}
  */
 export default function EditContentContact({
@@ -23,6 +27,8 @@ export default function EditContentContact({
   contactDetails,
   sources,
   setShouldShowEditMode,
+  personId,
+  personName,
 }) {
   const [emailList, setEmailList] = useState(
     emails ? stringToSources(emails, '\n') : [getNewSource()]
@@ -33,6 +39,48 @@ export default function EditContentContact({
   const [contactList, setContactList] = useState(
     contactDetails ? stringToSources(contactDetails, '\n') : [getNewSource()]
   )
+  const [sourceList, setSourceList] = useState(
+    sources ? stringToSources(sources, '\n') : [getNewSource()]
+  )
+  //client side only
+  //TODO: use type Person in person.ts rather than {Object}
+  /** @param {Object} data */
+  async function createPerson(data) {
+    const cmsApiUrl = `${window.location.origin}/api/data`
+
+    try {
+      const variables = {
+        data: {
+          thread_parent: {
+            connect: { id: personId },
+          },
+          ...data,
+        },
+      }
+      const result = await fireGqlRequest(
+        print(CreatePerson),
+        variables,
+        cmsApiUrl
+      )
+      console.log(result)
+      return true
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
+
+  async function submitHandler() {
+    const isSuccess = await createPerson({
+      name: personName,
+      email: sourcesToString(emailList, '\n'),
+      links: sourcesToString(linkList, '\n'),
+      contact_details: sourcesToString(contactList, '\n'),
+    })
+    if (isSuccess) {
+      setShouldShowEditMode(false)
+    }
+  }
 
   /**
    *
@@ -147,7 +195,7 @@ export default function EditContentContact({
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
-      <EditSource sources={sources} />
+      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => {}}

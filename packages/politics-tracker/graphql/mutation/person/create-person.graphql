@@ -1,4 +1,4 @@
-mutation AddPeopleToThread($data: PersonCreateInput!) {
+mutation CreatePerson($data: PersonCreateInput!) {
   createPerson(data: $data) {
     id
     name
@@ -18,5 +18,9 @@ mutation AddPeopleToThread($data: PersonCreateInput!) {
     contact_details
     links
     source
+    thread_parent {
+      id
+      name
+    }
   }
 }

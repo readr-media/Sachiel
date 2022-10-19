@@ -43,6 +43,7 @@ export default function SectionBodyPersonalFile({
   const [contactEditMode, setContactEditMode] = useState(false)
   const [tagEditMode, setTagEditMode] = useState(false)
   const {
+    id,
     name = '',
     image = '',
     alternative = '',
@@ -195,6 +196,8 @@ export default function SectionBodyPersonalFile({
         setShouldShowEditMode={setBioEditMode}
         editContent={
           <EditContentBiography
+            personId={id}
+            personName={name}
             listData={biography}
             sources={source}
             setShouldShowEditMode={setBioEditMode}
@@ -211,6 +214,8 @@ export default function SectionBodyPersonalFile({
         setShouldShowEditMode={setContactEditMode}
         editContent={
           <EditContentContact
+            personId={id}
+            personName={name}
             emails={email}
             contactDetails={contact_details}
             setShouldShowEditMode={setContactEditMode}
