@@ -4,9 +4,13 @@ import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
 import {
   stringToSources,
+  sourcesToString,
   getNewSource,
   typedHasOwnProperty,
 } from '~/utils/utils'
+import { print } from 'graphql'
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import { fireGqlRequest } from '~/utils/utils'
 
 /** TODO: refactor jsDoc, make it more clear
  * @typedef {Object} EditContentBasic - Basic information of edit field
@@ -126,7 +130,55 @@ export default function EditContentBasic({
     }
   }
 
-  const EDIT_CONTENT_BASIC = [
+  //client side only
+  //TODO: use type Person in person.ts rather than {Object}
+  /** @param {Object} data */
+  async function createPerson(data) {
+    const cmsApiUrl = `${window.location.origin}/api/data`
+
+    try {
+      const variables = {
+        data: {
+          thread_parent: {
+            connect: { id: personData.id },
+          },
+          ...data,
+        },
+      }
+      const result = await fireGqlRequest(
+        print(CreatePerson),
+        variables,
+        cmsApiUrl
+      )
+      console.log(result)
+      return true
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
+
+  async function submitHandler() {
+    const isSuccess = await createPerson({
+      name: personInfo.name,
+      image: personInfo.image,
+      alternative: personInfo.alternative,
+      other_names: personInfo.other_names,
+      birth_date_year: personInfo.birth_date_year,
+      birth_date_month: personInfo.birth_date_month,
+      birth_date_day: personInfo.birth_date_day,
+      death_date_year: personInfo.death_date_year,
+      death_date_month: personInfo.death_date_month,
+      death_date_day: personInfo.death_date_day,
+      gender: personInfo.gender,
+      national_identity: personInfo.national_identity,
+    })
+    if (isSuccess) {
+      setShouldShowEditMode(false)
+    }
+  }
+
+  const editBasicInfo = [
     {
       name: 'name',
       title: '姓名',
@@ -220,7 +272,13 @@ export default function EditContentBasic({
 
   return (
     <Fragment>
-      {EDIT_CONTENT_BASIC.map(
+      <div>
+        {JSON.stringify({
+          name: personInfo.name,
+          image: personInfo.image,
+        })}
+      </div>
+      {editBasicInfo.map(
         ({
           name,
           title,
@@ -250,7 +308,7 @@ export default function EditContentBasic({
       <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
         onClick={() => setShouldShowEditMode(false)}
-        submitHandler={() => {}}
+        submitHandler={() => submitHandler()}
       />
     </Fragment>
   )
