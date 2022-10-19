@@ -1,8 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import EditContentItem from './edit-content-item'
 import SourceInput from '../politics/source-input'
-
+import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
+import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 
 /**
  * @typedef {Object} EditContentBasic - Basic information of edit field
@@ -86,10 +87,14 @@ const EDIT_CONTENT_BASIC = [
 /**
  *
  * @param {Object} props
- * @param {string} props.sources
+ * @param {string} [props.sources]
+ * @param {function} props.setShouldShowEditMode
  * @returns
  */
-export default function EditContentBasic({ sources }) {
+export default function EditContentBasic({ sources, setShouldShowEditMode }) {
+  const [sourceList, setSourceList] = useState(
+    sources ? stringToSources(sources, '\n') : [getNewSource()]
+  )
   return (
     <Fragment>
       {EDIT_CONTENT_BASIC.map(
@@ -114,7 +119,11 @@ export default function EditContentBasic({ sources }) {
           ></EditContentItem>
         )
       )}
-      <EditSource sources={sources}></EditSource>
+      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
+      <EditSendOrCancel
+        onClick={() => setShouldShowEditMode(false)}
+        submitHandler={() => {}}
+      />
     </Fragment>
   )
 }
