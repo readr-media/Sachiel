@@ -411,7 +411,10 @@ export default function Home(props) {
   return (
     <Fragment>
       <GAScript />
-      <LandingPage />
+      <LandingPage
+        // @ts-ignore
+        propsData={props}
+      />
     </Fragment>
   )
 }

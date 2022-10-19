@@ -149,55 +149,54 @@ const ArrowIcon = styled.div``
  * @returns {React.ReactElement}
  */
 
-const information = [
-  {
-    id: '1',
-    title: '縣市長政見',
-    buttonTitle: '補縣市長政見坑',
-    backgroundColor: 'green',
-    buttonColor: 'green',
-  },
-  {
-    id: '2',
-    title: '縣市議員政見',
-    buttonTitle: '補縣市議員政見坑',
-    backgroundColor: 'blue',
-    buttonColor: 'blue',
-  },
-]
-
-export default function StatisticsBoard() {
+// @ts-ignore
+export default function StatisticsBoard({ propsData }) {
   return (
     <BoardContainer>
-      {information.map((e) => {
-        return (
-          <BoardBox key={e.id}>
-            <BoardContent color={e.backgroundColor}>
-              <ContentWrap>
-                <ContentSubtitle color={e.buttonColor}>
-                  {e.title}
-                </ContentSubtitle>
-                <h5>已有政見的候選人數</h5>
-                <CalNum color={e.buttonColor}>
-                  {/* FIXME: props number 待補 */}
-                  <h2>612</h2>
-                </CalNum>
-              </ContentWrap>
-            </BoardContent>
-            <BoardButton color={e.buttonColor}>
-              <h4>{e.buttonTitle}</h4>
-              <ArrowIcon>
-                <Image
-                  alt="arrowRight"
-                  src="/landingpage/arrow_right.svg"
-                  width="48"
-                  height="48"
-                />
-              </ArrowIcon>
-            </BoardButton>
-          </BoardBox>
-        )
-      })}
+      <BoardBox key="mayor">
+        <BoardContent color="green">
+          <ContentWrap>
+            <ContentSubtitle color="green">縣市長政見</ContentSubtitle>
+            <h5>已有政見的候選人數</h5>
+            <CalNum color="green">
+              <h2>{propsData['totalCandidatesOfMayor']}</h2>
+            </CalNum>
+          </ContentWrap>
+        </BoardContent>
+        <BoardButton color="green">
+          <h4>補縣市長政見坑</h4>
+          <ArrowIcon>
+            <Image
+              alt="arrowRight"
+              src="/landingpage/arrow_right.svg"
+              width="48"
+              height="48"
+            />
+          </ArrowIcon>
+        </BoardButton>
+      </BoardBox>
+      <BoardBox key="councilor">
+        <BoardContent color="blue">
+          <ContentWrap>
+            <ContentSubtitle color="blue">縣市議員政見</ContentSubtitle>
+            <h5>已有政見的候選人數</h5>
+            <CalNum color="blue">
+              <h2>{propsData['totalCandidatesOfcouncilor']}</h2>
+            </CalNum>
+          </ContentWrap>
+        </BoardContent>
+        <BoardButton color="blue">
+          <h4>補縣市議員政見坑</h4>
+          <ArrowIcon>
+            <Image
+              alt="arrowRight"
+              src="/landingpage/arrow_right.svg"
+              width="48"
+              height="48"
+            />
+          </ArrowIcon>
+        </BoardButton>
+      </BoardBox>
     </BoardContainer>
   )
 }

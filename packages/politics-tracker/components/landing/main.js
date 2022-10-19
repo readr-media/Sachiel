@@ -26,17 +26,27 @@ const HeaderWrap = styled.div`
  * @property {Object} titleData
  * @returns {React.ReactElement}
  */
-export default function Person() {
+// @ts-ignore : fix in the future
+export default function LandingMain({ propsData }) {
   return (
     <ThemeProvider theme={theme}>
       <HeaderWrap>
         <Header />
       </HeaderWrap>
       <Main>
-        <FrontPage />
+        <FrontPage
+          // @ts-ignore : fix in the future
+          propsData={propsData}
+        />
         <How />
-        <Mayor />
-        <Council />
+        <Mayor
+          // @ts-ignore
+          propsData={propsData}
+        />
+        <Council
+          // @ts-ignore
+          propsData={propsData}
+        />
         <TeamIntro />
       </Main>
       <Footer />
