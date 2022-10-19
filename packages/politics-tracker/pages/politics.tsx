@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps<
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
-                electionArea?.name
+                electionArea?.city
               ),
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
