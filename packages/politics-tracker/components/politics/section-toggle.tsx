@@ -33,6 +33,7 @@ export default function SectionToggle(props: SectionToggleProps): JSX.Element {
               width={20}
               height={20}
               borderWidth={1}
+              unoptimized={true}
             />
             <div className={s['party']}>{props.party}</div>
           </div>
