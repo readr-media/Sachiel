@@ -29,7 +29,7 @@ export { UnorderedList, ListItem }
  */
 export default function ContentList({ listData }) {
   const biographyList = useMemo(
-    () => stringToSources(listData, '\n'),
+    () => (listData ? stringToSources(listData, '\n') : []),
     [listData]
   )
   return (

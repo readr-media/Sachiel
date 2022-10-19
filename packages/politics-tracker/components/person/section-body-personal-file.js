@@ -36,7 +36,7 @@ const TagContainer = styled.div`
  */
 export default function SectionBodyPersonalFile({
   isActive = false,
-  personData = {},
+  personData,
 }) {
   const [basicEditMode, setBasicEditMode] = useState(false)
   const [bioEditMode, setBioEditMode] = useState(false)
@@ -165,6 +165,7 @@ export default function SectionBodyPersonalFile({
         setShouldShowEditMode={setBasicEditMode}
         editContent={
           <EditContentBasic
+            personData={personData}
             sources={source}
             setShouldShowEditMode={setBasicEditMode}
           />

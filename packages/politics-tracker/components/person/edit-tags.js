@@ -22,9 +22,14 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
 export default function EditTags(props) {
   const tags = useMemo(
     () =>
-      props.tags.map((item) => {
-        return Object.assign({}, { id: item.id, value: item.name, error: '' })
-      }),
+      props.tags
+        ? props.tags.map((item) => {
+            return Object.assign(
+              {},
+              { id: item.id, value: item.name, error: '' }
+            )
+          })
+        : [],
     [props.tags]
   )
   const [tagList, setTagList] = useState(tags)
