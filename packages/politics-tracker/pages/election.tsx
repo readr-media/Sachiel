@@ -8,15 +8,20 @@ import type {
   RawPersonElection,
 } from '~/types/common'
 import moment from 'moment'
-// @ts-ignore: no definition
-import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import { fireGqlRequest, electionName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
+// @ts-ignore: no definition
+import errors from '@twreporter/errors'
+// @ts-ignore: no definition
+import EVC from '@readr-media/react-election-votes-comparison'
 import DefaultLayout from '~/components/layout/default'
 import Nav, { type LinkMember } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
+
+const DataLoader = EVC.DataLoader
+const EVCComponent = EVC.ReactComponent
 
 type ElectionPageProps = {
   data: any
@@ -29,7 +34,16 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const { electionId, areaId } = query
 
+  const dataLoader = new DataLoader({
+    apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+    year: '2018',
+    type: 'councilMember',
+    area: 'allDistricts',
+  })
+
   try {
+    const data = await dataLoader.loadData()
+
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
     let election: undefined | RawElection
@@ -133,7 +147,7 @@ export const getServerSideProps: GetServerSideProps<
 
     return {
       props: {
-        data: {},
+        data: data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
       },
@@ -185,10 +199,19 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
+  console.log(props.data)
+
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
-        <Nav {...navProps} />
+        <div className="w-full">
+          <EVCComponent
+            year={2018}
+            title="test"
+            districts={props.data.TaipeiCity.districts}
+          />
+          <Nav {...navProps} />
+        </div>
       </main>
     </DefaultLayout>
   )
