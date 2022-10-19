@@ -22,20 +22,8 @@ export type OGProperties = {
 }
 
 const OpenGraph = ({ properties }: { properties: OGProperties }) => {
-  const {
-    locale,
-    url,
-    site_name,
-    title,
-    type,
-    description,
-    author,
-    section,
-    image,
-    modified_time,
-    published_time,
-    card,
-  } = properties
+  const { locale, url, site_name, title, type, description, image, card } =
+    properties
 
   return (
     <>
@@ -90,8 +78,8 @@ export default function CustomHead(): JSX.Element {
       <OpenGraph properties={siteInformation} />
       <link
         rel="apple-touch-icon"
-        sizes="120x120"
-        href="/favicon-120x120.png"
+        sizes="180x180"
+        href="/apple-touch-icon.png"
       />
       <link
         rel="icon"
@@ -105,11 +93,11 @@ export default function CustomHead(): JSX.Element {
         sizes="16x16"
         href="/favicon-16x16.png"
       />
-      <link rel="shortcut icon" sizes="48x48" href="/favicon-48x48.png" />
-      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#04295e" />
       <link rel="manifest" href="/manifest.json" />
-      <meta name="msapplication-TileColor" content="#da532c" />
-      <meta name="theme-color" content="#ffffff" />
+      <meta name="application-name" content={siteInformation.title} />
+      <meta name="msapplication-TileColor" content="#04295e" />
+      <meta name="theme-color" content="#04295e" />
     </Head>
   )
 }
