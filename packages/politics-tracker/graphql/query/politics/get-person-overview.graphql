@@ -1,5 +1,10 @@
 query GetPersonOverView($personId: ID!) {
-  personElections(where: {person_id: {id: { equals: $personId }}}) {
+  personElections(where: {
+    person_id: {
+      id: { equals: $personId },
+      status: { equals: "verified" }
+    }
+  }) {
     id
     person_id {
       id
