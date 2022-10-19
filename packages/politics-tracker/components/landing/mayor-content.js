@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, Fragment } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,12 +15,21 @@ const DistrictTitle = styled.div`
   &:hover {
     cursor: pointer;
   }
+
+  p {
+    color: ${({ theme }) => theme.backgroundColor.highlightRed};
+  }
+  h5 {
+    color: ${({ theme }) => theme.textColor.black};
+  }
+
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
 
     &:hover {
       cursor: inherit;
     }
+    p,
     h5 {
       width: 10%;
       text-align: center;
@@ -72,6 +81,7 @@ const ListWrapDesk = styled.div`
   max-width: 814px;
   padding: 0px;
   font-size: 18px;
+  flex-wrap: wrap;
   div {
     color: ${({ theme }) => theme.textColor.green};
     display: flex;
@@ -79,6 +89,10 @@ const ListWrapDesk = styled.div`
     justify-content: center;
     padding: 0px 10px;
     border-right: 1px solid rgba(15, 45, 53, 0.3);
+    margin: 5px 0px;
+  }
+  div:hover {
+    cursor: pointer;
   }
 `
 
@@ -139,13 +153,17 @@ const SubtitleButton = styled.button`
 const SubtitleButtonDesk = styled.div`
   color: ${({ theme }) => theme.backgroundColor.white};
   font-weight: 500;
+  max-height: 24px;
   //TODO:
   font-size: 14px;
   padding: 4px 8px;
   min-width: 86px;
   border-radius: 32px;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
+  margin: 5px 10px 0px 0px;
 `
 
 const DistrictContentDesk = styled.div`
@@ -170,25 +188,36 @@ const CouncilWrap = styled.div`
  * @returns {React.ReactElement}
  */
 
-//FIXME: areaPersonData正確用法應該是要{}
-export default function CouncilContent() {
-  //TODO: 這邊放暫時假資料
-  const district = [
-    '第01選舉區',
-    '第02選舉區',
-    '第03選舉區',
-    '第04選舉區',
-    '第05選舉區',
-  ]
+// @ts-ignore
+export default function MayorContent({ propsData, mayorRegion }) {
+  // @ts-ignore
+  function toggle(e) {
+    if (e.currentTarget.nextElementSibling.style.display === 'none') {
+      e.currentTarget.nextElementSibling.style.display = 'block'
+    } else {
+      e.currentTarget.nextElementSibling.style.display = 'none'
+    }
+  }
 
-  // function toggle(e) {
-  //   console.log(e.currentTarget.children[1].style.transform)
-  //   if (e.currentTarget.nextElementSibling.style.display === 'none') {
-  //     e.currentTarget.nextElementSibling.style.display = 'block'
-  //   } else {
-  //     e.currentTarget.nextElementSibling.style.display = 'none'
-  //   }
-  // }
+  const newPropsData = JSON.parse(JSON.stringify(propsData))
+  const rawDatas = newPropsData['mayorAndPolitics'][mayorRegion].areas
+
+  const [sortWay, setSortWay] = useState(true)
+
+  // @ts-ignore
+  const lowToHigh = (datas) => {
+    return [...datas].sort((a, b) => {
+      return b?.done / b?.total - a?.done / a?.total
+    })
+  }
+  // @ts-ignore
+  const HighToLow = (datas) => {
+    return [...datas].sort((a, b) => {
+      return a?.done / a?.total - b?.done / b?.total
+    })
+  }
+
+  const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
 
   return (
     <CouncilWrap>
@@ -203,17 +232,22 @@ export default function CouncilContent() {
             src="/landingpage/arrow_green_down.svg"
             width="20"
             height="20"
+            onClick={() => {
+              setSortWay(!sortWay)
+            }}
           />
         </div>
         <h4>補坑狀況</h4>
       </FilterBar>
-      {district.map((district) => {
+      {sortDatas.map((v, i) => {
         return (
-          <ItemWrap key={district}>
+          <ItemWrap key={v.name}>
+            {/* FIXME: toggle effect*/}
+            {/* <DistrictTitle onClick={toggle}> */}
             <DistrictTitle>
               <Title>
-                <h4>{district}</h4>
-                <TitleImg>
+                <h4>{v.name}</h4>
+                <TitleImg onClick={() => {}}>
                   <Image
                     alt="arrowDownGreen"
                     src="/landingpage/arrow_down_green.svg"
@@ -222,117 +256,139 @@ export default function CouncilContent() {
                   />
                 </TitleImg>
               </Title>
-              <h5>0/4</h5>
+              {/* FIXME: 尚未處理政見all的顏色變化 */}
+              {v.done === 0 ? (
+                <p>
+                  {v.done}/{v.total}
+                </p>
+              ) : (
+                <h5>
+                  {v.done}/{v.total}
+                </h5>
+              )}
 
               <DistrictContentDesk>
-                <DeskList>
-                  <SubtitleButtonDesk color={'highlightRed'}>
-                    還沒有政見
-                  </SubtitleButtonDesk>
-                  <ListWrapDesk>
-                    <div>張家豪</div>
-                    <div>張家豪</div>
-                    <div>張家豪</div>
-                  </ListWrapDesk>
-                </DeskList>
-                <DeskList>
-                  <SubtitleButtonDesk color={'orange'}>
-                    政見還很少
-                  </SubtitleButtonDesk>
-                  <ListWrapDesk>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                  </ListWrapDesk>
-                </DeskList>
-                <DeskList>
-                  <SubtitleButtonDesk color={'green'}>
-                    超過20條政見
-                  </SubtitleButtonDesk>
-                  <ListWrapDesk>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                    <div>
-                      <Link href="#">
-                        <span>張家豪</span>
-                      </Link>
-                    </div>
-                  </ListWrapDesk>
-                </DeskList>
+                {v.candidates
+                  // @ts-ignore
+                  .filter(
+                    // @ts-ignore
+                    (candidate) => candidate.done === 0
+                  ).length !== 0 ? (
+                  <DeskList>
+                    <SubtitleButtonDesk color={'orange'}>
+                      還沒有政見
+                    </SubtitleButtonDesk>
+                    <ListWrapDesk>
+                      {v.candidates
+                        .filter(
+                          // @ts-ignore
+                          (candidate) => candidate.done === 0
+                        )
+                        // @ts-ignore
+                        .map((value) => {
+                          return (
+                            <Link
+                              href={{
+                                pathname: `politics/[personId]`,
+                              }}
+                              as={`/politics/${value.id}`}
+                              key={value.name}
+                            >
+                              <div>{value.name}</div>
+                            </Link>
+                          )
+                        })}
+                    </ListWrapDesk>
+                  </DeskList>
+                ) : (
+                  <Fragment></Fragment>
+                )}
+                {v.candidates
+                  // @ts-ignore
+                  .filter(
+                    // @ts-ignore
+                    (candidate) => candidate.done < 20 && candidate.done > 0
+                  ).length !== 0 ? (
+                  <DeskList>
+                    <SubtitleButtonDesk color={'orange'}>
+                      政見還很少
+                    </SubtitleButtonDesk>
+                    <ListWrapDesk>
+                      {v.candidates
+                        .filter(
+                          // @ts-ignore
+                          (candidate) =>
+                            candidate.done < 20 && candidate.done > 0
+                        )
+                        // @ts-ignore
+                        .map((value) => {
+                          return (
+                            <Link
+                              href={{
+                                pathname: `politics/[personId]`,
+                              }}
+                              as={`/politics/${value.id}`}
+                              key={value.name}
+                            >
+                              <div>{value.name}</div>
+                            </Link>
+                          )
+                        })}
+                    </ListWrapDesk>
+                  </DeskList>
+                ) : (
+                  <Fragment></Fragment>
+                )}
+                {v.candidates
+                  // @ts-ignore
+                  .filter(
+                    // @ts-ignore
+                    (candidate) => candidate.done > 20
+                  ).length !== 0 ? (
+                  <DeskList>
+                    <SubtitleButtonDesk color={'orange'}>
+                      超過20條政見
+                    </SubtitleButtonDesk>
+                    <ListWrapDesk>
+                      {v.candidates
+                        .filter(
+                          // @ts-ignore
+                          (candidate) => candidate.done > 20
+                        )
+                        // @ts-ignore
+                        .map((value) => {
+                          return (
+                            <Link
+                              href={{
+                                pathname: `politics/[personId]`,
+                              }}
+                              as={`/politics/${value.id}`}
+                              key={value.name}
+                            >
+                              <div>{value.name}</div>
+                            </Link>
+                          )
+                        })}
+                    </ListWrapDesk>
+                  </DeskList>
+                ) : (
+                  <Fragment></Fragment>
+                )}
               </DistrictContentDesk>
             </DistrictTitle>
-            <DistrictContent style={{ display: 'none' }}>
+
+            {/* <DistrictContent style={{ display: 'none' }}>
               <SubtitleButton>還沒有政見</SubtitleButton>
               <ListWrap>
                 <div>
                   <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
                     <span>蔡依靜 Lamen. Panay</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>何進雄 Kin Cian.Ri Pun</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
                   </Link>
                 </div>
               </ListWrap>
 
               <SubtitleButton>政見還很少</SubtitleButton>
               <ListWrap>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
                 <div>
                   <Link href="#">
                     <span>張家豪</span>
@@ -347,23 +403,8 @@ export default function CouncilContent() {
                     <span>張家豪</span>
                   </Link>
                 </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
               </ListWrap>
-            </DistrictContent>
+            </DistrictContent> */}
           </ItemWrap>
         )
       })}
