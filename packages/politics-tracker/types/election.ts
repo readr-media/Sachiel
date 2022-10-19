@@ -1,8 +1,6 @@
-export type ElectionLink = {
-  electionId: string
-  electionAreaId: string
-  name: string
-  year: number
-  month: number
-  day: number
-}
+import type { PersonElection } from './politics'
+
+export type ElectionLink = Pick<
+  PersonElection,
+  'electionArea' | 'electionType' | 'name' | 'year' | 'month' | 'day'
+>

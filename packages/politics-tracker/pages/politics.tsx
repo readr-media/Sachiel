@@ -110,8 +110,8 @@ export const getServerSideProps: GetServerSideProps<
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
-              electionId: eId,
-              electionAreaId: String(electionArea?.id),
+              electionType: String(election.type),
+              electionArea: String(electionArea?.city),
               id: String(current.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
@@ -324,8 +324,9 @@ const Politics = (props: PoliticsPageProps) => {
       href: {
         pathname: '/election',
         query: {
-          electionId: props.latestElection.electionId,
-          areaId: props.latestElection.electionAreaId,
+          year: props.latestElection.year,
+          area: props.latestElection.electionArea,
+          type: props.latestElection.electionType,
         },
       },
     },

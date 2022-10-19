@@ -2,12 +2,10 @@ import type { GetServerSideProps } from 'next'
 import type { ElectionLink } from '~/types/election'
 import type {
   GenericGQLData,
-  RawElectionArea,
   withKeyObject,
   RawElection,
   RawPersonElection,
 } from '~/types/common'
-import moment from 'moment'
 import { print } from 'graphql'
 import { fireGqlRequest, electionName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
@@ -24,7 +22,7 @@ const DataLoader = EVC.DataLoader
 const EVCComponent = EVC.ReactComponent
 
 type ElectionPageProps = {
-  data: any
+  data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
 }
@@ -32,29 +30,31 @@ type ElectionPageProps = {
 export const getServerSideProps: GetServerSideProps<
   ElectionPageProps
 > = async ({ query }) => {
-  const { electionId, areaId } = query
+  const { year, area, type } = query
+  const yearNumber = Number(year)
+  const areaStr = String(area)
 
   const dataLoader = new DataLoader({
     apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
-    year: '2018',
-    type: 'councilMember',
-    area: 'allDistricts',
+    year,
+    type,
+    area,
   })
 
   try {
-    const data = await dataLoader.loadData()
+    // const data = await dataLoader.loadData()
 
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
     let election: undefined | RawElection
-    let area: undefined | RawElectionArea
     {
       // get election data
-      const rawData: GenericGQLData<RawElection, 'election'> =
+      const rawData: GenericGQLData<RawElection[], 'elections'> =
         await fireGqlRequest(
           print(GetElection),
           {
-            electionId,
+            year: yearNumber,
+            type,
           },
           cmsApiUrl
         )
@@ -72,7 +72,7 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      election = rawData.data?.election
+      election = rawData.data?.elections?.[0]
       if (!election) {
         return {
           notFound: true,
@@ -80,7 +80,6 @@ export const getServerSideProps: GetServerSideProps<
       }
     }
 
-    const type = election.type
     {
       // use personElection to get election list
       const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
@@ -88,7 +87,7 @@ export const getServerSideProps: GetServerSideProps<
           print(GetElectionHistoryOfArea),
           {
             type,
-            areaId,
+            area: areaStr,
           },
           cmsApiUrl
         )
@@ -106,22 +105,27 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      rawData.data?.personElections.map((pe: RawPersonElection) => {
-        area = pe.electoral_district
-        const e = pe.election as RawElection
-        const eId = e.id as string
-        electionMap[eId] = e
-        return pe
-      })
+      // since virtual field (`city`) could not be used in where clause of query,
+      // we need to filter data ourself.
+      rawData.data?.personElections
+        .filter((pe: RawPersonElection) => {
+          return pe.electoral_district?.city === areaStr
+        })
+        .map((pe: RawPersonElection) => {
+          const e = pe.election as RawElection
+          const eId = e.id as string
+          electionMap[eId] = e
+          return pe
+        })
 
       Object.values(electionMap).map((e: RawElection) => {
         elections.push({
-          electionId: String(e.id),
-          electionAreaId: String(areaId),
+          electionType: String(type),
+          electionArea: areaStr,
           name: electionName<string | number | undefined>(
             e.election_year_year,
             e.name,
-            area?.name
+            areaStr
           ),
           year: Number(e.election_year_year),
           month: Number(e.election_year_month),
@@ -130,24 +134,14 @@ export const getServerSideProps: GetServerSideProps<
       })
 
       elections.sort((prev, current) => {
-        const prevTime = moment()
-          .year(Number(prev.year))
-          .month(Number(prev.month) - 1)
-          .date(Number(prev.day))
-          .unix()
-        const currentTime = moment()
-          .year(Number(current.year))
-          .month(Number(current.month) - 1)
-          .date(Number(current.day))
-          .unix()
-        return prevTime - currentTime
+        return prev.year - current.year
       })
     }
-    const index = elections.findIndex((e) => e.electionId === electionId)
+    const index = elections.findIndex((e) => e.year === yearNumber)
 
     return {
       props: {
-        data: data,
+        data: {},
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
       },
@@ -185,8 +179,9 @@ function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
         href: {
           pathname: '/election',
           query: {
-            electionId: item.electionId,
-            areaId: item.electionAreaId,
+            year: item.year,
+            area: item.electionArea,
+            type: item.electionType,
           },
         },
       }
@@ -199,17 +194,15 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
-  console.log(props.data)
-
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
-          <EVCComponent
+          {/* <EVCComponent
             year={2018}
             title="test"
             districts={props.data.TaipeiCity.districts}
-          />
+          /> */}
           <Nav {...navProps} />
         </div>
       </main>
