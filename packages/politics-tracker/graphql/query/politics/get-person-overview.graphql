@@ -1,5 +1,5 @@
-query GetPersonOverView($name: String!, $year: Int!) {
-  personElections(where: {person_id: {name: { equals: $name }, birth_date_year: { equals: $year}}}) {
+query GetPersonOverView($personId: ID!) {
+  personElections(where: {person_id: {id: { equals: $personId }}}) {
     id
     person_id {
       id
@@ -22,6 +22,7 @@ query GetPersonOverView($name: String!, $year: Int!) {
     electoral_district {
       id
       name
+      city
     }
   }
 }
