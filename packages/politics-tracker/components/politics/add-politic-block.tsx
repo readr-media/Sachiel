@@ -1,4 +1,7 @@
-import AddPoliticForm from './add-politic-form'
+import dynamic from 'next/dynamic'
+const AddPoliticForm = dynamic(() => import('./add-politic-form'), {
+  ssr: false,
+})
 import Button from './button'
 import Plus from '~/components/icons/plus'
 import { useState } from 'react'
