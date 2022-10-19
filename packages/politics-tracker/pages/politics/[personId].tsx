@@ -45,7 +45,7 @@ type PoliticsPageProps = {
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
 > = async ({ query }) => {
-  const { name, year } = query
+  const { personId } = query
 
   try {
     const profile: PersonOverview = {
@@ -70,8 +70,7 @@ export const getServerSideProps: GetServerSideProps<
         await fireGqlRequest(
           print(GetPersonOverView),
           {
-            name: name,
-            year: Number(year),
+            personId,
           },
           cmsApiUrl
         )
