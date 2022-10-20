@@ -88,8 +88,8 @@ export const getServerSideProps = async ({ res }) => {
    * @type {PropsData}
    */
   const propsData = {
-    totalCandidatesOfMayor: 0,
-    totalCandidatesOfcouncilor: 0,
+    totalCompletionOfMayor: 0,
+    totalCompletionOfCouncilor: 0,
     mayorAndPolitics: [],
     councilorAndPolitics: [],
   }
@@ -343,8 +343,8 @@ export const getServerSideProps = async ({ res }) => {
     })
 
     propsData.mayorAndPolitics.push(...sortedDistrictData)
-    propsData.totalCandidatesOfMayor = sortedDistrictData.reduce(
-      (sum, current) => sum + current.total,
+    propsData.totalCompletionOfMayor = sortedDistrictData.reduce(
+      (sum, current) => sum + current.amount,
       0
     )
 
@@ -367,11 +367,11 @@ export const getServerSideProps = async ({ res }) => {
       cityData[city].total += area.total
     }
 
-    propsData.totalCandidatesOfcouncilor = Object.values(cityData).reduce(
+    propsData.totalCompletionOfCouncilor = Object.values(cityData).reduce(
       (sum, city) => {
         city.areas.sort(sortCouncilorAreas)
 
-        return sum + city.total
+        return sum + city.amount
       },
       0
     )
