@@ -1,10 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import MayorList from '~/components/landing/mayor-content'
 
 const CouncilContainer = styled.div`
   width: 100%;
   display: flex;
+  position: relative;
+
+  #mayor {
+    position: absolute;
+    top: -64px;
+    visibility: hidden;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    #mayor {
+      top: -80px;
+    }
+  }
 `
 const CouncilContentWrap = styled.div`
   width: 100%;
@@ -82,7 +94,7 @@ const ButtonGroup = styled.div`
   align-items: center;
   justify-content: center;
   margin: auto;
-  padding: 20px 15px;
+  padding: 0px 15px;
   ${({ theme }) => theme.breakpoint.md} {
     padding: 20px 10px;
   }
@@ -114,7 +126,6 @@ const ButtonGroup = styled.div`
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 18px;
       padding: 8px 12px;
-      /* margin-bottom: 20px; */
     }
   }
   li {
@@ -123,7 +134,7 @@ const ButtonGroup = styled.div`
       margin: 20px 5px;
     }
     ${({ theme }) => theme.breakpoint.xl} {
-      margin: 20px 3px;
+      margin: 20px 5px;
     }
   }
 
@@ -134,6 +145,14 @@ const ButtonGroup = styled.div`
   }
 
   ul li a.active {
+    cursor: pointer;
+    color: ${({ theme }) => theme.textColor.white};
+    background: ${({ theme }) => theme.textColor.green};
+    box-shadow: 0px 2px 20px rgba(131, 121, 248, 0.1),
+      0px 2px 4px rgba(131, 121, 248, 0.5);
+  }
+
+  #press {
     cursor: pointer;
     color: ${({ theme }) => theme.textColor.white};
     background: ${({ theme }) => theme.textColor.green};
@@ -169,31 +188,51 @@ const Content = styled.div`
 
 // @ts-ignore
 export default function MayorMain({ propsData }) {
-  // console.log(propsData)
+  //直接先生一筆lowtohigh的資料群再去map
+  const newPropsData = JSON.parse(JSON.stringify(propsData))
+  const rawDatas = newPropsData['mayorAndPolitics']
+
+  // @ts-ignore
+  const lowToHigh = (datas) => {
+    return [...datas].sort((a, b) => {
+      return a?.amount / a?.total - b?.amount / b?.total
+    })
+  }
+  //跑縣市的資料已經經過complete percent排序
+  const dataOrderByCompletePercent = lowToHigh(rawDatas)
+
   /**
    *
    * @param {Object[]} cityItems
    */
-
   const initState = (cityItems) => {
     const menuItems = []
     for (let i = 0; i < cityItems.length; i++) {
       menuItems.push({
         id: i + 1,
-        name: cityItems[i],
+        infor: cityItems[i],
         active: false,
+        // @ts-ignore
+        name: cityItems[i].name,
+        // @ts-ignore
+        total: cityItems[i].total,
+        // @ts-ignore
+        amount: cityItems[i].amount,
       })
     }
     return menuItems
   }
 
-  const defaultMayorPolitics = initState(propsData['mayorAndPolitics'])
+  const defaultMenuItems = initState(dataOrderByCompletePercent)
   // 一開始沒有被按的項目, active全為false
-  const [menuItems, setmenuItems] = useState(defaultMayorPolitics)
-  const [mayorRegion, setMayorReion] = useState(0)
+  const firstRender = [...defaultMenuItems]
+  firstRender[0].active = true
+  const [menuItems, setMenuItems] = useState(firstRender)
+  const [mayorRegion, setMayorRegion] = useState(0)
 
   return (
-    <CouncilContainer id="councilTitle">
+    <CouncilContainer>
+      <span id="mayor"></span>
       <CouncilContentWrap>
         <TitleWrap>
           <SideBar>
@@ -208,7 +247,7 @@ export default function MayorMain({ propsData }) {
               <ButtonGroup>
                 {/* onclick後再觸發一次fetch */}
                 <ul>
-                  {propsData['mayorAndPolitics'].map(
+                  {menuItems.map(
                     (
                       // @ts-ignore
                       v,
@@ -219,23 +258,34 @@ export default function MayorMain({ propsData }) {
                         <li
                           key={i}
                           onClick={() => {
-                            const newMayorAndPolitics =
-                              defaultMayorPolitics.map((v, index) => {
-                                if (i === index) return { ...v, active: true }
+                            firstRender[0].active = false
+                            const newMenuItems = firstRender.map((v, index) => {
+                              if (i === 0) {
+                                v = { ...v, active: false }
+                              }
+                              if (i === index) return { ...v, active: true }
+                              return v
+                            })
 
-                                return v
-                              })
-
-                            setmenuItems(newMayorAndPolitics)
-                            setMayorReion(i)
+                            setMenuItems(newMenuItems)
+                            setMayorRegion(i)
                           }}
                         >
-                          <a href="#/" className={v.active ? 'active' : ''}>
-                            {v.name}{' '}
-                            <span>
-                              ( {v.amount} / {v.total} )
-                            </span>
-                          </a>
+                          {v.active ? (
+                            <a href="#/" id="press">
+                              {v.name}
+                              <span>
+                                ( {v.amount} / {v.total} )
+                              </span>
+                            </a>
+                          ) : (
+                            <a href="#/" id="nopress">
+                              {v.name}
+                              <span>
+                                ( {v.amount} / {v.total} )
+                              </span>
+                            </a>
+                          )}
                         </li>
                       )
                     }
@@ -243,7 +293,10 @@ export default function MayorMain({ propsData }) {
                 </ul>
               </ButtonGroup>
             </ButtonWrap>
-            <MayorList mayorRegion={mayorRegion} propsData={propsData} />
+            <MayorList
+              mayorRegion={mayorRegion}
+              dataOrderByCompletePercent={dataOrderByCompletePercent}
+            />
           </Content>
         </CouncilContent>
       </CouncilContentWrap>
