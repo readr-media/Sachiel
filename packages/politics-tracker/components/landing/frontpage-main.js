@@ -44,10 +44,7 @@ export default function FrontPage({ propsData }) {
         的格式將散佈在網路上關於公眾人物的公開資料串連起來，
         包括公眾人物的學歷、經歷、資產、政治獻金、學術論文、報告、親戚關係。
       </Introduce>
-      <Statistics
-        // @ts-ignore
-        propsData={propsData}
-      />
+      <Statistics propsData={propsData} />
     </FrontPageContainer>
   )
 }
