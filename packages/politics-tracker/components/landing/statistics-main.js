@@ -162,7 +162,7 @@ export default function StatisticsBoard({ propsData }) {
             <CalNum color="green">
               <h2>
                 <CountUp
-                  end={propsData['totalCandidatesOfMayor']}
+                  end={propsData['totalCompletionOfMayor']}
                   duration={3}
                   decimal=","
                 />
@@ -192,7 +192,7 @@ export default function StatisticsBoard({ propsData }) {
             <CalNum color="blue">
               <h2>
                 <CountUp
-                  end={propsData['totalCandidatesOfcouncilor']}
+                  end={propsData['totalCompletionOfCouncilor']}
                   separator=","
                   duration={3}
                 />

@@ -56,13 +56,15 @@ export default function People({ personData, personElectionsData }) {
   )
 }
 
-/**
- * @async
- * @param {import("next").GetServerSidePropsContext} context
- * @returns {Promise<Object>}
- */
-export async function getServerSideProps(context) {
-  const id = context?.query?.id
+/** @type { import('next').GetServerSideProps } */
+export async function getServerSideProps({ query, res }) {
+  // cache policy
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=600, stale-while-revalidate=60'
+  )
+
+  const id = query.id
   try {
     const {
       data: { people },

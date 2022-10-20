@@ -51,8 +51,8 @@ export type DistrinctOfMayorElection = {
 }
 
 export type PropsData = {
-  totalCandidatesOfMayor: number
-  totalCandidatesOfcouncilor: number
+  totalCompletionOfMayor: number
+  totalCompletionOfCouncilor: number
   mayorAndPolitics: DistrinctOfMayorElection[]
   councilorAndPolitics: CityOfCouncilorElection[]
 }

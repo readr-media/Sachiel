@@ -22,7 +22,14 @@ import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-poli
  * @typedef { import('~/types/landing').withKeyCityOfCouncilorElection } CityOfCouncilorElection
  */
 
-export const getServerSideProps = async () => {
+/** @type { import('next').GetServerSideProps } */
+export const getServerSideProps = async ({ res }) => {
+  // cache policy
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=300, stale-while-revalidate=60'
+  )
+
   const NORTH = 'north'
   const CENTER = 'center'
   const SOUTH = 'south'
@@ -81,8 +88,8 @@ export const getServerSideProps = async () => {
    * @type {PropsData}
    */
   const propsData = {
-    totalCandidatesOfMayor: 0,
-    totalCandidatesOfcouncilor: 0,
+    totalCompletionOfMayor: 0,
+    totalCompletionOfCouncilor: 0,
     mayorAndPolitics: [],
     councilorAndPolitics: [],
   }
@@ -336,8 +343,8 @@ export const getServerSideProps = async () => {
     })
 
     propsData.mayorAndPolitics.push(...sortedDistrictData)
-    propsData.totalCandidatesOfMayor = sortedDistrictData.reduce(
-      (sum, current) => sum + current.total,
+    propsData.totalCompletionOfMayor = sortedDistrictData.reduce(
+      (sum, current) => sum + current.amount,
       0
     )
 
@@ -360,11 +367,11 @@ export const getServerSideProps = async () => {
       cityData[city].total += area.total
     }
 
-    propsData.totalCandidatesOfcouncilor = Object.values(cityData).reduce(
+    propsData.totalCompletionOfCouncilor = Object.values(cityData).reduce(
       (sum, city) => {
         city.areas.sort(sortCouncilorAreas)
 
-        return sum + city.total
+        return sum + city.amount
       },
       0
     )
