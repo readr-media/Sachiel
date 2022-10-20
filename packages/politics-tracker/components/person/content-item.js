@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { stringToSources, getNewSource } from '~/utils/utils'
-
 const ContentItemContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,7 +40,15 @@ const ContentItemContent = styled.div`
     margin-bottom: 8px;
   }
 `
-export { ContentItemContainer, ContentItemTitle, ContentItemContent }
+const ContentItemEmpty = styled(ContentItemContent)`
+  color: ${({ theme }) => theme.textColor.black30};
+`
+export {
+  ContentItemContainer,
+  ContentItemTitle,
+  ContentItemContent,
+  ContentItemEmpty,
+}
 /**
  * @param {Object} props
  * @param {String} [props.title]
@@ -51,19 +58,26 @@ export { ContentItemContainer, ContentItemTitle, ContentItemContent }
  */
 export default function ContentItem({ title = '', content, children }) {
   const contentList = useMemo(
-    () => (content ? stringToSources(content, '\n') : []),
+    () =>
+      content
+        ? stringToSources(content, '\n').filter((item) => item.value)
+        : [],
     [content]
   )
   return (
     <ContentItemContainer>
       <ContentItemTitle>{title}</ContentItemTitle>
       <div>
-        {contentList?.map((item) => (
-          <ContentItemContent key={item.id}>
-            {children}
-            {item.value}
-          </ContentItemContent>
-        ))}
+        {contentList && contentList.length !== 0 ? (
+          contentList?.map((item) => (
+            <ContentItemContent key={item.id}>
+              {children}
+              {item.value}
+            </ContentItemContent>
+          ))
+        ) : (
+          <ContentItemEmpty>尚未新增</ContentItemEmpty>
+        )}
       </div>
     </ContentItemContainer>
   )
