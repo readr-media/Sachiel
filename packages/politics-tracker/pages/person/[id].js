@@ -11,8 +11,6 @@ import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
-import CustomHead from '~/components/custom-head'
-import GAScript from '~/components/ga-script'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 const Main = styled.main`

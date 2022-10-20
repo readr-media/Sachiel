@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { siteUrl } from '~/constants/config'
 
 export type OGProperties = {
@@ -72,20 +71,10 @@ export default function CustomHead(): JSX.Element {
   }
 
   return (
-    <Head>
+    <>
       <title>{siteInformation.title}</title>
       <meta name="description" content={siteInformation.description} />
       <OpenGraph properties={siteInformation} />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
-        rel="stylesheet"
-      />
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -108,6 +97,6 @@ export default function CustomHead(): JSX.Element {
       <meta name="application-name" content={siteInformation.title} />
       <meta name="msapplication-TileColor" content="#04295e" />
       <meta name="theme-color" content="#04295e" />
-    </Head>
+    </>
   )
 }
