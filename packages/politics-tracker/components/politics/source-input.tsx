@@ -9,7 +9,11 @@ type SourceInputProps = {
   showError: boolean
   removable: boolean
   placeholder?: string
+  // this is type definition
+  // eslint-disable-next-line
   onChange: (id: string, value: string) => void
+  // this is type definition
+  // eslint-disable-next-line
   onDelete: (id: string) => void
 }
 
