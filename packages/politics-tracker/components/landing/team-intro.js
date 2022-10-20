@@ -8,7 +8,8 @@ const TeamIntroContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 40px 0px;
-  background: ${({ theme }) => theme.backgroundColor.landingYellow};
+  background: ${({ theme }) => theme.backgroundColor.black};
+  color: ${({ theme }) => theme.backgroundColor.white};
   box-shadow: inset 0px -4px 0px #000000;
 `
 
@@ -18,21 +19,34 @@ const TeamIntroWrap = styled.div`
   text-align: center;
   h4 {
     ${({ theme }) => theme.fontSize['title-sub-md']};
-    color: ${({ theme }) => theme.textColor.black};
     font-weight: 700;
     margin-bottom: 10px;
+    margin: 0 12px 10px 12px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    max-width: 978px;
-  }
-  h4 {
-    margin: 0 12px 10px 12px;
+    max-width: 850px;
+    h4 {
+      font-size: 18px;
+    }
   }
 `
+const TeamSubtitle = styled.div`
+  width: 100%;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  ${({ theme }) => theme.breakpoint.xl} {
+    font-size: 28px;
+  }
+`
+const TeamWrap = styled.div``
 /**
  *
  * @returns {React.ReactElement}
@@ -42,17 +56,17 @@ const TeamIntroWrap = styled.div`
 export default function TeamIntro() {
   return (
     <TeamIntroContainer>
-      <TeamIntroWrap>
-        <h4>監製：簡信昌</h4>
-        <h4>製作人：李又如、王薏晴</h4>
-        <h4>記者：李又如</h4>
-        <h4>設計：吳曼努</h4>
-        <h4>工程：李法賢、李文瀚、蘇廷葳</h4>
-        <h4>社群：徐湘芸</h4>
-        <h4>設計：吳曼努</h4>
-        <h4>工程：李法賢、李文瀚、蘇廷葳</h4>
-        <h4>其他：還有好多人</h4>
-      </TeamIntroWrap>
+      <TeamWrap>
+        <TeamSubtitle>製作團隊</TeamSubtitle>
+        <TeamIntroWrap>
+          <h4>監製：簡信昌</h4>
+          <h4>製作人：李又如、王薏晴</h4>
+          <h4>記者：李又如</h4>
+          <h4>設計：吳曼努</h4>
+          <h4>工程：李法賢、李文瀚、蘇廷葳</h4>
+          <h4>社群：徐湘芸</h4>
+        </TeamIntroWrap>
+      </TeamWrap>
     </TeamIntroContainer>
   )
 }
