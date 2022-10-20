@@ -27,7 +27,6 @@ const Button = styled.div`
     line-height: 1.5;
   }
 
-  //FIXME: hover顏色效果不太明顯
   &:hover,
   &:active {
     background: ${({ theme }) => theme.backgroundColor.skinColor};
@@ -42,24 +41,28 @@ const Button = styled.div`
 export default function TitleButton() {
   return (
     <ButtonContainer>
-      <Button>
-        <Image
-          alt="frontpageButton"
-          src="/landingpage/button_arrow.svg"
-          width="20"
-          height="20"
-        />
-        <h5>縣市長</h5>
-      </Button>
-      <Button>
-        <Image
-          alt="frontpageButton"
-          src="/landingpage/button_arrow.svg"
-          width="20"
-          height="20"
-        />
-        <h5>縣市議員</h5>
-      </Button>
+      <a href="#mayor">
+        <Button>
+          <Image
+            alt="frontpageButton"
+            src="/landingpage/button_arrow.svg"
+            width="20"
+            height="20"
+          />
+          <h5>縣市長</h5>
+        </Button>
+      </a>
+      <a href="#councilorBlock">
+        <Button>
+          <Image
+            alt="frontpageButton"
+            src="/landingpage/button_arrow.svg"
+            width="20"
+            height="20"
+          />
+          <h5>縣市議員</h5>
+        </Button>
+      </a>
     </ButtonContainer>
   )
 }
