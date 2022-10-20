@@ -114,13 +114,13 @@ const ListWrapDesk = styled.div`
 
 const ItemWrap = styled.div`
   width: 100%;
-  background: ${({ theme }) => theme.backgroundColor.greenLake};
+  background: ${({ theme }) => theme.backgroundColor.landingGreen};
   box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.1);
 `
 const FilterBar = styled.div`
   width: 100%;
   box-shadow: inset 0px -2px 0px #000000;
-  background: ${({ theme }) => theme.backgroundColor.greenLake};
+  background: ${({ theme }) => theme.backgroundColor.landingGreen};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -217,6 +217,15 @@ const SubtitleWrap = styled.div`
     padding-top: 5px;
   }
 `
+
+const ItemGroup = styled.div`
+  > div:nth-child(odd) {
+    background: ${({ theme }) => theme.backgroundColor.landingGreen};
+  }
+  > div:nth-child(even) {
+    background: ${({ theme }) => theme.backgroundColor.greenLake};
+  }
+`
 /**
  *
  * @returns {React.ReactElement}
@@ -294,150 +303,158 @@ export default function MayorContent({
         </div>
         <h4>補坑狀況</h4>
       </FilterBar>
-      {sortDatas.map((v, i) => {
-        return (
-          <ItemWrap key={v.name}>
-            <DistrictInforBox>
-              <SubtitleWrap onClick={toggle}>
-                <Title>
-                  <h4>{v.name}</h4>
-                  <TitleImg onClick={() => {}}>
-                    <Image
-                      alt="arrowDownGreen"
-                      src="/landingpage/arrow_down_green.svg"
-                      width="20"
-                      height="20"
-                    />
-                  </TitleImg>
-                </Title>
+      <ItemGroup>
+        {sortDatas.map((v, i) => {
+          return (
+            <ItemWrap key={v.name}>
+              <DistrictInforBox>
+                <SubtitleWrap onClick={toggle}>
+                  <Title>
+                    <h4>{v.name}</h4>
+                    <TitleImg onClick={() => {}}>
+                      <Image
+                        alt="arrowDownGreen"
+                        src="/landingpage/arrow_down_green.svg"
+                        width="20"
+                        height="20"
+                      />
+                    </TitleImg>
+                  </Title>
 
-                {v.done === 0 ? (
-                  <p>
-                    {v.done}/{v.total}
-                  </p>
-                ) : v.done === v.total ? (
-                  <h3>
-                    {v.done}/{v.total}
-                  </h3>
-                ) : (
-                  <h5>
-                    {v.done}/{v.total}
-                  </h5>
-                )}
-              </SubtitleWrap>
+                  {v.done === 0 ? (
+                    <p>
+                      {v.done}/{v.total}
+                    </p>
+                  ) : v.done === v.total ? (
+                    <h3>
+                      {v.done}/{v.total}
+                    </h3>
+                  ) : (
+                    <h5>
+                      {v.done}/{v.total}
+                    </h5>
+                  )}
+                </SubtitleWrap>
 
-              <DistrictContentDesk style={{ display: 'none' }}>
-                {v.candidates
-                  // @ts-ignore
-                  .filter(
+                <DistrictContentDesk style={{ display: 'none' }}>
+                  {v.candidates
                     // @ts-ignore
-                    (candidate) => candidate.done === 0
-                  ).length !== 0 ? (
-                  <DeskList>
-                    <SubtitleButtonDesk style={{ backgroundColor: '#DB4C65' }}>
-                      還沒有政見
-                    </SubtitleButtonDesk>
-                    <ListWrapDesk>
-                      {v.candidates
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done === 0
-                        )
-                        // @ts-ignore
-                        .map((value) => {
-                          return (
-                            <Link
-                              href={{
-                                pathname: `politics/[personId]`,
-                              }}
-                              as={`/politics/${value.id}`}
-                              key={value.name}
-                            >
-                              <div>{value.name}</div>
-                            </Link>
+                    .filter(
+                      // @ts-ignore
+                      (candidate) => candidate.done === 0
+                    ).length !== 0 ? (
+                    <DeskList>
+                      <SubtitleButtonDesk
+                        style={{ backgroundColor: '#DB4C65' }}
+                      >
+                        還沒有政見
+                      </SubtitleButtonDesk>
+                      <ListWrapDesk>
+                        {v.candidates
+                          .filter(
+                            // @ts-ignore
+                            (candidate) => candidate.done === 0
                           )
-                        })}
-                    </ListWrapDesk>
-                  </DeskList>
-                ) : (
-                  <Fragment></Fragment>
-                )}
-                {v.candidates
-                  // @ts-ignore
-                  .filter(
+                          // @ts-ignore
+                          .map((value) => {
+                            return (
+                              <Link
+                                href={{
+                                  pathname: `politics/[personId]`,
+                                }}
+                                as={`/politics/${value.id}`}
+                                key={value.name}
+                              >
+                                <div>{value.name}</div>
+                              </Link>
+                            )
+                          })}
+                      </ListWrapDesk>
+                    </DeskList>
+                  ) : (
+                    <Fragment></Fragment>
+                  )}
+                  {v.candidates
                     // @ts-ignore
-                    (candidate) => candidate.done < 20 && candidate.done > 0
-                  ).length !== 0 ? (
-                  <DeskList>
-                    <SubtitleButtonDesk style={{ backgroundColor: '#F58439' }}>
-                      政見還很少
-                    </SubtitleButtonDesk>
-                    <ListWrapDesk>
-                      {v.candidates
-                        .filter(
-                          // @ts-ignore
-                          (candidate) =>
-                            candidate.done < 20 && candidate.done > 0
-                        )
-                        // @ts-ignore
-                        .map((value) => {
-                          return (
-                            <Link
-                              href={{
-                                pathname: `politics/[personId]`,
-                              }}
-                              as={`/politics/${value.id}`}
-                              key={value.name}
-                            >
-                              <div>{value.name}</div>
-                            </Link>
+                    .filter(
+                      // @ts-ignore
+                      (candidate) => candidate.done < 20 && candidate.done > 0
+                    ).length !== 0 ? (
+                    <DeskList>
+                      <SubtitleButtonDesk
+                        style={{ backgroundColor: '#F58439' }}
+                      >
+                        政見還很少
+                      </SubtitleButtonDesk>
+                      <ListWrapDesk>
+                        {v.candidates
+                          .filter(
+                            // @ts-ignore
+                            (candidate) =>
+                              candidate.done < 20 && candidate.done > 0
                           )
-                        })}
-                    </ListWrapDesk>
-                  </DeskList>
-                ) : (
-                  <Fragment></Fragment>
-                )}
-                {v.candidates
-                  // @ts-ignore
-                  .filter(
+                          // @ts-ignore
+                          .map((value) => {
+                            return (
+                              <Link
+                                href={{
+                                  pathname: `politics/[personId]`,
+                                }}
+                                as={`/politics/${value.id}`}
+                                key={value.name}
+                              >
+                                <div>{value.name}</div>
+                              </Link>
+                            )
+                          })}
+                      </ListWrapDesk>
+                    </DeskList>
+                  ) : (
+                    <Fragment></Fragment>
+                  )}
+                  {v.candidates
                     // @ts-ignore
-                    (candidate) => candidate.done > 20
-                  ).length !== 0 ? (
-                  <DeskList>
-                    <SubtitleButtonDesk style={{ backgroundColor: '#2FB7BF' }}>
-                      超過20條政見
-                    </SubtitleButtonDesk>
-                    <ListWrapDesk>
-                      {v.candidates
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done > 20
-                        )
-                        // @ts-ignore
-                        .map((value) => {
-                          return (
-                            <Link
-                              href={{
-                                pathname: `politics/[personId]`,
-                              }}
-                              as={`/politics/${value.id}`}
-                              key={value.name}
-                            >
-                              <div>{value.name}</div>
-                            </Link>
+                    .filter(
+                      // @ts-ignore
+                      (candidate) => candidate.done > 20
+                    ).length !== 0 ? (
+                    <DeskList>
+                      <SubtitleButtonDesk
+                        style={{ backgroundColor: '#2FB7BF' }}
+                      >
+                        超過20條政見
+                      </SubtitleButtonDesk>
+                      <ListWrapDesk>
+                        {v.candidates
+                          .filter(
+                            // @ts-ignore
+                            (candidate) => candidate.done > 20
                           )
-                        })}
-                    </ListWrapDesk>
-                  </DeskList>
-                ) : (
-                  <Fragment></Fragment>
-                )}
-              </DistrictContentDesk>
-            </DistrictInforBox>
-          </ItemWrap>
-        )
-      })}
+                          // @ts-ignore
+                          .map((value) => {
+                            return (
+                              <Link
+                                href={{
+                                  pathname: `politics/[personId]`,
+                                }}
+                                as={`/politics/${value.id}`}
+                                key={value.name}
+                              >
+                                <div>{value.name}</div>
+                              </Link>
+                            )
+                          })}
+                      </ListWrapDesk>
+                    </DeskList>
+                  ) : (
+                    <Fragment></Fragment>
+                  )}
+                </DistrictContentDesk>
+              </DistrictInforBox>
+            </ItemWrap>
+          )
+        })}
+      </ItemGroup>
     </CouncilWrap>
   )
 }
