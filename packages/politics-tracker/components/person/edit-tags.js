@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { stringToSources, getNewSource } from '~/utils/utils'
 import { SourceInputWrapper } from './edit-source'
 import SourceInput from '../politics/source-input'
+import { useToast } from '~/components/toast/use-toast'
 
 import styled from 'styled-components'
 import EditSource from './edit-source'
@@ -31,6 +32,8 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
  * @returns {React.ReactElement}
  */
 export default function EditTags(props) {
+  const toast = useToast()
+
   /**
    *
    * @param {import("~/types/person").Person["tags"]} tagList
@@ -82,7 +85,6 @@ export default function EditTags(props) {
    * @param {string} cmsApiUrl
    */
   async function createPerson(tagList, cmsApiUrl) {
-    console.log(tagList)
     try {
       const variables = {
         data: {
@@ -206,7 +208,20 @@ export default function EditTags(props) {
   }
   async function submitHandler() {
     const isSuccess = await submitTag()
-    console.log(isSuccess)
+    if (isSuccess) {
+      toast.open({
+        status: 'success',
+        title: '送出成功',
+        desc: '通過志工審核後，您新增的資料就會出現在這裡',
+      })
+      props.setShouldShowEditMode(false)
+    } else {
+      toast.open({
+        status: 'fail',
+        title: '出了點問題...',
+        desc: '送出失敗，請重試一次',
+      })
+    }
   }
   function addSource() {
     const extended = [...tagList, getNewSource()]

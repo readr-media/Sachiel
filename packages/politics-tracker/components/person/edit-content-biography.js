@@ -10,7 +10,7 @@ import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import ListItem from './list-item'
-
+import { useToast } from '../toast/use-toast'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
@@ -35,6 +35,7 @@ export default function EditContentBiography({
   personId,
   personName,
 }) {
+  const toast = useToast()
   const [list, setList] = useState(
     listData ? stringToSources(listData, '\n') : [getNewSource()]
   )
@@ -87,7 +88,18 @@ export default function EditContentBiography({
       source: sourcesToString(sourceList, '\n'),
     })
     if (isSuccess) {
+      toast.open({
+        status: 'success',
+        title: '送出成功',
+        desc: '通過志工審核後，您新增的資料就會出現在這裡',
+      })
       setShouldShowEditMode(false)
+    } else {
+      toast.open({
+        status: 'fail',
+        title: '出了點問題...',
+        desc: '送出失敗，請重試一次',
+      })
     }
   }
   function addSource() {
