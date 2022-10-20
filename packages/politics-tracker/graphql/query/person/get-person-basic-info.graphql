@@ -1,5 +1,5 @@
-query GetPersonBasicInfo ($Id: ID!) {
-  person(where: { id: $Id }) {
+query GetPeople($Id: ID!) {
+  people(where: { id: { equals: $Id }, status: { equals: "verified" } }) {
     id
     name
     image
@@ -15,8 +15,9 @@ query GetPersonBasicInfo ($Id: ID!) {
     gender
     national_identity
     email
-    contact_details    
+    contact_details
     links
+    status
     source
     tags {
       id
@@ -24,3 +25,4 @@ query GetPersonBasicInfo ($Id: ID!) {
     }
   }
 }
+
