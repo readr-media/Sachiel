@@ -10,7 +10,7 @@ const ElectionItemContainer = styled(ListItem)`
   align-items: center;
   margin-bottom: 16px;
   gap: 4px;
-
+  cursor: pointer;
   color: ${({ theme }) => theme.textColor.orange};
   &::before {
     top: 14px;
@@ -31,22 +31,29 @@ const PoliticButton = styled.a`
   border-color: ${({ theme }) => theme.borderColor.yellow};
   border-width: 2px;
   border-radius: 24px;
+  background-color: white;
+
+  &:hover {
+    background-color: #fffcf3;
+  }
 `
 /**
  *
  * @param {Object} props
  * @param {boolean} [props.isActive]
  * @param {import('~/types/common').RawPersonElection[]} props.personElectionsData
+ * @param {import('~/types/person').Person['id']} props.personId
  * @returns {React.ReactElement}
  */
 export default function SectionBodyElection({
   isActive = false,
   personElectionsData,
+  personId,
 }) {
   const electionsList = personElectionsData.map((item) => (
     <ElectionItemContainer key={item.id}>
       <ElectionItem>{item.election?.name}</ElectionItem>
-      <PoliticButton href="/">政見</PoliticButton>
+      <PoliticButton href={`/politics/${personId}`}>政見</PoliticButton>
     </ElectionItemContainer>
   ))
   return (
