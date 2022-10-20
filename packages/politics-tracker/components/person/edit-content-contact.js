@@ -9,6 +9,8 @@ import EditSendOrCancel from './edit-send-or-cancel'
 import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
+import { useToast } from '~/components/toast/use-toast'
+
 /**
  *
  * @param {Object} props
@@ -30,6 +32,8 @@ export default function EditContentContact({
   personId,
   personName,
 }) {
+  const toast = useToast()
+
   const [emailList, setEmailList] = useState(
     emails ? stringToSources(emails, '\n') : [getNewSource()]
   )
@@ -92,7 +96,18 @@ export default function EditContentContact({
       contact_details: sourcesToString(contactList, '\n'),
     })
     if (isSuccess) {
+      toast.open({
+        status: 'success',
+        title: '送出成功',
+        desc: '通過志工審核後，您新增的資料就會出現在這裡',
+      })
       setShouldShowEditMode(false)
+    } else {
+      toast.open({
+        status: 'fail',
+        title: '出了點問題...',
+        desc: '送出失敗，請重試一次',
+      })
     }
   }
 
