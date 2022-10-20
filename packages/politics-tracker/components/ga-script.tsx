@@ -4,13 +4,13 @@ import { gaTrackingId } from '~/constants/config'
 export default function GAScript(): JSX.Element {
   return (
     <>
-      {/* ref: https://blog.jarrodwatts.com/track-user-behaviour-on-your-website-with-google-analytics-and-nextjs */}
+      {/* ref: https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs */}
       {/* Google tag (gtag.js) */}
       <Script
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?${gaTrackingId}`}
       />
-      <Script id="ga-script" strategy="lazyOnload">
+      <Script id="ga-script" strategy="afterInteractive">
         {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
