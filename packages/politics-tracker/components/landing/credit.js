@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-// 最外圍的橘色大框
 const TeamIntroContainer = styled.div`
   width: 100%;
   display: flex;

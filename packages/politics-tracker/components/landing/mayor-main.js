@@ -140,7 +140,6 @@ const ButtonGroup = styled.div`
 
   ul li a:hover {
     cursor: pointer;
-    /* color: ${({ theme }) => theme.textColor.blue}; */
     background: ${({ theme }) => theme.backgroundColor.landingGreen};
   }
 
@@ -201,7 +200,7 @@ export default function MayorMain({ propsData }) {
       return a?.amount / a?.total - b?.amount / b?.total
     })
   }
-  //跑縣市的資料已經經過complete percent排序
+
   const dataOrderByCompletePercent = lowToHigh(rawDatas)
 
   /**
@@ -248,7 +247,6 @@ export default function MayorMain({ propsData }) {
           <Content>
             <ButtonWrap>
               <ButtonGroup>
-                {/* onclick後再觸發一次fetch */}
                 <ul>
                   {menuItems.map(
                     (
