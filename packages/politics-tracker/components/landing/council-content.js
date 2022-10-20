@@ -103,6 +103,7 @@ const ListWrapDesk = styled.div`
 
   div:hover {
     cursor: pointer;
+    text-decoration-line: underline;
   }
 
   ${({ theme }) => theme.breakpoint.xl} {
@@ -136,9 +137,6 @@ const FilterBar = styled.div`
   }
   h4 {
     display: none;
-  }
-  div:nth-child(2):hover {
-    cursor: pointer;
   }
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
@@ -209,6 +207,11 @@ const SubtitleWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  p,
+  h3,
+  h5 {
+    margin-left: 10px;
+  }
   ${({ theme }) => theme.breakpoint.xl} {
     width: 25%;
     justify-content: flex-start;
@@ -221,6 +224,14 @@ const ItemGroup = styled.div`
   }
   > div:nth-child(even) {
     background: ${({ theme }) => theme.backgroundColor.landingPurple};
+  }
+`
+const HoverWrap = styled.div`
+  max-width: 58px;
+  padding-left: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(15, 45, 53, 0.05);
   }
 `
 /**
@@ -278,24 +289,26 @@ export default function CouncilContent({
             setArrowToggle(!arrowToggle)
           }}
         >
-          <h5>進度</h5>
-          {arrowToggle ? (
-            <Image
-              alt="arrowPurple"
-              src="/landingpage/arrow_purple_down.svg"
-              width="20"
-              height="20"
-              onClick={() => {}}
-            />
-          ) : (
-            <Image
-              alt="arrowPurple"
-              src="/landingpage/arrow_purple_up.svg"
-              width="20"
-              height="20"
-              onClick={() => {}}
-            />
-          )}
+          <HoverWrap>
+            <h5>進度</h5>
+            {arrowToggle ? (
+              <Image
+                alt="arrowPurple"
+                src="/landingpage/arrow_purple_down.svg"
+                width="20"
+                height="20"
+                onClick={() => {}}
+              />
+            ) : (
+              <Image
+                alt="arrowPurple"
+                src="/landingpage/arrow_purple_up.svg"
+                width="20"
+                height="20"
+                onClick={() => {}}
+              />
+            )}
+          </HoverWrap>
         </div>
         <h4>補坑狀況</h4>
       </FilterBar>

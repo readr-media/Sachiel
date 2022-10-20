@@ -105,6 +105,7 @@ const ListWrapDesk = styled.div`
 
   div:hover {
     cursor: pointer;
+    text-decoration-line: underline;
   }
 
   ${({ theme }) => theme.breakpoint.xl} {
@@ -140,9 +141,13 @@ const FilterBar = styled.div`
   h4 {
     display: none;
   }
-  div:nth-child(2):hover {
+  /* > div:nth-child(2):hover {
     cursor: pointer;
   }
+  > div:nth-child(2):hover > h5 {
+    cursor: pointer;
+    background-color: rgba(15, 45, 53, 0.05);
+  } */
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
     div {
@@ -155,6 +160,14 @@ const FilterBar = styled.div`
     span {
       display: none;
     }
+  }
+`
+const HoverWrap = styled.div`
+  max-width: 58px;
+  padding-left: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(15, 45, 53, 0.05);
   }
 `
 const SubtitleButton = styled.button`
@@ -211,6 +224,11 @@ const SubtitleWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  p,
+  h3,
+  h5 {
+    margin-left: 10px;
+  }
   ${({ theme }) => theme.breakpoint.xl} {
     width: 25%;
     justify-content: flex-start;
@@ -282,24 +300,26 @@ export default function MayorContent({
             setArrowToggle(!arrowToggle)
           }}
         >
-          <h5>進度</h5>
-          {arrowToggle ? (
-            <Image
-              alt="arrowGreen"
-              src="/landingpage/arrow_green_down.svg"
-              width="20"
-              height="20"
-              onClick={() => {}}
-            />
-          ) : (
-            <Image
-              alt="arrowGreen"
-              src="/landingpage/arrow_green_up.svg"
-              width="20"
-              height="20"
-              onClick={() => {}}
-            />
-          )}
+          <HoverWrap>
+            <h5>進度</h5>
+            {arrowToggle ? (
+              <Image
+                alt="arrowGreen"
+                src="/landingpage/arrow_green_down.svg"
+                width="20"
+                height="20"
+                onClick={() => {}}
+              />
+            ) : (
+              <Image
+                alt="arrowGreen"
+                src="/landingpage/arrow_green_up.svg"
+                width="20"
+                height="20"
+                onClick={() => {}}
+              />
+            )}
+          </HoverWrap>
         </div>
         <h4>補坑狀況</h4>
       </FilterBar>
