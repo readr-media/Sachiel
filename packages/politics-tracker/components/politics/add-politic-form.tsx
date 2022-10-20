@@ -43,6 +43,8 @@ export default function AddPoliticForm(
           source: data.source,
         },
       }
+      // result is not used currently
+      // eslint-disable-next-line
       const result: RawPolitic = await fireGqlRequest(
         print(CreatePolitic),
         variables,
