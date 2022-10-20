@@ -61,7 +61,7 @@ export async function getServerSideProps({ query, res }) {
   // cache policy
   res.setHeader(
     'Cache-Control',
-    'public, maxage=600, stale-while-revalidate=60'
+    'public, s-maxage=600, stale-while-revalidate=60'
   )
 
   const id = query.id
