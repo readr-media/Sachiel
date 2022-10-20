@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import CouncilList from '~/components/landing/council-content'
+import Image from 'next/image'
 
 const CouncilContainer = styled.div`
   width: 100%;
   display: flex;
+  position: relative;
+  #councilorBlock {
+    position: absolute;
+    top: -64px;
+    visibility: hidden;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    #councilorBlock {
+      top: -80px;
+    }
+  }
 `
 const CouncilContentWrap = styled.div`
   width: 100%;
@@ -69,67 +81,90 @@ const ButtonGroup = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: ${({ theme }) => theme.backgroundColor.landingPurple};
   max-width: 1230px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: auto;
-  padding: 20px 15px;
+  padding: 20px 15px 10px 15px;
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 20px 10px;
+    padding: 10px 20px;
+  }
+
+  #listBox {
+    width: 100%;
+    /* outline: 1px solid red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   ul {
-    min-width: 250px;
-    max-width: 1100px;
-    width: 100%;
+    /* outline: 1px solid blue; */
+    display: block;
+    width: 260px;
     margin: auto;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
+    ${({ theme }) => theme.breakpoint.sm} {
+      width: 430px;
+    }
     ${({ theme }) => theme.breakpoint.md} {
       justify-content: center;
+      width: 640px;
+    }
+    ${({ theme }) => theme.breakpoint.xl} {
+      width: 1000px;
+      max-width: 1230px;
     }
   }
-  ul li a {
+  /* //a才是真的button外觀 */
+  ul li div {
     text-decoration: none;
     background: ${({ theme }) => theme.backgroundColor.white};
     color: ${({ theme }) => theme.textColor.blue};
-    padding: 10px 20px;
+    padding: 8px 15px;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 32px;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid ${({ theme }) => theme.textColor.blue};
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 18px;
+      padding: 8px 12px;
+      min-width: 150px;
+    }
+  }
+  li {
+    margin: 6px;
+    ${({ theme }) => theme.breakpoint.md} {
+      margin: 10px 5px;
+    }
+  }
+
+  #press {
     font-weight: 500;
     font-size: 14px;
     padding: 8px 15px;
     border-radius: 32px;
     line-height: 1.3;
     border: 1px solid ${({ theme }) => theme.textColor.blue};
-    ${({ theme }) => theme.breakpoint.md} {
-      font-size: 18px;
-      padding: 8px 12px;
-    }
-  }
-  li {
-    margin: 15px 6px;
-    ${({ theme }) => theme.breakpoint.md} {
-      margin: 20px 5px;
-    }
-    ${({ theme }) => theme.breakpoint.xl} {
-      margin: 20px 3px;
-    }
-  }
-
-  ul li a:hover {
-    cursor: pointer;
-    color: ${({ theme }) => theme.textColor.blue};
-    background: ${({ theme }) => theme.backgroundColor.lightPurple};
-  }
-
-  .active {
-    cursor: pointer;
     color: ${({ theme }) => theme.textColor.white};
     background: ${({ theme }) => theme.textColor.blue};
     box-shadow: 0px 2px 20px rgba(131, 121, 248, 0.1),
       0px 2px 4px rgba(131, 121, 248, 0.5);
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 18px;
+      padding: 8px 12px;
+      min-width: 150px;
+    }
   }
+
   span {
     font-size: 14px;
     display: none;
@@ -151,7 +186,41 @@ const ContentSide = styled.div`
 const Content = styled.div`
   width: 100%;
   padding-bottom: 20px;
+  /* outline: 5px solid red; */
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 20px 40px 40px;
+  }
 `
+
+const ToggleGroup = styled.div`
+  max-height: 100px;
+  display: block;
+  ${({ theme }) => theme.breakpoint.md} {
+    max-height: 65px;
+  }
+`
+const ToggleButton = styled.div`
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.textColor.blue};
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    font-size: 16px;
+  }
+`
+
+//步驟：
+
 /**
  *
  * @returns {React.ReactElement}
@@ -159,6 +228,20 @@ const Content = styled.div`
 
 // @ts-ignore
 export default function CouncilMain({ propsData }) {
+  //直接先生一筆lowtohigh的資料群再去map
+  const newPropsData = JSON.parse(JSON.stringify(propsData))
+  const rawDatas = newPropsData['councilorAndPolitics']
+
+  // @ts-ignore
+  const lowToHigh = (datas) => {
+    return [...datas].sort((a, b) => {
+      return a?.amount / a?.total - b?.amount / b?.total
+    })
+  }
+
+  //跑縣市的資料已經經過完成比例排序
+  const dataOrderByCompletePercent = lowToHigh(rawDatas)
+
   /**
    *
    * @param {Object[]} cityItems
@@ -168,20 +251,35 @@ export default function CouncilMain({ propsData }) {
     for (let i = 0; i < cityItems.length; i++) {
       menuItems.push({
         id: i + 1,
-        name: cityItems[i],
+        infor: cityItems[i],
         active: false,
+        // @ts-ignore
+        name: cityItems[i].name,
+        // @ts-ignore
+        total: cityItems[i].total,
+        // @ts-ignore
+        amount: cityItems[i].amount,
       })
     }
     return menuItems
   }
 
-  const defaultCouncilPolitics = initState(propsData['councilorAndPolitics'])
+  const defaultMenuItems = initState(dataOrderByCompletePercent)
   // 一開始沒有被按的項目, active全為false
-  const [menuItems, setMenuItems] = useState(defaultCouncilPolitics)
+  const firstRender = [...defaultMenuItems]
+  firstRender[0].active = true
+  const [menuItems, setMenuItems] = useState(firstRender)
   const [councilRegion, setCouncilRegion] = useState(0)
 
+  const [toggle, setToggle] = useState(true)
+  const toggleStatus = toggle
+    ? { overflow: 'hidden' }
+    : { overflow: 'visible', maxHeight: 'none' }
+  const toggleNotion = toggle ? '展開所有縣市' : '收合部分縣市'
+
   return (
-    <CouncilContainer id="councilTitle">
+    <CouncilContainer>
+      <span id="councilorBlock"></span>
       <CouncilContentWrap>
         <TitleWrap>
           <SideBar />
@@ -192,47 +290,86 @@ export default function CouncilMain({ propsData }) {
           <Content>
             <ButtonWrap>
               <ButtonGroup>
-                <ul>
-                  {propsData['councilorAndPolitics'].map(
-                    (
-                      // @ts-ignore
-                      v,
-                      // @ts-ignore
-                      i
-                    ) => {
-                      return (
-                        <li
-                          key={i}
-                          onClick={() => {
-                            const newMenuItems = defaultCouncilPolitics.map(
-                              (v, index) => {
-                                if (i === index) return { ...v, active: true }
+                <ToggleGroup style={toggleStatus}>
+                  <div id="listBox">
+                    <ul>
+                      {menuItems.map(
+                        (
+                          // @ts-ignore
+                          v,
+                          // @ts-ignore
+                          i
+                        ) => {
+                          return (
+                            <li
+                              key={i}
+                              onClick={() => {
+                                firstRender[0].active = false
+                                const newMenuItems = firstRender.map(
+                                  (v, index) => {
+                                    if (i === index)
+                                      return { ...v, active: true }
 
-                                return v
-                              }
-                            )
+                                    return v
+                                  }
+                                )
 
-                            setMenuItems(newMenuItems)
-                            setCouncilRegion(i)
-                          }}
-                        >
-                          <a href="#/" className={v.active ? 'active' : ''}>
-                            {v.name}{' '}
-                            <span>
-                              ( {v.amount} / {v.total} )
-                            </span>
-                          </a>
-                        </li>
-                      )
-                    }
+                                setMenuItems(newMenuItems)
+                                setCouncilRegion(i)
+                              }}
+                            >
+                              {v.active ? (
+                                <div id="press">
+                                  {v.name}
+                                  <span>
+                                    ( {v.amount} / {v.total} )
+                                  </span>
+                                </div>
+                              ) : (
+                                <div id="nopress">
+                                  {v.name}
+                                  <span>
+                                    ( {v.amount} / {v.total})
+                                  </span>
+                                </div>
+                              )}
+                            </li>
+                          )
+                        }
+                      )}
+                    </ul>
+                  </div>
+                </ToggleGroup>
+                <ToggleButton
+                  onClick={() => {
+                    setToggle(!toggle)
+                  }}
+                >
+                  {toggleNotion}
+                  {toggle ? (
+                    <Image
+                      alt="arrowPurple"
+                      src="/landingpage/arrow_down_purple.svg"
+                      width="20"
+                      height="20"
+                      onClick={() => {}}
+                    />
+                  ) : (
+                    <Image
+                      alt="arrowPurple"
+                      src="/landingpage/arrow_up_purple.svg"
+                      width="20"
+                      height="20"
+                      onClick={() => {}}
+                    />
                   )}
-                </ul>
+                </ToggleButton>
               </ButtonGroup>
             </ButtonWrap>
             <CouncilList
               // @ts-ignore
               councilRegion={councilRegion}
-              propsData={propsData}
+              dataOrderByCompletePercent={dataOrderByCompletePercent}
             />
           </Content>
         </CouncilContent>

@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const DistrictTitle = styled.div`
+const DistrictInforBox = styled.div`
   width: 100%;
-  padding: 10px 15px;
+  padding: 10px 20px 10px 15px;
   color: ${({ theme }) => theme.textColor.black};
   font-weight: 500;
   font-size: 16px;
   line-height: 130%;
-  display: flex;
-  justify-content: space-between;
   &:hover {
     cursor: pointer;
   }
@@ -22,26 +20,40 @@ const DistrictTitle = styled.div`
   h5 {
     color: ${({ theme }) => theme.textColor.black};
   }
+  h3 {
+    color: ${({ theme }) => theme.textColor.green};
+  }
 
   ${({ theme }) => theme.breakpoint.xl} {
+    display: flex;
     justify-content: flex-start;
 
     &:hover {
       cursor: inherit;
     }
     p,
-    h5 {
+    h5,
+    h3 {
       width: 10%;
       text-align: center;
     }
   }
 `
+//縣市名稱
 const Title = styled.div`
   display: flex;
+
+  h4 {
+    font-weight: 500;
+    margin-right: 5px;
+  }
   ${({ theme }) => theme.breakpoint.xl} {
-    width: 12%;
+    h4 {
+      min-width: 130px;
+    }
   }
 `
+//下拉icon 按了可以展開
 const TitleImg = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     display: none;
@@ -77,10 +89,9 @@ const ListWrapDesk = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  font-size: 18px;
+  font-size: 16px;
   max-width: 814px;
   padding: 0px;
-  font-size: 18px;
   flex-wrap: wrap;
   div {
     color: ${({ theme }) => theme.textColor.green};
@@ -91,8 +102,13 @@ const ListWrapDesk = styled.div`
     border-right: 1px solid rgba(15, 45, 53, 0.3);
     margin: 5px 0px;
   }
+
   div:hover {
     cursor: pointer;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: none;
   }
 `
 
@@ -124,10 +140,14 @@ const FilterBar = styled.div`
   h4 {
     display: none;
   }
+  div:nth-child(2):hover {
+    cursor: pointer;
+  }
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
     div {
-      width: 12%;
+      width: 130px;
+      margin-right: 5px;
     }
     h4 {
       display: block;
@@ -154,34 +174,48 @@ const SubtitleButtonDesk = styled.div`
   color: ${({ theme }) => theme.backgroundColor.white};
   font-weight: 500;
   max-height: 24px;
+  max-width: 76px;
   //TODO:
-  font-size: 14px;
+  font-size: 12px;
   padding: 4px 8px;
   min-width: 86px;
   border-radius: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.backgroundColor.highlightRed};
-  margin: 5px 10px 0px 0px;
+  margin: 5px 10px 5px 0px;
 `
 
 const DistrictContentDesk = styled.div`
   width: 100%;
-  display: none;
-  padding-left: 50px;
   ${({ theme }) => theme.breakpoint.xl} {
-    display: block;
+    padding-left: 30px;
+    display: block !important;
   }
 `
 const DeskList = styled.div`
-  display: flex;
   width: 100%;
-  margin-bottom: 15px;
+  padding-top: 15px;
+  margin-bottom: 7px;
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding: 0px;
+    display: flex;
+  }
 `
 const CouncilWrap = styled.div`
   max-width: 1230px;
   margin: auto;
+`
+
+const SubtitleWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  ${({ theme }) => theme.breakpoint.xl} {
+    width: 25%;
+    justify-content: flex-start;
+    padding-top: 5px;
+  }
 `
 /**
  *
@@ -189,7 +223,12 @@ const CouncilWrap = styled.div`
  */
 
 // @ts-ignore
-export default function MayorContent({ propsData, mayorRegion }) {
+export default function MayorContent({
+  // @ts-ignore
+  dataOrderByCompletePercent,
+  // @ts-ignore
+  mayorRegion,
+}) {
   // @ts-ignore
   function toggle(e) {
     if (e.currentTarget.nextElementSibling.style.display === 'none') {
@@ -199,19 +238,22 @@ export default function MayorContent({ propsData, mayorRegion }) {
     }
   }
 
-  const newPropsData = JSON.parse(JSON.stringify(propsData))
-  const rawDatas = newPropsData['mayorAndPolitics'][mayorRegion].areas
+  const newDataOrderByCompletePercent = JSON.parse(
+    JSON.stringify(dataOrderByCompletePercent)
+  )
+  const rawDatas = newDataOrderByCompletePercent[mayorRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
+  const [arrowToggle, setArrowToggle] = useState(true)
 
   // @ts-ignore
-  const lowToHigh = (datas) => {
+  const HighToLow = (datas) => {
     return [...datas].sort((a, b) => {
       return b?.done / b?.total - a?.done / a?.total
     })
   }
   // @ts-ignore
-  const HighToLow = (datas) => {
+  const lowToHigh = (datas) => {
     return [...datas].sort((a, b) => {
       return a?.done / a?.total - b?.done / b?.total
     })
@@ -225,49 +267,66 @@ export default function MayorContent({ propsData, mayorRegion }) {
         <div>
           <h5>縣市名</h5>
         </div>
-        <div>
+        <div
+          onClick={() => {
+            setSortWay(!sortWay)
+            setArrowToggle(!arrowToggle)
+          }}
+        >
           <h5>進度</h5>
-          <Image
-            alt="arrowGreen"
-            src="/landingpage/arrow_green_down.svg"
-            width="20"
-            height="20"
-            onClick={() => {
-              setSortWay(!sortWay)
-            }}
-          />
+          {arrowToggle ? (
+            <Image
+              alt="arrowGreen"
+              src="/landingpage/arrow_green_down.svg"
+              width="20"
+              height="20"
+              onClick={() => {}}
+            />
+          ) : (
+            <Image
+              alt="arrowGreen"
+              src="/landingpage/arrow_green_up.svg"
+              width="20"
+              height="20"
+              onClick={() => {}}
+            />
+          )}
         </div>
         <h4>補坑狀況</h4>
       </FilterBar>
       {sortDatas.map((v, i) => {
         return (
           <ItemWrap key={v.name}>
-            {/* FIXME: toggle effect*/}
-            {/* <DistrictTitle onClick={toggle}> */}
-            <DistrictTitle>
-              <Title>
-                <h4>{v.name}</h4>
-                <TitleImg onClick={() => {}}>
-                  <Image
-                    alt="arrowDownGreen"
-                    src="/landingpage/arrow_down_green.svg"
-                    width="20"
-                    height="20"
-                  />
-                </TitleImg>
-              </Title>
-              {/* FIXME: 尚未處理政見all的顏色變化 */}
-              {v.done === 0 ? (
-                <p>
-                  {v.done}/{v.total}
-                </p>
-              ) : (
-                <h5>
-                  {v.done}/{v.total}
-                </h5>
-              )}
+            <DistrictInforBox>
+              <SubtitleWrap onClick={toggle}>
+                <Title>
+                  <h4>{v.name}</h4>
+                  <TitleImg onClick={() => {}}>
+                    <Image
+                      alt="arrowDownGreen"
+                      src="/landingpage/arrow_down_green.svg"
+                      width="20"
+                      height="20"
+                    />
+                  </TitleImg>
+                </Title>
 
-              <DistrictContentDesk>
+                {v.done === 0 ? (
+                  <p>
+                    {v.done}/{v.total}
+                  </p>
+                ) : v.done === v.total ? (
+                  <h3>
+                    {v.done}/{v.total}
+                  </h3>
+                ) : (
+                  <h5>
+                    {v.done}/{v.total}
+                  </h5>
+                )}
+              </SubtitleWrap>
+
+              <DistrictContentDesk style={{ display: 'none' }}>
                 {v.candidates
                   // @ts-ignore
                   .filter(
@@ -275,7 +334,7 @@ export default function MayorContent({ propsData, mayorRegion }) {
                     (candidate) => candidate.done === 0
                   ).length !== 0 ? (
                   <DeskList>
-                    <SubtitleButtonDesk color={'orange'}>
+                    <SubtitleButtonDesk style={{ backgroundColor: '#DB4C65' }}>
                       還沒有政見
                     </SubtitleButtonDesk>
                     <ListWrapDesk>
@@ -310,7 +369,7 @@ export default function MayorContent({ propsData, mayorRegion }) {
                     (candidate) => candidate.done < 20 && candidate.done > 0
                   ).length !== 0 ? (
                   <DeskList>
-                    <SubtitleButtonDesk color={'orange'}>
+                    <SubtitleButtonDesk style={{ backgroundColor: '#F58439' }}>
                       政見還很少
                     </SubtitleButtonDesk>
                     <ListWrapDesk>
@@ -346,7 +405,7 @@ export default function MayorContent({ propsData, mayorRegion }) {
                     (candidate) => candidate.done > 20
                   ).length !== 0 ? (
                   <DeskList>
-                    <SubtitleButtonDesk color={'orange'}>
+                    <SubtitleButtonDesk style={{ backgroundColor: '#2FB7BF' }}>
                       超過20條政見
                     </SubtitleButtonDesk>
                     <ListWrapDesk>
@@ -375,36 +434,7 @@ export default function MayorContent({ propsData, mayorRegion }) {
                   <Fragment></Fragment>
                 )}
               </DistrictContentDesk>
-            </DistrictTitle>
-
-            {/* <DistrictContent style={{ display: 'none' }}>
-              <SubtitleButton>還沒有政見</SubtitleButton>
-              <ListWrap>
-                <div>
-                  <Link href="#">
-                    <span>蔡依靜 Lamen. Panay</span>
-                  </Link>
-                </div>
-              </ListWrap>
-
-              <SubtitleButton>政見還很少</SubtitleButton>
-              <ListWrap>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-              </ListWrap>
-
-              <SubtitleButton>超過20條政見</SubtitleButton>
-              <ListWrap>
-                <div>
-                  <Link href="#">
-                    <span>張家豪</span>
-                  </Link>
-                </div>
-              </ListWrap>
-            </DistrictContent> */}
+            </DistrictInforBox>
           </ItemWrap>
         )
       })}
