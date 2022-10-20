@@ -22,7 +22,14 @@ import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-poli
  * @typedef { import('~/types/landing').withKeyCityOfCouncilorElection } CityOfCouncilorElection
  */
 
-export const getServerSideProps = async () => {
+/** @type { import('next').GetServerSideProps } */
+export const getServerSideProps = async ({ res }) => {
+  // cache policy
+  res.setHeader(
+    'Cache-Control',
+    'public, maxage=300, stale-while-revalidate=60'
+  )
+
   const NORTH = 'north'
   const CENTER = 'center'
   const SOUTH = 'south'

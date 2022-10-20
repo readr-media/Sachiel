@@ -44,7 +44,13 @@ type PoliticsPageProps = {
 
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
-> = async ({ query }) => {
+> = async ({ query, res }) => {
+  // cache policy
+  res.setHeader(
+    'Cache-Control',
+    'public, maxage=600, stale-while-revalidate=60'
+  )
+
   const { personId } = query
 
   try {
