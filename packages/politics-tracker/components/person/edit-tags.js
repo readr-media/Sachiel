@@ -69,7 +69,14 @@ export default function EditTags(props) {
     [props.tags]
   )
   const [tagList, setTagList] = useState(tags)
-
+  /**
+   * If property `value` of element in `tagList` are all empty string,
+   * then should disable submit button.
+   */
+  const shouldDisableSubmit = useMemo(
+    () => tagList.filter((i) => i.value).length === 0,
+    [tagList]
+  )
   /**
    * @param {Object[]|[]} tagList
    * @param {string} cmsApiUrl
@@ -247,6 +254,7 @@ export default function EditTags(props) {
       ))}
       <AddInputButton addTarget="標籤" onClick={addSource}></AddInputButton>
       <EditSendOrCancel
+        isDisable={shouldDisableSubmit}
         onClick={() => props.setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
       />
