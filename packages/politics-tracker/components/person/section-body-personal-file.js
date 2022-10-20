@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { stringToSources } from '~/utils/utils'
 
-import ContentItem from './content-item'
+import ContentItem, { ContentItemEmpty } from './content-item'
 import ProfileImage from './profile-image'
 import SectionBody from './section-body'
 import Content from './content'
@@ -26,6 +26,10 @@ const TagContainer = styled.div`
   width: 100%;
   gap: 12px;
   flex-wrap: wrap;
+  ${({ theme }) => theme.fontSize['title-sub']};
+  ${({ theme }) => theme.breakpoint.md} {
+    ${({ theme }) => theme.fontSize['title-sub-md']};
+  }
 `
 /**
  *
@@ -244,9 +248,13 @@ export default function SectionBodyPersonalFile({
         }
       >
         <TagContainer>
-          {tags.map((item) => (
-            <Tag key={item.id} id={item.id} name={item.name}></Tag>
-          ))}
+          {tags.length !== 0 ? (
+            tags.map((item) => (
+              <Tag key={item.id} id={item.id} name={item.name}></Tag>
+            ))
+          ) : (
+            <ContentItemEmpty>尚未新增</ContentItemEmpty>
+          )}
         </TagContainer>
       </Content>
     </SectionBody>
