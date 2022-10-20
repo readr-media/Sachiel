@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import { typedHasOwnProperty } from '~/utils/utils'
+import CountUp from 'react-countup'
 
 const BoardContainer = styled.div`
   width: 100%;
@@ -159,21 +160,29 @@ export default function StatisticsBoard({ propsData }) {
             <ContentSubtitle color="green">縣市長政見</ContentSubtitle>
             <h5>已有政見的候選人數</h5>
             <CalNum color="green">
-              <h2>{propsData['totalCandidatesOfMayor']}</h2>
+              <h2>
+                <CountUp
+                  end={propsData['totalCandidatesOfMayor']}
+                  duration={3}
+                  decimal=","
+                />
+              </h2>
             </CalNum>
           </ContentWrap>
         </BoardContent>
-        <BoardButton color="green">
-          <h4>補縣市長政見坑</h4>
-          <ArrowIcon>
-            <Image
-              alt="arrowRight"
-              src="/landingpage/arrow_right.svg"
-              width="48"
-              height="48"
-            />
-          </ArrowIcon>
-        </BoardButton>
+        <a href="#mayor">
+          <BoardButton color={'green'}>
+            <h4>補縣市長政見坑</h4>
+            <ArrowIcon>
+              <Image
+                alt="arrowRight"
+                src="/landingpage/arrow_right.svg"
+                width="48"
+                height="48"
+              />
+            </ArrowIcon>
+          </BoardButton>
+        </a>
       </BoardBox>
       <BoardBox key="councilor">
         <BoardContent color="blue">
@@ -181,21 +190,29 @@ export default function StatisticsBoard({ propsData }) {
             <ContentSubtitle color="blue">縣市議員政見</ContentSubtitle>
             <h5>已有政見的候選人數</h5>
             <CalNum color="blue">
-              <h2>{propsData['totalCandidatesOfcouncilor']}</h2>
+              <h2>
+                <CountUp
+                  end={propsData['totalCandidatesOfcouncilor']}
+                  separator=","
+                  duration={3}
+                />
+              </h2>
             </CalNum>
           </ContentWrap>
         </BoardContent>
-        <BoardButton color="blue">
-          <h4>補縣市議員政見坑</h4>
-          <ArrowIcon>
-            <Image
-              alt="arrowRight"
-              src="/landingpage/arrow_right.svg"
-              width="48"
-              height="48"
-            />
-          </ArrowIcon>
-        </BoardButton>
+        <a href="#councilorBlock">
+          <BoardButton color="blue">
+            <h4>補縣市議員政見坑</h4>
+            <ArrowIcon>
+              <Image
+                alt="arrowRight"
+                src="/landingpage/arrow_right.svg"
+                width="48"
+                height="48"
+              />
+            </ArrowIcon>
+          </BoardButton>
+        </a>
       </BoardBox>
     </BoardContainer>
   )
