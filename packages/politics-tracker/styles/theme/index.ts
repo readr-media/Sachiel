@@ -58,6 +58,7 @@ export const theme = {
     white: sharedColor.white,
     yellow: '#B2800D',
     black5: 'rgba(15, 45, 53, 0.05)',
+    black10: 'rgba(15, 45, 53, 0.1)',
   },
   fontSize: {
     'title-main': 'font-size:24px; line-height: 1.2',
