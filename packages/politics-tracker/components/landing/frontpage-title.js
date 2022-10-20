@@ -66,7 +66,7 @@ const MainTitleGroup = styled.div`
     font-size: 40px;
     line-height: 1.2;
     font-weight: 900;
-    max-width: 160px;
+    max-width: 200px;
     margin: auto;
     margin-bottom: 10px;
     ${({ theme }) => theme.breakpoint.md} {
@@ -80,7 +80,12 @@ const MainTitleGroup = styled.div`
     /* TODO: 建檔成theme variable */
     font-size: 22px;
     font-weight: 700;
+    margin: auto;
     margin-bottom: 10px;
+    max-width: 250px;
+    ${({ theme }) => theme.breakpoint.md} {
+      max-width: none;
+    }
     ${({ theme }) => theme.breakpoint.xl} {
       font-size: 28px;
     }
