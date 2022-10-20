@@ -76,36 +76,83 @@ const IntroWrap = styled.div`
  */
 
 //TODO: img的部分有辦法只存檔名嗎？
-const information = [
-  { img: '/landingpage/process01.svg', num: '1', intro: '選擇候選人' },
-  {
-    img: '/landingpage/process02.svg',
-    num: '2',
-    intro: '新增或編輯該候選人的政見',
-  },
-  { img: '/landingpage/process03.svg', num: '3', intro: '送出審核給志工確認' },
-  {
-    img: '/landingpage/process04.svg',
-    num: '4',
-    intro: '資料確認無誤補坑成功！',
-  },
-]
+// const information = [
+//   { img: '/landingpage/process01.svg', num: '1', intro: '選擇候選人' },
+//   {
+//     img: '/landingpage/process02.svg',
+//     num: '2',
+//     intro: '新增或編輯該候選人的政見',
+//   },
+//   { img: '/landingpage/process03.svg', num: '3', intro: '送出審核給志工確認' },
+//   {
+//     img: '/landingpage/process04.svg',
+//     num: '4',
+//     intro: '資料確認無誤補坑成功！',
+//   },
+// ]
 
 export default function HowContent() {
   return (
     <ContentContainer>
       <ItemWrap>
-        {information.map((e) => {
-          return (
-            <HowItem key={e.num}>
-              <Image alt="process01" src={e.img} width="160" height="160" />
-              <IntroWrap>
-                <ItemNum>{e.num}</ItemNum>
-                <h4>{e.intro}</h4>
-              </IntroWrap>
-            </HowItem>
-          )
-        })}
+        {/* {information.map((e) => { */}
+        {/* return ( */}
+        <HowItem>
+          <Image
+            alt="process01"
+            src="/landingpage/process01.svg"
+            width="160"
+            height="160"
+          />
+          <IntroWrap>
+            <ItemNum>1</ItemNum>
+            <h4>選擇候選人</h4>
+          </IntroWrap>
+        </HowItem>
+        <HowItem>
+          <Image
+            alt="process02"
+            src="/landingpage/process02.svg"
+            width="160"
+            height="160"
+          />
+          <IntroWrap>
+            <ItemNum>2</ItemNum>
+            <h4>
+              新增或編輯<br></br>該候選人的政見
+            </h4>
+          </IntroWrap>
+        </HowItem>
+        <HowItem>
+          <Image
+            alt="process03"
+            src="/landingpage/process03.svg"
+            width="160"
+            height="160"
+          />
+          <IntroWrap>
+            <ItemNum>3</ItemNum>
+            <h4>
+              送出審核給<br></br>志工確認
+            </h4>
+          </IntroWrap>
+        </HowItem>
+        <HowItem>
+          <Image
+            alt="process04"
+            src="/landingpage/process04.svg"
+            width="160"
+            height="160"
+          />
+          <IntroWrap>
+            <ItemNum>4</ItemNum>
+            <h4>
+              資料確認無誤<br></br>補坑成功！
+            </h4>
+          </IntroWrap>
+        </HowItem>
+        {/* ) */}
+        {/* })} */}
       </ItemWrap>
     </ContentContainer>
   )
