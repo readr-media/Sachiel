@@ -53,10 +53,10 @@
   @apply name;
 }
 .tab {
-  @apply text-[20px] absolute right-0 bottom-0 inline-block bg-button px-3 py-2;
+  @apply text-[20px] absolute right-0 bottom-0  bg-button px-3 py-2;
   @apply font-bold leading-sub text-main shadow-y-and-left;
-  @apply md:hidden;
-  @apply lg:text-[24px] lg:top-0 lg:bottom-auto lg:inline-block lg:pt-1 lg:shadow-bottom-and-x;
+  @apply md:text-[24px] md:top-0 md:bottom-auto md:pt-1 md:shadow-bottom-and-left;
+  @apply lg:shadow-bottom-and-x;
 }
 .data-block {
   @apply flex w-full flex-row flex-wrap;

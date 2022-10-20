@@ -15,14 +15,11 @@ export { SourceInputWrapper }
 /**
  *
  * @param {Object} props
- * @param {string} [props.sources]
+ * @param {import('~/types/common').Source[]} props.sourceList
+ * @param {function} props.setSourceList
  * @returns {React.ReactElement}
  */
-export default function EditSource({ sources }) {
-  const [sourceList, setSourceList] = useState(
-    sources ? stringToSources(sources, '\n') : [getNewSource()]
-  )
-
+export default function EditSource({ sourceList, setSourceList }) {
   function addSource() {
     const extended = [...sourceList, getNewSource()]
     setSourceList(extended)

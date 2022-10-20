@@ -8,7 +8,7 @@ import SectionBody from './section-body'
 import Content from './content'
 import ContentList from './content-list'
 import ContentLink from './content-link'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import moment from 'moment'
 import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
@@ -36,9 +36,14 @@ const TagContainer = styled.div`
  */
 export default function SectionBodyPersonalFile({
   isActive = false,
-  personData = {},
+  personData,
 }) {
+  const [basicEditMode, setBasicEditMode] = useState(false)
+  const [bioEditMode, setBioEditMode] = useState(false)
+  const [contactEditMode, setContactEditMode] = useState(false)
+  const [tagEditMode, setTagEditMode] = useState(false)
   const {
+    id,
     name = '',
     image = '',
     alternative = '',
@@ -58,7 +63,6 @@ export default function SectionBodyPersonalFile({
     source = '',
     tags = [],
   } = personData
-  console.log(alternative, other_names)
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
@@ -157,7 +161,15 @@ export default function SectionBodyPersonalFile({
     <SectionBody shouldShowSectionBody={isActive}>
       <Content
         title="基本資料"
-        editContent={<EditContentBasic sources={source} />}
+        shouldShowEditMode={basicEditMode}
+        setShouldShowEditMode={setBasicEditMode}
+        editContent={
+          <EditContentBasic
+            personData={personData}
+            sources={source}
+            setShouldShowEditMode={setBasicEditMode}
+          />
+        }
       >
         <ContentItem title="姓名" content={name}>
           <ContentPersonImage
@@ -181,8 +193,16 @@ export default function SectionBodyPersonalFile({
 
       <Content
         title="經歷"
+        shouldShowEditMode={bioEditMode}
+        setShouldShowEditMode={setBioEditMode}
         editContent={
-          <EditContentBiography listData={biography} sources={source} />
+          <EditContentBiography
+            personId={id}
+            personName={name}
+            listData={biography}
+            sources={source}
+            setShouldShowEditMode={setBioEditMode}
+          />
         }
       >
         <ContentList listData={biography} />
@@ -191,10 +211,15 @@ export default function SectionBodyPersonalFile({
       {/* TODO: show multiple line */}
       <Content
         title="聯絡方式"
+        shouldShowEditMode={contactEditMode}
+        setShouldShowEditMode={setContactEditMode}
         editContent={
           <EditContentContact
+            personId={id}
+            personName={name}
             emails={email}
             contactDetails={contact_details}
+            setShouldShowEditMode={setContactEditMode}
             links={links}
             sources={source}
           />
@@ -205,7 +230,19 @@ export default function SectionBodyPersonalFile({
         <ContentLink title="網站" links={links} />
         <Sources sources={source} />
       </Content>
-      <Content title="標籤" editContent={<EditTags tags={tags}></EditTags>}>
+      <Content
+        shouldShowEditMode={tagEditMode}
+        setShouldShowEditMode={setTagEditMode}
+        title="標籤"
+        editContent={
+          <EditTags
+            setShouldShowEditMode={setTagEditMode}
+            tags={tags}
+            personId={id}
+            personName={name}
+          ></EditTags>
+        }
+      >
         <TagContainer>
           {tags.map((item) => (
             <Tag key={item.id} id={item.id} name={item.name}></Tag>

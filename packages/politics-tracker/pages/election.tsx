@@ -9,6 +9,7 @@ import type {
 import { print } from 'graphql'
 import { fireGqlRequest, electionName } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
+import { districtsMapping, electionTypesMapping } from '~/constants/election'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 // @ts-ignore: no definition
@@ -22,6 +23,9 @@ const DataLoader = EVC.DataLoader
 const EVCComponent = EVC.ReactComponent
 
 type ElectionPageProps = {
+  year: number
+  name: string
+  area: string
   data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
@@ -31,18 +35,20 @@ export const getServerSideProps: GetServerSideProps<
   ElectionPageProps
 > = async ({ query }) => {
   const { year, area, type } = query
+  let electName: string
   const yearNumber = Number(year)
   const areaStr = String(area)
+  const mappedAreaStr = districtsMapping[areaStr] ?? 'allDisticts'
 
   const dataLoader = new DataLoader({
     apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
     year,
-    type,
-    area,
+    type: electionTypesMapping[String(type)],
+    area: mappedAreaStr,
   })
 
   try {
-    // const data = await dataLoader.loadData()
+    const data = await dataLoader.loadData()
 
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
@@ -73,6 +79,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       election = rawData.data?.elections?.[0]
+      electName = election?.name ?? ''
       if (!election) {
         return {
           notFound: true,
@@ -141,7 +148,10 @@ export const getServerSideProps: GetServerSideProps<
 
     return {
       props: {
-        data: {},
+        year: yearNumber,
+        name: electionName(undefined, electName, areaStr),
+        area: mappedAreaStr,
+        data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
       },
@@ -198,11 +208,11 @@ const Election = (props: ElectionPageProps) => {
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
-          {/* <EVCComponent
-            year={2018}
-            title="test"
-            districts={props.data.TaipeiCity.districts}
-          /> */}
+          <EVCComponent
+            year={props.year}
+            title={props.name}
+            districts={props.data.districts}
+          />
           <Nav {...navProps} />
         </div>
       </main>

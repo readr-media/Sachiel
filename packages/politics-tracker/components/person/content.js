@@ -14,11 +14,20 @@ const ContentContainer = styled.div`
  * @param {string} props.title
  * @param {React.ReactElement[] | React.ReactElement} props.children
  * @param {React.ReactElement[] | React.ReactElement} [props.editContent]
+ * @param {boolean} props.shouldShowEditMode
+ * @param {function} props.setShouldShowEditMode
  * @returns {React.ReactElement}
  */
-export default function Content({ title, children, editContent }) {
-  const [shouldShowEditMode, setShouldShowEditMode] = useState(false)
-
+export default function Content({
+  title,
+  children,
+  editContent,
+  shouldShowEditMode,
+  setShouldShowEditMode,
+}) {
+  const submitHandler = () => {
+    console.log('submit')
+  }
   return (
     <ContentContainer>
       <ContentTitle title={title}>
@@ -28,14 +37,7 @@ export default function Content({ title, children, editContent }) {
           )}
         </Fragment>
       </ContentTitle>
-      {shouldShowEditMode ? (
-        <Fragment>
-          {editContent}
-          <EditSendOrCancel onClick={() => setShouldShowEditMode(false)} />
-        </Fragment>
-      ) : (
-        children
-      )}
+      {shouldShowEditMode ? <Fragment>{editContent}</Fragment> : children}
     </ContentContainer>
   )
 }

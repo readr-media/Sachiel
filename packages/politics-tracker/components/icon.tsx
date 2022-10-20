@@ -9,6 +9,7 @@ type IconProps = {
   width: number
   height: number
   borderWidth: number
+  unoptimized?: boolean
 }
 
 export default function Icon(props: IconProps): JSX.Element {
@@ -42,16 +43,19 @@ export default function Icon(props: IconProps): JSX.Element {
         </svg>
       </div>
 
-      <Image
-        src={props.src}
-        alt={props.alt ?? ''}
-        className={iconStyle}
-        width={props.width}
-        height={props.height}
-        onError={() => {
-          setFailed(() => true)
-        }}
-      />
+      {!failed && props.src && (
+        <Image
+          src={props.src}
+          alt={props.alt ?? ''}
+          className={iconStyle}
+          width={props.width}
+          height={props.height}
+          unoptimized={props.unoptimized}
+          onError={() => {
+            setFailed(() => true)
+          }}
+        />
+      )}
     </div>
   )
 }

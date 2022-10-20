@@ -1,5 +1,6 @@
 import type { Politic } from '~/types/politics'
 import type { RawPolitic } from '~/types/common'
+import dynamic from 'next/dynamic'
 import { print } from 'graphql'
 import {
   usePersonElectionId,
@@ -12,7 +13,9 @@ import classNames from 'classnames'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import SourceItem from './source-item'
 import PoliticContent from './politic-content'
-import PoliticForm from './politic-form'
+const PoliticForm = dynamic(() => import('./politic-form'), {
+  ssr: false,
+})
 import Edit from '~/components/icons/edit'
 import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
 import s from './politic-body.module.css'

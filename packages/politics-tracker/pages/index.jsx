@@ -32,7 +32,7 @@ export const getServerSideProps = async () => {
   const MAYOR = '縣市首長'
   const COUNCILOR = '縣市議員'
   /** @type {NumberObject} */
-  const DISTINCT_ORDER = {
+  const DISTRICT_ORDER = {
     [NORTH]: 1,
     [CENTER]: 2,
     [SOUTH]: 3,
@@ -41,14 +41,14 @@ export const getServerSideProps = async () => {
   }
 
   /** @type {StringObject} */
-  const DISTINCT_CHINESE_MAP = {
+  const DISTRICT_CHINESE_MAP = {
     [NORTH]: '北部',
     [CENTER]: '中部',
     [SOUTH]: '南部',
     [EAST]: '東部',
     [ISLAND]: '離島',
   }
-  const DISTINCT_MAP = {
+  const DISTRICT_MAP = {
     // north
     臺北市: NORTH,
     新北市: NORTH,
@@ -304,27 +304,27 @@ export const getServerSideProps = async () => {
 
     // mayors
     /** @type {DistrinctOfMayorElection} */
-    const distinctData = {}
+    const districtData = {}
     for (const [cityName, area] of Object.entries(mayorArea)) {
-      if (!typedHasOwnProperty(DISTINCT_MAP, cityName)) continue
+      if (!typedHasOwnProperty(DISTRICT_MAP, cityName)) continue
 
-      const distinct = DISTINCT_MAP[cityName]
-      if (!distinctData[distinct]) {
-        distinctData[distinct] = {
-          key: distinct,
-          name: DISTINCT_CHINESE_MAP[distinct],
+      const district = DISTRICT_MAP[cityName]
+      if (!districtData[district]) {
+        districtData[district] = {
+          key: district,
+          name: DISTRICT_CHINESE_MAP[district],
           amount: 0,
           total: 0,
           areas: [],
         }
       }
-      distinctData[distinct].areas.push(area)
-      distinctData[distinct].amount += area.done
-      distinctData[distinct].total += area.total
+      districtData[district].areas.push(area)
+      districtData[district].amount += area.done
+      districtData[district].total += area.total
     }
 
-    // sort distinct by pre-defined order
-    const sortedDistinctData = Object.values(distinctData).sort((d1, d2) => {
+    // sort district by pre-defined order
+    const sortedDistrictData = Object.values(districtData).sort((d1, d2) => {
       const key1 = d1.key
       const key2 = d2.key
 
@@ -332,11 +332,11 @@ export const getServerSideProps = async () => {
       d1.areas.sort(sortMayorCities)
       d2.areas.sort(sortMayorCities)
 
-      return DISTINCT_ORDER[key1] - DISTINCT_ORDER[key2]
+      return DISTRICT_ORDER[key1] - DISTRICT_ORDER[key2]
     })
 
-    propsData.mayorAndPolitics.push(...sortedDistinctData)
-    propsData.totalCandidatesOfMayor = sortedDistinctData.reduce(
+    propsData.mayorAndPolitics.push(...sortedDistrictData)
+    propsData.totalCandidatesOfMayor = sortedDistrictData.reduce(
       (sum, current) => sum + current.total,
       0
     )
@@ -407,7 +407,6 @@ export const getServerSideProps = async () => {
  * @returns
  */
 export default function Home(props) {
-  console.log(props)
   return (
     <Fragment>
       <GAScript />
