@@ -39,6 +39,7 @@ export default function Section({ personData, personElectionsData }) {
         title="參與過的選舉"
       >
         <SectionBodyElection
+          personId={personData.id}
           personElectionsData={personElectionsData}
           isActive={activeId === '1'}
         ></SectionBodyElection>
