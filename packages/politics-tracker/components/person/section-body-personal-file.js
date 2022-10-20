@@ -238,6 +238,8 @@ export default function SectionBodyPersonalFile({
           <EditTags
             setShouldShowEditMode={setTagEditMode}
             tags={tags}
+            personId={id}
+            personName={name}
           ></EditTags>
         }
       >

@@ -1,0 +1,6 @@
+query GetExistTags($TagsName: [String!]) {
+  tags(where: { name: { in: $TagsName } }) {
+    id
+    name
+  }
+}
