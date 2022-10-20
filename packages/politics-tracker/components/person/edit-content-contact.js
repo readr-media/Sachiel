@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useMemo } from 'react'
 import { EditContentItemTitle } from './edit-content-item'
 import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import SourceInput from '../politics/source-input'
@@ -42,6 +42,20 @@ export default function EditContentContact({
   const [sourceList, setSourceList] = useState(
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
+  /**
+   * If property `value` of element in `emailList`, linkList and contactList are all empty string,
+   * or property `value` of element in `sourceList` are all empty string,
+   * then should disable submit button.
+   */
+  const shouldDisableSubmit = useMemo(
+    () =>
+      (emailList.filter((i) => i.value).length === 0 &&
+        linkList.filter((i) => i.value).length === 0 &&
+        contactList.filter((i) => i.value).length === 0) ||
+      sourceList.filter((i) => i.value).length === 0,
+    [emailList, linkList, contactList, sourceList]
+  )
+
   //client side only
   //TODO: use type Person in person.ts rather than {Object}
   /** @param {Object} data */
@@ -197,6 +211,7 @@ export default function EditContentContact({
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
       <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
+        isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
       />
