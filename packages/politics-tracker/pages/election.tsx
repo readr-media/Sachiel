@@ -148,7 +148,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         year: yearNumber,
-        name: electName,
+        name: electionName(undefined, electName, areaStr),
         area: districtsMapping[areaStr],
         data,
         prev: elections[index - 1] ?? null,
