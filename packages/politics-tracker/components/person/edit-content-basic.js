@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useMemo } from 'react'
 import EditContentItem from './edit-content-item'
 import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
@@ -43,6 +43,16 @@ export default function EditContentBasic({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
   const [personInfo, setPersonInfo] = useState(Object.assign({}, personData))
+
+  /**
+   * If  property `value` of element in `sourceList` are all empty strings,
+   * or personInfo.name is empty string, then should disable submit button.
+   */
+  const shouldDisableSubmit = useMemo(
+    () => !personInfo.name || sourceList.filter((i) => i.value).length === 0,
+    [personInfo.name, sourceList]
+  )
+
   /**
    *
    * @param {string} name
@@ -301,6 +311,7 @@ export default function EditContentBasic({
       )}
       <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
+        isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
       />

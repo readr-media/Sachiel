@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useMemo } from 'react'
 import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
 import { SourceInputWrapper } from './edit-source'
 import SourceInput from '../politics/source-input'
@@ -9,6 +9,7 @@ import EditSendOrCancel from './edit-send-or-cancel'
 import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
+import ListItem from './list-item'
 
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
@@ -41,6 +42,17 @@ export default function EditContentBiography({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
 
+  /**
+   * If property `value` of element in `sourceList` are all empty string,
+   * of property `value` of element in `list` are all empty string,
+   * then should disable submit button.
+   */
+  const shouldDisableSubmit = useMemo(
+    () =>
+      list.filter((i) => i.value).length === 0 ||
+      sourceList.filter((i) => i.value).length === 0,
+    [list, sourceList]
+  )
   //client side only
   //TODO: use type Person in person.ts rather than {Object}
   /** @param {Object} data */
@@ -126,6 +138,7 @@ export default function EditContentBiography({
 
       <EditSource sourceList={sourceList} setSourceList={setSourceList} />
       <EditSendOrCancel
+        isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
       />
