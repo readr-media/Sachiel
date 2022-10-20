@@ -19,6 +19,8 @@ const fullConfig = getTailwindConfig()
 type PoliticFormProps = {
   politic: Politic
   closeForm: () => void
+  // this is type definition
+  // eslint-disable-next-line
   submitForm: (politic: Politic) => Promise<boolean>
 }
 
