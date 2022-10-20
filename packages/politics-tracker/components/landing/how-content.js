@@ -75,22 +75,6 @@ const IntroWrap = styled.div`
  * @returns {React.ReactElement}
  */
 
-//TODO: img的部分有辦法只存檔名嗎？
-// const information = [
-//   { img: '/landingpage/process01.svg', num: '1', intro: '選擇候選人' },
-//   {
-//     img: '/landingpage/process02.svg',
-//     num: '2',
-//     intro: '新增或編輯該候選人的政見',
-//   },
-//   { img: '/landingpage/process03.svg', num: '3', intro: '送出審核給志工確認' },
-//   {
-//     img: '/landingpage/process04.svg',
-//     num: '4',
-//     intro: '資料確認無誤補坑成功！',
-//   },
-// ]
-
 export default function HowContent() {
   return (
     <ContentContainer>
@@ -133,7 +117,7 @@ export default function HowContent() {
           <IntroWrap>
             <ItemNum>3</ItemNum>
             <h4>
-              送出審核給<br></br>志工確認
+              送出給志工<br></br>確認資料來源
             </h4>
           </IntroWrap>
         </HowItem>

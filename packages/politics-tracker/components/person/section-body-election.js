@@ -1,6 +1,5 @@
 import SectionBody from './section-body'
 import { UnorderedList, ListItem } from './content-list'
-import { Fragment } from 'react'
 import styled from 'styled-components'
 
 const ElectionItemContainer = styled(ListItem)`
@@ -18,7 +17,7 @@ const ElectionItemContainer = styled(ListItem)`
   }
 `
 
-const ElectionItem = styled.p`
+const ElectionLink = styled.a`
   margin-right: 16px;
 `
 
@@ -50,9 +49,33 @@ export default function SectionBodyElection({
   personElectionsData,
   personId,
 }) {
+  /**
+   *
+   * @param {import('~/types/common').RawElection["election_year_year"]} year
+   * @param {import('~/types/common').RawElectionArea["city"]} [city]
+   * @param {import('~/types/common').RawElectionArea["type"]} type
+   * @returns
+   */
+  const electionLink = (year, city, type = '') => {
+    if (year && city !== undefined && type) {
+      return `/election?year=${year}&area=${
+        city === '' ? `""` : city
+      }&type=${type}`
+    }
+    return undefined
+  }
+
   const electionsList = personElectionsData.map((item) => (
     <ElectionItemContainer key={item.id}>
-      <ElectionItem>{item.election?.name}</ElectionItem>
+      <ElectionLink
+        href={electionLink(
+          item.election?.election_year_year,
+          item.electoral_district?.city,
+          item.election?.type
+        )}
+      >
+        {item.election?.name}
+      </ElectionLink>
       <PoliticButton href={`/politics/${personId}`}>政見</PoliticButton>
     </ElectionItemContainer>
   ))
