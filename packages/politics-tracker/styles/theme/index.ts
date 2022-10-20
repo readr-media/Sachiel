@@ -37,6 +37,7 @@ export const theme = {
     landingGreen: '#F3FDFF',
     landingPurple: '#ECEDFF',
     lightPurple: '#F3F4FF',
+    skinDark: '#FFF1E8',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
