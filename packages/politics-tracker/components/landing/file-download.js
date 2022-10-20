@@ -115,7 +115,7 @@ export default function TeamIntro() {
             return (
               <div key={v.buttonTitle}>
                 <a href={v.buttonURL}>
-                  <p>下載縣市長政見</p>
+                  <p>{v.buttonTitle}</p>
                   <Image
                     alt="arrowRightblack"
                     src="/landingpage/arrow_right_black.svg"

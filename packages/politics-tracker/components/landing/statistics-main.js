@@ -162,7 +162,7 @@ export default function StatisticsBoard({ propsData }) {
             <CalNum color="green">
               <h2>
                 <CountUp
-                  end={propsData['totalCandidatesOfMayor']}
+                  end={propsData['totalCompletionOfMayor']}
                   duration={3}
                   decimal=","
                 />
@@ -172,7 +172,7 @@ export default function StatisticsBoard({ propsData }) {
         </BoardContent>
         <a href="#mayor">
           <BoardButton color={'green'}>
-            <h4>新增縣市長政見坑</h4>
+            <h4>新增縣市長政見</h4>
             <ArrowIcon>
               <Image
                 alt="arrowRight"
@@ -192,7 +192,7 @@ export default function StatisticsBoard({ propsData }) {
             <CalNum color="blue">
               <h2>
                 <CountUp
-                  end={propsData['totalCandidatesOfcouncilor']}
+                  end={propsData['totalCompletionOfCouncilor']}
                   separator=","
                   duration={3}
                 />
@@ -202,7 +202,7 @@ export default function StatisticsBoard({ propsData }) {
         </BoardContent>
         <a href="#councilorBlock">
           <BoardButton color="blue">
-            <h4>新增縣市議員政見坑</h4>
+            <h4>新增縣市議員政見</h4>
             <ArrowIcon>
               <Image
                 alt="arrowRight"
