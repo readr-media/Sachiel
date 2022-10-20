@@ -106,7 +106,10 @@ function electionName<T extends string | number | undefined>(
   name: T,
   area: T
 ): string {
-  return [year, name, area].join(' ')
+  // replace year info in election.name with emepty string
+  return [year, String(name).replace(/^\d+年/, ''), area]
+    .filter((text) => text !== undefined)
+    .join(' ')
 }
 
 function getNewSource(): Source {
