@@ -180,6 +180,9 @@ const ContentSide = styled.div`
 const Content = styled.div`
   width: 100%;
   padding-bottom: 20px;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 20px 40px 40px;
+  }
 `
 /**
  *
