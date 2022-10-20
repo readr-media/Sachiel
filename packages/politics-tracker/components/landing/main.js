@@ -9,6 +9,7 @@ import Footer from '~/components/footer'
 import FrontPage from '~/components/landing/frontpage-main'
 import How from '~/components/landing/how-main'
 import TeamIntro from '~/components/landing/team-intro'
+import Credit from '~/components/landing/credit'
 import Mayor from '~/components/landing/mayor-main'
 import Council from '~/components/landing/council-main'
 
@@ -22,6 +23,7 @@ const Main = styled.main`
 const HeaderWrap = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
 `
+
 /**
  * @property {Object} titleData
  * @returns {React.ReactElement}
@@ -47,6 +49,7 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore
           propsData={propsData}
         />
+        <Credit />
         <TeamIntro />
       </Main>
       <Footer />
