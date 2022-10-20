@@ -209,6 +209,7 @@ const Election = (props: ElectionPageProps) => {
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
           <EVCComponent
+            key={`${props.year}_${props.name}_${props.area}`}
             year={props.year}
             title={props.name}
             districts={props.data.districts}
