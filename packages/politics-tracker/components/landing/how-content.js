@@ -66,6 +66,9 @@ const IntroWrap = styled.div`
   top: 140px;
   left: 0px;
   right: 0px;
+  h4 {
+    max-width: 168px;
+  }
 `
 /**
  *
