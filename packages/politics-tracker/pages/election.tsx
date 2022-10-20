@@ -211,7 +211,7 @@ const Election = (props: ElectionPageProps) => {
           <EVCComponent
             year={props.year}
             title={props.name}
-            districts={props.data[props.area].districts}
+            districts={props.data.districts}
           />
           <Nav {...navProps} />
         </div>
