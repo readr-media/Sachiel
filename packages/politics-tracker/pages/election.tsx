@@ -38,12 +38,13 @@ export const getServerSideProps: GetServerSideProps<
   let electName: string
   const yearNumber = Number(year)
   const areaStr = String(area)
+  const mappedAreaStr = districtsMapping[areaStr] ?? 'allDisticts'
 
   const dataLoader = new DataLoader({
     apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
     year,
     type: electionTypesMapping[String(type)],
-    area: districtsMapping[areaStr],
+    area: mappedAreaStr,
   })
 
   try {
@@ -149,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         year: yearNumber,
         name: electionName(undefined, electName, areaStr),
-        area: districtsMapping[areaStr],
+        area: mappedAreaStr,
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
