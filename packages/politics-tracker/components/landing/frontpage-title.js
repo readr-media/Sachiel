@@ -82,7 +82,7 @@ const MainTitleGroup = styled.div`
     font-weight: 700;
     margin: auto;
     margin-bottom: 10px;
-    max-width: 250px;
+    max-width: 200px;
     ${({ theme }) => theme.breakpoint.md} {
       max-width: none;
     }
