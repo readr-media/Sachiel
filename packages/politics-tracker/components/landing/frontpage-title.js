@@ -171,7 +171,7 @@ export default function Title() {
               />
             </LogoIcon>
             <h1>政見不失憶</h1>
-            <h4>臺灣 2022 選舉政見協作計劃平台</h4>
+            <h4>臺灣 2022 選舉政見協作平台</h4>
             <TitleButton />
           </MainTitleGroup>
         </MainTitleContainer>
