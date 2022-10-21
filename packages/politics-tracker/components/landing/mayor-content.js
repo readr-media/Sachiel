@@ -232,6 +232,10 @@ export default function MayorContent({
 
   const [activeData, setActiveData] = useState(sortDataWithActive)
 
+  useEffect(() => {
+    setActiveData(sortDataWithActive)
+  }, [mayorRegion])
+
   // @ts-ignore
   function clickChangeIcon(id) {
     setActiveData((pre) => {

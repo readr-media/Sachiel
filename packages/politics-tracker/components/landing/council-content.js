@@ -57,32 +57,6 @@ const TitleImg = styled.div`
     display: none;
   }
 `
-const DistrictContent = styled.span`
-  padding: 10px 15px;
-  ${({ theme }) => theme.breakpoint.xl} {
-    display: none !important;
-  }
-`
-const ListWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  div {
-    border-right: 1px solid rgba(15, 45, 53, 0.3);
-    margin-bottom: 15px;
-  }
-  span {
-    color: ${({ theme }) => theme.textColor.blue};
-    font-size: 16px;
-    margin: 0px 10px;
-    cursor: pointer;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    span {
-      font-size: 18px;
-    }
-  }
-`
 const ListWrapDesk = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -235,7 +209,6 @@ export default function CouncilContent({
     JSON.stringify(dataOrderByCompletePercent)
   )
   const rawDatas = newDataOrderByCompletePercent[councilRegion].areas
-
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
 
@@ -251,14 +224,19 @@ export default function CouncilContent({
       return a?.done / a?.total - b?.done / b?.total
     })
   }
-
+  //sortDatas可以跑出資料沒錯
   const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
   const sortDataWithActive = sortDatas.map((data) => ({
     ...data,
     active: false,
   }))
 
+  //activeData是用在實際跑資料上 但sortDataWithActive有變動的時候 activeData不會跟著一起變
   const [activeData, setActiveData] = useState(sortDataWithActive)
+
+  useEffect(() => {
+    setActiveData(sortDataWithActive)
+  }, [councilRegion])
 
   // @ts-ignore
   function clickChangeIcon(id) {
@@ -282,7 +260,7 @@ export default function CouncilContent({
     setIsDesktop(window.innerWidth >= 1200)
     function resizeChangeIcon() {
       // @ts-ignore
-      setIsDesktop((pre) => {
+      setIsDesktop(() => {
         if (window.innerWidth >= 1200) {
           return true
         } else {
