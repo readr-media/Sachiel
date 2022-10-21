@@ -190,6 +190,8 @@ const ItemGroup = styled.div`
 const HoverWrap = styled.div`
   max-width: 58px;
   padding-left: 3px;
+  user-select: none;
+  -webkit-user-drag: none;
   &:hover {
     cursor: pointer;
     background-color: rgba(15, 45, 53, 0.05);
