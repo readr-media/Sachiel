@@ -82,14 +82,13 @@ const ButtonGroup = styled.div`
   background: ${({ theme }) => theme.backgroundColor.landingPurple};
   max-width: 1230px;
   margin: auto;
-  padding: 20px 15px 10px 15px;
+  padding: 20px 15px 0px 15px;
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 10px 20px;
+    padding: 10px 20px 0px 20px;
   }
 
   #listBox {
     width: 100%;
-    /* outline: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,7 +98,6 @@ const ButtonGroup = styled.div`
   }
 
   ul {
-    /* outline: 1px solid blue; */
     display: block;
     width: 260px;
     margin: auto;
@@ -119,7 +117,6 @@ const ButtonGroup = styled.div`
       max-width: 1230px;
     }
   }
-  /* //a才是真的button外觀 */
   ul li div {
     text-decoration: none;
     background: ${({ theme }) => theme.backgroundColor.white};
@@ -140,6 +137,12 @@ const ButtonGroup = styled.div`
       min-width: 150px;
     }
   }
+
+  ul li div:hover {
+    cursor: pointer;
+    background: ${({ theme }) => theme.backgroundColor.lightPurple};
+  }
+
   li {
     margin: 6px;
     ${({ theme }) => theme.breakpoint.md} {
@@ -193,6 +196,7 @@ const Content = styled.div`
 `
 
 const ToggleGroup = styled.div`
+  padding: 4px;
   max-height: 100px;
   display: block;
   ${({ theme }) => theme.breakpoint.md} {
@@ -207,20 +211,24 @@ const ToggleButton = styled.div`
   font-weight: 500;
   line-height: 1.5;
   color: ${({ theme }) => theme.textColor.blue};
-  display: flex;
-  align-items: center;
-  padding-top: 10px;
-  justify-content: center;
+  padding: 5px;
   &:hover {
     cursor: pointer;
+  }
+  div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0px;
+  }
+  &:hover > div {
+    background: rgba(15, 45, 53, 0.05);
   }
   ${({ theme }) => theme.breakpoint.xl} {
     font-size: 16px;
   }
 `
-
-//步驟：
-
 /**
  *
  * @returns {React.ReactElement}
@@ -228,7 +236,6 @@ const ToggleButton = styled.div`
 
 // @ts-ignore
 export default function CouncilMain({ propsData }) {
-  //直接先生一筆lowtohigh的資料群再去map
   const newPropsData = JSON.parse(JSON.stringify(propsData))
   const rawDatas = newPropsData['councilorAndPolitics']
 
@@ -239,7 +246,6 @@ export default function CouncilMain({ propsData }) {
     })
   }
 
-  //跑縣市的資料已經經過完成比例排序
   const dataOrderByCompletePercent = lowToHigh(rawDatas)
 
   /**
@@ -345,24 +351,26 @@ export default function CouncilMain({ propsData }) {
                     setToggle(!toggle)
                   }}
                 >
-                  {toggleNotion}
-                  {toggle ? (
-                    <Image
-                      alt="arrowPurple"
-                      src="/landingpage/arrow_down_purple.svg"
-                      width="20"
-                      height="20"
-                      onClick={() => {}}
-                    />
-                  ) : (
-                    <Image
-                      alt="arrowPurple"
-                      src="/landingpage/arrow_up_purple.svg"
-                      width="20"
-                      height="20"
-                      onClick={() => {}}
-                    />
-                  )}
+                  <div>
+                    {toggleNotion}
+                    {toggle ? (
+                      <Image
+                        alt="arrowPurple"
+                        src="/landingpage/arrow_down_purple.svg"
+                        width="20"
+                        height="20"
+                        onClick={() => {}}
+                      />
+                    ) : (
+                      <Image
+                        alt="arrowPurple"
+                        src="/landingpage/arrow_up_purple.svg"
+                        width="20"
+                        height="20"
+                        onClick={() => {}}
+                      />
+                    )}
+                  </div>
                 </ToggleButton>
               </ButtonGroup>
             </ButtonWrap>

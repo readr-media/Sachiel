@@ -14,6 +14,7 @@ const UnorderedList = styled.ul`
 const ListItem = styled.li`
   position: relative;
   padding-left: 14px;
+  margin-top: 8px;
   &::before {
     content: '';
     position: absolute;

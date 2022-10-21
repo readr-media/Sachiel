@@ -82,7 +82,7 @@ const MainTitleGroup = styled.div`
     font-weight: 700;
     margin: auto;
     margin-bottom: 10px;
-    max-width: 250px;
+    max-width: 200px;
     ${({ theme }) => theme.breakpoint.md} {
       max-width: none;
     }
@@ -171,7 +171,7 @@ export default function Title() {
               />
             </LogoIcon>
             <h1>政見不失憶</h1>
-            <h4>臺灣 2022 選舉政見協作計劃平台</h4>
+            <h4>臺灣 2022 選舉政見協作平台</h4>
             <TitleButton />
           </MainTitleGroup>
         </MainTitleContainer>
