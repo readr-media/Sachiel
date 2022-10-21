@@ -27,7 +27,7 @@ export const getServerSideProps = async ({ res }) => {
   // cache policy
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=300, stale-while-revalidate=60'
+    'public, max-age=300, stale-while-revalidate=60'
   )
 
   const NORTH = 'north'

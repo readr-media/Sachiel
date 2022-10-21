@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<
   // cache policy
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=600, stale-while-revalidate=60'
+    'public, max-age=600, stale-while-revalidate=60'
   )
 
   const { personId } = query
