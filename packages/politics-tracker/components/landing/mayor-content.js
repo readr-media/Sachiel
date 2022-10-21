@@ -234,7 +234,7 @@ export default function MayorContent({
 
   useEffect(() => {
     setActiveData(sortDataWithActive)
-  }, [mayorRegion])
+  }, [mayorRegion, sortWay])
 
   // @ts-ignore
   function clickChangeIcon(id) {

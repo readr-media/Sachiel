@@ -236,7 +236,7 @@ export default function CouncilContent({
 
   useEffect(() => {
     setActiveData(sortDataWithActive)
-  }, [councilRegion])
+  }, [councilRegion, sortWay])
 
   // @ts-ignore
   function clickChangeIcon(id) {
@@ -284,6 +284,7 @@ export default function CouncilContent({
           onClick={() => {
             setSortWay(!sortWay)
             setArrowToggle(!arrowToggle)
+            console.log('點到排序')
           }}
         >
           <HoverWrap>
@@ -302,7 +303,12 @@ export default function CouncilContent({
                 src="/landingpage/arrow_purple_up.svg"
                 width="20"
                 height="20"
-                onClick={() => {}}
+                // onClick={() => {
+                //   console.log('點到排序')
+                // }}
+                onClick={() => {
+                  console.log('點到排序')
+                }}
               />
             )}
           </HoverWrap>
