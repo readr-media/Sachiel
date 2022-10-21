@@ -163,8 +163,8 @@ export default function StatisticsBoard({ propsData }) {
               <h2>
                 <CountUp
                   end={propsData['totalCompletionOfMayor']}
-                  duration={3}
                   decimal=","
+                  duration={0.8}
                 />
               </h2>
             </CalNum>
@@ -194,7 +194,7 @@ export default function StatisticsBoard({ propsData }) {
                 <CountUp
                   end={propsData['totalCompletionOfCouncilor']}
                   separator=","
-                  duration={3}
+                  duration={0.8}
                 />
               </h2>
             </CalNum>
