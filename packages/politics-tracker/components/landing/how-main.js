@@ -66,7 +66,7 @@ export default function TeamIntro() {
       </HowSideBar>
       <HowContentWrap>
         <HowTitle>
-          <h4>補坑指南：如何協助政見</h4>
+          <h4>補坑指南：如何協作政見</h4>
         </HowTitle>
         <HowContent />
       </HowContentWrap>

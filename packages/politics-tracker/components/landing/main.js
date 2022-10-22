@@ -16,8 +16,6 @@ import Council from '~/components/landing/council-main'
 const Main = styled.main`
   width: 100%;
   padding-top: 64px;
-  user-select: none;
-  -webkit-user-drag: none;
   ${({ theme }) => theme.breakpoint.md} {
     padding-top: 80px;
   }

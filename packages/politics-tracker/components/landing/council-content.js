@@ -190,6 +190,8 @@ const ItemGroup = styled.div`
 const HoverWrap = styled.div`
   max-width: 58px;
   padding-left: 3px;
+  user-select: none;
+  -webkit-user-drag: none;
   &:hover {
     cursor: pointer;
     background-color: rgba(15, 45, 53, 0.05);
@@ -222,7 +224,7 @@ export default function CouncilContent({
       return a?.done / a?.total - b?.done / b?.total
     })
   }
-
+  //sortDatas可以跑出資料沒錯
   const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
   const sortDataWithActive = sortDatas.map((data) => ({
     ...data,
@@ -235,6 +237,10 @@ export default function CouncilContent({
   )
 
   const [activeData, setActiveData] = useState(sortDataWithActive)
+
+  useEffect(() => {
+    setActiveData(sortDataWithActive)
+  }, [councilRegion, sortWay])
 
   // @ts-ignore
   function clickChangeIcon(id) {
@@ -258,7 +264,7 @@ export default function CouncilContent({
     setIsDesktop(window.innerWidth >= 1200)
     function resizeChangeIcon() {
       // @ts-ignore
-      setIsDesktop((pre) => {
+      setIsDesktop(() => {
         if (window.innerWidth >= 1200) {
           return true
         } else {
@@ -282,6 +288,7 @@ export default function CouncilContent({
           onClick={() => {
             setSortWay(!sortWay)
             setArrowToggle(!arrowToggle)
+            console.log('點到排序')
           }}
         >
           <HoverWrap>
@@ -300,7 +307,12 @@ export default function CouncilContent({
                 src="/landingpage/arrow_purple_up.svg"
                 width="20"
                 height="20"
-                onClick={() => {}}
+                // onClick={() => {
+                //   console.log('點到排序')
+                // }}
+                onClick={() => {
+                  console.log('點到排序')
+                }}
               />
             )}
           </HoverWrap>

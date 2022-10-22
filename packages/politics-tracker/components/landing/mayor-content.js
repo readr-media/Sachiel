@@ -125,6 +125,8 @@ const FilterBar = styled.div`
 const HoverWrap = styled.div`
   max-width: 58px;
   padding-left: 3px;
+  user-select: none;
+  -webkit-user-drag: none;
   &:hover {
     cursor: pointer;
     background-color: rgba(15, 45, 53, 0.05);
@@ -233,6 +235,10 @@ export default function MayorContent({
   )
 
   const [activeData, setActiveData] = useState(sortDataWithActive)
+
+  useEffect(() => {
+    setActiveData(sortDataWithActive)
+  }, [mayorRegion, sortWay])
 
   // @ts-ignore
   function clickChangeIcon(id) {
