@@ -218,10 +218,8 @@ export default function CouncilContent({
   // @ts-ignore
   councilRegion,
 }) {
-  const newDataOrderByCompletePercent = JSON.parse(
-    JSON.stringify(dataOrderByCompletePercent)
-  )
-  const rawDatas = newDataOrderByCompletePercent[councilRegion].areas
+  const rawDatas = dataOrderByCompletePercent[councilRegion].areas
+
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
 
@@ -244,7 +242,11 @@ export default function CouncilContent({
     active: false,
   }))
 
-  //activeData是用在實際跑資料上 但sortDataWithActive有變動的時候 activeData不會跟著一起變
+  useEffect(
+    () => setActiveData(sortDataWithActive),
+    [JSON.stringify(sortDataWithActive)]
+  )
+
   const [activeData, setActiveData] = useState(sortDataWithActive)
 
   useEffect(() => {
