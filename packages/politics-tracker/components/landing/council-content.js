@@ -57,32 +57,6 @@ const TitleImg = styled.div`
     display: none;
   }
 `
-const DistrictContent = styled.span`
-  padding: 10px 15px;
-  ${({ theme }) => theme.breakpoint.xl} {
-    display: none !important;
-  }
-`
-const ListWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  div {
-    border-right: 1px solid rgba(15, 45, 53, 0.3);
-    margin-bottom: 15px;
-  }
-  span {
-    color: ${({ theme }) => theme.textColor.blue};
-    font-size: 16px;
-    margin: 0px 10px;
-    cursor: pointer;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    span {
-      font-size: 18px;
-    }
-  }
-`
 const ListWrapDesk = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -231,10 +205,7 @@ export default function CouncilContent({
   // @ts-ignore
   councilRegion,
 }) {
-  const newDataOrderByCompletePercent = JSON.parse(
-    JSON.stringify(dataOrderByCompletePercent)
-  )
-  const rawDatas = newDataOrderByCompletePercent[councilRegion].areas
+  const rawDatas = dataOrderByCompletePercent[councilRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
@@ -257,6 +228,11 @@ export default function CouncilContent({
     ...data,
     active: false,
   }))
+
+  useEffect(
+    () => setActiveData(sortDataWithActive),
+    [JSON.stringify(sortDataWithActive)]
+  )
 
   const [activeData, setActiveData] = useState(sortDataWithActive)
 

@@ -138,7 +138,7 @@ const ButtonGroup = styled.div`
     }
   }
 
-  ul li div:hover {
+  ul li div:not(.press):hover {
     cursor: pointer;
     background: ${({ theme }) => theme.backgroundColor.lightPurple};
   }
@@ -150,7 +150,7 @@ const ButtonGroup = styled.div`
     }
   }
 
-  #press {
+  .press {
     font-weight: 500;
     font-size: 14px;
     padding: 8px 15px;
@@ -325,14 +325,14 @@ export default function CouncilMain({ propsData }) {
                               }}
                             >
                               {v.active ? (
-                                <div id="press">
+                                <div className="press">
                                   {v.name}
                                   <span>
                                     ( {v.amount} / {v.total} )
                                   </span>
                                 </div>
                               ) : (
-                                <div id="nopress">
+                                <div className="nopress">
                                   {v.name}
                                   <span>
                                     ( {v.amount} / {v.total})

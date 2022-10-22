@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import MayorList from '~/components/landing/mayor-content'
 
@@ -138,7 +138,7 @@ const ButtonGroup = styled.div`
     }
   }
 
-  ul li a:hover {
+  ul li a:not(.press):hover {
     cursor: pointer;
     background: ${({ theme }) => theme.backgroundColor.landingGreen};
   }
@@ -151,7 +151,7 @@ const ButtonGroup = styled.div`
       0px 2px 4px rgba(131, 121, 248, 0.5);
   }
 
-  #press {
+  .press {
     cursor: pointer;
     color: ${({ theme }) => theme.textColor.white};
     background: ${({ theme }) => theme.textColor.green};
@@ -273,14 +273,14 @@ export default function MayorMain({ propsData }) {
                           }}
                         >
                           {v.active ? (
-                            <a href="#/" id="press">
+                            <a href="#/" className="press">
                               {v.name}
                               <span>
                                 ( {v.amount} / {v.total} )
                               </span>
                             </a>
                           ) : (
-                            <a href="#/" id="nopress">
+                            <a href="#/" className="nopress">
                               {v.name}
                               <span>
                                 ( {v.amount} / {v.total} )
