@@ -69,6 +69,7 @@ export const getServerSideProps = async ({ res }) => {
     苗栗縣: CENTER,
     彰化縣: CENTER,
     南投縣: CENTER,
+    雲林縣: CENTER,
     // south
     高雄市: SOUTH,
     臺南市: SOUTH,
