@@ -205,10 +205,7 @@ export default function MayorContent({
   // @ts-ignore
   mayorRegion,
 }) {
-  const newDataOrderByCompletePercent = JSON.parse(
-    JSON.stringify(dataOrderByCompletePercent)
-  )
-  const rawDatas = newDataOrderByCompletePercent[mayorRegion].areas
+  const rawDatas = dataOrderByCompletePercent[mayorRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
@@ -231,6 +228,11 @@ export default function MayorContent({
     ...data,
     active: false,
   }))
+
+  useEffect(
+    () => setActiveData(sortDataWithActive),
+    [JSON.stringify(sortDataWithActive)]
+  )
 
   const [activeData, setActiveData] = useState(sortDataWithActive)
 
