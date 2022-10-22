@@ -98,13 +98,13 @@ const ButtonGroup = styled.div`
   }
 
   ul {
+    min-width: 260px;
     display: block;
-    width: 260px;
     margin: auto;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     ${({ theme }) => theme.breakpoint.sm} {
       width: 430px;
     }

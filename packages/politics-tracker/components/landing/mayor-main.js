@@ -101,7 +101,7 @@ const ButtonGroup = styled.div`
 
   ul {
     min-width: 250px;
-    max-width: 1100px;
+    max-width: 270px;
     width: 100%;
     margin: auto;
     list-style: none;
@@ -110,6 +110,7 @@ const ButtonGroup = styled.div`
     justify-content: center;
     ${({ theme }) => theme.breakpoint.md} {
       justify-content: center;
+      max-width: 1100px;
     }
   }
   ul li a {
