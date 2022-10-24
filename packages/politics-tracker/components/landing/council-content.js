@@ -70,9 +70,9 @@ const ListWrapDesk = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0px 10px;
+    padding: 0px 10px 0px 0px;
     border-right: 1px solid rgba(15, 45, 53, 0.3);
-    margin: 5px 0px;
+    margin: 5px 10px 5px 0px;
   }
 
   div:hover {
@@ -127,19 +127,30 @@ const FilterBar = styled.div`
   }
 `
 const SubtitleButtonDesk = styled.div`
-  color: ${({ theme }) => theme.backgroundColor.white};
   font-weight: 500;
-  max-height: 24px;
-  max-width: 76px;
   //TODO:
   font-size: 12px;
-  padding: 4px 8px;
-  min-width: 86px;
-  border-radius: 32px;
+  padding: 4px 8px 4px 0px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 5px 10px 5px 0px;
+  p {
+    color: ${({ theme }) => theme.backgroundColor.white};
+    padding: 4px 8px;
+    border-radius: 32px;
+    margin: 5px 10px 5px 0px;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding: 0px;
+    margin-right: 15px;
+    display: block;
+
+    p {
+      min-width: 86px;
+      width: 100%;
+      padding: 4px 6px;
+      max-height: 29px;
+    }
+  }
 `
 
 // @ts-ignore
@@ -152,8 +163,8 @@ const DistrictContentDesk = styled.div`
 `
 const DeskList = styled.div`
   width: 100%;
-  padding-top: 15px;
-  margin-bottom: 7px;
+  padding-top: 10px;
+  margin-bottom: 5px;
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 0px;
     display: flex;
@@ -376,10 +387,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done === 0
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#DB4C65' }}
-                        >
-                          還沒有政見
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#DB4C65' }}>
+                            還沒有政見
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
@@ -414,10 +425,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done < 20 && candidate.done > 0
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#F58439' }}
-                        >
-                          政見還很少
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#F58439' }}>
+                            政見還很少
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
@@ -453,10 +464,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done > 20
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#2FB7BF' }}
-                        >
-                          超過20條政見
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#2FB7BF' }}>
+                            超過20條政見
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
@@ -493,10 +504,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done === 0
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#DB4C65' }}
-                        >
-                          還沒有政見
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#DB4C65' }}>
+                            還沒有政見
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
@@ -531,10 +542,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done < 20 && candidate.done > 0
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#F58439' }}
-                        >
-                          政見還很少
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#F58439' }}>
+                            政見還很少
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
@@ -570,10 +581,10 @@ export default function CouncilContent({
                         (candidate) => candidate.done > 20
                       ).length !== 0 ? (
                       <DeskList>
-                        <SubtitleButtonDesk
-                          style={{ backgroundColor: '#2FB7BF' }}
-                        >
-                          超過20條政見
+                        <SubtitleButtonDesk>
+                          <p style={{ backgroundColor: '#2FB7BF' }}>
+                            超過20條政見
+                          </p>
                         </SubtitleButtonDesk>
                         <ListWrapDesk>
                           {v.candidates
