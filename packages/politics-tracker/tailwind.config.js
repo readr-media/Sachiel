@@ -25,7 +25,7 @@ module.exports = {
       textColor: {
         main: '#0F2D35',
         error: '#C0374F',
-        control: '#B3800D',
+        control: '#B2800D',
         default: '#838383',
       },
       boxShadow: {
