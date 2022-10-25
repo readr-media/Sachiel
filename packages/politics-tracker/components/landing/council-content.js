@@ -28,9 +28,6 @@ const DistrictInforBox = styled.div`
     display: flex;
     justify-content: flex-start;
 
-    &:hover {
-      cursor: inherit;
-    }
     p,
     h5,
     h3 {
@@ -73,6 +70,9 @@ const ListWrapDesk = styled.div`
     padding: 0px 10px 0px 0px;
     border-right: 1px solid rgba(15, 45, 53, 0.3);
     margin: 5px 10px 5px 0px;
+  }
+  div:last-child {
+    border-right: none;
   }
 
   div:hover {
@@ -235,7 +235,6 @@ export default function CouncilContent({
       return a?.done / a?.total - b?.done / b?.total
     })
   }
-  //sortDatas可以跑出資料沒錯
   const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
   const sortDataWithActive = sortDatas.map((data) => ({
     ...data,
@@ -299,7 +298,6 @@ export default function CouncilContent({
           onClick={() => {
             setSortWay(!sortWay)
             setArrowToggle(!arrowToggle)
-            console.log('點到排序')
           }}
         >
           <HoverWrap>
@@ -318,12 +316,7 @@ export default function CouncilContent({
                 src="/landingpage/arrow_purple_up.svg"
                 width="20"
                 height="20"
-                // onClick={() => {
-                //   console.log('點到排序')
-                // }}
-                onClick={() => {
-                  console.log('點到排序')
-                }}
+                onClick={() => {}}
               />
             )}
           </HoverWrap>
@@ -334,14 +327,12 @@ export default function CouncilContent({
         {activeData.map((v, i) => {
           return (
             <ItemWrap key={i}>
-              <DistrictInforBox>
-                <SubtitleWrap
-                  key={v.id}
-                  id={v.name}
-                  onClick={() => {
-                    clickChangeIcon(v.id)
-                  }}
-                >
+              <DistrictInforBox
+                onClick={() => {
+                  clickChangeIcon(v.id)
+                }}
+              >
+                <SubtitleWrap key={v.id} id={v.name}>
                   <Title>
                     <h4>{v.name.slice(3)}</h4>
                     <TitleImg onClick={() => {}}>
