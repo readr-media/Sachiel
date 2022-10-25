@@ -276,6 +276,11 @@ export default function MayorContent({
         if (window.innerWidth >= 1200) {
           return true
         } else {
+          setActiveData((pre) => {
+            return pre.map((data) => {
+              return { ...data, active: false }
+            })
+          })
           return false
         }
       })

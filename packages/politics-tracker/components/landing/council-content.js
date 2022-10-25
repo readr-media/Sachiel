@@ -218,6 +218,7 @@ export default function CouncilContent({
   // @ts-ignore
   councilRegion,
 }) {
+  //如果 isDesk=false的話 isActive要全部變為false
   const rawDatas = dataOrderByCompletePercent[councilRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
@@ -278,6 +279,12 @@ export default function CouncilContent({
         if (window.innerWidth >= 1200) {
           return true
         } else {
+          // 如果判斷是手機版 一律變為 false
+          setActiveData((pre) => {
+            return pre.map((data) => {
+              return { ...data, active: false }
+            })
+          })
           return false
         }
       })
@@ -325,6 +332,7 @@ export default function CouncilContent({
       </FilterBar>
       <ItemGroup>
         {activeData.map((v, i) => {
+          // console.log(activeData)
           return (
             <ItemWrap key={i}>
               <DistrictInforBox
