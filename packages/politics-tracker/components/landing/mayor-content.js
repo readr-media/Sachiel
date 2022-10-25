@@ -28,6 +28,10 @@ const DistrictInforBox = styled.div`
     display: flex;
     justify-content: flex-start;
 
+    &:hover {
+      cursor: auto;
+    }
+
     p,
     h5,
     h3 {
@@ -76,6 +80,10 @@ const ListWrapDesk = styled.div`
 
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: none;
+    div:hover {
+      cursor: pointer;
+      text-decoration-line: underline;
+    }
   }
 `
 
