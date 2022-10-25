@@ -104,14 +104,11 @@ const ButtonGroup = styled.div`
     padding: 10px 20px 0px 20px;
   }
 
-  #listBox {
+  .listBox {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   ul {
@@ -148,6 +145,9 @@ const ButtonGroup = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid ${({ theme }) => theme.textColor.blue};
+    &:hover {
+      cursor: pointer;
+    }
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 18px;
       padding: 8px 12px;
@@ -304,7 +304,7 @@ export default function CouncilMain({ propsData }) {
             <ButtonWrap>
               <ButtonGroup>
                 <ToggleGroup style={toggleStatus}>
-                  <div id="listBox">
+                  <div className="listBox">
                     <ul>
                       {menuItems.map(
                         (
