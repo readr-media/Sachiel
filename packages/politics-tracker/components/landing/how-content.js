@@ -4,22 +4,31 @@ import Image from 'next/image'
 
 const ContentContainer = styled.div`
   width: 100%;
-  padding: 1px;
+  padding: 0px 20px 15px;
+  ${({ theme }) => theme.breakpoint.sm} {
+    padding: 0px 0px 15px;
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 0px 20px 40px;
+  }
 `
 const ItemWrap = styled.div`
   width: 100%;
+  padding: 1px;
   margin: auto;
   ${({ theme }) => theme.breakpoint.sm} {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    padding: 0px 88px;
+    max-width: 360px;
   }
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 0px 20px;
     justify-content: space-between;
     flex-wrap: nowrap;
+    max-width: 920px;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
     max-width: 1040px;
   }
 `
@@ -27,7 +36,7 @@ const HowItem = styled.div`
   position: relative;
   min-height: 240px;
   text-align: center;
-  margin: 40px 20px;
+  margin-top: 40px;
   h4 {
     /* TODO: 建檔成theme variable */
     font-size: 20px;
@@ -38,7 +47,7 @@ const HowItem = styled.div`
     max-width: 140px;
   }
   ${({ theme }) => theme.breakpoint.sm} {
-    margin: 40px 20px;
+    margin: 40px 0px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     margin: 40px 8px;
@@ -70,6 +79,62 @@ const IntroWrap = styled.div`
     max-width: 168px;
   }
 `
+
+const GuideLink = styled.div`
+  width: 100%;
+  max-width: 240px;
+  text-align: center;
+  margin: 25px auto 0px auto;
+  padding: 16px 0px;
+  background: ${({ theme }) => theme.backgroundColor.skinDark};
+  font-size: 14px;
+  font-weight: 500;
+  p {
+    margin-bottom: 10px;
+    color: ${({ theme }) => theme.textColor.black};
+  }
+
+  a {
+    max-width: 110px;
+    border: 2px solid ${({ theme }) => theme.textColor.orange};
+    border-radius: 24px;
+    margin: auto;
+    color: ${({ theme }) => theme.textColor.orange};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px 4px 12px;
+    &:hover {
+      cursor: pointer;
+      background: ${({ theme }) => theme.backgroundColor.pink};
+    }
+  }
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    max-width: 360px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+
+    p {
+      margin-bottom: 0px;
+      margin-right: 10px;
+    }
+
+    a {
+      margin: 0px;
+    }
+  }
+
+  ${({ theme }) => theme.breakpoint.md} {
+    max-width: 920px;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 1040px;
+  }
+`
 /**
  *
  * @returns {React.ReactElement}
@@ -79,8 +144,6 @@ export default function HowContent() {
   return (
     <ContentContainer>
       <ItemWrap>
-        {/* {information.map((e) => { */}
-        {/* return ( */}
         <HowItem>
           <Image
             alt="process01"
@@ -135,9 +198,23 @@ export default function HowContent() {
             </h4>
           </IntroWrap>
         </HowItem>
-        {/* ) */}
-        {/* })} */}
       </ItemWrap>
+      <GuideLink>
+        <p>需要大量新增政見嗎？請參考</p>
+        <a
+          href="https://hackmd.io/@readr/H1WmP88Eo"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          協作指南
+          <Image
+            alt="obliqueArrow"
+            src="/landingpage/oblique_arrow.svg"
+            width="20"
+            height="20"
+          />
+        </a>
+      </GuideLink>
     </ContentContainer>
   )
 }
