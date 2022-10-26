@@ -47,7 +47,7 @@ export default function Sources({ sources }) {
             {sourceList?.map((item, index) => (
               <SourceItem
                 key={item.id}
-                no={index}
+                no={index + 1}
                 content={item.value}
               ></SourceItem>
             ))}

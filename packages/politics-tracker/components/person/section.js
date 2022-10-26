@@ -16,7 +16,7 @@ const SectionContainer = styled.div`
  * @returns {React.ReactElement}
  */
 export default function Section({ personData, personElectionsData }) {
-  const [activeId, setActiveId] = useState('')
+  const [activeId, setActiveId] = useState('0')
   return (
     <SectionContainer>
       <SectionList

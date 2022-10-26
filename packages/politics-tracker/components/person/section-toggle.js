@@ -101,8 +101,8 @@ const ToggleText = styled.div`
 `
 const ToggleIcon = styled.span`
   flex-shrink: 0;
-  width: 24px;
-  height: 20px;
+  width: 2.25rem;
+  height: 2.25rem;
   path {
     fill: ${({ color, theme }) =>
       color === 'disable'
