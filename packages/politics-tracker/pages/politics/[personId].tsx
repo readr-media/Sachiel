@@ -315,7 +315,7 @@ const Politics = (props: PoliticsPageProps) => {
   const navProps: withKeyObject<LinkMember | undefined> = {
     prev: {
       backgroundColor: 'bg-person',
-      content: '回上層',
+      content: '回個人資訊',
       href: {
         pathname: '/person/[id]',
         query: {
