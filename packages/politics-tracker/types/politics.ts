@@ -1,4 +1,5 @@
 export type PersonOverview = {
+  id: string
   name: string
   avatar: string
   party: string
