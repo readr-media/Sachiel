@@ -1,5 +1,5 @@
 import type { PersonOverview } from '~/types/politics'
-import type { LinkProps } from 'next/link'
+import type { LinkHref } from '~/types/common'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
@@ -113,7 +113,6 @@ type TextConfig = {
   lineHeight: number
   customClass: string
 }
-type LinkHref = LinkProps['href']
 
 export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {

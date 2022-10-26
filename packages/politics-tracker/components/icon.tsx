@@ -1,12 +1,10 @@
-import type { LinkProps } from 'next/link'
+import type { LinkHref } from '~/types/common'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/future/image'
 import { useState } from 'react'
 import classNames from 'classnames'
 import s from './icon.module.css'
-
-type LinkHref = LinkProps['href']
 
 type IconProps = {
   src: string
