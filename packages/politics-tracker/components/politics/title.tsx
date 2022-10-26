@@ -1,4 +1,6 @@
 import type { PersonOverview } from '~/types/politics'
+import type { LinkProps } from 'next/link'
+import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
 import classNames from 'classnames'
@@ -111,6 +113,7 @@ type TextConfig = {
   lineHeight: number
   customClass: string
 }
+type LinkHref = LinkProps['href']
 
 export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
@@ -149,19 +152,31 @@ export default function Title(props: PersonOverview): JSX.Element {
     customClass: subTextClass,
   }
 
+  const hrefObject: LinkHref = {
+    pathname: '/person/[id]',
+    query: {
+      id: props.id,
+    },
+  }
+
   return (
     <div className={s['main-container']}>
       <div className={s['profile-block']}>
         <span className={s['avatar-large']}>
-          <Icon src={props.avatar} {...personLarge} />
+          <Icon src={props.avatar} {...personLarge} href={hrefObject} />
         </span>
         <span className={s['avatar-small']}>
-          <Icon src={props.avatar} {...personSmall} />
+          <Icon src={props.avatar} {...personSmall} href={hrefObject} />
         </span>
         <div className={s.name}>
-          <MultipleLineBlock content={props.name} {...mainText}>
-            <SingleLineBlock content={props.name} customClass={mainTextClass} />
-          </MultipleLineBlock>
+          <Link href={hrefObject} legacyBehavior={false}>
+            <MultipleLineBlock content={props.name} {...mainText}>
+              <SingleLineBlock
+                content={props.name}
+                customClass={mainTextClass}
+              />
+            </MultipleLineBlock>
+          </Link>
           <div className={s.party}>
             <Icon src={props.partyIcon} {...party} />
             <div className={s['party-name']}>
