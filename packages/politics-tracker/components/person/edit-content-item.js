@@ -29,7 +29,7 @@ const EditContentItemInput = styled.input`
   margin-top: 8px;
   border: solid 1px rgba(0, 0, 0, 0.1);
   user-select: none;
-
+  width: 100%;
   ::placeholder {
     color: ${({ theme }) => theme.textColor.black30};
   }
