@@ -1,1 +1,1 @@
-export const SOURCE_DELIMITER = '\r\n'
+export const SOURCE_DELIMITER = '\n'

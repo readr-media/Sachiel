@@ -1,4 +1,6 @@
 import type { PersonOverview } from '~/types/politics'
+import type { LinkHref } from '~/types/common'
+import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
 import classNames from 'classnames'
@@ -23,7 +25,10 @@ type MultipleLineBlock = Pick<
   BlockProps,
   'content' | 'fontSize' | 'lineHeight' | 'children' | 'customClass'
 >
-type PoliticsBlockProps = Pick<BlockProps, 'title' | 'customClass' | 'children'>
+type PoliticsBlockProps = Pick<
+  BlockProps,
+  'title' | 'customClass' | 'children'
+> & { subTitle?: string }
 
 const SingleLineBlock = (props: SingleLineBlock) => {
   const style = classNames(s['single-line-block'], props.customClass)
@@ -87,7 +92,10 @@ const PoliticsBlock = (props: PoliticsBlockProps) => {
   return (
     <div className={containerStyle}>
       <div className={s['text-group']}>
-        <div className={s.title}>{props.title}</div>
+        <div className={s.title}>
+          <span>{props.title}</span>
+          {props.subTitle && <span>{props.subTitle}</span>}
+        </div>
         <div className={s.content}>{props.children}</div>
       </div>
     </div>
@@ -143,19 +151,31 @@ export default function Title(props: PersonOverview): JSX.Element {
     customClass: subTextClass,
   }
 
+  const hrefObject: LinkHref = {
+    pathname: '/person/[id]',
+    query: {
+      id: props.id,
+    },
+  }
+
   return (
     <div className={s['main-container']}>
       <div className={s['profile-block']}>
         <span className={s['avatar-large']}>
-          <Icon src={props.avatar} {...personLarge} />
+          <Icon src={props.avatar} {...personLarge} href={hrefObject} />
         </span>
         <span className={s['avatar-small']}>
-          <Icon src={props.avatar} {...personSmall} />
+          <Icon src={props.avatar} {...personSmall} href={hrefObject} />
         </span>
         <div className={s.name}>
-          <MultipleLineBlock content={props.name} {...mainText}>
-            <SingleLineBlock content={props.name} customClass={mainTextClass} />
-          </MultipleLineBlock>
+          <Link href={hrefObject} legacyBehavior={false}>
+            <MultipleLineBlock content={props.name} {...mainText}>
+              <SingleLineBlock
+                content={props.name}
+                customClass={mainTextClass}
+              />
+            </MultipleLineBlock>
+          </Link>
           <div className={s.party}>
             <Icon src={props.partyIcon} {...party} />
             <div className={s['party-name']}>
@@ -180,13 +200,21 @@ export default function Title(props: PersonOverview): JSX.Element {
             />
           </MultipleLineBlock>
         </PoliticsBlock>
-        <PoliticsBlock title="已審核政見" customClass={s['already-block']}>
+        <PoliticsBlock
+          title="目前"
+          subTitle="政見數"
+          customClass={s['already-block']}
+        >
           <SingleLineBlock
             content={props.completed}
             customClass={mainTextClass}
           />
         </PoliticsBlock>
-        <PoliticsBlock title="待審核政見" customClass={s['waiting-block']}>
+        <PoliticsBlock
+          title="待確認"
+          subTitle="政見數"
+          customClass={s['waiting-block']}
+        >
           <SingleLineBlock
             content={props.waiting}
             customClass={mainTextClass}

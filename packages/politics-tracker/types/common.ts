@@ -1,3 +1,7 @@
+import type { LinkProps } from 'next/link'
+
+export type LinkHref = LinkProps['href']
+
 export type withKeyObject<T> = Record<string, T>
 
 export type GenericGQLData<T, U extends string> = {

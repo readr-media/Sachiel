@@ -20,7 +20,7 @@ import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
 const DataLoader = EVC.DataLoader
-const EVCComponent = EVC.ReactComponent
+const EVCComponent = EVC.ReactComponent.CouncilMemeber
 
 type ElectionPageProps = {
   year: number
