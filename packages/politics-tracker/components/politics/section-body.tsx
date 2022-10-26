@@ -20,7 +20,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
           {props.politics.length > 0 ? (
             politicList
           ) : (
-            <div className={s['default']}>這個人還沒有政見...</div>
+            <div className={s['default']}>這個人還沒有被新增政見...</div>
           )}
           <AddPoliticBlock />
         </>
