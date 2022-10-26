@@ -1,8 +1,12 @@
+import type { LinkProps } from 'next/link'
 import React from 'react'
+import Link from 'next/link'
 import Image from 'next/future/image'
 import { useState } from 'react'
 import classNames from 'classnames'
 import s from './icon.module.css'
+
+type LinkHref = LinkProps['href']
 
 type IconProps = {
   src: string
@@ -11,9 +15,10 @@ type IconProps = {
   height: number
   borderWidth: number
   unoptimized?: boolean
+  href?: LinkHref
 }
 
-const Icon = React.memo(function Icon(props: IconProps): JSX.Element {
+const IconInner = (props: IconProps) => {
   const [complete, setComplete] = useState<boolean>(false)
 
   const defaultIconStyle = classNames(s['default-icon'], { hidden: complete })
@@ -61,6 +66,20 @@ const Icon = React.memo(function Icon(props: IconProps): JSX.Element {
         </svg>
       </div>
     </div>
+  )
+}
+
+const Icon = React.memo(function Icon(props: IconProps): JSX.Element {
+  return (
+    <>
+      {props.href ? (
+        <Link href={props.href} legacyBehavior={false}>
+          <IconInner {...props} />
+        </Link>
+      ) : (
+        <IconInner {...props} />
+      )}
+    </>
   )
 })
 
