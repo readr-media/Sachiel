@@ -22,7 +22,7 @@
 }
 .title {
   @apply sub-text;
-  @apply md:mb-2 md:inline-block md:w-[54px];
+  @apply md:flex flex-col flex-nowrap md:mb-2 md:w-[54px] md:mx-auto;
 }
 .content {
   @apply main-text overflow-hidden text-ellipsis;

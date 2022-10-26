@@ -29,8 +29,9 @@ const DistrictInforBox = styled.div`
     justify-content: flex-start;
 
     &:hover {
-      cursor: inherit;
+      cursor: auto;
     }
+
     p,
     h5,
     h3 {
@@ -69,7 +70,9 @@ const ListWrapDesk = styled.div`
     border-right: 1px solid rgba(15, 45, 53, 0.3);
     margin: 5px 10px 5px 0px;
   }
-
+  div:last-child {
+    border-right: none;
+  }
   div:hover {
     cursor: pointer;
     text-decoration-line: underline;
@@ -77,6 +80,10 @@ const ListWrapDesk = styled.div`
 
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: none;
+    div:hover {
+      cursor: pointer;
+      text-decoration-line: underline;
+    }
   }
 `
 
@@ -277,6 +284,11 @@ export default function MayorContent({
         if (window.innerWidth >= 1200) {
           return true
         } else {
+          setActiveData((pre) => {
+            return pre.map((data) => {
+              return { ...data, active: false }
+            })
+          })
           return false
         }
       })
@@ -326,14 +338,12 @@ export default function MayorContent({
         {activeData.map((v, i) => {
           return (
             <ItemWrap key={v.name}>
-              <DistrictInforBox>
-                <SubtitleWrap
-                  key={v.id}
-                  id={v.name}
-                  onClick={() => {
-                    clickChangeIcon(v.id)
-                  }}
-                >
+              <DistrictInforBox
+                onClick={() => {
+                  clickChangeIcon(v.id)
+                }}
+              >
+                <SubtitleWrap key={v.id} id={v.name}>
                   <Title>
                     <h4>{v.name}</h4>
                     <TitleImg onClick={() => {}}>

@@ -10,7 +10,7 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@readr-media/react-election-votes-comparison": "1.0.0-beta.10",
+    "@readr-media/react-election-votes-comparison": "1.1.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",

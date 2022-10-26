@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import MayorList from '~/components/landing/mayor-content'
+import MayorContent from '~/components/landing/mayor-content'
 
-const CouncilContainer = styled.div`
+const MayorContainer = styled.div`
   width: 100%;
   display: flex;
   position: relative;
@@ -18,7 +18,25 @@ const CouncilContainer = styled.div`
     }
   }
 `
-const CouncilContentWrap = styled.div`
+const MayorSideBar = styled.div`
+  display: none;
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: block;
+    width: 6vw;
+    background: #f7ba31;
+    box-shadow: inset -4px 0px 0px #000000;
+    padding-top: 40px;
+
+    h3 {
+      display: block;
+      font-weight: 900;
+      color: #fff1e8;
+      font-size: 48px;
+      transform: rotate(90deg);
+    }
+  }
+`
+const MayorContentWrap = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.backgroundColor.landingGreen};
   box-shadow: inset 0px -4px 0px #000000;
@@ -28,8 +46,18 @@ const TitleWrap = styled.div`
   height: 57px;
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.breakpoint.xl} {
+  div:nth-child(1) {
+    width: 40px;
+    height: 100%;
+    background: #f7ba31;
+    box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
+    padding-top: 40px;
+  }
+  ${({ theme }) => theme.breakpoint.xxl} {
     height: 64px;
+    div:nth-child(1) {
+      display: none;
+    }
   }
 `
 const SubTitle = styled.div`
@@ -50,29 +78,6 @@ const SubTitle = styled.div`
   ${({ theme }) => theme.breakpoint.xxl} {
     width: 344px;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
-  }
-`
-
-const SideBar = styled.div`
-  padding: 16px 8px 20px;
-  box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
-  width: 40px;
-  height: 100%;
-  background: ${({ theme }) => theme.backgroundColor.landingYellow};
-  h3 {
-    font-weight: 900;
-    color: ${({ theme }) => theme.textColor.pink};
-    /* TODO: 建檔成theme variable */
-    font-size: 48px;
-    transform: rotate(90deg);
-    display: none;
-  }
-  ${({ theme }) => theme.breakpoint.xxl} {
-    width: 6vw;
-    box-shadow: inset -4px 0px 0px #000000;
-    h3 {
-      display: block;
-    }
   }
 `
 
@@ -167,16 +172,6 @@ const ButtonGroup = styled.div`
     }
   }
 `
-const ContentSide = styled.div`
-  background: ${({ theme }) => theme.backgroundColor.landingYellow};
-  display: none;
-  ${({ theme }) => theme.breakpoint.xxl} {
-    min-width: 86.5px;
-    display: block;
-    width: 6vw;
-    box-shadow: inset -4px 0px 0px #000000;
-  }
-`
 const Content = styled.div`
   width: 100%;
   padding-bottom: 20px;
@@ -191,7 +186,6 @@ const Content = styled.div`
 
 // @ts-ignore
 export default function MayorMain({ propsData }) {
-  //直接先生一筆lowtohigh的資料群再去map
   const newPropsData = JSON.parse(JSON.stringify(propsData))
   const rawDatas = newPropsData['mayorAndPolitics']
 
@@ -227,24 +221,23 @@ export default function MayorMain({ propsData }) {
   }
 
   const defaultMenuItems = initState(dataOrderByCompletePercent)
-  // 一開始沒有被按的項目, active全為false
   const firstRender = [...defaultMenuItems]
   firstRender[0].active = true
   const [menuItems, setMenuItems] = useState(firstRender)
   const [mayorRegion, setMayorRegion] = useState(0)
 
   return (
-    <CouncilContainer>
+    <MayorContainer>
       <span id="mayor"></span>
-      <CouncilContentWrap>
+      <MayorSideBar>
+        <h3>#Process</h3>
+      </MayorSideBar>
+      <MayorContentWrap>
         <TitleWrap>
-          <SideBar>
-            <h3>#Process</h3>
-          </SideBar>
+          <div></div>
           <SubTitle>補坑進度：縣市長政見</SubTitle>
         </TitleWrap>
         <CouncilContent>
-          <ContentSide />
           <Content>
             <ButtonWrap>
               <ButtonGroup>
@@ -295,13 +288,13 @@ export default function MayorMain({ propsData }) {
                 </ul>
               </ButtonGroup>
             </ButtonWrap>
-            <MayorList
+            <MayorContent
               mayorRegion={mayorRegion}
               dataOrderByCompletePercent={dataOrderByCompletePercent}
             />
           </Content>
         </CouncilContent>
-      </CouncilContentWrap>
-    </CouncilContainer>
+      </MayorContentWrap>
+    </MayorContainer>
   )
 }

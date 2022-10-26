@@ -198,9 +198,9 @@ export const getServerSideProps = async ({ res }) => {
         const election = pe.election
         const area = pe.electoral_district
 
-        const name = person.name
+        const id = person.id
 
-        peopleMap[name] = {
+        peopleMap[id] = {
           id: String(person.id),
           name: String(person.name),
           year: Number(person.birth_date_year),
@@ -243,9 +243,9 @@ export const getServerSideProps = async ({ res }) => {
       for (const p of politicList) {
         if (p.status === 'verified') {
           const pe = p.person
-          const name = String(pe.person_id?.name)
+          const id = String(pe.person_id?.id)
           //
-          peopleMap[name].done += 1
+          peopleMap[id].done += 1
         }
       }
     }
@@ -255,7 +255,7 @@ export const getServerSideProps = async ({ res }) => {
     const mayorArea = {}
     /** @type {AreaOfCouncilorElection} */
     const coucilArea = {}
-    for (const [name, person] of Object.entries(peopleMap)) {
+    for (const [id, person] of Object.entries(peopleMap)) {
       const type = person.type
 
       switch (type) {

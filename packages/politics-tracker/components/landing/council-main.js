@@ -18,6 +18,25 @@ const CouncilContainer = styled.div`
     }
   }
 `
+const CouncilSideBar = styled.div`
+  display: none;
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: block;
+    width: 6vw;
+    background: #f7ba31;
+    box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
+    padding-top: 40px;
+
+    h3 {
+      display: block;
+      font-weight: 900;
+      /* FIXME: font-weight size */
+      color: #f7ba31;
+      font-size: 48px;
+      transform: rotate(90deg);
+    }
+  }
+`
 const CouncilContentWrap = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.backgroundColor.lightPurple};
@@ -28,8 +47,18 @@ const TitleWrap = styled.div`
   height: 57px;
   display: flex;
   align-items: center;
-  ${({ theme }) => theme.breakpoint.xl} {
+  div:nth-child(1) {
+    width: 40px;
+    height: 100%;
+    background: #f7ba31;
+    box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
+    padding-top: 40px;
+  }
+  ${({ theme }) => theme.breakpoint.xxl} {
     height: 64px;
+    div:nth-child(1) {
+      display: none;
+    }
   }
 `
 const SubTitle = styled.div`
@@ -50,18 +79,6 @@ const SubTitle = styled.div`
   ${({ theme }) => theme.breakpoint.xxl} {
     width: 344px;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
-  }
-`
-
-const SideBar = styled.div`
-  padding: 16px 8px 20px;
-  box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
-  width: 40px;
-  height: 100%;
-  background: ${({ theme }) => theme.backgroundColor.landingYellow};
-  ${({ theme }) => theme.breakpoint.xxl} {
-    width: 6vw;
-    box-shadow: inset -4px 0px 0px #000000;
   }
 `
 
@@ -87,14 +104,11 @@ const ButtonGroup = styled.div`
     padding: 10px 20px 0px 20px;
   }
 
-  #listBox {
+  .listBox {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   ul {
@@ -131,6 +145,9 @@ const ButtonGroup = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid ${({ theme }) => theme.textColor.blue};
+    &:hover {
+      cursor: pointer;
+    }
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 18px;
       padding: 8px 12px;
@@ -176,20 +193,9 @@ const ButtonGroup = styled.div`
     }
   }
 `
-const ContentSide = styled.div`
-  background: ${({ theme }) => theme.backgroundColor.landingYellow};
-  display: none;
-  ${({ theme }) => theme.breakpoint.xxl} {
-    min-width: 86.5px;
-    display: block;
-    width: 6vw;
-    box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
-  }
-`
 const Content = styled.div`
   width: 100%;
   padding-bottom: 20px;
-  /* outline: 5px solid red; */
   ${({ theme }) => theme.breakpoint.md} {
     padding: 20px 40px 40px;
   }
@@ -271,7 +277,6 @@ export default function CouncilMain({ propsData }) {
   }
 
   const defaultMenuItems = initState(dataOrderByCompletePercent)
-  // 一開始沒有被按的項目, active全為false
   const firstRender = [...defaultMenuItems]
   firstRender[0].active = true
   const [menuItems, setMenuItems] = useState(firstRender)
@@ -286,18 +291,20 @@ export default function CouncilMain({ propsData }) {
   return (
     <CouncilContainer>
       <span id="councilorBlock"></span>
+      <CouncilSideBar>
+        <h3>#Process</h3>
+      </CouncilSideBar>
       <CouncilContentWrap>
         <TitleWrap>
-          <SideBar />
+          <div></div>
           <SubTitle>補坑進度：縣市議員政見</SubTitle>
         </TitleWrap>
         <CouncilContent>
-          <ContentSide />
           <Content>
             <ButtonWrap>
               <ButtonGroup>
                 <ToggleGroup style={toggleStatus}>
-                  <div id="listBox">
+                  <div className="listBox">
                     <ul>
                       {menuItems.map(
                         (

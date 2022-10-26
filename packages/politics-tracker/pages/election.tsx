@@ -20,7 +20,6 @@ import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
 const DataLoader = EVC.DataLoader
-const EVCComponent = EVC.ReactComponent
 
 type ElectionPageProps = {
   year: number
@@ -29,6 +28,7 @@ type ElectionPageProps = {
   data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
+  electionType: string
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -154,24 +154,26 @@ export const getServerSideProps: GetServerSideProps<
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
+        electionType: electionTypesMapping[String(type)],
       },
     }
   } catch (err) {
+    const annotatingError = errors.helpers.wrap(
+      err,
+      'UnhandledError',
+      'Error occurs while getting election data'
+    )
+
     // All exceptions that include a stack trace will be
     // integrated with Error Reporting.
     // See https://cloud.google.com/run/docs/error-reporting
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
+        message: errors.helpers.printAll(annotatingError, {
+          withStack: false,
+          withPayload: true,
+        }),
       })
     )
 
@@ -204,6 +206,17 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
+  let EVCComponent
+  switch (props.electionType) {
+    case 'mayor':
+      EVCComponent = EVC.ReactComponent.CountyMayor
+      break
+    case 'councilMember':
+    default: {
+      EVCComponent = EVC.ReactComponent.CouncilMember
+      break
+    }
+  }
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">

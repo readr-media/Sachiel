@@ -29,8 +29,9 @@ const DistrictInforBox = styled.div`
     justify-content: flex-start;
 
     &:hover {
-      cursor: inherit;
+      cursor: auto;
     }
+
     p,
     h5,
     h3 {
@@ -74,6 +75,9 @@ const ListWrapDesk = styled.div`
     border-right: 1px solid rgba(15, 45, 53, 0.3);
     margin: 5px 10px 5px 0px;
   }
+  div:last-child {
+    border-right: none;
+  }
 
   div:hover {
     cursor: pointer;
@@ -82,6 +86,10 @@ const ListWrapDesk = styled.div`
 
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: none;
+    div:hover {
+      cursor: pointer;
+      text-decoration-line: underline;
+    }
   }
 `
 const ItemWrap = styled.div`
@@ -218,6 +226,7 @@ export default function CouncilContent({
   // @ts-ignore
   councilRegion,
 }) {
+  //如果 isDesk=false的話 isActive要全部變為false
   const rawDatas = dataOrderByCompletePercent[councilRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
@@ -235,7 +244,6 @@ export default function CouncilContent({
       return a?.done / a?.total - b?.done / b?.total
     })
   }
-  //sortDatas可以跑出資料沒錯
   const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
   const sortDataWithActive = sortDatas.map((data) => ({
     ...data,
@@ -279,6 +287,12 @@ export default function CouncilContent({
         if (window.innerWidth >= 1200) {
           return true
         } else {
+          // 如果判斷是手機版 一律變為 false
+          setActiveData((pre) => {
+            return pre.map((data) => {
+              return { ...data, active: false }
+            })
+          })
           return false
         }
       })
@@ -299,7 +313,6 @@ export default function CouncilContent({
           onClick={() => {
             setSortWay(!sortWay)
             setArrowToggle(!arrowToggle)
-            console.log('點到排序')
           }}
         >
           <HoverWrap>
@@ -318,12 +331,7 @@ export default function CouncilContent({
                 src="/landingpage/arrow_purple_up.svg"
                 width="20"
                 height="20"
-                // onClick={() => {
-                //   console.log('點到排序')
-                // }}
-                onClick={() => {
-                  console.log('點到排序')
-                }}
+                onClick={() => {}}
               />
             )}
           </HoverWrap>
@@ -332,16 +340,15 @@ export default function CouncilContent({
       </FilterBar>
       <ItemGroup>
         {activeData.map((v, i) => {
+          // console.log(activeData)
           return (
             <ItemWrap key={i}>
-              <DistrictInforBox>
-                <SubtitleWrap
-                  key={v.id}
-                  id={v.name}
-                  onClick={() => {
-                    clickChangeIcon(v.id)
-                  }}
-                >
+              <DistrictInforBox
+                onClick={() => {
+                  clickChangeIcon(v.id)
+                }}
+              >
+                <SubtitleWrap key={v.id} id={v.name}>
                   <Title>
                     <h4>{v.name.slice(3)}</h4>
                     <TitleImg onClick={() => {}}>

@@ -12,7 +12,7 @@
   --active-padding-shift: 0px;
   --press-diff: calc(var(--button-height) - var(--active-button-height));
   @apply relative flex flex-nowrap bg-button px-4 py-3 items-center;
-  @apply text-[22px] font-bold leading-sub text-main no-underline shadow-around transition-all duration-150 cursor-pointer;
+  @apply text-[22px] font-bold leading-sub text-main no-underline shadow-around transition-all duration-300 cursor-pointer;
   @apply md:text-[28px];
 
   &::before, &::after {

@@ -1,3 +1,6 @@
+import type { LinkHref } from '~/types/common'
+import React from 'react'
+import Link from 'next/link'
 import Image from 'next/future/image'
 import { useState } from 'react'
 import classNames from 'classnames'
@@ -10,12 +13,13 @@ type IconProps = {
   height: number
   borderWidth: number
   unoptimized?: boolean
+  href?: LinkHref
 }
 
-export default function Icon(props: IconProps): JSX.Element {
-  const [failed, setFailed] = useState<boolean>(false)
+const IconInner = (props: IconProps) => {
+  const [complete, setComplete] = useState<boolean>(false)
 
-  const iconStyle = classNames(s.icon, { hidden: failed })
+  const defaultIconStyle = classNames(s['default-icon'], { hidden: complete })
 
   return (
     <div
@@ -23,10 +27,27 @@ export default function Icon(props: IconProps): JSX.Element {
       style={{
         width: props.width,
         height: props.height,
-        borderWidth: failed ? 0 : props.borderWidth,
+        borderWidth: complete ? props.borderWidth : 0,
       }}
     >
-      <div className={s['default-icon']}>
+      {props.src && (
+        <Image
+          src={props.src}
+          alt={props.alt ?? ''}
+          className={s.icon}
+          width={props.width}
+          height={props.height}
+          unoptimized={props.unoptimized}
+          onLoadingComplete={() => {
+            setComplete(true)
+          }}
+          onError={() => {
+            setComplete(true)
+          }}
+        />
+      )}
+
+      <div className={defaultIconStyle}>
         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle
             cx="30"
@@ -42,20 +63,22 @@ export default function Icon(props: IconProps): JSX.Element {
           />
         </svg>
       </div>
-
-      {!failed && props.src && (
-        <Image
-          src={props.src}
-          alt={props.alt ?? ''}
-          className={iconStyle}
-          width={props.width}
-          height={props.height}
-          unoptimized={props.unoptimized}
-          onError={() => {
-            setFailed(() => true)
-          }}
-        />
-      )}
     </div>
   )
 }
+
+const Icon = React.memo(function Icon(props: IconProps): JSX.Element {
+  return (
+    <>
+      {props.href ? (
+        <Link href={props.href} legacyBehavior={false}>
+          <IconInner {...props} />
+        </Link>
+      ) : (
+        <IconInner {...props} />
+      )}
+    </>
+  )
+})
+
+export default Icon
