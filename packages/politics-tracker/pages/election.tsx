@@ -20,7 +20,6 @@ import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
 const DataLoader = EVC.DataLoader
-const EVCComponent = EVC.ReactComponent.CouncilMemeber
 
 type ElectionPageProps = {
   year: number
@@ -29,6 +28,7 @@ type ElectionPageProps = {
   data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
+  electionType: string
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -154,6 +154,7 @@ export const getServerSideProps: GetServerSideProps<
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
+        electionType: electionTypesMapping[String(type)],
       },
     }
   } catch (err) {
@@ -205,6 +206,17 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
+  let EVCComponent 
+  switch(props.electionType) {
+    case 'mayor':
+      EVCComponent = EVC.ReactComponent.CountyMayor
+      break
+    case 'councilMember':
+    default: {
+      EVCComponent = EVC.ReactComponent.CouncilMember
+      break
+    }
+  }
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
