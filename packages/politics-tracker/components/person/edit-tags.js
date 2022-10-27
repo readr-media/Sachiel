@@ -97,6 +97,7 @@ export default function EditTags(props) {
           },
         },
       }
+
       const result = await fireGqlRequest(
         print(CreatePerson),
         variables,
@@ -164,31 +165,30 @@ export default function EditTags(props) {
       const allTagsName = tagList.map((tag) => {
         return tag.value.trim()
       })
-
       const existTagsData = await getExistTags(allTagsName, cmsApiUrl)
-
       /** @type {{id:string,name:string}[]} */
       const existTags = existTagsData.data.tags
 
-      const unRegisteredTags = existTags
-        .map((tag) => tag.name)
-        .filter((tag) => allTagsName.indexOf(tag) === -1)
+      const existsTagsName = existTags.map((tag) => tag.name)
+      const unRegisteredTagsName = allTagsName.filter(
+        (tag) => existsTagsName.indexOf(tag) === -1
+      )
 
       let submitTagList
-      if (unRegisteredTags.length !== 0) {
+      if (unRegisteredTagsName.length !== 0) {
         //create new Tags at cms
 
-        const unRegisteredTagsName = unRegisteredTags.map((tag) => {
+        const unRegisteredTags = unRegisteredTagsName.map((tag) => {
           return { name: tag }
         })
-        const createTagsData = await createTags(unRegisteredTagsName, cmsApiUrl)
+        await createTags(unRegisteredTags, cmsApiUrl)
         submitTagList = [
           ...existTags
             .map((/**@type {{name:string}}*/ tag) => {
               return { name: tag.name }
             })
             .filter((/**@type {{name:string}}*/ tag) => tag.name),
-          ...unRegisteredTagsName,
+          ...unRegisteredTags,
         ]
       } else {
         submitTagList = [
@@ -199,8 +199,7 @@ export default function EditTags(props) {
             .filter((/**@type {{name:string}}*/ tag) => tag.name),
         ]
       }
-      const result = await createPerson(submitTagList, cmsApiUrl)
-      return true
+      return await createPerson(submitTagList, cmsApiUrl)
     } catch (err) {
       console.error(err)
       return false
