@@ -206,8 +206,8 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
-  let EVCComponent 
-  switch(props.electionType) {
+  let EVCComponent
+  switch (props.electionType) {
     case 'mayor':
       EVCComponent = EVC.ReactComponent.CountyMayor
       break
