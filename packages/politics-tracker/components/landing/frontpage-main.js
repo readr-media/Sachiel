@@ -14,6 +14,7 @@ const FrontPageContainer = styled.div`
   }
   ${({ theme }) => theme.breakpoint.xl} {
     height: calc(100vh - 80px);
+    min-height: 620px;
   }
 `
 const Introduce = styled.div`
