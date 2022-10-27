@@ -18,6 +18,7 @@ type IconProps = {
 
 const IconInner = (props: IconProps) => {
   const [complete, setComplete] = useState<boolean>(false)
+  const [showImage, setShowImage] = useState<boolean>(true)
 
   const defaultIconStyle = classNames(s['default-icon'], { hidden: complete })
 
@@ -30,7 +31,7 @@ const IconInner = (props: IconProps) => {
         borderWidth: complete ? props.borderWidth : 0,
       }}
     >
-      {props.src && (
+      {props.src && showImage && (
         <Image
           src={props.src}
           alt={props.alt ?? ''}
@@ -42,7 +43,7 @@ const IconInner = (props: IconProps) => {
             setComplete(true)
           }}
           onError={() => {
-            setComplete(true)
+            setShowImage(false)
           }}
         />
       )}
