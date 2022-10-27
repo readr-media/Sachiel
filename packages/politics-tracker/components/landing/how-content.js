@@ -82,7 +82,6 @@ const IntroWrap = styled.div`
 
 const GuideLink = styled.div`
   width: 100%;
-  max-width: 240px;
   text-align: center;
   margin: 25px auto 0px auto;
   padding: 16px 0px;
