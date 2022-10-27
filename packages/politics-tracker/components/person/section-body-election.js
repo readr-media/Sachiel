@@ -1,6 +1,7 @@
 import SectionBody from './section-body'
 import { UnorderedList, ListItem } from './content-list'
 import styled from 'styled-components'
+import ArrowTilt from '../icons/arrow-tilt'
 
 const ElectionItemContainer = styled(ListItem)`
   display: flex;
@@ -22,7 +23,9 @@ const ElectionLink = styled.a`
 `
 
 const PoliticButton = styled.a`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 72px;
   height: 32px;
   text-align: center;
@@ -31,6 +34,10 @@ const PoliticButton = styled.a`
   border-width: 2px;
   border-radius: 24px;
   background-color: white;
+
+  span {
+    margin-right: 2px;
+  }
 
   &:hover {
     background-color: #fffcf3;
@@ -76,7 +83,10 @@ export default function SectionBodyElection({
       >
         {item.election?.name}
       </ElectionLink>
-      <PoliticButton href={`/politics/${personId}`}>政見</PoliticButton>
+      <PoliticButton href={`/politics/${personId}`}>
+        <span>政見</span>
+        <ArrowTilt />
+      </PoliticButton>
     </ElectionItemContainer>
   ))
   return (

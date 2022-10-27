@@ -13,6 +13,9 @@ const EditSendOrCancelContainer = styled.div`
 const EditCancel = styled.button`
   color: ${({ theme }) => theme.textColor.gray};
   user-select: none;
+  &:hover {
+    color: ${({ theme }) => theme.textColor.blue};
+  }
 `
 const EditSend = styled.button`
   display: flex;
@@ -34,6 +37,10 @@ const EditSend = styled.button`
       disabled ? theme.textColor.black30 : theme.textColor.white};
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  &:hover {
+    background-color: ${({ disabled, theme }) =>
+      disabled ? theme.backgroundColor.disable : theme.textColor.blue};
+  }
 `
 /**
  *
