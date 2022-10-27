@@ -15,5 +15,5 @@
   @apply md:text-[16px];
 }
 .minus {
-  @apply ml-1 flex h-8 w-8 shrink-0 cursor-pointer flex-row items-center justify-around self-center text-control;
+  @apply ml-1 block h-8 w-8 shrink-0 cursor-pointer self-center text-control;
 }
