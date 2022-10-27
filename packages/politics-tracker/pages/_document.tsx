@@ -1,12 +1,8 @@
+import type { DocumentContext } from 'next/document'
 import React from 'react'
-import Document, {
-  DocumentContext,
-  Html,
-  Head,
-  Main,
-  NextScript,
-} from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
+import CustomHead from '~/components/custom-head'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -39,6 +35,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <CustomHead />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
