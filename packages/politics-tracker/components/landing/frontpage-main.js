@@ -41,9 +41,8 @@ export default function FrontPage({ propsData }) {
     <FrontPageContainer>
       <Title />
       <Introduce>
-        這是一個簡單但需要眾人協力的計畫。我們希望用「開放資料」
-        的格式將散佈在網路上關於公眾人物的公開資料串連起來，
-        包括公眾人物的學歷、經歷、資產、政治獻金、學術論文、報告、親戚關係。
+        政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr
+        協作平台邀請你一起追蹤候選人選舉時提出的政見，並監督他是否在任期內達成。
       </Introduce>
       <Statistics propsData={propsData} />
     </FrontPageContainer>
