@@ -94,7 +94,29 @@ const RadioButton = styled.input`
   }
 `
 
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #c0374f;
+  margin: 5px 0px;
+`
+
 export { EditContentItemTitle }
+
+/**
+ * @param {object[]} dateValue
+ */
+//date-rule-regex-check
+// FIXME: date validation (ex: early than now)
+function dateCheck(dateValue) {
+  const dateRules = /^\d{4}\-(0?[1-9]|1[012])?\-(0?|[1-9]|[12][0-9]|3[01])?$/
+  // const dateRules = /^\d{4}\-(0[1-9]|1[012])?\-(0[1-9]|[12][0-9]|3[01])?$/
+  if (dateValue.join('') === '') {
+    return true
+  } else {
+    return dateRules.test(dateValue.join('-'))
+  }
+}
 
 /**
  * @param {import('./edit-content-basic').EditContentBasic} props
@@ -110,6 +132,8 @@ export default function EditContentItem({
   options,
   value,
   onChange,
+  // @ts-ignore
+  errormessage,
 }) {
   return (
     <EditContentItemContainer>
@@ -130,11 +154,18 @@ export default function EditContentItem({
           defaultValue={value ? `${value}` : ''}
         ></EditContentItemInput>
       )}
+      {type === 'input' && !value ? (
+        <ErrorMessage>{errormessage}</ErrorMessage>
+      ) : (
+        <></>
+      )}
       {type === 'input-date' && (
         <EditContentItemInput
           id={name}
           placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            onChange(e.target.value)
+          }}
           defaultValue={
             value
               ? `${value[0] ? value[0] : '0000'}-${
@@ -143,6 +174,13 @@ export default function EditContentItem({
               : ''
           }
         ></EditContentItemInput>
+      )}
+      {type === 'input-date' &&
+      // @ts-ignore
+      !dateCheck(value) ? (
+        <ErrorMessage>{errormessage}</ErrorMessage>
+      ) : (
+        <></>
       )}
       {type === 'radio' && options && (
         <EditContentItemRadioContainer>

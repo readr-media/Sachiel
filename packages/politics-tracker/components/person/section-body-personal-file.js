@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import { stringToSources } from '~/utils/utils'
+import Image from 'next/future/image'
 
 import ContentItem, { ContentItemEmpty } from './content-item'
 import ProfileImage from './profile-image'
@@ -17,8 +18,8 @@ import Sources from './sources'
 import Tag from './tag'
 import EditTags from './edit-tags'
 const ContentPersonImage = styled(ProfileImage)`
-  width: 40px;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   margin-right: 8px;
 `
 const TagContainer = styled.div`
@@ -161,6 +162,7 @@ export default function SectionBodyPersonalFile({
     } else return ''
   }
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
+  const [showImage, setShowImage] = useState(true)
   return (
     <SectionBody shouldShowSectionBody={isActive}>
       <Content
@@ -176,9 +178,22 @@ export default function SectionBodyPersonalFile({
         }
       >
         <ContentItem title="姓名" content={name}>
-          <ContentPersonImage
-            src={image ? image : '/images/default-head-photo.png'}
-          />
+          {image && showImage ? (
+            <ContentPersonImage>
+              <Image
+                alt=""
+                src={image}
+                fill
+                onError={() => {
+                  setShowImage(false)
+                }}
+              />
+            </ContentPersonImage>
+          ) : (
+            <ContentPersonImage>
+              <Image alt="" src="/images/default-head-photo.png" fill />
+            </ContentPersonImage>
+          )}
         </ContentItem>
         <ContentItem title="別名" content={alternative} />
         <ContentItem title="舊名" content={other_names} />
