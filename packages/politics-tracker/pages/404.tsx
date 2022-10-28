@@ -1,6 +1,12 @@
 import type { NextPage } from 'next'
 import DefaultLayout from '~/components/layout/default'
 
+export async function getStaticProps() {
+  return {
+    props: {},
+  }
+}
+
 const Custom404: NextPage = () => {
   return (
     <div className="flex h-screen w-screen flex-col">
