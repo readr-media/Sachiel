@@ -269,7 +269,7 @@ export default function EditContentContact({
             onDelete={deleteLink}
           />
           {!URLValidationCheck(item.value) && (
-            <ErrorMessage>請輸入有效的網站來源</ErrorMessage>
+            <ErrorMessage>請輸入有效的網址</ErrorMessage>
           )}
         </InputWrapperNoLabel>
       ))}

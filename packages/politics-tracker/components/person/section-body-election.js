@@ -20,6 +20,9 @@ const ElectionItemContainer = styled(ListItem)`
 
 const ElectionLink = styled.a`
   margin-right: 16px;
+  &:hover {
+    text-decoration-line: underline;
+  }
 `
 
 const PoliticButton = styled.a`
