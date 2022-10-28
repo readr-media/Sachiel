@@ -64,25 +64,29 @@ export default function Sources({ sources }) {
     [sources]
   )
   return (
-    <Fragment>
-      <SourcesContainer>
-        {isOpen && (
-          <Fragment>
-            <SourcesTitle>來源</SourcesTitle>
-            <SourceItemWrap>
-              {sourceList?.map((item, index) => (
-                <SourceItem
-                  key={item.id}
-                  no={index + 1}
-                  content={item.value}
-                ></SourceItem>
-              ))}
-            </SourceItemWrap>
-          </Fragment>
-        )}
-      </SourcesContainer>
-      <Hr className="hr" />
-      <SourcesButton isOpen={isOpen} setIsOpen={setIsOpen} />
-    </Fragment>
+    <>
+      {sourceList.length !== 0 && (
+        <Fragment>
+          <SourcesContainer>
+            {isOpen && (
+              <Fragment>
+                <SourcesTitle>來源</SourcesTitle>
+                <SourceItemWrap>
+                  {sourceList?.map((item, index) => (
+                    <SourceItem
+                      key={item.id}
+                      no={index + 1}
+                      content={item.value}
+                    ></SourceItem>
+                  ))}
+                </SourceItemWrap>
+              </Fragment>
+            )}
+          </SourcesContainer>
+          <Hr className="hr" />
+          <SourcesButton isOpen={isOpen} setIsOpen={setIsOpen} />
+        </Fragment>
+      )}
+    </>
   )
 }
