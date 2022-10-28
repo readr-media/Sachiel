@@ -7,7 +7,6 @@ import { print } from 'graphql'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 import LandingPage from '~/components/landing/main'
-import GAScript from '~/components/ga-script'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 
@@ -417,7 +416,6 @@ export const getServerSideProps = async ({ res }) => {
 export default function Home(props) {
   return (
     <Fragment>
-      <GAScript />
       <LandingPage
         // @ts-ignore
         propsData={props}
