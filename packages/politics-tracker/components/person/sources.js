@@ -8,7 +8,12 @@ const SourcesContainer = styled.div`
   margin-top: 20px;
   display: flex;
   background-color: ${({ theme }) => theme.backgroundColor.black5};
-  align-items: center;
+  position: relative;
+  /* TODO:: 目前這個寫法還沒有很好 */
+  padding-left: 34px;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding-left: 44px;
+  }
 `
 
 const Hr = styled.hr`
@@ -20,11 +25,31 @@ const SourcesTitle = styled.div`
   color: ${({ theme }) => theme.backgroundColor.white};
   font-size: 12px;
   line-height: 14px;
-  padding: 8px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  height: 100%;
+  width: 34px;
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 14px;
     line-height: 16px;
-  } ;
+    padding: 8px;
+    width: 44px;
+  }
+`
+const SourceItemWrap = styled.div`
+  padding: 0.5rem 0px;
+  a,
+  span {
+    padding-right: 0.5rem;
+    border-right-width: 1px;
+    border-left-width: 0px;
+  }
 `
 /**
  *
@@ -44,13 +69,15 @@ export default function Sources({ sources }) {
         {isOpen && (
           <Fragment>
             <SourcesTitle>來源</SourcesTitle>
-            {sourceList?.map((item, index) => (
-              <SourceItem
-                key={item.id}
-                no={index + 1}
-                content={item.value}
-              ></SourceItem>
-            ))}
+            <SourceItemWrap>
+              {sourceList?.map((item, index) => (
+                <SourceItem
+                  key={item.id}
+                  no={index + 1}
+                  content={item.value}
+                ></SourceItem>
+              ))}
+            </SourceItemWrap>
           </Fragment>
         )}
       </SourcesContainer>
