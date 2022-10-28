@@ -44,9 +44,6 @@ const nextConfig = {
       },
     ]
   },
-  publicRuntimeConfig: {
-    gaTrackingId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID,
-  },
   output: 'standalone',
 }
 
