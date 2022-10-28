@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import theme from '~/styles/theme'
 import ProfileImage from './profile-image'
+import Image from 'next/future/image'
 const TitleWrapper = styled.div`
   width: 100%;
 `
@@ -34,12 +35,13 @@ const Name = styled.h1`
 `
 
 const TitleProfileImage = styled(ProfileImage)`
+  min-width: 60px;
+  min-height: 60px;
   ${({ theme }) => theme.breakpoint.md} {
-    width: 80px;
-    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
   }
 `
-
 const ColorBlock = styled.div`
   border-color: ${({ theme }) => theme.borderColor.black};
   background-color: ${({ color }) => color};
@@ -77,7 +79,6 @@ const TitleDecorationDesktop = styled(TitleDecoration)`
     width: 256px;
   }
 `
-
 /**
  *
  * @param {Object} props
@@ -86,6 +87,8 @@ const TitleDecorationDesktop = styled(TitleDecoration)`
  * @returns {React.ReactElement}
  */
 export default function Title({ name, image }) {
+  const [showImage, setShowImage] = useState(true)
+
   return (
     <TitleWrapper>
       <TitleTop>
@@ -94,9 +97,22 @@ export default function Title({ name, image }) {
           <ColorBlockDesktop color={theme.backgroundColor.yellow} />
         </TitleDecorationDesktop>
         <TitleInfo>
-          <TitleProfileImage
-            src={image ? image : '/images/default-head-photo.png'}
-          />
+          {image && showImage ? (
+            <TitleProfileImage>
+              <Image
+                alt=""
+                src={image}
+                fill
+                onError={() => {
+                  setShowImage(false)
+                }}
+              />
+            </TitleProfileImage>
+          ) : (
+            <TitleProfileImage>
+              <Image alt="" src="/images/default-head-photo.png" fill />
+            </TitleProfileImage>
+          )}
           <Name>{name}</Name>
         </TitleInfo>
         <TitleDecorationDesktop>

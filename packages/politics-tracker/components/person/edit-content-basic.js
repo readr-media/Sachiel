@@ -49,6 +49,7 @@ export default function EditContentBasic({
    * If  property `value` of element in `sourceList` are all empty strings,
    * or personInfo.name is empty string, then should disable submit button.
    */
+
   const shouldDisableSubmit = useMemo(
     () => !personInfo.name || sourceList.filter((i) => i.value).length === 0,
     [personInfo.name, sourceList]
@@ -95,50 +96,66 @@ export default function EditContentBasic({
   /**
    * @param {string} value
    */
+  // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateBirthDate(value) {
     const dateArray = stringToDate(value)
-    if (dateArray[0]) {
-      setPersonInfo({
-        ...personInfo,
-        birth_date_year: dateArray[0],
-      })
-    }
-    if (dateArray[1]) {
-      setPersonInfo({
-        ...personInfo,
-        birth_date_month: dateArray[1],
-      })
-    }
-    if (dateArray[2]) {
-      setPersonInfo({
-        ...personInfo,
-        birth_date_day: dateArray[2],
-      })
-    }
+    // if (dateArray[0]) {
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     birth_date_year: dateArray[0],
+    //   })
+    // }
+    // if (dateArray[1]) {
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     birth_date_month: dateArray[1],
+    //   })
+    // }
+    // if (dateArray[2]) {
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     birth_date_day: dateArray[2],
+    //   })
+    // }
+    setPersonInfo({
+      ...personInfo,
+      birth_date_year: dateArray[0],
+      birth_date_month: dateArray[1],
+      birth_date_day: dateArray[2],
+    })
   }
   /**
    * @param {string} value
    */
+  // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateDeadDate(value) {
     const dateArray = stringToDate(value)
-    if (dateArray[0]) {
-      setPersonInfo({
-        ...personInfo,
-        death_date_year: dateArray[0],
-      })
-    }
-    if (dateArray[1]) {
-      setPersonInfo({
-        ...personInfo,
-        death_date_month: dateArray[1],
-      })
-    }
-    if (dateArray[2]) {
-      setPersonInfo({
-        ...personInfo,
-        death_date_day: dateArray[2],
-      })
-    }
+    // if (dateArray[0]) {
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     death_date_year: dateArray[0],
+    //   })
+    // }
+    // if (dateArray[1]) {
+    //   console.log('1', dateArray[1])
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     death_date_month: dateArray[1],
+    //   })
+    // }
+    // if (dateArray[2]) {
+    //   console.log('2', dateArray[2])
+    //   setPersonInfo({
+    //     ...personInfo,
+    //     death_date_day: dateArray[2],
+    //   })
+    // }
+    setPersonInfo({
+      ...personInfo,
+      death_date_year: dateArray[0],
+      death_date_month: dateArray[1],
+      death_date_day: dateArray[2],
+    })
   }
 
   //client side only
@@ -211,6 +228,7 @@ export default function EditContentBasic({
       isRequired: true,
       value: personInfo.name,
       update: updateList('name'),
+      errormessage: '姓名為必填',
     },
     {
       name: 'image',
@@ -255,6 +273,7 @@ export default function EditContentBasic({
         personInfo.birth_date_day,
       ],
       update: updateBirthDate,
+      errormessage: '請輸入正確的時間格式',
     },
     {
       name: 'death-date',
@@ -269,6 +288,7 @@ export default function EditContentBasic({
         personInfo.death_date_day,
       ],
       update: updateDeadDate,
+      errormessage: '請輸入正確的時間格式',
     },
     {
       name: 'gender',
@@ -305,6 +325,7 @@ export default function EditContentBasic({
           options,
           value,
           update,
+          errormessage,
         }) => (
           <EditContentItem
             key={name}
@@ -318,6 +339,8 @@ export default function EditContentBasic({
             value={value}
             onChange={update}
             personInfo={personInfo}
+            // @ts-ignore
+            errormessage={errormessage}
           ></EditContentItem>
         )
       )}

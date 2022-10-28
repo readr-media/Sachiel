@@ -12,6 +12,13 @@ const SourceInputWrapper = styled.div`
 `
 export { SourceInputWrapper }
 
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #c0374f;
+  margin: 5px 0px;
+`
+
 /**
  *
  * @param {Object} props
@@ -54,18 +61,25 @@ export default function EditSource({ sourceList, setSourceList }) {
       </EditContentItemTitle>
       {sourceList.map((source, index) => (
         //TODO: add error and show error
-        <SourceInputWrapper key={source.id}>
-          <SourceInput
-            id={source.id}
-            no={index + 1}
-            value={source.value}
-            error={source.error}
-            showError={false}
-            removable={index !== 0}
-            onChange={updateSource}
-            onDelete={deleteSource}
-          />
-        </SourceInputWrapper>
+        <Fragment key={source.id}>
+          <SourceInputWrapper>
+            <SourceInput
+              id={source.id}
+              no={index + 1}
+              value={source.value}
+              error={source.error}
+              showError={false}
+              removable={index !== 0}
+              onChange={updateSource}
+              onDelete={deleteSource}
+            />
+          </SourceInputWrapper>
+          {source.value === '' && index === 0 ? (
+            <ErrorMessage>請至少填寫一個來源</ErrorMessage>
+          ) : (
+            <></>
+          )}
+        </Fragment>
       ))}
       <AddInputButton
         addTarget="來源"
