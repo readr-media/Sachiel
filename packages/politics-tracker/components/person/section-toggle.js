@@ -107,7 +107,7 @@ const ToggleIcon = styled.span`
     fill: ${({ color, theme }) =>
       color === 'disable'
         ? theme.textColor.black30
-        : theme.backgroundColor.black};
+        : theme.backgroundColor.white};
   }
 `
 
