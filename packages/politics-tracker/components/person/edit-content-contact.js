@@ -10,7 +10,14 @@ import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { useToast } from '~/components/toast/use-toast'
+import styled from 'styled-components'
 
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #c0374f;
+  margin: 5px 0px;
+`
 /**
  *
  * @param {Object} props
@@ -56,7 +63,9 @@ export default function EditContentContact({
       (emailList.filter((i) => i.value).length === 0 &&
         linkList.filter((i) => i.value).length === 0 &&
         contactList.filter((i) => i.value).length === 0) ||
-      sourceList.filter((i) => i.value).length === 0,
+      sourceList.filter((i) => i.value).length === 0 ||
+      emailList.filter((i) => !emailValidationCheck(i.value)).length !== 0 ||
+      linkList.filter((i) => !URLValidationCheck(i.value)).length !== 0,
     [emailList, linkList, contactList, sourceList]
   )
 
@@ -152,6 +161,42 @@ export default function EditContentContact({
     }
   }
 
+  /**
+   * @param {string} email
+   */
+
+  // email-validation-check
+  function emailValidationCheck(email) {
+    const emailRules =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    if (email === '') {
+      return true
+    } else {
+      return emailRules.test(email)
+    }
+  }
+
+  /**
+   * @param {string} url
+   */
+  // URL-validation-check
+  function URLValidationCheck(url) {
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    )
+    if (url === '') {
+      return true
+    } else {
+      return pattern.test(url)
+    }
+  }
+
   const updateEmail = updateList(emailList, setEmailList)
   const addEmail = addList(emailList, setEmailList)
   const deleteEmail = deleteList(emailList, setEmailList)
@@ -165,7 +210,6 @@ export default function EditContentContact({
   return (
     <Fragment>
       <EditContentItemTitle>電子信箱</EditContentItemTitle>
-
       {emailList?.map((item, index) => (
         //TODO: add error and show error
         <InputWrapperNoLabel key={item.id}>
@@ -180,6 +224,9 @@ export default function EditContentContact({
             onChange={updateEmail}
             onDelete={deleteEmail}
           />
+          {!emailValidationCheck(item.value) && (
+            <ErrorMessage>請輸入有效的Email</ErrorMessage>
+          )}
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="電子信箱" onClick={addEmail}></AddInputButton>
@@ -221,6 +268,9 @@ export default function EditContentContact({
             onChange={updateLink}
             onDelete={deleteLink}
           />
+          {!URLValidationCheck(item.value) && (
+            <ErrorMessage>請輸入有效的網站來源</ErrorMessage>
+          )}
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
