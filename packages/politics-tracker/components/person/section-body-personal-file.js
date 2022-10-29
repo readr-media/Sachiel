@@ -268,7 +268,7 @@ export default function SectionBodyPersonalFile({
               <Tag key={item.id} id={item.id} name={item.name}></Tag>
             ))
           ) : (
-            <ContentItemEmpty>尚未新增</ContentItemEmpty>
+            <ContentItemEmpty>這個人還沒被新增標籤⋯</ContentItemEmpty>
           )}
         </TagContainer>
       </Content>
