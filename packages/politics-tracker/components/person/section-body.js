@@ -12,8 +12,8 @@ const SectionBodyContainer = styled.div`
      */
     ({ shouldShowSectionBody }) => (shouldShowSectionBody ? 'unset' : '0px')
   };
-  min-height: ${({ shouldShowSectionBody }) =>
-    shouldShowSectionBody ? '200px' : '0px'};
+  /* min-height: ${({ shouldShowSectionBody }) =>
+    shouldShowSectionBody ? '200px' : '0px'}; */
   padding: ${({ shouldShowSectionBody }) =>
     shouldShowSectionBody ? '20px' : '0px'};
 
