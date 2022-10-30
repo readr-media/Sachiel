@@ -2,6 +2,8 @@ steps:
   # build docker image for target sub-pacakge
   - name: gcr.io/cloud-builders/docker
     id: Build Image
+    env:
+    - 'ENV=$_ENV'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -44,3 +46,4 @@ substitutions:
   _TARGET_PACKAGE: '' # default value
   _IMAGE_NAME: '' # default value
   _CLOUD_RUN_SERVICE_NAMES: '' # default value
+  _ENV: 'dev' # default value
