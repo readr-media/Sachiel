@@ -1,10 +1,9 @@
 import '~/styles/globals.css'
-import type { AppContext, AppInitialProps, AppProps } from 'next/app'
-import App from 'next/app'
+import type { AppProps } from 'next/app'
 import Script from 'next/script'
+import { gaTrackingId } from '~/constants/config'
 
-type AppOwnProps = { gaTrackingId: string | undefined }
-function MyApp({ Component, pageProps, gaTrackingId }: AppProps & AppOwnProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       {/* ref: https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs */}
@@ -24,17 +23,6 @@ function MyApp({ Component, pageProps, gaTrackingId }: AppProps & AppOwnProps) {
       <Component {...pageProps} />
     </>
   )
-}
-
-MyApp.getInitialProps = async (
-  context: AppContext
-): Promise<AppInitialProps & AppOwnProps> => {
-  const ctx = await App.getInitialProps(context)
-
-  return {
-    ...ctx,
-    gaTrackingId: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID,
-  }
 }
 
 export default MyApp
