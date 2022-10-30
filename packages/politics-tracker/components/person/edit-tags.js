@@ -38,10 +38,21 @@ export default function EditTags(props) {
    * then should disable submit button.
    */
   const shouldDisableSubmit = useMemo(
-    () => tagList.filter((i) => i.name).length === 0,
+    () =>
+      tagList.filter((i) => i.name).length === 0 ||
+      JSON.stringify(takeArrayKeyName(tagList, 'name')) ===
+        JSON.stringify(takeArrayKeyName(props.tags, 'name')),
     [tagList]
   )
-
+  //take tagList's name to compare with props.tags's name
+  //if the same then shouldDisableSubmit = true
+  // @ts-ignore
+  function takeArrayKeyName(array, key) {
+    // @ts-ignore
+    return array.map(function (item) {
+      return item[key]
+    })
+  }
   /**
    *
    * @param {string} key

@@ -37,6 +37,7 @@ const PoliticButton = styled.a`
   border-width: 2px;
   border-radius: 24px;
   background-color: white;
+  ${({ theme }) => theme.fontSize['title-sub']};
 
   span {
     margin-right: 2px;
