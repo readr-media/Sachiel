@@ -50,6 +50,8 @@ export default function EditContentBiography({
    */
   const shouldDisableSubmit = useMemo(
     () =>
+      list.filter((i) => i.value).length === 0 ||
+      sourceList.filter((i) => i.value).length === 0 ||
       (JSON.stringify(takeArrayKeyName(list, 'value')) ===
         JSON.stringify(
           // @ts-ignore
@@ -59,9 +61,7 @@ export default function EditContentBiography({
           JSON.stringify(
             // @ts-ignore
             takeArrayKeyName(stringToSources(sources, '\n'), 'value')
-          )) ||
-      sourceList.filter((i) => i.value).length === 0 ||
-      list.filter((i) => i.value).length === 0,
+          )),
     [list, sourceList]
   )
 
