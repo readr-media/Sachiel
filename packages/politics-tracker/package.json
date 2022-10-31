@@ -21,6 +21,7 @@
     "react-countup": "^6.3.2",
     "react-dom": "18.2.0",
     "react-resize-detector": "^7.1.2",
+    "react-spinners": "^0.13.6",
     "styled-components": "^5.3.6",
     "use-fit-text": "^2.4.0",
     "uuid": "^9.0.0"

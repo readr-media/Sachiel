@@ -51,9 +51,27 @@ export default function EditContentBiography({
   const shouldDisableSubmit = useMemo(
     () =>
       list.filter((i) => i.value).length === 0 ||
-      sourceList.filter((i) => i.value).length === 0,
+      sourceList.filter((i) => i.value).length === 0 ||
+      (JSON.stringify(takeArrayKeyName(list, 'value')) ===
+        JSON.stringify(
+          // @ts-ignore
+          takeArrayKeyName(stringToSources(listData, '\n'), 'value')
+        ) &&
+        JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
+          JSON.stringify(
+            // @ts-ignore
+            takeArrayKeyName(stringToSources(sources, '\n'), 'value')
+          )),
     [list, sourceList]
   )
+
+  // @ts-ignore
+  function takeArrayKeyName(array, key) {
+    // @ts-ignore
+    return array.map(function (item) {
+      return item[key]
+    })
+  }
   //client side only
   //TODO: use type Person in person.ts rather than {Object}
   /** @param {Object} data */

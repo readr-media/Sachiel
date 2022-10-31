@@ -11,6 +11,9 @@ import { ContentItemEmpty } from './content-item'
 const ContentItemLink = styled(ContentItemContent)`
   color: ${({ theme }) => theme.textColor.blue};
   margin-bottom: 8px;
+  &:hover {
+    text-decoration-line: underline;
+  }
 `
 /**
  *

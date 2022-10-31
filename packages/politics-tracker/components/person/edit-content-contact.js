@@ -63,12 +63,39 @@ export default function EditContentContact({
       (emailList.filter((i) => i.value).length === 0 &&
         linkList.filter((i) => i.value).length === 0 &&
         contactList.filter((i) => i.value).length === 0) ||
+      (JSON.stringify(takeArrayKeyName(emailList, 'value')) ===
+        JSON.stringify(
+          // @ts-ignore
+          takeArrayKeyName(stringToSources(emails, '\n'), 'value')
+        ) &&
+        JSON.stringify(takeArrayKeyName(contactList, 'value')) ===
+          JSON.stringify(
+            // @ts-ignore
+            takeArrayKeyName(stringToSources(contactDetails, '\n'), 'value')
+          ) &&
+        JSON.stringify(takeArrayKeyName(linkList, 'value')) ===
+          JSON.stringify(
+            // @ts-ignore
+            takeArrayKeyName(stringToSources(links, '\n'), 'value')
+          ) &&
+        JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
+          JSON.stringify(
+            // @ts-ignore
+            takeArrayKeyName(stringToSources(sources, '\n'), 'value')
+          )) ||
       sourceList.filter((i) => i.value).length === 0 ||
       emailList.filter((i) => !emailValidationCheck(i.value)).length !== 0 ||
       linkList.filter((i) => !URLValidationCheck(i.value)).length !== 0,
     [emailList, linkList, contactList, sourceList]
   )
 
+  // @ts-ignore
+  function takeArrayKeyName(array, key) {
+    // @ts-ignore
+    return array.map(function (item) {
+      return item[key]
+    })
+  }
   //client side only
   //TODO: use type Person in person.ts rather than {Object}
   /** @param {Object} data */
