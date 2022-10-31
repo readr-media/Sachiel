@@ -42,7 +42,7 @@
 
 .home {
   @apply order-3 flex shrink-0 items-center justify-center bg-white px-10 py-5;
-  @apply text-black shadow-top md:order-none;
+  @apply text-black shadow-top md:order-none hover:bg-black hover:text-white;
 
   &.default-hidden {
     @apply hidden md:flex;
