@@ -19,7 +19,16 @@
   },
   "homepage": "https://github.com/readr-media/public-platform#readme",
   "devDependencies": {
+    "eslint": "8.24.0",
+    "eslint-config-next": "12.3.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
-    "lerna": "^5.5.4"
+    "lerna": "^5.5.4",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": "eslint --cache --fix"
   }
 }
