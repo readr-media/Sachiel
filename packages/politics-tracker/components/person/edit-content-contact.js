@@ -58,6 +58,28 @@ export default function EditContentContact({
   // send totalList as a prop to edit-source.js to judge whether error message show
   const totalList = emailList.concat(linkList).concat(contactList)
 
+  // check whether source-list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
+    // @ts-ignore
+    (x) => x === ''
+  )
+
+  //if input's sum = 1 and value is empty, return false (button=able)
+  //if input's sum > 1, true/false is decided by whether inputs have ('')
+  // @ts-ignore
+  const infoLinksCheckEmptyValue = (infoLinksArray) => {
+    if (infoLinksArray.length === 1 && infoLinksArray[0].value === '') {
+      return false
+    } else {
+      const result = takeArrayKeyName(infoLinksArray, 'value')?.some(
+        // @ts-ignore
+        (x) => x === ''
+      )
+      return result
+    }
+  }
   /**
    * If property `value` of element in `emailList`, linkList and contactList are all empty string,
    * or property `value` of element in `sourceList` are all empty string,
@@ -91,7 +113,11 @@ export default function EditContentContact({
           )) ||
       sourceList.filter((i) => i.value).length === 0 ||
       emailList.filter((i) => !emailValidationCheck(i.value)).length !== 0 ||
-      linkList.filter((i) => !URLValidationCheck(i.value)).length !== 0,
+      linkList.filter((i) => !URLValidationCheck(i.value)).length !== 0 ||
+      SourceValueCheck ||
+      infoLinksCheckEmptyValue(emailList) ||
+      infoLinksCheckEmptyValue(linkList) ||
+      infoLinksCheckEmptyValue(contactList),
     [emailList, linkList, contactList, sourceList]
   )
 

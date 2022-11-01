@@ -44,6 +44,22 @@ export default function EditContentBiography({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
 
+  // check whether source-list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
+    // @ts-ignore
+    (x) => x === ''
+  )
+
+  // check whether list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const biographyValueCheck = takeArrayKeyName(list, 'value')?.some(
+    // @ts-ignore
+    (x) => x === ''
+  )
+
   /**
    * If property `value` of element in `sourceList` are all empty string,
    * of property `value` of element in `list` are all empty string,
@@ -62,7 +78,9 @@ export default function EditContentBiography({
           JSON.stringify(
             // @ts-ignore
             takeArrayKeyName(stringToSources(sources, '\n'), 'value')
-          )),
+          )) ||
+      SourceValueCheck ||
+      biographyValueCheck,
     [list, sourceList]
   )
 
