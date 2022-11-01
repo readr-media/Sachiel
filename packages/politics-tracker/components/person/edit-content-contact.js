@@ -53,11 +53,17 @@ export default function EditContentContact({
   const [sourceList, setSourceList] = useState(
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
+
+  // create "totalList" to concat emailList/linkList/contactList
+  // send totalList as a prop to edit-source.js to judge whether error message show
+  const totalList = emailList.concat(linkList).concat(contactList)
+
   /**
    * If property `value` of element in `emailList`, linkList and contactList are all empty string,
    * or property `value` of element in `sourceList` are all empty string,
    * then should disable submit button.
    */
+
   const shouldDisableSubmit = useMemo(
     () =>
       (emailList.filter((i) => i.value).length === 0 &&
@@ -92,7 +98,7 @@ export default function EditContentContact({
   // @ts-ignore
   function takeArrayKeyName(array, key) {
     // @ts-ignore
-    return array.map(function (item) {
+    return array?.map(function (item) {
       return item[key]
     })
   }
@@ -301,7 +307,12 @@ export default function EditContentContact({
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="網站" onClick={addLink}></AddInputButton>
-      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
+      <EditSource
+        sourceList={sourceList}
+        setSourceList={setSourceList}
+        // @ts-ignore
+        inputStatusCheck={totalList}
+      />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
