@@ -44,13 +44,21 @@ export default function EditContentBasic({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
   const [personInfo, setPersonInfo] = useState(Object.assign({}, personData))
-
   /**
    * If  property `value` of element in `sourceList` are all empty strings,
    * or personInfo.name is empty string, then should disable submit button.
    */
 
   const cloneObj = { ...personInfo }
+  const personInfoValueCheck = { ...personInfo }
+
+  // check whether source-list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
+    // @ts-ignore
+    (x) => x === ''
+  )
 
   const shouldDisableSubmit = useMemo(
     () =>
@@ -62,7 +70,8 @@ export default function EditContentBasic({
             takeArrayKeyName(stringToSources(sources, '\n'), 'value')
           )) ||
       !personInfo.name ||
-      sourceList.filter((i) => i.value).length === 0,
+      sourceList.filter((i) => i.value).length === 0 ||
+      SourceValueCheck,
     [personInfo.name, sourceList, personInfo]
   )
   // @ts-ignore
@@ -339,7 +348,7 @@ export default function EditContentBasic({
         sourceList={sourceList}
         setSourceList={setSourceList}
         // @ts-ignore
-        inputStatusCheck={[personInfo]}
+        inputStatusCheck={[personInfoValueCheck]}
       />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
