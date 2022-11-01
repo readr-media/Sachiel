@@ -1,4 +1,3 @@
-import type { CloseFuction } from '~/types/toast'
 import { useEffect, useState, useRef } from 'react'
 
 type WindowSize = {
