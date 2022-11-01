@@ -13,22 +13,22 @@ import { districtsMapping, electionTypesMapping } from '~/constants/election'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 // @ts-ignore: no definition
-import EVC from '@readr-media/react-election-votes-comparison'
+import evc from '@readr-media/react-election-votes-comparison'
 import DefaultLayout from '~/components/layout/default'
 import Nav, { type LinkMember } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
-const DataLoader = EVC.DataLoader
+const DataLoader = evc.DataLoader
 
 type ElectionPageProps = {
   year: number
   name: string
   area: string
+  scrollTo: string
   data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
-  electionType: string
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -38,17 +38,40 @@ export const getServerSideProps: GetServerSideProps<
   let electName: string
   const yearNumber = Number(year)
   const areaStr = String(area)
-  const mappedAreaStr = districtsMapping[areaStr] ?? 'allDisticts'
+  const mappedAreaStr = districtsMapping[areaStr] ?? 'all'
 
-  const dataLoader = new DataLoader({
-    apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
-    year,
-    type: electionTypesMapping[String(type)],
-    area: mappedAreaStr,
-  })
+  const electionType = electionTypesMapping[String(type)]
+  let ldr  
+  switch (electionType) {
+    case 'mayor': {
+      ldr = new DataLoader({
+        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        year,
+        type: electionType,
+        district: 'all',
+        version: 'v2',
+      })
+      break
+    }
+    case 'councilMember': {
+      ldr = new DataLoader({
+        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        year,
+        type: electionType,
+        district: mappedAreaStr,
+        version: 'v1',
+      })
+      break
+    }
+    default: {
+      return {
+        notFound: true,
+      }
+    }
+  }
 
   try {
-    const data = await dataLoader.loadData()
+    const data = Object.assign({type: electionType}, await ldr.loadData())
 
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
@@ -151,10 +174,10 @@ export const getServerSideProps: GetServerSideProps<
         year: yearNumber,
         name: electionName(undefined, electName, areaStr),
         area: mappedAreaStr,
+        scrollTo: areaStr,
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
-        electionType: electionTypesMapping[String(type)],
       },
     }
   } catch (err) {
@@ -206,26 +229,14 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
-  let EVCComponent
-  switch (props.electionType) {
-    case 'mayor':
-      EVCComponent = EVC.ReactComponent.CountyMayor
-      break
-    case 'councilMember':
-    default: {
-      EVCComponent = EVC.ReactComponent.CouncilMember
-      break
-    }
-  }
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
-          <EVCComponent
+          <evc.ReactComponent.EVC
             key={`${props.year}_${props.name}_${props.area}`}
-            year={props.year}
-            title={props.name}
-            districts={props.data.districts}
+            election={props.data}
+            scrollTo={props.scrollTo}
           />
           <Nav {...navProps} />
         </div>
