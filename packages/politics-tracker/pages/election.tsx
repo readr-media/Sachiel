@@ -2,7 +2,6 @@ import type { GetServerSideProps } from 'next'
 import type { ElectionLink } from '~/types/election'
 import type {
   GenericGQLData,
-  withKeyObject,
   RawElection,
   RawPersonElection,
 } from '~/types/common'
@@ -50,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<
   try {
     const data = await dataLoader.loadData()
 
-    const electionMap: withKeyObject<RawElection> = {}
+    const electionMap: Record<string, RawElection> = {}
     const elections: ElectionLink[] = []
     let election: undefined | RawElection
     {

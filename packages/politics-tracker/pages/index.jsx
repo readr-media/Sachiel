@@ -11,14 +11,12 @@ import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 
 /**
- * @typedef { import('~/types/landing').withNumber } NumberObject
- * @typedef { import('~/types/landing').withString } StringObject
  * @typedef { import('~/types/landing').PropsData } PropsData
- * @typedef { import('~/types/landing').withKeyPersonData } PersonData
- * @typedef { import('~/types/landing').witKeyAreaOfMayorElection } AreaOfMayorElection
- * @typedef { import('~/types/landing').withKeyDistrinctOfMayorElection } DistrinctOfMayorElection
- * @typedef { import('~/types/landing').withKeyAreaOfCouncilorElection } AreaOfCouncilorElection
- * @typedef { import('~/types/landing').withKeyCityOfCouncilorElection } CityOfCouncilorElection
+ * @typedef { import('~/types/landing').PersonData } PersonData
+ * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
+ * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
+ * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
+ * @typedef { import('~/types/landing').CityOfCouncilorElection } CityOfCouncilorElection
  */
 
 /** @type { import('next').GetServerSideProps } */
@@ -37,7 +35,7 @@ export const getServerSideProps = async ({ res }) => {
   const COMPLETE_THRESHOLD = 0
   const MAYOR = '縣市首長'
   const COUNCILOR = '縣市議員'
-  /** @type {NumberObject} */
+  /** @type {Record<string, number>} */
   const DISTRICT_ORDER = {
     [NORTH]: 1,
     [CENTER]: 2,
@@ -46,7 +44,7 @@ export const getServerSideProps = async ({ res }) => {
     [ISLAND]: 5,
   }
 
-  /** @type {StringObject} */
+  /** @type {Record<string, string>} */
   const DISTRICT_CHINESE_MAP = {
     [NORTH]: '北部',
     [CENTER]: '中部',
@@ -147,9 +145,7 @@ export const getServerSideProps = async ({ res }) => {
   }
 
   try {
-    /**
-     * @type {PersonData}
-     */
+    /** @type {Record<string, PersonData>} */
     const peopleMap = {}
     const personElecitonIds = []
 
@@ -250,9 +246,9 @@ export const getServerSideProps = async ({ res }) => {
     }
 
     // construct final data
-    /** @type {AreaOfMayorElection} */
+    /** @type {Record<string, CityOfMayorElection>} */
     const mayorArea = {}
-    /** @type {AreaOfCouncilorElection} */
+    /** @type {Record<string, AreaOfCouncilorElection>} */
     const coucilArea = {}
     for (const [id, person] of Object.entries(peopleMap)) {
       const type = person.type
@@ -310,7 +306,7 @@ export const getServerSideProps = async ({ res }) => {
     }
 
     // mayors
-    /** @type {DistrinctOfMayorElection} */
+    /** @type {Record<string, DistrinctOfMayorElection>} */
     const districtData = {}
     for (const [cityName, area] of Object.entries(mayorArea)) {
       if (!typedHasOwnProperty(DISTRICT_MAP, cityName)) continue
@@ -349,7 +345,7 @@ export const getServerSideProps = async ({ res }) => {
     )
 
     // concilors
-    /** @type {CityOfCouncilorElection} */
+    /** @type {Record<string, CityOfCouncilorElection>} */
     const cityData = {}
     for (const [areaName, area] of Object.entries(coucilArea)) {
       const city = area.city

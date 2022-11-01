@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-import type { withKeyObject, Source } from '~/types/common'
+import type { Source } from '~/types/common'
 const resolveConfig = require('tailwindcss/resolveConfig')
 import tailwindConfig from '~/tailwind.config'
 import axios from 'axios'
@@ -64,7 +64,7 @@ function isURL(urlString: string): boolean {
 
 async function fireGqlRequest<T>(
   query: string,
-  variables: undefined | withKeyObject<T>,
+  variables: undefined | Record<string, T>,
   apiUrl: string = 'http://localhost:3000/api/data'
 ) {
   const { data: result } = await axios({
@@ -90,7 +90,7 @@ function typedHasOwnProperty<X extends {}, Y extends PropertyKey>(
   return obj.hasOwnProperty(prop)
 }
 
-function hasOwnByArray(obj: withKeyObject<any>, keys: string[]): boolean {
+function hasOwnByArray(obj: Record<string, unknown>, keys: string[]): boolean {
   return keys.reduce((isPass: boolean, current: string) => {
     if (!obj.hasOwnProperty(current)) isPass = false
     return isPass

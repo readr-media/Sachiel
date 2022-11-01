@@ -1,6 +1,4 @@
-import type { withKeyObject } from '~/types/common'
-
-export const districtsMapping: withKeyObject<string> = {
+export const districtsMapping: Record<string, string> = {
   臺北市: 'taipeiCity',
   新北市: 'newTaipeiCity',
   桃園市: 'taoyuanCity',
@@ -24,7 +22,7 @@ export const districtsMapping: withKeyObject<string> = {
   新竹市: 'hsinchuCity',
   嘉義市: 'chiayiCity',
 }
-export const electionTypesMapping: withKeyObject<string> = {
+export const electionTypesMapping: Record<string, string> = {
   省長: 'governorProvince',
   省議員: 'provinceCouncilMember',
   縣市首長: 'mayor',
