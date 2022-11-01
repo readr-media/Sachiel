@@ -39,6 +39,7 @@ export default function EditContentBiography({
   const [list, setList] = useState(
     listData ? stringToSources(listData, '\n') : [getNewSource()]
   )
+
   const [sourceList, setSourceList] = useState(
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
@@ -68,7 +69,7 @@ export default function EditContentBiography({
   // @ts-ignore
   function takeArrayKeyName(array, key) {
     // @ts-ignore
-    return array.map(function (item) {
+    return array?.map(function (item) {
       return item[key]
     })
   }
@@ -146,6 +147,7 @@ export default function EditContentBiography({
     const remain = list.filter((item) => id !== item.id)
     setList(remain)
   }
+  // 當list有內容的時候 一填寫來源就會報錯
   return (
     <Fragment>
       {list?.map((item, index) => (
@@ -165,8 +167,12 @@ export default function EditContentBiography({
         </InputWrapperNoLabel>
       ))}
       <AddInputButton addTarget="經歷" onClick={addSource}></AddInputButton>
-
-      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
+      <EditSource
+        sourceList={sourceList}
+        setSourceList={setSourceList}
+        // @ts-ignore
+        inputStatusCheck={list}
+      />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}

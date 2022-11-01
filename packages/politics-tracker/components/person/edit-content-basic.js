@@ -335,7 +335,12 @@ export default function EditContentBasic({
           ></EditContentItem>
         )
       )}
-      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
+      <EditSource
+        sourceList={sourceList}
+        setSourceList={setSourceList}
+        // @ts-ignore
+        inputStatusCheck={[personInfo]}
+      />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
