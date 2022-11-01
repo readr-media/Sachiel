@@ -15,8 +15,11 @@ import SectionToggle from './section-toggle'
  */
 export default function SectionList2({
   id,
+  // @ts-ignore
+  activeId,
+  // @ts-ignore
+  setActiveId,
   isActive,
-  setActive,
   color,
   children,
   title,
@@ -25,10 +28,12 @@ export default function SectionList2({
     <Fragment>
       <SectionToggle
         id={id}
-        isActive={isActive}
-        setActive={(/** @type {null|string} id */ id) => setActive(id)}
+        activeId={activeId}
+        // @ts-ignore
+        setActiveId={setActiveId}
         color={color}
         title={title}
+        isActive={isActive}
       />
       {children}
     </Fragment>
