@@ -32,5 +32,7 @@ export type PersonElection = {
   year: number
   month: number
   day: number
+  source: string | null
+  lastUpdate: string | null
   politics: Politic[]
 }

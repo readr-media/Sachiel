@@ -3,7 +3,10 @@ import { SOURCE_DELIMITER } from '~/constants/politics'
 import PoliticBody from './politic-body'
 import s from './politic-block.module.css'
 
-type PoliticBlockProps = Pick<PersonElection, 'politics'>
+type PoliticBlockProps = Pick<
+  PersonElection,
+  'politics' | 'source' | 'lastUpdate'
+>
 
 type GroupData = {
   name: string
@@ -51,8 +54,16 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
     </section>
   ))
 
+  const sourceString: string = props.source
+    ? props.source.split(SOURCE_DELIMITER).join('、')
+    : ''
+
   return (
     <div className={s['container']}>
+      <div className={s['info']}>
+        <span className={s['last-update']}>{props.lastUpdate} 更新</span>
+        <span className={s['source']}>來源：{sourceString}</span>
+      </div>
       <div className={s['group-container']}>{politcGroup}</div>
     </div>
   )

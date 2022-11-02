@@ -1,10 +1,13 @@
-import type { Politic } from '~/types/politics'
+import type { PersonElection } from '~/types/politics'
 import classNames from 'classnames'
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
 import s from './section-body.module.css'
 
-type SectionBodyProps = { politics: Politic[] } & { show: boolean }
+type SectionBodyProps = Pick<
+  PersonElection,
+  'source' | 'lastUpdate' | 'politics'
+> & { show: boolean }
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const style = classNames(s['section-body'], { [s['show']]: props.show })

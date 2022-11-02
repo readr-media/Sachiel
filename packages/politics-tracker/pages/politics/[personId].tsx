@@ -3,6 +3,7 @@ import type {
   PersonElection,
   PersonOverview,
   PoliticAmount,
+  Politic,
 } from '~/types/politics'
 import type {
   GenericGQLData,
@@ -128,6 +129,8 @@ export const getServerSideProps: GetServerSideProps<
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
+              source: current.source ?? null,
+              lastUpdate: null,
               politics: [],
             }
           }
@@ -257,10 +260,26 @@ export const getServerSideProps: GetServerSideProps<
         })
       }
 
-      // sort politics in an election by Id in ascending order
-      Object.keys(electionMap).forEach((eId) => {
-        electionMap[eId].politics.sort((a, b) => Number(a) - Number(b))
-        elections.push(electionMap[eId])
+      // get latestUpdate info of each election
+      const dateFormat = 'YYYY/MM/DD'
+      Object.values(electionMap).forEach((election) => {
+        election.lastUpdate = election.politics.reduce(
+          (result: string | null, curr: Politic) => {
+            const latest = moment(result, dateFormat)
+            const current = moment(curr.updatedAt ?? curr.createdAt)
+            if (latest.isValid() && current.isValid()) {
+              return current.isAfter(latest)
+                ? current.format(dateFormat)
+                : result
+            } else if (current.isValid()) {
+              return current.format(dateFormat)
+            } else {
+              return result
+            }
+          },
+          null
+        )
+        elections.push(election)
       })
 
       // sort elections by date in descending order
