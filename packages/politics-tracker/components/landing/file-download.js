@@ -91,13 +91,11 @@ export default function TeamIntro() {
   const ButtonData = [
     {
       buttonTitle: '下載縣市長政見',
-      // TODO: put Mayor URL file Link here
-      buttonURL: '#',
+      buttonURL: 'https://whoareyou-gcs.readr.tw/politics/politics-81.csv',
     },
     {
       buttonTitle: '下載縣市議員政見',
-      // TODO: put Councilor URL file Link here
-      buttonURL: '#',
+      buttonURL: 'https://whoareyou-gcs.readr.tw/politics/politics-82.csv',
     },
   ]
   return (
@@ -114,7 +112,7 @@ export default function TeamIntro() {
           {ButtonData.map((v) => {
             return (
               <div key={v.buttonTitle}>
-                <a href={v.buttonURL}>
+                <a href={v.buttonURL} target="_blank" rel="noreferrer">
                   <p>{v.buttonTitle}</p>
                   <Image
                     alt="arrowRightblack"
