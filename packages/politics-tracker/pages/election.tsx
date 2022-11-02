@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<
   const mappedAreaStr = districtsMapping[areaStr] ?? 'all'
 
   const electionType = electionTypesMapping[String(type)]
-  let ldr  
+  let ldr
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const data = Object.assign({type: electionType}, await ldr.loadData())
+    const data = Object.assign({ type: electionType }, await ldr.loadData())
 
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
