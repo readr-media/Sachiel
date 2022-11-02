@@ -4,6 +4,7 @@ import { print } from 'graphql'
 import {
   usePersonElectionId,
   usePoliticAmount,
+  usePoliticList,
 } from './react-context/use-politics'
 import { useToast } from '../toast/use-toast'
 import { fireGqlRequest } from '~/utils/utils'
@@ -31,6 +32,7 @@ export default function AddPoliticForm(
   const toast = useToast()
   const politicAmount = usePoliticAmount()
   const personElectionId: string = usePersonElectionId()
+  const waitingPoliticList = usePoliticList()
 
   // client side only
   async function createPolitic(data: Politic): Promise<boolean> {
@@ -61,6 +63,15 @@ export default function AddPoliticForm(
       politicAmount.setAmount({
         ...amount,
         waiting: amount.waiting + 1,
+      })
+
+      waitingPoliticList.addToList({
+        id: String(new Date().valueOf()),
+        ...variables.data,
+        tagId: null,
+        tagName: null,
+        createdAt: null,
+        updatedAt: null,
       })
 
       toast.open({
