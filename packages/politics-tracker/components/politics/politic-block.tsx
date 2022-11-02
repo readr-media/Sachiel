@@ -1,5 +1,9 @@
 import type { Politic, PersonElection } from '~/types/politics'
-import { SOURCE_DELIMITER } from '~/constants/politics'
+import {
+  SOURCE_DELIMITER,
+  SOURCE_DELEMITER_SECONDARY,
+} from '~/constants/politics'
+import { isURL } from '~/utils/utils'
 import PoliticBody from './politic-body'
 import s from './politic-block.module.css'
 
@@ -54,15 +58,53 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
     </section>
   ))
 
-  const sourceString: string = props.source
-    ? props.source.split(SOURCE_DELIMITER).join('、')
-    : ''
+  const sourceData = props.source
+    ? props.source
+        .split(SOURCE_DELIMITER)
+        .map((str) => str.split(SOURCE_DELEMITER_SECONDARY))
+    : []
+
+  const sourceList = sourceData
+    .map((pair, index) => {
+      switch (pair.length) {
+        case 1:
+          return (
+            <span key={index} className={s['source-item']}>
+              {pair[0]}
+            </span>
+          )
+        case 2: {
+          if (isURL(pair[0])) {
+            return (
+              <a
+                key={index}
+                href={pair[0]}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={s['source-item']}
+              >
+                {pair[1]}
+              </a>
+            )
+          } else {
+            return (
+              <span key={index} className={s['source-item']}>
+                {pair[1]}
+              </span>
+            )
+          }
+        }
+        default:
+          return undefined
+      }
+    })
+    .filter((ele) => ele !== undefined)
 
   return (
     <div className={s['container']}>
       <div className={s['info']}>
         <span className={s['last-update']}>{props.lastUpdate} 更新</span>
-        <span className={s['source']}>來源：{sourceString}</span>
+        <span className={s['source']}>來源：{sourceList}</span>
       </div>
       <div className={s['group-container']}>{politcGroup}</div>
     </div>

@@ -10,8 +10,19 @@
   @apply md:inline md:pr-2;
 }
 .source {
-  @apply flex pt-1;
-  @apply md:inline md:pt-0 md:pl-2 md:border-l md:border-solid md:border-black md:border-opacity-5;
+  @apply inline pt-1 break-all;
+  @apply md:pt-0 md:pl-2 md:border-l md:border-solid md:border-black md:border-opacity-5;
+}
+.source-item {
+  * + & {
+    @apply before:content-['、'];
+  }
+}
+a.source-item {
+  &:hover, &:active {
+    @apply text-main opacity-100;
+    @apply before:text-main before:text-opacity-50;
+  }
 }
 .group-container {
   @apply px-4 md:px-5 flex flex-col gap-y-5 md:gap-y-10;
