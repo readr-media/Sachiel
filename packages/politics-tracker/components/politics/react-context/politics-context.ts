@@ -1,4 +1,4 @@
-import type { PoliticAmount } from '~/types/politics'
+import type { PoliticAmount, Politic } from '~/types/politics'
 import { createContext } from 'react'
 
 const PersonElectionIdContext = createContext<string>('')
@@ -14,5 +14,14 @@ const PoliticAmountContext = createContext<{
   },
   setAmount: () => {},
 })
+const PoliticListContext = createContext<{
+  politicList: Politic[]
+  // this is type definition
+  // eslint-disable-next-line
+  addToList: (politic: Politic) => void
+}>({
+  politicList: [],
+  addToList: () => {},
+})
 
-export { PersonElectionIdContext, PoliticAmountContext }
+export { PersonElectionIdContext, PoliticAmountContext, PoliticListContext }
