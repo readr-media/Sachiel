@@ -130,6 +130,20 @@ export type RawPoliticProgress = Partial<{
   updatedBy: string
 }>
 
+export type RawTag = Partial<{
+  id: string
+  name: string
+  brief: string
+  state: string
+  ogTitle: string
+  ogDescription: string
+  isFeatured: boolean
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+}>
+
 export type RawPolitic = Partial<{
   id: string
   person: RawPersonElection
@@ -139,7 +153,9 @@ export type RawPolitic = Partial<{
   progress: RawPoliticProgress[]
   progressCount: number
   status: StatusOptionsB
+  reviewed: Boolean
   thread_parent: RawPolitic
+  tag: RawTag
   createdAt: string
   updatedAt: string
   createdBy: string

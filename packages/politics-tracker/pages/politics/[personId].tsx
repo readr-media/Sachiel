@@ -207,7 +207,7 @@ export const getServerSideProps: GetServerSideProps<
         notverified: 'waiting',
       }
       const politicList = rawData.data?.politics || []
-      const polticGroup: Record<
+      const politicGroup: Record<
         string,
         {
           latestId: string
@@ -217,22 +217,23 @@ export const getServerSideProps: GetServerSideProps<
       // keep latest politc of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
+        const reviewed = politic.reviewed
         const attribute: keyof PoliticAmount = attributeMap[status]
         profile[attribute] += 1
 
-        if (status === 'verified') {
+        if (status === 'verified' && reviewed) {
           const selfId = politic.id as string
           const commonId = politic.thread_parent?.id ?? selfId
-          if (polticGroup.hasOwnProperty(commonId)) {
-            const latestId = polticGroup[commonId].latestId
+          if (politicGroup.hasOwnProperty(commonId)) {
+            const latestId = politicGroup[commonId].latestId
             if (Number(selfId) - Number(latestId) > 0) {
-              polticGroup[commonId] = {
+              politicGroup[commonId] = {
                 latestId: selfId,
                 politic,
               }
             }
           } else {
-            polticGroup[commonId] = {
+            politicGroup[commonId] = {
               latestId: selfId,
               politic,
             }
@@ -241,14 +242,18 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const verifiedLatestPoliticList: RawPolitic[] = Object.keys(
-        polticGroup
-      ).map((key) => polticGroup[key].politic)
+        politicGroup
+      ).map((key) => politicGroup[key].politic)
       for (const politic of verifiedLatestPoliticList) {
         const eId = politic.person?.election?.id as string
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
           source: String(politic.source),
+          tagId: politic.tag?.id ?? null,
+          tagName: politic.tag?.name ?? null,
+          createdAt: String(politic.createdAt),
+          updatedAt: politic.updatedAt ?? null,
         })
       }
 
@@ -258,6 +263,7 @@ export const getServerSideProps: GetServerSideProps<
         elections.push(electionMap[eId])
       })
 
+      // sort elections by date in descending order
       elections.sort((a, b) => {
         const prev = moment()
           .year(Number(a.year))

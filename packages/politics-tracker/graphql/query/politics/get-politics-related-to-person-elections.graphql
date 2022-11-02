@@ -4,6 +4,9 @@ query GetPolticsRelatedToPersonElections($ids: [ID!]) {
     desc
     source
     status
+    reviewed
+    createdAt
+    updatedAt
     thread_parent {
       id
       desc
@@ -15,6 +18,10 @@ query GetPolticsRelatedToPersonElections($ids: [ID!]) {
       election {
         id
       }
+    }
+    tag {
+      id
+      name
     }
   }
 }

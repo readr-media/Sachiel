@@ -15,6 +15,10 @@ export type Politic = {
   id?: string
   desc: string
   source: string
+  tagId: string | null
+  tagName: string | null
+  createdAt: string | null
+  updatedAt: string | null
   error?: string
 }
 

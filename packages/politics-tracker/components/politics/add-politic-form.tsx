@@ -21,6 +21,10 @@ export default function AddPoliticForm(
   const defaultPolitic: Politic = {
     desc: '',
     source: '',
+    tagId: null,
+    tagName: null,
+    createdAt: null,
+    updatedAt: null,
   }
 
   const toast = useToast()

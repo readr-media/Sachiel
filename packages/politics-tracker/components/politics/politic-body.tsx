@@ -24,7 +24,7 @@ type PoliticBodyProps = Politic & { no: number }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const [isEditing, setEditing] = useState<boolean>(false)
-  const index = String(props.no).padStart(2, '0')
+  const index = `${String(props.no).padStart(2, '0')}.`
   const sources = props.source.split(SOURCE_DELIMITER)
   const sourceList = sources.map((s, i) => (
     <SourceItem key={i} no={i + 1} content={s} />
