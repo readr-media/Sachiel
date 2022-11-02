@@ -253,6 +253,7 @@ export const getServerSideProps: GetServerSideProps<
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
           source: String(politic.source),
+          content: String(politic.content),
           tagId: politic.tag?.id ?? null,
           tagName: politic.tag?.name ?? null,
           createdAt: String(politic.createdAt),

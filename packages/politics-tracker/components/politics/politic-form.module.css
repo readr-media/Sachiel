@@ -1,14 +1,20 @@
 @import "./share.css";
 
 .politic {
-  @apply flex flex-col;
+  @apply flex flex-col gap-y-2;
 }
 .politic-input {
   @apply input-base grow px-2 py-1 text-[16px] font-medium leading-[1.8] text-main;
   @apply md:text-[18px];
 }
+.detail {
+  @apply politic pt-8;
+}
+.source {
+  @apply politic pt-10;
+}
 .btn-add-source {
-  @apply flex cursor-pointer flex-row flex-nowrap items-center justify-center mt-2 py-3;
+  @apply flex cursor-pointer flex-row flex-nowrap items-center justify-center py-3;
   @apply text-[16px] leading-[1.8] text-control font-medium;
   @apply md:text-[18px];
 
@@ -19,10 +25,6 @@
 }
 .icon-add-source {
   @apply w-5 h-5;
-}
-.reminder {
-  @apply mt-2 text-[14px] font-medium leading-6 text-main opacity-50;
-  @apply md:text-[16px];
 }
 .control-group {
   @apply mt-4 flex flex-row flex-nowrap items-center justify-between;

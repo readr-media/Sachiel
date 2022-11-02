@@ -52,6 +52,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           },
           desc: data.desc,
           source: data.source,
+          content: data.content,
         },
       }
       // result is not used currently

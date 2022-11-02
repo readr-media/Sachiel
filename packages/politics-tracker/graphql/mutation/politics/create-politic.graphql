@@ -2,6 +2,7 @@ mutation CreatePolitic($data: PoliticCreateInput!) {
   createPolitic(data: $data) {
     desc
     source
+    content
     person {
       id
       person_id {

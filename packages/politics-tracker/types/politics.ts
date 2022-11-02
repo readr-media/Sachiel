@@ -15,6 +15,7 @@ export type Politic = {
   id?: string
   desc: string
   source: string
+  content: string
   tagId: string | null
   tagName: string | null
   createdAt: string | null

@@ -149,6 +149,7 @@ export type RawPolitic = Partial<{
   person: RawPersonElection
   desc: string
   source: string
+  content: string
   contributer: string
   progress: RawPoliticProgress[]
   progressCount: number

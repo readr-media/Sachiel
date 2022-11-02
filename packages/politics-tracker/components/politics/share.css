@@ -15,3 +15,17 @@
   @apply mt-1 text-[14px] font-medium leading-6 text-error;
   @apply md:text-[16px];
 }
+
+.section-label {
+  @apply text-title-sub text-main font-bold;
+  @apply md:text-title-sub-md;
+}
+
+.required {
+  @apply after:content-['（必填）'] after:text-error;
+}
+
+.section-description {
+  @apply text-[14px] text-main text-opacity-50 leading-[1.5] font-medium;
+  @apply md:text-[16px];
+}
