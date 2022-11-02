@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@readr-media/react-election-votes-comparison": "2.0.0-beta.3",
+    "@readr-media/react-election-votes-comparison": "2.0.0-beta.4",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
     "chinese-numbers-converter": "^2.3.1",
