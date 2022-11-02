@@ -64,9 +64,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Environment Variables
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
+| ENV | 字串 | '' | 環境設定 |
 | NEXT_PUBLIC_SITE_URL | 字串 | '' | 網站網址 |
 | NEXT_PUBLIC_CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
-| NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID | 字串 | '' | Google Analytics Tracking ID |
+| GOOGLE_ANALYTICS_TRACKING_ID | 字串 | '' | Google Analytics Tracking ID |
+| URL_OF_JSON_FOR_LANDING_PAGE | 字串 | '' | landing 頁所需的資料來源 |
 
 ## Feature Toggle (功能開關，暫時性)
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |

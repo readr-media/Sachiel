@@ -21,6 +21,9 @@ const ContentPersonImage = styled(ProfileImage)`
   min-width: 40px;
   min-height: 40px;
   margin-right: 8px;
+  img {
+    object-fit: cover;
+  }
 `
 const TagContainer = styled.div`
   display: flex;
@@ -268,7 +271,7 @@ export default function SectionBodyPersonalFile({
               <Tag key={item.id} id={item.id} name={item.name}></Tag>
             ))
           ) : (
-            <ContentItemEmpty>尚未新增</ContentItemEmpty>
+            <ContentItemEmpty>這個人還沒被新增標籤⋯</ContentItemEmpty>
           )}
         </TagContainer>
       </Content>

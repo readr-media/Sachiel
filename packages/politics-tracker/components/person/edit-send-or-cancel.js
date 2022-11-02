@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import { EditIcon } from './edit-button'
 import ArrowRight from '../icons/arrow-right'
+import PulseLoader from 'react-spinners/PulseLoader'
 const EditSendOrCancelContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -9,7 +11,6 @@ const EditSendOrCancelContainer = styled.div`
   padding-bottom: 20px;
   border-width: 0 0 2px;
 `
-
 const EditCancel = styled.button`
   color: ${({ theme }) => theme.textColor.gray};
   user-select: none;
@@ -18,6 +19,7 @@ const EditCancel = styled.button`
   }
 `
 const EditSend = styled.button`
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,14 +57,33 @@ export default function EditSendOrCancel({
   onClick,
   submitHandler,
 }) {
+  const [startLoading, setStartLoading] = useState(false)
   return (
     <EditSendOrCancelContainer>
       <EditCancel onClick={() => onClick()}>取消</EditCancel>
-      <EditSend disabled={isDisable} onClick={() => submitHandler()}>
-        送出審核
-        <EditIcon>
-          <ArrowRight />
-        </EditIcon>
+      <EditSend
+        disabled={isDisable}
+        onClick={() => {
+          setStartLoading(true)
+          setTimeout(() => {
+            submitHandler()
+            setStartLoading(false)
+          }, 1000)
+        }}
+      >
+        <PulseLoader
+          color="#8379F8"
+          loading={startLoading}
+          margin={3}
+          size={6}
+          speedMultiplier={0.7}
+        />
+        {!startLoading && '送出審核'}
+        {!startLoading && (
+          <EditIcon>
+            <ArrowRight />
+          </EditIcon>
+        )}
       </EditSend>
     </EditSendOrCancelContainer>
   )

@@ -33,15 +33,36 @@ export default function EditTags(props) {
   const toast = useToast()
 
   const [tagList, setTagList] = useState(props.tags)
+
+  // check whether tagList-list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const tagsValueCheck = takeArrayKeyName(tagList, 'name')?.some(
+    // @ts-ignore
+    (x) => x === ''
+  )
+
   /**
    * If property `value` of element in `tagList` are all empty string,
    * then should disable submit button.
    */
   const shouldDisableSubmit = useMemo(
-    () => tagList.filter((i) => i.name).length === 0,
+    () =>
+      tagList.filter((i) => i.name).length === 0 ||
+      JSON.stringify(takeArrayKeyName(tagList, 'name')) ===
+        JSON.stringify(takeArrayKeyName(props.tags, 'name')) ||
+      tagsValueCheck,
     [tagList]
   )
-
+  //take tagList's name to compare with props.tags's name
+  //if the same then shouldDisableSubmit = true
+  // @ts-ignore
+  function takeArrayKeyName(array, key) {
+    // @ts-ignore
+    return array.map(function (item) {
+      return item[key]
+    })
+  }
   /**
    *
    * @param {string} key

@@ -44,16 +44,61 @@ export default function EditContentBasic({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
   const [personInfo, setPersonInfo] = useState(Object.assign({}, personData))
-
   /**
    * If  property `value` of element in `sourceList` are all empty strings,
    * or personInfo.name is empty string, then should disable submit button.
    */
 
-  const shouldDisableSubmit = useMemo(
-    () => !personInfo.name || sourceList.filter((i) => i.value).length === 0,
-    [personInfo.name, sourceList]
+  const cloneObj = { ...personInfo }
+  const personInfoValueCheck = { ...personInfo }
+
+  // check whether source-list value has ('')
+  // if have (''), return true
+  // @ts-ignore
+  const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
+    // @ts-ignore
+    (x) => x === ''
   )
+
+  // if user edit basic-form, return false, then source-error-message hidden
+  // send BasicFormEditCheck as a prop to edit-source.js
+  const BasicFormEditCheck =
+    JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+    JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData)))
+
+  const shouldDisableSubmit = useMemo(
+    () =>
+      (JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+        JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData))) &&
+        JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
+          JSON.stringify(
+            // @ts-ignore
+            takeArrayKeyName(stringToSources(sources, '\n'), 'value')
+          )) ||
+      !personInfo.name ||
+      sourceList.filter((i) => i.value).length === 0 ||
+      SourceValueCheck,
+    [personInfo.name, sourceList, personInfo]
+  )
+  // @ts-ignore
+  function mapEmptyValueToNull(object) {
+    Object.keys(object).forEach((key) => {
+      if (object[key] === '') {
+        object[key] = null
+      }
+      if (object[key] === undefined) {
+        object[key] = null
+      }
+    })
+    return object
+  }
+  // @ts-ignore
+  function takeArrayKeyName(array, key) {
+    // @ts-ignore
+    return array.map(function (item) {
+      return item[key]
+    })
+  }
 
   /**
    *
@@ -61,7 +106,6 @@ export default function EditContentBasic({
    */
   function updateList(name) {
     return (/** @type {string | undefined} */ value) => {
-      const cloneObj = { ...personInfo }
       if (typedHasOwnProperty(cloneObj, name)) {
         cloneObj[name] = value
       }
@@ -74,9 +118,9 @@ export default function EditContentBasic({
    */
   function updateGender(value) {
     let newValue = ''
-    if (value === '男') {
+    if (value === 'M') {
       setPersonInfo({ ...personInfo, gender: 'M' })
-    } else if (value === '女') {
+    } else if (value === 'F') {
       setPersonInfo({ ...personInfo, gender: 'F' })
     } else return
   }
@@ -99,24 +143,6 @@ export default function EditContentBasic({
   // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateBirthDate(value) {
     const dateArray = stringToDate(value)
-    // if (dateArray[0]) {
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     birth_date_year: dateArray[0],
-    //   })
-    // }
-    // if (dateArray[1]) {
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     birth_date_month: dateArray[1],
-    //   })
-    // }
-    // if (dateArray[2]) {
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     birth_date_day: dateArray[2],
-    //   })
-    // }
     setPersonInfo({
       ...personInfo,
       birth_date_year: dateArray[0],
@@ -130,26 +156,6 @@ export default function EditContentBasic({
   // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateDeadDate(value) {
     const dateArray = stringToDate(value)
-    // if (dateArray[0]) {
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     death_date_year: dateArray[0],
-    //   })
-    // }
-    // if (dateArray[1]) {
-    //   console.log('1', dateArray[1])
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     death_date_month: dateArray[1],
-    //   })
-    // }
-    // if (dateArray[2]) {
-    //   console.log('2', dateArray[2])
-    //   setPersonInfo({
-    //     ...personInfo,
-    //     death_date_day: dateArray[2],
-    //   })
-    // }
     setPersonInfo({
       ...personInfo,
       death_date_year: dateArray[0],
@@ -344,7 +350,13 @@ export default function EditContentBasic({
           ></EditContentItem>
         )
       )}
-      <EditSource sourceList={sourceList} setSourceList={setSourceList} />
+      <EditSource
+        sourceList={sourceList}
+        setSourceList={setSourceList}
+        // @ts-ignore
+        inputStatusCheck={[personInfoValueCheck]}
+        BasicFormEditCheck={BasicFormEditCheck}
+      />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}

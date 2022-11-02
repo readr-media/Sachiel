@@ -35,6 +35,10 @@ const EditContentItemInput = styled.input`
   }
   &:focus {
     outline: none;
+    border: 1px solid ${({ theme }) => theme.backgroundColor.black};
+  }
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.backgroundColor.black};
   }
 `
 

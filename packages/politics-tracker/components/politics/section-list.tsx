@@ -19,7 +19,13 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           isActive={isActive}
           setActive={() => setIsActive(!isActive)}
         />
-        <SectionBody show={isActive} politics={props.politics} />
+        <SectionBody
+          show={isActive}
+          politics={props.politics}
+          lastUpdate={props.lastUpdate}
+          waitingPolitics={props.waitingPolitics}
+          source={props.source}
+        />
       </div>
     </PersonElectionIdContext.Provider>
   )
