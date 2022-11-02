@@ -3,6 +3,7 @@ import type {
   PersonElection,
   PersonOverview,
   PoliticAmount,
+  Politic,
 } from '~/types/politics'
 import type {
   GenericGQLData,
@@ -128,7 +129,10 @@ export const getServerSideProps: GetServerSideProps<
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
+              source: current.source ?? null,
+              lastUpdate: null,
               politics: [],
+              waitingPolitics: [],
             }
           }
 
@@ -207,7 +211,7 @@ export const getServerSideProps: GetServerSideProps<
         notverified: 'waiting',
       }
       const politicList = rawData.data?.politics || []
-      const polticGroup: Record<
+      const politicGroup: Record<
         string,
         {
           latestId: string
@@ -217,47 +221,83 @@ export const getServerSideProps: GetServerSideProps<
       // keep latest politc of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
+        const reviewed = politic.reviewed
         const attribute: keyof PoliticAmount = attributeMap[status]
         profile[attribute] += 1
 
-        if (status === 'verified') {
+        if (status === 'verified' && reviewed) {
           const selfId = politic.id as string
           const commonId = politic.thread_parent?.id ?? selfId
-          if (polticGroup.hasOwnProperty(commonId)) {
-            const latestId = polticGroup[commonId].latestId
+          if (politicGroup.hasOwnProperty(commonId)) {
+            const latestId = politicGroup[commonId].latestId
             if (Number(selfId) - Number(latestId) > 0) {
-              polticGroup[commonId] = {
+              politicGroup[commonId] = {
                 latestId: selfId,
                 politic,
               }
             }
           } else {
-            polticGroup[commonId] = {
+            politicGroup[commonId] = {
               latestId: selfId,
               politic,
             }
           }
+        } else if (!reviewed) {
+          const eId = politic.person?.election?.id as string
+
+          electionMap[eId].waitingPolitics.push({
+            id: String(politic.id),
+            desc: String(politic.desc),
+            source: '',
+            content: '',
+            tagId: null,
+            tagName: null,
+            createdAt: String(politic.createdAt),
+            updatedAt: politic.updatedAt ?? null,
+          })
         }
       }
 
       const verifiedLatestPoliticList: RawPolitic[] = Object.keys(
-        polticGroup
-      ).map((key) => polticGroup[key].politic)
+        politicGroup
+      ).map((key) => politicGroup[key].politic)
       for (const politic of verifiedLatestPoliticList) {
         const eId = politic.person?.election?.id as string
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
           source: String(politic.source),
+          content: String(politic.content),
+          tagId: politic.tag?.id ?? null,
+          tagName: politic.tag?.name ?? null,
+          createdAt: String(politic.createdAt),
+          updatedAt: politic.updatedAt ?? null,
         })
       }
 
-      // sort politics in an election by Id in ascending order
-      Object.keys(electionMap).forEach((eId) => {
-        electionMap[eId].politics.sort((a, b) => Number(a) - Number(b))
-        elections.push(electionMap[eId])
+      // get latestUpdate info of each election
+      const dateFormat = 'YYYY/MM/DD'
+      Object.values(electionMap).forEach((election) => {
+        election.lastUpdate = election.politics.reduce(
+          (result: string | null, curr: Politic) => {
+            const latest = moment(result, dateFormat)
+            const current = moment(curr.updatedAt ?? curr.createdAt)
+            if (latest.isValid() && current.isValid()) {
+              return current.isAfter(latest)
+                ? current.format(dateFormat)
+                : result
+            } else if (current.isValid()) {
+              return current.format(dateFormat)
+            } else {
+              return result
+            }
+          },
+          null
+        )
+        elections.push(election)
       })
 
+      // sort elections by date in descending order
       elections.sort((a, b) => {
         const prev = moment()
           .year(Number(a.year))

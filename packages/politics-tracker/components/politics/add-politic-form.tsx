@@ -21,6 +21,11 @@ export default function AddPoliticForm(
   const defaultPolitic: Politic = {
     desc: '',
     source: '',
+    content: '',
+    tagId: null,
+    tagName: null,
+    createdAt: null,
+    updatedAt: null,
   }
 
   const toast = useToast()
@@ -41,6 +46,7 @@ export default function AddPoliticForm(
           },
           desc: data.desc,
           source: data.source,
+          content: data.content,
         },
       }
       // result is not used currently
