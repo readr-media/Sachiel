@@ -60,6 +60,12 @@ export default function EditContentBasic({
     (x) => x === ''
   )
 
+  // if user edit basic-form, return false, then source-error-message hidden
+  // send BasicFormEditCheck as a prop to edit-source.js
+  const BasicFormEditCheck =
+    JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+    JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData)))
+
   const shouldDisableSubmit = useMemo(
     () =>
       (JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
@@ -349,6 +355,7 @@ export default function EditContentBasic({
         setSourceList={setSourceList}
         // @ts-ignore
         inputStatusCheck={[personInfoValueCheck]}
+        BasicFormEditCheck={BasicFormEditCheck}
       />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}

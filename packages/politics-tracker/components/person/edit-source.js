@@ -31,6 +31,8 @@ export default function EditSource({
   setSourceList,
   // @ts-ignore
   inputStatusCheck,
+  // @ts-ignore
+  BasicFormEditCheck,
 }) {
   function addSource() {
     const extended = [...sourceList, getNewSource()]
@@ -101,7 +103,7 @@ export default function EditSource({
               onDelete={deleteSource}
             />
           </SourceInputWrapper>
-          {totalValueCheck() ? (
+          {BasicFormEditCheck || totalValueCheck() ? (
             <></>
           ) : (
             <ErrorMessage>請至少填寫一個來源</ErrorMessage>
