@@ -23,6 +23,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           show={isActive}
           politics={props.politics}
           lastUpdate={props.lastUpdate}
+          waitingPolitics={props.waitingPolitics}
           source={props.source}
         />
       </div>

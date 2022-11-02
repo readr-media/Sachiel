@@ -27,6 +27,7 @@ module.exports = {
         error: '#C0374F',
         control: '#B2800D',
         default: '#838383',
+        'button-2': '#B3800D',
       },
       boxShadow: {
         top: 'inset 0px 4px 0px #000000',

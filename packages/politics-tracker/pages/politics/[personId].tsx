@@ -132,6 +132,7 @@ export const getServerSideProps: GetServerSideProps<
               source: current.source ?? null,
               lastUpdate: null,
               politics: [],
+              waitingPolitics: [],
             }
           }
 
@@ -241,6 +242,19 @@ export const getServerSideProps: GetServerSideProps<
               politic,
             }
           }
+        } else if (!reviewed) {
+          const eId = politic.person?.election?.id as string
+
+          electionMap[eId].waitingPolitics.push({
+            id: String(politic.id),
+            desc: String(politic.desc),
+            source: '',
+            content: '',
+            tagId: null,
+            tagName: null,
+            createdAt: String(politic.createdAt),
+            updatedAt: politic.updatedAt ?? null,
+          })
         }
       }
 

@@ -2,11 +2,12 @@ import type { PersonElection } from '~/types/politics'
 import classNames from 'classnames'
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
+import WaitingPoliticBlock from './waiting-politic-block'
 import s from './section-body.module.css'
 
 type SectionBodyProps = Pick<
   PersonElection,
-  'source' | 'lastUpdate' | 'politics'
+  'source' | 'lastUpdate' | 'politics' | 'waitingPolitics'
 > & { show: boolean }
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
@@ -22,6 +23,9 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
             <div className={s['default']}>這個人還沒有被新增政見...</div>
           )}
           <AddPoliticBlock />
+          {props.waitingPolitics.length > 0 && (
+            <WaitingPoliticBlock waitingPolitics={props.waitingPolitics} />
+          )}
         </>
       )}
     </div>
