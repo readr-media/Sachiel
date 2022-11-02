@@ -5,7 +5,6 @@ import type {
   PoliticAmount,
 } from '~/types/politics'
 import type {
-  withKeyObject,
   GenericGQLData,
   RawPersonElection,
   RawPerson,
@@ -65,7 +64,7 @@ export const getServerSideProps: GetServerSideProps<
       completed: 0,
     }
     const elections: PersonElection[] = []
-    const electionMap: withKeyObject<PersonElection> = {}
+    const electionMap: Record<string, PersonElection> = {}
     const personElectionIds: number[] = []
     let latestPersonElection: RawPersonElection
     let latestPerson: RawPerson
@@ -208,10 +207,13 @@ export const getServerSideProps: GetServerSideProps<
         notverified: 'waiting',
       }
       const politicList = rawData.data?.politics || []
-      const polticGroup: withKeyObject<{
-        latestId: string
-        politic: RawPolitic
-      }> = {}
+      const polticGroup: Record<
+        string,
+        {
+          latestId: string
+          politic: RawPolitic
+        }
+      > = {}
       // keep latest politc of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
@@ -314,7 +316,7 @@ const Politics = (props: PoliticsPageProps) => {
     setPoliticAmounts(amount)
   }
 
-  const navProps: withKeyObject<LinkMember | undefined> = {
+  const navProps: Record<string, LinkMember | undefined> = {
     prev: {
       backgroundColor: 'bg-person',
       content: '回個人資訊',
