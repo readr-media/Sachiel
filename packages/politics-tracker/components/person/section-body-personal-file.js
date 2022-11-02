@@ -21,6 +21,9 @@ const ContentPersonImage = styled(ProfileImage)`
   min-width: 40px;
   min-height: 40px;
   margin-right: 8px;
+  img {
+    object-fit: cover;
+  }
 `
 const TagContainer = styled.div`
   display: flex;

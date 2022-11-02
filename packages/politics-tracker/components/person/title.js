@@ -37,6 +37,9 @@ const Name = styled.h1`
 const TitleProfileImage = styled(ProfileImage)`
   min-width: 60px;
   min-height: 60px;
+  img {
+    object-fit: cover;
+  }
   ${({ theme }) => theme.breakpoint.md} {
     min-width: 80px;
     min-height: 80px;
@@ -103,6 +106,8 @@ export default function Title({ name, image }) {
                 alt=""
                 src={image}
                 fill
+                // layout="fill"
+                // obejectFit="cover"
                 onError={() => {
                   setShowImage(false)
                 }}

@@ -4,8 +4,9 @@ import errors from '@twreporter/errors'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
+import axios from 'axios'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
+import { cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
 import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
@@ -144,6 +145,50 @@ export const getServerSideProps = async ({ res }) => {
     }
   }
 
+  // retrieve data from GCS json for page load optimization
+  try {
+    /** @type {import('axios').AxiosResponse<PropsData>} */
+    const { data: result } = await axios.get(urlOfJsonForlandingPage)
+    /** @type {boolean} */
+    let isValid = Object.keys(propsData).reduce(
+      /**
+       * @param {boolean} valid
+       * @param {string} key
+       * @return {boolean}
+       * */
+      (valid, key) => {
+        if (!typedHasOwnProperty(result, key)) valid = false
+        return valid
+      },
+      true
+    )
+
+    return {
+      props: Object.assign(propsData, result),
+    }
+
+    if (!isValid) throw new Error('fail to retrieve json data')
+  } catch (err) {
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+
+  // fallback to use GraphQL query if GCS json request failed
   try {
     /** @type {Record<string, PersonData>} */
     const peopleMap = {}

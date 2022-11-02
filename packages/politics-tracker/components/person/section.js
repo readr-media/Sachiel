@@ -16,32 +16,41 @@ const SectionContainer = styled.div`
  * @returns {React.ReactElement}
  */
 export default function Section({ personData, personElectionsData }) {
-  const [activeId, setActiveId] = useState('0')
+  const [activeId, setActiveId] = useState([])
   return (
     <SectionContainer>
       <SectionList
         id={'0'}
-        isActive={activeId === '0'}
-        setActive={setActiveId}
+        // @ts-ignore
+        isActive={activeId.includes('0')}
+        // @ts-ignore
+        setActiveId={setActiveId}
+        activeId={activeId}
         color="blue"
         title="個人檔案"
       >
         <SectionBodyPersonalFile
-          isActive={activeId === '0'}
+          // @ts-ignore
+          isActive={activeId.includes('0')}
           personData={personData}
         ></SectionBodyPersonalFile>
       </SectionList>
       <SectionList
         id={'1'}
-        isActive={activeId === '1'}
-        setActive={setActiveId}
+        // @ts-ignore
+        isActive={activeId.includes('1')}
+        // @ts-ignore
+        setActiveId={setActiveId}
+        activeId={activeId}
         color="orange"
         title="參與過的選舉"
       >
+        {/* 這邊是toggle body */}
         <SectionBodyElection
           personId={personData.id}
           personElectionsData={personElectionsData}
-          isActive={activeId === '1'}
+          // @ts-ignore
+          isActive={activeId.includes('1')}
         ></SectionBodyElection>
       </SectionList>
       <SectionList
@@ -50,6 +59,8 @@ export default function Section({ personData, personElectionsData }) {
         isActive={false}
         setActive={setActiveId}
         title="資產（即將開放）"
+        // @ts-ignore
+        activeId={activeId}
       ></SectionList>
       <SectionList
         id={null}
@@ -57,6 +68,8 @@ export default function Section({ personData, personElectionsData }) {
         isActive={false}
         setActive={setActiveId}
         title="政治獻金（即將開放）"
+        // @ts-ignore
+        activeId={activeId}
       ></SectionList>
       <SectionList
         id={null}
@@ -64,6 +77,8 @@ export default function Section({ personData, personElectionsData }) {
         isActive={false}
         setActive={setActiveId}
         title="犯罪記錄（即將開放）"
+        // @ts-ignore
+        activeId={activeId}
       ></SectionList>
     </SectionContainer>
   )

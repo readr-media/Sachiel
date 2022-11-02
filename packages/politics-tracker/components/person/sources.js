@@ -43,12 +43,16 @@ const SourcesTitle = styled.div`
   }
 `
 const SourceItemWrap = styled.div`
-  padding: 0.5rem 0px;
-  a,
-  span {
-    padding-right: 0.5rem;
-    border-right-width: 1px;
-    border-left-width: 0px;
+  align-items: center;
+  background-color: rgb(15 45 53 / var(--tw-bg-opacity));
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.3rem 0.5rem 0;
+  * {
+    border-left-width: 1px;
   }
 `
 /**

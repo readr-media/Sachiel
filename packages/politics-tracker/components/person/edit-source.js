@@ -26,12 +26,18 @@ const ErrorMessage = styled.div`
  * @param {function} props.setSourceList
  * @returns {React.ReactElement}
  */
-export default function EditSource({ sourceList, setSourceList }) {
+export default function EditSource({
+  sourceList,
+  setSourceList,
+  // @ts-ignore
+  inputStatusCheck,
+  // @ts-ignore
+  BasicFormEditCheck,
+}) {
   function addSource() {
     const extended = [...sourceList, getNewSource()]
     setSourceList(extended)
   }
-
   /**
    *
    * @param {string} id
@@ -46,6 +52,29 @@ export default function EditSource({ sourceList, setSourceList }) {
     })
     setSourceList(updated)
   }
+
+  // check whether content-input has value(if have value, return true)
+  // @ts-ignore
+  const ContentValueCheck = inputStatusCheck?.some((x) => x.value !== '')
+
+  // check whether source-input has value(if have value, return true)
+  // @ts-ignore
+  const SourceValueCheck = sourceList?.some((x) => x.value !== '')
+
+  // if all inputs are empty, error message hidden
+  // if content-input is empty but source-input has, error message also hidden
+  // other status: error message show
+  function totalValueCheck() {
+    if (
+      ContentValueCheck === SourceValueCheck ||
+      (!ContentValueCheck && SourceValueCheck)
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   /**
    * @param {string} id
    */
@@ -74,10 +103,10 @@ export default function EditSource({ sourceList, setSourceList }) {
               onDelete={deleteSource}
             />
           </SourceInputWrapper>
-          {source.value === '' && index === 0 ? (
-            <ErrorMessage>請至少填寫一個來源</ErrorMessage>
-          ) : (
+          {BasicFormEditCheck || totalValueCheck() ? (
             <></>
+          ) : (
+            <ErrorMessage>請至少填寫一個來源</ErrorMessage>
           )}
         </Fragment>
       ))}

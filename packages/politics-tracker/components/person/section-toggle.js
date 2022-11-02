@@ -119,27 +119,41 @@ const ToggleIcon = styled.span`
  * @param {boolean} props.isActive
  * @param {Function} props.setActive
  * @param {null|string} props.id
+ * @param {Object[]} props.activeId
  * @returns {React.ReactElement}
  */
 export default function SectionToggle({
   color,
   isActive,
-  setActive,
+  activeId,
+  // @ts-ignore
+  setActiveId,
   id,
   title,
 }) {
-  function toggle() {
-    if (id) {
-      if (isActive) {
-        setActive('')
-      } else {
-        setActive(id)
-      }
+  // @ts-ignore
+  function toggleActiveID(id) {
+    if (activeId?.includes(id)) {
+      const newActiveId = activeId?.filter(function (value) {
+        return value !== id
+      })
+      setActiveId(newActiveId)
+    } else if (id === null) {
+      return
+    } else {
+      const newActiveId = [...activeId, id]
+      setActiveId(newActiveId)
     }
   }
   return (
     <ToggleWrapper>
-      <ToggleButton isActive={isActive} color={color} onClick={toggle}>
+      <ToggleButton
+        color={color}
+        isActive={isActive}
+        onClick={() => {
+          toggleActiveID(id)
+        }}
+      >
         <ToggleText color={color}>{title}</ToggleText>
         <ToggleIcon color={color}>
           {isActive ? <ArrowUp /> : <ArrowDown />}
