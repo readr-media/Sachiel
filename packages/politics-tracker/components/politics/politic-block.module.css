@@ -1,0 +1,39 @@
+.container {
+  
+}
+.info {
+  @apply py-3 px-5 mb-5 bg-label bg-opacity-5 text-main text-opacity-50 text-[12px] leading-[1.5] font-medium;
+  @apply md:text-[14px];
+}
+.last-update {
+  @apply flex;
+  @apply md:inline md:pr-2;
+}
+.source {
+  @apply inline pt-1 break-all;
+  @apply md:pt-0 md:pl-2 md:border-l md:border-solid md:border-black md:border-opacity-5;
+}
+.source-item {
+  * + & {
+    @apply before:content-['、'];
+  }
+}
+a.source-item {
+  &:hover, &:active {
+    @apply text-main opacity-100;
+    @apply before:text-main before:text-opacity-50;
+  }
+}
+.group-container {
+  @apply px-4 md:px-5 flex flex-col gap-y-5 md:gap-y-10;
+}
+.group-member {
+
+}
+.group-title {
+  @apply inline-block mb-2 text-main text-[20px] leading-[1.3] font-bold shadow-[0_2px_0_0_#000000];
+  @apply md:text-[24px];
+}
+.politic {
+  @apply flex flex-col gap-y-5 md:gap-y-10;
+}

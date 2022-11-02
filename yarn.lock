@@ -1284,10 +1284,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@readr-media/react-election-votes-comparison@2.0.0-beta.3":
-  version "2.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-election-votes-comparison/-/react-election-votes-comparison-2.0.0-beta.3.tgz#94a489045154b3a7e54c43ea973d97109a9008ae"
-  integrity sha512-lFJ2L42eFEdkifG82Q7qZEDPBE9naw8TJ4XSYZhaKHzg/HBZ8F8NxF630lu1jalNRm41WJBVTfy5NAzX5SxnHQ==
+"@readr-media/react-election-votes-comparison@2.0.0-beta.4":
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-election-votes-comparison/-/react-election-votes-comparison-2.0.0-beta.4.tgz#ee5a451e49d1be89c690b94332c83601ef17484a"
+  integrity sha512-BGf35FjrdvPBOPHEgn3oLvCD35TAYB3zPjhy2jFKDowvnkj4FQMu64xuv42Vs468lzULMkYFXFoRdWVefVqyNw==
   dependencies:
     "@twreporter/errors" "^1.1.1"
     axios "0.27.2"

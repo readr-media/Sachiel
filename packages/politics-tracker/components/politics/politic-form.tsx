@@ -8,6 +8,7 @@ import {
   sourcesToString,
 } from '~/utils/utils'
 import { useEffect, useMemo, useState } from 'react'
+import classNames from 'classnames'
 import SourceInput from './source-input'
 import Button from './button'
 import Plus from '~/components/icons/plus'
@@ -176,6 +177,12 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
   return (
     <>
       <section className={s['politic']}>
+        <label className={classNames(s['section-label'], s['required'])}>
+          政見
+        </label>
+        <span className={s['section-description']}>
+          以「能檢驗是否實踐」為一條政見！例如候選人說了：「我承諾當上市長以後要蓋輕軌、拓展高速公路路線，解決ＯＯ區交通。」那撰寫上要拆成兩條政見：「蓋輕軌，解決ＯＯ區交通。」＆「拓展高速公路路線，解決ＯＯ區交通。」
+        </span>
         <textarea
           rows={isMobile() ? 6 : 3}
           className={s['politic-input']}
@@ -184,19 +191,39 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
           onChange={(e) => {
             setPolitic({ ...politic, desc: e.target.value })
           }}
+          required
         />
         {politic.error && showError && (
           <span className={s['error-text']}>{politic.error}</span>
         )}
       </section>
-      {sourceList}
-      <div className={s['btn-add-source']} onClick={addSource}>
-        <span>新增來源</span>
-        <span className={s['icon-add-source']}>
-          <Plus />
+      <section className={s['detail']}>
+        <label className={classNames(s['section-label'])}>政見補充說明</label>
+        <textarea
+          rows={6}
+          className={s['politic-input']}
+          placeholder="請輸入政見補充說明..."
+          value={politic.content}
+          onChange={(e) => {
+            setPolitic({ ...politic, content: e.target.value })
+          }}
+        />
+      </section>
+      <section className={s['source']}>
+        <label className={classNames(s['section-label'], s['required'])}>
+          來源
+        </label>
+        <span className={s['section-description']}>
+          附上清楚資料來源有助志工快速審核資訊。
         </span>
-      </div>
-      <div className={s['reminder']}>附上清楚資料來源有助志工快速審核資訊</div>
+        {sourceList}
+        <div className={s['btn-add-source']} onClick={addSource}>
+          <span>新增來源</span>
+          <span className={s['icon-add-source']}>
+            <Plus />
+          </span>
+        </div>
+      </section>
       <section className={s['control-group']}>
         <span onClick={props.closeForm} className={s['cancel']}>
           取消

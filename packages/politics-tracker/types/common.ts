@@ -2,8 +2,6 @@ import type { LinkProps } from 'next/link'
 
 export type LinkHref = LinkProps['href']
 
-export type withKeyObject<T> = Record<string, T>
-
 export type GenericGQLData<T, U extends string> = {
   data?: Record<U, T>
   errors: any[]
@@ -132,16 +130,33 @@ export type RawPoliticProgress = Partial<{
   updatedBy: string
 }>
 
+export type RawTag = Partial<{
+  id: string
+  name: string
+  brief: string
+  state: string
+  ogTitle: string
+  ogDescription: string
+  isFeatured: boolean
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+}>
+
 export type RawPolitic = Partial<{
   id: string
   person: RawPersonElection
   desc: string
   source: string
+  content: string
   contributer: string
   progress: RawPoliticProgress[]
   progressCount: number
   status: StatusOptionsB
+  reviewed: Boolean
   thread_parent: RawPolitic
+  tag: RawTag
   createdAt: string
   updatedAt: string
   createdBy: string

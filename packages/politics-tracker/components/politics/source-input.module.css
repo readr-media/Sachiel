@@ -4,7 +4,7 @@
   @apply flex flex-col;
 }
 .input-group {
-  @apply mt-2 flex flex-row flex-nowrap;
+  @apply flex flex-row flex-nowrap;
 }
 .label {
   @apply flex flex-row items-center shrink-0 bg-default px-2 text-[12px] text-white font-medium;

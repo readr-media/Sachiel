@@ -4,21 +4,20 @@ import errors from '@twreporter/errors'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
+import axios from 'axios'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
+import { cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
 import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 
 /**
- * @typedef { import('~/types/landing').withNumber } NumberObject
- * @typedef { import('~/types/landing').withString } StringObject
  * @typedef { import('~/types/landing').PropsData } PropsData
- * @typedef { import('~/types/landing').withKeyPersonData } PersonData
- * @typedef { import('~/types/landing').witKeyAreaOfMayorElection } AreaOfMayorElection
- * @typedef { import('~/types/landing').withKeyDistrinctOfMayorElection } DistrinctOfMayorElection
- * @typedef { import('~/types/landing').withKeyAreaOfCouncilorElection } AreaOfCouncilorElection
- * @typedef { import('~/types/landing').withKeyCityOfCouncilorElection } CityOfCouncilorElection
+ * @typedef { import('~/types/landing').PersonData } PersonData
+ * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
+ * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
+ * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
+ * @typedef { import('~/types/landing').CityOfCouncilorElection } CityOfCouncilorElection
  */
 
 /** @type { import('next').GetServerSideProps } */
@@ -37,7 +36,7 @@ export const getServerSideProps = async ({ res }) => {
   const COMPLETE_THRESHOLD = 0
   const MAYOR = '縣市首長'
   const COUNCILOR = '縣市議員'
-  /** @type {NumberObject} */
+  /** @type {Record<string, number>} */
   const DISTRICT_ORDER = {
     [NORTH]: 1,
     [CENTER]: 2,
@@ -46,7 +45,7 @@ export const getServerSideProps = async ({ res }) => {
     [ISLAND]: 5,
   }
 
-  /** @type {StringObject} */
+  /** @type {Record<string, string>} */
   const DISTRICT_CHINESE_MAP = {
     [NORTH]: '北部',
     [CENTER]: '中部',
@@ -146,10 +145,52 @@ export const getServerSideProps = async ({ res }) => {
     }
   }
 
+  // retrieve data from GCS json for page load optimization
   try {
-    /**
-     * @type {PersonData}
-     */
+    /** @type {import('axios').AxiosResponse<PropsData>} */
+    const { data: result } = await axios.get(urlOfJsonForlandingPage)
+    /** @type {boolean} */
+    let isValid = Object.keys(propsData).reduce(
+      /**
+       * @param {boolean} valid
+       * @param {string} key
+       * @return {boolean}
+       * */
+      (valid, key) => {
+        if (!typedHasOwnProperty(result, key)) valid = false
+        return valid
+      },
+      true
+    )
+
+    return {
+      props: Object.assign(propsData, result),
+    }
+
+    if (!isValid) throw new Error('fail to retrieve json data')
+  } catch (err) {
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+
+  // fallback to use GraphQL query if GCS json request failed
+  try {
+    /** @type {Record<string, PersonData>} */
     const peopleMap = {}
     const personElecitonIds = []
 
@@ -250,9 +291,9 @@ export const getServerSideProps = async ({ res }) => {
     }
 
     // construct final data
-    /** @type {AreaOfMayorElection} */
+    /** @type {Record<string, CityOfMayorElection>} */
     const mayorArea = {}
-    /** @type {AreaOfCouncilorElection} */
+    /** @type {Record<string, AreaOfCouncilorElection>} */
     const coucilArea = {}
     for (const [id, person] of Object.entries(peopleMap)) {
       const type = person.type
@@ -310,7 +351,7 @@ export const getServerSideProps = async ({ res }) => {
     }
 
     // mayors
-    /** @type {DistrinctOfMayorElection} */
+    /** @type {Record<string, DistrinctOfMayorElection>} */
     const districtData = {}
     for (const [cityName, area] of Object.entries(mayorArea)) {
       if (!typedHasOwnProperty(DISTRICT_MAP, cityName)) continue
@@ -349,7 +390,7 @@ export const getServerSideProps = async ({ res }) => {
     )
 
     // concilors
-    /** @type {CityOfCouncilorElection} */
+    /** @type {Record<string, CityOfCouncilorElection>} */
     const cityData = {}
     for (const [areaName, area] of Object.entries(coucilArea)) {
       const city = area.city

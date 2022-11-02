@@ -1,19 +1,18 @@
 .container {
-  @apply flex flex-row flex-nowrap mx-5 py-5;
+  @apply flex flex-col flex-nowrap;
   &.editing {
-    @apply flex-col md:flex-row;
     box-shadow: inset 0px -2px 0px #000000;
   }
 }
 .content-group {
-  @apply flex flex-col grow overflow-hidden;
+  @apply flex flex-col grow overflow-hidden pb-5;
 }
 .politic-base {
   @apply text-[16px] font-medium leading-[1.8] text-main;
   @apply md:text-[18px];
 }
 .index {
-  @apply politic-base mr-2 mb-2 shrink-0;
+  @apply politic-base mb-1 shrink-0;
 }
 .content {
   @apply politic-base relative;

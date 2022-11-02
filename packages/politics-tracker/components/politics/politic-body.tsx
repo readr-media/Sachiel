@@ -5,6 +5,7 @@ import { print } from 'graphql'
 import {
   usePersonElectionId,
   usePoliticAmount,
+  usePoliticList,
 } from './react-context/use-politics'
 import { useToast } from '../toast/use-toast'
 import { fireGqlRequest } from '~/utils/utils'
@@ -24,7 +25,7 @@ type PoliticBodyProps = Politic & { no: number }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const [isEditing, setEditing] = useState<boolean>(false)
-  const index = String(props.no).padStart(2, '0')
+  const index = `${String(props.no).padStart(2, '0')}.`
   const sources = props.source.split(SOURCE_DELIMITER)
   const sourceList = sources.map((s, i) => (
     <SourceItem key={i} no={i + 1} content={s} />
@@ -33,6 +34,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const toast = useToast()
   const politicAmount = usePoliticAmount()
   const personElectionId: string = usePersonElectionId()
+  const waitingPoliticList = usePoliticList()
 
   async function appendPoliticToThread(data: Politic): Promise<boolean> {
     const cmsApiUrl = `${window.location.origin}/api/data`
@@ -52,6 +54,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           },
           desc: data.desc,
           source: data.source,
+          content: data.content,
         },
       }
       // result is not used currently
@@ -66,6 +69,15 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       politicAmount.setAmount({
         ...amount,
         waiting: amount.waiting + 1,
+      })
+
+      waitingPoliticList.addToList({
+        id: String(new Date().valueOf()),
+        ...variables.data,
+        tagId: null,
+        tagName: null,
+        createdAt: null,
+        updatedAt: null,
       })
 
       toast.open({

@@ -1,0 +1,27 @@
+.container {
+  @apply flex flex-col p-5 shadow-top;
+}
+.toggle {
+  @apply flex flex-row flex-nowrap gap-x-2 items-center cursor-pointer;
+}
+.toggle-icon {
+  @apply inline-block h-6 w-6 text-button-2;
+}
+.toggle-text {
+  @apply text-title-sub font-bold text-main;
+  @apply md:text-title-sub-md
+}
+.list {
+  @apply hidden gap-y-2 list-none list-inside pt-5;
+  @apply text-[16px] leading-[1.5] font-medium text-main text-opacity-50;
+
+  &.expanded {
+    @apply flex flex-col;
+  }
+}
+.item {
+  @apply relative line-clamp-3 pl-4;
+  &::before {
+    @apply content-[''] absolute left-0 top-3 w-[6px] h-[6px] -translate-y-[3px] bg-button rounded-full;
+  }
+}
