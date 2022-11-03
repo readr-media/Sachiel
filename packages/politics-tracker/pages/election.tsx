@@ -41,20 +41,22 @@ export const getServerSideProps: GetServerSideProps<
 
   const electionType = electionTypesMapping[String(type)]
   let ldr
+  let scrollTo = ''
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        apiOrigin: 'https://whoareyou-gcs.readr.tw',
         year,
         type: electionType,
         district: 'all',
         version: 'v2',
       })
+      scrollTo = areaStr
       break
     }
     case 'councilMember': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        apiOrigin: 'https://whoareyou-gcs.readr.tw',
         year,
         type: electionType,
         district: mappedAreaStr,
@@ -173,7 +175,7 @@ export const getServerSideProps: GetServerSideProps<
         year: yearNumber,
         name: electionName(undefined, electName, areaStr),
         area: mappedAreaStr,
-        scrollTo: areaStr,
+        scrollTo,
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
