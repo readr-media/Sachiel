@@ -5,7 +5,7 @@ import {
 } from './content-item'
 import styled from 'styled-components'
 import React, { useMemo } from 'react'
-import { stringToSources, getNewSource } from '~/utils/utils'
+import { stringToSources } from '~/utils/utils'
 import { ContentItemEmpty } from './content-item'
 
 const ContentItemLink = styled(ContentItemContent)`
