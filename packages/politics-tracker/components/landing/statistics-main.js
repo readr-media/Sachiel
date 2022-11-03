@@ -41,14 +41,14 @@ const BoardContent = styled.div`
 `
 const ContentWrap = styled.div`
   text-align: center;
-  h5 {
+  h3 {
     color: ${({ theme }) => theme.textColor.white};
     margin-bottom: 30px;
     font-weight: 700;
     font-size: 16px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
-    h5 {
+    h3 {
       font-size: 18px;
       margin-bottom: 40px;
     }
@@ -117,7 +117,7 @@ const BoardButton = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 20px 0px 18px;
-  h4 {
+  h3 {
     color: ${({ theme }) => theme.textColor.white};
     font-weight: 700;
     ${({ theme }) => theme.fontSize['title-main']}
@@ -139,7 +139,7 @@ const BoardButton = styled.div`
     -o-transition: 0.35s ease-in-out;
   }
   ${({ theme }) => theme.breakpoint.xl} {
-    h4 {
+    h3 {
       font-size: 32px;
     }
   }
@@ -158,7 +158,7 @@ export default function StatisticsBoard({ propsData }) {
         <BoardContent color="green">
           <ContentWrap>
             <ContentSubtitle color="green">縣市長政見</ContentSubtitle>
-            <h5>已有政見的候選人數</h5>
+            <h3>已有政見的候選人數</h3>
             <CalNum color="green">
               <h2>
                 <CountUp
@@ -172,7 +172,7 @@ export default function StatisticsBoard({ propsData }) {
         </BoardContent>
         <a href="#mayor">
           <BoardButton color={'green'}>
-            <h4>新增縣市長政見</h4>
+            <h3>新增縣市長政見</h3>
             <ArrowIcon>
               <Image
                 alt="arrowRight"
@@ -188,7 +188,7 @@ export default function StatisticsBoard({ propsData }) {
         <BoardContent color="blue">
           <ContentWrap>
             <ContentSubtitle color="blue">縣市議員政見</ContentSubtitle>
-            <h5>已有政見的候選人數</h5>
+            <h3>已有政見的候選人數</h3>
             <CalNum color="blue">
               <h2>
                 <CountUp
@@ -202,7 +202,7 @@ export default function StatisticsBoard({ propsData }) {
         </BoardContent>
         <a href="#councilorBlock">
           <BoardButton color="blue">
-            <h4>新增縣市議員政見</h4>
+            <h3>新增縣市議員政見</h3>
             <ArrowIcon>
               <Image
                 alt="arrowRight"

@@ -61,7 +61,7 @@ const ListWrapDesk = styled.div`
   max-width: 814px;
   padding: 0px;
   flex-wrap: wrap;
-  div {
+  a {
     color: ${({ theme }) => theme.textColor.green};
     display: flex;
     align-items: center;
@@ -70,11 +70,10 @@ const ListWrapDesk = styled.div`
     border-right: 1px solid rgba(15, 45, 53, 0.3);
     margin: 5px 10px 5px 0px;
   }
-  div:last-child {
+  a:last-child {
     border-right: none;
   }
-  div:hover {
-    cursor: pointer;
+  a:hover {
     text-decoration-line: underline;
   }
 
@@ -100,7 +99,7 @@ const FilterBar = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px 5px 15px;
-  h5 {
+  h3 {
     margin: 0px 3px 2px 0px;
   }
   div {
@@ -303,7 +302,7 @@ export default function MayorContent({
     <MayorWrap>
       <FilterBar>
         <div>
-          <h5>縣市名</h5>
+          <h3>縣市名</h3>
         </div>
         <div
           onClick={() => {
@@ -312,7 +311,7 @@ export default function MayorContent({
           }}
         >
           <HoverWrap>
-            <h5>進度</h5>
+            <h3>進度</h3>
             {arrowToggle ? (
               <Image
                 alt="arrowGreen"
@@ -409,8 +408,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
@@ -448,8 +448,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
@@ -486,8 +487,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
@@ -526,8 +528,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
@@ -565,8 +568,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
@@ -603,8 +607,9 @@ export default function MayorContent({
                                   }}
                                   as={`/politics/${value.id}`}
                                   key={value.name}
+                                  legacyBehavior={false}
                                 >
-                                  <div>{value.name}</div>
+                                  {value.name}
                                 </Link>
                               )
                             })}
