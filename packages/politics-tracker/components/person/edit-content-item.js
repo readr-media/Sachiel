@@ -5,6 +5,7 @@ import { ContentItemContainer, ContentItemTitle } from './content-item'
 
 const EditContentItemContainer = styled(ContentItemContainer)`
   margin-bottom: 32px;
+  -webkit-user-select: text;
   ${({ theme }) => theme.breakpoint.md} {
     flex-direction: column;
   }
@@ -24,11 +25,14 @@ const EditContentItemDescription = styled.p`
   }
 `
 const EditContentItemInput = styled.input`
+  -webkit-user-select: text; /* Chrome, Opera, Safari */
+  -moz-user-select: text; /* Firefox 2+ */
+  -ms-user-select: text; /* IE 10+ */
+  user-select: text; /* Standard syntax */
   font-size: 18px;
   padding: 8px 16px;
   margin-top: 8px;
   border: solid 1px rgba(0, 0, 0, 0.1);
-  user-select: none;
   width: 100%;
   ::placeholder {
     color: ${({ theme }) => theme.textColor.black30};
