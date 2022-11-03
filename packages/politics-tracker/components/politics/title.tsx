@@ -162,10 +162,20 @@ export default function Title(props: PersonOverview): JSX.Element {
     <div className={s['main-container']}>
       <div className={s['profile-block']}>
         <span className={s['avatar-large']}>
-          <Icon src={props.avatar} {...personLarge} href={hrefObject} />
+          <Icon
+            src={props.avatar}
+            {...personLarge}
+            href={hrefObject}
+            ariaLabel="image link to personal page"
+          />
         </span>
         <span className={s['avatar-small']}>
-          <Icon src={props.avatar} {...personSmall} href={hrefObject} />
+          <Icon
+            src={props.avatar}
+            {...personSmall}
+            href={hrefObject}
+            ariaLabel="image link to personal page"
+          />
         </span>
         <div className={s.name}>
           <Link href={hrefObject} legacyBehavior={false}>

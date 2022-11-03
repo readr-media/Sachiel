@@ -14,6 +14,7 @@ type IconProps = {
   borderWidth: number
   unoptimized?: boolean
   href?: LinkHref
+  ariaLabel?: string
 }
 
 const IconInner = (props: IconProps) => {
@@ -72,7 +73,11 @@ const Icon = React.memo(function Icon(props: IconProps): JSX.Element {
   return (
     <>
       {props.href ? (
-        <Link href={props.href} legacyBehavior={false}>
+        <Link
+          href={props.href}
+          legacyBehavior={false}
+          aria-label={props.ariaLabel}
+        >
           <IconInner {...props} />
         </Link>
       ) : (
