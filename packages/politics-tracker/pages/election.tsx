@@ -23,6 +23,7 @@ const DataLoader = evc.DataLoader
 
 type ElectionPageProps = {
   year: number
+  title: string
   name: string
   area: string
   scrollTo: string
@@ -174,6 +175,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         year: yearNumber,
+        title: areaStr + (electionType === 'councilMember' ? '議員選舉' : ''),
         name: electionName(undefined, electName, areaStr),
         area: mappedAreaStr,
         scrollTo,
@@ -231,13 +233,16 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
+  const { year, title } = props 
+  const election = Object.assign({year, title}, props.data)
+
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
           <evc.ReactComponent.EVC
             key={`${props.year}_${props.name}_${props.area}`}
-            election={props.data}
+            election={election}
             scrollTo={props.scrollTo}
           />
           <Nav {...navProps} />
