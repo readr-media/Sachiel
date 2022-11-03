@@ -4,7 +4,6 @@ import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
 import {
   stringToSources,
-  sourcesToString,
   getNewSource,
   typedHasOwnProperty,
 } from '~/utils/utils'

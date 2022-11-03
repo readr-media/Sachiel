@@ -54,7 +54,7 @@ const MainTitleContainer = styled.div`
 const MainTitleGroup = styled.div`
   text-align: center;
   h1,
-  h4 {
+  h2 {
     color: ${({ theme }) => theme.textColor.black};
     text-align: center;
     ${({ theme }) => theme.breakpoint.md} {
@@ -76,7 +76,7 @@ const MainTitleGroup = styled.div`
       font-size: 60px;
     }
   }
-  h4 {
+  h2 {
     /* TODO: 建檔成theme variable */
     font-size: 22px;
     font-weight: 700;
@@ -171,7 +171,7 @@ export default function Title() {
               />
             </LogoIcon>
             <h1>政見不失憶</h1>
-            <h4>臺灣 2022 選舉政見協作平台</h4>
+            <h2>臺灣 2022 選舉政見協作平台</h2>
             <TitleButton />
           </MainTitleGroup>
         </MainTitleContainer>

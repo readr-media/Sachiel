@@ -1,9 +1,6 @@
 import type { Politic, PersonElection } from '~/types/politics'
-import {
-  SOURCE_DELIMITER,
-  SOURCE_DELEMITER_SECONDARY,
-} from '~/constants/politics'
-import { isURL } from '~/utils/utils'
+import { SOURCE_DELIMITER } from '~/constants/politics'
+import { generateSourceMeta } from '~/utils/utils'
 import PoliticBody from './politic-body'
 import s from './politic-block.module.css'
 
@@ -58,47 +55,27 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
     </section>
   ))
 
-  const sourceData = props.source
-    ? props.source
-        .split(SOURCE_DELIMITER)
-        .map((str) => str.split(SOURCE_DELEMITER_SECONDARY))
-    : []
+  const sourceData = props.source ? props.source.split(SOURCE_DELIMITER) : []
 
-  const sourceList = sourceData
-    .map((pair, index) => {
-      switch (pair.length) {
-        case 1:
-          return (
-            <span key={index} className={s['source-item']}>
-              {pair[0]}
-            </span>
-          )
-        case 2: {
-          if (isURL(pair[0])) {
-            return (
-              <a
-                key={index}
-                href={pair[0]}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={s['source-item']}
-              >
-                {pair[1]}
-              </a>
-            )
-          } else {
-            return (
-              <span key={index} className={s['source-item']}>
-                {pair[1]}
-              </span>
-            )
-          }
-        }
-        default:
-          return undefined
-      }
-    })
-    .filter((ele) => ele !== undefined)
+  const sourceList = sourceData.map((content, index) => {
+    const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
+
+    return isLink ? (
+      <a
+        key={index}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={s['source-item']}
+      >
+        {text}
+      </a>
+    ) : (
+      <span key={index} className={s['source-item']}>
+        {text}
+      </span>
+    )
+  })
 
   return (
     <div className={s['container']}>

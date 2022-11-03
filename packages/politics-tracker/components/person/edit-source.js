@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import SourceInput from '../politics/source-input'
 import { EditContentItemTitle } from './edit-content-item'
 import AddInputButton from './add-input-button'
-import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
+import { getNewSource } from '~/utils/utils'
 import styled from 'styled-components'
 
 const SourceInputWrapper = styled.div`

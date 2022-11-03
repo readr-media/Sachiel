@@ -36,13 +36,16 @@ export default function Nav(props: NavProps): JSX.Element {
           </a>
         </Link>
       )}
-      <div className={homeStyle}>
-        <Link href="/">
-          <a className={s['icon-home']}>
-            <Home />
-          </a>
-        </Link>
-      </div>
+      <Link
+        href="/"
+        legacyBehavior={false}
+        className={homeStyle}
+        aria-label="link to homepage"
+      >
+        <div className={s['icon-home']}>
+          <Home />
+        </div>
+      </Link>
       {props.next && (
         <Link href={props.next.href}>
           <a className={nextStyle}>
