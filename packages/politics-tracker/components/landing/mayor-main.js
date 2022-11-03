@@ -118,7 +118,7 @@ const ButtonGroup = styled.div`
       max-width: 1100px;
     }
   }
-  ul li a {
+  ul li button {
     text-decoration: none;
     background: ${({ theme }) => theme.backgroundColor.white};
     color: ${({ theme }) => theme.textColor.green};
@@ -135,7 +135,7 @@ const ButtonGroup = styled.div`
     }
   }
   li {
-    margin: 15px 6px;
+    margin: 20px 6px 0px 6px;
     ${({ theme }) => theme.breakpoint.md} {
       margin: 20px 5px;
     }
@@ -144,12 +144,12 @@ const ButtonGroup = styled.div`
     }
   }
 
-  ul li a:not(.press):hover {
+  ul li button:not(.press):hover {
     cursor: pointer;
     background: ${({ theme }) => theme.backgroundColor.landingGreen};
   }
 
-  ul li a.active {
+  ul li button.active {
     cursor: pointer;
     color: ${({ theme }) => theme.textColor.white};
     background: ${({ theme }) => theme.textColor.green};
@@ -267,19 +267,19 @@ export default function MayorMain({ propsData }) {
                           }}
                         >
                           {v.active ? (
-                            <a href="#/" className="press">
+                            <button className="press">
                               {v.name}
                               <span>
                                 ( {v.amount} / {v.total} )
                               </span>
-                            </a>
+                            </button>
                           ) : (
-                            <a href="#/" className="nopress">
+                            <button className="nopress">
                               {v.name}
                               <span>
                                 ( {v.amount} / {v.total} )
                               </span>
-                            </a>
+                            </button>
                           )}
                         </li>
                       )
