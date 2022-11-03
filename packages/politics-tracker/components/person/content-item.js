@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { stringToSources, getNewSource } from '~/utils/utils'
+import { stringToSources } from '~/utils/utils'
 const ContentItemContainer = styled.div`
   display: flex;
   flex-direction: column;
