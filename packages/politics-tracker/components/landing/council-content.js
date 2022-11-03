@@ -105,7 +105,7 @@ const FilterBar = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px 5px 15px;
-  h5 {
+  h3 {
     margin: 0px 3px 2px 0px;
   }
   div {
@@ -307,7 +307,7 @@ export default function CouncilContent({
     <CouncilWrap>
       <FilterBar>
         <div>
-          <h5>地區</h5>
+          <h3>地區</h3>
         </div>
         <div
           onClick={() => {
@@ -316,7 +316,7 @@ export default function CouncilContent({
           }}
         >
           <HoverWrap>
-            <h5>進度</h5>
+            <h3>進度</h3>
             {arrowToggle ? (
               <Image
                 alt="arrowPurple"

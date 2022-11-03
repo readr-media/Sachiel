@@ -21,7 +21,7 @@ const Button = styled.div`
   justify-content: center;
   margin: auto 5px;
   ${({ theme }) => theme.fontSize['title-sub']};
-  h5 {
+  h3 {
     color: ${({ theme }) => theme.textColor.black};
     ${({ theme }) => theme.fontSize['title-sub']};
     line-height: 1.5;
@@ -49,7 +49,7 @@ export default function TitleButton() {
             width="20"
             height="20"
           />
-          <h5>縣市長</h5>
+          <h3>縣市長</h3>
         </Button>
       </a>
       <a href="#councilorBlock">
@@ -60,7 +60,7 @@ export default function TitleButton() {
             width="20"
             height="20"
           />
-          <h5>縣市議員</h5>
+          <h3>縣市議員</h3>
         </Button>
       </a>
     </ButtonContainer>
