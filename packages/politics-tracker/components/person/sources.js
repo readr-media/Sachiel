@@ -2,7 +2,7 @@ import { Fragment, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import SourceItem from '../politics/source-item'
 import SourcesButton from './sources-button'
-import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
+import { stringToSources } from '~/utils/utils'
 
 const SourcesContainer = styled.div`
   margin-top: 20px;

@@ -112,6 +112,7 @@ export type RawPersonElection = Partial<{
   elected: boolean
   incumbent: boolean
   source: string
+  politicSource: string
   createdAt: string
   updatedAt: string
   createdBy: string

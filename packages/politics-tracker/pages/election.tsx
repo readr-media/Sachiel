@@ -22,6 +22,7 @@ const DataLoader = evc.DataLoader
 
 type ElectionPageProps = {
   year: number
+  title: string
   name: string
   area: string
   scrollTo: string
@@ -41,20 +42,22 @@ export const getServerSideProps: GetServerSideProps<
 
   const electionType = electionTypesMapping[String(type)]
   let ldr
+  let scrollTo = ''
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        apiOrigin: 'https://whoareyou-gcs.readr.tw',
         year,
         type: electionType,
         district: 'all',
         version: 'v2',
       })
+      scrollTo = areaStr
       break
     }
     case 'councilMember': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw/elections',
+        apiOrigin: 'https://whoareyou-gcs.readr.tw',
         year,
         type: electionType,
         district: mappedAreaStr,
@@ -171,9 +174,10 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         year: yearNumber,
+        title: areaStr + (electionType === 'councilMember' ? '議員選舉' : ''),
         name: electionName(undefined, electName, areaStr),
         area: mappedAreaStr,
-        scrollTo: areaStr,
+        scrollTo,
         data,
         prev: elections[index - 1] ?? null,
         next: elections[index + 1] ?? null,
@@ -228,14 +232,18 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
+  const { year, title } = props 
+  const election = Object.assign({year, title}, props.data)
+
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
           <evc.ReactComponent.EVC
             key={`${props.year}_${props.name}_${props.area}`}
-            election={props.data}
+            election={election}
             scrollTo={props.scrollTo}
+            stickyTopOffset="80px"
           />
           <Nav {...navProps} />
         </div>

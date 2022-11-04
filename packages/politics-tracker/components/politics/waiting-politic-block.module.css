@@ -20,7 +20,7 @@
   }
 }
 .item {
-  @apply relative line-clamp-3 pl-4;
+  @apply relative line-clamp-3 pl-4 break-all;
   &::before {
     @apply content-[''] absolute left-0 top-3 w-[6px] h-[6px] -translate-y-[3px] bg-button rounded-full;
   }

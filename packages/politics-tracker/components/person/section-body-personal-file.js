@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-import { stringToSources } from '~/utils/utils'
 import Image from 'next/future/image'
 
 import ContentItem, { ContentItemEmpty } from './content-item'

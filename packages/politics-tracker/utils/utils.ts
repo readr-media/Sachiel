@@ -4,7 +4,10 @@ const resolveConfig = require('tailwindcss/resolveConfig')
 import tailwindConfig from '~/tailwind.config'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
-import { SOURCE_DELIMITER } from '~/constants/politics'
+import {
+  SOURCE_DELIMITER,
+  SOURCE_DELEMITER_SECONDARY,
+} from '~/constants/politics'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -137,6 +140,49 @@ function sourcesToString(
 ): string {
   return sources.map((s) => s.value).join(delimiter)
 }
+
+type SourceMeta = {
+  isLink: boolean
+  link: string
+  text: string
+}
+
+function generateSourceMeta(
+  content: string,
+  textPrefix: string,
+  no: number
+): SourceMeta {
+  let isLink: boolean = false
+  let link: string = ''
+  let text: string = ''
+
+  const contentPair = content.split(SOURCE_DELEMITER_SECONDARY)
+
+  switch (contentPair.length) {
+    case 1: {
+      link = contentPair[0]
+      isLink = isURL(link)
+      text = isLink ? `來源 ${no}` : `${textPrefix}${content}`
+      break
+    }
+    case 2: {
+      link = contentPair[0]
+      isLink = isURL(link)
+      text = isLink ? `${textPrefix}${contentPair[1]}` : link
+      break
+    }
+    default: {
+      break
+    }
+  }
+
+  return {
+    isLink,
+    link,
+    text,
+  }
+}
+
 export {
   getLineBreaks,
   getTailwindConfig,
@@ -149,4 +195,5 @@ export {
   getNewSource,
   sourcesToString,
   stringToSources,
+  generateSourceMeta,
 }

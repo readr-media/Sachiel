@@ -1,5 +1,5 @@
 .content {
-  @apply line-clamp-3;
+  @apply line-clamp-3 break-all;
   &.expanded {
     @apply line-clamp-none;
 

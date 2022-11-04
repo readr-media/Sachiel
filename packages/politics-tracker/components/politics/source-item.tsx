@@ -1,4 +1,4 @@
-import { isURL } from '~/utils/utils'
+import { generateSourceMeta } from '~/utils/utils'
 import s from './source-item.module.css'
 
 type SourceItemProps = {
@@ -6,16 +6,17 @@ type SourceItemProps = {
   content: string
 }
 export default function SourceItem(props: SourceItemProps): JSX.Element {
-  const isLink = isURL(props.content)
-  const text = isLink
-    ? `來源 ${props.no}`
-    : `來源 ${props.no}：${props.content}`
+  const { isLink, link, text } = generateSourceMeta(
+    props.content,
+    `來源 ${props.no}：`,
+    props.no
+  )
 
   return (
     <>
       {isLink ? (
         <a
-          href={props.content}
+          href={link}
           target="_blank"
           rel="noreferer noopener noreferrer"
           className={s['link']}
