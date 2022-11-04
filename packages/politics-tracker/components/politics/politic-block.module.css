@@ -31,7 +31,7 @@ a.source-item {
 
 }
 .group-title {
-  @apply inline-block mb-2 text-main text-[20px] leading-[1.3] font-bold shadow-[0_2px_0_0_#000000];
+  @apply inline-block mb-2 text-main text-[20px] leading-[1.3] font-bold shadow-[0_2px_0_0_#000000] break-all;
   @apply md:text-[24px];
 }
 .politic {
