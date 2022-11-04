@@ -244,6 +244,7 @@ const Election = (props: ElectionPageProps) => {
             key={`${props.year}_${props.name}_${props.area}`}
             election={election}
             scrollTo={props.scrollTo}
+            stickyTopOffset="80px"
           />
           <Nav {...navProps} />
         </div>
