@@ -168,7 +168,7 @@ function generateSourceMeta(
     case 2: {
       link = contentPair[0]
       isLink = isURL(link)
-      text = isLink ? `${contentPair[1]}` : link
+      text = isLink ? `${textPrefix}${contentPair[1]}` : link
       break
     }
     default: {
