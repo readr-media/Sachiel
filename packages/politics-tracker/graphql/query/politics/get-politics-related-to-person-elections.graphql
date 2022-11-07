@@ -6,6 +6,9 @@ query GetPolticsRelatedToPersonElections($ids: [ID!]) {
     source
     status
     reviewed
+    progress {
+      progress
+    }
     createdAt
     updatedAt
     thread_parent {
