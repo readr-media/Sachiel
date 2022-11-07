@@ -10,6 +10,7 @@ export type LinkMember = {
   content: string
   href: LinkHref
   backgroundColor: string
+  textColor?: string
 }
 
 type NavProps = {
@@ -18,8 +19,16 @@ type NavProps = {
 }
 
 export default function Nav(props: NavProps): JSX.Element {
-  const backStyle = classNames(s['back'], props.prev?.backgroundColor)
-  const nextStyle = classNames(s['next'], props.next?.backgroundColor)
+  const backStyle = classNames(
+    s['back'],
+    props.prev?.backgroundColor,
+    props.prev?.textColor ?? 'text-white'
+  )
+  const nextStyle = classNames(
+    s['next'],
+    props.next?.backgroundColor,
+    props.next?.textColor ?? 'text-white'
+  )
   const homeStyle = classNames(s['home'], {
     [s['default-hidden']]: !(props.prev && props.next),
   })
