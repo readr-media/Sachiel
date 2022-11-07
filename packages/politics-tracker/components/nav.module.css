@@ -1,5 +1,5 @@
 .container {
-  @apply flex w-full flex-col flex-nowrap text-[24px] font-bold leading-[1.2] text-white;
+  @apply flex w-full flex-col flex-nowrap text-[24px] font-bold leading-[1.2];
   @apply md:flex-row;
   @apply lg:text-[32px];
 }
