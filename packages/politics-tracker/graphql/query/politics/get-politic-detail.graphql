@@ -1,4 +1,4 @@
-query GetPolticsRelatedToPersonElections($politicId: ID!) {
+query GetPoliticsDetail($politicId: ID!) {
   politics(where: {id: { equals: $politicId }}) {
     id
     person{
