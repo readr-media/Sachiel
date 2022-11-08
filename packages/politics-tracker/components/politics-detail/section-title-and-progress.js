@@ -12,12 +12,15 @@ const Title = styled.div`
   letter-spacing: 0.1rem;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.textColor.black};
   h1 {
     font-size: 22px;
+    font-weight: 700;
     margin-bottom: 8px;
   }
   h2 {
     font-size: 16px;
+    font-weight: 700;
   }
   svg {
     width: 36px;
@@ -26,6 +29,14 @@ const Title = styled.div`
   }
   svg:hover {
     cursor: pointer;
+  }
+  .election_area {
+    display: none;
+  }
+  ${({ theme }) => theme.breakpoint.sm} {
+    .election_area {
+      display: inline-block;
+    }
   }
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -38,10 +49,11 @@ const Title = styled.div`
     }
   }
 `
-const TitleImage = styled.div`
+const TitlePartyInfo = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
+  outline: 1px solid red;
 
   .partyImage {
     width: 24px;
@@ -51,10 +63,24 @@ const TitleImage = styled.div`
     overflow: hidden;
     display: flex;
     align-items: center;
+    border: 1px solid ${({ theme }) => theme.textColor.white};
     img {
       height: 100%;
       object-fit: cover;
     }
+  }
+`
+const Term = styled.span`
+  border: 1px solid #000000;
+  padding: 4px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  span {
+    letter-spacing: 0.05rem;
+  }
+  ${({ theme }) => theme.breakpoint.sm} {
+    font-size: 14px;
   }
 `
 /**
@@ -69,14 +95,18 @@ export default function SectionTitle({ politicData }) {
       <ArrowLeft />
       <div>
         <h1>
-          {politicData.person.election.name} {election_area}
+          {politicData.person.election.name} {''}
+          <span className="election_area">{election_area}</span>
         </h1>
-        <TitleImage>
+        <TitlePartyInfo>
           <div className="partyImage">
             <img src={politicData.person.party.image} alt=""></img>
           </div>
-          <h2>{politicData.person.party.name}</h2>
-        </TitleImage>
+          <span>{politicData.person.party.name}</span>
+        </TitlePartyInfo>
+        <Term>
+          任期 <span>2022-12-29~2026-12-27</span>
+        </Term>
       </div>
     </Title>
   )

@@ -5,7 +5,7 @@ import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
 
 const ExpertContainer = styled.div`
-  padding: 20px 5px;
+  padding-top: 12px;
   > span {
     font-style: normal;
     font-weight: 500;
@@ -42,19 +42,20 @@ const ExpertList = styled.li`
 const ExpertTitle = styled.div`
   display: flex;
   margin-bottom: 12px;
-  .professorImage {
+  .expertImage {
     margin-right: 12px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
     /* background-size: cover; */
   }
-  .professorName {
+  .expertName {
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 1.3;
     color: #0f2d35;
+    margin-bottom: 2px;
   }
   span {
     font-style: normal;
@@ -63,14 +64,23 @@ const ExpertTitle = styled.div`
     line-height: 1.5;
     color: rgba(15, 45, 53, 0.5);
   }
+  ${({ theme }) => theme.breakpoint.md} {
+    .expertName {
+      font-size: 18px;
+    }
+    span {
+      font-size: 16px;
+    }
+  }
 `
 const ExpertContent = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   > span {
     font-style: normal;
     font-weight: 500;
     font-size: 12px;
-    line-height: 14px;
+    display: inline-block;
+    margin-bottom: 3px;
     color: rgba(15, 45, 53, 0.5);
   }
   > p {
@@ -80,6 +90,14 @@ const ExpertContent = styled.div`
     line-height: 180%;
     text-align: justify;
     color: rgba(15, 45, 53, 0.66);
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    span {
+      font-size: 14px;
+    }
+    p {
+      font-size: 18px;
+    }
   }
 `
 const ExpertLinks = styled.div`
@@ -97,11 +115,13 @@ const ExpertLinks = styled.div`
   }
   li {
     list-style: none;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     padding-left: 15px;
     position: relative;
     cursor: pointer;
     color: #b3800d;
+    font-size: 16px;
+    font-weight: 500;
     &:hover {
       text-decoration-line: underline;
     }
@@ -116,7 +136,18 @@ const ExpertLinks = styled.div`
     text-align: center;
     position: absolute;
     left: 0px;
-    top: 10px;
+    top: 12px;
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    > span {
+      font-size: 14px;
+    }
+    li {
+      font-size: 18px;
+    }
+    li:before {
+      top: 14px;
+    }
   }
 `
 
@@ -147,12 +178,12 @@ export default function PoliticsExpert({ infoList, isActive }) {
         image={value.avatar}
       >
         <div
-          className="professorImage"
+          className="expertImage"
           // @ts-ignore
           image={value.avatar}
         ></div>
         <div>
-          <p className="professorName">{value.contributer}</p>
+          <p className="expertName">{value.contributer}</p>
           <span>{value.title}</span>
         </div>
       </ExpertTitle>

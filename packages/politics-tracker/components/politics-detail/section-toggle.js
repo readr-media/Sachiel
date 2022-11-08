@@ -2,11 +2,16 @@ import styled from 'styled-components'
 import SecondArrowUp from '../icons/second-arrow-up'
 import SecondArrowDown from '../icons/second-arrow-down'
 
-const SourcesButtonContainer = styled.div`
+const ToggleContainer = styled.div`
   margin-left: auto;
   display: flex;
+  align-items: center;
   box-shadow: inset 0px -2px 0px #000000;
-  padding: 10px 4px;
+  padding: 9px 4px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.05rem;
   cursor: pointer;
   .arrow {
     border-color: ${({ theme }) => theme.textColor.blue};
@@ -23,8 +28,11 @@ const SourcesButtonContainer = styled.div`
     }
   }
   svg {
-    margin-right: 5px;
+    margin-right: 9px;
     color: #b3800d;
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 18px;
   }
 `
 /**
@@ -45,9 +53,9 @@ const SourcesButtonContainer = styled.div`
  * @param {Object[]} props.activeId
  * @returns {React.ReactElement}
  */
-export default function SourcesButton({ title, isActive, id, toggleActiveID }) {
+export default function Toggle({ title, isActive, id, toggleActiveID }) {
   return (
-    <SourcesButtonContainer
+    <ToggleContainer
       // @ts-ignore
       isActive={isActive}
       onClick={() => {
@@ -63,6 +71,6 @@ export default function SourcesButton({ title, isActive, id, toggleActiveID }) {
       )}
 
       <span>{title}</span>
-    </SourcesButtonContainer>
+    </ToggleContainer>
   )
 }

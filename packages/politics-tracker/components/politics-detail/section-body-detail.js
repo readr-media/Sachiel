@@ -3,7 +3,7 @@ import Sources from './sources'
 import SectionBody from './section-body'
 
 const DetailContainer = styled.div`
-  padding: 20px 5px;
+  padding: 20px 0px;
   span {
     display: inline-block;
     font-style: normal;

@@ -8,6 +8,9 @@ import SectionBodyExpert from './section-body-expert'
 const SectionListContainer = styled.div`
   width: 100%;
   padding: 20px 16px;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 20px;
+  }
 `
 
 /**
