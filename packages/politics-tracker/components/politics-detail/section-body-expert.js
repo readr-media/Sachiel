@@ -47,14 +47,7 @@ const ExpertTitle = styled.div`
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    /* background: url(${(props) =>
-      // @ts-ignore
-      image
-        ? // @ts-ignore
-          props.image
-        : '/images/default-head-photo.png'})
-      no-repeat center; */
-    background-size: cover;
+    /* background-size: cover; */
   }
   .professorName {
     font-style: normal;
@@ -128,7 +121,7 @@ const ExpertLinks = styled.div`
 `
 
 // @ts-ignore
-export default function PoliticsProfessor({ infoList, isActive }) {
+export default function PoliticsExpert({ infoList, isActive }) {
   const sourceData = infoList[1].link
     ? infoList[1].link.split(SOURCE_DELIMITER)
     : []
@@ -136,8 +129,8 @@ export default function PoliticsProfessor({ infoList, isActive }) {
   const sourceList = sourceData.map((content, index) => {
     const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
     return isLink ? (
-      <li>
-        <a key={index} href={link} target="_blank" rel="noopener noreferrer">
+      <li key={index}>
+        <a href={link} target="_blank" rel="noopener noreferrer">
           {text}
         </a>
       </li>

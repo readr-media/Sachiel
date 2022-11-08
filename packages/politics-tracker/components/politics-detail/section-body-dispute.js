@@ -53,8 +53,8 @@ export default function PoliticsList({ infoList, isActive }) {
   const sourceList = sourceData.map((content, index) => {
     const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
     return isLink ? (
-      <li>
-        <a key={index} href={link} target="_blank" rel="noopener noreferrer">
+      <li key={index}>
+        <a href={link} target="_blank" rel="noopener noreferrer">
           {text}
         </a>
       </li>
