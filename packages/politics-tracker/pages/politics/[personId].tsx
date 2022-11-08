@@ -129,7 +129,7 @@ export const getServerSideProps: GetServerSideProps<
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
-              source: current.source ?? null,
+              source: current.politicSource ?? '',
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],

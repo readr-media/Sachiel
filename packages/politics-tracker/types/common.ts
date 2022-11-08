@@ -112,15 +112,24 @@ export type RawPersonElection = Partial<{
   elected: boolean
   incumbent: boolean
   source: string
+  politicSource: string
   createdAt: string
   updatedAt: string
   createdBy: string
   updatedBy: string
 }>
 
+export type JSONValue =
+  | string
+  | number
+  | boolean
+  | { [x: string]: JSONValue }
+  | Array<JSONValue>
+
 export type RawPoliticProgress = Partial<{
   id: string
   politic: RawPolitic
+  content: JSONValue
   progress: string
   source: string
   contributer: string
