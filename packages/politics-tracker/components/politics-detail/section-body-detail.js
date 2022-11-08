@@ -37,15 +37,17 @@ const DetailContainer = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 1.8;
-    color: #0F2D35;
+    color: #0f2d35;
   }
   ${({ theme }) => theme.breakpoint.md} {
-    p, span {
+    p,
+    span {
       font-size: 18px;
     }
   }
 `
 
+// @ts-ignore
 export default function PoliticsDetail({ politic, additional, isActive }) {
   const source = '選舉公報'
 

@@ -232,8 +232,8 @@ const Election = (props: ElectionPageProps) => {
     next: getConfigItme(props.next),
   }
 
-  const { year, title } = props 
-  const election = Object.assign({year, title}, props.data)
+  const { year, title } = props
+  const election = Object.assign({ year, title }, props.data)
 
   return (
     <DefaultLayout>
