@@ -35,8 +35,7 @@ export default function PoliticsDetail({ politicData }) {
   /** @type {LinkMember} */
   const navProps = {
     content: '回政見總覽',
-    // FIXME: href link to /politics/id
-    href: '/',
+    href: `/politics/${politicData.person.person_id.id}`,
     backgroundColor: 'bg-button',
     textColor: 'text-black',
   }
