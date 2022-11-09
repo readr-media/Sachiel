@@ -38,6 +38,13 @@ const DisputeContainer = styled.div`
     left: 0px;
     top: 12px;
   }
+  div {
+    text-align: center;
+    color: rgba(15, 45, 53, 0.3);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.8;
+  }
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 18px;
   }
@@ -45,9 +52,9 @@ const DisputeContainer = styled.div`
 
 // @ts-ignore
 export default function PoliticsList({ infoList, isActive }) {
-  const sourceData = infoList ? infoList.split(SOURCE_DELIMITER) : []
+  const disputeData = infoList ? infoList.split(SOURCE_DELIMITER) : []
   // @ts-ignore
-  const sourceList = sourceData.map((content, index) => {
+  const disputeList = disputeData.map((content, index) => {
     const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
     return isLink ? (
       <li key={index}>
@@ -62,7 +69,11 @@ export default function PoliticsList({ infoList, isActive }) {
   return (
     <SectionBody shouldShowSectionBody={isActive}>
       <DisputeContainer>
-        <ul>{sourceList}</ul>
+        {disputeList.length !== 0 ? (
+          <ul>{disputeList}</ul>
+        ) : (
+          <div>還沒有人新增相關爭議...</div>
+        )}
       </DisputeContainer>
     </SectionBody>
   )

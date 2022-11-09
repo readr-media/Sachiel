@@ -38,6 +38,13 @@ const TimeContainer = styled.div`
     left: 0px;
     top: 10px;
   }
+  div {
+    text-align: center;
+    color: rgba(15, 45, 53, 0.3);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.8;
+  }
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 18px;
     li {
@@ -64,7 +71,11 @@ export default function PoliticsList({ infoList, isActive }) {
   return (
     <SectionBody shouldShowSectionBody={isActive}>
       <TimeContainer>
-        <ul>{info}</ul>
+        {infoList.length !== 0 ? (
+          <ul>{info}</ul>
+        ) : (
+          <div>還沒有人新增相關進度...</div>
+        )}
       </TimeContainer>
     </SectionBody>
   )
