@@ -11,6 +11,7 @@ import { fireGqlRequest } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
+import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -31,7 +32,8 @@ const Main = styled.main`
  * @param {import('../../../types/politics-detail').PoliticDetail} props.politicData
  * @returns {React.ReactElement}
  */
-export default function PoliticsDetail({ politicData }) {
+// @ts-ignore
+export default function PoliticsDetail({ politicData, politicAmount }) {
   /** @type {LinkMember} */
   const navProps = {
     content: '回政見總覽',
@@ -39,6 +41,11 @@ export default function PoliticsDetail({ politicData }) {
     backgroundColor: 'bg-button',
     textColor: 'text-black',
   }
+  //politics verified
+  const rawPoliticList = [...politicAmount.data?.politics]
+  const verifiedPolitic = rawPoliticList.filter((value) => {
+    return value.status === 'verified' && value.reviewed
+  })
 
   return (
     <DefaultLayout>
@@ -48,12 +55,11 @@ export default function PoliticsDetail({ politicData }) {
             id={politicData.person.person_id.id}
             name={politicData.person.person_id.name}
             avatar={politicData.person.person_id.image}
-            // FIXME: completed & waiting
             campaign={politicData.person.election.type}
             party={politicData.person.party.name}
             partyIcon={politicData.person.party.image}
-            completed={0}
-            waiting={0}
+            completed={verifiedPolitic.length}
+            waiting={rawPoliticList.length - verifiedPolitic.length}
           />
           <Section politicData={politicData}></Section>
         </Main>
@@ -86,8 +92,14 @@ export async function getServerSideProps({ query, res }) {
       }
     }
 
+    const politicAmount = await fireGqlRequest(
+      print(GetPolticsRelatedToPersonElections),
+      { ids: politics[0].person.id },
+      cmsApiUrl
+    )
+
     return {
-      props: { politicData: politics[0] }, // will be passed to the page component as props
+      props: { politicData: politics[0], politicAmount: politicAmount }, // will be passed to the page component as props
     }
   } catch (err) {
     console.error(err)
