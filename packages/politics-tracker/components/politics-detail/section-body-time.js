@@ -15,6 +15,7 @@ const TimeContainer = styled.div`
   a {
     color: #b3800d;
     display: inline-block;
+    text-align: justify;
     &:hover {
       text-decoration-line: underline;
     }

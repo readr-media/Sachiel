@@ -30,6 +30,10 @@ const ToggleContainer = styled.div`
   svg {
     margin-right: 9px;
     color: #b3800d;
+    border-radius: 50%;
+  }
+  &:hover svg {
+    background: rgba(15, 45, 53, 0.05);
   }
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 18px;
