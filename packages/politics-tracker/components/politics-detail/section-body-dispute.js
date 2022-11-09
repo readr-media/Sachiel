@@ -4,22 +4,16 @@ import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
 
 const DisputeContainer = styled.div`
-  padding: 20px 5px;
+  padding-top: 20px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
   span {
-    font-family: 'Noto Sans TC';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
     color: #0f2d35;
     display: block;
   }
   a {
-    font-family: 'Noto Sans TC';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
     color: #b3800d;
     display: inline-block;
     &:hover {
@@ -27,7 +21,7 @@ const DisputeContainer = styled.div`
     }
   }
   li {
-    margin-bottom: 10px;
+    margin-bottom: 9px;
     padding-left: 15px;
     position: relative;
     cursor: pointer;
@@ -42,7 +36,10 @@ const DisputeContainer = styled.div`
     text-align: center;
     position: absolute;
     left: 0px;
-    top: 10px;
+    top: 12px;
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 18px;
   }
 `
 
@@ -53,8 +50,8 @@ export default function PoliticsList({ infoList, isActive }) {
   const sourceList = sourceData.map((content, index) => {
     const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
     return isLink ? (
-      <li>
-        <a key={index} href={link} target="_blank" rel="noopener noreferrer">
+      <li key={index}>
+        <a href={link} target="_blank" rel="noopener noreferrer">
           {text}
         </a>
       </li>

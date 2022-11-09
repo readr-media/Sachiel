@@ -26,7 +26,11 @@ const Main = styled.main`
  * @typedef {import('~/components/nav').LinkMember } LinkMember
  * @returns {React.ReactElement}
  */
-// @ts-ignore
+/**
+ * @param {Object} props
+ * @param {import('../../../types/politics-detail').PoliticDetail} props.politicData
+ * @returns {React.ReactElement}
+ */
 export default function PoliticsDetail({ politicData }) {
   /** @type {LinkMember} */
   const navProps = {
@@ -34,6 +38,7 @@ export default function PoliticsDetail({ politicData }) {
     // FIXME: href link to /politics/id
     href: '/',
     backgroundColor: 'bg-button',
+    textColor: 'text-black',
   }
 
   return (
@@ -70,20 +75,20 @@ export async function getServerSideProps({ query, res }) {
   const id = query.politicId
   try {
     const {
-      data: { politic },
+      data: { politics },
     } = await fireGqlRequest(
       print(GetPoliticDetail),
       { politicId: id },
       cmsApiUrl
     )
-    if (politic.length === 0) {
+    if (politics.length === 0) {
       return {
         notFound: true,
       }
     }
 
     return {
-      props: { politicData: politic[0] }, // will be passed to the page component as props
+      props: { politicData: politics[0] }, // will be passed to the page component as props
     }
   } catch (err) {
     console.error(err)

@@ -1,23 +1,18 @@
 import styled from 'styled-components'
 import SectionBody from './section-body'
 
-const ListContainer = styled.div`
-  padding: 20px 5px;
+const TimeContainer = styled.div`
+  padding-top: 20px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
   span {
-    font-family: 'Noto Sans TC';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
     color: #0f2d35;
     display: block;
+    margin-bottom: 4px;
   }
   a {
-    font-family: 'Noto Sans TC';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
     color: #b3800d;
     display: inline-block;
     &:hover {
@@ -25,7 +20,7 @@ const ListContainer = styled.div`
     }
   }
   li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     padding-left: 15px;
     position: relative;
     cursor: pointer;
@@ -42,6 +37,16 @@ const ListContainer = styled.div`
     left: 0px;
     top: 10px;
   }
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 18px;
+    li {
+      display: flex;
+    }
+    span {
+      min-width: 100px;
+      margin-right: 5px;
+    }
+  }
 `
 
 // @ts-ignore
@@ -57,9 +62,9 @@ export default function PoliticsList({ infoList, isActive }) {
   ))
   return (
     <SectionBody shouldShowSectionBody={isActive}>
-      <ListContainer>
+      <TimeContainer>
         <ul>{info}</ul>
-      </ListContainer>
+      </TimeContainer>
     </SectionBody>
   )
 }
