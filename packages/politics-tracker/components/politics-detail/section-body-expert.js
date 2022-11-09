@@ -43,11 +43,18 @@ const ExpertTitle = styled.div`
   display: flex;
   margin-bottom: 12px;
   .expertImage {
-    margin-right: 12px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    /* background-size: cover; */
+    margin-right: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border: 2px solid #ffffff;
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
   }
   .expertName {
     font-style: normal;
@@ -173,15 +180,14 @@ export default function PoliticsExpert({ infoList, isActive }) {
   // @ts-ignore
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
-      <ExpertTitle
-        // @ts-ignore
-        image={value.avatar}
-      >
-        <div
-          className="expertImage"
-          // @ts-ignore
-          image={value.avatar}
-        ></div>
+      <ExpertTitle>
+        <div className="expertImage">
+          {value.avatar ? (
+            <img src={value.avatar} alt=""></img>
+          ) : (
+            <img src="/images/default-head-photo.png" alt=""></img>
+          )}
+        </div>
         <div>
           <p className="expertName">{value.contributer}</p>
           <span>{value.title}</span>
