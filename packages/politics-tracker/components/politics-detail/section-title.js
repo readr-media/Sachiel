@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import ArrowLeft from '~/components/icons/arrow-left'
+import Link from 'next/link'
 
 const Title = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
@@ -97,24 +98,27 @@ const Term = styled.span`
  */
 export default function SectionTitle({ politicData }) {
   const election_area = politicData.person.electoral_district.name.substr(0, 3)
+  const linkHref = `/politics/${politicData.person.person_id.id}`
   return (
-    <Title>
-      <ArrowLeft />
-      <div>
-        <h1>
-          {politicData.person.election.name} {''}
-          <span className="election_area">{election_area}</span>
-        </h1>
-        <TitlePartyInfo>
-          <div className="partyImage">
-            <img src={politicData.person.party.image} alt=""></img>
-          </div>
-          <span>{politicData.person.party.name}</span>
-        </TitlePartyInfo>
-        {/* <Term>
-          任期 <span>2022-12-29~2026-12-27</span>
-        </Term> */}
-      </div>
-    </Title>
+    <Link href={linkHref}>
+      <Title>
+        <ArrowLeft />
+        <div>
+          <h1>
+            {politicData.person.election.name} {''}
+            <span className="election_area">{election_area}</span>
+          </h1>
+          <TitlePartyInfo>
+            <div className="partyImage">
+              <img src={politicData.person.party.image} alt=""></img>
+            </div>
+            <span>{politicData.person.party.name}</span>
+          </TitlePartyInfo>
+          {/* <Term>
+            任期 <span>2022-12-29~2026-12-27</span>
+          </Term> */}
+        </div>
+      </Title>
+    </Link>
   )
 }
