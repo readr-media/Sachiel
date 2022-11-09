@@ -181,13 +181,6 @@ export default function PoliticsExpert({ infoList, isActive }) {
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
       <ExpertTitle>
-        {/* <div className="expertImage">
-          {value.avatar ? (
-            (<img src={value.avatar} alt=""></img>
-          ) : (
-            <img src="/images/default-head-photo.png" alt=""></img>
-          )}
-        </div> */}
         <div className="expertImage">
           {value.avatar ? (
             <img src={value.avatar} alt=""></img>
