@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Sources from './sources'
 import SectionTitle from './section-title'
 import SectionContent from './section-content'
-// import ProgressBar from './progress'
+import ProgressBar from './progressbar'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -23,7 +23,7 @@ export default function Section({ politicData }) {
     <SectionContainer>
       <div>
         <SectionTitle politicData={politicData}></SectionTitle>
-        {/* <ProgressBar /> */}
+        <ProgressBar politicData={politicData}></ProgressBar>
         <SectionContent politicData={politicData}></SectionContent>
         <Sources></Sources>
       </div>
