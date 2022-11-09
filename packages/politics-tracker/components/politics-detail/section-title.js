@@ -9,7 +9,6 @@ const Title = styled.div`
   font-weight: 700;
   padding: 12px 16px;
   line-height: 1.3;
-  letter-spacing: 0.1rem;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.textColor.black};
@@ -18,6 +17,9 @@ const Title = styled.div`
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 8px;
+    span {
+      margin-right: 5px;
+    }
   }
   h2 {
     font-size: 16px;
@@ -38,6 +40,7 @@ const Title = styled.div`
   ${({ theme }) => theme.breakpoint.sm} {
     .election_area {
       display: inline-block;
+      margin-left: 5px;
     }
   }
 
@@ -99,13 +102,28 @@ const Term = styled.span`
 export default function SectionTitle({ politicData }) {
   const election_area = politicData.person.electoral_district.name.substr(0, 3)
   const linkHref = `/politics/${politicData.person.person_id.id}`
+
+  //change election_name's year from RepublicYear to Common Era (+1911)
+  const rawElectionName = politicData.person.election.name
+  const electionCenturyYear = ChangeYearToCentury(rawElectionName)
+  const electionWithoutYear = rawElectionName.slice(
+    rawElectionName.indexOf('年') + 1
+  )
+
+  // @ts-ignore
+  function ChangeYearToCentury(item) {
+    const rawYear = item.slice(0, item.indexOf('年'))
+    const newYear = Number(+rawYear + 1911)
+    return newYear
+  }
   return (
     <Link href={linkHref}>
       <Title>
         <ArrowLeft />
         <div>
           <h1>
-            {politicData.person.election.name} {''}
+            <span>{electionCenturyYear}</span>
+            <span>{electionWithoutYear}</span>
             <span className="election_area">{election_area}</span>
           </h1>
           <TitlePartyInfo>
