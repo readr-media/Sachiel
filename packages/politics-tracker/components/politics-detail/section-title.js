@@ -1,4 +1,3 @@
-//這邊放xx選舉 xx政黨
 import styled from 'styled-components'
 import ArrowLeft from '~/components/icons/arrow-left'
 
@@ -13,6 +12,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.textColor.black};
+  cursor: pointer;
   h1 {
     font-size: 22px;
     font-weight: 700;
@@ -26,9 +26,10 @@ const Title = styled.div`
     width: 36px;
     height: 36px;
     margin-right: 15px;
+    border-radius: 50%;
   }
-  svg:hover {
-    cursor: pointer;
+  &:hover svg {
+    background: rgba(15, 45, 53, 0.05);
   }
   .election_area {
     display: none;
@@ -53,11 +54,10 @@ const TitlePartyInfo = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-  outline: 1px solid red;
 
   .partyImage {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     margin-right: 8px;
     overflow: hidden;
@@ -67,6 +67,13 @@ const TitlePartyInfo = styled.div`
     img {
       height: 100%;
       object-fit: cover;
+    }
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 18px;
+    .partyImage {
+      width: 24px;
+      height: 24px;
     }
   }
 `
@@ -104,9 +111,9 @@ export default function SectionTitle({ politicData }) {
           </div>
           <span>{politicData.person.party.name}</span>
         </TitlePartyInfo>
-        <Term>
+        {/* <Term>
           任期 <span>2022-12-29~2026-12-27</span>
-        </Term>
+        </Term> */}
       </div>
     </Title>
   )

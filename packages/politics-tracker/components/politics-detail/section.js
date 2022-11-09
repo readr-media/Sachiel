@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import Sources from './sources'
-import SectionTitle from './section-title-and-progress'
+import SectionTitle from './section-title'
 import SectionContent from './section-content'
+// import ProgressBar from './progress'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -11,9 +12,6 @@ const SectionContainer = styled.div`
     max-width: 688px;
     margin: auto;
   }
-  /* ${({ theme }) => theme.breakpoint.md} {
-    padding: 40px;
-  } */
 `
 /**
  * @param {Object} props
@@ -25,6 +23,7 @@ export default function Section({ politicData }) {
     <SectionContainer>
       <div>
         <SectionTitle politicData={politicData}></SectionTitle>
+        {/* <ProgressBar /> */}
         <SectionContent politicData={politicData}></SectionContent>
         <Sources></Sources>
       </div>
