@@ -128,7 +128,11 @@ export default function SectionTitle({ politicData }) {
           </h1>
           <TitlePartyInfo>
             <div className="partyImage">
-              <img src={politicData.person.party.image} alt=""></img>
+              {politicData.person.party.image ? (
+                <img src={politicData.person.party.image} alt=""></img>
+              ) : (
+                <img src="/images/default-head-photo.png" alt=""></img>
+              )}
             </div>
             <span>{politicData.person.party.name}</span>
           </TitlePartyInfo>
