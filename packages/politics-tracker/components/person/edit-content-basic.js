@@ -94,7 +94,7 @@ export default function EditContentBasic({
   // @ts-ignore
   function takeArrayKeyName(array, key) {
     // @ts-ignore
-    return array.map(function (item) {
+    return array?.map(function (item) {
       return item[key]
     })
   }
