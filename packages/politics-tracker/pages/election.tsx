@@ -14,7 +14,7 @@ import errors from '@twreporter/errors'
 // @ts-ignore: no definition
 import evc from '@readr-media/react-election-votes-comparison'
 import DefaultLayout from '~/components/layout/default'
-import Nav, { type LinkMember } from '~/components/nav'
+import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
@@ -227,9 +227,10 @@ function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
 }
 
 const Election = (props: ElectionPageProps) => {
-  const navProps = {
+  const navProps: NavProps = {
     prev: getConfigItme(props.prev),
     next: getConfigItme(props.next),
+    alwaysShowHome: true,
   }
 
   const { year, title } = props
