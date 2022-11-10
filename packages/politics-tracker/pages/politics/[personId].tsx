@@ -31,7 +31,7 @@ import DefaultLayout from '~/components/layout/default'
 import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
 // import Nav from '~/components/politics/nav'
-import Nav, { type LinkMember } from '~/components/nav'
+import Nav, { type NavProps } from '~/components/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
@@ -356,7 +356,7 @@ const Politics = (props: PoliticsPageProps) => {
     setPoliticAmounts(amount)
   }
 
-  const navProps: Record<string, LinkMember | undefined> = {
+  const navProps: NavProps = {
     prev: {
       backgroundColor: 'bg-person',
       content: '回個人資訊',
@@ -379,6 +379,7 @@ const Politics = (props: PoliticsPageProps) => {
         },
       },
     },
+    alwaysShowHome: true,
   }
 
   const sections = props.elections.map((e, index) => (
