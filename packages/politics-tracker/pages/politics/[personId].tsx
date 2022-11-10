@@ -5,13 +5,15 @@ import type {
   PoliticAmount,
   Politic,
 } from '~/types/politics'
-import type {
+import {
   GenericGQLData,
   RawPersonElection,
   RawPerson,
   RawPolitic,
   RawElection,
   StatusOptionsB,
+  PROGRESS,
+  RawPoliticProgress,
 } from '~/types/common'
 
 import { useState } from 'react'
@@ -40,6 +42,11 @@ type PoliticsPageProps = {
   elections: PersonElection[]
   person: RawPerson
   latestElection: PersonElection
+}
+
+function getProgressStatus(progressList: RawPoliticProgress[]): `${PROGRESS}` {
+  progressList.sort((p1, p2) => Number(p2.id) - Number(p1.id))
+  return progressList[0]?.progress ?? PROGRESS.NOT_START
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -102,6 +109,8 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
+      const now = moment()
+
       // sorted by election date
       latestPersonElection = personElections.reduce(
         (previous: RawPersonElection, current: RawPersonElection) => {
@@ -129,6 +138,13 @@ export const getServerSideProps: GetServerSideProps<
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
+              isFinished: now.isAfter(
+                moment(
+                  `${election.election_year_year}-${election.election_year_month}-${election.election_year_day}`,
+                  'YYYY-M-D'
+                )
+              ),
+              elected: current.elected === true,
               source: current.politicSource ?? '',
               lastUpdate: null,
               politics: [],
@@ -250,6 +266,7 @@ export const getServerSideProps: GetServerSideProps<
             desc: String(politic.desc),
             source: '',
             content: '',
+            progess: PROGRESS.NOT_START,
             tagId: null,
             tagName: null,
             createdAt: String(politic.createdAt),
@@ -268,6 +285,7 @@ export const getServerSideProps: GetServerSideProps<
           desc: String(politic.desc),
           source: String(politic.source),
           content: String(politic.content),
+          progess: getProgressStatus(politic.progress ?? []),
           tagId: politic.tag?.id ?? null,
           tagName: politic.tag?.name ?? null,
           createdAt: String(politic.createdAt),
