@@ -10,6 +10,7 @@ const SourcesContainer = styled.div`
   position: relative;
   /* TODO:: 目前這個寫法還沒有很好 */
   padding-left: 34px;
+  overflow: hidden;
   ${({ theme }) => theme.breakpoint.md} {
     padding-left: 44px;
   }
