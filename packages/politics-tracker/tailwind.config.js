@@ -18,9 +18,12 @@ module.exports = {
         politics: '#FFFCF3',
         campaign: '#F58439',
         person: '#8379F8',
-        // politics/title
-        'politic-completed': '#2FB7BF',
-        'politic-waiting': '#DB4C65',
+        waiting: '#DB4C65',
+        // politics/status
+        'in-progress': '#F6BA31',
+        'in-trouble': '#DB4C65',
+        complete: '#2FB7BF',
+        disabled: '#C5CBCD',
       },
       textColor: {
         main: '#0F2D35',

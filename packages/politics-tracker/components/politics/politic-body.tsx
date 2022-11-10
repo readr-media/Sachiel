@@ -1,5 +1,4 @@
 import type { Politic } from '~/types/politics'
-import type { RawPolitic } from '~/types/common'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { print } from 'graphql'
@@ -12,6 +11,7 @@ import { useToast } from '../toast/use-toast'
 import { fireGqlRequest } from '~/utils/utils'
 import { useState } from 'react'
 import classNames from 'classnames'
+import { RawPolitic, PROGRESS } from '~/types/common'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import SourceItem from './source-item'
 import PoliticContent from './politic-content'
@@ -105,10 +105,34 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   }
 
   const style = classNames(s['container'], { [s['editing']]: isEditing })
+  const status = personElection.elected
+    ? props.progess ?? PROGRESS.NOT_START
+    : 'failed'
+  const statusStyle = classNames(s['status'], s[status])
+
+  function getStatusText(status: `${PROGRESS}` | 'failed') {
+    const map: Record<PROGRESS | 'failed', string> = {
+      'no-progress': '未開始',
+      'in-progress': '進行中',
+      'in-trouble': '卡關中',
+      complete: '已完成',
+      failed: '未當選',
+    }
+
+    return map[status]
+  }
 
   return (
     <div className={style}>
-      <span className={s['index']}>{index}</span>
+      <div className={s['header']}>
+        <span className={s['index']}>{index}</span>
+        {personElection.isFinished && (
+          <span className={s['politic-status']}>
+            <span className={s['text']}>達成進度</span>
+            <span className={statusStyle}>{getStatusText(status)}</span>
+          </span>
+        )}
+      </div>
       <div className={s['content-group']}>
         {isEditing ? (
           <PoliticForm
