@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { print } from 'graphql'
 import {
-  usePersonElectionId,
+  usePersonElection,
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
@@ -35,7 +35,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
   const toast = useToast()
   const politicAmount = usePoliticAmount()
-  const personElectionId: string = usePersonElectionId()
+  const personElection = usePersonElection()
   const waitingPoliticList = usePoliticList()
 
   async function appendPoliticToThread(data: Politic): Promise<boolean> {
@@ -51,7 +51,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           },
           person: {
             connect: {
-              id: personElectionId,
+              id: personElection.id,
             },
           },
           desc: data.desc,
