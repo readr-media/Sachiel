@@ -4,8 +4,8 @@ import SectionBody from './section-body'
 
 const DetailContainer = styled.div`
   padding: 20px 0px;
-  > li:nth-child(1) {
-    padding-bottom: 30px;
+  > li:nth-child(2) {
+    padding-top: 30px;
   }
 `
 const DetailList = styled.li`
@@ -28,7 +28,7 @@ const DetailList = styled.li`
     margin-bottom: 10px;
     padding-left: 15px;
   }
-  > span:before {
+  &:before {
     content: '';
     display: inline-block;
     background-color: #f7ba31;
@@ -40,6 +40,9 @@ const DetailList = styled.li`
     left: 0px;
     top: 10px;
   }
+  &:nth-child(2):before {
+    top: 40px;
+  }
   ${({ theme }) => theme.breakpoint.md} {
     p,
     span {
@@ -48,10 +51,16 @@ const DetailList = styled.li`
   }
 `
 
-// @ts-ignore
-export default function PoliticsDetail({ politic, additional, isActive }) {
-  const source = '選舉公報'
-
+export default function PoliticsDetail({
+  // @ts-ignore
+  politic,
+  // @ts-ignore
+  additional,
+  // @ts-ignore
+  isActive,
+  // @ts-ignore
+  source,
+}) {
   return (
     <SectionBody shouldShowSectionBody={isActive}>
       <DetailContainer>
@@ -59,10 +68,12 @@ export default function PoliticsDetail({ politic, additional, isActive }) {
           <span>政見</span>
           <p>{politic}</p>
         </DetailList>
-        <DetailList>
-          <span>補充說明</span>
-          <p>{additional}</p>
-        </DetailList>
+        {additional !== '' && (
+          <DetailList>
+            <span>補充說明</span>
+            <p>{additional}</p>
+          </DetailList>
+        )}
         <Sources sources={source} />
       </DetailContainer>
     </SectionBody>

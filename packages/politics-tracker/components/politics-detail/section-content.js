@@ -52,6 +52,7 @@ export default function SectionContent({ politicData }) {
         // @ts-ignore
         setActiveId={setActiveId}
         activeId={activeId}
+        source={politicData.source}
       />
       <SectionToggle
         id={'1'}
@@ -79,19 +80,23 @@ export default function SectionContent({ politicData }) {
         setActiveId={setActiveId}
         activeId={activeId}
       />
-      <SectionToggle
-        id={'3'}
-        title={'專家看點'}
-        toggleActiveID={toggleActiveID}
-        // @ts-ignore
-        isActive={activeId.includes('3')}
-      />
-      <SectionBodyExpert
-        infoList={politicData.expertPoint}
-        isActive={activeId.includes('3')} // @ts-ignore
-        setActiveId={setActiveId}
-        activeId={activeId}
-      />
+      {politicData.expertPoint.length !== 0 && (
+        <>
+          <SectionToggle
+            id={'3'}
+            title={'專家看點'}
+            toggleActiveID={toggleActiveID}
+            // @ts-ignore
+            isActive={activeId.includes('3')}
+          />
+          <SectionBodyExpert
+            infoList={politicData.expertPoint}
+            isActive={activeId.includes('3')} // @ts-ignore
+            setActiveId={setActiveId}
+            activeId={activeId}
+          />
+        </>
+      )}
     </SectionListContainer>
   )
 }
