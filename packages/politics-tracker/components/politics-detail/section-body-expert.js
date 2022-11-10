@@ -160,7 +160,7 @@ const ExpertLinks = styled.div`
 
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
-  const sourceData = infoList[1].link
+  const sourceData = infoList[1]?.link
     ? infoList[1].link.split(SOURCE_DELIMITER)
     : []
   // @ts-ignore
