@@ -11,6 +11,7 @@ import { fireGqlRequest } from '~/utils/utils'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
+import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 
 const Main = styled.main`
@@ -42,8 +43,8 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
     textColor: 'text-black',
   }
   //politics verified
-  const rawPoliticList = [...politicAmount.data?.politics]
-  const verifiedPolitic = rawPoliticList.filter((value) => {
+  const allPoliticList = [...politicAmount.data?.politics]
+  const verifiedPolitic = allPoliticList.filter((value) => {
     return value.status === 'verified' && value.reviewed
   })
 
@@ -58,8 +59,8 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
             campaign={politicData.person.election.type}
             party={politicData.person.party.name}
             partyIcon={politicData.person.party.image}
-            completed={verifiedPolitic.length}
-            waiting={rawPoliticList.length - verifiedPolitic.length}
+            completed={allPoliticList.length}
+            waiting={allPoliticList.length - verifiedPolitic.length}
           />
           <Section politicData={politicData}></Section>
         </Main>
@@ -91,15 +92,35 @@ export async function getServerSideProps({ query, res }) {
         notFound: true,
       }
     }
+    //get all personElections ID this person join
+    const {
+      data: { personElections },
+    } = await fireGqlRequest(
+      print(GetPersonElections),
+      { Id: politics[0].person.person_id.id },
+      cmsApiUrl
+    )
 
+    const rawPersonElection = [...personElections]
+    // @ts-ignore
+    const personElectionIds = []
+    rawPersonElection.map((item) => {
+      personElectionIds.push(item.id)
+    })
+
+    //要把跟這個人有關的personElectionID都放進去
     const politicAmount = await fireGqlRequest(
       print(GetPolticsRelatedToPersonElections),
-      { ids: politics[0].person.id },
+      // @ts-ignore
+      { ids: personElectionIds },
       cmsApiUrl
     )
 
     return {
-      props: { politicData: politics[0], politicAmount: politicAmount }, // will be passed to the page component as props
+      props: {
+        politicData: politics[0],
+        politicAmount: politicAmount,
+      }, // will be passed to the page component as props
     }
   } catch (err) {
     console.error(err)
