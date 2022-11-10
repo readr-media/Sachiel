@@ -27,15 +27,18 @@
 .source-list {
   @apply flex grow flex-row flex-wrap items-center bg-label bg-opacity-5 gap-2 p-2 pl-0;
 }
-.button-edit {
+.control-group {
   @apply mt-2 flex flex-row py-1;
   box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1), inset 0px -1px 0px rgba(0, 0, 0, 0.1);
 }
-.button-inner {
-  @apply flex w-full cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
+.button {
+  @apply flex basis-1/3 grow cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
   @apply text-[16px] leading-[1.8] text-control;
   @apply hover:bg-button-3 active:bg-button-3 md:text-[18px];
 }
 .button-icon {
   @apply w-5 h-5;
+}
+.divider {
+  @apply my-auto mx-1 h-6 w-[1px] bg-label opacity-10;
 }
