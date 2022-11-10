@@ -8,7 +8,7 @@ import type {
 } from '~/types/common'
 import { print } from 'graphql'
 import { fireGqlRequest, electionName } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
+import { cmsApiUrl, env } from '~/constants/config'
 import { districtsMapping, electionTypesMapping } from '~/constants/election'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps<
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw',
+        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
         year,
         type: electionType,
         district: 'all',
@@ -58,11 +58,11 @@ export const getServerSideProps: GetServerSideProps<
     }
     case 'councilMember': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw',
+        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
         year,
         type: electionType,
         district: mappedAreaStr,
-        version: 'v1',
+        version: 'v2',
       })
       break
     }
@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const data = Object.assign({ type: electionType }, await ldr.loadData())
+    const data = await ldr.loadData()
 
     const electionMap: withKeyObject<RawElection> = {}
     const elections: ElectionLink[] = []
