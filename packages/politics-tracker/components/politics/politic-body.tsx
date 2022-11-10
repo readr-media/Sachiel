@@ -1,6 +1,7 @@
 import type { Politic } from '~/types/politics'
 import type { RawPolitic } from '~/types/common'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { print } from 'graphql'
 import {
   usePersonElectionId,
@@ -18,6 +19,7 @@ const PoliticForm = dynamic(() => import('./politic-form'), {
   ssr: false,
 })
 import Edit from '~/components/icons/edit'
+import ArrowRight from '../icons/arrow-right'
 import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
 import s from './politic-body.module.css'
 
@@ -125,13 +127,29 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
               </div>
               <div className={s['source-list']}>{sourceList}</div>
             </div>
-            <div className={s['button-edit']} onClick={() => setEditing(true)}>
-              <div className={s['button-inner']}>
+            <div className={s['control-group']}>
+              <div className={s['button']} onClick={() => setEditing(true)}>
                 <span>編輯</span>
                 <span className={s['button-icon']}>
                   <Edit />
                 </span>
               </div>
+              <div className={s['divider']}></div>
+              <Link
+                href={{
+                  pathname: '/politics/detail/[politicId]',
+                  query: {
+                    politicId: props.id,
+                  },
+                }}
+                legacyBehavior={false}
+                className={s['button']}
+              >
+                <span>政見細節</span>
+                <span className={s['button-icon']}>
+                  <ArrowRight />
+                </span>
+              </Link>
             </div>
           </>
         )}
