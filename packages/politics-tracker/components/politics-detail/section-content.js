@@ -51,34 +51,31 @@ export default function SectionContent({ politicData }) {
         isActive={activeId.includes('0')}
         // @ts-ignore
         setActiveId={setActiveId}
-        activeId={activeId}
         source={politicData.source}
       />
       <SectionToggle
         id={'1'}
         title={'相關進度'}
         toggleActiveID={toggleActiveID}
-        // @ts-ignore
         isActive={activeId.includes('1')}
       />
       <SectionBodyTimeList
+        // @ts-ignore
         infoList={politicData.timeline}
-        isActive={activeId.includes('1')} // @ts-ignore
+        isActive={activeId.includes('1')}
         setActiveId={setActiveId}
-        activeId={activeId}
       />
       <SectionToggle
         id={'2'}
         title={'相關爭議'}
         toggleActiveID={toggleActiveID}
-        // @ts-ignore
         isActive={activeId.includes('2')}
       />
       <SectionBodyDispute
         infoList={politicData.dispute}
-        isActive={activeId.includes('2')} // @ts-ignore
+        isActive={activeId.includes('2')}
+        // @ts-ignore
         setActiveId={setActiveId}
-        activeId={activeId}
       />
       {politicData.expertPoint.length !== 0 && (
         <>
@@ -91,9 +88,9 @@ export default function SectionContent({ politicData }) {
           />
           <SectionBodyExpert
             infoList={politicData.expertPoint}
-            isActive={activeId.includes('3')} // @ts-ignore
+            isActive={activeId.includes('3')}
+            // @ts-ignore
             setActiveId={setActiveId}
-            activeId={activeId}
           />
         </>
       )}

@@ -54,7 +54,6 @@ const ToggleContainer = styled.div`
  * @param {Boolean} props.isActive
  * @param {Function} props.toggleActiveID
  * @param {null|string} props.id
- * @param {Object[]} props.activeId
  * @returns {React.ReactElement}
  */
 export default function Toggle({ title, isActive, id, toggleActiveID }) {
