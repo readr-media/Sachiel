@@ -34,7 +34,7 @@
   }
 
   &.disable {
-    @apply  bg-[#C5CBCD] cursor-not-allowed;
+    @apply  bg-disabled cursor-not-allowed;
     border-color: rgba(0, 0, 0, 0.1);
 
     .content {

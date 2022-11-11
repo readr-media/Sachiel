@@ -11,8 +11,36 @@
   @apply text-[16px] font-medium leading-[1.8] text-main;
   @apply md:text-[18px];
 }
+.header {
+  @apply flex justify-between items-center;
+}
 .index {
   @apply politic-base mb-1 shrink-0;
+}
+.politic-status {
+  @apply font-medium leading-[1.5] text-[14px] shrink-0;
+  @apply md:text-[16px];
+}
+.text {
+  @apply inline-block mr-2 text-main text-opacity-50;
+}
+.status {
+  @apply inline-block px-3 py-1;
+  &.no-progress {
+    @apply bg-label bg-opacity-50 text-white;
+  }
+  &.in-progress {
+    @apply bg-in-progress bg-opacity-100 text-main;
+  }
+  &.in-trouble {
+    @apply bg-in-trouble bg-opacity-100 text-white;
+  }
+  &.complete {
+    @apply bg-complete bg-opacity-100 text-white;
+  }
+  &.failed {
+    @apply bg-disabled bg-opacity-100 text-main text-opacity-30;
+  }
 }
 .content {
   @apply politic-base relative;

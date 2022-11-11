@@ -2,7 +2,7 @@ import type { Politic } from '~/types/politics'
 import type { RawPolitic } from '~/types/common'
 import { print } from 'graphql'
 import {
-  usePersonElectionId,
+  usePersonElection,
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
@@ -31,7 +31,7 @@ export default function AddPoliticForm(
 
   const toast = useToast()
   const politicAmount = usePoliticAmount()
-  const personElectionId: string = usePersonElectionId()
+  const personElection = usePersonElection()
   const waitingPoliticList = usePoliticList()
 
   // client side only
@@ -43,7 +43,7 @@ export default function AddPoliticForm(
         data: {
           person: {
             connect: {
-              id: personElectionId,
+              id: personElection.id,
             },
           },
           desc: data.desc,

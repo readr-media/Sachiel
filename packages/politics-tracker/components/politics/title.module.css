@@ -70,8 +70,8 @@
   @apply h-[70px] w-1/2 md:h-auto md:w-1/4;
 }
 .already-block {
-  @apply statistic-block bg-politic-completed shadow-bottom-and-right;
+  @apply statistic-block bg-complete shadow-bottom-and-right;
 }
 .waiting-block {
-  @apply statistic-block bg-politic-waiting shadow-bottom;
+  @apply statistic-block bg-waiting shadow-bottom;
 }
