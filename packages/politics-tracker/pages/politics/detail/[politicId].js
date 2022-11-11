@@ -25,7 +25,7 @@ const Main = styled.main`
   }
 `
 /**
- * @typedef {import('~/components/nav').LinkMember } LinkMember
+ * @typedef {import('~/components/nav').NavProps } NavProps
  * @returns {React.ReactElement}
  */
 /**
@@ -35,12 +35,15 @@ const Main = styled.main`
  */
 // @ts-ignore
 export default function PoliticsDetail({ politicData, politicAmount }) {
-  /** @type {LinkMember} */
+  /** @type {NavProps} */
   const navProps = {
-    content: '回政見總覽',
-    href: `/politics/${politicData.person.person_id.id}`,
-    backgroundColor: 'bg-button',
-    textColor: 'text-black',
+    prev: {
+      content: '回政見總覽',
+      href: `/politics/${politicData.person.person_id.id}`,
+      backgroundColor: 'bg-button',
+      textColor: 'text-black',
+    },
+    alwaysShowHome: true,
   }
   //politics verified
   const allPoliticList = [...politicAmount.data?.politics]
@@ -67,7 +70,7 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
           />
           <Section politicData={politicData}></Section>
         </Main>
-        <Nav prev={navProps} />
+        <Nav {...navProps} />
       </ThemeProvider>
     </DefaultLayout>
   )

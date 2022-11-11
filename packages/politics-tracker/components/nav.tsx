@@ -13,9 +13,10 @@ export type LinkMember = {
   textColor?: string
 }
 
-type NavProps = {
+export type NavProps = {
   prev?: LinkMember
   next?: LinkMember
+  alwaysShowHome?: boolean
 }
 
 export default function Nav(props: NavProps): JSX.Element {
@@ -30,7 +31,7 @@ export default function Nav(props: NavProps): JSX.Element {
     props.next?.textColor ?? 'text-white'
   )
   const homeStyle = classNames(s['home'], {
-    [s['default-hidden']]: !(props.prev && props.next),
+    [s['default-hidden']]: !props.alwaysShowHome,
   })
 
   return (

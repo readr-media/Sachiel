@@ -532,6 +532,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -573,6 +574,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -612,6 +614,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>

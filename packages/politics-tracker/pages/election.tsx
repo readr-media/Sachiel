@@ -7,14 +7,14 @@ import type {
 } from '~/types/common'
 import { print } from 'graphql'
 import { fireGqlRequest, electionName } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
+import { cmsApiUrl, env } from '~/constants/config'
 import { districtsMapping, electionTypesMapping } from '~/constants/election'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 // @ts-ignore: no definition
 import evc from '@readr-media/react-election-votes-comparison'
 import DefaultLayout from '~/components/layout/default'
-import Nav, { type LinkMember } from '~/components/nav'
+import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw',
+        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
         year,
         type: electionType,
         district: 'all',
@@ -57,11 +57,11 @@ export const getServerSideProps: GetServerSideProps<
     }
     case 'councilMember': {
       ldr = new DataLoader({
-        apiOrigin: 'https://whoareyou-gcs.readr.tw',
+        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
         year,
         type: electionType,
         district: mappedAreaStr,
-        version: 'v1',
+        version: 'v2',
       })
       break
     }
@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const data = Object.assign({ type: electionType }, await ldr.loadData())
+    const data = await ldr.loadData()
 
     const electionMap: Record<string, RawElection> = {}
     const elections: ElectionLink[] = []
@@ -227,9 +227,10 @@ function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
 }
 
 const Election = (props: ElectionPageProps) => {
-  const navProps = {
+  const navProps: NavProps = {
     prev: getConfigItme(props.prev),
     next: getConfigItme(props.next),
+    alwaysShowHome: true,
   }
 
   const { year, title } = props
