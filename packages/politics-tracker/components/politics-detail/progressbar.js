@@ -116,14 +116,14 @@ const ProgressBar = styled.div`
 /**
  * @param {Object} props
  * @param {import('../../types/politics-detail').PoliticDetail} props.politicData
+ * @param {Object} props.politicData
+ * @param {Object} props.politicData.progress
+ * @param {String} props.politicData.progress.progress
  * @returns {React.ReactElement}
  */
 export default function SectionTitle({ politicData }) {
   // @ts-ignore
   const progressType = politicData.progress[0]?.progress
-  /**
-   * @param {string} item
-   */
   return (
     <ProgressBar>
       <div className="arrow-steps clearfix">

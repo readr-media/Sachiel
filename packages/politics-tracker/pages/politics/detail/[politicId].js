@@ -50,6 +50,9 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
   const verifiedPolitic = allPoliticList.filter((value) => {
     return value.status === 'verified' && value.reviewed
   })
+  const notVerifiedPolitic = allPoliticList.filter((value) => {
+    return value.status === 'notverified' && !value.reviewed
+  })
 
   return (
     <DefaultLayout>
@@ -62,8 +65,8 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
             campaign={politicData.person.election.type}
             party={politicData.person.party.name}
             partyIcon={politicData.person.party.image}
-            completed={allPoliticList.length}
-            waiting={allPoliticList.length - verifiedPolitic.length}
+            completed={verifiedPolitic.length}
+            waiting={notVerifiedPolitic.length}
           />
           <Section politicData={politicData}></Section>
         </Main>
@@ -111,7 +114,6 @@ export async function getServerSideProps({ query, res }) {
       personElectionIds.push(item.id)
     })
 
-    //要把跟這個人有關的personElectionID都放進去
     const politicAmount = await fireGqlRequest(
       print(GetPolticsRelatedToPersonElections),
       // @ts-ignore

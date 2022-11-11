@@ -56,10 +56,18 @@ const TimeContainer = styled.div`
     }
   }
 `
-
-// @ts-ignore
+/**
+ *
+ * @param {Object} props
+ * @param {Object[]} props.infoList
+ * @param {string} props.infoList[].id
+ * @param {string} props.infoList[].eventDate
+ * @param {string} props.infoList[].link
+ * @param {string} props.infoList[].content
+ * @param {Boolean} props.isActive
+ * @returns {React.ReactElement}
+ */
 export default function PoliticsList({ infoList, isActive }) {
-  // @ts-ignore
   const info = infoList.map((value) => (
     <li key={value.id}>
       <span>{value.eventDate.substr(0, 10)}</span>
