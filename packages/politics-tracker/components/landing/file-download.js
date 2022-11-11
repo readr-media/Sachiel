@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
+import ReactGA from 'react-ga'
 
 const TeamIntroContainer = styled.div`
   width: 100%;
@@ -82,6 +83,22 @@ const CreditButtonWrap = styled.div`
   }
 `
 const TeamWrap = styled.div``
+
+// GA click
+const mayorDownloadOnclick = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「下載縣市長政見」',
+  })
+}
+const councilorDownloadOnclick = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「下載縣市議員政見」',
+  })
+}
 /**
  *
  * @returns {React.ReactElement}
@@ -92,10 +109,12 @@ export default function TeamIntro() {
     {
       buttonTitle: '下載縣市長政見',
       buttonURL: 'https://whoareyou-gcs.readr.tw/politics/politics-81.csv',
+      GAclick: mayorDownloadOnclick,
     },
     {
       buttonTitle: '下載縣市議員政見',
       buttonURL: 'https://whoareyou-gcs.readr.tw/politics/politics-82.csv',
+      GAclick: councilorDownloadOnclick,
     },
   ]
   return (
@@ -119,7 +138,7 @@ export default function TeamIntro() {
                     src="/landingpage/arrow_right_black.svg"
                     width="20"
                     height="20"
-                    onClick={() => {}}
+                    onClick={v.GAclick}
                   />
                 </a>
               </div>
