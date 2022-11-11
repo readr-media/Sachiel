@@ -11,7 +11,7 @@ import How from '~/components/landing/how-main'
 import TeamIntro from '~/components/landing/credit'
 import Credit from '~/components/landing/file-download'
 import Mayor from '~/components/landing/mayor-main'
-import Council from '~/components/landing/council-main'
+import Councilor from '~/components/landing/council-main'
 
 const Main = styled.main`
   width: 100%;
@@ -45,7 +45,7 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore
           propsData={propsData}
         />
-        <Council
+        <Councilor
           // @ts-ignore
           propsData={propsData}
         />
