@@ -46,7 +46,9 @@ export const getServerSideProps: GetServerSideProps<
   switch (electionType) {
     case 'mayor': {
       ldr = new DataLoader({
-        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
+        apiUrl: `https://whoareyou-gcs.readr.tw/${
+          env === 'dev' ? 'elections-dev' : 'elections'
+        }`,
         year,
         type: electionType,
         district: 'all',
@@ -57,7 +59,9 @@ export const getServerSideProps: GetServerSideProps<
     }
     case 'councilMember': {
       ldr = new DataLoader({
-        apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
+        apiUrl: `https://whoareyou-gcs.readr.tw/${
+          env === 'dev' ? 'elections-dev' : 'elections'
+        }`,
         year,
         type: electionType,
         district: mappedAreaStr,
