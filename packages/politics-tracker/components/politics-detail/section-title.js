@@ -110,7 +110,9 @@ export default function SectionTitle({ politicData }) {
     rawElectionName.indexOf('年') + 1
   )
 
-  // @ts-ignore
+  /**
+   * @param {string} item
+   */
   function ChangeYearToCentury(item) {
     const rawYear = item.slice(0, item.indexOf('年'))
     const newYear = Number(+rawYear + 1911)

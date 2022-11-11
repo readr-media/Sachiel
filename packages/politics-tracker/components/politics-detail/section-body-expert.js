@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { Fragment } from 'react'
 import SectionBody from './section-body'
+import Image from 'next/future/image'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
-
 const ExpertContainer = styled.div`
   padding-top: 12px;
   > span {
@@ -41,21 +41,8 @@ const ExpertList = styled.li`
 `
 const ExpertTitle = styled.div`
   display: flex;
+  align-items: center;
   margin-bottom: 12px;
-  .expertImage {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    margin-right: 12px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    border: 2px solid #ffffff;
-    img {
-      height: 100%;
-      object-fit: cover;
-    }
-  }
   .expertName {
     font-style: normal;
     font-weight: 700;
@@ -158,36 +145,52 @@ const ExpertLinks = styled.div`
   }
 `
 
+const ExpertImage = styled.div`
+  border-color: ${({ theme }) => theme.borderColor.white};
+  border-width: 2px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  background: url('/images/default-head-photo.png') center center no-repeat
+    contain;
+  img {
+    min-width: 48px;
+    min-height: 48px;
+    height: 100%;
+    object-fit: cover;
+    z-index: 100;
+  }
+  ${({ theme }) => theme.breakpoint.md} {
+    min-width: 60px;
+    min-height: 60px;
+  }
+  .avatar_show {
+    display: block;
+  }
+  .avatar_hidden {
+    display: none;
+  }
+`
+
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
-  const sourceData = infoList[1]?.link
-    ? infoList[1].link.split(SOURCE_DELIMITER)
-    : []
-  // @ts-ignore
-  const sourceList = sourceData.map((content, index) => {
-    const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
-    return isLink ? (
-      <li key={index}>
-        <a href={link} target="_blank" rel="noopener noreferrer">
-          {text}
-        </a>
-      </li>
-    ) : (
-      ''
-    )
-  })
-
   // @ts-ignore
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
       <ExpertTitle>
-        <div className="expertImage">
-          {value.avatar ? (
-            <img src={value.avatar} alt=""></img>
-          ) : (
-            <img src="/images/default-head-photo.png" alt=""></img>
-          )}
-        </div>
+        {value.avatar ? (
+          <ExpertImage>
+            <Image src={value.avatar} fill className="avatar_show" alt="" />
+          </ExpertImage>
+        ) : (
+          <ExpertImage></ExpertImage>
+        )}
         <div>
           <p className="expertName">{value.contributer}</p>
           <span>{value.title}</span>
@@ -201,7 +204,35 @@ export default function PoliticsExpert({ infoList, isActive }) {
         {value.link.length !== 0 && (
           <Fragment>
             <span>相關連結</span>
-            <ul>{sourceList}</ul>
+            <ul>
+              {value.link.split(SOURCE_DELIMITER).map(
+                (
+                  // @ts-ignore
+                  content,
+                  // @ts-ignore
+                  index
+                ) => {
+                  const { isLink, link, text } = generateSourceMeta(
+                    content,
+                    '',
+                    index + 1
+                  )
+                  return (
+                    isLink && (
+                      <li key={index}>
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {text}
+                        </a>
+                      </li>
+                    )
+                  )
+                }
+              )}
+            </ul>
           </Fragment>
         )}
       </ExpertLinks>
