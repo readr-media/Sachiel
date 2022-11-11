@@ -6,6 +6,7 @@ import SectionContent from './section-content'
 import ProgressBar from './progressbar'
 // @ts-ignore: no definition
 import Feedback from '@readr-media/react-feedback'
+import { useConfig } from '../react-context/use-global'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -34,17 +35,19 @@ const FeedbackFormContainer = styled.div`
  */
 export default function Section({ politicData }) {
   const router = useRouter()
+  const config = useConfig()
+
   const FeedbackFormProps = {
     forms: [
       {
-        id: '',
+        id: config.formId,
         name: '',
         type: '',
         active: true,
         fieldsCount: 1,
         fields: [
           {
-            id: '',
+            id: config.fieldId,
             name: '你覺得這個政見如何？',
             status: '',
             sortOrder: null,
