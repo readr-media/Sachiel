@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Sources from './sources'
 import SectionTitle from './section-title'
 import SectionContent from './section-content'
 import ProgressBar from './progressbar'
+// @ts-ignore: no definition
+import Feedback from '@readr-media/react-feedback'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -13,12 +16,51 @@ const SectionContainer = styled.div`
     margin: auto;
   }
 `
+
+const FeedbackFormContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+  box-shadow: inset 0px 4px 0px #000000;
+  > form {
+    display: inline-block;
+  }
+`
+
 /**
  * @param {Object} props
  * @param {import('../../types/politics-detail').PoliticDetail} props.politicData
  * @returns {React.ReactElement}
  */
 export default function Section({ politicData }) {
+  const router = useRouter()
+  const FeedbackFormProps = {
+    forms: [
+      {
+        id: '',
+        name: '',
+        type: '',
+        active: true,
+        fieldsCount: 1,
+        fields: [
+          {
+            id: '',
+            name: '你覺得這個政見如何？',
+            status: '',
+            sortOrder: null,
+            type: 'single',
+            thumbUpLabel: '清楚',
+            thumbDownLabel: '模糊',
+            identifier: `politics-tracker${router.asPath}`,
+          },
+        ],
+      },
+    ],
+    shouldUseRecaptcha: false,
+    theme: 'politics-tracker',
+    storageKey: 'politics-tracker-user-id',
+  }
+
   return (
     <SectionContainer>
       <div>
@@ -26,6 +68,9 @@ export default function Section({ politicData }) {
         <ProgressBar politicData={politicData}></ProgressBar>
         <SectionContent politicData={politicData}></SectionContent>
         <Sources></Sources>
+        <FeedbackFormContainer>
+          <Feedback {...FeedbackFormProps} />
+        </FeedbackFormContainer>
       </div>
     </SectionContainer>
   )
