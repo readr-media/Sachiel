@@ -220,12 +220,6 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      const attributeMap: {
-        [T in StatusOptionsB]: keyof PoliticAmount
-      } = {
-        verified: 'completed',
-        notverified: 'waiting',
-      }
       const politicList = rawData.data?.politics || []
       const politicGroup: Record<
         string,
@@ -238,8 +232,6 @@ export const getServerSideProps: GetServerSideProps<
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
         const reviewed = politic.reviewed
-        const attribute: keyof PoliticAmount = attributeMap[status]
-        profile[attribute] += 1
 
         if (status === 'verified' && reviewed) {
           const selfId = politic.id as string
@@ -313,6 +305,10 @@ export const getServerSideProps: GetServerSideProps<
           null
         )
         elections.push(election)
+
+        // calculate sum of waiting and completed politics
+        profile.waiting += election.waitingPolitics.length
+        profile.completed += election.politics.length
       })
 
       // sort elections by date in descending order
