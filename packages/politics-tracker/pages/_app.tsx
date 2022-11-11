@@ -2,6 +2,7 @@ import '~/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import { gaTrackingId } from '~/constants/config'
+import NextNProgress from 'nextjs-progressbar'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           gtag('config', '${gaTrackingId}');
         `}
       </Script>
+      <NextNProgress />
       <Component {...pageProps} />
     </>
   )
