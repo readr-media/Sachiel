@@ -46,14 +46,6 @@ export default function PoliticsDetail({ politicData, politicAmount, config }) {
     },
     alwaysShowHome: true,
   }
-  //politics verified
-  const allPoliticList = [...politicAmount.data?.politics]
-  const verifiedPolitic = allPoliticList.filter((value) => {
-    return value.status === 'verified' && value.reviewed
-  })
-  const notVerifiedPolitic = allPoliticList.filter((value) => {
-    return value.status === 'notverified' && !value.reviewed
-  })
 
   return (
     <DefaultLayout>
@@ -67,8 +59,8 @@ export default function PoliticsDetail({ politicData, politicAmount, config }) {
               campaign={politicData.person.election.type}
               party={politicData.person.party.name}
               partyIcon={politicData.person.party.image}
-              completed={verifiedPolitic.length}
-              waiting={notVerifiedPolitic.length}
+              completed={politicAmount.passed}
+              waiting={politicAmount.waiting}
             />
             <Section politicData={politicData}></Section>
           </Main>
@@ -117,17 +109,33 @@ export async function getServerSideProps({ query, res }) {
       personElectionIds.push(item.id)
     })
 
-    const politicAmount = await fireGqlRequest(
+    /**
+     * @typedef {import('~/types/common').RawPolitic} RawPolitic
+     * @type {import('axios').AxiosResponse<{politics: RawPolitic[]}>}
+     */
+    const {
+      data: { politics: allPoliticList },
+    } = await fireGqlRequest(
       print(GetPolticsRelatedToPersonElections),
       // @ts-ignore
       { ids: personElectionIds },
       cmsApiUrl
     )
 
+    const passedAmount = allPoliticList.filter(
+      (value) => value.status === 'verified' && value.reviewed
+    ).length
+    const waitingAmount = allPoliticList.filter(
+      (value) => !value.reviewed
+    ).length
+
     return {
       props: {
         politicData: politics[0],
-        politicAmount: politicAmount,
+        politicAmount: {
+          passed: passedAmount,
+          waiting: waitingAmount,
+        },
         config: feedbackFormConfig,
       }, // will be passed to the page component as props
     }
