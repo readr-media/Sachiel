@@ -6,6 +6,15 @@ const env: string = envList.includes(String(process.env.ENV))
 // environment independent
 const siteUrl: string = process.env.NEXT_PUBLIC_SITE_URL ?? ''
 const cmsApiUrl: string = process.env.NEXT_PUBLIC_CMS_API_URL ?? ''
+let feedbackFormConfig: Partial<Record<'formId' | 'fieldId', string>> = {}
+try {
+  feedbackFormConfig = JSON.parse(process.env.FEEDBACK_FORM_CONFIG ?? '')
+} catch (e) {
+  feedbackFormConfig = {
+    formId: '',
+    fieldId: '',
+  }
+}
 
 // environemnt dependent
 let gaTrackingId: string
@@ -22,4 +31,11 @@ switch (env) {
   }
 }
 
-export { env, siteUrl, cmsApiUrl, gaTrackingId, urlOfJsonForlandingPage }
+export {
+  env,
+  siteUrl,
+  cmsApiUrl,
+  gaTrackingId,
+  urlOfJsonForlandingPage,
+  feedbackFormConfig,
+}

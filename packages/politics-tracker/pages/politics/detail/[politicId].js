@@ -8,8 +8,9 @@ import Nav from '~/components/nav'
 import Title from '~/components/politics/title'
 import Section from '~/components/politics-detail/section'
 import { fireGqlRequest } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
+import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
 import { print } from 'graphql'
+import { ConfigContext } from '~/components/react-context/global'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
@@ -34,7 +35,7 @@ const Main = styled.main`
  * @returns {React.ReactElement}
  */
 // @ts-ignore
-export default function PoliticsDetail({ politicData, politicAmount }) {
+export default function PoliticsDetail({ politicData, politicAmount, config }) {
   /** @type {NavProps} */
   const navProps = {
     prev: {
@@ -56,22 +57,24 @@ export default function PoliticsDetail({ politicData, politicAmount }) {
 
   return (
     <DefaultLayout>
-      <ThemeProvider theme={theme}>
-        <Main>
-          <Title
-            id={politicData.person.person_id.id}
-            name={politicData.person.person_id.name}
-            avatar={politicData.person.person_id.image}
-            campaign={politicData.person.election.type}
-            party={politicData.person.party.name}
-            partyIcon={politicData.person.party.image}
-            completed={verifiedPolitic.length}
-            waiting={notVerifiedPolitic.length}
-          />
-          <Section politicData={politicData}></Section>
-        </Main>
-        <Nav {...navProps} />
-      </ThemeProvider>
+      <ConfigContext.Provider value={config}>
+        <ThemeProvider theme={theme}>
+          <Main>
+            <Title
+              id={politicData.person.person_id.id}
+              name={politicData.person.person_id.name}
+              avatar={politicData.person.person_id.image}
+              campaign={politicData.person.election.type}
+              party={politicData.person.party.name}
+              partyIcon={politicData.person.party.image}
+              completed={verifiedPolitic.length}
+              waiting={notVerifiedPolitic.length}
+            />
+            <Section politicData={politicData}></Section>
+          </Main>
+          <Nav {...navProps} />
+        </ThemeProvider>
+      </ConfigContext.Provider>
     </DefaultLayout>
   )
 }
@@ -125,6 +128,7 @@ export async function getServerSideProps({ query, res }) {
       props: {
         politicData: politics[0],
         politicAmount: politicAmount,
+        config: feedbackFormConfig,
       }, // will be passed to the page component as props
     }
   } catch (err) {
