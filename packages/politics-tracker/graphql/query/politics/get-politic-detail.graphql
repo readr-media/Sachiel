@@ -2,6 +2,7 @@ query GetPoliticsDetail($politicId: ID!) {
   politics(where: {id: { equals: $politicId }}) {
     id
     person{
+      elected
       id,
       electoral_district{
         id,
