@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Sources from './sources'
 import SectionBody from './section-body'
+import { SOURCE_DELIMITER } from '~/constants/politics'
 
 const DetailContainer = styled.div`
   padding: 20px 0px;
@@ -17,6 +18,7 @@ const DetailList = styled.li`
     line-height: 1.8;
     color: #0f2d35;
     text-align: justify;
+    margin-bottom: 12px;
   }
   > span {
     display: inline-block;
@@ -66,12 +68,26 @@ export default function PoliticsDetail({
       <DetailContainer>
         <DetailList>
           <span>政見</span>
-          <p>{politic}</p>
+          {politic.split(SOURCE_DELIMITER).map(
+            (
+              // @ts-ignore
+              item
+            ) => {
+              return <p key={item}>{item}</p>
+            }
+          )}
         </DetailList>
         {additional !== '' && (
           <DetailList>
             <span>補充說明</span>
-            <p>{additional}</p>
+            {additional.split(SOURCE_DELIMITER).map(
+              (
+                // @ts-ignore
+                item
+              ) => {
+                return <p key={item}>{item}</p>
+              }
+            )}
           </DetailList>
         )}
         <Sources sources={source} />
