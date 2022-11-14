@@ -86,6 +86,7 @@ const ExpertContent = styled.div`
     line-height: 180%;
     text-align: justify;
     color: rgba(15, 45, 53, 0.66);
+    margin-bottom: 12px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     span {
@@ -118,10 +119,12 @@ const ExpertLinks = styled.div`
     color: #b3800d;
     font-size: 16px;
     font-weight: 500;
+    overflow: hidden;
     &:hover {
       text-decoration-line: underline;
     }
   }
+
   li:before {
     content: '';
     display: inline-block;
@@ -147,39 +150,6 @@ const ExpertLinks = styled.div`
   }
 `
 
-// const ExpertImage = styled.div`
-//   border-color: ${({ theme }) => theme.borderColor.white};
-//   border-width: 2px;
-//   overflow: hidden;
-//   position: relative;
-//   border-radius: 50%;
-//   width: 48px;
-//   height: 48px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   margin-right: 12px;
-//   background: url('/images/default-head-photo.png') center center no-repeat
-//     contain;
-//   img {
-//     min-width: 48px;
-//     min-height: 48px;
-//     height: 100%;
-//     object-fit: cover;
-//     z-index: 100;
-//   }
-//   ${({ theme }) => theme.breakpoint.md} {
-//     min-width: 60px;
-//     min-height: 60px;
-//   }
-//   .avatar_show {
-//     display: block;
-//   }
-//   .avatar_hidden {
-//     display: none;
-//   }
-// `
-
 const ExpertImage = styled(ProfileImage)`
   min-width: 48px;
   min-height: 48px;
@@ -197,6 +167,7 @@ const ExpertImage = styled(ProfileImage)`
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
   const [showImage, setShowImage] = useState([])
+
   // @ts-ignore
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
@@ -229,7 +200,14 @@ export default function PoliticsExpert({ infoList, isActive }) {
       </ExpertTitle>
       <ExpertContent>
         <span>{value.reviewDate.substr(0, 10)}</span>
-        <p>{value.content}</p>
+        {value.content.split(SOURCE_DELIMITER).map(
+          (
+            // @ts-ignore
+            item
+          ) => {
+            return <p key={item}>{item}</p>
+          }
+        )}
       </ExpertContent>
       <ExpertLinks>
         {value.link.length !== 0 && (
@@ -250,15 +228,11 @@ export default function PoliticsExpert({ infoList, isActive }) {
                   )
                   return (
                     isLink && (
-                      <li key={index}>
-                        <a
-                          href={link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {text}
-                        </a>
-                      </li>
+                      <a href={link} target="_blank" rel="noopener noreferrer">
+                        <li key={index}>
+                          <span> {text} </span>
+                        </li>
+                      </a>
                     )
                   )
                 }
