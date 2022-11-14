@@ -28,11 +28,7 @@ query GetPoliticsDetail($politicId: ID!) {
     source
     status
     status
-    progress {
-      id,
-      source,
-      progress,
-    }
+    current_progress
     timeline{
       id,
       eventDate,
