@@ -1,9 +1,11 @@
 import styled from 'styled-components'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import SectionBody from './section-body'
-import Image from 'next/future/image'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
+import ProfileImage from '../person/profile-image'
+import Image from 'next/future/image'
+
 const ExpertContainer = styled.div`
   padding-top: 12px;
   > span {
@@ -145,51 +147,80 @@ const ExpertLinks = styled.div`
   }
 `
 
-const ExpertImage = styled.div`
-  border-color: ${({ theme }) => theme.borderColor.white};
-  border-width: 2px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 12px;
-  background: url('/images/default-head-photo.png') center center no-repeat
-    contain;
+// const ExpertImage = styled.div`
+//   border-color: ${({ theme }) => theme.borderColor.white};
+//   border-width: 2px;
+//   overflow: hidden;
+//   position: relative;
+//   border-radius: 50%;
+//   width: 48px;
+//   height: 48px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-right: 12px;
+//   background: url('/images/default-head-photo.png') center center no-repeat
+//     contain;
+//   img {
+//     min-width: 48px;
+//     min-height: 48px;
+//     height: 100%;
+//     object-fit: cover;
+//     z-index: 100;
+//   }
+//   ${({ theme }) => theme.breakpoint.md} {
+//     min-width: 60px;
+//     min-height: 60px;
+//   }
+//   .avatar_show {
+//     display: block;
+//   }
+//   .avatar_hidden {
+//     display: none;
+//   }
+// `
+
+const ExpertImage = styled(ProfileImage)`
+  min-width: 48px;
+  min-height: 48px;
+  margin-right: 10px;
   img {
-    min-width: 48px;
-    min-height: 48px;
-    height: 100%;
     object-fit: cover;
-    z-index: 100;
   }
   ${({ theme }) => theme.breakpoint.md} {
     min-width: 60px;
     min-height: 60px;
   }
-  .avatar_show {
-    display: block;
-  }
-  .avatar_hidden {
-    display: none;
-  }
 `
 
+// 目前的問題是：因為是跑map 所以不能用 useState 去處理
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
+  const [showImage, setShowImage] = useState([])
   // @ts-ignore
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
       <ExpertTitle>
-        {value.avatar ? (
+        {value.avatar &&
+        !showImage.includes(
+          // @ts-ignore
+          value.id
+        ) ? (
           <ExpertImage>
-            <Image src={value.avatar} fill className="avatar_show" alt="" />
+            <Image
+              alt=""
+              src={value.avatar}
+              fill
+              onError={() => {
+                // @ts-ignore
+                setShowImage([...showImage, value.id])
+              }}
+            />
           </ExpertImage>
         ) : (
-          <ExpertImage></ExpertImage>
+          <ExpertImage>
+            <Image alt="" src="/images/default-head-photo.png" fill />
+          </ExpertImage>
         )}
         <div>
           <p className="expertName">{value.contributer}</p>
