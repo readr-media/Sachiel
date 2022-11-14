@@ -116,6 +116,11 @@ const ProgressBar = styled.div`
     background: #2fb7bf;
     color: #ffffff;
   }
+
+  //progress: no election
+  .step4 {
+    width: 50%;
+  }
 `
 /**
  * @param {Object} props
@@ -127,37 +132,53 @@ const ProgressBar = styled.div`
  */
 export default function SectionTitle({ politicData }) {
   // @ts-ignore
+  const electResult = politicData.person.elected
+  // @ts-ignore
   const progressType = politicData.current_progress
 
   return (
     <ProgressBar>
       <div className="arrow-steps clearfix">
-        <div className="step step1">
-          <span>提出政見</span>
-        </div>
-        {(progressType === 'no-progress' || progressType === undefined) && (
-          <div className="step step2 bg-gray">
-            <span>未開始</span>
-          </div>
-        )}
-        {(progressType === 'in-progress' || progressType === 'complete') && (
-          <div className="step step2 bg-yellow">
-            <span>進行中</span>
-          </div>
-        )}
-        {progressType === 'in-trouble' && (
-          <div className="step step2 bg-red">
-            <span>卡關中</span>
-          </div>
-        )}
-        {progressType === 'complete' ? (
-          <div className="step step3 bg-green">
-            <span>已完成</span>
-          </div>
+        {electResult ? (
+          <>
+            <div className="step step1">
+              <span>提出政見</span>
+            </div>
+            {(progressType === 'no-progress' || progressType === undefined) && (
+              <div className="step step2 bg-gray">
+                <span>未開始</span>
+              </div>
+            )}
+            {(progressType === 'in-progress' ||
+              progressType === 'complete') && (
+              <div className="step step2 bg-yellow">
+                <span>進行中</span>
+              </div>
+            )}
+            {progressType === 'in-trouble' && (
+              <div className="step step2 bg-red">
+                <span>卡關中</span>
+              </div>
+            )}
+            {progressType === 'complete' ? (
+              <div className="step step3 bg-green">
+                <span>已完成</span>
+              </div>
+            ) : (
+              <div className="step step3">
+                <span>已完成</span>
+              </div>
+            )}
+          </>
         ) : (
-          <div className="step step3">
-            <span>已完成</span>
-          </div>
+          <>
+            <div className="step step1 step4">
+              <span>提出政見</span>
+            </div>
+            <div className="step step3">
+              <span>未當選</span>
+            </div>
+          </>
         )}
       </div>
     </ProgressBar>
