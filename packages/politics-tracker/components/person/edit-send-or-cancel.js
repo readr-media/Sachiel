@@ -50,12 +50,14 @@ const EditSend = styled.button`
  * @param {boolean} props.isDisable
  * @param {function} props.onClick
  * @param {function} props.submitHandler
+ * @param {function} props.GAClick
  * @returns {React.ReactElement}
  */
 export default function EditSendOrCancel({
   isDisable,
   onClick,
   submitHandler,
+  GAClick,
 }) {
   const [startLoading, setStartLoading] = useState(false)
   return (
@@ -64,6 +66,7 @@ export default function EditSendOrCancel({
       <EditSend
         disabled={isDisable}
         onClick={() => {
+          GAClick()
           setStartLoading(true)
           setTimeout(() => {
             submitHandler()

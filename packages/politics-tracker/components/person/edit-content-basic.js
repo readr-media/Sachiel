@@ -11,6 +11,7 @@ import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { useToast } from '../toast/use-toast'
+import ReactGA from 'react-ga'
 /** TODO: refactor jsDoc, make it more clear
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -24,9 +25,16 @@ import { useToast } from '../toast/use-toast'
  * @property {function}  onChange - value of content
  * @property {import('~/types/person').Person}  personInfo - value of content
  */
+// GA click
+const handleBasicSendButton = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「基本資料」區塊的「送出審核」',
+  })
+}
 
 /**
- *
  * @param {Object} props
  * @param {string} [props.sources]
  * @param {import('~/types/person').Person} props.personData
@@ -53,21 +61,26 @@ export default function EditContentBasic({
 
   // check whether source-list value has ('')
   // if have (''), return true
-  // @ts-ignore
   const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
-    // @ts-ignore
-    (x) => x === ''
+    /**
+     * @param {String} source
+     */
+    (source) => source === ''
   )
 
   // if user edit basic-form, return false, then source-error-message hidden
   // send BasicFormEditCheck as a prop to edit-source.js
   const BasicFormEditCheck =
+    // @ts-ignore
     JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+    // @ts-ignore
     JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData)))
 
   const shouldDisableSubmit = useMemo(
     () =>
+      // @ts-ignore
       (JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+        // @ts-ignore
         JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData))) &&
         JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
           JSON.stringify(
@@ -79,9 +92,13 @@ export default function EditContentBasic({
       SourceValueCheck,
     [personInfo.name, sourceList, personInfo]
   )
+
   // @ts-ignore
   function mapEmptyValueToNull(object) {
     Object.keys(object).forEach((key) => {
+      /**
+       * @param {String} [key]
+       */
       if (object[key] === '') {
         object[key] = null
       }
@@ -100,7 +117,6 @@ export default function EditContentBasic({
   }
 
   /**
-   *
    * @param {string} name
    */
   function updateList(name) {
@@ -354,12 +370,14 @@ export default function EditContentBasic({
         setSourceList={setSourceList}
         // @ts-ignore
         inputStatusCheck={[personInfoValueCheck]}
+        // @ts-ignore
         BasicFormEditCheck={BasicFormEditCheck}
       />
       <EditSendOrCancel
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
+        GAClick={handleBasicSendButton}
       />
     </Fragment>
   )

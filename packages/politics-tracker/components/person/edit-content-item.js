@@ -184,8 +184,10 @@ export default function EditContentItem({
         ></EditContentItemInput>
       )}
       {type === 'input-date' &&
-      // @ts-ignore
-      !dateCheck(value) ? (
+      !dateCheck(
+        // @ts-ignore
+        value
+      ) ? (
         <ErrorMessage>{errormessage}</ErrorMessage>
       ) : (
         <></>

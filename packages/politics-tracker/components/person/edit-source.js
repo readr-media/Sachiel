@@ -24,12 +24,12 @@ const ErrorMessage = styled.div`
  * @param {Object} props
  * @param {import('~/types/common').Source[]} props.sourceList
  * @param {function} props.setSourceList
+ * @param {Array<Object>} props.inputStatusCheck
  * @returns {React.ReactElement}
  */
 export default function EditSource({
   sourceList,
   setSourceList,
-  // @ts-ignore
   inputStatusCheck,
   // @ts-ignore
   BasicFormEditCheck,
@@ -58,7 +58,6 @@ export default function EditSource({
   const ContentValueCheck = inputStatusCheck?.some((x) => x.value !== '')
 
   // check whether source-input has value(if have value, return true)
-  // @ts-ignore
   const SourceValueCheck = sourceList?.some((x) => x.value !== '')
 
   // if all inputs are empty, error message hidden
