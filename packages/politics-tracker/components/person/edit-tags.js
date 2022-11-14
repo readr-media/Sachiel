@@ -13,12 +13,21 @@ import { fireGqlRequest } from '~/utils/utils'
 import GetExistTags from '~/graphql/query/person/get-exist-tags.graphql'
 import CreateTags from '~/graphql/mutation/person/create-tags.graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import ReactGA from 'react-ga'
 
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
   }
 `
+// GA click
+const handleTagSendButton = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「標籤」區塊的「送出審核」',
+  })
+}
 
 /**
  *
@@ -38,7 +47,6 @@ export default function EditTags(props) {
   // if have (''), return true
   // @ts-ignore
   const tagsValueCheck = takeArrayKeyName(tagList, 'name')?.some(
-    // @ts-ignore
     (x) => x === ''
   )
 
@@ -49,22 +57,26 @@ export default function EditTags(props) {
   const shouldDisableSubmit = useMemo(
     () =>
       tagList.filter((i) => i.name).length === 0 ||
+      // @ts-ignore
       JSON.stringify(takeArrayKeyName(tagList, 'name')) ===
+        // @ts-ignore
         JSON.stringify(takeArrayKeyName(props.tags, 'name')) ||
       tagsValueCheck,
     [tagList]
   )
   //take tagList's name to compare with props.tags's name
   //if the same then shouldDisableSubmit = true
-  // @ts-ignore
+  /**
+   * @param {Array<Object>} array
+   * @param {number} key
+   */
   function takeArrayKeyName(array, key) {
-    // @ts-ignore
     return array.map(function (item) {
+      // @ts-ignore
       return item[key]
     })
   }
   /**
-   *
    * @param {string} key
    * @param {string} value
    * @returns {{[key: string]: string}}
@@ -265,6 +277,7 @@ export default function EditTags(props) {
         isDisable={shouldDisableSubmit}
         onClick={() => props.setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
+        GAClick={handleTagSendButton}
       />
     </Fragment>
   )

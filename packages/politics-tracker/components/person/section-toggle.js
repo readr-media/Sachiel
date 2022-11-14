@@ -116,22 +116,26 @@ const ToggleIcon = styled.span`
  * @param {Object} props
  * @param {string} props.color
  * @param {string} props.title
+ * @param {Function} props.GAClick
  * @param {boolean} props.isActive
- * @param {Function} props.setActive
  * @param {null|string} props.id
  * @param {Object[]} props.activeId
+ * @param {Function} props.setActiveId
  * @returns {React.ReactElement}
  */
 export default function SectionToggle({
   color,
   isActive,
   activeId,
-  // @ts-ignore
   setActiveId,
   id,
   title,
+  GAClick,
 }) {
-  // @ts-ignore
+  // FIXME: jsDocs
+  /**
+   * @param {any} id
+   */
   function toggleActiveID(id) {
     if (activeId?.includes(id)) {
       const newActiveId = activeId?.filter(function (value) {
@@ -152,6 +156,7 @@ export default function SectionToggle({
         isActive={isActive}
         onClick={() => {
           toggleActiveID(id)
+          GAClick()
         }}
       >
         <ToggleText color={color}>{title}</ToggleText>
