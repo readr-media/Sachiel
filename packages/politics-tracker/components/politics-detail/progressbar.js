@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const ProgressBar = styled.div`
@@ -112,6 +112,10 @@ const ProgressBar = styled.div`
   .step3:after {
     border-left: 17px solid #c5cbcd;
   }
+  .bg-green {
+    background: #2fb7bf;
+    color: #ffffff;
+  }
 `
 /**
  * @param {Object} props
@@ -136,7 +140,7 @@ export default function SectionTitle({ politicData }) {
             <span>未開始</span>
           </div>
         )}
-        {progressType === 'in-progress' && (
+        {(progressType === 'in-progress' || progressType === 'complete') && (
           <div className="step step2 bg-yellow">
             <span>進行中</span>
           </div>
@@ -146,9 +150,15 @@ export default function SectionTitle({ politicData }) {
             <span>卡關中</span>
           </div>
         )}
-        <div className="step step3">
-          <span>已完成</span>
-        </div>
+        {progressType === 'complete' ? (
+          <div className="step step3 bg-green">
+            <span>已完成</span>
+          </div>
+        ) : (
+          <div className="step step3">
+            <span>已完成</span>
+          </div>
+        )}
       </div>
     </ProgressBar>
   )
