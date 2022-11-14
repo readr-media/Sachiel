@@ -36,7 +36,7 @@ query GetPoliticsDetail($politicId: ID!) {
       content,
       link
     }
-    expertPoint{
+    expertPoint(orderBy:{reviewDate: desc}){
       id,
       avatar,
       contributer,
@@ -46,6 +46,5 @@ query GetPoliticsDetail($politicId: ID!) {
       link,
     }
     dispute
-    
   }
 }
