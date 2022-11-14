@@ -126,27 +126,6 @@ export type JSONValue =
   | { [x: string]: JSONValue }
   | Array<JSONValue>
 
-export enum PROGRESS {
-  NOT_START = 'no-progress', // 還沒開始
-  IN_PROGRESS = 'in-progress', // 進行中
-  IN_TROUBLE = 'in-trouble', // 卡關中
-  COMPLETED = 'complete', // 已完成
-}
-
-export type RawPoliticProgress = Partial<{
-  id: string
-  politic: RawPolitic
-  content: JSONValue
-  // ref: https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
-  progress: `${PROGRESS}`
-  source: string
-  contributer: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  updatedBy: string
-}>
-
 export type RawTag = Partial<{
   id: string
   name: string
@@ -161,6 +140,13 @@ export type RawTag = Partial<{
   updatedBy: string
 }>
 
+export enum PROGRESS {
+  NOT_START = 'no-progress', // 還沒開始
+  IN_PROGRESS = 'in-progress', // 進行中
+  IN_TROUBLE = 'in-trouble', // 卡關中
+  COMPLETED = 'complete', // 已完成
+}
+
 export type RawPolitic = Partial<{
   id: string
   person: RawPersonElection
@@ -168,7 +154,7 @@ export type RawPolitic = Partial<{
   source: string
   content: string
   contributer: string
-  progress: RawPoliticProgress[]
+  current_progress: `${PROGRESS}`
   progressCount: number
   status: StatusOptionsB
   reviewed: Boolean

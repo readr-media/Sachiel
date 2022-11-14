@@ -123,7 +123,8 @@ const ProgressBar = styled.div`
  */
 export default function SectionTitle({ politicData }) {
   // @ts-ignore
-  const progressType = politicData.progress[0]?.progress
+  const progressType = politicData.current_progress
+
   return (
     <ProgressBar>
       <div className="arrow-steps clearfix">

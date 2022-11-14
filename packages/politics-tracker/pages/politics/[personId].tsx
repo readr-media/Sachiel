@@ -13,7 +13,6 @@ import {
   RawElection,
   StatusOptionsB,
   PROGRESS,
-  RawPoliticProgress,
 } from '~/types/common'
 
 import { useState } from 'react'
@@ -42,11 +41,6 @@ type PoliticsPageProps = {
   elections: PersonElection[]
   person: RawPerson
   latestElection: PersonElection
-}
-
-function getProgressStatus(progressList: RawPoliticProgress[]): `${PROGRESS}` {
-  progressList.sort((p1, p2) => Number(p2.id) - Number(p1.id))
-  return progressList[0]?.progress ?? PROGRESS.NOT_START
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -277,7 +271,7 @@ export const getServerSideProps: GetServerSideProps<
           desc: String(politic.desc),
           source: String(politic.source),
           content: String(politic.content),
-          progess: getProgressStatus(politic.progress ?? []),
+          progess: politic.current_progress ?? PROGRESS.NOT_START,
           tagId: politic.tag?.id ?? null,
           tagName: politic.tag?.name ?? null,
           createdAt: String(politic.createdAt),
