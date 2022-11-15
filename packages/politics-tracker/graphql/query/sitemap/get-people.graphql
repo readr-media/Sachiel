@@ -1,0 +1,7 @@
+query GetPeople {
+  people(where: { status: { equals: "verified" } }) {
+    id
+    createdAt
+    updatedAt
+  }
+}
