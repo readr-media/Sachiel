@@ -14,7 +14,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn build && yarn postbuild
+RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:${NODE_VERSION} AS runner
