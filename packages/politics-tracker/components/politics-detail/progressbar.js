@@ -133,6 +133,7 @@ const ProgressBar = styled.div`
 export default function SectionTitle({ politicData }) {
   // @ts-ignore
   const electResult = politicData.person.elected
+
   // @ts-ignore
   const progressType = politicData.current_progress
 

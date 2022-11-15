@@ -17,6 +17,9 @@ export type Person = {
   party: Party
   election: Election
   person_id: PersonId
+  votes_obtained_number: string
+  elected: Boolean
+  incumbent: Boolean
 }
 
 export type ElectoralDistrict = {
