@@ -14,7 +14,7 @@ const DisputeContainer = styled.div`
     display: block;
   }
   a {
-    color: #b3800d;
+    color: ${({ theme }) => theme.textColor.brown};
     display: inline-block;
     &:hover {
       text-decoration-line: underline;

@@ -29,7 +29,7 @@ const ToggleContainer = styled.div`
   }
   svg {
     margin-right: 9px;
-    color: #b3800d;
+    color: ${({ theme }) => theme.textColor.brown};
     border-radius: 50%;
   }
   &:hover svg {

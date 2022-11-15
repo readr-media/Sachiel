@@ -116,7 +116,7 @@ const ExpertLinks = styled.div`
     padding-left: 15px;
     position: relative;
     cursor: pointer;
-    color: #b3800d;
+    color: ${({ theme }) => theme.textColor.brown};
     font-size: 16px;
     font-weight: 500;
     overflow: hidden;
@@ -163,7 +163,6 @@ const ExpertImage = styled(ProfileImage)`
   }
 `
 
-// 目前的問題是：因為是跑map 所以不能用 useState 去處理
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
   const [showImage, setShowImage] = useState([])
@@ -182,6 +181,8 @@ export default function PoliticsExpert({ infoList, isActive }) {
               alt=""
               src={value.avatar}
               fill
+              // @ts-ignore
+              sizes={60}
               onError={() => {
                 // @ts-ignore
                 setShowImage([...showImage, value.id])
@@ -190,7 +191,13 @@ export default function PoliticsExpert({ infoList, isActive }) {
           </ExpertImage>
         ) : (
           <ExpertImage>
-            <Image alt="" src="/images/default-head-photo.png" fill />
+            <Image
+              alt=""
+              src="/images/default-head-photo.png"
+              fill
+              // @ts-ignore
+              sizes={60}
+            />
           </ExpertImage>
         )}
         <div>
@@ -228,8 +235,13 @@ export default function PoliticsExpert({ infoList, isActive }) {
                   )
                   return (
                     isLink && (
-                      <a href={link} target="_blank" rel="noopener noreferrer">
-                        <li key={index}>
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        key={index}
+                      >
+                        <li>
                           <span> {text} </span>
                         </li>
                       </a>
