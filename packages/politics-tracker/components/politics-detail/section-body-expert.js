@@ -1,9 +1,11 @@
 import styled from 'styled-components'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import SectionBody from './section-body'
-import Image from 'next/future/image'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
+import ProfileImage from '../person/profile-image'
+import Image from 'next/future/image'
+
 const ExpertContainer = styled.div`
   padding-top: 12px;
   > span {
@@ -84,6 +86,7 @@ const ExpertContent = styled.div`
     line-height: 180%;
     text-align: justify;
     color: rgba(15, 45, 53, 0.66);
+    margin-bottom: 12px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     span {
@@ -113,13 +116,15 @@ const ExpertLinks = styled.div`
     padding-left: 15px;
     position: relative;
     cursor: pointer;
-    color: #b3800d;
+    color: ${({ theme }) => theme.textColor.brown};
     font-size: 16px;
     font-weight: 500;
+    overflow: hidden;
     &:hover {
       text-decoration-line: underline;
     }
   }
+
   li:before {
     content: '';
     display: inline-block;
@@ -145,51 +150,55 @@ const ExpertLinks = styled.div`
   }
 `
 
-const ExpertImage = styled.div`
-  border-color: ${({ theme }) => theme.borderColor.white};
-  border-width: 2px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 12px;
-  background: url('/images/default-head-photo.png') center center no-repeat
-    contain;
+const ExpertImage = styled(ProfileImage)`
+  min-width: 48px;
+  min-height: 48px;
+  margin-right: 10px;
   img {
-    min-width: 48px;
-    min-height: 48px;
-    height: 100%;
     object-fit: cover;
-    z-index: 100;
   }
   ${({ theme }) => theme.breakpoint.md} {
     min-width: 60px;
     min-height: 60px;
   }
-  .avatar_show {
-    display: block;
-  }
-  .avatar_hidden {
-    display: none;
-  }
 `
 
 // @ts-ignore
 export default function PoliticsExpert({ infoList, isActive }) {
+  const [showImage, setShowImage] = useState([])
+
   // @ts-ignore
   const info = infoList.map((value) => (
     <ExpertList key={value.id}>
       <ExpertTitle>
-        {value.avatar ? (
+        {value.avatar &&
+        !showImage.includes(
+          // @ts-ignore
+          value.id
+        ) ? (
           <ExpertImage>
-            <Image src={value.avatar} fill className="avatar_show" alt="" />
+            <Image
+              alt=""
+              src={value.avatar}
+              fill
+              // @ts-ignore
+              sizes={60}
+              onError={() => {
+                // @ts-ignore
+                setShowImage([...showImage, value.id])
+              }}
+            />
           </ExpertImage>
         ) : (
-          <ExpertImage></ExpertImage>
+          <ExpertImage>
+            <Image
+              alt=""
+              src="/images/default-head-photo.png"
+              fill
+              // @ts-ignore
+              sizes={60}
+            />
+          </ExpertImage>
         )}
         <div>
           <p className="expertName">{value.contributer}</p>
@@ -198,7 +207,14 @@ export default function PoliticsExpert({ infoList, isActive }) {
       </ExpertTitle>
       <ExpertContent>
         <span>{value.reviewDate.substr(0, 10)}</span>
-        <p>{value.content}</p>
+        {value.content.split(SOURCE_DELIMITER).map(
+          (
+            // @ts-ignore
+            item
+          ) => {
+            return <p key={item}>{item}</p>
+          }
+        )}
       </ExpertContent>
       <ExpertLinks>
         {value.link.length !== 0 && (
@@ -219,15 +235,16 @@ export default function PoliticsExpert({ infoList, isActive }) {
                   )
                   return (
                     isLink && (
-                      <li key={index}>
-                        <a
-                          href={link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {text}
-                        </a>
-                      </li>
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        key={index}
+                      >
+                        <li>
+                          <span> {text} </span>
+                        </li>
+                      </a>
                     )
                   )
                 }

@@ -14,6 +14,7 @@ import { ConfigContext } from '~/components/react-context/global'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -35,7 +36,15 @@ const Main = styled.main`
  * @returns {React.ReactElement}
  */
 // @ts-ignore
-export default function PoliticsDetail({ politicData, politicAmount, config }) {
+export default function PoliticsDetail({
+  politicData,
+  // @ts-ignore
+  politicAmount,
+  // @ts-ignore
+  latestPersonElection,
+  // @ts-ignore
+  config,
+}) {
   /** @type {NavProps} */
   const navProps = {
     prev: {
@@ -56,7 +65,7 @@ export default function PoliticsDetail({ politicData, politicAmount, config }) {
               id={politicData.person.person_id.id}
               name={politicData.person.person_id.name}
               avatar={politicData.person.person_id.image}
-              campaign={politicData.person.election.type}
+              campaign={latestPersonElection}
               party={politicData.person.party.name}
               partyIcon={politicData.person.party.image}
               completed={politicAmount.passed}
@@ -129,6 +138,16 @@ export async function getServerSideProps({ query, res }) {
       (value) => !value.reviewed
     ).length
 
+    //get latest election type this person join ( put in <Title> component)
+    const {
+      data: { personElections: personAllElections },
+    } = await fireGqlRequest(
+      print(GetPersonOverView),
+      // @ts-ignore
+      { personId: politics[0].person.person_id.id },
+      cmsApiUrl
+    )
+
     return {
       props: {
         politicData: politics[0],
@@ -136,6 +155,7 @@ export async function getServerSideProps({ query, res }) {
           passed: passedAmount,
           waiting: waitingAmount,
         },
+        latestPersonElection: personAllElections[0].election.type,
         config: feedbackFormConfig,
       }, // will be passed to the page component as props
     }

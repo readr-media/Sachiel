@@ -13,7 +13,7 @@ const TimeContainer = styled.div`
     margin-bottom: 4px;
   }
   a {
-    color: #b3800d;
+    color: ${({ theme }) => theme.textColor.brown};
     display: inline-block;
     text-align: justify;
     &:hover {
