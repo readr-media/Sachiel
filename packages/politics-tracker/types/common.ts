@@ -11,6 +11,21 @@ export type StatusOptionsA = 'active' | 'deactive'
 
 export type StatusOptionsB = 'verified' | 'notverified'
 
+export type RawElectionArea = Partial<{
+  id: string
+  name: string
+  city: string
+  level: string
+  type: string
+  aboriginal: string
+  description: string
+  status: StatusOptionsA
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+}>
+
 export type RawElection = Partial<{
   id: string
   name: string
@@ -22,21 +37,7 @@ export type RawElection = Partial<{
   type: string
   register_date: string
   location: string
-  status: StatusOptionsA
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  updatedBy: string
-}>
-
-export type RawElectionArea = Partial<{
-  id: string
-  name: string
-  city: string
-  level: string
-  type: string
-  aboriginal: string
-  description: string
+  electionArea: RawElectionArea[]
   status: StatusOptionsA
   createdAt: string
   updatedAt: string
