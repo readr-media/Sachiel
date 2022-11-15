@@ -120,6 +120,7 @@ const ExpertLinks = styled.div`
     font-size: 16px;
     font-weight: 500;
     overflow: hidden;
+    word-break: break-all;
     &:hover {
       text-decoration-line: underline;
     }
