@@ -1,0 +1,10 @@
+query GetPolitics {
+  politics(where: {
+    status: { equals: "verified" },
+    reviewed: { equals: true }
+  }) {
+    id
+    createdAt
+    updatedAt
+  }
+}
