@@ -55,6 +55,10 @@ export default function PoliticsDetail({
     },
     alwaysShowHome: true,
   }
+  if (politicData.person.party === null) {
+    // @ts-ignore
+    politicData.person.party = { name: '無黨籍' }
+  }
 
   return (
     <DefaultLayout>
@@ -66,8 +70,8 @@ export default function PoliticsDetail({
               name={politicData.person.person_id.name}
               avatar={politicData.person.person_id.image}
               campaign={latestPersonElection}
-              party={politicData.person.party.name}
-              partyIcon={politicData.person.party.image}
+              party={politicData.person.party?.name}
+              partyIcon={politicData.person.party?.image}
               completed={politicAmount.passed}
               waiting={politicAmount.waiting}
             />

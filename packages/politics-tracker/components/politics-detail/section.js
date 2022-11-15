@@ -68,7 +68,9 @@ export default function Section({ politicData }) {
     <SectionContainer>
       <div>
         <SectionTitle politicData={politicData}></SectionTitle>
-        <ProgressBar politicData={politicData}></ProgressBar>
+        {politicData.person.votes_obtained_number !== '' && (
+          <ProgressBar politicData={politicData}></ProgressBar>
+        )}
         <SectionContent politicData={politicData}></SectionContent>
         <Sources></Sources>
         <FeedbackFormContainer>

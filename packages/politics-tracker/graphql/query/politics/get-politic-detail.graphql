@@ -2,7 +2,9 @@ query GetPoliticsDetail($politicId: ID!) {
   politics(where: {id: { equals: $politicId }}) {
     id
     person{
+      votes_obtained_number
       elected
+      incumbent
       id,
       electoral_district{
         id,
@@ -17,6 +19,8 @@ query GetPoliticsDetail($politicId: ID!) {
        type,
        level,
        status,
+       election_year_year
+
       },
       person_id{
         id,
