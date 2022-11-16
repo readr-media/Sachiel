@@ -435,21 +435,16 @@ export const getServerSideProps = async ({ res }) => {
       readrCmsApiUrl
     )
 
+    // use moment() format 'publishTime' to 'YYYY/MM/DD'
     if (allPostsWithPoliticsTrackerTag.length !== 0) {
-      // filter: get posts with state === 'published'
-      // @ts-ignore
-      const publishedPosts = allPostsWithPoliticsTrackerTag.filter((item) => {
-        return item.state === 'published'
-      })
-
-      // use moment() format 'publishTime' to 'YYYY/MM/DD'
-      // @ts-ignore
-      propsData.postsWithPoliticsTrackerTag = publishedPosts.map((value) => {
-        return {
-          ...value,
-          publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
-        }
-      })
+      propsData.postsWithPoliticsTrackerTag =
+        // @ts-ignore
+        allPostsWithPoliticsTrackerTag.map((value) => {
+          return {
+            ...value,
+            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+          }
+        })
     }
 
     return {
