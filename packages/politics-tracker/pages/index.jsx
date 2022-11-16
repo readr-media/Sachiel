@@ -153,6 +153,63 @@ export const getServerSideProps = async ({ res }) => {
     }
   }
 
+  //Get posts from Readr CMS with politics-tracker tags
+  //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
+  try {
+    const readrPostsData = await fireGqlRequest(
+      print(GetPostsWithPoliticsTracker),
+      { tag: '選舉政見追蹤' },
+      readrCmsApiUrl
+    )
+
+    const readrGqlErrors = readrPostsData.errors
+
+    if (readrGqlErrors) {
+      const annotatingError = errors.helpers.wrap(
+        new Error('Errors returned in `GetPostsWithPoliticsTracker` query'),
+        'GraphQLError',
+        'failed to complete `GetPostsWithPoliticsTracker`',
+        { errors: readrGqlErrors }
+      )
+
+      throw annotatingError
+    }
+
+    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
+    if (
+      readrPostsWithPoliticsTrackerTag &&
+      readrPostsWithPoliticsTrackerTag.length !== 0
+    ) {
+      // use moment() format 'publishTime' to 'YYYY/MM/DD'
+      propsData.postsWithPoliticsTrackerTag =
+        // @ts-ignore
+        readrPostsWithPoliticsTrackerTag.map((value) => {
+          return {
+            ...value,
+            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+          }
+        })
+    }
+  } catch (err) {
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+
   // retrieve data from GCS json for page load optimization
   try {
     /** @type {import('axios').AxiosResponse<PropsData>} */
@@ -447,63 +504,6 @@ export const getServerSideProps = async ({ res }) => {
     return {
       notFound: true,
     }
-  }
-
-  //Get posts from Readr CMS with politics-tracker tags
-  //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
-  try {
-    const readrPostsData = await fireGqlRequest(
-      print(GetPostsWithPoliticsTracker),
-      { tag: '選舉政見追蹤' },
-      readrCmsApiUrl
-    )
-
-    const readrGqlErrors = readrPostsData.errors
-
-    if (readrGqlErrors) {
-      const annotatingError = errors.helpers.wrap(
-        new Error('Errors returned in `GetPostsWithPoliticsTracker` query'),
-        'GraphQLError',
-        'failed to complete `GetPostsWithPoliticsTracker`',
-        { errors: readrGqlErrors }
-      )
-
-      throw annotatingError
-    }
-
-    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
-    if (
-      readrPostsWithPoliticsTrackerTag &&
-      readrPostsWithPoliticsTrackerTag.length !== 0
-    ) {
-      // use moment() format 'publishTime' to 'YYYY/MM/DD'
-      propsData.postsWithPoliticsTrackerTag =
-        // @ts-ignore
-        readrPostsWithPoliticsTrackerTag.map((value) => {
-          return {
-            ...value,
-            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
-          }
-        })
-    }
-  } catch (err) {
-    // All exceptions that include a stack trace will be
-    // integrated with Error Reporting.
-    // See https://cloud.google.com/run/docs/error-reporting
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
-      })
-    )
   }
 
   return {
