@@ -54,9 +54,10 @@ export type PropsData = {
   totalCompletionOfCouncilor: number // 已有通過審核政見的議員候選人數
   mayorAndPolitics: DistrinctOfMayorElection[]
   councilorAndPolitics: CityOfCouncilorElection[]
-  postsWithPoliticsTrackerTag: []
+  postsWithPoliticsTrackerTag: allPostsWithPoliticsTrackerTag[]
 }
 
+// Readr內符合指定標籤(tag)的文章(post)資料
 export type allPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
