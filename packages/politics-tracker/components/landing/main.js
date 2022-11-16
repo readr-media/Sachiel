@@ -12,7 +12,6 @@ import TeamIntro from '~/components/landing/credit'
 import Credit from '~/components/landing/file-download'
 import Mayor from '~/components/landing/mayor-main'
 import Councilor from '~/components/landing/council-main'
-import Report from '~/components/landing/report'
 
 const Main = styled.main`
   width: 100%;
@@ -51,12 +50,6 @@ export default function LandingMain({ propsData }) {
           propsData={propsData}
         />
         <Credit />
-        {propsData.postsWithPoliticsTrackerTag.length !== 0 && (
-          <Report
-            // @ts-ignore
-            propsData={propsData.postsWithPoliticsTrackerTag}
-          />
-        )}
         <TeamIntro />
       </Main>
       <Footer />
