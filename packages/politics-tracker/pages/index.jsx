@@ -1,19 +1,26 @@
 import React, { Fragment } from 'react'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
+import moment from 'moment'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
 import axios from 'axios'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
-import { cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
+import {
+  cmsApiUrl,
+  readrCmsApiUrl,
+  urlOfJsonForlandingPage,
+} from '~/constants/config'
 import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
+import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
 
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
  * @typedef { import('~/types/landing').PersonData } PersonData
+ * @typedef { import('~/types/landing').allPostsWithPoliticsTrackerTag } allPostsWithPoliticsTrackerTag
  * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
  * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
  * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
@@ -91,6 +98,7 @@ export const getServerSideProps = async ({ res }) => {
     totalCompletionOfCouncilor: 0,
     mayorAndPolitics: [],
     councilorAndPolitics: [],
+    postsWithPoliticsTrackerTag: [],
   }
 
   /**
@@ -417,10 +425,6 @@ export const getServerSideProps = async ({ res }) => {
       0
     )
     propsData.councilorAndPolitics.push(...Object.values(cityData))
-
-    return {
-      props: propsData,
-    }
   } catch (err) {
     // All exceptions that include a stack trace will be
     // integrated with Error Reporting.
@@ -445,8 +449,65 @@ export const getServerSideProps = async ({ res }) => {
     }
   }
 
+  //Get posts from Readr CMS with politics-tracker tags
+  //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
+  try {
+    const readrPostsData = await fireGqlRequest(
+      print(GetPostsWithPoliticsTracker),
+      { tag: '選舉政見追蹤' },
+      readrCmsApiUrl
+    )
+
+    const readrGqlErrors = readrPostsData.errors
+
+    if (readrGqlErrors) {
+      const annotatingError = errors.helpers.wrap(
+        new Error('Errors returned in `GetPostsWithPoliticsTracker` query'),
+        'GraphQLError',
+        'failed to complete `GetPostsWithPoliticsTracker`',
+        { errors: readrGqlErrors }
+      )
+
+      throw annotatingError
+    }
+
+    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
+    if (
+      readrPostsWithPoliticsTrackerTag &&
+      readrPostsWithPoliticsTrackerTag.length !== 0
+    ) {
+      // use moment() format 'publishTime' to 'YYYY/MM/DD'
+      propsData.postsWithPoliticsTrackerTag =
+        // @ts-ignore
+        readrPostsWithPoliticsTrackerTag.map((value) => {
+          return {
+            ...value,
+            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+          }
+        })
+    }
+  } catch (err) {
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+
   return {
-    notFound: true,
+    props: propsData,
   }
 }
 
