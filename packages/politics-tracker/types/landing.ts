@@ -54,4 +54,19 @@ export type PropsData = {
   totalCompletionOfCouncilor: number // 已有通過審核政見的議員候選人數
   mayorAndPolitics: DistrinctOfMayorElection[]
   councilorAndPolitics: CityOfCouncilorElection[]
+  postsWithPoliticsTrackerTag: []
+}
+
+export type allPostsWithPoliticsTrackerTag = {
+  id: string
+  name: string // 文章標題
+  state: string // 文章發佈狀態(Draft/Published/Scheduled/Archieved)
+  publishTime: string // 文章發佈時間
+  heroImage: ImageOfPost[]
+}
+
+export type ImageOfPost = {
+  id: string
+  name: string //文章視覺圖名稱
+  urlOriginal: string //文章視覺圖網址
 }

@@ -1,19 +1,26 @@
 import React, { Fragment } from 'react'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
+import moment from 'moment'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
 import axios from 'axios'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
-import { cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
+import {
+  cmsApiUrl,
+  readrCmsApiUrl,
+  urlOfJsonForlandingPage,
+} from '~/constants/config'
 import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
+import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
 
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
  * @typedef { import('~/types/landing').PersonData } PersonData
+ * @typedef { import('~/types/landing').allPostsWithPoliticsTrackerTag } allPostsWithPoliticsTrackerTag
  * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
  * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
  * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
@@ -91,6 +98,7 @@ export const getServerSideProps = async ({ res }) => {
     totalCompletionOfCouncilor: 0,
     mayorAndPolitics: [],
     councilorAndPolitics: [],
+    postsWithPoliticsTrackerTag: [],
   }
 
   /**
@@ -417,6 +425,32 @@ export const getServerSideProps = async ({ res }) => {
       0
     )
     propsData.councilorAndPolitics.push(...Object.values(cityData))
+
+    // get Readr posts with politics-tracker tag
+    const {
+      data: { allPosts: allPostsWithPoliticsTrackerTag },
+    } = await fireGqlRequest(
+      print(GetPostsWithPoliticsTracker),
+      { tag: '選舉政見追蹤' },
+      readrCmsApiUrl
+    )
+
+    if (allPostsWithPoliticsTrackerTag.length !== 0) {
+      // filter: get posts with state === 'published'
+      // @ts-ignore
+      const publishedPosts = allPostsWithPoliticsTrackerTag.filter((item) => {
+        return item.state === 'published'
+      })
+
+      // use moment() format 'publishTime' to 'YYYY/MM/DD'
+      // @ts-ignore
+      propsData.postsWithPoliticsTrackerTag = publishedPosts.map((value) => {
+        return {
+          ...value,
+          publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+        }
+      })
+    }
 
     return {
       props: propsData,
