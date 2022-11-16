@@ -427,7 +427,7 @@ export default function MayorContent({
                         .filter(
                           // @ts-ignore
                           (candidate) =>
-                            candidate.done < 20 && candidate.done > 0
+                            candidate.done < 21 && candidate.done > 0
                         ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
@@ -440,7 +440,7 @@ export default function MayorContent({
                               .filter(
                                 // @ts-ignore
                                 (candidate) =>
-                                  candidate.done < 20 && candidate.done > 0
+                                  candidate.done < 21 && candidate.done > 0
                               )
                               // @ts-ignore
                               .map((value) => {
@@ -532,6 +532,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -548,7 +549,7 @@ export default function MayorContent({
                         .filter(
                           // @ts-ignore
                           (candidate) =>
-                            candidate.done < 20 && candidate.done > 0
+                            candidate.done < 21 && candidate.done > 0
                         ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
@@ -561,7 +562,7 @@ export default function MayorContent({
                               .filter(
                                 // @ts-ignore
                                 (candidate) =>
-                                  candidate.done < 20 && candidate.done > 0
+                                  candidate.done < 21 && candidate.done > 0
                               )
                               // @ts-ignore
                               .map((value) => {
@@ -573,6 +574,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -612,6 +614,7 @@ export default function MayorContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>

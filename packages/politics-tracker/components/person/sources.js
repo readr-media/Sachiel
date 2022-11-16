@@ -9,7 +9,6 @@ const SourcesContainer = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.backgroundColor.black5};
   position: relative;
-  /* TODO:: 目前這個寫法還沒有很好 */
   padding-left: 34px;
   ${({ theme }) => theme.breakpoint.md} {
     padding-left: 44px;
@@ -58,10 +57,11 @@ const SourceItemWrap = styled.div`
 /**
  *
  * @param {Object} props
+ * @param {Function} props.GAClick
  * @param {string} [props.sources]
  * @returns
  */
-export default function Sources({ sources }) {
+export default function Sources({ sources, GAClick }) {
   const [isOpen, setIsOpen] = useState(false)
   const sourceList = useMemo(
     () => (sources ? stringToSources(sources, '\n') : []),
@@ -88,7 +88,11 @@ export default function Sources({ sources }) {
             )}
           </SourcesContainer>
           <Hr className="hr" />
-          <SourcesButton isOpen={isOpen} setIsOpen={setIsOpen} />
+          <SourcesButton
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            GAClick={GAClick}
+          />
         </Fragment>
       )}
     </>

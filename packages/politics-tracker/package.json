@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap --config next-sitemap.config.mjs",
     "start": "next start"
   },
   "dependencies": {
-    "@readr-media/react-election-votes-comparison": "2.0.0-beta.8",
+    "@readr-media/react-election-votes-comparison": "2.0.0-beta.11",
+    "@readr-media/react-feedback": "3.3.0",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
     "chinese-numbers-converter": "^2.3.1",
@@ -17,12 +19,17 @@
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.4",
     "next": "12.3.1",
+    "next-sitemap": "^3.1.31",
+    "nextjs-progressbar": "^0.0.16",
+    "prop-types": "^15.5.10",
     "react": "18.2.0",
     "react-countup": "^6.3.2",
     "react-dom": "18.2.0",
+    "react-ga": "^3.3.1",
     "react-resize-detector": "^7.1.2",
     "react-spinners": "^0.13.6",
     "styled-components": "^5.3.6",
+    "ts-import": "^4.0.0-beta.6",
     "use-fit-text": "^2.4.0",
     "uuid": "^9.0.0"
   },

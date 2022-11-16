@@ -1,0 +1,14 @@
+query GetPostsOfPoliticsTrackerTag($tag: String!) {
+    allPosts(where: { tags_some: {name:$tag}}){
+      id 
+			name
+      state
+      publishTime
+      heroImage{
+        id
+        name
+        urlOriginal
+      }
+  }
+}
+

@@ -1,10 +1,8 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 
 import ContentTitle from './content-title'
 import EditButton from './edit-button'
-import ContentItem from './content-item'
 import styled from 'styled-components'
-import EditSendOrCancel from './edit-send-or-cancel'
 const ContentContainer = styled.div`
   padding: 0 0 20px;
 `
@@ -16,6 +14,7 @@ const ContentContainer = styled.div`
  * @param {React.ReactElement[] | React.ReactElement} [props.editContent]
  * @param {boolean} props.shouldShowEditMode
  * @param {function} props.setShouldShowEditMode
+ * @param {function} props.GAClick
  * @returns {React.ReactElement}
  */
 export default function Content({
@@ -24,6 +23,7 @@ export default function Content({
   editContent,
   shouldShowEditMode,
   setShouldShowEditMode,
+  GAClick,
 }) {
   const submitHandler = () => {
     console.log('submit')
@@ -33,7 +33,12 @@ export default function Content({
       <ContentTitle title={title}>
         <Fragment>
           {!shouldShowEditMode && (
-            <EditButton onClick={() => setShouldShowEditMode(true)} />
+            <EditButton
+              onClick={() => {
+                GAClick()
+                setShouldShowEditMode(true)
+              }}
+            />
           )}
         </Fragment>
       </ContentTitle>

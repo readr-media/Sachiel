@@ -1,0 +1,11 @@
+query GetElections {
+  elections {
+    type
+    election_year_year
+    createdAt
+    updatedAt
+    electionArea {
+      city
+    }
+  }
+}

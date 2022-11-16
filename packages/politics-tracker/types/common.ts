@@ -11,6 +11,21 @@ export type StatusOptionsA = 'active' | 'deactive'
 
 export type StatusOptionsB = 'verified' | 'notverified'
 
+export type RawElectionArea = Partial<{
+  id: string
+  name: string
+  city: string
+  level: string
+  type: string
+  aboriginal: string
+  description: string
+  status: StatusOptionsA
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+}>
+
 export type RawElection = Partial<{
   id: string
   name: string
@@ -22,21 +37,7 @@ export type RawElection = Partial<{
   type: string
   register_date: string
   location: string
-  status: StatusOptionsA
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  updatedBy: string
-}>
-
-export type RawElectionArea = Partial<{
-  id: string
-  name: string
-  city: string
-  level: string
-  type: string
-  aboriginal: string
-  description: string
+  electionArea: RawElectionArea[]
   status: StatusOptionsA
   createdAt: string
   updatedAt: string
@@ -126,19 +127,6 @@ export type JSONValue =
   | { [x: string]: JSONValue }
   | Array<JSONValue>
 
-export type RawPoliticProgress = Partial<{
-  id: string
-  politic: RawPolitic
-  content: JSONValue
-  progress: string
-  source: string
-  contributer: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  updatedBy: string
-}>
-
 export type RawTag = Partial<{
   id: string
   name: string
@@ -153,6 +141,13 @@ export type RawTag = Partial<{
   updatedBy: string
 }>
 
+export enum PROGRESS {
+  NOT_START = 'no-progress', // 還沒開始
+  IN_PROGRESS = 'in-progress', // 進行中
+  IN_TROUBLE = 'in-trouble', // 卡關中
+  COMPLETED = 'complete', // 已完成
+}
+
 export type RawPolitic = Partial<{
   id: string
   person: RawPersonElection
@@ -160,7 +155,7 @@ export type RawPolitic = Partial<{
   source: string
   content: string
   contributer: string
-  progress: RawPoliticProgress[]
+  current_progress: `${PROGRESS}`
   progressCount: number
   status: StatusOptionsB
   reviewed: Boolean

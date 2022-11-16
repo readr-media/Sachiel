@@ -24,12 +24,18 @@ const SourcesButtonContainer = styled(EditButtonContainer)`
  *
  * @param {Object} props
  * @param {boolean} props.isOpen
+ * @param {Function} props.GAClick
  * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setIsOpen
  * @returns {React.ReactElement}
  */
-export default function SourcesButton({ isOpen, setIsOpen }) {
+export default function SourcesButton({ isOpen, setIsOpen, GAClick }) {
   return (
-    <SourcesButtonContainer onClick={() => setIsOpen(!isOpen)}>
+    <SourcesButtonContainer
+      onClick={() => {
+        GAClick()
+        setIsOpen(!isOpen)
+      }}
+    >
       <span>{isOpen ? '收合' : '展開'}來源</span>
       {isOpen ? <i className="arrow up"></i> : <i className="arrow down"></i>}
     </SourcesButtonContainer>

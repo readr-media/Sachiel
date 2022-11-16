@@ -1,0 +1,54 @@
+query GetPoliticsDetail($politicId: ID!) {
+  politics(where: {id: { equals: $politicId }}) {
+    id
+    person{
+      votes_obtained_number
+      elected
+      incumbent
+      id,
+      electoral_district{
+        id,
+        name
+      }
+      party{
+        name,
+        image,
+      },
+      election{
+       name,
+       type,
+       level,
+       status,
+       election_year_year
+
+      },
+      person_id{
+        id,
+        name,
+        image,
+      }
+    }
+    desc
+    content
+    source
+    status
+    status
+    current_progress
+    timeline{
+      id,
+      eventDate,
+      content,
+      link
+    }
+    expertPoint(orderBy:{reviewDate: desc}){
+      id,
+      avatar,
+      contributer,
+      title,
+      reviewDate,
+      content,
+      link,
+    }
+    dispute
+  }
+}

@@ -11,8 +11,36 @@
   @apply text-[16px] font-medium leading-[1.8] text-main;
   @apply md:text-[18px];
 }
+.header {
+  @apply flex justify-between items-center;
+}
 .index {
   @apply politic-base mb-1 shrink-0;
+}
+.politic-status {
+  @apply font-medium leading-[1.5] text-[14px] shrink-0;
+  @apply md:text-[16px];
+}
+.text {
+  @apply inline-block mr-2 text-main text-opacity-50;
+}
+.status {
+  @apply inline-block px-3 py-1;
+  &.no-progress {
+    @apply bg-label bg-opacity-50 text-white;
+  }
+  &.in-progress {
+    @apply bg-in-progress bg-opacity-100 text-main;
+  }
+  &.in-trouble {
+    @apply bg-in-trouble bg-opacity-100 text-white;
+  }
+  &.complete {
+    @apply bg-complete bg-opacity-100 text-white;
+  }
+  &.failed {
+    @apply bg-disabled bg-opacity-100 text-main text-opacity-30;
+  }
 }
 .content {
   @apply politic-base relative;
@@ -27,15 +55,18 @@
 .source-list {
   @apply flex grow flex-row flex-wrap items-center bg-label bg-opacity-5 gap-2 p-2 pl-0;
 }
-.button-edit {
+.control-group {
   @apply mt-2 flex flex-row py-1;
   box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1), inset 0px -1px 0px rgba(0, 0, 0, 0.1);
 }
-.button-inner {
-  @apply flex w-full cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
+.button {
+  @apply flex basis-1/3 grow cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
   @apply text-[16px] leading-[1.8] text-control;
   @apply hover:bg-button-3 active:bg-button-3 md:text-[18px];
 }
 .button-icon {
   @apply w-5 h-5;
+}
+.divider {
+  @apply my-auto mx-1 h-6 w-[1px] bg-label opacity-10;
 }

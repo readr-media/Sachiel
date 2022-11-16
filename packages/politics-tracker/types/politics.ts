@@ -1,3 +1,5 @@
+import { PROGRESS } from './common'
+
 export type PersonOverview = {
   id: string
   name: string
@@ -16,6 +18,7 @@ export type Politic = {
   desc: string
   source: string
   content: string
+  progess?: `${PROGRESS}`
   tagId: string | null
   tagName: string | null
   createdAt: string | null
@@ -33,6 +36,8 @@ export type PersonElection = {
   year: number
   month: number
   day: number
+  elected: boolean
+  isFinished: boolean
   source: string | null
   lastUpdate: string | null
   politics: Politic[]

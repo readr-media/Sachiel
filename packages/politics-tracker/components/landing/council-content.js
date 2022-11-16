@@ -225,7 +225,6 @@ export default function CouncilContent({
   // @ts-ignore
   councilRegion,
 }) {
-  //如果 isDesk=false的話 isActive要全部變為false
   const rawDatas = dataOrderByCompletePercent[councilRegion].areas
 
   const [sortWay, setSortWay] = useState(true)
@@ -243,6 +242,7 @@ export default function CouncilContent({
       return a?.done / a?.total - b?.done / b?.total
     })
   }
+
   const sortDatas = sortWay ? lowToHigh(rawDatas) : HighToLow(rawDatas)
   const sortDataWithActive = sortDatas.map((data) => ({
     ...data,
@@ -286,7 +286,6 @@ export default function CouncilContent({
         if (window.innerWidth >= 1200) {
           return true
         } else {
-          // 如果判斷是手機版 一律變為 false
           setActiveData((pre) => {
             return pre.map((data) => {
               return { ...data, active: false }
@@ -341,7 +340,6 @@ export default function CouncilContent({
         {activeData
           .filter((v) => v.hasOwnProperty('candidates'))
           .map((v, i) => {
-            // console.log(activeData)
             return (
               <ItemWrap key={i}>
                 <DistrictInforBox
@@ -432,7 +430,7 @@ export default function CouncilContent({
                         .filter(
                           // @ts-ignore
                           (candidate) =>
-                            candidate.done < 20 && candidate.done > 0
+                            candidate.done < 21 && candidate.done > 0
                         ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
@@ -445,7 +443,7 @@ export default function CouncilContent({
                               .filter(
                                 // @ts-ignore
                                 (candidate) =>
-                                  candidate.done < 20 && candidate.done > 0
+                                  candidate.done < 21 && candidate.done > 0
                               )
                               // @ts-ignore
                               .map((value) => {
@@ -537,6 +535,7 @@ export default function CouncilContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -553,7 +552,7 @@ export default function CouncilContent({
                         .filter(
                           // @ts-ignore
                           (candidate) =>
-                            candidate.done < 20 && candidate.done > 0
+                            candidate.done < 21 && candidate.done > 0
                         ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
@@ -566,7 +565,7 @@ export default function CouncilContent({
                               .filter(
                                 // @ts-ignore
                                 (candidate) =>
-                                  candidate.done < 20 && candidate.done > 0
+                                  candidate.done < 21 && candidate.done > 0
                               )
                               // @ts-ignore
                               .map((value) => {
@@ -578,6 +577,7 @@ export default function CouncilContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>
@@ -617,6 +617,7 @@ export default function CouncilContent({
                                     as={`/politics/${value.id}`}
                                     key={value.name}
                                     legacyBehavior={false}
+                                    onClick={(e) => e.stopPropagation()}
                                   >
                                     {value.name}
                                   </Link>

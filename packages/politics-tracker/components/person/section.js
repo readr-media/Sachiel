@@ -1,14 +1,29 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import SectionList from './section-list'
-import SectionBody from './section-body'
 import SectionBodyPersonalFile from './section-body-personal-file'
 import SectionBodyElection from './section-body-election'
+import ReactGA from 'react-ga'
 const SectionContainer = styled.div`
   max-width: 688px;
   margin: 0 auto;
   padding: 0 26px 0 16px;
 `
+// GA click
+const handleOpenPersonalFile = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊收合「個人檔案」',
+  })
+}
+const handleOpenElection = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊展開「參與過的選舉」',
+  })
+}
 /**
  * @param {Object} props
  * @param {import('../../types/person').Person} props.personData
@@ -21,35 +36,30 @@ export default function Section({ personData, personElectionsData }) {
     <SectionContainer>
       <SectionList
         id={'0'}
-        // @ts-ignore
         isActive={activeId.includes('0')}
-        // @ts-ignore
         setActiveId={setActiveId}
         activeId={activeId}
         color="blue"
         title="個人檔案"
+        GAClick={handleOpenPersonalFile}
       >
         <SectionBodyPersonalFile
-          // @ts-ignore
           isActive={activeId.includes('0')}
           personData={personData}
         ></SectionBodyPersonalFile>
       </SectionList>
       <SectionList
         id={'1'}
-        // @ts-ignore
         isActive={activeId.includes('1')}
-        // @ts-ignore
         setActiveId={setActiveId}
         activeId={activeId}
         color="orange"
         title="參與過的選舉"
+        GAClick={handleOpenElection}
       >
-        {/* 這邊是toggle body */}
         <SectionBodyElection
           personId={personData.id}
           personElectionsData={personElectionsData}
-          // @ts-ignore
           isActive={activeId.includes('1')}
         ></SectionBodyElection>
       </SectionList>
@@ -57,27 +67,28 @@ export default function Section({ personData, personElectionsData }) {
         id={null}
         color="disable"
         isActive={false}
+        // @ts-ignore
         setActive={setActiveId}
         title="資產（即將開放）"
-        // @ts-ignore
         activeId={activeId}
       ></SectionList>
       <SectionList
         id={null}
         color="disable"
         isActive={false}
+        // @ts-ignore
         setActive={setActiveId}
         title="政治獻金（即將開放）"
-        // @ts-ignore
         activeId={activeId}
       ></SectionList>
       <SectionList
         id={null}
         color="disable"
+        // @ts-ignore
         isActive={false}
+        // @ts-ignore
         setActive={setActiveId}
         title="犯罪記錄（即將開放）"
-        // @ts-ignore
         activeId={activeId}
       ></SectionList>
     </SectionContainer>
