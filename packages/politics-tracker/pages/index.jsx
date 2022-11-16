@@ -426,52 +426,9 @@ export const getServerSideProps = async ({ res }) => {
     )
     propsData.councilorAndPolitics.push(...Object.values(cityData))
 
-    //get posts from Readr CMS with politics-tracker tags
-    try {
-      const readrPostsData = await fireGqlRequest(
-        print(GetPostsWithPoliticsTracker),
-        { tag: '選舉政見追蹤' },
-        readrCmsApiUrl
-      )
-
-      const readrGqlErrors = readrPostsData.errors
-
-      if (readrGqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `GetPostsWithPoliticsTracker` query'),
-          'GraphQLError',
-          'failed to complete `GetPostsWithPoliticsTracker`',
-          { errors: readrGqlErrors }
-        )
-
-        throw annotatingError
-      }
-
-      const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
-      if (!readrPostsWithPoliticsTrackerTag) {
-        return {
-          notFound: true,
-        }
-      }
-      if (readrPostsWithPoliticsTrackerTag.length !== 0) {
-        // use moment() format 'publishTime' to 'YYYY/MM/DD'
-        propsData.postsWithPoliticsTrackerTag =
-          // @ts-ignore
-          readrPostsWithPoliticsTrackerTag.map((value) => {
-            return {
-              ...value,
-              publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
-            }
-          })
-        return {
-          props: propsData,
-        }
-      }
-    } catch (err) {
-      return {
-        notFound: true,
-      }
-    }
+    // return {
+    //   props: propsData,
+    // }
   } catch (err) {
     // All exceptions that include a stack trace will be
     // integrated with Error Reporting.
@@ -493,6 +450,54 @@ export const getServerSideProps = async ({ res }) => {
 
     return {
       notFound: true,
+    }
+  }
+
+  //Get posts from Readr CMS with politics-tracker tags
+  //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
+  try {
+    const readrPostsData = await fireGqlRequest(
+      print(GetPostsWithPoliticsTracker),
+      { tag: '選舉政見追蹤' },
+      readrCmsApiUrl
+    )
+
+    const readrGqlErrors = readrPostsData.errors
+
+    if (readrGqlErrors) {
+      const annotatingError = errors.helpers.wrap(
+        new Error('Errors returned in `GetPostsWithPoliticsTracker` query'),
+        'GraphQLError',
+        'failed to complete `GetPostsWithPoliticsTracker`',
+        { errors: readrGqlErrors }
+      )
+
+      throw annotatingError
+    }
+
+    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
+    if (!readrPostsWithPoliticsTrackerTag) {
+      return {
+        notFound: true,
+      }
+    }
+    if (readrPostsWithPoliticsTrackerTag.length !== 0) {
+      // use moment() format 'publishTime' to 'YYYY/MM/DD'
+      propsData.postsWithPoliticsTrackerTag =
+        // @ts-ignore
+        readrPostsWithPoliticsTrackerTag.map((value) => {
+          return {
+            ...value,
+            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+          }
+        })
+      return {
+        props: propsData,
+      }
+    }
+  } catch (err) {
+    return {
+      props: propsData,
     }
   }
 
