@@ -5,7 +5,7 @@ const env: string = envList.includes(String(process.env.ENV))
 
 // environment independent
 const cmsApiUrl: string = process.env.NEXT_PUBLIC_CMS_API_URL ?? ''
-const readrCmsApiUrl: string = process.env.NEXT_Readr_CMS_API_URL ?? ''
+const readrCmsApiUrl: string = process.env.NEXT_PUBLIC_READR_CMS_API_URL ?? ''
 let feedbackFormConfig: Partial<Record<'formId' | 'fieldId', string>> = {}
 try {
   feedbackFormConfig = JSON.parse(process.env.FEEDBACK_FORM_CONFIG ?? '')

@@ -1,5 +1,5 @@
 query GetPostsOfPoliticsTrackerTag($tag: String!) {
-    allPosts(where: { tags_some: {name:$tag} AND: {state: published}} sortBy: publishTime_DESC first:4){
+    allPosts(where: { tags_some: {name:$tag}  state: published} sortBy: publishTime_DESC first:4){
       id 
 			name
       state

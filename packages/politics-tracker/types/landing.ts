@@ -63,7 +63,7 @@ export type allPostsWithPoliticsTrackerTag = {
   name: string // 文章標題
   state: string // 文章發佈狀態(Draft/Published/Scheduled/Archieved)
   publishTime: string // 文章發佈時間
-  heroImage: ImageOfPost[]
+  heroImage: null | ImageOfPost
 }
 
 export type ImageOfPost = {
