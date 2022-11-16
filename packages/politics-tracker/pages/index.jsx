@@ -472,12 +472,10 @@ export const getServerSideProps = async ({ res }) => {
     }
 
     const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
-    if (!readrPostsWithPoliticsTrackerTag) {
-      return {
-        notFound: true,
-      }
-    }
-    if (readrPostsWithPoliticsTrackerTag.length !== 0) {
+    if (
+      readrPostsWithPoliticsTrackerTag &&
+      readrPostsWithPoliticsTrackerTag.length !== 0
+    ) {
       // use moment() format 'publishTime' to 'YYYY/MM/DD'
       propsData.postsWithPoliticsTrackerTag =
         // @ts-ignore
@@ -487,18 +485,29 @@ export const getServerSideProps = async ({ res }) => {
             publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
           }
         })
-      return {
-        props: propsData,
-      }
     }
   } catch (err) {
-    return {
-      props: propsData,
-    }
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
   }
 
   return {
-    notFound: true,
+    props: propsData,
   }
 }
 
