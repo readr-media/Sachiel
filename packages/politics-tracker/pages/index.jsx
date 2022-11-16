@@ -425,10 +425,6 @@ export const getServerSideProps = async ({ res }) => {
       0
     )
     propsData.councilorAndPolitics.push(...Object.values(cityData))
-
-    // return {
-    //   props: propsData,
-    // }
   } catch (err) {
     // All exceptions that include a stack trace will be
     // integrated with Error Reporting.
