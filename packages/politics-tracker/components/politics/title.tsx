@@ -7,6 +7,17 @@ import classNames from 'classnames'
 import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
 import Icon from '~/components/icon'
 import s from './title.module.css'
+import ReactGA from 'react-ga'
+
+// GA click
+const handleCandidateClick = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊人名',
+  })
+}
+
 const fullConfig = getTailwindConfig()
 
 const mainTextClass = s['main-text']
@@ -178,7 +189,11 @@ export default function Title(props: PersonOverview): JSX.Element {
           />
         </span>
         <div className={s.name}>
-          <Link href={hrefObject} legacyBehavior={false}>
+          <Link
+            href={hrefObject}
+            legacyBehavior={false}
+            onClick={handleCandidateClick}
+          >
             <MultipleLineBlock content={props.name} {...mainText}>
               <SingleLineBlock
                 content={props.name}

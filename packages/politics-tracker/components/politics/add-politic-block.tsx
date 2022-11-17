@@ -6,6 +6,16 @@ import Button from './button'
 import Plus from '~/components/icons/plus'
 import { useState } from 'react'
 import s from './add-politic-block.module.css'
+import ReactGA from 'react-ga'
+
+//GA click
+const handleAddNewPolitic = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「新增政見」',
+  })
+}
 
 export default function AddPoliticBlock(): JSX.Element {
   const [showEditArea, setShowEditArea] = useState(false)
@@ -19,7 +29,10 @@ export default function AddPoliticBlock(): JSX.Element {
           <Button
             text="新增政見"
             icon={Plus()}
-            onClick={() => setShowEditArea(true)}
+            onClick={() => {
+              handleAddNewPolitic()
+              setShowEditArea(true)
+            }}
           />
         </span>
       )}

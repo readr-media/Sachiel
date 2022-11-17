@@ -5,6 +5,39 @@ import Home from '~/components/icons/home'
 import ArrowLeft from '~/components/icons/arrow-left'
 import ArrowRight from '~/components/icons/arrow-right'
 import s from './nav.module.css'
+import ReactGA from 'react-ga'
+
+//GA click
+const handleBackToHome = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: '點擊「HOME」',
+  })
+}
+
+const handlePreviousClick = (prev: string | undefined) => {
+  if (prev === '回政見總覽' || prev === '回首頁' || prev === '回個人資訊') {
+    ReactGA.event({
+      category: 'Projects_PoliticsTracker',
+      action: 'click',
+      label: `點擊${prev}`,
+    })
+  } else {
+    ReactGA.event({
+      category: 'Projects_PoliticsTracker',
+      action: 'click',
+      label: `點擊往前一屆選舉`,
+    })
+  }
+}
+const handleNextClick = () => {
+  ReactGA.event({
+    category: 'Projects_PoliticsTracker',
+    action: 'click',
+    label: `點擊往後一屆選舉`,
+  })
+}
 
 export type LinkMember = {
   content: string
@@ -38,7 +71,10 @@ export default function Nav(props: NavProps): JSX.Element {
     <div className={s['container']}>
       {props.prev && (
         <Link href={props.prev.href}>
-          <a className={backStyle}>
+          <a
+            className={backStyle}
+            onClick={() => handlePreviousClick(props.prev?.content)}
+          >
             <span className={s['icon']}>
               <ArrowLeft />
             </span>
@@ -52,13 +88,13 @@ export default function Nav(props: NavProps): JSX.Element {
         className={homeStyle}
         aria-label="link to homepage"
       >
-        <div className={s['icon-home']}>
+        <div className={s['icon-home']} onClick={handleBackToHome}>
           <Home />
         </div>
       </Link>
       {props.next && (
         <Link href={props.next.href}>
-          <a className={nextStyle}>
+          <a className={nextStyle} onClick={handleNextClick}>
             <span className={s['icon']}>
               <ArrowRight />
             </span>

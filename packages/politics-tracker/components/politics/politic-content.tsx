@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 import classNames from 'classnames'
 import s from './politic-content.module.css'
+import ReactGA from 'react-ga'
 
 type PoliticContentProps = {
   children: string
@@ -38,6 +39,14 @@ export default function PoliticContent(
     { [s['expanded']]: isExpanded }
   )
 
+  const handleOpenPoliticsClick = () => {
+    ReactGA.event({
+      category: 'Projects_PoliticsTracker',
+      action: 'click',
+      label: '點擊過長政見「展開全部」',
+    })
+  }
+
   function shouldShowControl(isCropped: boolean, isExpanded: boolean): boolean {
     return (isCropped && !isExpanded) || (!isCropped && isExpanded)
   }
@@ -49,7 +58,13 @@ export default function PoliticContent(
       </div>
       {shouldShowControl(isCropped, isExpanded) && (
         <div className={s['mask']}>
-          <span className={s['control']} onClick={toggleExpand}>
+          <span
+            className={s['control']}
+            onClick={() => {
+              handleOpenPoliticsClick()
+              toggleExpand()
+            }}
+          >
             {isExpanded ? '顯示較少' : '展開全部'}
           </span>
         </div>
