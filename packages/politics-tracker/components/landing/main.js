@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
+import { InView } from 'react-intersection-observer'
+import ReactGA from 'react-ga'
 
 //components
 import Header from '~/components/header'
@@ -24,6 +26,8 @@ const Main = styled.main`
 const HeaderWrap = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
 `
+const QaGaAnchorWrapper = styled.div``
+const QaGaAnchor = styled.div``
 
 /**
  * @property {Object} titleData
@@ -31,6 +35,22 @@ const HeaderWrap = styled.div`
  */
 // @ts-ignore : fix in the future
 export default function LandingMain({ propsData }) {
+  const [inView, setInView] = useState(false)
+  const [hasSentGa, setHasSentGa] = useState(false)
+
+  // @ts-ignore
+  const handleGaInview = (isInView) => {
+    setInView(isInView)
+    if (isInView && !hasSentGa) {
+      ReactGA.event({
+        category: 'Projects_PoliticsTracker',
+        action: 'scroll',
+        label: '頁面滑動至最尾端',
+      })
+      setHasSentGa(true)
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <HeaderWrap>
@@ -59,6 +79,14 @@ export default function LandingMain({ propsData }) {
         )}
         <TeamIntro />
       </Main>
+      <InView onChange={handleGaInview}>
+        {({ ref, inView }) => (
+          <QaGaAnchorWrapper ref={ref}>
+            <QaGaAnchor ref={ref} />
+            <QaGaAnchor />
+          </QaGaAnchorWrapper>
+        )}
+      </InView>
       <Footer />
     </ThemeProvider>
   )
