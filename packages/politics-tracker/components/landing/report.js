@@ -199,7 +199,7 @@ export default function TeamIntro({ propsData }) {
       </ul>
       <ReportButton>
         <a
-          href="https://www.readr.tw/tag/%E9%81%B8%E8%88%89%E6%94%BF%E8%A6%8B%E8%BF%BD%E8%B9%A4"
+          href="https://dev.readr.tw/tag/%E9%81%B8%E8%88%89%E6%94%BF%E8%A6%8B%E8%BF%BD%E8%B9%A4"
           target="_blank"
           rel="noreferrer"
         >
