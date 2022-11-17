@@ -33,7 +33,7 @@ type ElectionPageProps = {
 
 export const getServerSideProps: GetServerSideProps<
   ElectionPageProps
-> = async ({ query }) => {
+> = async ({ query = {} }) => {
   const { year, area, type } = query
   let electName: string
   const yearNumber = Number(year)
@@ -41,31 +41,24 @@ export const getServerSideProps: GetServerSideProps<
   const mappedAreaStr = districtsMapping[areaStr] ?? 'all'
 
   const electionType = electionTypesMapping[String(type)]
-  let ldr
+  let ldr = new DataLoader({
+    apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
+    version: 'v2',
+  })
   let scrollTo = ''
+  let data 
   switch (electionType) {
     case 'mayor': {
-      ldr = new DataLoader({
-        apiUrl: `https://whoareyou-gcs.readr.tw/${
-          env === 'dev' ? 'elections-dev' : 'elections'
-        }`,
+      data = await ldr.loadMayorData({
         year,
-        type: electionType,
-        district: 'all',
-        version: 'v2',
       })
       scrollTo = areaStr
       break
     }
     case 'councilMember': {
-      ldr = new DataLoader({
-        apiUrl: `https://whoareyou-gcs.readr.tw/${
-          env === 'dev' ? 'elections-dev' : 'elections'
-        }`,
+      data = await ldr.loadCouncilMemberData({
         year,
-        type: electionType,
         district: mappedAreaStr,
-        version: 'v2',
       })
       break
     }
@@ -77,8 +70,6 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const data = await ldr.loadData()
-
     const electionMap: Record<string, RawElection> = {}
     const elections: ElectionLink[] = []
     let election: undefined | RawElection
@@ -237,15 +228,14 @@ const Election = (props: ElectionPageProps) => {
     alwaysShowHome: true,
   }
 
-  const { year, title } = props
-  const election = Object.assign({ year, title }, props.data)
+  const { year, title } = props || {}
+  const election = props.data
 
   return (
     <DefaultLayout>
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
           <evc.ReactComponent.EVC
-            key={`${props.year}_${props.name}_${props.area}`}
             election={election}
             scrollTo={props.scrollTo}
             stickyTopOffset="80px"
