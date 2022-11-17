@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
+import ReactGA from 'react-ga'
+import { gaTrackingId } from '~/constants/config'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
-import moment from 'moment'
+import moment from 'moment-timezone'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
@@ -186,7 +188,9 @@ export const getServerSideProps = async ({ res }) => {
         readrPostsWithPoliticsTrackerTag.map((value) => {
           return {
             ...value,
-            publishTime: moment(value.publishTime).format('YYYY/MM/DD'),
+            publishTime: moment(value.publishTime)
+              .tz('Asia/Taipei')
+              .format('YYYY/MM/DD'),
           }
         })
     }
@@ -511,11 +515,17 @@ export const getServerSideProps = async ({ res }) => {
   }
 }
 
+// ReactGA.initialize('UA-83609754-1')
+
 /**
  * @param {PropsData} props
  * @returns
  */
 export default function Home(props) {
+  // useEffect(() => {
+  //   ReactGA.pageview(window.location.pathname + window.location.search)
+  // }, [])
+
   return (
     <Fragment>
       <LandingPage
