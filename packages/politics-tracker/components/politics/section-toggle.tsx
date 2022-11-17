@@ -5,12 +5,14 @@ import s from './section-toggle.module.css'
 import ReactGA from 'react-ga'
 
 // GA click
-const handlePoliticListOnclick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊展開其他選舉欄',
-  })
+const handlePoliticListOnclick = (order: any, isActive: boolean) => {
+  if (order && !isActive) {
+    ReactGA.event({
+      category: 'Projects_PoliticsTracker',
+      action: 'click',
+      label: '點擊展開其他選舉欄',
+    })
+  }
 }
 
 type SectionToggleProps = {
@@ -19,6 +21,7 @@ type SectionToggleProps = {
   party: string
   partyIcon: string
   isActive: boolean
+  order: any
   setActive: () => void
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
@@ -33,7 +36,10 @@ export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   }
 
   return (
-    <div className={s['container']} onClick={handlePoliticListOnclick}>
+    <div
+      className={s['container']}
+      onClick={() => handlePoliticListOnclick(props.order, props.isActive)}
+    >
       <div className={toggleClass} onClick={toggle}>
         <div className={s['content']}>
           <div className={s['text']}>{props.content}</div>
