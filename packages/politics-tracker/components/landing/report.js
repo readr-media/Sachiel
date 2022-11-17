@@ -174,9 +174,8 @@ export default function TeamIntro({ propsData }) {
           ) => {
             return (
               <ReportList key={item.id}>
-                {/* TODO: 上prod之前要換成正式readr網址 */}
                 <a
-                  href={`https://dev.readr.tw/post/${item.id}`}
+                  href={`https://www.readr.tw/post/${item.id}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -199,7 +198,7 @@ export default function TeamIntro({ propsData }) {
       </ul>
       <ReportButton>
         <a
-          href="https://dev.readr.tw/tag/%E9%81%B8%E8%88%89%E6%94%BF%E8%A6%8B%E8%BF%BD%E8%B9%A4"
+          href="https://www.readr.tw/tag/%E9%81%B8%E8%88%89%E6%94%BF%E8%A6%8B%E8%BF%BD%E8%B9%A4"
           target="_blank"
           rel="noreferrer"
         >
