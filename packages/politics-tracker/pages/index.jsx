@@ -515,16 +515,16 @@ export const getServerSideProps = async ({ res }) => {
   }
 }
 
-// ReactGA.initialize('UA-83609754-1')
+ReactGA.initialize(gaTrackingId)
 
 /**
  * @param {PropsData} props
  * @returns
  */
 export default function Home(props) {
-  // useEffect(() => {
-  //   ReactGA.pageview(window.location.pathname + window.location.search)
-  // }, [])
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search)
+  }, [])
 
   return (
     <Fragment>
