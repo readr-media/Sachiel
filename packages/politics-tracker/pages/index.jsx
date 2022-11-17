@@ -1,6 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
-import ReactGA from 'react-ga'
-import { gaTrackingId } from '~/constants/config'
+import React, { Fragment } from 'react'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import moment from 'moment-timezone'
@@ -515,17 +513,11 @@ export const getServerSideProps = async ({ res }) => {
   }
 }
 
-ReactGA.initialize(gaTrackingId)
-
 /**
  * @param {PropsData} props
  * @returns
  */
 export default function Home(props) {
-  useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search)
-  }, [])
-
   return (
     <Fragment>
       <LandingPage
