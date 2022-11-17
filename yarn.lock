@@ -4551,7 +4551,14 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moment@^2.29.4:
+moment-timezone@^0.5.39:
+  version "0.5.39"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.39.tgz#342625a3b98810f04c8f4ea917e448d3525e600b"
+  integrity sha512-hoB6suq4ISDj7BDgctiOy6zljBsdYT0++0ZzZm9rtxIvJhIbQ3nmbgSWe7dNFGurl6/7b1OUkHlmN9JWgXVz7w==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0", moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -5687,6 +5694,11 @@ react-ga@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.3.1.tgz#d8e1f4e05ec55ed6ff944dcb14b99011dfaf9504"
   integrity sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==
+
+react-intersection-observer@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.4.1.tgz#4ccb21e16acd0b9cf5b28d275af7055bef878f6b"
+  integrity sha512-IXpIsPe6BleFOEHKzKh5UjwRUaz/JYS0lT/HPsupWEQou2hDqjhLMStc5zyE3eQVT4Fk3FufM8Fw33qW1uyeiw==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
