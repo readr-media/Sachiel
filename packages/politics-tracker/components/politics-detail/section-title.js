@@ -130,17 +130,18 @@ export default function SectionTitle({ politicData }) {
           </h1>
           <TitlePartyInfo>
             <div className="partyImage">
-              {politicData.person.party.image ? (
-                <img src={politicData.person.party.image} alt=""></img>
+              {politicData.person.party?.image ? (
+                <img src={politicData.person.party?.image} alt=""></img>
               ) : (
                 <img src="/images/default-head-photo.png" alt=""></img>
               )}
             </div>
-            <span>{politicData.person.party.name}</span>
+            {politicData.person.party?.name ? (
+              <span>{politicData.person.party?.name}</span>
+            ) : (
+              <span>無黨籍</span>
+            )}
           </TitlePartyInfo>
-          {/* <Term>
-            任期 <span>2022-12-29~2026-12-27</span>
-          </Term> */}
         </div>
       </Title>
     </Link>

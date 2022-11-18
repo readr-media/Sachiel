@@ -8,17 +8,12 @@ const SourcesContainer = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.backgroundColor.black5};
   position: relative;
-  /* TODO:: 目前這個寫法還沒有很好 */
+  /* TODO:: update style here */
   padding-left: 34px;
   overflow: hidden;
   ${({ theme }) => theme.breakpoint.md} {
     padding-left: 44px;
   }
-`
-
-const Hr = styled.hr`
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 8px;
 `
 const SourcesTitle = styled.div`
   background-color: ${({ theme }) => theme.backgroundColor.black50};

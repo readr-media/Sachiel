@@ -15,7 +15,7 @@ const TimeContainer = styled.div`
   a {
     color: ${({ theme }) => theme.textColor.brown};
     display: inline-block;
-    text-align: justify;
+    word-break: break-all;
     &:hover {
       text-decoration-line: underline;
     }
@@ -70,7 +70,7 @@ const TimeContainer = styled.div`
 export default function PoliticsList({ infoList, isActive }) {
   const info = infoList.map((value) => (
     <li key={value.id}>
-      <span>{value.eventDate.substr(0, 10)}</span>
+      <span>{value.eventDate?.substr(0, 10)}</span>
       <a href={value.link} target="_blank" rel="noreferrer">
         {value.content}
       </a>

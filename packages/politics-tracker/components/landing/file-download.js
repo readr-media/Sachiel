@@ -130,7 +130,7 @@ export default function TeamIntro() {
         <CreditButtonWrap>
           {ButtonData.map((v) => {
             return (
-              <div key={v.buttonTitle}>
+              <div key={v.buttonTitle} onClick={v.GAclick}>
                 <a href={v.buttonURL} target="_blank" rel="noreferrer">
                   <p>{v.buttonTitle}</p>
                   <Image
@@ -138,7 +138,6 @@ export default function TeamIntro() {
                     src="/landingpage/arrow_right_black.svg"
                     width="20"
                     height="20"
-                    onClick={v.GAclick}
                   />
                 </a>
               </div>
