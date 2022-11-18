@@ -64,7 +64,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Environment Variables
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
-| ENV | 字串 | '' | 環境設定 |
+| NEXT_PUBLIC_ENV | 字串 | '' | 環境設定 |
 | NEXT_PUBLIC_SITE_URL | 字串 | '' | 網站網址 |
 | NEXT_PUBLIC_CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
 | NEXT_PUBLIC_READR_CMS_API_URL | 字串 | '' | 後端 Readr CMS GraphQL API 呼叫端點資訊(用於landing頁的"相關報導") |
