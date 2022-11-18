@@ -5,38 +5,13 @@ import Home from '~/components/icons/home'
 import ArrowLeft from '~/components/icons/arrow-left'
 import ArrowRight from '~/components/icons/arrow-right'
 import s from './nav.module.css'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
-//GA click
-const handleBackToHome = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「HOME」',
-  })
-}
-
-const handlePreviousClick = (prev: string | undefined) => {
-  if (prev === '回政見總覽' || prev === '回首頁' || prev === '回個人資訊') {
-    ReactGA.event({
-      category: 'Projects_PoliticsTracker',
-      action: 'click',
-      label: `點擊${prev}`,
-    })
-  } else {
-    ReactGA.event({
-      category: 'Projects_PoliticsTracker',
-      action: 'click',
-      label: `點擊往前一屆選舉`,
-    })
-  }
-}
-const handleNextClick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: `點擊往後一屆選舉`,
-  })
+const GALabelMap: Record<string, string> = {
+  '/election': '點擊「往前一屆選舉」',
+  '/politics/[personId]': '點擊「回政見總覽」',
+  '/person/[id]': '點擊「回個人資訊」',
+  '/': '點擊「回首頁」',
 }
 
 export type LinkMember = {
@@ -73,7 +48,19 @@ export default function Nav(props: NavProps): JSX.Element {
         <Link href={props.prev.href}>
           <a
             className={backStyle}
-            onClick={() => handlePreviousClick(props.prev?.content)}
+            onClick={() => {
+              if (
+                !(
+                  props.prev === undefined ||
+                  typeof props.prev !== 'object' ||
+                  typeof props.prev?.href !== 'object' ||
+                  props.prev.href.pathname === null ||
+                  props.prev.href.pathname === undefined
+                )
+              ) {
+                return logGAEvent('click', GALabelMap[props.prev.href.pathname])
+              }
+            }}
           >
             <span className={s['icon']}>
               <ArrowLeft />
@@ -88,13 +75,32 @@ export default function Nav(props: NavProps): JSX.Element {
         className={homeStyle}
         aria-label="link to homepage"
       >
-        <div className={s['icon-home']} onClick={handleBackToHome}>
+        <div
+          className={s['icon-home']}
+          onClick={() => logGAEvent('click', '點擊「HOME」')}
+        >
           <Home />
         </div>
       </Link>
       {props.next && (
         <Link href={props.next.href}>
-          <a className={nextStyle} onClick={handleNextClick}>
+          <a
+            className={nextStyle}
+            onClick={() => {
+              if (
+                !(
+                  props.prev === undefined ||
+                  typeof props.prev !== 'object' ||
+                  typeof props.prev?.href !== 'object' ||
+                  props.prev.href.pathname === null ||
+                  props.prev.href.pathname === undefined
+                ) &&
+                props.prev.href.pathname === '/election'
+              ) {
+                return logGAEvent('click', '點擊「往下一屆選舉」')
+              }
+            }}
+          >
             <span className={s['icon']}>
               <ArrowRight />
             </span>
