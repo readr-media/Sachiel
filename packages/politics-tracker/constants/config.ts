@@ -24,18 +24,18 @@ switch (env) {
   case 'dev':
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
     urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
-    siteUrl = process.env.PUBLIC_SITE_URL ?? 'https://whoareyou-dev.readr.tw'
+    siteUrl = process.env.SITE_URL ?? 'https://whoareyou-dev.readr.tw'
     break
   case 'prod': {
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
     urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
-    siteUrl = process.env.PUBLIC_SITE_URL ?? 'https://whoareyou.readr.tw'
+    siteUrl = process.env.SITE_URL ?? 'https://whoareyou.readr.tw'
     break
   }
   default:
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? ''
     urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
-    siteUrl = process.env.PUBLIC_SITE_URL ?? 'http://localhost:3000'
+    siteUrl = process.env.SITE_URL ?? 'http://localhost:3000'
     break
 }
 
