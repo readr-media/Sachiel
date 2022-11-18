@@ -1,6 +1,6 @@
 const envList: string[] = ['dev', 'prod']
-const env: string = envList.includes(String(process.env.ENV))
-  ? String(process.env.ENV)
+const env: string = envList.includes(String(process.env.NEXT_PUBLIC_ENV))
+  ? String(process.env.NEXT_PUBLIC_ENV)
   : 'localhost'
 
 // environment independent
