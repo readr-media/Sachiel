@@ -48,10 +48,15 @@ export default function PoliticsDetail({
   /** @type {NavProps} */
   const navProps = {
     prev: {
-      content: '回政見總覽',
-      href: `/politics/${politicData.person.person_id.id}`,
       backgroundColor: 'bg-button',
       textColor: 'text-black',
+      content: '回政見總覽',
+      href: {
+        pathname: '/politics/[personId]',
+        query: {
+          personId: politicData.person.person_id.id,
+        },
+      },
     },
     alwaysShowHome: true,
   }

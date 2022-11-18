@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 
@@ -13,6 +13,7 @@ import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+
 const Main = styled.main`
   background-color: #f3f4ff;
   height: 100%;
@@ -25,19 +26,27 @@ const Main = styled.main`
 `
 
 /**
- * @typedef {import('~/components/nav').LinkMember } LinkMember
- *
+ * @typedef {import('~/components/nav').NavProps } NavProps
+ * @returns {React.ReactElement}
+ */
+/**
  * @param {Object} props
  * @param {import('../../types/person').Person} props.personData
  * @param {import('../../types/common').RawPersonElection[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
 export default function People({ personData, personElectionsData }) {
-  /** @type {LinkMember} */
+  /** @type {NavProps} */
   const navProps = {
-    content: '回首頁',
-    href: '/',
-    backgroundColor: 'bg-person',
+    prev: {
+      backgroundColor: 'bg-person',
+      content: '回首頁',
+      href: {
+        pathname: '/',
+        query: {},
+      },
+    },
+    alwaysShowHome: true,
   }
 
   return (
@@ -50,7 +59,7 @@ export default function People({ personData, personElectionsData }) {
             personElectionsData={personElectionsData}
           />
         </Main>
-        <Nav prev={navProps} />
+        <Nav {...navProps} />
       </ThemeProvider>
     </DefaultLayout>
   )
