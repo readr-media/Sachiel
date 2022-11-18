@@ -14,15 +14,7 @@ import Button from './button'
 import Plus from '~/components/icons/plus'
 import ArrowRight from '~/components/icons/arrow-right'
 import s from './politic-form.module.css'
-import ReactGA from 'react-ga'
-
-const handleSendButtonClick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「送出審核」',
-  })
-}
+import { logGAEvent } from '~/utils/analytics'
 
 const fullConfig = getTailwindConfig()
 
@@ -243,7 +235,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
           disable={!isValid}
           loading={isProcessing}
           onClick={() => {
-            handleSendButtonClick()
+            logGAEvent('click', '點擊「送出審核」')
             submitHandler()
           }}
         />
