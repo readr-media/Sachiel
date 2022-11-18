@@ -42,11 +42,13 @@ export const getServerSideProps: GetServerSideProps<
 
   const electionType = electionTypesMapping[String(type)]
   let ldr = new DataLoader({
-    apiUrl: `https://whoareyou-gcs.readr.tw/${env === 'dev' ? 'elections-dev': 'elections'}`,
+    apiUrl: `https://whoareyou-gcs.readr.tw/${
+      env === 'dev' ? 'elections-dev' : 'elections'
+    }`,
     version: 'v2',
   })
   let scrollTo = ''
-  let data 
+  let data
   switch (electionType) {
     case 'mayor': {
       data = await ldr.loadMayorData({
