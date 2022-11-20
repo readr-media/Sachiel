@@ -12,13 +12,13 @@ export const logPageView = () => {
   ReactGA.pageview(window.location.pathname)
 }
 
-export const logGAEvent = (
-  category = 'Projects_PoliticsTracker',
-  action = '',
-  label = ''
-) => {
+export const logGAEvent = (action = '', label = '') => {
   if (action) {
-    ReactGA.event({ category, action, label })
+    ReactGA.event({
+      action,
+      label,
+      category: 'Projects_PoliticsTracker',
+    })
   }
 }
 
