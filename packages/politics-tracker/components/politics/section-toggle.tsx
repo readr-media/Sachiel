@@ -10,7 +10,7 @@ type SectionToggleProps = {
   party: string
   partyIcon: string
   isActive: boolean
-  order: any
+  order: number
   setActive: () => void
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
