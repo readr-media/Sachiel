@@ -50,14 +50,13 @@ export default function Nav(props: NavProps): JSX.Element {
             className={backStyle}
             onClick={() => {
               if (
-                !(
-                  props.prev === undefined ||
-                  typeof props.prev !== 'object' ||
-                  typeof props.prev?.href !== 'object' ||
-                  props.prev.href.pathname === null ||
-                  props.prev.href.pathname === undefined
-                )
+                props.prev === undefined ||
+                typeof props.prev !== 'object' ||
+                typeof props.prev?.href !== 'object' ||
+                !props.prev.href.pathname
               ) {
+                return
+              } else {
                 return logGAEvent('click', GALabelMap[props.prev.href.pathname])
               }
             }}
