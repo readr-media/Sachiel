@@ -5,6 +5,14 @@ import Home from '~/components/icons/home'
 import ArrowLeft from '~/components/icons/arrow-left'
 import ArrowRight from '~/components/icons/arrow-right'
 import s from './nav.module.css'
+import { logGAEvent } from '~/utils/analytics'
+
+const GALabelMap: Record<string, string> = {
+  '/election': '點擊「往前一屆選舉」',
+  '/politics/[personId]': '點擊「回政見總覽」',
+  '/person/[id]': '點擊「回個人資訊」',
+  '/': '點擊「回首頁」',
+}
 
 export type LinkMember = {
   content: string
@@ -38,7 +46,21 @@ export default function Nav(props: NavProps): JSX.Element {
     <div className={s['container']}>
       {props.prev && (
         <Link href={props.prev.href}>
-          <a className={backStyle}>
+          <a
+            className={backStyle}
+            onClick={() => {
+              if (
+                props.prev === undefined ||
+                typeof props.prev !== 'object' ||
+                typeof props.prev?.href !== 'object' ||
+                !props.prev.href.pathname
+              ) {
+                return
+              } else {
+                return logGAEvent('click', GALabelMap[props.prev.href.pathname])
+              }
+            }}
+          >
             <span className={s['icon']}>
               <ArrowLeft />
             </span>
@@ -52,13 +74,30 @@ export default function Nav(props: NavProps): JSX.Element {
         className={homeStyle}
         aria-label="link to homepage"
       >
-        <div className={s['icon-home']}>
+        <div
+          className={s['icon-home']}
+          onClick={() => logGAEvent('click', '點擊「HOME」')}
+        >
           <Home />
         </div>
       </Link>
       {props.next && (
         <Link href={props.next.href}>
-          <a className={nextStyle}>
+          <a
+            className={nextStyle}
+            onClick={() => {
+              if (
+                props.prev === undefined ||
+                typeof props.prev !== 'object' ||
+                typeof props.prev?.href !== 'object' ||
+                !props.prev.href.pathname
+              ) {
+                return
+              } else if (props.prev.href.pathname === '/election') {
+                return logGAEvent('click', '點擊「往下一屆選舉」')
+              }
+            }}
+          >
             <span className={s['icon']}>
               <ArrowRight />
             </span>

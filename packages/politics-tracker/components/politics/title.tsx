@@ -7,6 +7,8 @@ import classNames from 'classnames'
 import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
 import Icon from '~/components/icon'
 import s from './title.module.css'
+import { logGAEvent } from '~/utils/analytics'
+
 const fullConfig = getTailwindConfig()
 
 const mainTextClass = s['main-text']
@@ -178,7 +180,11 @@ export default function Title(props: PersonOverview): JSX.Element {
           />
         </span>
         <div className={s.name}>
-          <Link href={hrefObject} legacyBehavior={false}>
+          <Link
+            href={hrefObject}
+            legacyBehavior={false}
+            onClick={() => logGAEvent('click', '點擊人名')}
+          >
             <MultipleLineBlock content={props.name} {...mainText}>
               <SingleLineBlock
                 content={props.name}
