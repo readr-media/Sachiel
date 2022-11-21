@@ -164,7 +164,8 @@ export async function getServerSideProps({ query, res }) {
           passed: passedAmount,
           waiting: waitingAmount,
         },
-        latestPersonElection: personAllElections[0].election.type,
+        latestPersonElection:
+          personAllElections[personAllElections.length - 1].election.type,
         config: feedbackFormConfig,
       }, // will be passed to the page component as props
     }
