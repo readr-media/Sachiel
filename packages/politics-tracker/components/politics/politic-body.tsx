@@ -22,6 +22,7 @@ import Edit from '~/components/icons/edit'
 import ArrowRight from '../icons/arrow-right'
 import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
 import s from './politic-body.module.css'
+import { logGAEvent } from '~/utils/analytics'
 
 type PoliticBodyProps = Politic & { no: number }
 
@@ -168,6 +169,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                 }}
                 legacyBehavior={false}
                 className={s['button']}
+                onClick={() => logGAEvent('click', '點擊「政見細節」')}
               >
                 <span>政見細節</span>
                 <span className={s['button-icon']}>

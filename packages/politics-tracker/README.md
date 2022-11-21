@@ -64,9 +64,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Environment Variables
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
-| ENV | 字串 | '' | 環境設定 |
-| NEXT_PUBLIC_SITE_URL | 字串 | '' | 網站網址 |
-| NEXT_PUBLIC_CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
+| NEXT_PUBLIC_ENV | 字串 | '' | 環境設定 |
+| SITE_URL | 字串 | '' | 網站網址 |
+| CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
+| READR_CMS_API_URL | 字串 | '' | 後端 Readr CMS GraphQL API 呼叫端點資訊(用於landing頁的"相關報導") |
 | GOOGLE_ANALYTICS_TRACKING_ID | 字串 | '' | Google Analytics Tracking ID |
 | URL_OF_JSON_FOR_LANDING_PAGE | 字串 | '' | landing 頁所需的資料來源 |
 | FEEDBACK_FORM_CONFIG | JSON 字串 | '' | 使用者回饋表單的設定資訊 |

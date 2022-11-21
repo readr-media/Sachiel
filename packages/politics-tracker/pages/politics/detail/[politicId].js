@@ -48,10 +48,15 @@ export default function PoliticsDetail({
   /** @type {NavProps} */
   const navProps = {
     prev: {
-      content: '回政見總覽',
-      href: `/politics/${politicData.person.person_id.id}`,
       backgroundColor: 'bg-button',
       textColor: 'text-black',
+      content: '回政見總覽',
+      href: {
+        pathname: '/politics/[personId]',
+        query: {
+          personId: politicData.person.person_id.id,
+        },
+      },
     },
     alwaysShowHome: true,
   }
@@ -136,7 +141,10 @@ export async function getServerSideProps({ query, res }) {
     )
 
     const passedAmount = allPoliticList.filter(
-      (value) => value.status === 'verified' && value.reviewed
+      (value) =>
+        value.status === 'verified' &&
+        value.reviewed &&
+        value.thread_parent === null
     ).length
     const waitingAmount = allPoliticList.filter(
       (value) => !value.reviewed
@@ -159,7 +167,8 @@ export async function getServerSideProps({ query, res }) {
           passed: passedAmount,
           waiting: waitingAmount,
         },
-        latestPersonElection: personAllElections[0].election.type,
+        latestPersonElection:
+          personAllElections[personAllElections.length - 1].election.type,
         config: feedbackFormConfig,
       }, // will be passed to the page component as props
     }

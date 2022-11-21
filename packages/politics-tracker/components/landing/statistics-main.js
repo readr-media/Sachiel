@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Image from 'next/image'
 import { typedHasOwnProperty } from '~/utils/utils'
 import CountUp from 'react-countup'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 const BoardContainer = styled.div`
   width: 100%;
@@ -145,21 +145,6 @@ const BoardButton = styled.div`
     }
   }
 `
-// GA click
-const handleMayorOnclick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「新增縣市長政見」',
-  })
-}
-const handleCouncilorOnclick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「新增縣市議員政見」',
-  })
-}
 const ArrowIcon = styled.div``
 /**
  *
@@ -187,7 +172,12 @@ export default function StatisticsBoard({ propsData }) {
           </ContentWrap>
         </BoardContent>
         <a href="#mayor">
-          <BoardButton color={'green'} onClick={handleMayorOnclick}>
+          <BoardButton
+            color={'green'}
+            onClick={() => {
+              logGAEvent('click', '點擊「新增縣市長政見」')
+            }}
+          >
             <h3>新增縣市長政見</h3>
             <ArrowIcon>
               <Image
@@ -217,7 +207,12 @@ export default function StatisticsBoard({ propsData }) {
           </ContentWrap>
         </BoardContent>
         <a href="#councilorBlock">
-          <BoardButton color="blue" onClick={handleCouncilorOnclick}>
+          <BoardButton
+            color="blue"
+            onClick={() => {
+              logGAEvent('click', '點擊「新增縣市議員政見」')
+            }}
+          >
             <h3>新增縣市議員政見</h3>
             <ArrowIcon>
               <Image

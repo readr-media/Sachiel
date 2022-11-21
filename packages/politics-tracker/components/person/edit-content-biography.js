@@ -10,23 +10,14 @@ import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { useToast } from '../toast/use-toast'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
   }
 `
-// GA click
-const handleBiographySendButton = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「經歷」區塊的「送出審核」',
-  })
-}
 
 /**
- *
  * @param {Object} props
  * @param {string} [props.listData]
  * @param {string} [props.sources]
@@ -201,7 +192,9 @@ export default function EditContentBiography({
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
-        GAClick={handleBiographySendButton}
+        GAClick={() => {
+          logGAEvent('click', '點擊「經歷」區塊的「送出審核」')
+        }}
       />
     </Fragment>
   )
