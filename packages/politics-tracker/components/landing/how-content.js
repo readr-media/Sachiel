@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -135,14 +135,6 @@ const GuideLink = styled.div`
     max-width: 1040px;
   }
 `
-// GA click
-const handleDocOnclick = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「協作指南」',
-  })
-}
 
 /**
  *
@@ -214,7 +206,9 @@ export default function HowContent() {
           href="https://hackmd.io/@readr/H1WmP88Eo"
           target="_blank"
           rel="noreferrer noopener"
-          onClick={handleDocOnclick}
+          onClick={() => {
+            logGAEvent('click', '點擊「協作指南」')
+          }}
         >
           協作指南
           <Image

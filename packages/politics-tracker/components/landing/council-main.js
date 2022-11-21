@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CouncilList from '~/components/landing/council-content'
 import Image from 'next/image'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 const CouncilContainer = styled.div`
   width: 100%;
@@ -236,14 +236,6 @@ const ToggleButton = styled.div`
     font-size: 16px;
   }
 `
-// GA click
-const handleOpenCities = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「展開所有縣市」',
-  })
-}
 /**
  *
  * @returns {React.ReactElement}
@@ -367,7 +359,11 @@ export default function CouncilMain({ propsData }) {
                     setToggle(!toggle)
                   }}
                 >
-                  <div onClick={handleOpenCities}>
+                  <div
+                    onClick={() => {
+                      logGAEvent('click', '點擊「展開所有縣市」')
+                    }}
+                  >
                     {toggleNotion}
                     {toggle ? (
                       <Image

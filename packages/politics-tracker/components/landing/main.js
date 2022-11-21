@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
 import { InView } from 'react-intersection-observer'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 //components
 import Header from '~/components/header'
@@ -42,11 +42,7 @@ export default function LandingMain({ propsData }) {
   const handleGaInview = (isInView) => {
     setInView(isInView)
     if (isInView && !hasSentGa) {
-      ReactGA.event({
-        category: 'Projects_PoliticsTracker',
-        action: 'scroll',
-        label: '頁面滑動至最尾端',
-      })
+      logGAEvent('click', '頁面滑動至最底端')
       setHasSentGa(true)
     }
   }
