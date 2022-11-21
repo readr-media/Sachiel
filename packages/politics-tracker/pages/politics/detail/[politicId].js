@@ -141,10 +141,13 @@ export async function getServerSideProps({ query, res }) {
     )
 
     const passedAmount = allPoliticList.filter(
-      (value) => value.status === 'verified' && value.reviewed
+      (value) =>
+        value.status === 'verified' &&
+        value.reviewed &&
+        value.thread_parent === null
     ).length
     const waitingAmount = allPoliticList.filter(
-      (value) => !value.reviewed
+      (value) => !value.reviewed && value.thread_parent === null
     ).length
 
     //get latest election type this person join ( put in <Title> component)
