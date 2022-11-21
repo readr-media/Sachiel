@@ -16,7 +16,7 @@ import EditContentContact from './edit-content-contact'
 import Sources from './sources'
 import Tag from './tag'
 import EditTags from './edit-tags'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 const ContentPersonImage = styled(ProfileImage)`
   min-width: 40px;
   min-height: 40px;
@@ -35,58 +35,7 @@ const TagContainer = styled.div`
     ${({ theme }) => theme.fontSize['title-sub-md']};
   }
 `
-//GA click
-const handleBasicEdit = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「基本資料」區塊的「編輯」',
-  })
-}
-const handleBiographyEdit = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「經歷」區塊的「編輯」',
-  })
-}
-const handleContactEdit = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「聯絡方式」區塊的「編輯」',
-  })
-}
-const handleTagEdit = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「標籤」區塊的「編輯」',
-  })
-}
-const handleBasicOpenSources = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「基本資料」區塊的「展開來源」',
-  })
-}
-const handleBiographyOpenSources = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「經歷」區塊的「展開來源」',
-  })
-}
-const handleContactOpenSources = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「聯絡方式」區塊的「展開來源」',
-  })
-}
 /**
- *
  * @param {Object} props
  * @param {boolean} [props.isActive]
  * @param {import('../../types/person').Person} props.personData
@@ -222,7 +171,9 @@ export default function SectionBodyPersonalFile({
         title="基本資料"
         shouldShowEditMode={basicEditMode}
         setShouldShowEditMode={setBasicEditMode}
-        GAClick={handleBasicEdit}
+        GAClick={() => {
+          logGAEvent('click', '點擊「基本資料」區塊的「編輯」')
+        }}
         editContent={
           <EditContentBasic
             personData={personData}
@@ -261,14 +212,21 @@ export default function SectionBodyPersonalFile({
         />
         <ContentItem title="生理性別" content={displayedGender} />
         <ContentItem title="國籍" content={national_identity} />
-        <Sources sources={source} GAClick={handleBasicOpenSources} />
+        <Sources
+          sources={source}
+          GAClick={() => {
+            logGAEvent('click', '點擊「基本資料」區塊的「展開來源」')
+          }}
+        />
       </Content>
 
       <Content
         title="經歷"
         shouldShowEditMode={bioEditMode}
         setShouldShowEditMode={setBioEditMode}
-        GAClick={handleBiographyEdit}
+        GAClick={() => {
+          logGAEvent('click', '點擊「經歷」區塊的「編輯」')
+        }}
         editContent={
           <EditContentBiography
             personId={id}
@@ -280,14 +238,21 @@ export default function SectionBodyPersonalFile({
         }
       >
         <ContentList listData={biography} />
-        <Sources sources={source} GAClick={handleBiographyOpenSources} />
+        <Sources
+          sources={source}
+          GAClick={() => {
+            logGAEvent('click', '點擊「經歷」區塊的「展開來源」')
+          }}
+        />
       </Content>
       {/* TODO: show multiple line */}
       <Content
         title="聯絡方式"
         shouldShowEditMode={contactEditMode}
         setShouldShowEditMode={setContactEditMode}
-        GAClick={handleContactEdit}
+        GAClick={() => {
+          logGAEvent('click', '點擊「聯絡方式」區塊的「編輯」')
+        }}
         editContent={
           <EditContentContact
             personId={id}
@@ -303,13 +268,20 @@ export default function SectionBodyPersonalFile({
         <ContentItem title="電子信箱" content={email} />
         <ContentItem title="電話/地址" content={contact_details} />
         <ContentLink title="網站" links={links} />
-        <Sources sources={source} GAClick={handleContactOpenSources} />
+        <Sources
+          sources={source}
+          GAClick={() => {
+            logGAEvent('click', '點擊「聯絡方式」區塊的「展開來源」')
+          }}
+        />
       </Content>
       <Content
         shouldShowEditMode={tagEditMode}
         setShouldShowEditMode={setTagEditMode}
         title="標籤"
-        GAClick={handleTagEdit}
+        GAClick={() => {
+          logGAEvent('click', '點擊「標籤」區塊的「編輯」')
+        }}
         editContent={
           <EditTags
             setShouldShowEditMode={setTagEditMode}

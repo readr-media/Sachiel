@@ -11,7 +11,7 @@ import { print } from 'graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { useToast } from '../toast/use-toast'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 /** TODO: refactor jsDoc, make it more clear
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique
@@ -25,14 +25,6 @@ import ReactGA from 'react-ga'
  * @property {function}  onChange - value of content
  * @property {import('~/types/person').Person}  personInfo - value of content
  */
-// GA click
-const handleBasicSendButton = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「基本資料」區塊的「送出審核」',
-  })
-}
 
 /**
  * @param {Object} props
@@ -377,7 +369,9 @@ export default function EditContentBasic({
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
-        GAClick={handleBasicSendButton}
+        GAClick={() => {
+          logGAEvent('click', '點擊「基本資料」區塊的「送出審核」')
+        }}
       />
     </Fragment>
   )
