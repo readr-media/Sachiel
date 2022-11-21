@@ -13,21 +13,13 @@ import { fireGqlRequest } from '~/utils/utils'
 import GetExistTags from '~/graphql/query/person/get-exist-tags.graphql'
 import CreateTags from '~/graphql/mutation/person/create-tags.graphql'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
   }
 `
-// GA click
-const handleTagSendButton = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「標籤」區塊的「送出審核」',
-  })
-}
 
 /**
  *
@@ -277,7 +269,9 @@ export default function EditTags(props) {
         isDisable={shouldDisableSubmit}
         onClick={() => props.setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
-        GAClick={handleTagSendButton}
+        GAClick={() => {
+          logGAEvent('click', '點擊「標籤」區塊的「送出審核」')
+        }}
       />
     </Fragment>
   )

@@ -11,7 +11,7 @@ import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { fireGqlRequest } from '~/utils/utils'
 import { useToast } from '~/components/toast/use-toast'
 import styled from 'styled-components'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 
 const ErrorMessage = styled.div`
   font-size: 14px;
@@ -19,14 +19,6 @@ const ErrorMessage = styled.div`
   color: #c0374f;
   margin: 5px 0px;
 `
-// GA click
-const handleContactSendButton = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊「聯絡方式」區塊的「送出審核」',
-  })
-}
 /**
  *
  * @param {Object} props
@@ -350,7 +342,9 @@ export default function EditContentContact({
         isDisable={shouldDisableSubmit}
         onClick={() => setShouldShowEditMode(false)}
         submitHandler={() => submitHandler()}
-        GAClick={handleContactSendButton}
+        GAClick={() => {
+          logGAEvent('click', '點擊「聯絡方式」區塊的「送出審核」')
+        }}
       />
     </Fragment>
   )

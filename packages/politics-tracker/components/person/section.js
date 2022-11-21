@@ -3,27 +3,12 @@ import { useState } from 'react'
 import SectionList from './section-list'
 import SectionBodyPersonalFile from './section-body-personal-file'
 import SectionBodyElection from './section-body-election'
-import ReactGA from 'react-ga'
+import { logGAEvent } from '~/utils/analytics'
 const SectionContainer = styled.div`
   max-width: 688px;
   margin: 0 auto;
   padding: 0 26px 0 16px;
 `
-// GA click
-const handleOpenPersonalFile = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊收合「個人檔案」',
-  })
-}
-const handleOpenElection = () => {
-  ReactGA.event({
-    category: 'Projects_PoliticsTracker',
-    action: 'click',
-    label: '點擊展開「參與過的選舉」',
-  })
-}
 /**
  * @param {Object} props
  * @param {import('../../types/person').Person} props.personData
@@ -41,7 +26,9 @@ export default function Section({ personData, personElectionsData }) {
         activeId={activeId}
         color="blue"
         title="個人檔案"
-        GAClick={handleOpenPersonalFile}
+        GAClick={() => {
+          activeId.includes('0') && logGAEvent('click', '點擊收合「個人檔案」')
+        }}
       >
         <SectionBodyPersonalFile
           isActive={activeId.includes('0')}
@@ -55,7 +42,10 @@ export default function Section({ personData, personElectionsData }) {
         activeId={activeId}
         color="orange"
         title="參與過的選舉"
-        GAClick={handleOpenElection}
+        GAClick={() => {
+          !activeId.includes('1') &&
+            logGAEvent('click', '點擊展開「參與過的選舉」')
+        }}
       >
         <SectionBodyElection
           personId={personData.id}
