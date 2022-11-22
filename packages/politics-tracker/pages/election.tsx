@@ -261,7 +261,7 @@ const Election = (props: ElectionPageProps) => {
                 }
                 logGAEvent('click', `點擊身份別的tab(${tabName})`)
               } else if (_type === 'selector') {
-                logGAEvent('click', `點擊選區的selector`)
+                logGAEvent('click', `點擊選區的selector(${_value})`)
               }
             }}
           />
