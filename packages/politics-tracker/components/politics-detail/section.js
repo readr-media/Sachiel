@@ -64,11 +64,32 @@ export default function Section({ politicData }) {
     storageKey: 'politics-tracker-user-id',
   }
 
+  //judge the politic's election is finished or unfinished
+  //if finished: show progress-bar; if unfinished: hidden progress-bar
+
+  //get election Date (YYYY-MM-DD)
+  let electionDate =
+    politicData.person.election.election_year_year +
+    '-' +
+    politicData.person.election.election_year_month +
+    '-' +
+    politicData.person.election.election_year_day
+
+  // get current Date (YYYY-MM-DD)
+  let currentTime = new Date()
+  let day = currentTime.getDate()
+  let month = currentTime.getMonth() + 1
+  let year = currentTime.getFullYear()
+  let currentDate = `${year}-${month}-${day}`
+
+  // compare "election Date" & "current Date"
+  const electionFinishedOrNot = +new Date(electionDate) < +new Date(currentDate)
+
   return (
     <SectionContainer>
       <div>
         <SectionTitle politicData={politicData}></SectionTitle>
-        {politicData.person.votes_obtained_number !== '' && (
+        {electionFinishedOrNot && (
           <ProgressBar politicData={politicData}></ProgressBar>
         )}
         <SectionContent politicData={politicData}></SectionContent>
