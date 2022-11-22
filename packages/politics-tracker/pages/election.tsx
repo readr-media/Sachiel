@@ -17,6 +17,7 @@ import DefaultLayout from '~/components/layout/default'
 import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
+import { logGAEvent } from '~/utils/analytics'
 
 const DataLoader = evc.DataLoader
 
@@ -241,6 +242,28 @@ const Election = (props: ElectionPageProps) => {
             election={election}
             scrollTo={props.scrollTo}
             stickyTopOffset="80px"
+            onChange={(_type: string, _value: string) => {
+              if (_type === 'tab') {
+                let tabName = ''
+                switch (_value) {
+                  case 'normal':
+                    tabName = '區域'
+                    break
+                  case 'plainIndigenous':
+                    tabName = '平地原住民'
+                    break
+                  case 'mountainIndigenous':
+                    tabName = '山地原住民'
+                    break
+                  default:
+                    tabName = _value
+                    break
+                }
+                logGAEvent('click', `點擊身份別的tab(${tabName})`)
+              } else if (_type === 'selector') {
+                logGAEvent('click', `點擊選區的selector(${_value})`)
+              }
+            }}
           />
           <Nav {...navProps} />
         </div>
