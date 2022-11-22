@@ -34,7 +34,7 @@ query GetPoliticsDetail($politicId: ID!) {
     status
     status
     current_progress
-    timeline(orderBy:{eventDate: desc}){
+    timeline(orderBy:{eventDate: asc}){
       id,
       eventDate,
       content,
@@ -42,6 +42,7 @@ query GetPoliticsDetail($politicId: ID!) {
     }
     expertPoint(orderBy:{reviewDate: desc}){
       id,
+      expert,
       avatar,
       contributer,
       title,
