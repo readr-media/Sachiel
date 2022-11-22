@@ -3,6 +3,7 @@ query GetPoliticsDetail($politicId: ID!) {
     id
     person{
       votes_obtained_number
+      votes_obtained_percentage
       elected
       incumbent
       id,
@@ -20,7 +21,8 @@ query GetPoliticsDetail($politicId: ID!) {
        level,
        status,
        election_year_year
-
+       election_year_month
+       election_year_day
       },
       person_id{
         id,
