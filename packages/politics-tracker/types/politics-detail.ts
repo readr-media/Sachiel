@@ -18,6 +18,7 @@ export type Person = {
   election: Election
   person_id: PersonId
   votes_obtained_number: string
+  votes_obtained_percentage: string
   elected: Boolean
   incumbent: Boolean
 }
@@ -37,6 +38,9 @@ export type Election = {
   type: string
   level: string
   status: string
+  election_year_year: string
+  election_year_month: string
+  election_year_day: string
 }
 
 export type PersonId = {

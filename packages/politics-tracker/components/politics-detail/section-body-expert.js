@@ -202,7 +202,7 @@ export default function PoliticsExpert({ infoList, isActive }) {
           </ExpertImage>
         )}
         <div>
-          <p className="expertName">{value.contributer}</p>
+          <p className="expertName">{value.expert}</p>
           <span>{value.title}</span>
         </div>
       </ExpertTitle>
