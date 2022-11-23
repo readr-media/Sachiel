@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@readr-media/react-election-widgets": "1.0.1",
+    "@readr-media/react-election-widgets": "1.0.2",
     "@readr-media/react-feedback": "3.3.0",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
