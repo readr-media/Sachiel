@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
+import Head from 'next/head'
 
 import theme from '~/styles/theme'
 import Title from '~/components/person/title'
@@ -49,8 +50,18 @@ export default function People({ personData, personElectionsData }) {
     alwaysShowHome: true,
   }
 
+  // next/head title & description
+  const HeadInfo = {
+    title: `${personData.name} - 個人資訊｜READr 政商人物資料庫`,
+    description: `${personData.name}個人資料、經歷，各種政商關係及記錄`,
+  }
+
   return (
     <DefaultLayout>
+      <Head>
+        <title>{HeadInfo.title}</title>
+        <meta name="description" content={HeadInfo.description} />
+      </Head>
       <ThemeProvider theme={theme}>
         <Main>
           <Title name={personData.name} image={personData.image} />
