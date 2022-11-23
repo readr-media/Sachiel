@@ -1289,10 +1289,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@readr-media/react-election-widgets@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-election-widgets/-/react-election-widgets-1.0.1.tgz#3ab60f2b6cb5fcccfb6494465ab6c2ebc113d79a"
-  integrity sha512-lJ9wZcxSAu/gPlXkXU/znHtCBgm5NeVJ12BaDsbQZEFVB/dMWiSNbpkTpDO5UWEn8duGAY2njg71j34k8QM8kw==
+"@readr-media/react-election-widgets@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-election-widgets/-/react-election-widgets-1.0.2.tgz#47683c89b32f1f03cc52b4a0bb38ca99ca513bcb"
+  integrity sha512-ZbGi8VqXTGQC+eS+2VCdIU4r9hoAo510ikc5bsZw4l6iC0LEPdGQ5K8gGgP/wqKPAJk9tiXsHj/oc+W5TNiy8Q==
   dependencies:
     "@twreporter/errors" "^1.1.1"
     axios "^0.27.2"
