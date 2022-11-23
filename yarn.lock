@@ -1289,17 +1289,13 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@readr-media/react-election-votes-comparison@2.0.0-beta.23":
-  version "2.0.0-beta.23"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-election-votes-comparison/-/react-election-votes-comparison-2.0.0-beta.23.tgz#c65e947a002e00b505adacf2e14e4acb5f1c27a1"
-  integrity sha512-46dL6BCSokUU7Ac7kJuLZQPn57ANEB3kzH8vVOin3jYmwvYA1d8q6XVBNPEQU+QhGxFw/5cT5rpPlnsGlKDNBg==
+"@readr-media/react-election-widgets@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-election-widgets/-/react-election-widgets-1.0.2.tgz#47683c89b32f1f03cc52b4a0bb38ca99ca513bcb"
+  integrity sha512-ZbGi8VqXTGQC+eS+2VCdIU4r9hoAo510ikc5bsZw4l6iC0LEPdGQ5K8gGgP/wqKPAJk9tiXsHj/oc+W5TNiy8Q==
   dependencies:
     "@twreporter/errors" "^1.1.1"
-    axios "0.27.2"
-    lodash "^4.17.21"
-    regenerator-runtime "^0.13.9"
-    serialize-javascript "^6.0.0"
-    uuid "^8.3.2"
+    axios "^0.27.2"
 
 "@readr-media/react-feedback@3.3.0":
   version "3.3.0"
@@ -1775,7 +1771,7 @@ axios@*, axios@^1.1.2:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
-axios@0.27.2, axios@^0.27.2:
+axios@^0.27.2:
   version "0.27.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
