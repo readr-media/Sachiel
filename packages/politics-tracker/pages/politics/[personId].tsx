@@ -15,6 +15,8 @@ import {
   PROGRESS,
 } from '~/types/common'
 
+import Head from 'next/head'
+import CustomHead, { type HeadProps } from '~/components/custom-head'
 import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
@@ -33,7 +35,6 @@ import Title from '~/components/politics/title'
 import SectionList from '~/components/politics/section-list'
 // import Nav from '~/components/politics/nav'
 import Nav, { type NavProps } from '~/components/nav'
-import CustomHead, { type HeadProps } from '~/components/custom-head'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 type PoliticsPageProps = {
@@ -401,7 +402,10 @@ const Politics = (props: PoliticsPageProps) => {
 
   return (
     <DefaultLayout>
-      <CustomHead {...headProps} />
+      <Head>
+        <title key="title">{headProps.title}</title>
+        <CustomHead {...headProps} />
+      </Head>
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[60px]">
@@ -413,6 +417,7 @@ const Politics = (props: PoliticsPageProps) => {
         </div>
         <Nav {...navProps} />
       </main>
+      {/* </Fragment> */}
     </DefaultLayout>
   )
 }
