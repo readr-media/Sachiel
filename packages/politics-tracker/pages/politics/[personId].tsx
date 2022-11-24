@@ -17,6 +17,7 @@ import {
 
 import { useState } from 'react'
 import moment from 'moment'
+import Head from 'next/head'
 import { print } from 'graphql'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
 import {
@@ -394,8 +395,17 @@ const Politics = (props: PoliticsPageProps) => {
     <SectionList key={e.id} order={index} {...e} />
   ))
 
+  const HeadInfo = {
+    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
+    description: `${props.titleProps.name}參選紀錄及相關政見`,
+  }
+
   return (
     <DefaultLayout>
+      <Head>
+        <title>{HeadInfo.title}</title>
+        <meta name="description" content={HeadInfo.description} />
+      </Head>
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[60px]">
