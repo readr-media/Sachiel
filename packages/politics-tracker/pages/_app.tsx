@@ -7,6 +7,7 @@ import NextNProgress from 'nextjs-progressbar'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { initGA, logPageView } from '~/utils/analytics'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -32,6 +33,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <Head>
+        <title>政見不失憶：臺灣 2022 選舉政見協作平台</title>
+        <meta
+          name="description"
+          content="政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr 協作平台邀請你一起追蹤候選人選舉時提出的政見，並監督他是否在任期內達成。"
+        />
+      </Head>
       {/* ref: https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs */}
       {/* Google tag (gtag.js) */}
       <Script

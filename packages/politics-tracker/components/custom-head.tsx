@@ -72,8 +72,6 @@ export default function CustomHead(): JSX.Element {
 
   return (
     <>
-      <title>{siteInformation.title}</title>
-      <meta name="description" content={siteInformation.description} />
       <OpenGraph properties={siteInformation} />
       <link
         rel="apple-touch-icon"
