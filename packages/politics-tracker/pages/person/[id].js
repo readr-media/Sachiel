@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
-import Head from 'next/head'
+import CustomHead from '~/components/custom-head'
 
 import theme from '~/styles/theme'
 import Title from '~/components/person/title'
-import SectionList from '~/components/person/section-list'
 import Section from '~/components/person/section'
 import { cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
@@ -51,17 +50,14 @@ export default function People({ personData, personElectionsData }) {
   }
 
   // next/head title & description
-  const HeadInfo = {
+  const headProps = {
     title: `${personData.name} - 個人資訊｜READr 政商人物資料庫`,
     description: `${personData.name}個人資料、經歷，各種政商關係及記錄`,
   }
 
   return (
     <DefaultLayout>
-      <Head>
-        <title>{HeadInfo.title}</title>
-        <meta name="description" content={HeadInfo.description} />
-      </Head>
+      <CustomHead {...headProps} />
       <ThemeProvider theme={theme}>
         <Main>
           <Title name={personData.name} image={personData.image} />
