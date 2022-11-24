@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
-import Head from 'next/head'
+import CustomHead from '~/components/custom-head'
 
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
@@ -67,35 +67,25 @@ export default function PoliticsDetail({
   }
 
   //next/head title & description
-  const HeadInfo = { title: '', description: '' }
+  const headProps = { title: '', description: '' }
 
-  // if title length > 20，add "..."
-  if (politicData.desc.length > 20) {
-    HeadInfo.title = `${
-      politicData.person.person_id.name
-    } - ${politicData.desc.slice(0, 20)}⋯｜READr 政商人物資料庫`
-  } else {
-    HeadInfo.title = `${politicData.person.person_id.name} - ${politicData.desc}｜READr 政商人物資料庫`
-  }
+  headProps.title = `${politicData.person.person_id.name} - ${politicData.desc}｜READr 政商人物資料庫`
 
   // if election type = councilor，description add "electoral_district.name"
   if (politicData.person.election.type === '縣市議員') {
-    HeadInfo.description = `${politicData.person.person_id.name}在${
+    headProps.description = `${politicData.person.person_id.name}在${
       politicData.person.election.election_year_year
     }${politicData.person.electoral_district.name.slice(
       0,
       3
     )}議員選舉提出的政見：${politicData.desc}`
   } else {
-    HeadInfo.description = `${politicData.person.person_id.name}在${politicData.person.election.election_year_year}${politicData.person.election.type}選舉提出的政見：${politicData.desc}`
+    headProps.description = `${politicData.person.person_id.name}在${politicData.person.election.election_year_year}${politicData.person.election.type}選舉提出的政見：${politicData.desc}`
   }
 
   return (
     <DefaultLayout>
-      <Head>
-        <title>{HeadInfo.title}</title>
-        <meta name="description" content={HeadInfo.description} />
-      </Head>
+      <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <ThemeProvider theme={theme}>
           <Main>
