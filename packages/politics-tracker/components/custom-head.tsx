@@ -20,6 +20,11 @@ export type OGProperties = {
   card: 'summary_large_image'
 }
 
+export type HeadProps = {
+  title?: string
+  description?: string
+}
+
 const OpenGraph = ({ properties }: { properties: OGProperties }) => {
   const { locale, url, site_name, title, type, description, image, card } =
     properties
@@ -53,7 +58,7 @@ const OpenGraph = ({ properties }: { properties: OGProperties }) => {
   )
 }
 
-export default function CustomHead(): JSX.Element {
+export default function CustomHead(props: HeadProps): JSX.Element {
   const siteInformation: OGProperties = {
     title: '政見不失憶：臺灣 2022 選舉政見協作平台',
     description:
@@ -70,8 +75,12 @@ export default function CustomHead(): JSX.Element {
     card: 'summary_large_image',
   }
 
+  // console.log(props.title)
+
   return (
     <>
+      <title>{props.title}</title>
+      <meta name="description" content={props.description} />
       <OpenGraph properties={siteInformation} />
       <link
         rel="apple-touch-icon"
