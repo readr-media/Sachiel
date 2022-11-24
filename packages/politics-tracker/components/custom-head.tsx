@@ -1,4 +1,5 @@
 import { siteUrl } from '~/constants/config'
+import Head from 'next/head'
 
 export type OGProperties = {
   locale?: 'zh_TW'
@@ -98,10 +99,15 @@ export default function CustomHead(props: HeadProps): JSX.Element {
   }
 
   return (
-    <>
-      <meta name="description" content={props.description} key="description" />
+    <Head>
+      <title key="title">{siteInformation.title}</title>
+      <meta
+        name="description"
+        content={siteInformation.description}
+        key="description"
+      />
       <OpenGraph properties={siteInformation} />
       <meta name="application-name" content={siteInformation.title} />
-    </>
+    </Head>
   )
 }

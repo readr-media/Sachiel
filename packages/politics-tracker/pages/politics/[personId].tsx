@@ -15,7 +15,6 @@ import {
   PROGRESS,
 } from '~/types/common'
 
-import Head from 'next/head'
 import CustomHead, { type HeadProps } from '~/components/custom-head'
 import { useState } from 'react'
 import moment from 'moment'
@@ -402,10 +401,7 @@ const Politics = (props: PoliticsPageProps) => {
 
   return (
     <DefaultLayout>
-      <Head>
-        <title key="title">{headProps.title}</title>
-        <CustomHead {...headProps} />
-      </Head>
+      <CustomHead {...headProps} />
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[60px]">

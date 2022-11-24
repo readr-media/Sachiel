@@ -34,10 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Head>
-        <title key="title">政見不失憶：臺灣 2022 選舉政見協作平台</title>
-        <CustomHead />
-      </Head>
+      <CustomHead />
       {/* ref: https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs */}
       {/* Google tag (gtag.js) */}
       <Script
