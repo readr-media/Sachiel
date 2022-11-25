@@ -236,8 +236,8 @@ const Election = (props: ElectionPageProps) => {
   const election = props.data
 
   const headProps: HeadProps = {
-    title: `${election.year}${election.title}票數資料｜READr 政商人物資料庫`,
-    description: `${election.year}${election.title}的各政黨與候選人得票數、得票率、當選狀況一覽`,
+    title: `${election.year}${props.name}票數資料｜READr 政商人物資料庫`,
+    description: `${election.year}${props.name}的各政黨與候選人得票數、得票率、當選狀況一覽`,
   }
 
   return (
