@@ -61,11 +61,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - - -
 
 ## Environment Variables (環境變數)
-## Environment Variables
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
-| NEXT_PUBLIC_ENV | 字串 | '' | 環境設定 |
-| SITE_URL | 字串 | '' | 網站網址 |
+| NEXT_PUBLIC_ENV | 字串 | 'localhost' | 環境設定 |
+| SITE_URL | 字串 | 'http://localhost:3000' | 網站網址 |
 | CMS_API_URL | 字串 | '' | 後端 CMS GraphQL API 呼叫端點資訊 |
 | READR_CMS_API_URL | 字串 | '' | 後端 Readr CMS GraphQL API 呼叫端點資訊(用於landing頁的"相關報導") |
 | GOOGLE_ANALYTICS_TRACKING_ID | 字串 | '' | Google Analytics Tracking ID |
