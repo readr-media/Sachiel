@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
 import theme from '~/styles/theme'
+import CustomHead from '~/components/custom-head'
 
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
@@ -65,8 +66,32 @@ export default function PoliticsDetail({
     politicData.person.party = { name: '無黨籍' }
   }
 
+  //next/head title & description
+  const headProps = { title: '', description: '' }
+
+  headProps.title = `${politicData.person.person_id.name} - ${politicData.desc}｜READr 政商人物資料庫`
+
+  //get election name
+  const rawElectionName = politicData.person.election.name
+  const electionWithoutYear = rawElectionName.slice(
+    rawElectionName.indexOf('年') + 1
+  )
+
+  // if election.level = "地方選舉" add "electoral_district.name"
+  if (politicData.person.election.level === '地方選舉' || 'local') {
+    headProps.description = `${politicData.person.person_id.name}在${
+      politicData.person.election.election_year_year
+    }${politicData.person.electoral_district.name.slice(
+      0,
+      3
+    )}${electionWithoutYear}提出的政見：${politicData.desc}`
+  } else {
+    headProps.description = `${politicData.person.person_id.name}在${politicData.person.election.election_year_year}${politicData.person.election.type}選舉提出的政見：${politicData.desc}`
+  }
+
   return (
     <DefaultLayout>
+      <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <ThemeProvider theme={theme}>
           <Main>

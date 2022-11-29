@@ -15,6 +15,7 @@ import {
   PROGRESS,
 } from '~/types/common'
 
+import CustomHead, { type HeadProps } from '~/components/custom-head'
 import { useState } from 'react'
 import moment from 'moment'
 import { print } from 'graphql'
@@ -35,7 +36,6 @@ import SectionList from '~/components/politics/section-list'
 import Nav, { type NavProps } from '~/components/nav'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-
 type PoliticsPageProps = {
   titleProps: PersonOverview
   elections: PersonElection[]
@@ -394,8 +394,14 @@ const Politics = (props: PoliticsPageProps) => {
     <SectionList key={e.id} order={index} {...e} />
   ))
 
+  const headProps: HeadProps = {
+    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
+    description: `${props.titleProps.name}參選紀錄及相關政見`,
+  }
+
   return (
     <DefaultLayout>
+      <CustomHead {...headProps} />
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[60px]">
@@ -407,6 +413,7 @@ const Politics = (props: PoliticsPageProps) => {
         </div>
         <Nav {...navProps} />
       </main>
+      {/* </Fragment> */}
     </DefaultLayout>
   )
 }

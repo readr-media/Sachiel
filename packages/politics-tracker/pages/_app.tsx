@@ -7,6 +7,7 @@ import NextNProgress from 'nextjs-progressbar'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { initGA, logPageView } from '~/utils/analytics'
+import CustomHead from '~/components/custom-head'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <CustomHead />
       {/* ref: https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs */}
       {/* Google tag (gtag.js) */}
       <Script

@@ -18,6 +18,7 @@ import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import CustomHead, { type HeadProps } from '~/components/custom-head'
 
 const DataLoader = ew.VotesComparison.DataLoader
 
@@ -234,8 +235,14 @@ const Election = (props: ElectionPageProps) => {
   const { year, title } = props || {}
   const election = props.data
 
+  const headProps: HeadProps = {
+    title: `${election.year}${props.name}票數資料｜READr 政商人物資料庫`,
+    description: `${election.year}${props.name}的各政黨與候選人得票數、得票率、當選狀況一覽`,
+  }
+
   return (
     <DefaultLayout>
+      <CustomHead {...headProps} />
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
         <div className="w-full">
           <ew.VotesComparison.ReactComponent
