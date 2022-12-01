@@ -235,9 +235,15 @@ const Election = (props: ElectionPageProps) => {
   const { year, title } = props || {}
   const election = props.data
 
+  let headElectionName = ''
+  if (props.prev) {
+    headElectionName += `${props.year}${props.prev.electionType}選舉 ${props.prev.electionArea}`
+  } else {
+    headElectionName += `${props.year}${props.next?.electionType}選舉 ${props.next?.electionArea}`
+  }
   const headProps: HeadProps = {
-    title: `${election.year}${props.name}票數資料｜READr 政商人物資料庫`,
-    description: `${election.year}${props.name}的各政黨與候選人得票數、得票率、當選狀況一覽`,
+    title: `${headElectionName}票數資料｜READr 政商人物資料庫`,
+    description: `${headElectionName}的各政黨與候選人得票數、得票率、當選狀況一覽`,
   }
 
   return (
