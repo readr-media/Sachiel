@@ -16,6 +16,7 @@ import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
+import CustomHead from '~/components/custom-head'
 
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
@@ -520,6 +521,7 @@ export const getServerSideProps = async ({ res }) => {
 export default function Home(props) {
   return (
     <Fragment>
+      <CustomHead />
       <LandingPage
         // @ts-ignore
         propsData={props}

@@ -40,7 +40,6 @@ const OpenGraph = ({ properties }: { properties: OGProperties }) => {
         content={description || ''}
         key="og:description"
       />
-      <meta property="og:url" content={url} key="og:url" />
       <meta property="og:site_name" content={site_name} key="og:site_name" />
       {image && (
         <>
