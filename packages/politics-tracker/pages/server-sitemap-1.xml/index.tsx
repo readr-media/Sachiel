@@ -1,3 +1,4 @@
+// dynamic URLs for landing page and election pages
 import { getServerSideSitemap } from 'next-sitemap'
 import { GetServerSideProps } from 'next'
 import { siteUrl, cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
@@ -6,15 +7,8 @@ import { print } from 'graphql'
 import { fireGqlRequest } from '~/utils/utils'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
-import GetPeople from '~/graphql/query/sitemap/get-people.graphql'
-import GetPolitics from '~/graphql/query/sitemap/get-politics.graphql'
 import GetElections from '~/graphql/query/sitemap/get-elections.graphql'
-import {
-  GenericGQLData,
-  RawElection,
-  RawPerson,
-  RawPolitic,
-} from '~/types/common'
+import { GenericGQLData, RawElection } from '~/types/common'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const fields = []
@@ -22,8 +16,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const tasks = []
     tasks.push(axios.get(urlOfJsonForlandingPage))
-    tasks.push(fireGqlRequest(print(GetPeople), undefined, cmsApiUrl))
-    tasks.push(fireGqlRequest(print(GetPolitics), undefined, cmsApiUrl))
     tasks.push(fireGqlRequest(print(GetElections), undefined, cmsApiUrl))
     const results = await Promise.allSettled(tasks)
 
@@ -41,49 +33,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         lastmod: lastModified.toISOString(),
       })
     }
-    // person page
-    {
-      const resultOfPeople = results[1] as PromiseSettledResult<
-        GenericGQLData<RawPerson[], 'people'>
-      >
-      if (resultOfPeople.status === 'fulfilled') {
-        const people = resultOfPeople.value?.data?.people ?? []
-
-        for (const person of people) {
-          const personId = String(person.id)
-          const lastModified =
-            person.updatedAt ?? person.createdAt ?? new Date().toISOString()
-
-          fields.push({
-            loc: encodeURI(`${siteUrl}/person/${personId}`),
-            lastmod: lastModified,
-          })
-        }
-      }
-    }
-    // politic detail page
-    {
-      const resultOfPolitics = results[2] as PromiseSettledResult<
-        GenericGQLData<RawPolitic[], 'politics'>
-      >
-      if (resultOfPolitics.status === 'fulfilled') {
-        const politicList = resultOfPolitics.value?.data?.politics ?? []
-
-        for (const politic of politicList) {
-          const politicId = String(politic.id)
-          const lastModified =
-            politic.updatedAt ?? politic.createdAt ?? new Date().toISOString()
-
-          fields.push({
-            loc: encodeURI(`${siteUrl}/politics/detail/${politicId}`),
-            lastmod: lastModified,
-          })
-        }
-      }
-    }
     // election page
     {
-      const resultOfElections = results[3] as PromiseSettledResult<
+      const resultOfElections = results[1] as PromiseSettledResult<
         GenericGQLData<RawElection[], 'elections'>
       >
       if (resultOfElections.status === 'fulfilled') {
@@ -130,6 +82,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       })
     )
   }
+
+  console.log(
+    JSON.stringify({
+      severity: 'DEBUG',
+      message: `There are ${fields.length} URLs about landing page and elections pages.`,
+    })
+  )
 
   return getServerSideSitemap(ctx, fields)
 }
