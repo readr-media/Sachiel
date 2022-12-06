@@ -47,6 +47,11 @@ const nextConfig = {
         source: '/server-sitemaps/person/:year',
         destination: '/server-sitemaps/person.xml?=:year',
       },
+      // for personal page sitemaps
+      {
+        source: '/server-sitemaps/politics-summary/:year',
+        destination: '/server-sitemaps/politics-summary.xml?=:year',
+      },
     ]
   },
   output: 'standalone',
