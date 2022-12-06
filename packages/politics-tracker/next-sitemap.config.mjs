@@ -7,18 +7,13 @@ const sitemapConfig = {
   siteUrl,
   sitemapSize: 50000, // limitation from Google, ref: https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap
   generateRobotsTxt: true,
-  exclude: [
-    '/server-sitemap-1.xml',
-    '/server-sitemap-2.xml',
-    '/server-sitemap-3.xml',
-    '/server-sitemap-4.xml',
-  ],
+  exclude: ['/server-sitemaps/*'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${siteUrl}/server-sitemap-1.xml`, // landing page and election pages
-      `${siteUrl}/server-sitemap-2.xml`, // personal pages
-      `${siteUrl}/server-sitemap-3.xml`, // politics summary pages
-      `${siteUrl}/server-sitemap-4.xml`, // politic detail pages
+      `${siteUrl}/server-sitemaps/landing-and-elections.xml`, // landing page and election pages
+      `${siteUrl}/server-sitemaps/person.xml`, // personal pages
+      `${siteUrl}/server-sitemaps/politics-summary.xml`, // politics summary pages
+      `${siteUrl}/server-sitemaps/politics-detail.xml`, // politic detail pages
     ],
   },
 }
