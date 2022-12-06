@@ -1,5 +1,8 @@
-query GetPeople {
-  people(where: { status: { equals: "verified" } }) {
+query GetPeople($customFilter: [PersonWhereInput!] = []) {
+  people(where: {
+    status: { equals: "verified" }
+    AND: $customFilter
+  }) {
     id
     createdAt
     updatedAt

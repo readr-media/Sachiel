@@ -1,5 +1,5 @@
 // dynamic URLs for personal pages
-import { getServerSideSitemap } from 'next-sitemap'
+import { getServerSideSitemap, ISitemapField } from 'next-sitemap'
 import { GetServerSideProps } from 'next'
 import { siteUrl, cmsApiUrl } from '~/constants/config'
 import { print } from 'graphql'
@@ -10,11 +10,61 @@ import GetPeople from '~/graphql/query/sitemap/get-people.graphql'
 import { GenericGQLData, RawPerson } from '~/types/common'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const fields = []
+  const fields: ISitemapField[] = []
+  const { query } = ctx
+  /*
+    supports:
+      * xxxx-.xml
+      * xxxx-yyyy.xml
+      * -yyyy.xml
+      * null.xml
+  */
+  const regex = /^(((?<gte>\d*)\-?(?<lt>\d*))|(?<isNull>null))\.xml$/
+  const match = regex.exec(String(query.year))
+
+  if (!match) {
+    // invalid request
+    return getServerSideSitemap(ctx, fields)
+  }
+
+  const { gte, lt, isNull } = match.groups as {
+    gte?: string
+    lt?: string
+    isNull?: string
+  }
+
+  if (!(gte || lt || isNull)) {
+    // invalid request
+    return getServerSideSitemap(ctx, fields)
+  }
+
+  const customFilter = []
+
+  if (gte) {
+    customFilter.push({
+      birth_date_year: {
+        gte: Number(gte),
+      },
+    })
+  }
+
+  if (lt) {
+    customFilter.push({
+      birth_date_year: {
+        lt: Number(lt),
+      },
+    })
+  }
+
+  if (isNull) {
+    customFilter.push({
+      birth_date_year: null,
+    })
+  }
 
   try {
     const tasks = []
-    tasks.push(fireGqlRequest(print(GetPeople), undefined, cmsApiUrl))
+    tasks.push(fireGqlRequest(print(GetPeople), { customFilter }, cmsApiUrl))
     const results = await Promise.allSettled(tasks)
 
     // personal page
@@ -59,6 +109,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     JSON.stringify({
       severity: 'DEBUG',
       message: `There are ${fields.length} URLs about personal pages.`,
+      debugPayload: {
+        query,
+        match: {
+          gte,
+          lt,
+          isNull,
+        },
+      },
     })
   )
 
