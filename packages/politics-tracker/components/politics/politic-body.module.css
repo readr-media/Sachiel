@@ -1,8 +1,5 @@
 .container {
   @apply flex flex-col flex-nowrap;
-  &.editing {
-    box-shadow: inset 0px -2px 0px #000000;
-  }
 }
 .content-group {
   @apply flex flex-col grow overflow-hidden pb-5;
