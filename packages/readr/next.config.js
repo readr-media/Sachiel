@@ -1,3 +1,5 @@
+import { ENV } from '~/constants/environment-variables'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -36,6 +38,20 @@ const nextConfig = {
     return config
   },
   output: 'standalone',
+  async headers() {
+    return [
+      // for debug purpose
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'x-build-env',
+            value: ENV,
+          },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
