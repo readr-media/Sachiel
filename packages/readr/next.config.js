@@ -17,6 +17,11 @@ const nextConfig = {
     },
   },
   webpack: (config, /* eslint-disable-line no-unused-vars */ options) => {
+    // svg files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
     // graphql files
     config.module.rules.push({
       test: /\.(graphql|gql)$/,

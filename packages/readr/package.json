@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@svgr/webpack": "^6.5.1",
     "@twreporter/errors": "^1.1.1",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
