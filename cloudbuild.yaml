@@ -8,7 +8,7 @@ steps:
     args:
       - '-c'
       - |
-        cp yarn.lock packages/$_TARGET_PACKAGE
+        cp yarn.lock Dockerfile .dockerignore packages/$_TARGET_PACKAGE
         cd packages/$_TARGET_PACKAGE
         printenv > .env.local
         docker build -t gcr.io/$PROJECT_ID/$_IMAGE_NAME:${BRANCH_NAME}_${SHORT_SHA} .
