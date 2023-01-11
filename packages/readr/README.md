@@ -14,7 +14,7 @@
 |── pages/            - 頁面檔
 |   └── api/          - 後端 API
 |── constants/        - 常數、設定
-|── styles/           - CSS 檔案
+|── styles/           - CSS 檔案、theme
 |── types/            - TypeScript 使用的型別定義
 |── utils/            - 工具類 function
 |── graphql/          - GraphQL query/mutation
