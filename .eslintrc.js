@@ -6,9 +6,11 @@ module.exports = {
     },
   },
   extends: ['next/core-web-vitals', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'simple-import-sort'],
   rules: {
     'prettier/prettier': 'error',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'no-unused-vars': 'warn',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
