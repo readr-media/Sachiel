@@ -16,7 +16,7 @@ const nextConfig = {
       ssr: true,
     },
   },
-  webpack: (config, options) => {
+  webpack: (config, /* eslint-disable-line no-unused-vars */ options) => {
     // graphql files
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
