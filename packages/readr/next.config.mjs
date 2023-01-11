@@ -1,4 +1,6 @@
-import { ENV } from '~/constants/environment-variables'
+import * as tsImport from 'ts-import'
+
+const { ENV } = await tsImport.load('./constants/environment-variables.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -54,4 +56,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+export default nextConfig
