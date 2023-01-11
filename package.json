@@ -1,5 +1,5 @@
 {
-  "name": "public-platform",
+  "name": "sachiel",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,13 +11,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
-  "repository": "git+https://github.com/readr-media/public-platform.git",
+  "repository": "git+https://github.com/readr-media/Sachiel.git",
   "author": "tsuki",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/readr-media/public-platform/issues"
+    "url": "https://github.com/readr-media/Sachiel/issues"
   },
-  "homepage": "https://github.com/readr-media/public-platform#readme",
+  "homepage": "https://github.com/readr-media/Sachiel#readme",
   "devDependencies": {
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
