@@ -1,5 +1,7 @@
 # Sachiel
 
+This is a monorepo project for systems built with Next.js.
+
 ### Monorepo setup
 This is a monorepo containing sub-packages:
 - [@readr-media/politics-tracker](./packages/politics-tracker/): see `packages/politics-tracker`
