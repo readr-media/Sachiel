@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-node_modules/.bin/lerna run --concurrency 1 --stream test --since main
+node_modules/.bin/lerna run --concurrency 1 --stream test --since dev
