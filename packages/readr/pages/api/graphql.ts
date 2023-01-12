@@ -1,4 +1,9 @@
-// This API endpoint is for client-side GraphQL request
+/*
+ * This API endpoint is for client-side GraphQL request.
+ *
+ * Since rewrite rule in next.config is not configurable during runtime,
+ * we implement GraphQL API proxy by ourselves.
+ */
 
 import httpProxy from 'http-proxy'
 import { NextApiRequest, NextApiResponse } from 'next'
