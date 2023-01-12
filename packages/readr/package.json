@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.3",
     "@svgr/webpack": "^6.5.1",
     "@twreporter/errors": "^1.1.1",
     "graphql": "^16.6.0",
