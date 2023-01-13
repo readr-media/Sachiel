@@ -1,4 +1,4 @@
-import { ApolloProvider, gql } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { AppProps } from 'next/app'
 import { ThemeProvider } from 'styled-components'
 
