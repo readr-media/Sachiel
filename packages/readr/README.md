@@ -1,10 +1,17 @@
 # READr
 
 ## 使用教學
+### 開發與測試
 1. 建立 `.env.local` 檔案，並參考[環境變數](#environment-variables-環境變數)和[功能開關](#feature-toggle-功能開關暫時性)資訊進行設定，設定方式參考[文件](https://nextjs.org/docs/basic-features/environment-variables)
 2. 使用 `yarn install` 安裝環境依賴。
-3. 安裝完畢後，使用 `yarn dev` 啟動服務，進行開發測試。
-4. 開發完畢後，使用 `yarn build` 來建構正式環境程式，然後再使用 `yarn start` 來執行並驗證。
+3. 安裝完畢後，使用 `yarn run mock-server` 來啟動 mock GraphQL API server，作為本地端開發使用。
+4. 接著，使用 `yarn dev` 啟動服務，進行開發測試。
+5. 開發完畢後，使用 `yarn build` 來建構正式環境程式，然後再使用 `yarn start` 來執行並驗證。
+
+### 更新 mock GraphQL API server 的 schema
+* 在目標 DB 的 schema 更新後，將新版的 [schema.graphql](https://github.com/mirror-media/Lilith/blob/main/packages/readr/schema.graphql) 檔案複製到 `mock-server/typeDefs/` 底下，覆蓋既有 `schema.graphql`，然後重開 mock server 即可。
+
+
 - - -
 ## Project Directory Explanation (專案目錄結構說明)
 ```
@@ -20,9 +27,11 @@
 |── graphql/          - GraphQL query/mutation
 |   |── query/        - query
 |   └── mutation/     - mutation
-└── public/           - 靜態資源
-    |── icons/        - SVG icons
-    └── images/       - 圖片
+|── public/           - 靜態資源
+|   |── icons/        - SVG icons
+|   └── images/       - 圖片
+└── mock-server/      - mock GraphQL API server
+    └── typeDefs/     - GraphQL schema 檔案
 ```
 
 - - -
@@ -31,7 +40,8 @@
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_ENV | 字串 | 'localhost' | 環境設定 |
-| API_ENDPOINT | 字串 | '' | GraphQL API 端點 |
+| MOCK_API_SERVER_PORT | 整數 | '4000' | mock GraphQL API server 所使用的 port |
+| API_ENDPOINT | 字串 | 'http://localhost:4000/' | GraphQL API 端點 |
 
 ## Feature Toggle (功能開關，暫時性)
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
@@ -49,8 +59,8 @@
 - - -
 ## 部屬環境資訊
 ### Dev
-* [Cloud Build | ]()
-* [Cloud Run | ]()
+* [Cloud Build | sachiel-readr-dev](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/7029a598-d081-4cac-a86a-108c6898ad8a?project=mirrorlearning-161006)
+* [Cloud Run | readr-next-dev](https://console.cloud.google.com/run/detail/asia-east1/readr-next-dev/metrics?project=mirrorlearning-161006)
 
 ### Staging
 * [Cloud Build | ]()
