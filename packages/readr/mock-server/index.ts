@@ -4,6 +4,8 @@ import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchema } from '@graphql-tools/load'
 import { addMocksToSchema } from '@graphql-tools/mock'
 
+import { MOCK_API_SERVER_PORT } from '../constants/config'
+
 const startServer = async () => {
   const schema = await loadSchema('./mock-server/typeDefs/schema.graphql', {
     loaders: [new GraphQLFileLoader()],
@@ -18,7 +20,7 @@ const startServer = async () => {
   })
 
   const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
+    listen: { port: MOCK_API_SERVER_PORT },
   })
   /* eslint-disable-next-line no-console */
   console.log(`🚀 Mock Server listening at: ${url}`)

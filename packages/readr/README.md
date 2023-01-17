@@ -40,6 +40,7 @@
 | 變數名稱 | 資料型態 | 初始值 | 變數說明 |
 | --- | --- | --- | --- |
 | NEXT_PUBLIC_ENV | 字串 | 'localhost' | 環境設定 |
+| MOCK_API_SERVER_PORT | 整數 | '4000' | mock GraphQL API server 所使用的 port |
 | API_ENDPOINT | 字串 | 'http://localhost:4000/' | GraphQL API 端點 |
 
 ## Feature Toggle (功能開關，暫時性)
