@@ -16,6 +16,19 @@ const startServer = async () => {
     // mocked data for each field in the schema
     schema: addMocksToSchema({
       schema,
+      // This is an example to write mock data.
+      // In this example, query has field with `ResizedImages` type (e.g., photo), the field will return with mock data.
+      // For more detail, please read: https://www.apollographql.com/docs/apollo-server/testing/mocking/#using-lists-in-mocks
+      // mocks: {
+      //   ResizedImages: () => ({
+      //     original: 'this is original image',
+      //     w480: 'this is w480 image',
+      //     w800: 'this is w800 image',
+      //     w1200: 'this is w1200 image',
+      //     w1600: 'this is w1600 image',
+      //     w2400: 'this is w2400 image',
+      //   }),
+      // },
     }),
   })
 
