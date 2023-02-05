@@ -5,7 +5,7 @@ import { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import client from '~/apollo-client'
-import Layout from '~/components/layout'
+import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import theme from '~/styles/theme'
 
@@ -29,6 +29,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           {getLayout(<Component {...pageProps} />)}
+          <GDPRControl />
         </ThemeProvider>
       </ApolloProvider>
     </>
