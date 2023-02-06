@@ -5,6 +5,8 @@ import { getLocalStorage, setLocalStorage } from '~/utils/local-storage'
 
 const Container = styled.div`
   position: fixed;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   left: 0;
   bottom: 0;
@@ -17,12 +19,13 @@ const Container = styled.div`
   z-index: 599;
 
   ${({ theme }) => theme.breakpoint.md} {
-    display: flex;
+    flex-direction: row;
     font-size: 18px;
   }
 `
 
 const Control = styled.button`
+  order: 1;
   background-color: #ebf02c;
   color: #04295e;
   padding-top: 11px;
@@ -33,6 +36,10 @@ const Control = styled.button`
   align-items: center;
   justify-content: center;
   width: 100%;
+
+  &:focus-within {
+    box-shadow: inset 3px 3px red, inset -3px -3px red;
+  }
 
   ${({ theme }) => theme.breakpoint.md} {
     order: 2;
@@ -47,6 +54,7 @@ const Control = styled.button`
 `
 
 const MessageBox = styled.div`
+  order: 2;
   background-color: #04295e;
   color: #fff;
   padding: 20px;
@@ -81,9 +89,6 @@ export default function GDPRControl(): JSX.Element {
   if (shouldShowGDPRControl) {
     return (
       <Container>
-        <Control type="button" onClick={closeGDPRControl}>
-          <p>我知道了</p>
-        </Control>
         <MessageBox>
           <p>
             本網站使用 cookie
@@ -97,6 +102,9 @@ export default function GDPRControl(): JSX.Element {
             </a>
           </p>
         </MessageBox>
+        <Control type="button" onClick={closeGDPRControl}>
+          <p>我知道了</p>
+        </Control>
       </Container>
     )
   } else {
