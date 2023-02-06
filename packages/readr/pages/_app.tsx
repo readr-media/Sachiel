@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import client from '~/apollo-client'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
+import { ReadrStyles } from '~/components/layout/readr-styles'
 import theme from '~/styles/theme'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <NormalizeStyles />
+      <ReadrStyles />
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           {getLayout(<Component {...pageProps} />)}

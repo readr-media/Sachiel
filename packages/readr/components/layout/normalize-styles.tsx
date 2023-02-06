@@ -1,5 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 
+/**
+ * 不要更動它，如有全局的客製化需求，請到 readr-styles.tsx 修改
+ */
 export const NormalizeStyles = createGlobalStyle`
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
