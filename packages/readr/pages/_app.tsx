@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
+import Script from 'next/script'
 import { ReactElement, ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 
@@ -36,6 +37,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           <GDPRControl />
         </ThemeProvider>
       </ApolloProvider>
+      <Script
+        id="comScore"
+        dangerouslySetInnerHTML={{
+          __html: `var _comscore = _comscore || [];
+        _comscore.push({ c1: "2", c2: "24318560" });
+        (function() {
+        var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+        s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+        el.parentNode.insertBefore(s, el);
+        })();`,
+        }}
+      />
     </>
   )
 }
