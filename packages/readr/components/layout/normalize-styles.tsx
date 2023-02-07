@@ -4,6 +4,10 @@ import { createGlobalStyle } from 'styled-components'
  * 不要更動它，如有全局的客製化需求，請到 readr-styles.tsx 修改
  */
 export const NormalizeStyles = createGlobalStyle`
+/**
+ * Copy from https://unpkg.com/browse/tailwindcss@1.4.6/dist/base.css
+ */
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
@@ -14,10 +18,9 @@ export const NormalizeStyles = createGlobalStyle`
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
- html {
+html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
-  scroll-behavior:smooth;
 }
 
 /* Sections
@@ -29,12 +32,10 @@ export const NormalizeStyles = createGlobalStyle`
 
 body {
   margin: 0;
-  font-family: 'Noto Sans TC', 'Helvetica Neue', Arial, sans-serif;
-  background: #FDFAF9;
 }
 
 /**
- * Render the main element consistently in IE.
+ * Render the \`main\` element consistently in IE.
  */
 
 main {
@@ -42,8 +43,8 @@ main {
 }
 
 /**
- * Correct the font size and margin on h1 elements within section and
- * article contexts in Chrome, Firefox, and Safari.
+ * Correct the font size and margin on \`h1\` elements within \`section\` and
+ * \`article\` contexts in Chrome, Firefox, and Safari.
  */
 
 h1 {
@@ -67,7 +68,7 @@ hr {
 
 /**
  * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd em font sizing in all browsers.
+ * 2. Correct the odd \`em\` font sizing in all browsers.
  */
 
 pre {
@@ -95,7 +96,7 @@ abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted; /* 2 */
+  text-decoration: underline dotted; /* 2 */
 }
 
 /**
@@ -109,7 +110,7 @@ strong {
 
 /**
  * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd em font sizing in all browsers.
+ * 2. Correct the odd \`em\` font sizing in all browsers.
  */
 
 code,
@@ -128,7 +129,7 @@ small {
 }
 
 /**
- * Prevent sub and sup elements from affecting the line height in
+ * Prevent \`sub\` and \`sup\` elements from affecting the line height in
  * all browsers.
  */
 
@@ -184,7 +185,8 @@ textarea {
  */
 
 button,
-input { /* 1 */
+input {
+  /* 1 */
   overflow: visible;
 }
 
@@ -194,7 +196,8 @@ input { /* 1 */
  */
 
 button,
-select { /* 1 */
+select {
+  /* 1 */
   text-transform: none;
 }
 
@@ -203,9 +206,9 @@ select { /* 1 */
  */
 
 button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: button;
 }
 
@@ -214,9 +217,9 @@ button,
  */
 
 button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
@@ -226,9 +229,9 @@ button::-moz-focus-inner,
  */
 
 button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -242,9 +245,9 @@ fieldset {
 
 /**
  * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from fieldset elements in IE.
+ * 2. Correct the color inheritance from \`fieldset\` elements in IE.
  * 3. Remove the padding so developers are not caught out when they zero out
- *    fieldset elements in all browsers.
+ *    \`fieldset\` elements in all browsers.
  */
 
 legend {
@@ -277,8 +280,8 @@ textarea {
  * 2. Remove the padding in IE 10.
  */
 
-[type="checkbox"],
-[type="radio"] {
+[type='checkbox'],
+[type='radio'] {
   box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
@@ -287,8 +290,8 @@ textarea {
  * Correct the cursor style of increment and decrement buttons in Chrome.
  */
 
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -297,7 +300,7 @@ textarea {
  * 2. Correct the outline style in Safari.
  */
 
-[type="search"] {
+[type='search'] {
   -webkit-appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
@@ -306,13 +309,13 @@ textarea {
  * Remove the inner padding in Chrome and Safari on macOS.
  */
 
-[type="search"]::-webkit-search-decoration {
+[type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
 /**
  * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to inherit in Safari.
+ * 2. Change font properties to \`inherit\` in Safari.
  */
 
 ::-webkit-file-upload-button {
@@ -391,8 +394,8 @@ button {
 }
 
 /**
- * Work around a Firefox/IE bug where the transparent button background
- * results in a loss of the default button focus styles.
+ * Work around a Firefox/IE bug where the transparent \`button\` background
+ * results in a loss of the default \`button\` focus styles.
  */
 
 button:focus {
@@ -417,14 +420,16 @@ ul {
  */
 
 /**
- * 1. Use the user's configured sans font-family (with Tailwind's default
+ * 1. Use the user's configured \`sans\` font-family (with Tailwind's default
  *    sans-serif font stack as a fallback) as a sane default.
  * 2. Use Tailwind's default "normal" line-height so the user isn't forced
  *    to override it to ensure consistency even when using the default theme.
  */
 
 html {
-  font-family: PingFang TC, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 1 */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 1 */
   line-height: 1.5; /* 2 */
 }
 
@@ -434,7 +439,7 @@ html {
  *    We used to set this in the html element and inherit from
  *    the parent element for everything else. This caused issues
  *    in shadow-dom-enhanced elements like <details> where the content
- *    is wrapped by a div with box-sizing set to content-box.
+ *    is wrapped by a div with box-sizing set to \`content-box\`.
  *
  *    https://github.com/mozdevs/cssremedy/issues/4
  *
@@ -442,13 +447,13 @@ html {
  * 2. Allow adding a border to an element by just adding a border-width.
  *
  *    By default, the way the browser specifies that an element should have no
- *    border is by setting it's border-style to none in the user-agent
+ *    border is by setting it's border-style to \`none\` in the user-agent
  *    stylesheet.
  *
- *    In order to easily add borders to elements by just setting the border-width
- *    property, we change the default border-style for all elements to solid, and
- *    use border-width to hide them instead. This way our border utilities only
- *    need to set the border-width property instead of the entire border
+ *    In order to easily add borders to elements by just setting the \`border-width\`
+ *    property, we change the default border-style for all elements to \`solid\`, and
+ *    use border-width to hide them instead. This way our \`border\` utilities only
+ *    need to set the \`border-width\` property instead of the entire \`border\`
  *    shorthand, making our border utilities much more straightforward to compose.
  *
  *    https://github.com/tailwindcss/tailwindcss/pull/116
@@ -472,8 +477,8 @@ hr {
 }
 
 /**
- * Undo the border-style: none reset that Normalize applies to images so that
- * our border-{width} utilities have the expected effect.
+ * Undo the \`border-style: none\` reset that Normalize applies to images so that
+ * our \`border-{width}\` utilities have the expected effect.
  *
  * The Normalize reset is unnecessary for us since we default the border-width
  * to 0 on all elements.
@@ -489,11 +494,13 @@ textarea {
   resize: vertical;
 }
 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
   color: #a0aec0;
 }
 
-input::-ms-input-placeholder, textarea::-ms-input-placeholder {
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
   color: #a0aec0;
 }
 
@@ -503,7 +510,7 @@ textarea::placeholder {
 }
 
 button,
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
@@ -560,13 +567,14 @@ pre,
 code,
 kbd,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
 }
 
 /**
- * Make replaced elements display: block by default as that's
+ * Make replaced elements \`display: block\` by default as that's
  * the behavior you want almost all of the time. Inspired by
- * CSS Remedy, with svg added as well.
+ * CSS Remedy, with \`svg\` added as well.
  *
  * https://github.com/mozdevs/cssremedy/issues/14
  */
@@ -595,4 +603,5 @@ video {
   max-width: 100%;
   height: auto;
 }
+
 `
