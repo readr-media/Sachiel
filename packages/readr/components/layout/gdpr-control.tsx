@@ -16,6 +16,7 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-top-left-radius: 2px;
   overflow: hidden;
+  // TODO: manage z-index values
   z-index: 599;
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -36,10 +37,6 @@ const Control = styled.button`
   align-items: center;
   justify-content: center;
   width: 100%;
-
-  &:focus-within {
-    box-shadow: inset 3px 3px red, inset -3px -3px red;
-  }
 
   ${({ theme }) => theme.breakpoint.md} {
     order: 2;
