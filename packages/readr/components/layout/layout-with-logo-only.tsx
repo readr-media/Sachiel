@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 
+import { SITE_TITLE } from '~/constants/config'
+
+import CustomHead from './custom-head'
 import HeaderLogo from './header-logo'
 
 const Header = styled.header`
@@ -14,12 +17,21 @@ const Header = styled.header`
 `
 
 type LayoutProps = {
+  title?: string
+  description?: string
   children: React.ReactNode
 }
 
-export default function LayoutWithLogoOnly({ children }: LayoutProps) {
+export default function LayoutWithLogoOnly({
+  children,
+  title,
+  description,
+}: LayoutProps) {
+  const pageTitle = title ? `${title} - ${SITE_TITLE}` : title
+
   return (
     <>
+      <CustomHead title={pageTitle} description={description}></CustomHead>
       <Header>
         <HeaderLogo />
       </Header>
