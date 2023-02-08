@@ -1,8 +1,9 @@
 import { ApolloProvider } from '@apollo/client'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 import Script from 'next/script'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import client from '~/apollo-client'
@@ -11,6 +12,7 @@ import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
 import theme from '~/styles/theme'
+import * as gtag from '~/utils/gtag'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (
@@ -23,6 +25,18 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const router = useRouter()
+
+  useEffect(() => {
+    gtag.init()
+  }, [])
+
+  useEffect(() => {
+    const path =
+      window.location.pathname + window.location.search + window.location.hash
+    gtag.sendPageview(path)
+  }, [router.pathname])
+
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page)
 
