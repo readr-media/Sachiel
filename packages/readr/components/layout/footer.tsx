@@ -156,7 +156,7 @@ export default function Footer(): JSX.Element {
                 <NextLink
                   href={item.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer external nofollow"
                 >
                   <item.svgIcon />
                 </NextLink>
@@ -169,7 +169,7 @@ export default function Footer(): JSX.Element {
             <NextLink
               href="/about"
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer author"
               onClick={() => sendGAEvent('aboutus')}
             >
               關於我們
@@ -178,6 +178,7 @@ export default function Footer(): JSX.Element {
           <li>
             <NextLink
               href="mailto:readr@readr.tw"
+              rel="author"
               onClick={() => sendGAEvent('contact')}
             >
               聯絡我們
@@ -187,7 +188,7 @@ export default function Footer(): JSX.Element {
             <NextLink
               href="/privacy-rule"
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer license"
               onClick={() => sendGAEvent('privacy')}
             >
               隱私政策
@@ -197,7 +198,7 @@ export default function Footer(): JSX.Element {
             <NextLink
               href="https://forms.gle/C6B5MGYXLzXrmfSe6"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer external nofollow"
             >
               意見回饋
             </NextLink>
@@ -211,7 +212,7 @@ export default function Footer(): JSX.Element {
                 },
               }}
               target="_blank"
-              rel="noreferrer"
+              rel="noreferrer license"
             >
               服務條款
             </NextLink>
