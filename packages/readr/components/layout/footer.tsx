@@ -5,6 +5,7 @@ import iconFacebook from '~/public/icons/facebook.svg'
 import iconGitHub from '~/public/icons/github.svg'
 import iconInstagram from '~/public/icons/instagram.svg'
 import iconTwitter from '~/public/icons/twitter.svg'
+import * as gtag from '~/utils/gtag'
 
 const Main = styled.footer`
   display: block;
@@ -141,6 +142,10 @@ export default function Footer(): JSX.Element {
     },
   ]
 
+  function sendGAEvent(label?: string): void {
+    gtag.sendEvent('footer', 'click', label)
+  }
+
   return (
     <Main>
       <Container>
@@ -161,15 +166,30 @@ export default function Footer(): JSX.Element {
         </MediaLinkList>
         <MiscLinkList>
           <li>
-            <NextLink href="/about" target="_blank" rel="noreferrer">
+            <NextLink
+              href="/about"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => sendGAEvent('aboutus')}
+            >
               關於我們
             </NextLink>
           </li>
           <li>
-            <NextLink href="mailto:readr@readr.tw">聯絡我們</NextLink>
+            <NextLink
+              href="mailto:readr@readr.tw"
+              onClick={() => sendGAEvent('contact')}
+            >
+              聯絡我們
+            </NextLink>
           </li>
           <li>
-            <NextLink href="/privacy-rule" target="_blank" rel="noreferrer">
+            <NextLink
+              href="/privacy-rule"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => sendGAEvent('privacy')}
+            >
               隱私政策
             </NextLink>
           </li>
