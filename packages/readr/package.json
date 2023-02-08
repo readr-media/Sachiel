@@ -1,0 +1,44 @@
+{
+  "name": "readr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "mock-server": "ts-node -r dotenv/config mock-server/ dotenv_config_path=./.env.local ",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.3",
+    "@svgr/webpack": "^6.5.1",
+    "@twreporter/errors": "^1.1.1",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
+    "http-proxy": "^1.18.1",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.39",
+    "next": "^13.1.2",
+    "prop-types": "^15.5.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sharp": "^0.31.3",
+    "styled-components": "^5.3.6",
+    "ts-import": "^4.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@apollo/server": "^4.3.0",
+    "@graphql-tools/graphql-file-loader": "^7.5.14",
+    "@graphql-tools/load": "^7.8.9",
+    "@graphql-tools/mock": "^8.7.15",
+    "@graphql-tools/schema": "^9.0.13",
+    "@types/http-proxy": "^1.17.9",
+    "@types/node": "18.8.1",
+    "@types/react": "18.0.21",
+    "@types/react-dom": "18.0.6",
+    "@types/styled-components": "^5.1.26",
+    "eslint-config-next": "^13.1.2",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "4.8.4"
+  }
+}
