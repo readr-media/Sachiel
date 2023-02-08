@@ -25,6 +25,25 @@ const Container = styled.div`
   }
 `
 
+const Message = styled.p`
+  order: 2;
+  background-color: #04295e;
+  color: #fff;
+  padding: 20px;
+  ${({ theme }) => theme.breakpoint.md} {
+    order: 1;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding-left: 60px;
+  }
+  a {
+    text-decoration: underline;
+  }
+`
+
 const Control = styled.button`
   order: 1;
   background-color: #ebf02c;
@@ -50,25 +69,6 @@ const Control = styled.button`
   }
 `
 
-const MessageBox = styled.div`
-  order: 2;
-  background-color: #04295e;
-  color: #fff;
-  padding: 20px;
-  ${({ theme }) => theme.breakpoint.md} {
-    order: 1;
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    padding-left: 60px;
-  }
-  a {
-    text-decoration: underline;
-  }
-`
-
 export default function GDPRControl(): JSX.Element {
   const LOCAL_STORAGE_KEY = 'shouldShowGDPRControl'
   // should be false at first to prevent flashing
@@ -86,19 +86,17 @@ export default function GDPRControl(): JSX.Element {
   if (shouldShowGDPRControl) {
     return (
       <Container>
-        <MessageBox>
-          <p>
-            本網站使用 cookie
-            以及相關技術分析來改善使用者體驗。點選「我知道了」，視窗會關閉。
-            <a
-              href="https://www.readr.tw/privacy-rule"
-              target="_blank"
-              rel="noreferrer"
-            >
-              了解更多
-            </a>
-          </p>
-        </MessageBox>
+        <Message>
+          本網站使用 cookie
+          以及相關技術分析來改善使用者體驗。點選「我知道了」，視窗會關閉。
+          <a
+            href="https://www.readr.tw/privacy-rule"
+            target="_blank"
+            rel="noreferrer"
+          >
+            了解更多
+          </a>
+        </Message>
         <Control type="button" onClick={closeGDPRControl}>
           <p>我知道了</p>
         </Control>
