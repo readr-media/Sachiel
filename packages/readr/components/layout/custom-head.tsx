@@ -1,5 +1,6 @@
 import Head from 'next/head'
 
+import { SITE_TITLE } from '~/constants/config'
 import { SITE_URL } from '~/constants/environment-variables'
 
 export type OGProperties = {
@@ -81,14 +82,12 @@ export type HeadProps = {
 }
 
 export default function CustomHead(props: HeadProps): JSX.Element {
-  const siteTitle = 'READr 讀+'
-
   const siteInformation: OGProperties = {
-    title: props.title ?? siteTitle,
+    title: props.title ?? SITE_TITLE,
     description:
       props.description ??
       'READr 是一個新聞媒體，致力於透過內容實驗，增加使用者的媒體識讀能力。團隊組成為工程師、設計師、記者、產品經理，多元專業背景的成員共同完成新聞的產製，並在專案中加上讀者參與的元素，讓以往封閉的新聞編輯室有開放的可能。',
-    site_name: siteTitle,
+    site_name: SITE_TITLE,
     url: SITE_URL,
     type: 'website',
     image: {
