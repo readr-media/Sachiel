@@ -11,7 +11,9 @@ const About: NextPageWithLayout = () => {
 }
 
 About.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutWithLogoOnly>{page}</LayoutWithLogoOnly>
+  const pageTitle = '關於我們'
+
+  return <LayoutWithLogoOnly title={pageTitle}>{page}</LayoutWithLogoOnly>
 }
 
 export default About
