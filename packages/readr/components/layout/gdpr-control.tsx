@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -89,13 +90,9 @@ export default function GDPRControl(): JSX.Element {
         <Message>
           本網站使用 cookie
           以及相關技術分析來改善使用者體驗。點選「我知道了」，視窗會關閉。
-          <a
-            href="https://www.readr.tw/privacy-rule"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <NextLink href="/privacy-rule" target="_blank" rel="noreferrer">
             了解更多
-          </a>
+          </NextLink>
         </Message>
         <Control type="button" onClick={closeGDPRControl}>
           <p>我知道了</p>
