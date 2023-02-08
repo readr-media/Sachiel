@@ -9,7 +9,7 @@ const Link = styled(NextLink)`
 
 export default function HeaderLogo(): JSX.Element {
   return (
-    <Link href="/" className="header-logo">
+    <Link href="/" className="header-logo" aria-label="首頁">
       <ReadrLogo />
     </Link>
   )

@@ -157,6 +157,7 @@ export default function Footer(): JSX.Element {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer external nofollow"
+                  aria-label={item.name}
                 >
                   <item.svgIcon />
                 </NextLink>
