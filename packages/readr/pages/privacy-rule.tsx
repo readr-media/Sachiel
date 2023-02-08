@@ -195,7 +195,9 @@ const PrivacyRule: NextPageWithLayout = () => {
 }
 
 PrivacyRule.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutWithLogoOnly>{page}</LayoutWithLogoOnly>
+  const pageTitle = '隱私政策'
+
+  return <LayoutWithLogoOnly title={pageTitle}>{page}</LayoutWithLogoOnly>
 }
 
 export default PrivacyRule
