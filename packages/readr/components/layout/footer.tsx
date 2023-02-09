@@ -28,7 +28,6 @@ const Container = styled.div`
 const MediaLinkList = styled.ul`
   display: flex;
   justify-content: center;
-  color: rgba(#000, 0.88);
   margin: 0 0 30px 0;
   line-height: 1.4;
 
@@ -46,7 +45,6 @@ const MiscLinkList = styled.ul`
   display: flex;
   justify-content: center;
   font-size: 16px;
-  line-height: 23px;
   padding: 0 20px;
   line-height: 1.7;
   margin-bottom: 32px;
