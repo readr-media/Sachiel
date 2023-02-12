@@ -7,9 +7,24 @@ const Link = styled(NextLink)`
   display: block;
 `
 
-export default function HeaderLogo(): JSX.Element {
+type HeaderLogoProps = {
+  onClick?: () => void
+}
+
+export default function HeaderLogo(props: HeaderLogoProps): JSX.Element {
+  function clickHander() {
+    if (typeof props.onClick === 'function') {
+      props.onClick()
+    }
+  }
+
   return (
-    <Link href="/" className="header-logo" aria-label="首頁">
+    <Link
+      href="/"
+      className="header-logo"
+      aria-label="首頁"
+      onClick={clickHander}
+    >
       <ReadrLogo />
     </Link>
   )
