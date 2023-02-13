@@ -60,9 +60,7 @@ export type RelatedArticle = {
   href?: string
   title: string
   isReport?: boolean
-  img: {
-    src?: string
-  }
+  imageSrc?: string
 }
 
 type RelatedListInHeaderProps = {
@@ -79,7 +77,7 @@ export default function RelatedListInHeader({
       <ArticleListCard
         title={article.title}
         href={article.href}
-        image={article.img.src}
+        image={article.imageSrc}
         isReport={article.isReport}
         shouldHideBottomInfos={true}
         shouldNotLazyload={true}
