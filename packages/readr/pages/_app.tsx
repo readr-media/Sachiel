@@ -1,9 +1,10 @@
 import { ApolloProvider } from '@apollo/client'
-import { NextPage } from 'next'
-import { AppProps } from 'next/app'
+import type { NextPage } from 'next'
+import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
-import { ReactElement, ReactNode, useEffect } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import client from '~/apollo-client'
@@ -11,6 +12,8 @@ import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
+import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
+import type { Category } from '~/graphql/query/category'
 import theme from '~/styles/theme'
 import * as gtag from '~/utils/gtag'
 
@@ -22,9 +25,13 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
+} & {
+  props: {
+    categoriesAndRelatedPosts: Category[]
+  }
 }
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
   const router = useRouter()
 
   useEffect(() => {
@@ -46,9 +53,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <ReadrStyles />
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
-          {getLayout(<Component {...pageProps} />)}
-          <Footer />
-          <GDPRControl />
+          <HeaderCategoriesAndRelatePostsContext.Provider
+            value={props.categoriesAndRelatedPosts}
+          >
+            {getLayout(<Component {...pageProps} />)}
+            <Footer />
+            <GDPRControl />
+          </HeaderCategoriesAndRelatePostsContext.Provider>
         </ThemeProvider>
       </ApolloProvider>
       <Script
@@ -66,3 +77,5 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     </>
   )
 }
+
+export default MyApp
