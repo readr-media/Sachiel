@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
+import App from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import type { ReactElement, ReactNode } from 'react'
@@ -14,6 +15,7 @@ import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
+import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
 import * as gtag from '~/utils/gtag'
 
@@ -78,4 +80,43 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
   )
 }
 
+// getInitialProps runs on both server-side and client-side
+MyApp.getInitialProps = async (context: AppContext) => {
+  const ctx = await App.getInitialProps(context)
+
+  // retrieve categories and related posts
+  const categoriesAndRelatedPosts: Category[] = []
+
+  try {
+    const { data } = await client.query<{ categories: Category[] }>({
+      query: categories,
+      variables: {
+        first: 6,
+        shouldQueryRelatedPost: true,
+        relatedPostFirst: 5,
+        relatedPostTypes: [
+          'news',
+          'embedded',
+          'project3',
+          'report',
+          'frame',
+          'blank',
+          'scrollablevideo',
+        ],
+      },
+    })
+
+    categoriesAndRelatedPosts.push(...data.categories)
+  } catch (error) {
+    const err = error as Error
+    console.error(JSON.stringify({ severity: 'ERROR', message: err.stack }))
+  }
+
+  return {
+    ...ctx,
+    props: {
+      categoriesAndRelatedPosts,
+    },
+  }
+}
 export default MyApp
