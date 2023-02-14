@@ -17,10 +17,16 @@
 ```
 |── components/       - React 元件，共用類型的元件
 |   |── layout/       - 頁面布局元件
+|   |── shared/       - 共用元件
 |   └── */            - 單一頁面與其相關的元件，會放置在以頁面為名稱的子資料夾底下
 |── pages/            - 頁面檔
 |   └── api/          - 後端 API
 |── constants/        - 常數、設定
+|── contexts/         - React Context
+|── graphql/          - GraphQL request schema 檔案
+|   |── query/        - GraphQL queries
+|   └── mutation/     - GraphQL mutations
+|── hooks/            - custom React Hooks
 |── styles/           - CSS 檔案、theme
 |── types/            - TypeScript 使用的型別定義
 |── utils/            - 工具類 function
@@ -31,7 +37,8 @@
 |   |── icons/        - SVG icons
 |   └── images/       - 圖片
 └── mock-server/      - mock GraphQL API server
-    └── typeDefs/     - GraphQL schema 檔案
+    |── typeDefs/     - GraphQL schema 檔案
+    └── mocks/        - mock data 定義
 ```
 
 - - -
