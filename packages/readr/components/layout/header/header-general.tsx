@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import throttle from 'raf-throttle'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { RelatedArticle } from '~/components/shared/related-list-in-header'
@@ -160,6 +160,7 @@ export default function HeaderGeneral({
   const [readingPercent, setReadingPercent] = useState(0)
   const [shouldShowHamburgerMenu, setShouldShowHamburgerMenu] = useState(false)
   const [hasCompleteReading, setHadCompleteReading] = useState(false)
+  const restoreFocus = useRef<HTMLButtonElement>(null)
 
   const isCategoryPage = router.pathname.includes('/category')
   const isPostPage = router.pathname.includes('/post')
@@ -265,9 +266,18 @@ export default function HeaderGeneral({
         setBodyNotScroll()
       } else {
         clearBodyNotScroll()
+        if (restoreFocus.current) {
+          restoreFocus.current.focus()
+        }
       }
     } else {
-      clearBodyNotScroll()
+      if (shouldShowHamburgerMenu) {
+        clearBodyNotScroll()
+        setShouldShowHamburgerMenu(false)
+        if (restoreFocus.current) {
+          restoreFocus.current.focus()
+        }
+      }
     }
   }, [windowSize.width, shouldShowHamburgerMenu])
 
@@ -324,7 +334,11 @@ export default function HeaderGeneral({
             </DonateLink>
           )}
 
-          <HamburgerButton onClick={openHamburgerMenu} aria-label="開啟選單">
+          <HamburgerButton
+            onClick={openHamburgerMenu}
+            aria-label="開啟選單"
+            ref={restoreFocus}
+          >
             <IconHamburger />
           </HamburgerButton>
         </RightPart>

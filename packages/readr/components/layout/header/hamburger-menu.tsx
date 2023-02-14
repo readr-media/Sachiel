@@ -4,6 +4,7 @@
  */
 
 import NextLink from 'next/link'
+import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import IconClose from '~/public/icons/ham-close.svg'
@@ -113,6 +114,14 @@ export default function HamburgerMenu({
   categories,
   closeHandler,
 }: HamburgerMenuProps): JSX.Element {
+  const autoFocus = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (autoFocus.current) {
+      autoFocus.current.focus()
+    }
+  }, [])
+
   const categoryItems = categories.map((category) => (
     <CategoryItem key={category.id}>
       <NextLink
@@ -129,8 +138,8 @@ export default function HamburgerMenu({
     <Container>
       <CloseButton
         onClick={() => closeHandler()}
-        autoFocus={true}
         aria-label="關閉選單"
+        ref={autoFocus}
       >
         <IconClose />
       </CloseButton>
