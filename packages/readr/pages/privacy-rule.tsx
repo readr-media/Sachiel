@@ -1,10 +1,10 @@
 import NextImage from 'next/image'
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 import styled from 'styled-components'
 
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 
-import { NextPageWithLayout } from './_app'
+import type { NextPageWithLayout } from './_app'
 
 const Page = styled.div`
   background-color: #f1f1f1;
