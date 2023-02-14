@@ -1,12 +1,17 @@
-import styled from 'styled-components'
+// under construction
 
-const Text = styled.h1`
-  font-size: 3rem;
-  ${({ theme }) => theme.breakpoint.xl} {
-    font-size: 6rem;
-  }
-`
+import type { ReactElement } from 'react'
 
-export default function Home() {
-  return <Text>This is READr</Text>
+import LayoutGeneral from '~/components/layout/layout-general'
+
+import type { NextPageWithLayout } from './_app'
+
+const Index: NextPageWithLayout = () => {
+  return <p>首頁</p>
 }
+
+Index.getLayout = function getLayout(page: ReactElement) {
+  return <LayoutGeneral>{page}</LayoutGeneral>
+}
+
+export default Index
