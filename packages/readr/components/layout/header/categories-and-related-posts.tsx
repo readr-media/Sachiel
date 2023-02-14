@@ -7,9 +7,9 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import RelatedListInHeader, {
-  RelatedArticle,
-} from '~/components/shared/related-list-in-header'
+import RelatedListInHeader from '~/components/shared/related-list-in-header'
+
+import type { TransformedCategory } from './header-general'
 
 const Container = styled.ul`
   display: none;
@@ -64,13 +64,6 @@ const CategoryItem = styled.li`
     }
   }
 `
-
-type TransformedCategory = {
-  id: string
-  name: string
-  slug: string
-  relatedList: RelatedArticle[]
-}
 
 type CategoriesAndRelatedPostsProps = {
   isCategoryPage: boolean

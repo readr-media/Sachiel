@@ -6,8 +6,9 @@
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
-import { RelatedArticle } from '~/components/shared/related-list-in-header'
 import IconClose from '~/public/icons/ham-close.svg'
+
+import type { TransformedCategory } from './header-general'
 
 const Container = styled.div`
   display: flex;
@@ -100,13 +101,6 @@ const CategoryItem = styled.li`
     }
   }
 `
-
-type TransformedCategory = {
-  id: string
-  name: string
-  slug: string
-  relatedList: RelatedArticle[]
-}
 
 type HamburgerMenuProps = {
   isCategoryPage: boolean
