@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@apollo/server": "^4.3.0",
+    "@faker-js/faker": "^7.6.0",
     "@graphql-tools/graphql-file-loader": "^7.5.14",
     "@graphql-tools/load": "^7.8.9",
     "@graphql-tools/mock": "^8.7.15",
