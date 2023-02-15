@@ -1,5 +1,5 @@
-import { SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/query/category'
+import { ValidPostStyle } from '~/types/common'
 
 export function getHref({
   style,
@@ -7,15 +7,15 @@ export function getHref({
   slug,
 }: Pick<Post, 'style' | 'id' | 'slug'>): string | undefined {
   switch (style) {
-    case 'news':
-    case 'embedded':
-    case 'frame':
-    case 'blank':
+    case ValidPostStyle.NEWS:
+    case ValidPostStyle.EMBEDDED:
+    case ValidPostStyle.FRAME:
+    case ValidPostStyle.BLANK:
       return `/post/${id}`
-    case 'report':
-      return `${SITE_URL}/project/${slug}`
-    case 'project3':
-      return `${SITE_URL}/project/3/${slug}`
+    case ValidPostStyle.REPORT:
+      return `/project/${slug}`
+    case ValidPostStyle.PROJECT3:
+      return `/project/3/${slug}`
     default:
       return undefined
   }
@@ -27,17 +27,17 @@ export function getUid({
   slug,
 }: Pick<Post, 'style' | 'id' | 'slug'>): string {
   switch (style) {
-    case 'news':
-    case 'embedded':
-    case 'frame':
-    case 'blank':
+    case ValidPostStyle.NEWS:
+    case ValidPostStyle.EMBEDDED:
+    case ValidPostStyle.FRAME:
+    case ValidPostStyle.BLANK:
       return `post-${id}`
-    case 'report':
+    case ValidPostStyle.REPORT:
       return `project-${slug}`
-    case 'project3':
+    case ValidPostStyle.PROJECT3:
       return `project-3-${slug}`
     default:
-      throw new Error('')
+      return `default-uid-${style}-${slug}-${id}`
   }
 }
 
