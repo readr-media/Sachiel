@@ -1,26 +1,20 @@
 import gql from 'graphql-tag'
 
-import type { ResizedImages } from '~/types/common'
+import { GenericCategory, GenericPost } from '~/types/common'
 
-export type Photo = {
-  resized: ResizedImages | null
-}
+export type Post = Pick<
+  GenericPost,
+  | 'id'
+  | 'slug'
+  | 'style'
+  | 'title'
+  | 'heroImage'
+  | 'ogImage'
+  | 'publishTime'
+  | 'readingTime'
+>
 
-export type Post = {
-  id: string
-  slug?: string
-  style?: string
-  title?: string
-  heroImage?: Photo | null
-  ogImage?: Photo | null
-  publishTime?: string
-  readingTime?: number
-}
-
-export type Category = {
-  id: string
-  slug?: string
-  title?: string
+export type Category = Pick<GenericCategory, 'id' | 'slug' | 'title'> & {
   posts?: Post[]
   reports?: Post[]
 }
