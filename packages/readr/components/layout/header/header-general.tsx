@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import throttle from 'raf-throttle'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { RelatedArticle } from '~/components/shared/related-list-in-header'
@@ -223,20 +223,17 @@ export default function HeaderGeneral({
   }
 
   // memorize transformedCategories to prevent unwanted re-rendering at child components
-  const transformedCategoriesMemo: TransformedCategory[] = useMemo(
-    () =>
-      categories.map((item) => {
-        const relatedList = item.posts?.map(convertToRelatedArticle) ?? []
+  const transformedCategoriesMemo: TransformedCategory[] = categories.map(
+    (item) => {
+      const relatedList = item.posts?.map(convertToRelatedArticle) ?? []
 
-        return {
-          id: item.id,
-          name: item.title ?? '',
-          slug: item.slug ?? '',
-          relatedList,
-        }
-      }),
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-    [JSON.stringify(categories)]
+      return {
+        id: item.id,
+        name: item.title ?? '',
+        slug: item.slug ?? '',
+        relatedList,
+      }
+    }
   )
 
   function openHamburgerMenu() {
