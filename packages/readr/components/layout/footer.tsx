@@ -223,8 +223,8 @@ export default function Footer(): JSX.Element {
           <p>readr@readr.tw</p>
         </CompanyInfoSection>
         <CopyrightInfo>
-          &copy; <time>{new Date().getFullYear()}</time> READr All Rights
-          Reserved
+          &copy; <time>{new Date().getFullYear()}</time> 精鏡傳媒股份有限公司
+          All Rights Reserved
         </CopyrightInfo>
       </Container>
     </Main>
