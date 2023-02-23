@@ -1,0 +1,41 @@
+query GetPostById($id: ID!) {
+  post(where: { id: $id }) {
+    id
+    sortOrder
+    slug
+    name
+    subtitle
+    publishTime
+    categories {
+      id
+      title
+    }
+    writers {
+      id
+      name
+    }
+    designers {
+      id
+      name
+    }
+    heroImage {
+      id
+      name
+      imageFile {
+        url
+      }
+      urlOriginal
+      resized {
+        original
+        w480
+        w800
+        w1200
+        w1600
+        w2400
+      }
+    }
+    heroCaption
+    content
+    readingTime
+  }
+}
