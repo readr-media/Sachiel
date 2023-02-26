@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+import { postFragment } from '~/graphql/fragments/post'
 import { GenericCategory, GenericPost } from '~/types/common'
 
 export type Post = Pick<
@@ -47,32 +48,7 @@ const categories = gql`
         }
         orderBy: { publishTime: desc }
       ) @include(if: $shouldQueryRelatedPost) {
-        id
-        slug
-        style
-        title: name
-        heroImage {
-          resized {
-            original
-            w480
-            w800
-            w1200
-            w1600
-            w2400
-          }
-        }
-        ogImage {
-          resized {
-            original
-            w480
-            w800
-            w1200
-            w1600
-            w2400
-          }
-        }
-        publishTime
-        readingTime
+        ...PostFields
       }
       reports: relatedPost(
         take: $relatedReportFirst
@@ -83,35 +59,11 @@ const categories = gql`
         }
         orderBy: { publishTime: desc }
       ) @include(if: $shouldQueryRelatedReport) {
-        id
-        slug
-        style
-        title: name
-        heroImage {
-          resized {
-            original
-            w480
-            w800
-            w1200
-            w1600
-            w2400
-          }
-        }
-        ogImage {
-          resized {
-            original
-            w480
-            w800
-            w1200
-            w1600
-            w2400
-          }
-        }
-        publishTime
-        readingTime
+        ...PostFields
       }
     }
   }
+  ${postFragment}
 `
 
 export { categories }
