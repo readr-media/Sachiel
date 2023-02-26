@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { RelatedArticle } from '~/components/shared/related-list-in-header'
-import { DONATION_LINK } from '~/constants/config'
 import type { Post } from '~/graphql/query/category'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
@@ -323,11 +322,7 @@ export default function HeaderGeneral({
           )}
 
           {!isPostPage && (
-            <DonateLink
-              href={DONATION_LINK}
-              target="_blank"
-              rel="external nofollow"
-            >
+            <DonateLink href="/donate" target="_blank" rel="external nofollow">
               贊助我們
             </DonateLink>
           )}

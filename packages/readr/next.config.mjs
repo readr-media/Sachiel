@@ -1,6 +1,8 @@
 import * as tsImport from 'ts-import'
 
-const { ENV } = await tsImport.load('./constants/environment-variables.ts')
+const { ENV, DONATION_PAGE_URL } = await tsImport.load(
+  './constants/environment-variables.ts'
+)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,6 +40,15 @@ const nextConfig = {
     })
 
     return config
+  },
+  async redirects() {
+    return [
+      {
+        source: '/donate',
+        destination: DONATION_PAGE_URL,
+        permanent: true,
+      },
+    ]
   },
   output: 'standalone',
   async headers() {
