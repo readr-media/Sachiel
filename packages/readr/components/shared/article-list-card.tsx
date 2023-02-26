@@ -4,7 +4,7 @@ import NextImage from 'next/image'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
-import { DEFAULT_POST_IMAGE_PATH } from '~/constants/config'
+import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
 
 import DateAndReadTimeInfo from './date-and-read-time-info'

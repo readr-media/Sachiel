@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { SITE_TITLE } from '~/constants/config'
+import { SITE_TITLE } from '~/constants/constant'
 
 import CustomHead from './custom-head'
 import HeaderLogo from './header/header-logo'

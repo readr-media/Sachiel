@@ -1,4 +1,4 @@
-import { SITE_TITLE } from '~/constants/config'
+import { SITE_TITLE } from '~/constants/constant'
 
 import CustomHead from './custom-head'
 import HeaderGeneral from './header/header-general'
