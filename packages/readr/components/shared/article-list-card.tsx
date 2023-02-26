@@ -2,11 +2,12 @@
 
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { useState } from 'react'
 import styled from 'styled-components'
 
+import { DEFAULT_POST_IMAGE_PATH } from '~/constants/config'
+import useFallbackImage from '~/hooks/useFallbackImage'
+
 import DateAndReadTimeInfo from './date-and-read-time-info'
-const DEFAULT_POST_IMAGE_PATH = '/icons/default/post.svg'
 
 type StyledProps = {
   $shouldReverseInMobile: boolean
@@ -214,11 +215,10 @@ export default function ArticleListCard({
 }: ArticleListCardProps): JSX.Element {
   const isReportAndShouldHighlight = isReport && shouldHighlightReport
 
-  const [imageSrc, setImageSrc] = useState(image)
-
-  function setFallbackImage() {
-    setImageSrc(DEFAULT_POST_IMAGE_PATH)
-  }
+  const { imageSrc, onErrorHandle } = useFallbackImage(
+    image,
+    DEFAULT_POST_IMAGE_PATH
+  )
 
   function clickHander(event: unknown) {
     ;(event as Event).stopPropagation()
@@ -242,7 +242,7 @@ export default function ArticleListCard({
         <picture>
           <NextImage
             src={imageSrc}
-            onError={setFallbackImage}
+            onError={onErrorHandle}
             fill={true}
             unoptimized={true}
             alt={title}
