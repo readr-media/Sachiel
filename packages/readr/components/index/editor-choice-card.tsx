@@ -167,7 +167,7 @@ const FeatureLabel = styled.label`
   }
 `
 
-type EditorChoiceCardProps = {
+export type EditorChoiceCardProps = {
   href?: string
   title: string
   image?: string
