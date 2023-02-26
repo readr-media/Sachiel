@@ -7,6 +7,8 @@ export type ResizedImages = {
   w2400: string
 }
 
+export type keyOfResizedImages = keyof ResizedImages
+
 export type GenericPhoto = {
   resized: ResizedImages | null
 }
