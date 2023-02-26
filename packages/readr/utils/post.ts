@@ -1,4 +1,4 @@
-import type { Post } from '~/graphql/query/category'
+import type { Post } from '~/graphql/fragments/post'
 import { ValidPostStyle } from '~/types/common'
 
 export function getHref({

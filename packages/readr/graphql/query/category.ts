@@ -1,19 +1,8 @@
 import gql from 'graphql-tag'
 
+import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import { GenericCategory, GenericPost } from '~/types/common'
-
-export type Post = Pick<
-  GenericPost,
-  | 'id'
-  | 'slug'
-  | 'style'
-  | 'title'
-  | 'heroImage'
-  | 'ogImage'
-  | 'publishTime'
-  | 'readingTime'
->
+import { GenericCategory } from '~/types/common'
 
 export type Category = Pick<GenericCategory, 'id' | 'slug' | 'title'> & {
   posts?: Post[]

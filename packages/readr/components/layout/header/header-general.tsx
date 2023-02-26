@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { RelatedArticle } from '~/components/shared/related-list-in-header'
-import type { Post } from '~/graphql/query/category'
+import type { Post } from '~/graphql/fragments/post'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
