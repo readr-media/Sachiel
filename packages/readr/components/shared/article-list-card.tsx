@@ -8,6 +8,7 @@ import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
 
 import DateAndReadTimeInfo from './date-and-read-time-info'
+import ReportLabel from './report-label'
 
 type StyledProps = {
   $shouldReverseInMobile: boolean
@@ -109,22 +110,6 @@ const ImageWrapper = styled.div<StyledProps>`
         }
       }
     `}
-`
-
-const ReportLabel = styled.label`
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 13px;
-  line-height: 19px;
-  color: #fff;
-  background-color: rgba(0, 9, 40, 0.5);
-  border-radius: 2px;
-  padding: 2px 4px;
-  ${({ theme }) => theme.breakpoint.sm} {
-    top: 8px;
-    right: 8px;
-  }
 `
 
 const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
@@ -249,7 +234,7 @@ export default function ArticleListCard({
             priority={shouldNotLazyload}
           />
         </picture>
-        {isReport && <ReportLabel>專題</ReportLabel>}
+        {isReport && <ReportLabel />}
       </ImageWrapper>
       <TextWrapper $shouldHighlightReport={isReportAndShouldHighlight}>
         <div className="title">

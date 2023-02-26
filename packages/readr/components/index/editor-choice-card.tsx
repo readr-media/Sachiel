@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
+import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
 import IconFeaturedLabel from '~/public/icons/featured-label.svg'
@@ -59,22 +60,6 @@ const Container = styled(NextLink)<StyledProps>`
         transform: scale(1.1);
       }
     }
-  }
-`
-
-const ReportLabel = styled.label`
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 13px;
-  line-height: 19px;
-  color: #fff;
-  background-color: rgba(0, 9, 40, 0.5);
-  border-radius: 2px;
-  padding: 2px 4px;
-  ${({ theme }) => theme.breakpoint.sm} {
-    top: 8px;
-    right: 8px;
   }
 `
 
@@ -217,7 +202,7 @@ export default function EditorChoiceCard({
           alt={title}
         />
       </picture>
-      {isReport && <ReportLabel>專題</ReportLabel>}
+      {isReport && <ReportLabel />}
       <TextWrapper $isFeatured={isFeatured}>
         {isFeatured && (
           <FeatureLabel>
