@@ -1,5 +1,11 @@
+import dayjs from 'dayjs'
+
 import type { Post } from '~/graphql/fragments/post'
-import { ValidPostStyle } from '~/types/common'
+import {
+  keyOfResizedImages,
+  ResizedImages,
+  ValidPostStyle,
+} from '~/types/common'
 
 export function getHref({
   style,
@@ -41,7 +47,49 @@ export function getUid({
   }
 }
 
+export function getImageSrc(
+  imageObject?: ResizedImages | null,
+  beginSize: keyOfResizedImages = 'w480'
+): string {
+  const imageList: keyOfResizedImages[] = [
+    'w480',
+    'w800',
+    'w1200',
+    'w1600',
+    'w2400',
+    'original',
+  ]
+
+  if (!imageObject) {
+    return ''
+  }
+
+  let imageSrc = ''
+  for (
+    let index = imageList.indexOf(beginSize);
+    index < imageList.length;
+    index += 1
+  ) {
+    imageSrc = imageList[index] || imageSrc
+  }
+
+  return imageSrc
+}
+
 export function isReport(style: string = ''): boolean {
   const isReportStyleList = ['report', 'project3', 'embedded']
   return isReportStyleList.includes(style)
+}
+
+export function formatPostDate(datetime: dayjs.ConfigType): string {
+  const formatStr = dayjs().isSame(dayjs(datetime), 'year')
+    ? 'MM/DD'
+    : 'YYYY/MM/DD'
+  return dayjs(datetime).format(formatStr)
+}
+
+export function formatReadTime(readingTime = 0): string {
+  return readingTime
+    ? `閱讀時間 ${Number(readingTime)} 分鐘`
+    : `閱讀時間 10 分鐘`
 }
