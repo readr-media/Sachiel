@@ -70,7 +70,8 @@ export function getImageSrc(
     index < imageList.length;
     index += 1
   ) {
-    imageSrc = imageList[index] || imageSrc
+    const size = imageList[index]
+    imageSrc = imageObject[size] || imageSrc
   }
 
   return imageSrc
