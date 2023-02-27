@@ -37,6 +37,7 @@ export type GenericPost = {
   style?: ValidPostStyle
   name?: string
   title?: string // alias to `name`
+  subtitle?: string
   heroImage?: GenericPhoto | null
   ogImage?: GenericPhoto | null
   publishTime?: string
@@ -49,4 +50,9 @@ export type GenericCategory = {
   title?: string
   posts?: GenericPost[]
   reports?: GenericPost[]
+}
+
+export type GenericFeature = {
+  description: string
+  featurePost: GenericPost[]
 }
