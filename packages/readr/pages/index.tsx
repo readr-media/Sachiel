@@ -26,9 +26,13 @@ type PageProps = {
 }
 
 const Index: NextPageWithLayout<PageProps> = ({ editorChoices }) => {
+  const shouldShowEditorChoiceSection = editorChoices.length > 0
+
   return (
     <>
-      <EditorChoiceSection posts={editorChoices} />
+      {shouldShowEditorChoiceSection && (
+        <EditorChoiceSection posts={editorChoices} />
+      )}
     </>
   )
 }
