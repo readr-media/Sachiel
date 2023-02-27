@@ -18,6 +18,9 @@ export const theme = {
     xl: `@media (min-width: ${mediaSize.xl}px)`,
     xxl: `@media (min-width: ${mediaSize.xxl}px)`,
   },
+  width: {
+    main: '1096px', // 網頁內容
+  },
 }
 
 export default theme

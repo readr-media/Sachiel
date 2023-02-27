@@ -21,9 +21,10 @@ const Container = styled.section`
     }
 
     ${({ theme }) => theme.breakpoint.xl} {
+      --main-width: ${({ theme }) => theme.width.main};
       display: block;
-      min-width: calc((100% - 1096px) / 2 + 296px + 40px);
-      max-width: calc((100% - 1096px) / 2 + 296px + 40px);
+      min-width: calc((100% - var(--main-width)) / 2 + 296px + 40px);
+      max-width: calc((100% - var(--main-width)) / 2 + 296px + 40px);
       padding: 40px 0 40px 40px;
     }
   }
@@ -37,8 +38,9 @@ const FeaturedBlock = styled.div`
     padding: 40px 48px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
-    min-width: calc((100% - 1096px) / 2 + 720px + 40px);
-    max-width: calc((100% - 1096px) / 2 + 720px + 40px);
+    --main-width: ${({ theme }) => theme.width.main};
+    min-width: calc((100% - var(--main-width)) / 2 + 720px + 40px);
+    max-width: calc((100% - var(--main-width)) / 2 + 720px + 40px);
     padding: 40px 40px 40px 0;
   }
 `

@@ -20,7 +20,7 @@ const Main = styled.footer`
 const Container = styled.div`
   padding: 32px 0 24px 0;
   text-align: center;
-  max-width: 1096px;
+  max-width: ${({ theme }) => theme.width.main};
   margin: 0 auto;
   box-sizing: content-box;
 `
