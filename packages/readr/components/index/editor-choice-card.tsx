@@ -18,14 +18,14 @@ const Container = styled(NextLink)<StyledProps>`
   display: block;
   position: relative;
   ${({ theme }) => theme.breakpoint.xl} {
-    ${({ $isFeatured }) =>
+    ${({ $isFeatured, theme }) =>
       $isFeatured
         ? `
-          max-width: 720px;
+          max-width: ${theme.width.featuredEditorChoiceCard};
           margin-left: auto;
         `
         : `
-          max-width: 296px;
+          max-width: ${theme.width.editorChoiceCard};
           margin-right: auto;
         `}
   }

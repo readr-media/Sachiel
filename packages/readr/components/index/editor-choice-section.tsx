@@ -22,9 +22,15 @@ const Container = styled.section`
 
     ${({ theme }) => theme.breakpoint.xl} {
       --main-width: ${({ theme }) => theme.width.main};
+      --editor-choice-card-width: ${({ theme }) =>
+        theme.width.editorChoiceCard};
       display: block;
-      min-width: calc((100% - var(--main-width)) / 2 + 296px + 40px);
-      max-width: calc((100% - var(--main-width)) / 2 + 296px + 40px);
+      min-width: calc(
+        (100% - var(--main-width)) / 2 + var(--editor-choice-card-width) + 40px
+      );
+      max-width: calc(
+        (100% - var(--main-width)) / 2 + var(--editor-choice-card-width) + 40px
+      );
       padding: 40px 0 40px 40px;
     }
   }
@@ -39,8 +45,16 @@ const FeaturedBlock = styled.div`
   }
   ${({ theme }) => theme.breakpoint.xl} {
     --main-width: ${({ theme }) => theme.width.main};
-    min-width: calc((100% - var(--main-width)) / 2 + 720px + 40px);
-    max-width: calc((100% - var(--main-width)) / 2 + 720px + 40px);
+    --featured-editor-choice-card-width: ${({ theme }) =>
+      theme.width.featuredEditorChoiceCard};
+    min-width: calc(
+      (100% - var(--main-width)) / 2 + var(--featured-editor-choice-card-width) +
+        40px
+    );
+    max-width: calc(
+      (100% - var(--main-width)) / 2 + var(--featured-editor-choice-card-width) +
+        40px
+    );
     padding: 40px 40px 40px 0;
   }
 `
