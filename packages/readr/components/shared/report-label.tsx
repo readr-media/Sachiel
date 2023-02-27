@@ -1,3 +1,5 @@
+// 該元件作為文章卡片上，標示專題類別使用
+
 import styled from 'styled-components'
 
 const Label = styled.label`
