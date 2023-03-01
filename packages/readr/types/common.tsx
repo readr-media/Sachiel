@@ -53,6 +53,6 @@ export type GenericCategory = {
 
 export type GenericEditorChoice = {
   heroImage?: GenericPhoto
-  choices?: GenericPost[]
+  choices?: GenericPost | null
   publishTime?: string
 }
