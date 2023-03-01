@@ -6,13 +6,7 @@ type EditorChoice {
   sortOrder: Int
   name: String
   description: String
-  choices(
-    where: PostWhereInput! = {}
-    orderBy: [PostOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Post!]
-  choicesCount(where: PostWhereInput! = {}): Int
+  choices: Post
   link: String
   heroImage: Photo
   state: String
@@ -38,7 +32,7 @@ input EditorChoiceWhereInput {
   sortOrder: IntNullableFilter
   name: StringFilter
   description: StringFilter
-  choices: PostManyRelationFilter
+  choices: PostWhereInput
   link: StringFilter
   heroImage: PhotoWhereInput
   state: StringNullableFilter
@@ -105,12 +99,6 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
-}
-
 input StringNullableFilter {
   equals: String
   in: [String!]
@@ -172,7 +160,7 @@ input EditorChoiceUpdateInput {
   sortOrder: Int
   name: String
   description: String
-  choices: PostRelateToManyForUpdateInput
+  choices: PostRelateToOneForUpdateInput
   link: String
   heroImage: PhotoRelateToOneForUpdateInput
   state: String
@@ -183,11 +171,10 @@ input EditorChoiceUpdateInput {
   updatedBy: UserRelateToOneForUpdateInput
 }
 
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input PostRelateToOneForUpdateInput {
+  create: PostCreateInput
+  connect: PostWhereUniqueInput
+  disconnect: Boolean
 }
 
 input PhotoRelateToOneForUpdateInput {
@@ -211,7 +198,7 @@ input EditorChoiceCreateInput {
   sortOrder: Int
   name: String
   description: String
-  choices: PostRelateToManyForCreateInput
+  choices: PostRelateToOneForCreateInput
   link: String
   heroImage: PhotoRelateToOneForCreateInput
   state: String
@@ -222,9 +209,9 @@ input EditorChoiceCreateInput {
   updatedBy: UserRelateToOneForCreateInput
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input PostRelateToOneForCreateInput {
+  create: PostCreateInput
+  connect: PostWhereUniqueInput
 }
 
 input PhotoRelateToOneForCreateInput {
@@ -401,9 +388,14 @@ input TagRelateToManyForCreateInput {
 type Author {
   id: ID!
   name: String
+  name_en: String
+  title: String
+  title_en: String
   email: String
   image: Photo
   homepage: String
+  sort: Int
+  isMember: Boolean
   facebook: String
   twitter: String
   instagram: String
@@ -461,9 +453,14 @@ input AuthorWhereInput {
   NOT: [AuthorWhereInput!]
   id: IDFilter
   name: StringFilter
+  name_en: StringFilter
+  title: StringNullableFilter
+  title_en: StringNullableFilter
   email: StringNullableFilter
   image: PhotoWhereInput
   homepage: StringFilter
+  sort: IntNullableFilter
+  isMember: BooleanFilter
   facebook: StringFilter
   twitter: StringFilter
   instagram: StringFilter
@@ -478,6 +475,17 @@ input AuthorWhereInput {
   updatedAt: DateTimeNullableFilter
   createdBy: UserWhereInput
   updatedBy: UserWhereInput
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input PostManyRelationFilter {
+  every: PostWhereInput
+  some: PostWhereInput
+  none: PostWhereInput
 }
 
 input ProjectNoteManyRelationFilter {
@@ -507,8 +515,13 @@ input ProjectManyRelationFilter {
 input AuthorOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  name_en: OrderDirection
+  title: OrderDirection
+  title_en: OrderDirection
   email: OrderDirection
   homepage: OrderDirection
+  sort: OrderDirection
+  isMember: OrderDirection
   facebook: OrderDirection
   twitter: OrderDirection
   instagram: OrderDirection
@@ -520,9 +533,14 @@ input AuthorOrderByInput {
 
 input AuthorUpdateInput {
   name: String
+  name_en: String
+  title: String
+  title_en: String
   email: String
   image: PhotoRelateToOneForUpdateInput
   homepage: String
+  sort: Int
+  isMember: Boolean
   facebook: String
   twitter: String
   instagram: String
@@ -537,6 +555,13 @@ input AuthorUpdateInput {
   updatedAt: DateTime
   createdBy: UserRelateToOneForUpdateInput
   updatedBy: UserRelateToOneForUpdateInput
+}
+
+input PostRelateToManyForUpdateInput {
+  disconnect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  create: [PostCreateInput!]
+  connect: [PostWhereUniqueInput!]
 }
 
 input ProjectNoteRelateToManyForUpdateInput {
@@ -574,9 +599,14 @@ input AuthorUpdateArgs {
 
 input AuthorCreateInput {
   name: String
+  name_en: String
+  title: String
+  title_en: String
   email: String
   image: PhotoRelateToOneForCreateInput
   homepage: String
+  sort: Int
+  isMember: Boolean
   facebook: String
   twitter: String
   instagram: String
@@ -591,6 +621,11 @@ input AuthorCreateInput {
   updatedAt: DateTime
   createdBy: UserRelateToOneForCreateInput
   updatedBy: UserRelateToOneForCreateInput
+}
+
+input PostRelateToManyForCreateInput {
+  create: [PostCreateInput!]
+  connect: [PostWhereUniqueInput!]
 }
 
 input ProjectNoteRelateToManyForCreateInput {
@@ -611,6 +646,164 @@ input GalleryRelateToManyForCreateInput {
 input ProjectRelateToManyForCreateInput {
   create: [ProjectCreateInput!]
   connect: [ProjectWhereUniqueInput!]
+}
+
+type PageVariable {
+  id: ID!
+  name: String
+  relatedImage: Photo
+  value: JSON
+  page: String
+  url: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: User
+  updatedBy: User
+}
+
+input PageVariableWhereUniqueInput {
+  id: ID
+}
+
+input PageVariableWhereInput {
+  AND: [PageVariableWhereInput!]
+  OR: [PageVariableWhereInput!]
+  NOT: [PageVariableWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  relatedImage: PhotoWhereInput
+  page: StringNullableFilter
+  url: StringFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdBy: UserWhereInput
+  updatedBy: UserWhereInput
+}
+
+input PageVariableOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  page: OrderDirection
+  url: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input PageVariableUpdateInput {
+  name: String
+  relatedImage: PhotoRelateToOneForUpdateInput
+  value: JSON
+  page: String
+  url: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: UserRelateToOneForUpdateInput
+  updatedBy: UserRelateToOneForUpdateInput
+}
+
+input PageVariableUpdateArgs {
+  where: PageVariableWhereUniqueInput!
+  data: PageVariableUpdateInput!
+}
+
+input PageVariableCreateInput {
+  name: String
+  relatedImage: PhotoRelateToOneForCreateInput
+  value: JSON
+  page: String
+  url: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: UserRelateToOneForCreateInput
+  updatedBy: UserRelateToOneForCreateInput
+}
+
+type Award {
+  id: ID!
+  name: String
+  name_en: String
+  report: String
+  report_en: String
+  url: String
+  desc: String
+  desc_en: String
+  awardTime: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: User
+  updatedBy: User
+}
+
+input AwardWhereUniqueInput {
+  id: ID
+}
+
+input AwardWhereInput {
+  AND: [AwardWhereInput!]
+  OR: [AwardWhereInput!]
+  NOT: [AwardWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  name_en: StringFilter
+  report: StringFilter
+  report_en: StringFilter
+  url: StringFilter
+  desc: StringFilter
+  desc_en: StringFilter
+  awardTime: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdBy: UserWhereInput
+  updatedBy: UserWhereInput
+}
+
+input AwardOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  name_en: OrderDirection
+  report: OrderDirection
+  report_en: OrderDirection
+  url: OrderDirection
+  desc: OrderDirection
+  desc_en: OrderDirection
+  awardTime: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input AwardUpdateInput {
+  name: String
+  name_en: String
+  report: String
+  report_en: String
+  url: String
+  desc: String
+  desc_en: String
+  awardTime: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: UserRelateToOneForUpdateInput
+  updatedBy: UserRelateToOneForUpdateInput
+}
+
+input AwardUpdateArgs {
+  where: AwardWhereUniqueInput!
+  data: AwardUpdateInput!
+}
+
+input AwardCreateInput {
+  name: String
+  name_en: String
+  report: String
+  report_en: String
+  url: String
+  desc: String
+  desc_en: String
+  awardTime: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  createdBy: UserRelateToOneForCreateInput
+  updatedBy: UserRelateToOneForCreateInput
 }
 
 type Video {
@@ -862,11 +1055,6 @@ input TagWhereInput {
   updatedBy: UserWhereInput
 }
 
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
-}
-
 input PhotoManyRelationFilter {
   every: PhotoWhereInput
   some: PhotoWhereInput
@@ -977,6 +1165,7 @@ type Category {
 
 input CategoryWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 input CategoryWhereInput {
@@ -1140,6 +1329,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   writersCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfWriters: JSON
   photographers(
     where: AuthorWhereInput! = {}
     orderBy: [AuthorOrderByInput!]! = []
@@ -1147,6 +1337,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   photographersCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfPhotographers: JSON
   cameraOperators(
     where: AuthorWhereInput! = {}
     orderBy: [AuthorOrderByInput!]! = []
@@ -1154,6 +1345,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   cameraOperatorsCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfCameraOperators: JSON
   designers(
     where: AuthorWhereInput! = {}
     orderBy: [AuthorOrderByInput!]! = []
@@ -1161,6 +1353,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   designersCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfDesigners: JSON
   engineers(
     where: AuthorWhereInput! = {}
     orderBy: [AuthorOrderByInput!]! = []
@@ -1168,6 +1361,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   engineersCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfEngineers: JSON
   dataAnalysts(
     where: AuthorWhereInput! = {}
     orderBy: [AuthorOrderByInput!]! = []
@@ -1175,6 +1369,7 @@ type Post {
     skip: Int! = 0
   ): [Author!]
   dataAnalystsCount(where: AuthorWhereInput! = {}): Int
+  manualOrderOfDataAnalysts: JSON
   otherByline: String
   heroVideo: Video
   heroImage: Photo
@@ -1211,6 +1406,7 @@ type Post {
     skip: Int! = 0
   ): [Post!]
   relatedPostsCount(where: PostWhereInput! = {}): Int
+  manualOrderOfRelatedPosts: JSON
   data(
     where: DataSetWhereInput! = {}
     orderBy: [DataSetOrderByInput!]! = []
@@ -1348,11 +1544,17 @@ input PostUpdateInput {
   publishTime: DateTime
   categories: CategoryRelateToManyForUpdateInput
   writers: AuthorRelateToManyForUpdateInput
+  manualOrderOfWriters: JSON
   photographers: AuthorRelateToManyForUpdateInput
+  manualOrderOfPhotographers: JSON
   cameraOperators: AuthorRelateToManyForUpdateInput
+  manualOrderOfCameraOperators: JSON
   designers: AuthorRelateToManyForUpdateInput
+  manualOrderOfDesigners: JSON
   engineers: AuthorRelateToManyForUpdateInput
+  manualOrderOfEngineers: JSON
   dataAnalysts: AuthorRelateToManyForUpdateInput
+  manualOrderOfDataAnalysts: JSON
   otherByline: String
   heroVideo: VideoRelateToOneForUpdateInput
   heroImage: PhotoRelateToOneForUpdateInput
@@ -1371,6 +1573,7 @@ input PostUpdateInput {
   readingTime: Int
   collabration: CollaborationRelateToManyForUpdateInput
   relatedPosts: PostRelateToManyForUpdateInput
+  manualOrderOfRelatedPosts: JSON
   data: DataSetRelateToManyForUpdateInput
   ogTitle: String
   ogDescription: String
@@ -1444,11 +1647,17 @@ input PostCreateInput {
   publishTime: DateTime
   categories: CategoryRelateToManyForCreateInput
   writers: AuthorRelateToManyForCreateInput
+  manualOrderOfWriters: JSON
   photographers: AuthorRelateToManyForCreateInput
+  manualOrderOfPhotographers: JSON
   cameraOperators: AuthorRelateToManyForCreateInput
+  manualOrderOfCameraOperators: JSON
   designers: AuthorRelateToManyForCreateInput
+  manualOrderOfDesigners: JSON
   engineers: AuthorRelateToManyForCreateInput
+  manualOrderOfEngineers: JSON
   dataAnalysts: AuthorRelateToManyForCreateInput
+  manualOrderOfDataAnalysts: JSON
   otherByline: String
   heroVideo: VideoRelateToOneForCreateInput
   heroImage: PhotoRelateToOneForCreateInput
@@ -1467,6 +1676,7 @@ input PostCreateInput {
   readingTime: Int
   collabration: CollaborationRelateToManyForCreateInput
   relatedPosts: PostRelateToManyForCreateInput
+  manualOrderOfRelatedPosts: JSON
   data: DataSetRelateToManyForCreateInput
   ogTitle: String
   ogDescription: String
@@ -2166,12 +2376,6 @@ input ProjectChecklistUpdateInput {
   updatedBy: UserRelateToOneForUpdateInput
 }
 
-input PostRelateToOneForUpdateInput {
-  create: PostCreateInput
-  connect: PostWhereUniqueInput
-  disconnect: Boolean
-}
-
 input ProjectChecklistUpdateArgs {
   where: ProjectChecklistWhereUniqueInput!
   data: ProjectChecklistUpdateInput!
@@ -2196,11 +2400,6 @@ input ProjectChecklistCreateInput {
   updatedAt: DateTime
   createdBy: UserRelateToOneForCreateInput
   updatedBy: UserRelateToOneForCreateInput
-}
-
-input PostRelateToOneForCreateInput {
-  create: PostCreateInput
-  connect: PostWhereUniqueInput
 }
 
 type ProjectNote {
@@ -2336,6 +2535,7 @@ type NoteCategory {
 
 input NoteCategoryWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 input NoteCategoryWhereInput {
@@ -2505,6 +2705,21 @@ type Mutation {
   updateAuthors(data: [AuthorUpdateArgs!]!): [Author]
   deleteAuthor(where: AuthorWhereUniqueInput!): Author
   deleteAuthors(where: [AuthorWhereUniqueInput!]!): [Author]
+  createPageVariable(data: PageVariableCreateInput!): PageVariable
+  createPageVariables(data: [PageVariableCreateInput!]!): [PageVariable]
+  updatePageVariable(
+    where: PageVariableWhereUniqueInput!
+    data: PageVariableUpdateInput!
+  ): PageVariable
+  updatePageVariables(data: [PageVariableUpdateArgs!]!): [PageVariable]
+  deletePageVariable(where: PageVariableWhereUniqueInput!): PageVariable
+  deletePageVariables(where: [PageVariableWhereUniqueInput!]!): [PageVariable]
+  createAward(data: AwardCreateInput!): Award
+  createAwards(data: [AwardCreateInput!]!): [Award]
+  updateAward(where: AwardWhereUniqueInput!, data: AwardUpdateInput!): Award
+  updateAwards(data: [AwardUpdateArgs!]!): [Award]
+  deleteAward(where: AwardWhereUniqueInput!): Award
+  deleteAwards(where: [AwardWhereUniqueInput!]!): [Award]
   createVideo(data: VideoCreateInput!): Video
   createVideos(data: [VideoCreateInput!]!): [Video]
   updateVideo(where: VideoWhereUniqueInput!, data: VideoUpdateInput!): Video
@@ -2690,6 +2905,22 @@ type Query {
   ): [Author!]
   author(where: AuthorWhereUniqueInput!): Author
   authorsCount(where: AuthorWhereInput! = {}): Int
+  pageVariables(
+    where: PageVariableWhereInput! = {}
+    orderBy: [PageVariableOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [PageVariable!]
+  pageVariable(where: PageVariableWhereUniqueInput!): PageVariable
+  pageVariablesCount(where: PageVariableWhereInput! = {}): Int
+  awards(
+    where: AwardWhereInput! = {}
+    orderBy: [AwardOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Award!]
+  award(where: AwardWhereUniqueInput!): Award
+  awardsCount(where: AwardWhereInput! = {}): Int
   videos(
     where: VideoWhereInput! = {}
     orderBy: [VideoOrderByInput!]! = []

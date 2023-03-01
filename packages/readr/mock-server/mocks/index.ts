@@ -2,6 +2,7 @@ import type { IMocks } from '@graphql-tools/mock'
 
 import { Category } from './Category'
 import { DateTime } from './DateTime'
+import { EditorChoice } from './EditorChoice'
 import { Feature } from './Feature'
 import { Post } from './Post'
 import { Query } from './Query'
@@ -13,5 +14,6 @@ export const mocks: IMocks = {
   Category,
   Post,
   Feature,
+  EditorChoice,
   Query,
 }

@@ -52,6 +52,12 @@ export type GenericCategory = {
   reports?: GenericPost[]
 }
 
+export type GenericEditorChoice = {
+  heroImage?: GenericPhoto
+  choices?: GenericPost | null
+  publishTime?: string
+}
+
 export type GenericFeature = {
   description: string
   featurePost: GenericPost[]

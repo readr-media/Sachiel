@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           heroImage,
           ogImage,
           publishTime = '',
-        } = editorChoice.choices[0]
+        } = editorChoice.choices ?? {}
 
         const editorHeroImage = getImageSrc(editorChoice.heroImage?.resized)
         const postHeroImage = getImageSrc(heroImage?.resized)
