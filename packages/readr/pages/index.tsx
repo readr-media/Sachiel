@@ -132,7 +132,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           style,
           heroImage,
           ogImage,
-        } = feature.featurePost[0]
+        } = feature.featurePost ?? {}
 
         const postHeroImage = getImageSrc(heroImage?.resized)
         const postOgImage = getImageSrc(ogImage?.resized)

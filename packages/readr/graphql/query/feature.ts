@@ -7,7 +7,7 @@ import { GenericFeature, GenericPost } from '~/types/common'
 export type PostWithSubtitle = Post & Pick<GenericPost, 'subtitle'>
 
 export type Feature = Pick<GenericFeature, 'description' | 'featurePost'> & {
-  featurePost: PostWithSubtitle[]
+  featurePost: Post
 }
 
 const features = gql`
