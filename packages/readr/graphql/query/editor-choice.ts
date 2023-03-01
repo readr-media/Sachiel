@@ -6,7 +6,9 @@ import { postFragment } from '~/graphql/fragments/post'
 import type { GenericEditorChoice } from '~/types/common'
 
 export type EditorChoice = Required<
-  Pick<GenericEditorChoice, 'heroImage' | 'publishTime'> & { choices: Post[] }
+  Pick<GenericEditorChoice, 'heroImage' | 'publishTime'> & {
+    choices: Post | null
+  }
 >
 
 const editorChoices = gql`
