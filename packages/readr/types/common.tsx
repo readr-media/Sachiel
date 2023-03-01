@@ -60,5 +60,5 @@ export type GenericEditorChoice = {
 
 export type GenericFeature = {
   description: string
-  featurePost: GenericPost[]
+  featurePost?: GenericPost | null
 }

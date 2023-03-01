@@ -7,5 +7,4 @@ export const Feature: () => GenericFeature = () => ({
   description: randomBoolean()
     ? `${faker.internet.emoji()} ${faker.lorem.slug(2)}`
     : '',
-  featurePost: [...new Array(1)],
 })
