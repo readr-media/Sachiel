@@ -42,32 +42,33 @@ export default class MyDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang="zh-Hant">
-        <Head></Head>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#04295e" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta
-          name="msapplication-TileColor"
-          content="#ebf02c"
-          key="msapplication-TileColor"
-        />
-        <meta name="theme-color" content="#04295e" key="theme-color" />
+        <Head>
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+          />
+          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#04295e" />
+          <link rel="manifest" href="/site.webmanifest" />
+          <meta
+            name="msapplication-TileColor"
+            content="#ebf02c"
+            key="msapplication-TileColor"
+          />
+          <meta name="theme-color" content="#04295e" key="theme-color" />
+        </Head>
         <body>
           <Main />
           <NextScript />
