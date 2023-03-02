@@ -6,6 +6,7 @@ import { UrlLoader } from '@graphql-tools/url-loader'
 
 import { MOCK_API_SERVER_PORT } from '../constants/config'
 import { mocks } from './mocks'
+import { resolvers } from './resolver'
 
 const GQL_SCHEMA_URL =
   'https://raw.githubusercontent.com/mirror-media/Lilith/main/packages/readr/schema.graphql'
@@ -34,6 +35,7 @@ const startServer = async () => {
       //   }),
       // },
       mocks,
+      resolvers,
     }),
   })
 

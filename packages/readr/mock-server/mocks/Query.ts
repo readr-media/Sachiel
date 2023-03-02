@@ -1,5 +1,5 @@
 export const Query = {
-  categories: () => [...new Array(6)],
-  editorChoices: () => [...new Array(3)],
+  categories: () => [...new Array(10)],
+  editorChoices: () => [...new Array(6)],
   features: () => [...new Array(8)],
 }
