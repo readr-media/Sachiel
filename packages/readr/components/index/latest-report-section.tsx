@@ -7,9 +7,20 @@ import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import { Category } from '~/graphql/query/category'
 
+import { sectionStyle } from './share-styles'
+
 const Container = styled.section`
+  ${sectionStyle}
   width: 100%;
   margin: 0 auto 48px;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    padding: 0 48px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding: 0;
+  }
 
   .section-heading {
     margin: 0 0 12px;
