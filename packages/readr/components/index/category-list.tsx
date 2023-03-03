@@ -87,5 +87,5 @@ export default function CategoryList({
     )
   })
 
-  return <Container>{articleItems}</Container>
+  return <Container className="category-list">{articleItems}</Container>
 }

@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 
-import { DEFAULT_CATEGORY_SLUG } from '~/constants/constant'
+import { DEFAULT_CATEGORY } from '~/constants/constant'
 import { Category } from '~/graphql/query/category'
 import { useCategoryListContext } from '~/hooks/useContext'
 
@@ -72,19 +72,12 @@ type CategoryNavProps = {
 }
 
 export default function CategoryNav({
-  currentCategorySlug = DEFAULT_CATEGORY_SLUG,
+  currentCategorySlug = DEFAULT_CATEGORY.slug,
   categoryClickHandler,
 }: CategoryNavProps): JSX.Element {
   const categoryList = useCategoryListContext()
 
-  const formattedCategories: Category[] = [
-    {
-      id: DEFAULT_CATEGORY_SLUG,
-      title: '不分類',
-      slug: DEFAULT_CATEGORY_SLUG,
-    },
-    ...categoryList,
-  ]
+  const formattedCategories: Category[] = [DEFAULT_CATEGORY, ...categoryList]
 
   const clickHandler = (category: Category) => {
     if (typeof categoryClickHandler === 'function') {
@@ -98,5 +91,5 @@ export default function CategoryNav({
     </Item>
   ))
 
-  return <Container>{categoryItems}</Container>
+  return <Container className="category-nav">{categoryItems}</Container>
 }

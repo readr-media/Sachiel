@@ -10,6 +10,7 @@ import type { EditorChoiceCardWithId } from '~/components/index/editor-choice-se
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import type { FeatureCardWithId } from '~/components/index/feature-section'
 import FeatureSection from '~/components/index/feature-section'
+import LatestReportSection from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
@@ -39,6 +40,7 @@ const Index: NextPageWithLayout<PageProps> = ({ editorChoices, features }) => {
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
+      <LatestReportSection />
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
     </>
   )
