@@ -1,5 +1,5 @@
 // 最新報導
-import { useRef } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import CategoryNav from '~/components/shared/category-nav'
@@ -40,27 +40,29 @@ const ReportContainer = styled.div`
 `
 
 export default function LatestReportSection(): JSX.Element {
-  const activeCategory = useRef(DEFAULT_CATEGORY)
+  const [activeCategory, setActiveCategory] = useState(DEFAULT_CATEGORY)
 
-  const getCategoryName = (category: Category) =>
-    category?.slug === DEFAULT_CATEGORY.slug ? '' : category?.title
+  const getShowMoreText = (category: Category) => {
+    const name = category?.slug === DEFAULT_CATEGORY.slug ? '' : category.title
 
-  const showMoreText = `更多${getCategoryName(activeCategory.current)}報導`
+    return `更多${name}報導`
+  }
 
   const updateActiveCategory = (category: Category) => {
-    activeCategory.current = category
+    setActiveCategory(category)
   }
 
   return (
     <Container className="latest-report-section">
       <SectionHeading
         title="最新報導"
-        showMoreText={showMoreText}
+        showMoreText={getShowMoreText(activeCategory)}
+        categorySlug={activeCategory.slug}
         highlightColor="#ebf02c"
         headingLevel={2}
       />
       <CategoryNav
-        currentCategorySlug={activeCategory.current?.slug}
+        currentCategorySlug={activeCategory.slug}
         categoryClickHandler={updateActiveCategory}
       />
       <ReportContainer></ReportContainer>
