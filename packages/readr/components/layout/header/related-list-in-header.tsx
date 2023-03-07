@@ -5,9 +5,8 @@
 
 import styled from 'styled-components'
 
+import ArticleListCard from '~/components/shared/article-list-card'
 import type { ArticleCard } from '~/types/component'
-
-import ArticleListCard from './article-list-card'
 
 const Container = styled.div<{ $show: boolean }>`
   position: absolute;
