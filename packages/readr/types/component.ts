@@ -8,12 +8,7 @@ export type ArticleCard = {
   isReport?: boolean
 }
 
-export type ArticleCardWithIsFeatured = ArticleCard & {
-  isFeatured?: boolean
-}
-
 export type FeaturedArticle = ArticleCard & {
   subtitle?: string
   description?: string
-  isFirst?: boolean
 }

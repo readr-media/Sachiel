@@ -9,7 +9,7 @@ import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
 import IconFeaturedLabel from '~/public/icons/featured-label.svg'
-import { ArticleCardWithIsFeatured } from '~/types/component'
+import { ArticleCard } from '~/types/component'
 
 type StyledProps = {
   $isFeatured: boolean
@@ -169,6 +169,10 @@ const FeatureLabel = styled.label`
     }
   }
 `
+
+export type ArticleCardWithIsFeatured = ArticleCard & {
+  isFeatured?: boolean
+}
 
 export default function EditorChoiceCard({
   href = '',

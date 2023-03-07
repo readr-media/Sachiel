@@ -204,6 +204,10 @@ const Subtitle = styled.span`
   }
 `
 
+export type FeaturedArticleWithIsFirst = FeaturedArticle & {
+  isFirst?: boolean
+}
+
 export default function FeatureCard({
   href = '',
   title = '',
@@ -211,7 +215,7 @@ export default function FeatureCard({
   image = DEFAULT_POST_IMAGE_PATH,
   description = '',
   isFirst = false,
-}: FeaturedArticle): JSX.Element {
+}: FeaturedArticleWithIsFirst): JSX.Element {
   const { imageSrc, onErrorHandle } = useFallbackImage(
     image,
     DEFAULT_POST_IMAGE_PATH
