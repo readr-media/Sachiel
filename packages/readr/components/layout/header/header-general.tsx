@@ -7,21 +7,13 @@ import throttle from 'raf-throttle'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import type { Post } from '~/graphql/fragments/post'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
 import type { ArticleCard } from '~/types/component'
 import * as gtag from '~/utils/gtag'
-import {
-  formatPostDate,
-  formatReadTime,
-  getHref,
-  getImageSrc,
-  getUid,
-  isReport,
-} from '~/utils/post'
+import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
 
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
 const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
@@ -194,36 +186,17 @@ export default function HeaderGeneral({
     )
   })
 
-  function convertPostToArticleCard(post: Post): ArticleCard {
-    const {
-      id,
-      title = '',
-      slug = '',
-      readingTime = 0,
-      style,
-      heroImage,
-      ogImage,
-      publishTime = '',
-    } = post
-
-    const postHeroImage = getImageSrc(heroImage?.resized)
-    const postOgImage = getImageSrc(ogImage?.resized)
-
-    return {
-      id: getUid({ style, id, slug }),
-      title,
-      href: getHref({ style, id, slug }) ?? '', // undefined value can't be serialized
-      date: formatPostDate(publishTime),
-      readTimeText: formatReadTime(readingTime),
-      isReport: isReport(style),
-      image: postHeroImage || postOgImage,
-    }
-  }
-
   // memorize transformedCategories to prevent unwanted re-rendering at child components
   const transformedCategories: TransformedCategory[] = categories.map(
     (item) => {
-      const relatedList = item.posts?.map(convertPostToArticleCard) ?? []
+      const relatedList =
+        item.posts?.map((post) => {
+          const { heroImage, ogImage } = post
+          const image = getImageOfArticle({
+            images: [heroImage, ogImage],
+          })
+          return convertPostToArticleCard(post, image)
+        }) ?? []
 
       return {
         id: item.id,

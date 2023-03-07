@@ -17,11 +17,10 @@ import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
 import type { ArticleCard } from '~/types/component'
 import {
-  formatPostDate,
-  formatReadTime,
+  convertPostToArticleCard,
   getHref,
+  getImageOfArticle,
   getImageSrc,
-  isReport,
 } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
@@ -78,30 +77,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       }
 
       editorChoices = data.editorChoices.map((editorChoice) => {
-        const {
-          id = '',
-          title = '',
-          slug = '',
-          readingTime = 0,
-          style,
-          heroImage,
-          ogImage,
-          publishTime = '',
-        } = editorChoice.choices ?? {}
+        const { heroImage, ogImage } = editorChoice.choices ?? {}
 
-        const editorHeroImage = getImageSrc(editorChoice.heroImage?.resized)
-        const postHeroImage = getImageSrc(heroImage?.resized)
-        const postOgImage = getImageSrc(ogImage?.resized)
+        const image = getImageOfArticle({
+          images: [editorChoice.heroImage, heroImage, ogImage],
+        })
 
-        return {
-          id,
-          title,
-          href: getHref({ style, id, slug }) ?? '', // undefined value can't be serialized
-          date: formatPostDate(publishTime),
-          readTimeText: formatReadTime(readingTime),
-          isReport: isReport(style),
-          image: editorHeroImage || postHeroImage || postOgImage,
-        }
+        return convertPostToArticleCard(editorChoice?.choices, image)
       })
     }
 

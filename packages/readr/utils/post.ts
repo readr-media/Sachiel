@@ -2,10 +2,12 @@ import dayjs from 'dayjs'
 
 import type { Post } from '~/graphql/fragments/post'
 import {
+  GenericPhoto,
   keyOfResizedImages,
   ResizedImages,
   ValidPostStyle,
 } from '~/types/common'
+import type { ArticleCard } from '~/types/component'
 
 export function getHref({
   style,
@@ -93,4 +95,41 @@ export function formatReadTime(readingTime = 0): string {
   return readingTime
     ? `閱讀時間 ${Number(readingTime)} 分鐘`
     : `閱讀時間 10 分鐘`
+}
+
+export function getImageOfArticle({
+  images,
+  beginSize,
+}: {
+  images: (GenericPhoto | null | undefined)[]
+  beginSize?: keyOfResizedImages
+}): string {
+  return images.reduce((image, curr) => {
+    if (image) return image
+    else return getImageSrc(curr?.resized, beginSize)
+  }, '')
+}
+
+export function convertPostToArticleCard(
+  post: Post | null,
+  image?: string
+): ArticleCard {
+  const {
+    id = 'no-id',
+    title = '',
+    slug = '',
+    readingTime = 0,
+    style,
+    publishTime = '',
+  } = post ?? {}
+
+  return {
+    id: getUid({ style, id, slug }),
+    title,
+    href: getHref({ style, id, slug }) ?? '', // undefined value can't be serialized
+    date: formatPostDate(publishTime),
+    readTimeText: formatReadTime(readingTime),
+    isReport: isReport(style),
+    image,
+  }
 }
