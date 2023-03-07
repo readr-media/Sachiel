@@ -2,7 +2,8 @@
 
 import styled from 'styled-components'
 
-import { FeatureCardProps } from './feature-card'
+import type { FeaturedArticle } from '~/types/component'
+
 import FeatureCard from './feature-card'
 
 type StyledProps = {
@@ -37,12 +38,8 @@ const Item = styled.li<StyledProps>`
     `}
 `
 
-export type FeatureCardWithId = Omit<FeatureCardProps, 'isFirst'> & {
-  id: string
-}
-
 type FeatureSectionProps = {
-  posts: FeatureCardWithId[]
+  posts: FeaturedArticle[]
 }
 
 export default function FeatureSection({

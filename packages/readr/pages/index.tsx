@@ -7,7 +7,6 @@ import type { ReactElement } from 'react'
 
 import client from '~/apollo-client'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
-import type { FeatureCardWithId } from '~/components/index/feature-section'
 import FeatureSection from '~/components/index/feature-section'
 import LatestReportSection from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
@@ -15,19 +14,14 @@ import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
-import type { ArticleCard } from '~/types/component'
-import {
-  convertPostToArticleCard,
-  getHref,
-  getImageOfArticle,
-  getImageSrc,
-} from '~/utils/post'
+import type { ArticleCard, FeaturedArticle } from '~/types/component'
+import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
 type PageProps = {
   editorChoices: ArticleCard[]
-  features: FeatureCardWithId[]
+  features: FeaturedArticle[]
 }
 
 const Index: NextPageWithLayout<PageProps> = ({ editorChoices, features }) => {
@@ -54,7 +48,7 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   let editorChoices: ArticleCard[] = []
-  let features: FeatureCardWithId[] = []
+  let features: FeaturedArticle[] = []
 
   try {
     {
@@ -108,26 +102,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
       features = arrayRandomFilter(data.features, 4).map((feature) => {
         const { description } = feature
-        const {
-          id = '',
-          title = '',
-          subtitle = '',
-          slug = '',
-          style,
-          heroImage,
-          ogImage,
-        } = feature.featurePost ?? {}
+        const { subtitle = '', heroImage, ogImage } = feature.featurePost ?? {}
 
-        const postHeroImage = getImageSrc(heroImage?.resized)
-        const postOgImage = getImageSrc(ogImage?.resized)
+        const image = getImageOfArticle({
+          images: [heroImage, ogImage],
+        })
+
+        const article = convertPostToArticleCard(feature?.featurePost, image)
 
         return {
-          id,
-          title,
+          ...article,
           subtitle,
           description,
-          href: getHref({ style, id, slug }) ?? '',
-          image: postHeroImage || postOgImage,
         }
       })
     }
