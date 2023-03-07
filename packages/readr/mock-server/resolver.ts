@@ -21,6 +21,13 @@ export const resolvers: (store: IMockStore) => Partial<IResolvers> = (
       }
       return store.get('Query', 'ROOT', 'editorChoices')
     },
+    posts(_, { skip, take }) {
+      if (take) {
+        const list = store.get('Query', 'ROOT', 'posts') as Ref[]
+        return list.slice(skip, skip + take)
+      }
+      return store.get('Query', 'ROOT', 'posts')
+    },
   },
   // resolver for nested queries, ref: https://www.linkedin.com/pulse/resolving-nested-queries-graphql-using-apollo-server-saransh-kataria/
   Category: {
