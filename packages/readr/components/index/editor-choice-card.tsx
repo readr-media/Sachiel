@@ -9,6 +9,7 @@ import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
 import IconFeaturedLabel from '~/public/icons/featured-label.svg'
+import { ArticleCardWithIsFeatured } from '~/types/component'
 
 type StyledProps = {
   $isFeatured: boolean
@@ -169,16 +170,6 @@ const FeatureLabel = styled.label`
   }
 `
 
-export type EditorChoiceCardProps = {
-  href?: string
-  title: string
-  image?: string
-  date?: string
-  readTimeText?: string
-  isFeatured?: boolean
-  isReport?: boolean
-}
-
 export default function EditorChoiceCard({
   href = '',
   title = '',
@@ -187,7 +178,7 @@ export default function EditorChoiceCard({
   readTimeText = '',
   isFeatured = false,
   isReport = false,
-}: EditorChoiceCardProps): JSX.Element {
+}: ArticleCardWithIsFeatured): JSX.Element {
   const { imageSrc, onErrorHandle } = useFallbackImage(
     image,
     DEFAULT_POST_IMAGE_PATH

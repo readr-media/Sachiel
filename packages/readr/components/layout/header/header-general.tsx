@@ -7,12 +7,12 @@ import throttle from 'raf-throttle'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import type { ArticleCard } from '~/components/shared/article-list-card'
 import type { Post } from '~/graphql/fragments/post'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
+import type { ArticleCard } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 import {
   formatPostDate,

@@ -2,7 +2,8 @@
 
 import styled from 'styled-components'
 
-import type { EditorChoiceCardProps } from './editor-choice-card'
+import type { ArticleCard } from '~/types/component'
+
 import EditorChoiceCard from './editor-choice-card'
 
 const Container = styled.section`
@@ -79,10 +80,8 @@ const NormalBlock = styled.li`
   }
 `
 
-export type EditorChoiceCardWithId = EditorChoiceCardProps & { id: string }
-
 type EditorChoiceSectionProps = {
-  posts: EditorChoiceCardWithId[]
+  posts: ArticleCard[]
 }
 
 export default function EditorChoiceSection({

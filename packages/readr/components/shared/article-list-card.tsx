@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
+import type { ArticleCard } from '~/types/component'
 
 import DateAndReadTimeInfo from './date-and-read-time-info'
 import ReportLabel from './report-label'
@@ -170,16 +171,6 @@ const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
       }
     `}
 `
-
-export type ArticleCard = {
-  id?: string
-  href?: string
-  title: string
-  image?: string
-  date?: string
-  readTimeText?: string
-  isReport?: boolean
-}
 
 type ArticleListCardProps = ArticleCard & {
   shouldReverseInMobile?: boolean

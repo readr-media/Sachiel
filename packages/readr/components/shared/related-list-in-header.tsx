@@ -5,7 +5,8 @@
 
 import styled from 'styled-components'
 
-import type { ArticleCard } from './article-list-card'
+import type { ArticleCard } from '~/types/component'
+
 import ArticleListCard from './article-list-card'
 
 const Container = styled.div<{ $show: boolean }>`

@@ -6,7 +6,6 @@ import type { GetServerSideProps } from 'next'
 import type { ReactElement } from 'react'
 
 import client from '~/apollo-client'
-import type { EditorChoiceCardWithId } from '~/components/index/editor-choice-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import type { FeatureCardWithId } from '~/components/index/feature-section'
 import FeatureSection from '~/components/index/feature-section'
@@ -16,6 +15,7 @@ import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
+import type { ArticleCard } from '~/types/component'
 import {
   formatPostDate,
   formatReadTime,
@@ -27,7 +27,7 @@ import {
 import type { NextPageWithLayout } from './_app'
 
 type PageProps = {
-  editorChoices: EditorChoiceCardWithId[]
+  editorChoices: ArticleCard[]
   features: FeatureCardWithId[]
 }
 
@@ -54,7 +54,7 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
-  let editorChoices: EditorChoiceCardWithId[] = []
+  let editorChoices: ArticleCard[] = []
   let features: FeatureCardWithId[] = []
 
   try {
