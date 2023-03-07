@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 
+import type { ArticleCard } from './article-list-card'
 import ArticleListCard from './article-list-card'
 
 const Container = styled.div<{ $show: boolean }>`
@@ -55,17 +56,9 @@ const Divider = styled.div`
   background-color: #ebf02c;
 `
 
-export type RelatedArticle = {
-  uid: string
-  href?: string
-  title: string
-  isReport?: boolean
-  imageSrc?: string
-}
-
 type RelatedListInHeaderProps = {
   show?: boolean
-  relatedList: RelatedArticle[]
+  relatedList: ArticleCard[]
 }
 
 export default function RelatedListInHeader({
@@ -73,12 +66,9 @@ export default function RelatedListInHeader({
   relatedList,
 }: RelatedListInHeaderProps) {
   const articleItems = relatedList.map((article) => (
-    <li key={article.uid}>
+    <li key={article.id}>
       <ArticleListCard
-        title={article.title}
-        href={article.href}
-        image={article.imageSrc}
-        isReport={article.isReport}
+        {...article}
         shouldHideBottomInfos={true}
         shouldNotLazyload={true}
       />

@@ -117,8 +117,8 @@ MyApp.getInitialProps = async (context: AppContext) => {
       categoriesAndRelatedPosts.push(...data.categories)
     }
 
-    // fetch all categories
     {
+      // fetch all categories
       const { data } = await client.query<{ categories: Category[] }>({
         query: categories,
         variables: {

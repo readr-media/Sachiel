@@ -171,13 +171,17 @@ const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
     `}
 `
 
-type ArticleListCardProps = {
+export type ArticleCard = {
+  id?: string
   href?: string
   title: string
   image?: string
   date?: string
   readTimeText?: string
   isReport?: boolean
+}
+
+type ArticleListCardProps = ArticleCard & {
   shouldReverseInMobile?: boolean
   shouldHighlightReport?: boolean
   shouldHideBottomInfos?: boolean
