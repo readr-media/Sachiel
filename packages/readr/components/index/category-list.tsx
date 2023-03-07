@@ -15,7 +15,11 @@ const shareStyle = css`
   }
 `
 
-const Container = styled.ul`
+const Container = styled.div`
+  margin: 0;
+`
+
+const ItemList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -41,6 +45,11 @@ const Item = styled.li`
   ${shareStyle}
 `
 
+const FixPosition = styled.li`
+  margin: 0;
+  ${shareStyle}
+`
+
 type CategoryListProps = {
   posts?: ArticleCard[]
 }
@@ -56,5 +65,13 @@ export default function CategoryList({
     )
   })
 
-  return <Container className="category-list">{articleItems}</Container>
+  return (
+    <Container>
+      <ItemList className="category-list">
+        {articleItems}
+        <FixPosition />
+        <FixPosition />
+      </ItemList>
+    </Container>
+  )
 }
