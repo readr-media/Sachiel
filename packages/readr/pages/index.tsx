@@ -8,12 +8,19 @@ import type { ReactElement } from 'react'
 import client from '~/apollo-client'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
+import type { CategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LatestReportSection from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
+import { DEFAULT_CATEGORY } from '~/constants/constant'
+import type { Post } from '~/graphql/fragments/post'
+import type { Category } from '~/graphql/query/category'
+import { categories as categoriesQuery } from '~/graphql/query/category'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
+import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
+import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
 import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
 
@@ -21,11 +28,19 @@ import type { NextPageWithLayout } from './_app'
 
 type PageProps = {
   editorChoices: ArticleCard[]
+  categories: CategoryWithArticleCards[]
+  latest: CategoryWithArticleCards
   features: FeaturedArticle[]
 }
 
-const Index: NextPageWithLayout<PageProps> = ({ editorChoices, features }) => {
+const Index: NextPageWithLayout<PageProps> = ({
+  editorChoices,
+  categories,
+  latest,
+  features,
+}) => {
   const shouldShowEditorChoiceSection = editorChoices.length > 0
+  const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
 
   return (
@@ -33,7 +48,9 @@ const Index: NextPageWithLayout<PageProps> = ({ editorChoices, features }) => {
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
-      <LatestReportSection />
+      {shouldShowLatestReportSection && (
+        <LatestReportSection categories={categories} latest={latest} />
+      )}
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
     </>
   )
@@ -48,6 +65,12 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   let editorChoices: ArticleCard[] = []
+  let categories: CategoryWithArticleCards[] = []
+  let latest: CategoryWithArticleCards = {
+    id: DEFAULT_CATEGORY.id,
+    title: DEFAULT_CATEGORY.title,
+    slug: DEFAULT_CATEGORY.slug,
+  }
   let features: FeaturedArticle[] = []
 
   try {
@@ -79,6 +102,78 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
         return convertPostToArticleCard(editorChoice?.choices, image)
       })
+    }
+
+    {
+      const convertFunc = (post: Post): ArticleCard => {
+        const { heroImage, ogImage } = post
+        const image = getImageOfArticle({ images: [heroImage, ogImage] })
+        return convertPostToArticleCard(post, image)
+      }
+
+      {
+        // fetch categories and related latest reports
+        const { data } = await client.query<{ categories: Category[] }>({
+          query: categoriesQuery,
+          variables: {
+            relatedPostFirst: 8,
+            relatedReportFirst: 1,
+            shouldQueryRelatedPost: true,
+            shouldQueryRelatedReport: true,
+            relatedPostTypes: [ValidPostStyle.NEWS],
+            relatedReportTypes: [
+              ValidPostStyle.EMBEDDED,
+              ValidPostStyle.PROJECT3,
+              ValidPostStyle.REPORT,
+            ],
+          },
+        })
+
+        categories = data.categories.map((category) => {
+          const reports = category.reports?.map(convertFunc)
+
+          const posts =
+            category.posts?.length && !reports?.length
+              ? category.posts
+              : category.posts?.slice(0, 4)
+
+          return {
+            id: category.id,
+            title: category.title,
+            slug: category.slug,
+            posts: posts?.map(convertFunc),
+            reports,
+          }
+        })
+      }
+
+      {
+        // fetch latest reports
+        const {
+          data: { latestPosts },
+        } = await client.query<{ latestPosts: Post[] }>({
+          query: latestPostsQuery,
+          variables: {
+            first: 15,
+          },
+        })
+
+        let postCount = 0
+        const report = latestPosts.find(
+          (post) => post.style !== ValidPostStyle.NEWS
+        )
+
+        const posts = latestPosts.filter((post) => {
+          if (postCount < 4 && post.style === ValidPostStyle.NEWS) {
+            postCount += 1
+            return true
+          }
+          return false
+        })
+
+        latest.reports = report ? [convertFunc(report)] : undefined
+        latest.posts = posts.map(convertFunc)
+      }
     }
 
     {
@@ -143,6 +238,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   return {
     props: {
       editorChoices,
+      categories,
+      latest,
       features,
     },
   }

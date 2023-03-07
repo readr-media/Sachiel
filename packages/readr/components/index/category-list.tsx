@@ -3,14 +3,7 @@
 import styled, { css } from 'styled-components'
 
 import ArticleListCard from '~/components/shared/article-list-card'
-import type { Post } from '~/graphql/fragments/post'
-import {
-  formatPostDate,
-  formatReadTime,
-  getHref,
-  getImageSrc,
-  isReport,
-} from '~/utils/post'
+import type { ArticleCard } from '~/types/component'
 
 const shareStyle = css`
   width: 100%;
@@ -49,40 +42,16 @@ const Item = styled.li`
 `
 
 type CategoryListProps = {
-  posts: Post[]
+  posts?: ArticleCard[]
 }
 
 export default function CategoryList({
-  posts,
+  posts = [],
 }: CategoryListProps): JSX.Element {
-  const articleItems = posts.map((post) => {
-    const {
-      id = '',
-      title = '',
-      slug = '',
-      readingTime = 0,
-      style,
-      heroImage,
-      ogImage,
-      publishTime = '',
-    } = post
-
-    const postHeroImage = getImageSrc(heroImage?.resized)
-    const postOgImage = getImageSrc(ogImage?.resized)
-
-    const props = {
-      id,
-      title,
-      href: getHref({ style, id, slug }) ?? '', // undefined value can't be serialized
-      date: formatPostDate(publishTime),
-      readTimeText: formatReadTime(readingTime),
-      isReport: isReport(style),
-      image: postHeroImage || postOgImage,
-    }
-
+  const articleItems = posts.map((article) => {
     return (
-      <Item key={post.id}>
-        <ArticleListCard {...props} />
+      <Item key={article.id}>
+        <ArticleListCard {...article} />
       </Item>
     )
   })

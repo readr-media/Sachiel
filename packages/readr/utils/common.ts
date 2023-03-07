@@ -2,4 +2,8 @@ function isServer(): boolean {
   return typeof window === 'undefined'
 }
 
-export { isServer }
+function convertToStringList(arr: any[]): string {
+  return arr.map((element) => `"${element}"`).join(',')
+}
+
+export { convertToStringList, isServer }

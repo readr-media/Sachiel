@@ -2,12 +2,21 @@ import gql from 'graphql-tag'
 
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import { GenericCategory } from '~/types/common'
+import type { GenericCategory } from '~/types/common'
+import { ValidPostStyle } from '~/types/common'
+import { convertToStringList } from '~/utils/common'
 
 export type Category = Pick<GenericCategory, 'id' | 'slug' | 'title'> & {
   posts?: Post[]
   reports?: Post[]
 }
+
+const postStyles = [
+  ValidPostStyle.NEWS,
+  ValidPostStyle.FRAME,
+  ValidPostStyle.BLANK,
+  ValidPostStyle.SCROLLABLE_VIDEO,
+]
 
 const categories = gql`
   query (
@@ -18,7 +27,7 @@ const categories = gql`
     $reportSkip: Int
     $shouldQueryRelatedPost: Boolean = false
     $shouldQueryRelatedReport: Boolean = false
-    $relatedPostTypes: [String!] = ["news", "frame", "blank", "scrollablevideo"]
+    $relatedPostTypes: [String!] = [${convertToStringList(postStyles)}]
   ) {
     categories(
       take: $first

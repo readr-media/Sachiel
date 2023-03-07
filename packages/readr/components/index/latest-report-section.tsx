@@ -1,12 +1,14 @@
 // 最新報導
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import { Category } from '~/graphql/query/category'
+import type { Category } from '~/graphql/query/category'
+import type { ArticleCard } from '~/types/component'
 
+import CategoryList from './category-list'
 import { sectionStyle } from './share-styles'
 
 const Container = styled.section`
@@ -39,7 +41,23 @@ const ReportContainer = styled.div`
   }
 `
 
-export default function LatestReportSection(): JSX.Element {
+export type CategoryWithArticleCards = Pick<
+  Category,
+  'id' | 'slug' | 'title'
+> & {
+  posts?: ArticleCard[]
+  reports?: ArticleCard[]
+}
+
+type LatestReportSectionProps = {
+  latest: CategoryWithArticleCards
+  categories: CategoryWithArticleCards[]
+}
+
+export default function LatestReportSection({
+  latest,
+  categories,
+}: LatestReportSectionProps): JSX.Element {
   const [activeCategory, setActiveCategory] = useState(DEFAULT_CATEGORY)
 
   const getShowMoreText = (category: Category) => {
@@ -51,6 +69,22 @@ export default function LatestReportSection(): JSX.Element {
   const updateActiveCategory = (category: Category) => {
     setActiveCategory(category)
   }
+
+  const currentItem: CategoryWithArticleCards | undefined = useMemo(() => {
+    if (activeCategory.slug === DEFAULT_CATEGORY.slug) {
+      return latest
+    }
+    const matchedItem = categories.find(
+      (category) => category.slug === activeCategory.slug
+    )
+
+    return matchedItem &&
+      Object.hasOwn(matchedItem, 'posts') &&
+      Object.hasOwn(matchedItem, 'reports')
+      ? matchedItem
+      : undefined
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [activeCategory.slug])
 
   return (
     <Container className="latest-report-section">
@@ -65,7 +99,9 @@ export default function LatestReportSection(): JSX.Element {
         currentCategorySlug={activeCategory.slug}
         categoryClickHandler={updateActiveCategory}
       />
-      <ReportContainer></ReportContainer>
+      <ReportContainer>
+        <CategoryList posts={currentItem?.posts} />
+      </ReportContainer>
     </Container>
   )
 }
