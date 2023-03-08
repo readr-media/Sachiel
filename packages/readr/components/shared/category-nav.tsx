@@ -41,7 +41,8 @@ const Item = styled.li<StyledProps>`
       background-color: #ebf02c;
       transition: all 0.3s ease;
     }
-    &:hover {
+    &:hover,
+    &:focus {
       color: rgba(0, 9, 40, 0.66);
     }
 
