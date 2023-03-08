@@ -2,18 +2,6 @@ import gql from 'graphql-tag'
 
 import { GenericPost } from '~/types/common'
 
-// export type GenericPost = {
-//   id: string
-//   slug?: string
-//   style?: ValidPostStyle
-//   name?: string
-//   title?: string // alias to `name`
-//   heroImage?: GenericPhoto | null
-//   ogImage?: GenericPhoto | null
-//   publishTime?: string
-//   readingTime?: number
-// }
-
 export type Author = {
   id: number
   name: string
