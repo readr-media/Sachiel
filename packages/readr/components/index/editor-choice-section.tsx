@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import type { ArticleCard } from '~/types/component'
 
 import EditorChoiceCard from './editor-choice-card'
+import { editorChoiceAndFeatureStyle } from './share-styles'
 
 const Container = styled.section`
+  ${editorChoiceAndFeatureStyle}
   width: 100%;
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;

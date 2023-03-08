@@ -5,12 +5,18 @@ import styled from 'styled-components'
 import type { FeaturedArticle } from '~/types/component'
 
 import FeatureCard from './feature-card'
+import { editorChoiceAndFeatureStyle } from './share-styles'
 
 type StyledProps = {
   $isFirst: boolean
 }
 
 const Container = styled.section`
+  ${editorChoiceAndFeatureStyle}
+  ${({ theme }) => theme.breakpoint.xxl} {
+    margin: 0 0 120px;
+  }
+
   ul {
     width: 100%;
     ${({ theme }) => theme.breakpoint.md} {
