@@ -1,10 +1,10 @@
 // under construction
 
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 
-import { NextPageWithLayout } from './_app'
+import type { NextPageWithLayout } from './_app'
 
 const About: NextPageWithLayout = () => {
   return <p>About Us page is under construction!</p>

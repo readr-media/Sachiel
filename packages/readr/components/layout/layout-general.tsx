@@ -1,40 +1,27 @@
-import styled from 'styled-components'
-
 import { SITE_TITLE } from '~/constants/config'
 
 import CustomHead from './custom-head'
-import HeaderLogo from './header/header-logo'
-
-const Header = styled.header`
-  background-color: #fff;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  .header-logo {
-    width: 48px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-`
+import HeaderGeneral from './header/header-general'
 
 type LayoutProps = {
   title?: string
   description?: string
   children: React.ReactNode
+  onCompleteReadingHandle?: () => void
 }
 
-export default function LayoutWithLogoOnly({
+export default function LayoutGeneral({
   children,
   title,
   description,
+  onCompleteReadingHandle,
 }: LayoutProps) {
   const pageTitle = title ? `${title} - ${SITE_TITLE}` : title
 
   return (
     <>
       <CustomHead title={pageTitle} description={description}></CustomHead>
-      <Header>
-        <HeaderLogo />
-      </Header>
+      <HeaderGeneral onCompleteReadingHandle={onCompleteReadingHandle} />
       <main>{children}</main>
     </>
   )

@@ -5,6 +5,7 @@ import { loadSchema } from '@graphql-tools/load'
 import { addMocksToSchema } from '@graphql-tools/mock'
 
 import { MOCK_API_SERVER_PORT } from '../constants/config'
+import { mocks } from './mocks'
 
 const startServer = async () => {
   const schema = await loadSchema('./mock-server/typeDefs/schema.graphql', {
@@ -29,6 +30,7 @@ const startServer = async () => {
       //     w2400: 'this is w2400 image',
       //   }),
       // },
+      mocks,
     }),
   })
 
