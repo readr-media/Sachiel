@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import type { IMockStore, Ref } from '@graphql-tools/mock'
 import type { IResolvers } from '@graphql-tools/utils'
 
@@ -31,10 +32,12 @@ export const resolvers: (store: IMockStore) => Partial<IResolvers> = (
   },
   // resolver for nested queries, ref: https://www.linkedin.com/pulse/resolving-nested-queries-graphql-using-apollo-server-saransh-kataria/
   Category: {
-    relatedPost(_, { skip, take }) {
+    relatedPost(_, { take }) {
       if (take) {
         const list = store.get('Category', 'ROOT', 'relatedPost') as Ref[]
-        return list.slice(skip, skip + take)
+        const length = Math.floor(faker.datatype.number({ min: 0, max: take }))
+
+        return faker.helpers.arrayElements(list, length)
       }
       return store.get('Category', 'ROOT', 'relatedPost')
     },
