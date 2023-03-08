@@ -22,10 +22,10 @@ export const resolvers: (store: IMockStore) => Partial<IResolvers> = (
       }
       return store.get('Query', 'ROOT', 'editorChoices')
     },
-    posts(_, { skip, take }) {
+    posts(_, { take }) {
       if (take) {
         const list = store.get('Query', 'ROOT', 'posts') as Ref[]
-        return list.slice(skip, skip + take)
+        return faker.helpers.arrayElements(list, take)
       }
       return store.get('Query', 'ROOT', 'posts')
     },
