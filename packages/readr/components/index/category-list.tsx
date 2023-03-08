@@ -16,6 +16,7 @@ const shareStyle = css`
 `
 
 const Container = styled.div`
+  flex-grow: 1;
   margin: 0;
 `
 
@@ -24,10 +25,6 @@ const ItemList = styled.ul`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  &::after {
-    content: '';
-    ${shareStyle}
-  }
 `
 
 const Item = styled.li`
@@ -45,6 +42,7 @@ const Item = styled.li`
   ${shareStyle}
 `
 
+// 使文章卡片列表在不同數量下能夠正確顯示
 const FixPosition = styled.li`
   margin: 0;
   ${shareStyle}
@@ -60,7 +58,7 @@ export default function CategoryList({
   const articleItems = posts.map((article) => {
     return (
       <Item key={article.id}>
-        <ArticleListCard {...article} />
+        <ArticleListCard {...article} isReport={false} />
       </Item>
     )
   })
