@@ -18,6 +18,12 @@ const postStyles = [
   ValidPostStyle.SCROLLABLE_VIDEO,
 ]
 
+const reportStyles = [
+  ValidPostStyle.EMBEDDED,
+  ValidPostStyle.PROJECT3,
+  ValidPostStyle.REPORT,
+]
+
 const categories = gql`
   query (
     $first: Int
@@ -28,6 +34,7 @@ const categories = gql`
     $shouldQueryRelatedPost: Boolean = false
     $shouldQueryRelatedReport: Boolean = false
     $relatedPostTypes: [String!] = [${convertToStringList(postStyles)}]
+    $relatedReportTypes: [String!] = [${convertToStringList(reportStyles)}]
   ) {
     categories(
       take: $first
@@ -53,7 +60,7 @@ const categories = gql`
         skip: $reportSkip
         where: {
           state: { equals: "published" }
-          style: { in: $relatedPostTypes }
+          style: { in: $relatedReportTypes }
         }
         orderBy: { publishTime: desc }
       ) @include(if: $shouldQueryRelatedReport) {
