@@ -13,12 +13,12 @@ import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
+import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import CategoryListContext from '~/contexts/category-list'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
 import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
-import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -89,15 +89,7 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
 MyApp.getInitialProps = async (context: AppContext) => {
   const ctx = await App.getInitialProps(context)
 
-  const relatedPostTypes: ValidPostStyle[] = [
-    ValidPostStyle.NEWS,
-    ValidPostStyle.EMBEDDED,
-    ValidPostStyle.PROJECT3,
-    ValidPostStyle.REPORT,
-    ValidPostStyle.FRAME,
-    ValidPostStyle.BLANK,
-    ValidPostStyle.SCROLLABLE_VIDEO,
-  ]
+  const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
   const categoriesAndRelatedPosts: Category[] = []
   const categoryList: Category[] = []
 

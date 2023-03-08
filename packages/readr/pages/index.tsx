@@ -12,6 +12,7 @@ import type { CategoryWithArticleCards } from '~/components/index/latest-report-
 import LatestReportSection from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
+import { REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
@@ -121,11 +122,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
             shouldQueryRelatedPost: true,
             shouldQueryRelatedReport: true,
             relatedPostTypes: [ValidPostStyle.NEWS],
-            relatedReportTypes: [
-              ValidPostStyle.EMBEDDED,
-              ValidPostStyle.PROJECT3,
-              ValidPostStyle.REPORT,
-            ],
+            relatedReportTypes: REPORT_STYLES,
           },
         })
 

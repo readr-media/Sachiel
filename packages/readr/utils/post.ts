@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 
+import { REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import {
   GenericPhoto,
@@ -80,8 +81,7 @@ export function getImageSrc(
 }
 
 export function isReport(style: string = ''): boolean {
-  const isReportStyleList = ['report', 'project3', 'embedded']
-  return isReportStyleList.includes(style)
+  return REPORT_STYLES.includes(style)
 }
 
 export function formatPostDate(datetime: dayjs.ConfigType): string {

@@ -1,19 +1,11 @@
 import gql from 'graphql-tag'
 
-import { ValidPostStyle } from '~/types/common'
+import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import { convertToStringList } from '~/utils/common'
 
 import { postFragment } from '../fragments/post'
 
-const postStyles = [
-  ValidPostStyle.NEWS,
-  ValidPostStyle.REPORT,
-  ValidPostStyle.EMBEDDED,
-  ValidPostStyle.PROJECT3,
-  ValidPostStyle.FRAME,
-  ValidPostStyle.BLANK,
-  ValidPostStyle.SCROLLABLE_VIDEO,
-]
+const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const latestPosts = gql`
   query ($first: Int! = 3) {
