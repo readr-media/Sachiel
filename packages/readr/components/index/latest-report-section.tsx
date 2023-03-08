@@ -9,6 +9,7 @@ import type { Category } from '~/graphql/query/category'
 import type { ArticleCard } from '~/types/component'
 
 import CategoryList from './category-list'
+import CategoryReportCard from './category-report-card'
 import { sectionStyle } from './share-styles'
 
 const Container = styled.section`
@@ -34,7 +35,7 @@ const Container = styled.section`
 `
 
 const ReportContainer = styled.div`
-  isplay: block;
+  display: block;
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
     justify-content: space-between;
@@ -100,7 +101,12 @@ export default function LatestReportSection({
         categoryClickHandler={updateActiveCategory}
       />
       <ReportContainer>
-        <CategoryList posts={currentItem?.posts} />
+        {Number(currentItem?.posts?.length) > 0 && (
+          <CategoryList posts={currentItem?.posts} />
+        )}
+        {Number(currentItem?.reports?.length) > 0 && (
+          <CategoryReportCard report={currentItem?.reports?.[0]} />
+        )}
       </ReportContainer>
     </Container>
   )
