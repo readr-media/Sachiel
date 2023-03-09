@@ -2,6 +2,8 @@ import gql from 'graphql-tag'
 
 import { GenericPost } from '~/types/common'
 
+import { resizeImagesFragment } from '../fragments/resized-images'
+
 export type Author = {
   id: number
   name: string
@@ -47,18 +49,14 @@ const post = gql`
         }
         urlOriginal
         resized {
-          original
-          w480
-          w800
-          w1200
-          w1600
-          w2400
+          ...ResizedImagesField
         }
       }
       heroCaption
       content
     }
   }
+  ${resizeImagesFragment}
 `
 
 export { post }

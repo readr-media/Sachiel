@@ -1,17 +1,27 @@
+export type GenericImageFile = {
+  url: string
+}
+
 export type ResizedImages = {
-  original: string
-  w480: string
-  w800: string
-  w1200: string
-  w1600: string
-  w2400: string
+  original?: string
+  w480?: string
+  w800?: string
+  w1200?: string
+  w1600?: string
+  w2400?: string
 }
 
 export type keyOfResizedImages = keyof ResizedImages
 
 export type GenericPhoto = {
-  resized: ResizedImages | null
+  id?: string
+  name?: string
+  urlOriginal?: string
+  resized?: ResizedImages | null
+  imageFile?: GenericImageFile | null
 }
+
+export type PhotoWithResizedOnly = Pick<Required<GenericPhoto>, 'resized'>
 
 // ref: https://github.com/mirror-media/Lilith/blob/95bb4f8e9b43bd60515e1ba5b9b77d512f880bca/packages/readr/lists/Post.ts#L139
 /* eslint-disable no-unused-vars */

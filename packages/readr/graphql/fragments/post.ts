@@ -1,20 +1,17 @@
 import gql from 'graphql-tag'
 
-import type { GenericPost } from '~/types/common'
+import type { GenericPost, PhotoWithResizedOnly } from '~/types/common'
+
+import { resizeImagesFragment } from './resized-images'
 
 export type Post = Pick<
   GenericPost,
-  | 'id'
-  | 'slug'
-  | 'style'
-  | 'title'
-  | 'heroImage'
-  | 'ogImage'
-  | 'publishTime'
-  | 'readingTime'
->
+  'id' | 'slug' | 'style' | 'title' | 'publishTime' | 'readingTime'
+> & {
+  heroImage: PhotoWithResizedOnly | null
+  ogImage: PhotoWithResizedOnly | null
+}
 
-import { photoFragment } from './photo'
 export const postFragment = gql`
   fragment PostFields on Post {
     id
@@ -22,13 +19,17 @@ export const postFragment = gql`
     style
     title: name
     heroImage {
-      ...PhotoFields
+      resized {
+        ...ResizedImagesField
+      }
     }
     ogImage {
-      ...PhotoFields
+      resized {
+        ...ResizedImagesField
+      }
     }
     publishTime
     readingTime
   }
-  ${photoFragment}
+  ${resizeImagesFragment}
 `
