@@ -58,7 +58,7 @@ export default function FeatureSection({
   ))
 
   return (
-    <Container>
+    <Container aria-label="特色專題">
       <ul>{featureCardList}</ul>
     </Container>
   )

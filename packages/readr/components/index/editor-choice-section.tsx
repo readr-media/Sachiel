@@ -98,7 +98,7 @@ export default function EditorChoiceSection({
   ))
 
   return (
-    <Container>
+    <Container aria-label="編輯精選">
       <FeaturedBlock>
         <EditorChoiceCard {...featuredPost} isFeatured={true} />
       </FeaturedBlock>

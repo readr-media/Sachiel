@@ -59,6 +59,7 @@ export default function LatestReportSection({
   latest,
   categories,
 }: LatestReportSectionProps): JSX.Element {
+  const sectionTitle = '最新報導'
   const [activeCategory, setActiveCategory] =
     useState<NavCategory>(DEFAULT_CATEGORY)
 
@@ -89,9 +90,9 @@ export default function LatestReportSection({
   }, [activeCategory.slug])
 
   return (
-    <Container className="latest-report-section">
+    <Container className="latest-report-section" aria-label={sectionTitle}>
       <SectionHeading
-        title="最新報導"
+        title={sectionTitle}
         showMoreText={getShowMoreText(activeCategory)}
         categorySlug={activeCategory.slug}
         highlightColor="#ebf02c"
