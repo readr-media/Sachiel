@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { PostDetail } from '~/graphql/query/post'
+import type { Author, PostDetail } from '~/graphql/query/post'
 
 import MediaLinkList from '../shared/media-link'
 
@@ -100,8 +100,8 @@ interface PostProps {
 }
 
 export default function PostCredit({ postData }: PostProps): JSX.Element {
-  function renderNames(names: { id: number; name: string }[] | undefined) {
-    return names?.map((item) => <span key={item.id}>{item.name}</span>)
+  function renderNames(people: Author[]) {
+    return people?.map((person) => <span key={person.id}>{person.name}</span>)
   }
 
   const writers = renderNames(postData?.writers)

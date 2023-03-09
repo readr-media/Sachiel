@@ -41,6 +41,11 @@ export enum ValidPostStyle {
 }
 /* eslint-enable no-unused-vars */
 
+export type GenericAuthor = {
+  id?: string | number
+  name?: string
+}
+
 export type GenericPost = {
   id: string
   slug?: string
@@ -49,6 +54,12 @@ export type GenericPost = {
   title?: string // alias to `name`
   heroImage?: GenericPhoto | null
   ogImage?: GenericPhoto | null
+  heroCaption?: string
+  content?: unknown // it is hard to describe JSON type
+  dataAnalysts?: GenericAuthor[]
+  writers?: GenericAuthor[]
+  designers?: GenericAuthor[]
+  categories?: GenericCategory[]
   publishTime?: string
   readingTime?: number
 }

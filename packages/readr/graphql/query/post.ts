@@ -1,25 +1,36 @@
 import gql from 'graphql-tag'
 
-import { GenericPost } from '~/types/common'
+import {
+  GenericAuthor,
+  GenericCategory,
+  GenericPhoto,
+  GenericPost,
+} from '~/types/common'
 
+import { authorFragment } from '../fragments/author'
 import { resizeImagesFragment } from '../fragments/resized-images'
 
-export type Author = {
-  id: number
-  name: string
-}
+export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
+export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
+export type Photo = Pick<
+  Required<GenericPhoto>,
+  'id' | 'name' | 'urlOriginal' | 'imageFile' | 'resized'
+>
 
-export type Category = {
-  id: string
-  title?: string
-}
-
-export type PostDetail = GenericPost & {
-  writers?: Author[]
-  designers?: Author[]
-  dataAnalysts?: Author[]
-  categories?: Category[]
-}
+export type PostDetail = Pick<
+  Required<GenericPost>,
+  | 'id'
+  | 'slug'
+  | 'name'
+  | 'heroCaption'
+  | 'content'
+  | 'publishTime'
+  | 'readingTime'
+> & {
+  categories: Category[]
+} & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
+    heroImage: Photo
+  }
 
 const post = gql`
   query ($id: ID!) {
@@ -27,36 +38,38 @@ const post = gql`
       id
       slug
       name
+      heroCaption
+      content
       publishTime
       readingTime
       categories {
         id
         title
       }
+      dataAnalysts {
+        ...AuthorFields
+      }
       writers {
-        id
-        name
+        ...AuthorFields
       }
       designers {
-        id
-        name
+        ...AuthorFields
       }
       heroImage {
         id
         name
+        urlOriginal
         imageFile {
           url
         }
-        urlOriginal
         resized {
           ...ResizedImagesField
         }
       }
-      heroCaption
-      content
     }
   }
   ${resizeImagesFragment}
+  ${authorFragment}
 `
 
 export { post }
