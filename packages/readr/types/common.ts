@@ -1,17 +1,27 @@
+export type GenericImageFile = {
+  url: string
+}
+
 export type ResizedImages = {
-  original: string
-  w480: string
-  w800: string
-  w1200: string
-  w1600: string
-  w2400: string
+  original?: string
+  w480?: string
+  w800?: string
+  w1200?: string
+  w1600?: string
+  w2400?: string
 }
 
 export type keyOfResizedImages = keyof ResizedImages
 
 export type GenericPhoto = {
-  resized: ResizedImages | null
+  id?: string
+  name?: string
+  urlOriginal?: string
+  resized?: ResizedImages | null
+  imageFile?: GenericImageFile | null
 }
+
+export type PhotoWithResizedOnly = Pick<Required<GenericPhoto>, 'resized'>
 
 // ref: https://github.com/mirror-media/Lilith/blob/95bb4f8e9b43bd60515e1ba5b9b77d512f880bca/packages/readr/lists/Post.ts#L139
 /* eslint-disable no-unused-vars */
@@ -31,6 +41,11 @@ export enum ValidPostStyle {
 }
 /* eslint-enable no-unused-vars */
 
+export type GenericAuthor = {
+  id?: string | number
+  name?: string
+}
+
 export type GenericPost = {
   id: string
   slug?: string
@@ -40,6 +55,12 @@ export type GenericPost = {
   subtitle?: string
   heroImage?: GenericPhoto | null
   ogImage?: GenericPhoto | null
+  heroCaption?: string
+  content?: unknown // it is hard to describe JSON type
+  dataAnalysts?: GenericAuthor[]
+  writers?: GenericAuthor[]
+  designers?: GenericAuthor[]
+  categories?: GenericCategory[]
   publishTime?: string
   readingTime?: number
 }

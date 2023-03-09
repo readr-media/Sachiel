@@ -2785,6 +2785,11 @@
     serialize-javascript "^6.0.0"
     uuid "^8.3.2"
 
+"@readr-media/react-image@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.2.2.tgz#e3ce9e1aeca3b49f86406f488fb7b356cf661f72"
+  integrity sha512-RYuX9D2XpUX+GdN57dCNtcqKUS7h7MCPT+4fYY4Ao+AKZNLUtI/T6JKCXorc0QuR9dXtrBphOlYZxKcsgBjdKg==
+
 "@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@repeaterjs/repeater/-/repeater-3.0.4.tgz#a04d63f4d1bf5540a41b01a921c9a7fddc3bd1ca"
@@ -2954,6 +2959,13 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@twreporter/errors/-/errors-1.1.1.tgz#dc6339334509b56c6f9a46abffb12f65bfd07dae"
   integrity sha512-Ua4GBNhOnTp83FFrMkC+jB7uzSMUzEZLFJf0JN71pHv83qaGmKnHuTKop9I/8de5Yt6vO456eANsVS09qOsFFQ==
+  dependencies:
+    lodash.get "4"
+
+"@twreporter/errors@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@twreporter/errors/-/errors-1.1.2.tgz#533e3d14411fe0ac7836c4301a74a3556158ce12"
+  integrity sha512-arIe0H1CdBY9PSzCUTf66oxoBgYcPJRfjohdFBN+CCE8xbJZ1j4A5y1NgR0ZtRvhdNzHOskfjPLA2bU5ZgSxYQ==
   dependencies:
     lodash.get "4"
 

@@ -1,13 +1,15 @@
 import gql from 'graphql-tag'
 
-import { photoFragment } from '~/graphql/fragments/photo'
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import type { GenericEditorChoice } from '~/types/common'
+import type { GenericEditorChoice, PhotoWithResizedOnly } from '~/types/common'
+
+import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type EditorChoice = Required<
-  Pick<GenericEditorChoice, 'heroImage' | 'publishTime'> & {
+  Pick<GenericEditorChoice, 'publishTime'> & {
     choices: Post | null
+    heroImage: PhotoWithResizedOnly | null
   }
 >
 
@@ -19,7 +21,9 @@ const editorChoices = gql`
       where: { state: { equals: "published" } }
     ) {
       heroImage {
-        ...PhotoFields
+        resized {
+          ...ResizedImagesField
+        }
       }
       choices {
         ...PostFields
@@ -28,7 +32,7 @@ const editorChoices = gql`
     }
   }
   ${postFragment}
-  ${photoFragment}
+  ${resizeImagesFragment}
 `
 
 export { editorChoices }
