@@ -209,7 +209,7 @@ export type FeaturedArticleWithIsFirst = FeaturedArticle & {
 }
 
 export default function FeatureCard({
-  href = '',
+  href = '/',
   title = '',
   subtitle = '',
   image = DEFAULT_POST_IMAGE_PATH,

@@ -155,7 +155,7 @@ export default function CategoryReportCard({
   report,
 }: CategoryReportCardProps): JSX.Element {
   const {
-    href = '',
+    href = '/',
     title = '',
     image = DEFAULT_POST_IMAGE_PATH,
     date = '',

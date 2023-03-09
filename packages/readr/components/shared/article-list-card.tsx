@@ -181,7 +181,7 @@ type ArticleListCardProps = ArticleCard & {
 }
 
 export default function ArticleListCard({
-  href = '',
+  href = '/',
   title = '',
   image = DEFAULT_POST_IMAGE_PATH,
   date = '',

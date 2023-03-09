@@ -14,7 +14,7 @@ export function getHref({
   style,
   id,
   slug,
-}: Pick<Post, 'style' | 'id' | 'slug'>): string | undefined {
+}: Pick<Post, 'style' | 'id' | 'slug'>): string {
   switch (style) {
     case ValidPostStyle.NEWS:
     case ValidPostStyle.EMBEDDED:
@@ -26,7 +26,8 @@ export function getHref({
     case ValidPostStyle.PROJECT3:
       return `/project/3/${slug}`
     default:
-      return undefined
+      // undefined value can't be serialized, so set default value to '/'
+      return '/'
   }
 }
 
@@ -126,7 +127,7 @@ export function convertPostToArticleCard(
   return {
     id: getUid({ style, id, slug }),
     title,
-    href: getHref({ style, id, slug }) ?? '', // undefined value can't be serialized
+    href: getHref({ style, id, slug }),
     date: formatPostDate(publishTime),
     readTimeText: formatReadTime(readingTime),
     isReport: isReport(style),

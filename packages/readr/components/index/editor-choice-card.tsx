@@ -175,7 +175,7 @@ export type ArticleCardWithIsFeatured = ArticleCard & {
 }
 
 export default function EditorChoiceCard({
-  href = '',
+  href = '/',
   title = '',
   image = DEFAULT_POST_IMAGE_PATH,
   date = '',
