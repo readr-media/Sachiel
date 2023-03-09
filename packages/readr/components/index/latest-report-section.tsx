@@ -2,10 +2,10 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
+import type { NavCategory } from '~/components/shared/category-nav'
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import type { Category } from '~/graphql/query/category'
 import type { ArticleCard } from '~/types/component'
 
 import CategoryList from './category-list'
@@ -43,7 +43,7 @@ const ReportContainer = styled.div`
 `
 
 export type CategoryWithArticleCards = Pick<
-  Category,
+  NavCategory,
   'id' | 'slug' | 'title'
 > & {
   posts?: ArticleCard[]
@@ -59,15 +59,16 @@ export default function LatestReportSection({
   latest,
   categories,
 }: LatestReportSectionProps): JSX.Element {
-  const [activeCategory, setActiveCategory] = useState(DEFAULT_CATEGORY)
+  const [activeCategory, setActiveCategory] =
+    useState<NavCategory>(DEFAULT_CATEGORY)
 
-  const getShowMoreText = (category: Category) => {
+  const getShowMoreText = (category: NavCategory) => {
     const name = category?.slug === DEFAULT_CATEGORY.slug ? '' : category.title
 
     return `更多${name}報導`
   }
 
-  const updateActiveCategory = (category: Category) => {
+  const updateActiveCategory = (category: NavCategory) => {
     setActiveCategory(category)
   }
 

@@ -3,8 +3,8 @@
 import styled from 'styled-components'
 
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import { Category } from '~/graphql/query/category'
 import { useCategoryListContext } from '~/hooks/useContext'
+import { GenericCategory } from '~/types/common'
 
 type StyledProps = {
   $isActive: boolean
@@ -66,10 +66,12 @@ const Item = styled.li<StyledProps>`
 
 const Control = styled.button``
 
+export type NavCategory = Pick<GenericCategory, 'id' | 'slug' | 'title'>
+
 type CategoryNavProps = {
   currentCategorySlug?: string
   /* eslint-disable-next-line no-unused-vars */
-  categoryClickHandler: (category: Category) => void
+  categoryClickHandler: (category: NavCategory) => void
 }
 
 export default function CategoryNav({
@@ -78,9 +80,9 @@ export default function CategoryNav({
 }: CategoryNavProps): JSX.Element {
   const categoryList = useCategoryListContext()
 
-  const formattedCategories: Category[] = [DEFAULT_CATEGORY, ...categoryList]
+  const formattedCategories: NavCategory[] = [DEFAULT_CATEGORY, ...categoryList]
 
-  const clickHandler = (category: Category) => {
+  const clickHandler = (category: NavCategory) => {
     if (typeof categoryClickHandler === 'function') {
       categoryClickHandler(category)
     }
