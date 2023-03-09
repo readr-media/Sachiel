@@ -8,7 +8,7 @@ export const sectionStyle = css`
   padding-right: 20px;
 `
 
-export const editorChoiceAndFeatureStyle = css`
+export const sectionMargin = css`
   margin: 0 0 48px;
   ${({ theme }) => theme.breakpoint.md} {
     margin: 0 0 60px;

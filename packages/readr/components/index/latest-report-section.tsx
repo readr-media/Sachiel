@@ -90,7 +90,7 @@ export default function LatestReportSection({
   }, [activeCategory.slug])
 
   return (
-    <Container className="latest-report-section" aria-label={sectionTitle}>
+    <Container aria-label={sectionTitle}>
       <SectionHeading
         title={sectionTitle}
         showMoreText={getShowMoreText(activeCategory)}

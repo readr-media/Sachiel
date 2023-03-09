@@ -6,6 +6,7 @@ import type { GetServerSideProps } from 'next'
 import type { ReactElement } from 'react'
 
 import client from '~/apollo-client'
+import CollaborationSection from '~/components/index/collaboration-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
 import type { CategoryWithArticleCards } from '~/components/index/latest-report-section'
@@ -53,6 +54,7 @@ const Index: NextPageWithLayout<PageProps> = ({
         <LatestReportSection categories={categories} latest={latest} />
       )}
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
+      <CollaborationSection />
     </>
   )
 }
