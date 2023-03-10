@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+import type { Post } from '~/graphql/query/category'
 import { GenericPost } from '~/types/common'
 
 export type Author = {
@@ -17,16 +18,18 @@ export type PostDetail = GenericPost & {
   designers?: Author[]
   dataAnalysts?: Author[]
   categories?: Category[]
+  relatedPosts?: Post[]
 }
 
 const post = gql`
   query ($id: ID!) {
     post(where: { id: $id }) {
       id
+      sortOrder
       slug
       name
+      subtitle
       publishTime
-      readingTime
       categories {
         id
         title
@@ -36,6 +39,10 @@ const post = gql`
         name
       }
       designers {
+        id
+        name
+      }
+      dataAnalysts {
         id
         name
       }
@@ -57,6 +64,26 @@ const post = gql`
       }
       heroCaption
       content
+      readingTime
+      relatedPosts {
+        id
+        publishTime
+        name
+        readingTime
+      }
+      manualOrderOfRelatedPosts
+      heroImage {
+        id
+        name
+        resized {
+          original
+          w480
+          w800
+          w1200
+          w1600
+          w2400
+        }
+      }
     }
   }
 `

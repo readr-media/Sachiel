@@ -111,19 +111,19 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
   return (
     <Container>
       <CreditList>
-        {writers && (
+        {writers && writers?.length > 0 && (
           <li>
             <CreditTitle>記者</CreditTitle>
             <CreditName>{writers}</CreditName>
           </li>
         )}
-        {designers && (
+        {designers && designers?.length > 0 && (
           <li>
             <CreditTitle>設計</CreditTitle>
             <CreditName>{designers}</CreditName>
           </li>
         )}
-        {dataAnalysts && (
+        {dataAnalysts && dataAnalysts?.length > 0 && (
           <li>
             <CreditTitle>資料分析</CreditTitle>
             <CreditName>{dataAnalysts}</CreditName>
