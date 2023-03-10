@@ -17,7 +17,13 @@ const MediaLinkWrapper = styled.ul<MediaLinkProps>`
   align-items: center;
   justify-content: center;
   margin: ${(props) => props.margin};
-  > li {
+
+  > li + li {
+    margin-left: 16px;
+  }
+
+  a,
+  button {
     background: #f6f6fb;
     display: inline-block;
     width: 36px;
@@ -27,14 +33,12 @@ const MediaLinkWrapper = styled.ul<MediaLinkProps>`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+
+    &:hover {
+      background-color: rgba(246, 246, 251, 0.3);
+    }
   }
-  > li:hover {
-    cursor: pointer;
-    background-color: rgba(246, 246, 251, 0.3);
-  }
-  li + li {
-    margin-left: 16px;
-  }
+
   svg {
     width: 18px;
     height: 18px;
@@ -96,7 +100,7 @@ export default function MediaLinkList({ margin = '0 auto 48px' }): JSX.Element {
         )
       })}
       <li key="Line">
-        <button aria-label="複製網站連結">
+        <button type="button" aria-label="複製網站連結">
           <IconLink onClick={handleLinkClick} />
         </button>
       </li>
