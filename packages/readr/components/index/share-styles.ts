@@ -9,11 +9,11 @@ export const sectionStyle = css`
 `
 
 export const sectionMargin = css`
-  margin: 0 0 48px;
+  margin-bottom: 48px;
   ${({ theme }) => theme.breakpoint.md} {
-    margin: 0 0 60px;
+    margin-bottom: 60px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
-    margin: 0 0 80px;
+    margin-bottom: 80px;
   }
 `
