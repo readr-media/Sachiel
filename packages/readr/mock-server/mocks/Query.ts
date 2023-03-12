@@ -3,4 +3,5 @@ export const Query = {
   editorChoices: () => [...new Array(6)],
   features: () => [...new Array(8)],
   posts: () => [...new Array(50)],
+  quotes: () => [...new Array(20)],
 }
