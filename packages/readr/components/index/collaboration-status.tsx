@@ -1,3 +1,5 @@
+// 協作專區統計資訊
+
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -17,7 +19,7 @@ const Content = styled.p`
   text-align: center;
   letter-spacing: 0.025em;
   padding-bottom: 22px;
-  border-bottom: 1px solid rgba(#000, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   ${({ theme }) => theme.breakpoint.md} {
     padding-bottom: 28px;
     line-height: 1.5;
@@ -53,7 +55,7 @@ const NameList = styled.div`
   line-height: 1.8;
   padding-top: 18px;
   padding-bottom: 18px;
-  border-bottom: 1px solid rgba(#000, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `
 
 type CollaborationStatusProps = {
