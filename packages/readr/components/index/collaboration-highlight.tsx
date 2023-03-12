@@ -3,12 +3,7 @@
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 
-const Container = styled(NextLink)`
-  margin-bottom: 20px;
-  ${({ theme }) => theme.breakpoint.md} {
-    margin-bottom: 24px;
-  }
-`
+const Container = styled(NextLink)``
 
 type Item = {
   altText: string

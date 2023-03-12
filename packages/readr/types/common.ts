@@ -83,3 +83,10 @@ export type GenericFeature = {
   description: string
   featurePost?: GenericPost | null
 }
+
+export type GenericQuote = {
+  id: string
+  name: string
+  title: string
+  byline: string
+}

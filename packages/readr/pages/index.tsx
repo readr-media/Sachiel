@@ -22,6 +22,8 @@ import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choi
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
+import type { Quote } from '~/graphql/query/quote'
+import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
 import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
@@ -33,6 +35,7 @@ type PageProps = {
   categories: CategoryWithArticleCards[]
   latest: CategoryWithArticleCards
   features: FeaturedArticle[]
+  quotes?: Quote[]
 }
 
 const Index: NextPageWithLayout<PageProps> = ({
@@ -40,6 +43,7 @@ const Index: NextPageWithLayout<PageProps> = ({
   categories,
   latest,
   features,
+  quotes,
 }) => {
   const shouldShowEditorChoiceSection = editorChoices.length > 0
   const shouldShowLatestReportSection = categories.length > 0
@@ -54,7 +58,7 @@ const Index: NextPageWithLayout<PageProps> = ({
         <LatestReportSection categories={categories} latest={latest} />
       )}
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
-      <CollaborationSection />
+      <CollaborationSection quotes={quotes} />
     </>
   )
 }
@@ -75,6 +79,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     slug: DEFAULT_CATEGORY.slug,
   }
   let features: FeaturedArticle[] = []
+  let quotes: Quote[] = []
 
   try {
     {
@@ -211,6 +216,32 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         }
       })
     }
+
+    /**
+     * this section is disabled since <CollaborationQuoteSlider /> is replaced by <CollaborationHighlight />,
+     * see <CollaborationSection />
+    {
+      // fetch quote data
+      const { data, errors: gqlErrors } = await client.query<{
+        quotes: Quote[]
+      }>({
+        query: quotesQuery,
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `quotes` query'),
+          'GraphQLError',
+          'failed to complete `quotes`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      quotes = data.quotes
+    }
+    */
   } catch (err) {
     const annotatingError = errors.helpers.wrap(
       err,
@@ -240,6 +271,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       categories,
       latest,
       features,
+      quotes,
     },
   }
 }
