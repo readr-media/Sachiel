@@ -124,5 +124,3 @@ dist
 # generated static file
 **/politics-tracker/public/robots.txt
 **/politics-tracker/public/sitemap*.xml
-**/readr/public/robots.txt
-**/readr/public/sitemap*.xml
