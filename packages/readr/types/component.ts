@@ -12,3 +12,15 @@ export type FeaturedArticle = ArticleCard & {
   subtitle?: string
   description?: string
 }
+
+export type CollaborationItem = {
+  id: string
+  title: string
+  description: string
+  achvLink?: string
+  collabLink: string
+  image: string
+  progress?: number
+  requireTime?: number
+  endTime?: string
+}

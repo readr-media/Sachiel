@@ -6,6 +6,7 @@ import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import useFallbackImage from '~/hooks/useFallbackImage'
+import type { CollaborationItem } from '~/types/component'
 
 type StyledProps = {
   $isInProgress: boolean
@@ -15,7 +16,7 @@ const Container = styled(NextLink)`
   display: block;
   letter-spacing: 2.5px;
   &:hover img,
-  &:active img {
+  &:focus img {
     transform: scale(1.1);
   }
 `
@@ -172,16 +173,7 @@ const DateContent = styled.div`
   color: rgba(0, 0, 0, 0.66);
 `
 
-type Item = {
-  title: string
-  description: string
-  achvLink?: string
-  collabLink: string
-  image: string
-  progress?: number
-  endTime?: string
-  requireTime?: number
-}
+type CollaborationCardProps = Omit<CollaborationItem, 'id'>
 
 export default function CollaborationCard({
   achvLink,
@@ -192,7 +184,7 @@ export default function CollaborationCard({
   progress,
   endTime,
   requireTime,
-}: Item): JSX.Element {
+}: CollaborationCardProps): JSX.Element {
   const progressText = `${progress}%`
   const href = achvLink || collabLink
   const remainDays = dayjs().diff(dayjs(endTime), 'day') * -1
