@@ -1,15 +1,18 @@
 import gql from 'graphql-tag'
 
-import {
+import { authorFragment } from '~/graphql/fragments/author'
+import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
+import type {
   GenericAuthor,
   GenericCategory,
   GenericPhoto,
   GenericPost,
 } from '~/types/common'
 
-import { authorFragment } from '../fragments/author'
-import { resizeImagesFragment } from '../fragments/resized-images'
-
+export type RelatedPost = Pick<
+  Required<GenericPost>,
+  'id' | 'publishTime' | 'name' | 'readingTime'
+>
 export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
 export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
 export type Photo = Pick<
@@ -22,6 +25,9 @@ export type PostDetail = Pick<
   | 'id'
   | 'slug'
   | 'name'
+  | 'subtitle'
+  | 'sortOrder'
+  | 'manualOrderOfRelatedPosts'
   | 'heroCaption'
   | 'content'
   | 'publishTime'
@@ -30,14 +36,17 @@ export type PostDetail = Pick<
   categories: Category[]
 } & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
     heroImage: Photo
+    relatedPosts: RelatedPost[]
   }
 
 const post = gql`
   query ($id: ID!) {
     post(where: { id: $id }) {
       id
+      sortOrder
       slug
       name
+      subtitle
       heroCaption
       content
       publishTime
@@ -58,13 +67,19 @@ const post = gql`
       heroImage {
         id
         name
-        urlOriginal
         imageFile {
           url
         }
         resized {
           ...ResizedImagesField
         }
+      }
+      manualOrderOfRelatedPosts
+      relatedPosts {
+        id
+        name
+        publishTime
+        readingTime
       }
     }
   }

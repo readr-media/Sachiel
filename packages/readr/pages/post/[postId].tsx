@@ -1,5 +1,6 @@
 // under construction
 
+import { SubscribeButton } from '@readr-media/react-component'
 import CustomImage from '@readr-media/react-image'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
@@ -8,19 +9,19 @@ import styled from 'styled-components'
 
 import client from '~/apollo-client'
 import LayoutGeneral from '~/components/layout/layout-general'
-import Credit from '~/components/post/post-credit'
-import Title from '~/components/post/post-title'
+import Content from '~/components/post/post-content'
+import Report from '~/components/post/report'
 import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 
 const Article = styled.article`
   padding: 70px 0 0;
+
   ${({ theme }) => theme.breakpoint.lg} {
     padding: 86px 0 0;
   }
 `
-
 const HeroImage = styled.picture`
   width: 100%;
   max-width: 960px;
@@ -32,54 +33,43 @@ const HeroImage = styled.picture`
   }
 `
 
-const Heading = styled.article`
+const Subscribe = styled.div`
   width: 100%;
-  max-width: 568px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #04295e;
   padding: 0 20px;
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 36px;
-    letter-spacing: 0.04em;
-    color: #000928;
-    margin: 0 0 16px;
-    ${({ theme }) => theme.breakpoint.md} {
-      font-size: 36px;
-      line-height: 1.5;
-      letter-spacing: 0.03em;
-    }
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    padding: 0;
-    max-width: 600px;
-  }
 `
 
-const Post: NextPageWithLayout<{ postData: PostDetail }> = ({ postData }) => {
+interface PostProps {
+  postData: PostDetail
+}
+
+const Post: NextPageWithLayout<PostProps> = ({ postData }) => {
   return (
-    <Article id="post">
-      <HeroImage>
-        {postData.heroImage?.resized && (
-          <CustomImage
-            images={postData.heroImage?.resized}
-            defaultImage={'/default-image.svg'}
-            objectFit="cover"
-          />
-        )}
-      </HeroImage>
-      <Heading>
-        <Title postData={postData} />
-        <Credit postData={postData} />
-      </Heading>
-    </Article>
+    <>
+      <Article>
+        <HeroImage>
+          {postData.heroImage?.resized && (
+            <CustomImage
+              images={postData.heroImage?.resized}
+              defaultImage={'/icons/default/post.svg'}
+              objectFit="cover"
+            />
+          )}
+        </HeroImage>
+        <Content postData={postData} />
+      </Article>
+      <Subscribe>
+        <SubscribeButton />
+      </Subscribe>
+      <Report data={postData?.relatedPosts} />
+    </>
   )
 }
 
-type PostPageProps = {
-  postData: PostDetail
-}
-export const getServerSideProps: GetServerSideProps<PostPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<PostProps> = async ({
   query,
 }) => {
   const { postId } = query
