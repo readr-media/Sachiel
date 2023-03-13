@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SectionHeading from '~/components/shared/section-heading'
+import { CollaborationItem } from '~/types/component'
 
 import CollaborationHighlight from './collaboration-highlight'
+import CollaborationList from './collaboration-list'
 import CollaborationQuoteSlider from './collaboration-quote-slider'
-import { CollaborationStatus } from './collaboration-status'
+import CollaborationStatus from './collaboration-status'
 import { sectionMargin, sectionStyle } from './share-styles'
 
 const Container = styled.section`
@@ -33,11 +35,12 @@ const HighlightPart = styled.div`
 
 type CollaborationSectionProps = {
   quotes: Parameters<typeof CollaborationQuoteSlider>[0]['quotes']
+  items: CollaborationItem[]
 }
 
 export default function CollaborationSection(
   // eslint-disable-next-line no-unused-vars
-  { quotes }: CollaborationSectionProps
+  { quotes, items }: CollaborationSectionProps
 ): JSX.Element {
   const sectionTitle = '協作專區'
   const spreadsheetId = '1vEuoCAAXR8NMoh6qiOnj6kNdLv0lc-CaInLnWUuvySo'
@@ -107,6 +110,7 @@ export default function CollaborationSection(
           loadNames={loadCollaboratorNames}
         />
       )}
+      <CollaborationList items={items} />
     </Container>
   )
 }

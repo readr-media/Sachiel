@@ -64,7 +64,7 @@ type CollaborationStatusProps = {
   loadNames?: () => {}
 }
 
-export function CollaborationStatus({
+export default function CollaborationStatus({
   count,
   names,
   loadNames,

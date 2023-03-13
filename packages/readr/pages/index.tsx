@@ -17,6 +17,8 @@ import { REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
+import type { Collaboration } from '~/graphql/query/collaboration'
+import { collaborations as collaborationsQuery } from '~/graphql/query/collaboration'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
@@ -26,7 +28,12 @@ import type { Quote } from '~/graphql/query/quote'
 import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
-import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
+import type { CollaborationItem } from '~/types/component'
+import {
+  convertPostToArticleCard,
+  getImageOfArticle,
+  getImageSrc,
+} from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -36,6 +43,7 @@ type PageProps = {
   latest: CategoryWithArticleCards
   features: FeaturedArticle[]
   quotes?: Quote[]
+  collaborations: CollaborationItem[]
 }
 
 const Index: NextPageWithLayout<PageProps> = ({
@@ -44,10 +52,12 @@ const Index: NextPageWithLayout<PageProps> = ({
   latest,
   features,
   quotes,
+  collaborations,
 }) => {
   const shouldShowEditorChoiceSection = editorChoices.length > 0
   const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
+  const shouldShowCollaborationSection = collaborations.length > 0
 
   return (
     <>
@@ -58,7 +68,9 @@ const Index: NextPageWithLayout<PageProps> = ({
         <LatestReportSection categories={categories} latest={latest} />
       )}
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
-      <CollaborationSection quotes={quotes} />
+      {shouldShowCollaborationSection && (
+        <CollaborationSection quotes={quotes} items={collaborations} />
+      )}
     </>
   )
 }
@@ -80,6 +92,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   }
   let features: FeaturedArticle[] = []
   let quotes: Quote[] = []
+  let collaborations: CollaborationItem[] = []
 
   try {
     {
@@ -121,7 +134,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
       {
         // fetch categories and related latest reports
-        const { data } = await client.query<{ categories: Category[] }>({
+        const { data, error: gqlErrors } = await client.query<{
+          categories: Category[]
+        }>({
           query: categoriesQuery,
           variables: {
             relatedPostFirst: 8,
@@ -132,6 +147,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
             relatedReportTypes: REPORT_STYLES,
           },
         })
+
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            new Error('Errors returned in `categories` query'),
+            'GraphQLError',
+            'failed to complete `categories`',
+            { errors: gqlErrors }
+          )
+
+          throw annotatingError
+        }
 
         categories = data.categories.map((category) => {
           const reports = category.reports?.map(convertFunc)
@@ -155,12 +181,24 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         // fetch latest reports
         const {
           data: { latestPosts },
+          errors: gqlErrors,
         } = await client.query<{ latestPosts: Post[] }>({
           query: latestPostsQuery,
           variables: {
             first: 15,
           },
         })
+
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            new Error('Errors returned in `latestPosts` query'),
+            'GraphQLError',
+            'failed to complete `latestPosts`',
+            { errors: gqlErrors }
+          )
+
+          throw annotatingError
+        }
 
         let postCount = 0
         const report = latestPosts.find(
@@ -242,6 +280,52 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       quotes = data.quotes
     }
     */
+
+    {
+      // fetch collaboration items
+      const { data, errors: gqlErrors } = await client.query<{
+        collaborations: Collaboration[]
+      }>({
+        query: collaborationsQuery,
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `collaborations` query'),
+          'GraphQLError',
+          'failed to complete `collaborations`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      collaborations = data.collaborations.map((collaboration) => {
+        const {
+          id,
+          title = '',
+          description,
+          progress,
+          achvLink,
+          collabLink,
+          requireTime,
+          endTime,
+          heroImage,
+        } = collaboration
+
+        return {
+          id,
+          title,
+          description,
+          progress,
+          achvLink,
+          collabLink,
+          requireTime,
+          endTime,
+          image: getImageSrc(heroImage?.resized),
+        }
+      })
+    }
   } catch (err) {
     const annotatingError = errors.helpers.wrap(
       err,
@@ -272,6 +356,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       latest,
       features,
       quotes,
+      collaborations,
     },
   }
 }
