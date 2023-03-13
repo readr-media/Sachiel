@@ -1,11 +1,10 @@
 // 協作專區項目卡片
 
+import SharedImage from '@readr-media/react-image'
 import dayjs from 'dayjs'
-import NextImage from 'next/image'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
-import useFallbackImage from '~/hooks/useFallbackImage'
 import type { CollaborationItem } from '~/types/component'
 
 type StyledProps = {
@@ -29,6 +28,11 @@ const ImageBlock = styled.div`
   }
 
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.3s;
   }
@@ -178,7 +182,7 @@ type CollaborationCardProps = Omit<CollaborationItem, 'id'>
 export default function CollaborationCard({
   achvLink,
   collabLink,
-  image,
+  images,
   title,
   description,
   progress,
@@ -198,19 +202,12 @@ export default function CollaborationCard({
     ? '專題製作中'
     : '前往專題'
 
-  const { imageSrc, onErrorHandle } = useFallbackImage(
-    image,
-    '/icons/default/collaboration.svg'
-  )
-
   return (
     <Container href={href} target="_blank">
       <ImageBlock>
-        <NextImage
-          src={imageSrc}
-          onError={onErrorHandle}
-          fill={true}
-          unoptimized={true}
+        <SharedImage
+          images={images}
+          defaultImage={'/icons/default/collaboration.svg'}
           alt={title}
         />
         {canCollaborate && <InfoLabel>只要 {requireTime} 分鐘</InfoLabel>}

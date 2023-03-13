@@ -29,11 +29,7 @@ import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
-import {
-  convertPostToArticleCard,
-  getImageOfArticle,
-  getImageSrc,
-} from '~/utils/post'
+import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -322,7 +318,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           collabLink,
           requireTime,
           endTime,
-          image: getImageSrc(heroImage?.resized),
+          images: heroImage?.resized ?? {},
         }
       })
     }
