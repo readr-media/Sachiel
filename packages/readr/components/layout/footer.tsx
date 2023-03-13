@@ -20,7 +20,7 @@ const Main = styled.footer`
 const Container = styled.div`
   padding: 32px 0 24px 0;
   text-align: center;
-  max-width: 1096px;
+  max-width: ${({ theme }) => theme.width.main};
   margin: 0 auto;
   box-sizing: content-box;
 `
@@ -32,7 +32,6 @@ const MediaLinkList = styled.ul`
   line-height: 1.4;
 
   ${({ theme }) => theme.breakpoint.lg} {
-    order: 3;
     margin: 0 0 32px 0;
   }
 
@@ -50,7 +49,6 @@ const MiscLinkList = styled.ul`
   margin-bottom: 32px;
 
   ${({ theme }) => theme.breakpoint.lg} {
-    order: 1;
     padding: 0;
   }
 
@@ -104,10 +102,6 @@ const CopyrightInfo = styled.p`
   font-size: 12px;
   line-height: 18px;
   color: rgba(0, 0, 0, 0.3);
-  ${({ theme }) => theme.breakpoint.lg} {
-    order: 2;
-    margin-left: auto;
-  }
 `
 
 type ExternalLinkItem = {

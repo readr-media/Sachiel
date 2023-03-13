@@ -8,14 +8,13 @@ import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { RelatedArticle } from '~/components/shared/related-list-in-header'
-import type { Post } from '~/graphql/query/category'
+import type { Post } from '~/graphql/fragments/post'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
-import type { ResizedImages } from '~/types/common'
 import * as gtag from '~/utils/gtag'
-import { getHref, getUid, isReport } from '~/utils/post'
+import { getHref, getImageSrc, getUid, isReport } from '~/utils/post'
 
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
 const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
@@ -187,27 +186,6 @@ export default function HeaderGeneral({
       Math.round((pageYOffset / (bottom + pageYOffset - windowHeight)) * 100)
     )
   })
-
-  type keyOfResizedImages = keyof ResizedImages
-  function getImageSrc(imageObject?: ResizedImages | null): string {
-    const imageList: keyOfResizedImages[] = [
-      'w480',
-      'w800',
-      'w1200',
-      'w1600',
-      'w2400',
-      'original',
-    ]
-
-    if (!imageObject) {
-      return ''
-    }
-
-    return imageList.reduce(
-      (tmp: string, curr) => tmp || imageObject[curr] || '',
-      ''
-    )
-  }
 
   function convertToRelatedArticle(post: Post): RelatedArticle {
     const { title = '', heroImage, style = '' } = post

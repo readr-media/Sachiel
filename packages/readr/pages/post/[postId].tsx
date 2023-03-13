@@ -54,7 +54,7 @@ const Post: NextPageWithLayout<PostProps> = ({ postData }) => {
           {postData.heroImage?.resized && (
             <CustomImage
               images={postData.heroImage?.resized}
-              defaultImage={'/post-default-image.svg'}
+              defaultImage={'/icons/default/post.svg'}
               objectFit="cover"
             />
           )}
