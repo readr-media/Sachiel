@@ -11,6 +11,11 @@ type StyledProps = {
 
 const Container = styled.div`
   color: #000928;
+  margin-bottom: 14px;
+
+  ${({ theme }) => theme.breakpoint.md} {
+    margin-bottom: 20px;
+  }
 `
 
 const Content = styled.p`
