@@ -6,6 +6,11 @@ export const sectionStyle = css`
   margin-right: auto;
   padding-left: 20px;
   padding-right: 20px;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `
 
 export const sectionMargin = css`
