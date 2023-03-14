@@ -6,7 +6,7 @@ export const mediaSize = {
   md: 768,
   lg: 960,
   xl: 1200,
-  xxl: 1440,
+  xxl: 1400,
 }
 
 export const theme = {
@@ -17,6 +17,13 @@ export const theme = {
     lg: `@media (min-width: ${mediaSize.lg}px)`,
     xl: `@media (min-width: ${mediaSize.xl}px)`,
     xxl: `@media (min-width: ${mediaSize.xxl}px)`,
+  },
+  width: {
+    // 全站
+    main: '1096px', // 網頁內容
+    // 首頁 - 編輯精選區塊
+    featuredEditorChoiceCard: '720px',
+    editorChoiceCard: '296px',
   },
 }
 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { PostDetail } from '~/graphql/query/post'
-import { formattedDate } from '~/utils/date-formate'
+import { formatPostDate, formatReadTime } from '~/utils/post'
 
 import DateAndReadTimeInfo from '../shared/date-and-read-time-info'
 
@@ -75,8 +75,8 @@ export default function PostTitle({ postData }: PostProps): JSX.Element {
       <Category>{categoryItem}</Category>
       <h1>{postData?.name}</h1>
       <DateAndReadTimeInfo
-        date={formattedDate(postData?.publishTime)}
-        readTimeText={`閱讀時間 ${postData?.readingTime} 分鐘`}
+        date={formatPostDate(postData?.publishTime)}
+        readTimeText={formatReadTime(postData?.readingTime)}
       />
     </>
   )

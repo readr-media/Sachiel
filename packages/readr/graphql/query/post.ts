@@ -1,25 +1,43 @@
 import gql from 'graphql-tag'
 
-import type { Post } from '~/graphql/query/category'
-import { GenericPost } from '~/types/common'
+import { authorFragment } from '~/graphql/fragments/author'
+import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
+import type {
+  GenericAuthor,
+  GenericCategory,
+  GenericPhoto,
+  GenericPost,
+} from '~/types/common'
 
-export type Author = {
-  id: number
-  name: string
-}
+export type RelatedPost = Pick<
+  Required<GenericPost>,
+  'id' | 'publishTime' | 'name' | 'readingTime'
+>
+export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
+export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
+export type Photo = Pick<
+  Required<GenericPhoto>,
+  'id' | 'name' | 'urlOriginal' | 'imageFile' | 'resized'
+>
 
-export type Category = {
-  id: string
-  title?: string
-}
-
-export type PostDetail = GenericPost & {
-  writers?: Author[]
-  designers?: Author[]
-  dataAnalysts?: Author[]
-  categories?: Category[]
-  relatedPosts?: Post[]
-}
+export type PostDetail = Pick<
+  Required<GenericPost>,
+  | 'id'
+  | 'slug'
+  | 'name'
+  | 'subtitle'
+  | 'sortOrder'
+  | 'manualOrderOfRelatedPosts'
+  | 'heroCaption'
+  | 'content'
+  | 'publishTime'
+  | 'readingTime'
+> & {
+  categories: Category[]
+} & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
+    heroImage: Photo
+    relatedPosts: RelatedPost[]
+  }
 
 const post = gql`
   query ($id: ID!) {
@@ -29,22 +47,22 @@ const post = gql`
       slug
       name
       subtitle
+      heroCaption
+      content
       publishTime
+      readingTime
       categories {
         id
         title
       }
+      dataAnalysts {
+        ...AuthorFields
+      }
       writers {
-        id
-        name
+        ...AuthorFields
       }
       designers {
-        id
-        name
-      }
-      dataAnalysts {
-        id
-        name
+        ...AuthorFields
       }
       heroImage {
         id
@@ -52,40 +70,21 @@ const post = gql`
         imageFile {
           url
         }
-        urlOriginal
         resized {
-          original
-          w480
-          w800
-          w1200
-          w1600
-          w2400
+          ...ResizedImagesField
         }
-      }
-      heroCaption
-      content
-      readingTime
-      relatedPosts {
-        id
-        publishTime
-        name
-        readingTime
       }
       manualOrderOfRelatedPosts
-      heroImage {
+      relatedPosts {
         id
         name
-        resized {
-          original
-          w480
-          w800
-          w1200
-          w1600
-          w2400
-        }
+        publishTime
+        readingTime
       }
     }
   }
+  ${resizeImagesFragment}
+  ${authorFragment}
 `
 
 export { post }

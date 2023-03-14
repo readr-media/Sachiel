@@ -2,11 +2,13 @@
 
 import NextImage from 'next/image'
 import NextLink from 'next/link'
-import { useState } from 'react'
 import styled from 'styled-components'
 
+import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
+import useFallbackImage from '~/hooks/useFallbackImage'
+
 import DateAndReadTimeInfo from './date-and-read-time-info'
-const DEFAULT_POST_IMAGE_PATH = '/icons/default/post.svg'
+import ReportLabel from './report-label'
 
 type StyledProps = {
   $shouldReverseInMobile: boolean
@@ -110,22 +112,6 @@ const ImageWrapper = styled.div<StyledProps>`
     `}
 `
 
-const ReportLabel = styled.label`
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 13px;
-  line-height: 19px;
-  color: #fff;
-  background-color: rgba(0, 9, 40, 0.5);
-  border-radius: 2px;
-  padding: 2px 4px;
-  ${({ theme }) => theme.breakpoint.sm} {
-    top: 8px;
-    right: 8px;
-  }
-`
-
 const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
   .title {
     text-align: left;
@@ -214,11 +200,10 @@ export default function ArticleListCard({
 }: ArticleListCardProps): JSX.Element {
   const isReportAndShouldHighlight = isReport && shouldHighlightReport
 
-  const [imageSrc, setImageSrc] = useState(image)
-
-  function setFallbackImage() {
-    setImageSrc(DEFAULT_POST_IMAGE_PATH)
-  }
+  const { imageSrc, onErrorHandle } = useFallbackImage(
+    image,
+    DEFAULT_POST_IMAGE_PATH
+  )
 
   function clickHander(event: unknown) {
     ;(event as Event).stopPropagation()
@@ -242,14 +227,14 @@ export default function ArticleListCard({
         <picture>
           <NextImage
             src={imageSrc}
-            onError={setFallbackImage}
+            onError={onErrorHandle}
             fill={true}
             unoptimized={true}
             alt={title}
             priority={shouldNotLazyload}
           />
         </picture>
-        {isReport && <ReportLabel>專題</ReportLabel>}
+        {isReport && <ReportLabel />}
       </ImageWrapper>
       <TextWrapper $shouldHighlightReport={isReportAndShouldHighlight}>
         <div className="title">

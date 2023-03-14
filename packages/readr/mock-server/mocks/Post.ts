@@ -8,4 +8,5 @@ export const Post: () => GenericPost = () => ({
   slug: faker.lorem.slug(),
   style: faker.helpers.arrayElement(Object.values(ValidPostStyle)),
   name: faker.lorem.sentence(),
+  subtitle: faker.lorem.sentence(),
 })

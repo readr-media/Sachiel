@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import { SITE_TITLE } from '~/constants/config'
+import { SITE_TITLE } from '~/constants/constant'
 import { SITE_URL } from '~/constants/environment-variables'
 
 export type OGProperties = {
