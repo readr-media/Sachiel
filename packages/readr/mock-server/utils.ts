@@ -7,3 +7,5 @@ export const randomListLength = ({
   min?: number
   max?: number
 }) => Math.floor(faker.datatype.number({ min, max }))
+
+export const randomBoolean = () => faker.datatype.boolean()

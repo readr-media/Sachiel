@@ -1,15 +1,18 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
-import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { loadSchema } from '@graphql-tools/load'
 import { addMocksToSchema } from '@graphql-tools/mock'
+import { UrlLoader } from '@graphql-tools/url-loader'
 
 import { MOCK_API_SERVER_PORT } from '../constants/config'
 import { mocks } from './mocks'
 
+const GQL_SCHEMA_URL =
+  'https://raw.githubusercontent.com/mirror-media/Lilith/main/packages/readr/schema.graphql'
+
 const startServer = async () => {
-  const schema = await loadSchema('./mock-server/typeDefs/schema.graphql', {
-    loaders: [new GraphQLFileLoader()],
+  const schema = await loadSchema(GQL_SCHEMA_URL, {
+    loaders: [new UrlLoader()],
   })
 
   const server = new ApolloServer({

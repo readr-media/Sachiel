@@ -81,3 +81,8 @@ export type GenericEditorChoice = {
   choices?: GenericPost | null
   publishTime?: string
 }
+
+export type GenericFeature = {
+  description: string
+  featurePost?: GenericPost | null
+}
