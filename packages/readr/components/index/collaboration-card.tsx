@@ -112,7 +112,7 @@ const Description = styled.p`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   font-size: 13px;
-  color: rgba(#000, 0.66);
+  color: rgba(0, 0, 0, 0.66);
   letter-spacing: 1px;
   margin-bottom: 9px;
   // 13 * 1.5 * 2
@@ -166,6 +166,7 @@ const ProgressContent = styled.div`
     text-align: right;
     flex: 0 0 auto;
     margin-left: 12px;
+
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 18px;
     }

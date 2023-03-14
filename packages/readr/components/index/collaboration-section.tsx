@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SectionHeading from '~/components/shared/section-heading'
-import { CollaborationItem } from '~/types/component'
+import type { CollaborationItem } from '~/types/component'
 
 import CollaborationHighlight from './collaboration-highlight'
 import CollaborationList from './collaboration-list'
@@ -16,6 +16,11 @@ import { sectionMargin, sectionStyle } from './share-styles'
 const Container = styled.section`
   ${sectionStyle}
   ${sectionMargin}
+
+  box-sizing: border-box;
+  ${({ theme }) => theme.breakpoint.lg} {
+    box-sizing: content-box;
+  }
 
   // 調整 <SectionHeading />
   .section-heading {
