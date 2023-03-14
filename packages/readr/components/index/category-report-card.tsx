@@ -109,15 +109,15 @@ const TextWrapper = styled.div`
     }
 
     p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       font-size: 18px;
       font-weight: 700;
       line-height: 1.5;
       letter-spacing: 0.03em;
       color: #000928;
       word-wrap: break-word;
-      -webkit-line-clamp: 2;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
       overflow: hidden;
 
       ${({ theme }) => theme.breakpoint.sm} {
