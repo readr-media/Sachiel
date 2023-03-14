@@ -8,7 +8,7 @@ import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
-import { ArticleCard } from '~/types/component'
+import type { ArticleCard } from '~/types/component'
 
 const Container = styled(NextLink)`
   display: block;
