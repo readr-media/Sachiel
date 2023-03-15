@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
-    "@readr-media/react-component": "^1.0.2-beta.23",
+    "@readr-media/react-component": "^1.0.2-alfa.2",
     "@readr-media/react-image": "^1.2.2",
     "@svgr/webpack": "^6.5.1",
     "@twreporter/errors": "^1.1.2",
