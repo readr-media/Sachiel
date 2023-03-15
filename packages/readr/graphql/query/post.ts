@@ -80,6 +80,13 @@ const post = gql`
         name
         publishTime
         readingTime
+        heroImage {
+          id
+          name
+          resized {
+            ...ResizedImagesField
+          }
+        }
       }
     }
   }
