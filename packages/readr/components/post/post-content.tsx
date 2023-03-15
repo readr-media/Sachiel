@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import Heading from '~/components/post/post-heading'
 import MediaLinkList from '~/components/shared/media-link'
+import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
 
 const Content = styled.section`
@@ -61,7 +62,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       <Heading postData={postData} />
       <section id="summary" />
       <article id="post">文章頁 #{router?.query?.postId} 內文</article>
-      <DonateButton />
+      <DonateButton href={DONATION_PAGE_URL} />
       <QuoteAndMedia>
         <MediaLinkList />
         <section id="quote">#引用資料</section>

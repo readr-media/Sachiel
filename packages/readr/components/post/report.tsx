@@ -1,6 +1,7 @@
 import { RelatedReport } from '@readr-media/react-component'
 import styled from 'styled-components'
 
+import { SITE_URL } from '~/constants/environment-variables'
 import { GenericPhoto } from '~/types/common'
 
 const Wrapper = styled.div`
@@ -22,15 +23,20 @@ type RelatedPost = {
 }
 
 interface Props {
-  data?: RelatedPost[]
+  relatedData?: RelatedPost[]
 }
 
-export default function PostContent({ data }: Props): JSX.Element {
+export default function PostContent({ relatedData }: Props): JSX.Element {
+  const dataWithLink = relatedData?.map((item) => ({
+    ...item,
+    link: `http://${SITE_URL}/post/${item.id}`,
+  }))
+
   return (
     <>
-      {data?.length !== 0 && (
+      {Array.isArray(relatedData) && relatedData.length && (
         <Wrapper>
-          <RelatedReport relatedData={data} />
+          <RelatedReport relatedData={dataWithLink} />
         </Wrapper>
       )}
     </>

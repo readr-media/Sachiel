@@ -51,20 +51,18 @@ const Post: NextPageWithLayout<PostProps> = ({ postData }) => {
     <>
       <Article>
         <HeroImage>
-          {postData.heroImage?.resized && (
-            <CustomImage
-              images={postData.heroImage?.resized}
-              defaultImage={'/icons/default/post.svg'}
-              objectFit="cover"
-            />
-          )}
+          <CustomImage
+            images={postData.heroImage?.resized}
+            defaultImage={'/icons/default/post.svg'}
+            objectFit="cover"
+          />
         </HeroImage>
         <Content postData={postData} />
       </Article>
       <Subscribe>
         <SubscribeButton />
       </Subscribe>
-      <Report data={postData?.relatedPosts} />
+      <Report relatedData={postData?.relatedPosts} />
     </>
   )
 }

@@ -61,8 +61,10 @@ interface PostProps {
   postData: PostDetail
 }
 
-export default function PostTitle({ postData }: PostProps): JSX.Element {
-  const categoryItem = postData?.categories?.map((item) => {
+export default function PostTitle({
+  postData: { name, categories, publishTime, readingTime },
+}: PostProps): JSX.Element {
+  const categoryItem = categories.map((item) => {
     return (
       <li key={item.id}>
         <Link href={`/category/${item.title}`}>{item.title}</Link>
@@ -70,14 +72,14 @@ export default function PostTitle({ postData }: PostProps): JSX.Element {
     )
   })
 
+  const date = formatPostDate(publishTime)
+  const readTimeText = formatReadTime(readingTime)
+
   return (
     <>
-      <Category>{categoryItem}</Category>
-      <h1>{postData?.name}</h1>
-      <DateAndReadTimeInfo
-        date={formatPostDate(postData?.publishTime)}
-        readTimeText={formatReadTime(postData?.readingTime)}
-      />
+      {categories && <Category>{categoryItem}</Category>}
+      <h1>{name}</h1>
+      <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
     </>
   )
 }
