@@ -48,6 +48,7 @@ export default function DateAndReadTimeInfo({
   return (
     <Container className="time">
       {date && <time className="date">{date}</time>}
+      {' ' /* this whitespace is necessary for style*/}
       {readTimeText && <ReadTime className="read">{readTimeText}</ReadTime>}
     </Container>
   )

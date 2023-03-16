@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
+import type { FeaturedArticle } from '~/types/component'
 
 type StyledProps = {
   $isFirst: boolean
@@ -203,23 +204,18 @@ const Subtitle = styled.span`
   }
 `
 
-export type FeatureCardProps = {
-  href: string
-  title: string
-  subtitle: string
-  image: string
-  description: string
-  isFirst: boolean
+export type FeaturedArticleWithIsFirst = FeaturedArticle & {
+  isFirst?: boolean
 }
 
 export default function FeatureCard({
-  href = '',
+  href = '/',
   title = '',
   subtitle = '',
   image = DEFAULT_POST_IMAGE_PATH,
   description = '',
   isFirst = false,
-}: FeatureCardProps): JSX.Element {
+}: FeaturedArticleWithIsFirst): JSX.Element {
   const { imageSrc, onErrorHandle } = useFallbackImage(
     image,
     DEFAULT_POST_IMAGE_PATH

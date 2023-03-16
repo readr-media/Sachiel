@@ -13,6 +13,8 @@ import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
+import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import CategoryListContext from '~/contexts/category-list'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
 import { categories } from '~/graphql/query/category'
@@ -30,6 +32,7 @@ type AppPropsWithLayout = AppProps & {
 } & {
   props: {
     categoriesAndRelatedPosts: Category[]
+    categoryList: Category[]
   }
 }
 
@@ -58,7 +61,9 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
           <HeaderCategoriesAndRelatePostsContext.Provider
             value={props.categoriesAndRelatedPosts}
           >
-            {getLayout(<Component {...pageProps} />)}
+            <CategoryListContext.Provider value={props.categoryList}>
+              {getLayout(<Component {...pageProps} />)}
+            </CategoryListContext.Provider>
             <Footer />
             <GDPRControl />
           </HeaderCategoriesAndRelatePostsContext.Provider>
@@ -84,29 +89,39 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
 MyApp.getInitialProps = async (context: AppContext) => {
   const ctx = await App.getInitialProps(context)
 
-  // retrieve categories and related posts
+  const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
   const categoriesAndRelatedPosts: Category[] = []
+  const categoryList: Category[] = []
 
   try {
-    const { data } = await client.query<{ categories: Category[] }>({
-      query: categories,
-      variables: {
-        first: 6,
-        shouldQueryRelatedPost: true,
-        relatedPostFirst: 5,
-        relatedPostTypes: [
-          'news',
-          'embedded',
-          'project3',
-          'report',
-          'frame',
-          'blank',
-          'scrollablevideo',
-        ],
-      },
-    })
+    {
+      // fetch categories and related posts for header
+      const { data } = await client.query<{ categories: Category[] }>({
+        query: categories,
+        variables: {
+          first: 6,
+          shouldQueryRelatedPost: true,
+          relatedPostFirst: 5,
+          relatedPostTypes,
+        },
+      })
 
-    categoriesAndRelatedPosts.push(...data.categories)
+      categoriesAndRelatedPosts.push(...data.categories)
+    }
+
+    {
+      // fetch all categories
+      const { data } = await client.query<{ categories: Category[] }>({
+        query: categories,
+        variables: {
+          shouldQueryRelatedPost: true,
+          relatedPostFirst: 1,
+          relatedPostTypes,
+        },
+      })
+
+      categoryList.push(...data.categories)
+    }
   } catch (error) {
     const err = error as Error
     console.error(JSON.stringify({ severity: 'ERROR', message: err.stack }))
@@ -116,6 +131,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
     ...ctx,
     props: {
       categoriesAndRelatedPosts,
+      categoryList,
     },
   }
 }

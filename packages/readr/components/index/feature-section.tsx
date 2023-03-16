@@ -2,14 +2,21 @@
 
 import styled from 'styled-components'
 
-import { FeatureCardProps } from './feature-card'
+import type { FeaturedArticle } from '~/types/component'
+
 import FeatureCard from './feature-card'
+import { editorChoiceAndFeatureStyle } from './share-styles'
 
 type StyledProps = {
   $isFirst: boolean
 }
 
 const Container = styled.section`
+  ${editorChoiceAndFeatureStyle}
+  ${({ theme }) => theme.breakpoint.xxl} {
+    margin: 0 0 120px;
+  }
+
   ul {
     width: 100%;
     ${({ theme }) => theme.breakpoint.md} {
@@ -37,12 +44,8 @@ const Item = styled.li<StyledProps>`
     `}
 `
 
-export type FeatureCardWithId = Omit<FeatureCardProps, 'isFirst'> & {
-  id: string
-}
-
 type FeatureSectionProps = {
-  posts: FeatureCardWithId[]
+  posts: FeaturedArticle[]
 }
 
 export default function FeatureSection({
@@ -55,7 +58,7 @@ export default function FeatureSection({
   ))
 
   return (
-    <Container>
+    <Container aria-label="特色專題">
       <ul>{featureCardList}</ul>
     </Container>
   )
