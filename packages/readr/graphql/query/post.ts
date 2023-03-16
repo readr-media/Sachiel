@@ -1,9 +1,8 @@
 import gql from 'graphql-tag'
 
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
-import { authorFragment } from '~/graphql/fragments/author'
 import { postFragment } from '~/graphql/fragments/post'
-import {
+import type {
   GenericAuthor,
   GenericCategory,
   GenericPhoto,
@@ -11,13 +10,19 @@ import {
 } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
+import { authorFragment } from '../fragments/author'
 import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
 export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
 export type Photo = Pick<
   Required<GenericPhoto>,
-  'id' | 'name' | 'urlOriginal' | 'imageFile' | 'resized'
+  'id' | 'name' | 'imageFile' | 'resized'
+>
+
+export type RelatedPost = Pick<
+  Required<GenericPost>,
+  'id' | 'publishTime' | 'name' | 'readingTime'
 >
 
 export type PostDetail = Pick<
@@ -25,6 +30,9 @@ export type PostDetail = Pick<
   | 'id'
   | 'slug'
   | 'name'
+  | 'subtitle'
+  | 'sortOrder'
+  | 'manualOrderOfRelatedPosts'
   | 'heroCaption'
   | 'content'
   | 'publishTime'
@@ -33,6 +41,7 @@ export type PostDetail = Pick<
   categories: Category[]
 } & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
     heroImage: Photo
+    relatedPosts: RelatedPost[]
   }
 
 const post = gql`
@@ -41,6 +50,8 @@ const post = gql`
       id
       slug
       name
+      subtitle
+      sortOrder
       heroCaption
       content
       publishTime
@@ -61,13 +72,19 @@ const post = gql`
       heroImage {
         id
         name
-        urlOriginal
         imageFile {
           url
         }
         resized {
           ...ResizedImagesField
         }
+      }
+      manualOrderOfRelatedPosts
+      relatedPosts {
+        id
+        name
+        publishTime
+        readingTime
       }
     }
   }

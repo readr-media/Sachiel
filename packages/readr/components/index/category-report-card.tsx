@@ -8,7 +8,7 @@ import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import useFallbackImage from '~/hooks/useFallbackImage'
-import { ArticleCard } from '~/types/component'
+import type { ArticleCard } from '~/types/component'
 
 const Container = styled(NextLink)`
   display: block;
@@ -109,15 +109,15 @@ const TextWrapper = styled.div`
     }
 
     p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       font-size: 18px;
       font-weight: 700;
       line-height: 1.5;
       letter-spacing: 0.03em;
       color: #000928;
       word-wrap: break-word;
-      -webkit-line-clamp: 2;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
       overflow: hidden;
 
       ${({ theme }) => theme.breakpoint.sm} {

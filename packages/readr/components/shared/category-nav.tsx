@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import { useCategoryListContext } from '~/hooks/useContext'
-import { GenericCategory } from '~/types/common'
+import type { GenericCategory } from '~/types/common'
 
 type StyledProps = {
   $isActive: boolean

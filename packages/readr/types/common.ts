@@ -53,6 +53,7 @@ export type GenericPost = {
   name?: string
   title?: string // alias to `name`
   subtitle?: string
+  sortOrder?: number
   heroImage?: GenericPhoto | null
   ogImage?: GenericPhoto | null
   heroCaption?: string
@@ -61,6 +62,8 @@ export type GenericPost = {
   writers?: GenericAuthor[]
   designers?: GenericAuthor[]
   categories?: GenericCategory[]
+  relatedPosts?: GenericPost[]
+  manualOrderOfRelatedPosts?: unknown // it is hard to describe JSON type
   publishTime?: string
   readingTime?: number
 }
