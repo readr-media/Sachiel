@@ -12,7 +12,7 @@ export default async function handler(
   const { body: sheetRequest } = req
 
   try {
-    const auth = await loadCredentails()
+    const auth = loadCredentails()
 
     if (auth === null) {
       throw new Error('failed to get Google API OAuth client')
