@@ -3,7 +3,7 @@
 import SharedImage from '@readr-media/react-image'
 import dayjs from 'dayjs'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 import type { CollaborationItem } from '~/types/component'
 
@@ -202,6 +202,7 @@ export default function CollaborationCard({
     : isInProgress
     ? '專題製作中'
     : '前往專題'
+  const theme = useTheme()
 
   return (
     <Container href={href} target="_blank">
@@ -210,6 +211,13 @@ export default function CollaborationCard({
           images={images}
           defaultImage={'/icons/default/collaboration.svg'}
           alt={title}
+          breakpoint={{
+            mobile: `${theme.mediaSize.md - 1}px`,
+          }}
+          rwd={{
+            mobile: '190px',
+            default: '342px',
+          }}
         />
         {canCollaborate && <InfoLabel>只要 {requireTime} 分鐘</InfoLabel>}
         <StatusLabel $isInProgress={isInProgress}>{statusText}</StatusLabel>
