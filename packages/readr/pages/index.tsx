@@ -11,6 +11,7 @@ import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
 import type { CategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LatestReportSection from '~/components/index/latest-report-section'
+import OpenDataSection from '~/components/index/open-data-section'
 import LayoutGeneral from '~/components/layout/layout-general'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import { REPORT_STYLES } from '~/constants/constant'
@@ -67,6 +68,7 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
+      <OpenDataSection />
     </>
   )
 }
