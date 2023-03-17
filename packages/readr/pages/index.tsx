@@ -113,11 +113,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       editorChoices = data.editorChoices.map((editorChoice) => {
         const { heroImage, ogImage } = editorChoice.choices ?? {}
 
-        const image = getImageOfArticle({
-          images: [editorChoice.heroImage, heroImage, ogImage],
-        })
+        const images =
+          editorChoice.heroImage?.resized ??
+          heroImage?.resized ??
+          ogImage?.resized ??
+          {}
 
-        return convertPostToArticleCard(editorChoice?.choices, image)
+        return convertPostToArticleCard(
+          editorChoice?.choices,
+          undefined,
+          images
+        )
       })
     }
 
