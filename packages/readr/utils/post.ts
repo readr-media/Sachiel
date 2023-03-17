@@ -113,7 +113,8 @@ export function getImageOfArticle({
 
 export function convertPostToArticleCard(
   post: Post | null,
-  image?: string
+  image?: string,
+  images?: ResizedImages
 ): ArticleCard {
   const {
     id = 'no-id',
@@ -132,5 +133,6 @@ export function convertPostToArticleCard(
     readTimeText: formatReadTime(readingTime),
     isReport: isReport(style),
     image,
+    images: images ?? {},
   }
 }

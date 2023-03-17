@@ -5,6 +5,7 @@ export type ArticleCard = {
   href?: string
   title: string
   image?: string
+  images?: ResizedImages
   date?: string
   readTimeText?: string
   isReport?: boolean
