@@ -11,25 +11,24 @@ import client from '~/apollo-client'
 import LayoutGeneral from '~/components/layout/layout-general'
 import Content from '~/components/post/post-content'
 import Report from '~/components/post/report'
+import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 
-const Article = styled.article`
-  padding: 70px 0 0;
-
-  ${({ theme }) => theme.breakpoint.lg} {
-    padding: 86px 0 0;
-  }
-`
-const HeroImage = styled.picture`
+const HeroImage = styled.figure`
   width: 100%;
   max-width: 960px;
   margin: 0 auto 24px;
   height: 50vw;
   max-height: 480px;
-  ${({ theme }) => theme.breakpoint.md} {
-    margin: 24px auto 60px;
+
+  img {
+    margin-bottom: 8px;
+  }
+
+  ${({ theme }) => theme.breakpoint.lg} {
+    margin: 30px auto 60px;
   }
 `
 
@@ -49,16 +48,16 @@ interface PostProps {
 const Post: NextPageWithLayout<PostProps> = ({ postData }) => {
   return (
     <>
-      <Article>
+      <article>
         <HeroImage>
           <CustomImage
             images={postData.heroImage?.resized}
-            defaultImage={'/icons/default/post.svg'}
+            defaultImage={DEFAULT_POST_IMAGE_PATH}
             objectFit="cover"
           />
         </HeroImage>
         <Content postData={postData} />
-      </Article>
+      </article>
       <Subscribe>
         <SubscribeButton />
       </Subscribe>
