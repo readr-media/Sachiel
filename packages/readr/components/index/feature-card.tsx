@@ -1,11 +1,14 @@
-// 精選文章卡片 (might be legacy)
+// 精選文章卡片
 
-import NextImage from 'next/image'
+import SharedImage from '@readr-media/react-image'
+import type {
+  Breakpoint,
+  Rwd,
+} from '@readr-media/react-image/dist/react-components'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
-import useFallbackImage from '~/hooks/useFallbackImage'
 import type { FeaturedArticle } from '~/types/component'
 
 type StyledProps = {
@@ -43,6 +46,11 @@ const Container = styled(NextLink)<Pick<StyledProps, '$isFirst'>>`
     }
 
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       background-color: #d8d8d8;
@@ -212,26 +220,32 @@ export default function FeatureCard({
   href = '/',
   title = '',
   subtitle = '',
-  image = DEFAULT_POST_IMAGE_PATH,
+  images = {},
   description = '',
   isFirst = false,
 }: FeaturedArticleWithIsFirst): JSX.Element {
-  const { imageSrc, onErrorHandle } = useFallbackImage(
-    image,
-    DEFAULT_POST_IMAGE_PATH
-  )
-
   const [emoji, textWithoutEmoji] = description.split(' ')
+  const theme = useTheme()
+
+  const breakpoint: Breakpoint = {
+    mobile: `${theme.mediaSize.md - 1}px`,
+    tablet: `${theme.mediaSize.xl - 1}px`,
+  }
+
+  const rwd: Rwd = isFirst
+    ? { mobile: '100vw', tablet: '50vw', default: '100vw' }
+    : { mobile: '100vw', tablet: '50vw', default: '33vw' }
 
   return (
     <Container href={href} target="_blank" $isFirst={isFirst}>
       <picture>
-        <NextImage
-          src={imageSrc}
-          onError={onErrorHandle}
-          fill={true}
-          unoptimized={true}
+        <SharedImage
+          images={images}
+          defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
+          priority={true}
+          rwd={rwd}
+          breakpoint={breakpoint}
         />
       </picture>
       {title && (

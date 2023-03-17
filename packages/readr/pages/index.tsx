@@ -243,11 +243,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         const { description } = feature
         const { subtitle = '', heroImage, ogImage } = feature.featurePost ?? {}
 
-        const image = getImageOfArticle({
-          images: [heroImage, ogImage],
-        })
+        const images = heroImage?.resized ?? ogImage?.resized ?? {}
 
-        const article = convertPostToArticleCard(feature?.featurePost, image)
+        const article = convertPostToArticleCard(
+          feature?.featurePost,
+          undefined,
+          images
+        )
 
         return {
           ...article,
