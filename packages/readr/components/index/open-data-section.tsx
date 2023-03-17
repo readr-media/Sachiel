@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import OpenDataList from './open-data-list'
 import { sectionMargin, sectionStyle } from './share-styles'
 
 const Container = styled.section`
@@ -45,6 +46,7 @@ export default function OpenDataSection(): JSX.Element {
   return (
     <Container aria-label={sectionTitle}>
       <Header>{sectionTitle}</Header>
+      <OpenDataList />
     </Container>
   )
 }
