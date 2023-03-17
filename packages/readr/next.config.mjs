@@ -26,7 +26,27 @@ const nextConfig = {
     // svg files
     config.module.rules.push({
       test: /\.svg$/,
-      use: ['@svgr/webpack'],
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      // viewBox is required to resize SVGs with CSS.
+                      // @see https://github.com/svg/svgo/issues/1128
+                      removeViewBox: false,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
     })
     // graphql files
     config.module.rules.push({

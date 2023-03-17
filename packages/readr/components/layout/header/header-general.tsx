@@ -7,14 +7,13 @@ import throttle from 'raf-throttle'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import type { RelatedArticle } from '~/components/shared/related-list-in-header'
-import type { Post } from '~/graphql/fragments/post'
 import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
+import type { ArticleCard } from '~/types/component'
 import * as gtag from '~/utils/gtag'
-import { getHref, getImageSrc, getUid, isReport } from '~/utils/post'
+import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
 
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
 const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
@@ -143,7 +142,7 @@ export type TransformedCategory = {
   id: string
   name: string
   slug: string
-  relatedList: RelatedArticle[]
+  relatedList: ArticleCard[]
 }
 
 type HeaderGeneralProps = {
@@ -187,22 +186,17 @@ export default function HeaderGeneral({
     )
   })
 
-  function convertToRelatedArticle(post: Post): RelatedArticle {
-    const { title = '', heroImage, style = '' } = post
-
-    return {
-      uid: getUid(post),
-      title,
-      href: getHref(post),
-      isReport: isReport(style),
-      imageSrc: getImageSrc(heroImage?.resized),
-    }
-  }
-
   // memorize transformedCategories to prevent unwanted re-rendering at child components
-  const transformedCategoriesMemo: TransformedCategory[] = categories.map(
+  const transformedCategories: TransformedCategory[] = categories.map(
     (item) => {
-      const relatedList = item.posts?.map(convertToRelatedArticle) ?? []
+      const relatedList =
+        item.posts?.map((post) => {
+          const { heroImage, ogImage } = post
+          const image = getImageOfArticle({
+            images: [heroImage, ogImage],
+          })
+          return convertPostToArticleCard(post, image)
+        }) ?? []
 
       return {
         id: item.id,
@@ -289,7 +283,7 @@ export default function HeaderGeneral({
         <MiddlePart>
           <CategoriesAndRelatedPosts
             isCategoryPage={isCategoryPage}
-            categories={transformedCategoriesMemo}
+            categories={transformedCategories}
           />
         </MiddlePart>
         <RightPart>
@@ -318,7 +312,7 @@ export default function HeaderGeneral({
       {shouldShowHamburgerMenu && (
         <HamburgerMenu
           isCategoryPage={isCategoryPage}
-          categories={transformedCategoriesMemo}
+          categories={transformedCategories}
           closeHandler={closeHamburgerMenu}
         />
       )}

@@ -86,3 +86,27 @@ export type GenericFeature = {
   description: string
   featurePost?: GenericPost | null
 }
+
+export type GenericQuote = {
+  id: string
+  name: string
+  title: string
+  byline: string
+}
+
+export type GenericCollaboration = {
+  id: string
+  title?: string
+  name: string
+  description: string
+  progress: number
+  achvLink: string
+  collabLink: string
+  requireTime: number
+  endTime: string
+  heroImage: GenericPhoto | null
+}
+
+// This utility is for overwriting type without extending it
+// prettier-ignore
+export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U

@@ -1,8 +1,10 @@
 import gql from 'graphql-tag'
 
+import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import { GenericCategory } from '~/types/common'
+import type { GenericCategory } from '~/types/common'
+import { convertToStringList } from '~/utils/common'
 
 export type Category = Pick<GenericCategory, 'id' | 'slug' | 'title'> & {
   posts?: Post[]
@@ -18,7 +20,8 @@ const categories = gql`
     $reportSkip: Int
     $shouldQueryRelatedPost: Boolean = false
     $shouldQueryRelatedReport: Boolean = false
-    $relatedPostTypes: [String!] = ["news", "frame", "blank", "scrollablevideo"]
+    $relatedPostTypes: [String!] = [${convertToStringList(POST_STYLES)}]
+    $relatedReportTypes: [String!] = [${convertToStringList(REPORT_STYLES)}]
   ) {
     categories(
       take: $first
@@ -44,7 +47,7 @@ const categories = gql`
         skip: $reportSkip
         where: {
           state: { equals: "published" }
-          style: { in: $relatedPostTypes }
+          style: { in: $relatedReportTypes }
         }
         orderBy: { publishTime: desc }
       ) @include(if: $shouldQueryRelatedReport) {

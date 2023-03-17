@@ -6,5 +6,5 @@ export const Category: () => GenericCategory = () => ({
   id: faker.datatype.uuid(),
   slug: faker.lorem.slug(),
   title: faker.random.word(),
-  relatedPost: [...new Array(5)],
+  relatedPost: [...new Array(12)],
 })

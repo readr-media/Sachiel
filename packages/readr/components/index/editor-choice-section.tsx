@@ -2,10 +2,13 @@
 
 import styled from 'styled-components'
 
-import type { EditorChoiceCardProps } from './editor-choice-card'
+import type { ArticleCard } from '~/types/component'
+
 import EditorChoiceCard from './editor-choice-card'
+import { sectionMargin } from './share-styles'
 
 const Container = styled.section`
+  ${sectionMargin}
   width: 100%;
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
@@ -79,10 +82,8 @@ const NormalBlock = styled.li`
   }
 `
 
-export type EditorChoiceCardWithId = EditorChoiceCardProps & { id: string }
-
 type EditorChoiceSectionProps = {
-  posts: EditorChoiceCardWithId[]
+  posts: ArticleCard[]
 }
 
 export default function EditorChoiceSection({
@@ -97,7 +98,7 @@ export default function EditorChoiceSection({
   ))
 
   return (
-    <Container>
+    <Container aria-label="編輯精選">
       <FeaturedBlock>
         <EditorChoiceCard {...featuredPost} isFeatured={true} />
       </FeaturedBlock>

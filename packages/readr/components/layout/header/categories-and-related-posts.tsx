@@ -7,9 +7,8 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import RelatedListInHeader from '~/components/shared/related-list-in-header'
-
 import type { TransformedCategory } from './header-general'
+import RelatedListInHeader from './related-list-in-header'
 
 const Container = styled.ul`
   display: none;
