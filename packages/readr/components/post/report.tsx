@@ -1,4 +1,5 @@
 import { RelatedReport } from '@readr-media/react-component'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { SITE_URL } from '~/constants/environment-variables'
@@ -27,14 +28,20 @@ interface Props {
 }
 
 export default function PostContent({ relatedData }: Props): JSX.Element {
+  const [protocol, setProtocol] = useState('http:')
+
+  useEffect(() => {
+    setProtocol(window.location.protocol)
+  }, [])
+
   const dataWithLink = relatedData?.map((item) => ({
     ...item,
-    link: `http://${SITE_URL}/post/${item.id}`,
+    link: `${protocol}//${SITE_URL}/post/${item.id}`,
   }))
 
   return (
     <>
-      {Array.isArray(relatedData) && relatedData.length && (
+      {Array.isArray(relatedData) && relatedData.length > 0 && (
         <Wrapper>
           <RelatedReport relatedData={dataWithLink} />
         </Wrapper>
