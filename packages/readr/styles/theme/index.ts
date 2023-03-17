@@ -10,6 +10,7 @@ export const mediaSize = {
 }
 
 export const theme = {
+  mediaSize,
   breakpoint: {
     xs: `@media (min-width: ${mediaSize.xs}px)`,
     sm: `@media (min-width: ${mediaSize.sm}px)`,

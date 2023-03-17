@@ -13,17 +13,15 @@ import CategoryReportCard from './category-report-card'
 import { sectionStyle } from './share-styles'
 
 const Container = styled.section`
-  ${sectionStyle}
   width: 100%;
   margin: 0 auto 48px;
 
   ${({ theme }) => theme.breakpoint.sm} {
-    padding: 0 48px;
+    padding-left: 48px;
+    padding-right: 48px;
   }
 
-  ${({ theme }) => theme.breakpoint.xl} {
-    padding: 0;
-  }
+  ${sectionStyle}
 
   .section-heading {
     margin: 0 0 12px;
@@ -90,7 +88,7 @@ export default function LatestReportSection({
   }, [activeCategory.slug])
 
   return (
-    <Container className="latest-report-section" aria-label={sectionTitle}>
+    <Container aria-label={sectionTitle}>
       <SectionHeading
         title={sectionTitle}
         showMoreText={getShowMoreText(activeCategory)}

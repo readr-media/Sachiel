@@ -5,14 +5,14 @@ import styled from 'styled-components'
 import type { FeaturedArticle } from '~/types/component'
 
 import FeatureCard from './feature-card'
-import { editorChoiceAndFeatureStyle } from './share-styles'
+import { sectionMargin } from './share-styles'
 
 type StyledProps = {
   $isFirst: boolean
 }
 
 const Container = styled.section`
-  ${editorChoiceAndFeatureStyle}
+  ${sectionMargin}
   ${({ theme }) => theme.breakpoint.xxl} {
     margin: 0 0 120px;
   }

@@ -1,3 +1,5 @@
+import { ResizedImages } from './common'
+
 export type ArticleCard = {
   id?: string
   href?: string
@@ -11,4 +13,16 @@ export type ArticleCard = {
 export type FeaturedArticle = ArticleCard & {
   subtitle?: string
   description?: string
+}
+
+export type CollaborationItem = {
+  id: string
+  title: string
+  description: string
+  achvLink?: string
+  collabLink: string
+  images: ResizedImages
+  progress?: number
+  requireTime?: number
+  endTime?: string
 }
