@@ -11,7 +11,7 @@ import type {
 
 export type RelatedPost = Pick<
   Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime'
+  'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
 >
 export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
 export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
@@ -29,6 +29,7 @@ export type PostDetail = Pick<
   | 'sortOrder'
   | 'manualOrderOfRelatedPosts'
   | 'heroCaption'
+  | 'heroImage'
   | 'content'
   | 'publishTime'
   | 'readingTime'
@@ -47,7 +48,6 @@ const post = gql`
       slug
       name
       subtitle
-      heroCaption
       content
       publishTime
       readingTime
@@ -64,6 +64,7 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      heroCaption
       heroImage {
         id
         name

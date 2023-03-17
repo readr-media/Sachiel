@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { SITE_URL } from '~/constants/environment-variables'
-import { GenericPhoto } from '~/types/common'
+import type { RelatedPost } from '~/graphql/query/post'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,15 +14,6 @@ const Wrapper = styled.div`
     padding: 48px 0;
   }
 `
-
-type RelatedPost = {
-  id: string | undefined
-  publishTime?: string
-  name?: string
-  readingTime?: number
-  heroImage?: GenericPhoto | null | undefined
-}
-
 interface Props {
   relatedData?: RelatedPost[]
 }
