@@ -193,7 +193,7 @@ export default function HeaderGeneral({
         item.posts?.map((post) => {
           const { heroImage, ogImage } = post
           const images = heroImage?.resized ?? ogImage?.resized ?? {}
-          return convertPostToArticleCard(post, undefined, images)
+          return convertPostToArticleCard(post, images)
         }) ?? []
 
       return {

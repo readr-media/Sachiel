@@ -29,7 +29,7 @@ import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
-import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
+import { convertPostToArticleCard } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -119,11 +119,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           ogImage?.resized ??
           {}
 
-        return convertPostToArticleCard(
-          editorChoice?.choices,
-          undefined,
-          images
-        )
+        return convertPostToArticleCard(editorChoice?.choices, images)
       })
     }
 
@@ -131,7 +127,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       const convertFunc = (post: Post): ArticleCard => {
         const { heroImage, ogImage } = post
         const images = heroImage?.resized ?? ogImage?.resized ?? {}
-        return convertPostToArticleCard(post, undefined, images)
+        return convertPostToArticleCard(post, images)
       }
 
       {
@@ -245,11 +241,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
         const images = heroImage?.resized ?? ogImage?.resized ?? {}
 
-        const article = convertPostToArticleCard(
-          feature?.featurePost,
-          undefined,
-          images
-        )
+        const article = convertPostToArticleCard(feature?.featurePost, images)
 
         return {
           ...article,
