@@ -22,7 +22,7 @@ export type Photo = Pick<
 
 export type RelatedPost = Pick<
   Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime'
+  'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
 >
 
 export type PostDetail = Pick<
@@ -85,6 +85,16 @@ const post = gql`
         name
         publishTime
         readingTime
+        heroImage {
+          id
+          name
+          imageFile {
+            url
+          }
+          resized {
+            ...ResizedImagesField
+          }
+        }
       }
     }
   }
