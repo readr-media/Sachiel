@@ -1,23 +1,28 @@
 import gql from 'graphql-tag'
 
-import { authorFragment } from '~/graphql/fragments/author'
-import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
+import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import { postFragment } from '~/graphql/fragments/post'
 import type {
   GenericAuthor,
   GenericCategory,
   GenericPhoto,
   GenericPost,
 } from '~/types/common'
+import { convertToStringList } from '~/utils/common'
 
-export type RelatedPost = Pick<
-  Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
->
+import { authorFragment } from '../fragments/author'
+import { resizeImagesFragment } from '../fragments/resized-images'
+
 export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
 export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
 export type Photo = Pick<
   Required<GenericPhoto>,
-  'id' | 'name' | 'urlOriginal' | 'imageFile' | 'resized'
+  'id' | 'name' | 'imageFile' | 'resized'
+>
+
+export type RelatedPost = Pick<
+  Required<GenericPost>,
+  'id' | 'publishTime' | 'name' | 'readingTime'
 >
 
 export type PostDetail = Pick<
@@ -29,7 +34,6 @@ export type PostDetail = Pick<
   | 'sortOrder'
   | 'manualOrderOfRelatedPosts'
   | 'heroCaption'
-  | 'heroImage'
   | 'content'
   | 'publishTime'
   | 'readingTime'
@@ -44,10 +48,11 @@ const post = gql`
   query ($id: ID!) {
     post(where: { id: $id }) {
       id
-      sortOrder
       slug
       name
       subtitle
+      sortOrder
+      heroCaption
       content
       publishTime
       readingTime
@@ -64,7 +69,6 @@ const post = gql`
       designers {
         ...AuthorFields
       }
-      heroCaption
       heroImage {
         id
         name
@@ -81,13 +85,6 @@ const post = gql`
         name
         publishTime
         readingTime
-        heroImage {
-          id
-          name
-          resized {
-            ...ResizedImagesField
-          }
-        }
       }
     }
   }
@@ -95,4 +92,24 @@ const post = gql`
   ${authorFragment}
 `
 
-export { post }
+const postStyles = [...POST_STYLES, ...REPORT_STYLES]
+
+const latestPosts = gql`
+  query ($first: Int! = 3) {
+    latestPosts: posts(
+      take: $first
+      where: {
+        state: { equals: "published" }
+        style: {
+          in: [${convertToStringList(postStyles)}]
+        }
+      }
+      orderBy: { publishTime: desc }
+    ) {
+      ...PostFields
+    }
+  }
+  ${postFragment}
+`
+
+export { latestPosts, post }
