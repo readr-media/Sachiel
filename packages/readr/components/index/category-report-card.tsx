@@ -1,13 +1,12 @@
 // 類別專題報導
 
-import NextImage from 'next/image'
+import SharedImage from '@readr-media/react-image'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
-import useFallbackImage from '~/hooks/useFallbackImage'
 import type { ArticleCard } from '~/types/component'
 
 const Container = styled(NextLink)`
@@ -58,6 +57,11 @@ const Container = styled(NextLink)`
       padding-top: 75%;
     }
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       background-color: #d8d8d8;
@@ -157,26 +161,31 @@ export default function CategoryReportCard({
   const {
     href = '/',
     title = '',
-    image = DEFAULT_POST_IMAGE_PATH,
+    images = {},
     date = '',
     readTimeText = '',
     isReport = false,
   } = report ?? {}
 
-  const { imageSrc, onErrorHandle } = useFallbackImage(
-    image,
-    DEFAULT_POST_IMAGE_PATH
-  )
+  const theme = useTheme()
 
   return (
     <Container href={href} target="_blank">
       <picture>
-        <NextImage
-          src={imageSrc}
-          onError={onErrorHandle}
-          fill={true}
-          unoptimized={true}
+        <SharedImage
+          images={images}
+          defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
+          priority={false}
+          rwd={{
+            mobile: '100vw',
+            tablet: '40vw',
+            default: '540px',
+          }}
+          breakpoint={{
+            mobile: `${theme.mediaSize.sm - 1}px`,
+            tablet: `${theme.mediaSize.xl - 1}px`,
+          }}
         />
       </picture>
       {isReport && <ReportLabel />}

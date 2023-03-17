@@ -124,8 +124,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     {
       const convertFunc = (post: Post): ArticleCard => {
         const { heroImage, ogImage } = post
-        const image = getImageOfArticle({ images: [heroImage, ogImage] })
-        return convertPostToArticleCard(post, image)
+        const images = heroImage?.resized ?? ogImage?.resized ?? {}
+        return convertPostToArticleCard(post, undefined, images)
       }
 
       {

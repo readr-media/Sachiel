@@ -132,7 +132,7 @@ export function convertPostToArticleCard(
     date: formatPostDate(publishTime),
     readTimeText: formatReadTime(readingTime),
     isReport: isReport(style),
-    image,
+    image: image ?? '',
     images: images ?? {},
   }
 }
