@@ -9,6 +9,11 @@ import { Language } from '~/types/about'
 
 import type { NextPageWithLayout } from './_app'
 
+/*
+ * The `content` field is a string that may contain <b> tags for emphasis.
+ * This comment specifies that in the English mode, the <b> tags should not be split across lines.
+ * However, in the Chinese mode, the <b> tags may still be split across lines due to text wrapping.
+ */
 type Wording = {
   ch: {
     landing: {
