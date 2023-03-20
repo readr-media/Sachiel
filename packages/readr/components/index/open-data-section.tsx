@@ -1,4 +1,8 @@
+// 開放資料庫區塊
+
 import styled from 'styled-components'
+
+import type { DataSetItem } from '~/types/component'
 
 import OpenDataList from './open-data-list'
 import { sectionMargin, sectionStyle } from './share-styles'
@@ -40,13 +44,20 @@ const Header = styled.h2`
   }
 `
 
-export default function OpenDataSection(): JSX.Element {
+type OpenDataSectionProps = {
+  items: DataSetItem[]
+  totalCount: number
+}
+
+export default function OpenDataSection({
+  items,
+}: OpenDataSectionProps): JSX.Element {
   const sectionTitle = '開放資料庫'
 
   return (
     <Container aria-label={sectionTitle}>
       <Header>{sectionTitle}</Header>
-      <OpenDataList />
+      <OpenDataList items={items} />
     </Container>
   )
 }

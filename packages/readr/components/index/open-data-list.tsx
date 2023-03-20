@@ -1,6 +1,11 @@
+// 開放資料庫清單
+
 import styled from 'styled-components'
 
 import IconLoadMore from '~/public/icons/load-more.svg'
+import type { DataSetItem } from '~/types/component'
+
+import OpenDataItem from './open-data-item'
 
 const Container = styled.div`
   color: #000928;
@@ -56,6 +61,12 @@ const ListContainer = styled.ul`
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 `
 
+const Item = styled.li`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+`
+
 const Control = styled.div`
   text-align: center;
   margin-top: 8px;
@@ -83,7 +94,19 @@ const LoadMoreButton = styled.button`
   }
 `
 
-export default function OpenDataList(): JSX.Element {
+type OpenDataListProps = {
+  items: DataSetItem[]
+}
+
+export default function OpenDataList({
+  items,
+}: OpenDataListProps): JSX.Element {
+  const dataItems = items.map((item) => (
+    <Item key={item.id}>
+      <OpenDataItem {...item} />
+    </Item>
+  ))
+
   return (
     <Container>
       <Intro>
@@ -94,7 +117,7 @@ export default function OpenDataList(): JSX.Element {
         <span>資料列表</span>
         <span>資料怎麼用</span>
       </ListHeader>
-      <ListContainer></ListContainer>
+      <ListContainer>{dataItems}</ListContainer>
       <Control>
         <LoadMoreButton>
           <p>看更多</p>

@@ -20,6 +20,11 @@ import type { Category } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
 import type { Collaboration } from '~/graphql/query/collaboration'
 import { collaborations as collaborationsQuery } from '~/graphql/query/collaboration'
+import {
+  DataSet,
+  dataSets as dataSetsQuery,
+  DataSetWithCount,
+} from '~/graphql/query/dataset'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
@@ -28,7 +33,11 @@ import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { Quote } from '~/graphql/query/quote'
 import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
-import type { ArticleCard, FeaturedArticle } from '~/types/component'
+import type {
+  ArticleCard,
+  DataSetItem,
+  FeaturedArticle,
+} from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
 import { convertPostToArticleCard } from '~/utils/post'
 
@@ -41,6 +50,8 @@ type PageProps = {
   features: FeaturedArticle[]
   quotes?: Quote[]
   collaborations: CollaborationItem[]
+  dataSetItems: DataSetItem[]
+  dataSetCount: number
 }
 
 const Index: NextPageWithLayout<PageProps> = ({
@@ -50,11 +61,14 @@ const Index: NextPageWithLayout<PageProps> = ({
   features,
   quotes,
   collaborations,
+  dataSetItems,
+  dataSetCount,
 }) => {
   const shouldShowEditorChoiceSection = editorChoices.length > 0
   const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
   const shouldShowCollaborationSection = collaborations.length > 0
+  const shouldShowOpenDataSection = dataSetItems.length > 0
 
   return (
     <>
@@ -68,7 +82,9 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
-      <OpenDataSection />
+      {shouldShowOpenDataSection && (
+        <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
+      )}
     </>
   )
 }
@@ -91,6 +107,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   let features: FeaturedArticle[] = []
   let quotes: Quote[] = []
   let collaborations: CollaborationItem[] = []
+  let dataSetItems: DataSetItem[] = []
+  let dataSetCount: number = 0
 
   try {
     {
@@ -126,7 +144,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     }
 
     {
-      const convertFunc = (post: Post): ArticleCard => {
+      const postConvertFunc = (post: Post): ArticleCard => {
         const { heroImage, ogImage } = post
         const images = heroImage?.resized ?? ogImage?.resized ?? {}
         return convertPostToArticleCard(post, images)
@@ -160,7 +178,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         }
 
         categories = data.categories.map((category) => {
-          const reports = category.reports?.map(convertFunc)
+          const reports = category.reports?.map(postConvertFunc)
 
           const posts =
             category.posts?.length && !reports?.length
@@ -171,7 +189,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
             id: category.id,
             title: category.title,
             slug: category.slug,
-            posts: posts?.map(convertFunc),
+            posts: posts?.map(postConvertFunc),
             reports,
           }
         })
@@ -213,8 +231,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           return false
         })
 
-        latest.reports = report ? [convertFunc(report)] : undefined
-        latest.posts = posts.map(convertFunc)
+        if (report) {
+          latest.reports = [postConvertFunc(report)]
+        }
+        latest.posts = posts.map(postConvertFunc)
       }
     }
 
@@ -324,6 +344,53 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         }
       })
     }
+
+    {
+      // fetch open data items
+      const { data, error: gqlErrors } = await client.query<DataSetWithCount>({
+        query: dataSetsQuery,
+        variables: {
+          first: 3,
+          shouldQueryCount: true,
+        },
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `dataSets` query'),
+          'GraphQLError',
+          'failed to complete `dataSets`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      const dataSetConvertFunc = (item: DataSet): DataSetItem => {
+        const { id = '', title = '', link = '', gallery: galleries = [] } = item
+        const names = galleries[0]?.writer.map((w) => w.name)
+
+        return {
+          id,
+          title,
+          href: link,
+          writerName: names[0] ?? '',
+          galleries: galleries.map((gallery) => {
+            const { id = '', link = '', heroImage } = gallery
+
+            return {
+              id,
+              href: link,
+              images: heroImage?.resized ?? {},
+            }
+          }),
+        }
+      }
+
+      const { dataSets, count } = data
+      dataSetItems = dataSets.map(dataSetConvertFunc)
+      dataSetCount = count ?? dataSetItems.length
+    }
   } catch (err) {
     const annotatingError = errors.helpers.wrap(
       err,
@@ -355,6 +422,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       features,
       quotes,
       collaborations,
+      dataSetItems,
+      dataSetCount,
     },
   }
 }
