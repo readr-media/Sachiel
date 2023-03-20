@@ -15,6 +15,7 @@ import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
 export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
+
 export type Photo = Pick<
   Required<GenericPhoto>,
   'id' | 'name' | 'imageFile' | 'resized'
@@ -22,8 +23,10 @@ export type Photo = Pick<
 
 export type RelatedPost = Pick<
   Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
->
+  'id' | 'publishTime' | 'name' | 'readingTime'
+> & {
+  heroImage: Photo
+}
 
 export type PostDetail = Pick<
   Required<GenericPost>,
