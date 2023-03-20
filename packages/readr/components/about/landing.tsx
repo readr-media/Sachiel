@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 
 import type { Language } from '~/types/about'
@@ -188,66 +188,33 @@ export default function Landing({
   title: string
   content: string
 }): JSX.Element {
-  const [contentHtml, setContentHtml] = useState<string>(content)
-  const [isParsed, setIsParsed] = useState<boolean>(false)
-  const parsedContent = useCallback((): void => {
-    const parts = contentHtml?.split(/(<b>.*?<\/b>)/g)
-    const returnArr = parts.map((part) => {
-      if (part.startsWith('<b>') && part.endsWith('</b>')) {
-        const text = part.substring(3, part.length - 4)
-        const array = Array.from(text)
-        const spanElements = array.map(
-          (char, i) => `<span class="text-animation" key='${i}'>${char}</span>`
-        )
-        if (language === 'en') {
-          return `<div class="text-animation-wrapper">${spanElements.join(
-            ''
-          )}</div>`
-        } else {
-          return spanElements.join('')
-        }
-      } else {
-        return part
-      }
-    })
-    setContentHtml(() => {
-      return returnArr.join('')
-    })
-    setIsParsed(true)
-  }, [contentHtml])
-
-  const thirdStages = useCallback((child: Element) => {
+  const thirdStages = (child: Element) => {
     if (child.classList.contains('state-2')) {
       child.classList.add('state-3')
     }
-  }, [])
-  const secondStages = useCallback(
-    (child: Element) => {
-      if (child.classList.contains('state-1')) {
-        child.classList.add('state-2')
-        setTimeout(thirdStages.bind(null, child), 100)
-      } else if (!child.classList.contains('state-1')) {
-        child.classList.add('state-1')
-      }
-    },
-    [thirdStages]
-  )
+  }
 
-  const firstStages = useCallback(
-    (child: Element) => {
-      if (child.classList.contains('state-2')) {
-        child.classList.add('state-3')
-      } else if (child.classList.contains('state-1')) {
-        child.classList.add('state-2')
-      } else if (!child.classList.contains('state-1')) {
-        child.classList.add('state-1')
-        setTimeout(secondStages.bind(null, child), 100)
-      }
-    },
-    [secondStages]
-  )
+  const secondStages = (child: Element) => {
+    if (child.classList.contains('state-1')) {
+      child.classList.add('state-2')
+      setTimeout(thirdStages.bind(null, child), 100)
+    } else if (!child.classList.contains('state-1')) {
+      child.classList.add('state-1')
+    }
+  }
 
-  const decodeText = useCallback(() => {
+  const firstStages = (child: Element) => {
+    if (child.classList.contains('state-2')) {
+      child.classList.add('state-3')
+    } else if (child.classList.contains('state-1')) {
+      child.classList.add('state-2')
+    } else if (!child.classList.contains('state-1')) {
+      child.classList.add('state-1')
+      setTimeout(secondStages.bind(null, child), 100)
+    }
+  }
+
+  const decodeText = () => {
     const text = document
       .getElementsByClassName('decode-text')[0]
       .querySelectorAll('.text-animation')
@@ -272,7 +239,7 @@ export default function Landing({
         setTimeout(firstStages.bind(null, child), state1Time)
       }
     }
-  }, [firstStages])
+  }
 
   function shuffle(array: number[]) {
     let currentIndex = array.length
@@ -292,15 +259,34 @@ export default function Landing({
     return array
   }
 
-  useEffect(() => {
-    setIsParsed(false)
-    parsedContent()
-    decodeText()
-  }, [parsedContent, decodeText])
+  const parsedContent = useMemo(() => {
+    const parts = content?.split(/(<b>.*?<\/b>)/g)
+    const returnArr = parts.map((part) => {
+      if (part.startsWith('<b>') && part.endsWith('</b>')) {
+        const text = part.substring(3, part.length - 4)
+        const array = Array.from(text)
+        const spanElements = array.map(
+          (char, i) => `<span class="text-animation" key='${i}'>${char}</span>`
+        )
+        if (language === 'en') {
+          return `<div class="text-animation-wrapper">${spanElements.join(
+            ''
+          )}</div>`
+        } else {
+          return spanElements.join('')
+        }
+      } else {
+        return part
+      }
+    })
 
+    return returnArr.join('')
+  }, [content, language])
+
+  // do decodeText after content is parsed
   useEffect(() => {
-    if (isParsed) setContentHtml(content)
-  }, [content, isParsed])
+    decodeText()
+  }, [parsedContent])
 
   return (
     <Container>
@@ -325,7 +311,7 @@ export default function Landing({
           <MainBackground />
           <div
             className="decode-text"
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
+            dangerouslySetInnerHTML={{ __html: parsedContent }}
           />
         </LandingContent>
       </MainContainer>
