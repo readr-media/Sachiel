@@ -6,7 +6,7 @@ import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
 
-import { Readr } from '../../draft-renderer/src/index'
+import { Readr } from '@mirrormedia/lilith-draft-renderer'
 
 const Container = styled.section`
   width: 100%;
