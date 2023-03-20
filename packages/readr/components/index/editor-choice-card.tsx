@@ -1,13 +1,16 @@
 // 編輯精選文章卡片
 
-import NextImage from 'next/image'
+import SharedImage from '@readr-media/react-image'
+import type {
+  Breakpoint,
+  Rwd,
+} from '@readr-media/react-image/dist/react-components'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
-import useFallbackImage from '~/hooks/useFallbackImage'
 import IconFeaturedLabel from '~/public/icons/featured-label.svg'
 import type { ArticleCard } from '~/types/component'
 
@@ -55,6 +58,11 @@ const Container = styled(NextLink)<StyledProps>`
       padding-top: 52.5%;
     }
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       background-color: #d8d8d8;
@@ -177,26 +185,37 @@ export type ArticleCardWithIsFeatured = ArticleCard & {
 export default function EditorChoiceCard({
   href = '/',
   title = '',
-  image = DEFAULT_POST_IMAGE_PATH,
+  images = {},
   date = '',
   readTimeText = '',
   isFeatured = false,
   isReport = false,
 }: ArticleCardWithIsFeatured): JSX.Element {
-  const { imageSrc, onErrorHandle } = useFallbackImage(
-    image,
-    DEFAULT_POST_IMAGE_PATH
-  )
+  const theme = useTheme()
+
+  const breakpoint: Breakpoint = isFeatured
+    ? {
+        mobile: `${theme.mediaSize.xl - 1}px`,
+      }
+    : {
+        mobile: `${theme.mediaSize.md - 1}px`,
+        tablet: `${theme.mediaSize.xl - 1}px`,
+      }
+
+  const rwd: Rwd = isFeatured
+    ? { mobile: '100vw', default: '720px' }
+    : { mobile: '100vw', tablet: '50vw', default: '300px' }
 
   return (
     <Container href={href} target="_blank" $isFeatured={isFeatured}>
       <picture>
-        <NextImage
-          src={imageSrc}
-          onError={onErrorHandle}
-          fill={true}
-          unoptimized={true}
+        <SharedImage
+          images={images}
+          defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
+          priority={true}
+          rwd={rwd}
+          breakpoint={breakpoint}
         />
       </picture>
       {isReport && <ReportLabel />}

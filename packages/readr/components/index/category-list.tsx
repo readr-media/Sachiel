@@ -1,6 +1,6 @@
 // 報導清單
 
-import styled, { css } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 
 import ArticleListCard from '~/components/shared/article-list-card'
 import type { ArticleCard } from '~/types/component'
@@ -55,10 +55,24 @@ type CategoryListProps = {
 export default function CategoryList({
   posts = [],
 }: CategoryListProps): JSX.Element {
+  const theme = useTheme()
+
   const articleItems = posts.map((article) => {
     return (
       <Item key={article.id}>
-        <ArticleListCard {...article} isReport={false} />
+        <ArticleListCard
+          {...article}
+          isReport={false}
+          rwd={{
+            mobile: '30vw',
+            tablet: '50vw',
+            default: '256px',
+          }}
+          breakpoint={{
+            mobile: `${theme.mediaSize.sm - 1}px`,
+            tablet: `${theme.mediaSize.xl - 1}px`,
+          }}
+        />
       </Item>
     )
   })

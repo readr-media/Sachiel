@@ -13,7 +13,7 @@ import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
 import type { ArticleCard } from '~/types/component'
 import * as gtag from '~/utils/gtag'
-import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
+import { convertPostToArticleCard } from '~/utils/post'
 
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
 const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
@@ -192,10 +192,8 @@ export default function HeaderGeneral({
       const relatedList =
         item.posts?.map((post) => {
           const { heroImage, ogImage } = post
-          const image = getImageOfArticle({
-            images: [heroImage, ogImage],
-          })
-          return convertPostToArticleCard(post, image)
+          const images = heroImage?.resized ?? ogImage?.resized ?? {}
+          return convertPostToArticleCard(post, images)
         }) ?? []
 
       return {

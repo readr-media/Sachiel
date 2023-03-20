@@ -1,4 +1,4 @@
-// 精選文章卡片 (might be legacy)
+// 精選文章卡片
 
 import styled from 'styled-components'
 
