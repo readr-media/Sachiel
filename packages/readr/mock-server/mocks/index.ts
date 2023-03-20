@@ -1,5 +1,6 @@
 import type { IMocks } from '@graphql-tools/mock'
 
+import { Author } from './Author'
 import { Category } from './Category'
 import { Collaboration } from './Collaboration'
 import { DateTime } from './DateTime'
@@ -20,4 +21,5 @@ export const mocks: IMocks = {
   Query,
   Quote,
   Collaboration,
+  Author,
 }
