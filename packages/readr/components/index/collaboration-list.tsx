@@ -1,3 +1,5 @@
+// 協作專區項目清單
+
 import styled, { css } from 'styled-components'
 
 import type { CollaborationItem } from '~/types/component'
