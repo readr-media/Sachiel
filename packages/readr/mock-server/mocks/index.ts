@@ -3,6 +3,7 @@ import type { IMocks } from '@graphql-tools/mock'
 import { Author } from './Author'
 import { Category } from './Category'
 import { Collaboration } from './Collaboration'
+import { DataSet } from './DataSet'
 import { DateTime } from './DateTime'
 import { EditorChoice } from './EditorChoice'
 import { Feature } from './Feature'
@@ -22,6 +23,7 @@ export const mocks: IMocks = {
   Query,
   Quote,
   Collaboration,
+  DataSet,
   Gallery,
   Author,
 }
