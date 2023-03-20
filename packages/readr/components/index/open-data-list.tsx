@@ -1,11 +1,20 @@
 // 開放資料庫清單
 
+import { useState } from 'react'
 import styled from 'styled-components'
 
+import client from '~/apollo-client'
+import type { DataSet } from '~/graphql/query/dataset'
+import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import IconLoadMore from '~/public/icons/load-more.svg'
 import type { DataSetItem } from '~/types/component'
+import { convertDataSet } from '~/utils/data-set'
 
 import OpenDataItem from './open-data-item'
+
+type StyledProps = {
+  $isLoading: boolean
+}
 
 const Container = styled.div`
   color: #000928;
@@ -75,7 +84,7 @@ const Control = styled.div`
     margin-top: 10px;
   }
 `
-const LoadMoreButton = styled.button`
+const LoadMoreButton = styled.button<StyledProps>`
   user-select: none;
 
   > p {
@@ -92,16 +101,55 @@ const LoadMoreButton = styled.button`
     margin-left: auto;
     margin-right: auto;
   }
+
+  ${({ $isLoading }) => $isLoading && `cursor: not-allowed;`}
 `
 
 type OpenDataListProps = {
   items: DataSetItem[]
+  totalCount: number
 }
 
 export default function OpenDataList({
   items,
+  totalCount,
 }: OpenDataListProps): JSX.Element {
-  const dataItems = items.map((item) => (
+  const [isLoading, setIsLoading] = useState(false)
+  const [itemList, setItemList] = useState(items)
+  const shouldShowControl = itemList.length < totalCount
+
+  const loadMoreItems = async () => {
+    if (isLoading) return
+
+    setIsLoading(true)
+
+    try {
+      const { data, error: gqlErrors } = await client.query<{
+        dataSets: DataSet[]
+      }>({
+        query: dataSetsQuery,
+        variables: {
+          first: 3,
+          skip: itemList.length,
+          shouldQueryCount: false,
+        },
+      })
+
+      if (gqlErrors) {
+        throw gqlErrors
+      }
+
+      const newItems = data.dataSets.map(convertDataSet)
+
+      setItemList((state) => [...state, ...newItems])
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const dataItems = itemList.map((item) => (
     <Item key={item.id}>
       <OpenDataItem {...item} />
     </Item>
@@ -118,12 +166,17 @@ export default function OpenDataList({
         <span>資料怎麼用</span>
       </ListHeader>
       <ListContainer>{dataItems}</ListContainer>
-      <Control>
-        <LoadMoreButton>
-          <p>看更多</p>
-          <IconLoadMore />
-        </LoadMoreButton>
-      </Control>
+      {shouldShowControl && (
+        <Control>
+          <LoadMoreButton
+            onClick={() => loadMoreItems()}
+            $isLoading={isLoading}
+          >
+            <p>看更多</p>
+            <IconLoadMore />
+          </LoadMoreButton>
+        </Control>
+      )}
     </Container>
   )
 }

@@ -20,11 +20,8 @@ import type { Category } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
 import type { Collaboration } from '~/graphql/query/collaboration'
 import { collaborations as collaborationsQuery } from '~/graphql/query/collaboration'
-import {
-  DataSet,
-  dataSets as dataSetsQuery,
-  DataSetWithCount,
-} from '~/graphql/query/dataset'
+import type { DataSetWithCount } from '~/graphql/query/dataset'
+import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
@@ -39,6 +36,7 @@ import type {
   FeaturedArticle,
 } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
+import { convertDataSet } from '~/utils/data-set'
 import { convertPostToArticleCard } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
@@ -366,29 +364,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         throw annotatingError
       }
 
-      const dataSetConvertFunc = (item: DataSet): DataSetItem => {
-        const { id = '', title = '', link = '', gallery: galleries = [] } = item
-        const names = galleries[0]?.writer.map((w) => w.name)
-
-        return {
-          id,
-          title,
-          href: link,
-          writerName: names[0] ?? '',
-          galleries: galleries.map((gallery) => {
-            const { id = '', link = '', heroImage } = gallery
-
-            return {
-              id,
-              href: link,
-              images: heroImage?.resized ?? {},
-            }
-          }),
-        }
-      }
-
       const { dataSets, count } = data
-      dataSetItems = dataSets.map(dataSetConvertFunc)
+      dataSetItems = dataSets.map(convertDataSet)
       dataSetCount = count ?? dataSetItems.length
     }
   } catch (err) {

@@ -51,13 +51,14 @@ type OpenDataSectionProps = {
 
 export default function OpenDataSection({
   items,
+  totalCount,
 }: OpenDataSectionProps): JSX.Element {
   const sectionTitle = '開放資料庫'
 
   return (
     <Container aria-label={sectionTitle}>
       <Header>{sectionTitle}</Header>
-      <OpenDataList items={items} />
+      <OpenDataList items={items} totalCount={totalCount} />
     </Container>
   )
 }
