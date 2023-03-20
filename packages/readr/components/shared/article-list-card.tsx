@@ -1,11 +1,14 @@
 // 該元件作為文章資訊卡片使用
 
-import NextImage from 'next/image'
+import SharedImage from '@readr-media/react-image'
+import type {
+  Breakpoint,
+  Rwd,
+} from '@readr-media/react-image/dist/react-components'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
-import useFallbackImage from '~/hooks/useFallbackImage'
 import type { ArticleCard } from '~/types/component'
 
 import DateAndReadTimeInfo from './date-and-read-time-info'
@@ -72,6 +75,11 @@ const ImageWrapper = styled.div<StyledProps>`
     }
 
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       background-color: #d8d8d8;
@@ -178,12 +186,14 @@ type ArticleListCardProps = ArticleCard & {
   shouldHideBottomInfos?: boolean
   shouldNotLazyload?: boolean
   onClick?: () => any
+  rwd?: Rwd
+  breakpoint?: Breakpoint
 }
 
 export default function ArticleListCard({
   href = '/',
   title = '',
-  image = DEFAULT_POST_IMAGE_PATH,
+  images = {},
   date = '',
   readTimeText = '',
   isReport = false,
@@ -192,13 +202,10 @@ export default function ArticleListCard({
   shouldHideBottomInfos = false,
   shouldNotLazyload = false,
   onClick,
+  rwd,
+  breakpoint,
 }: ArticleListCardProps): JSX.Element {
   const isReportAndShouldHighlight = isReport && shouldHighlightReport
-
-  const { imageSrc, onErrorHandle } = useFallbackImage(
-    image,
-    DEFAULT_POST_IMAGE_PATH
-  )
 
   function clickHander(event: unknown) {
     ;(event as Event).stopPropagation()
@@ -220,13 +227,13 @@ export default function ArticleListCard({
         $shouldHighlightReport={isReportAndShouldHighlight}
       >
         <picture>
-          <NextImage
-            src={imageSrc}
-            onError={onErrorHandle}
-            fill={true}
-            unoptimized={true}
+          <SharedImage
+            images={images}
+            defaultImage={DEFAULT_POST_IMAGE_PATH}
             alt={title}
             priority={shouldNotLazyload}
+            rwd={rwd}
+            breakpoint={breakpoint}
           />
         </picture>
         {isReport && <ReportLabel />}

@@ -29,7 +29,7 @@ import { quotes as quotesQuery } from '~/graphql/query/quote'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard, FeaturedArticle } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
-import { convertPostToArticleCard, getImageOfArticle } from '~/utils/post'
+import { convertPostToArticleCard } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -113,19 +113,21 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       editorChoices = data.editorChoices.map((editorChoice) => {
         const { heroImage, ogImage } = editorChoice.choices ?? {}
 
-        const image = getImageOfArticle({
-          images: [editorChoice.heroImage, heroImage, ogImage],
-        })
+        const images =
+          editorChoice.heroImage?.resized ??
+          heroImage?.resized ??
+          ogImage?.resized ??
+          {}
 
-        return convertPostToArticleCard(editorChoice?.choices, image)
+        return convertPostToArticleCard(editorChoice?.choices, images)
       })
     }
 
     {
       const convertFunc = (post: Post): ArticleCard => {
         const { heroImage, ogImage } = post
-        const image = getImageOfArticle({ images: [heroImage, ogImage] })
-        return convertPostToArticleCard(post, image)
+        const images = heroImage?.resized ?? ogImage?.resized ?? {}
+        return convertPostToArticleCard(post, images)
       }
 
       {
@@ -237,11 +239,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         const { description } = feature
         const { subtitle = '', heroImage, ogImage } = feature.featurePost ?? {}
 
-        const image = getImageOfArticle({
-          images: [heroImage, ogImage],
-        })
+        const images = heroImage?.resized ?? ogImage?.resized ?? {}
 
-        const article = convertPostToArticleCard(feature?.featurePost, image)
+        const article = convertPostToArticleCard(feature?.featurePost, images)
 
         return {
           ...article,

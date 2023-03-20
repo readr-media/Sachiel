@@ -71,6 +71,7 @@ export default function RelatedListInHeader({
         {...article}
         shouldHideBottomInfos={true}
         shouldNotLazyload={true}
+        rwd={{ default: '240px' }}
       />
     </li>
   ))
