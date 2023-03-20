@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { Language } from '~/types/about'
+import type { Language } from '~/types/about'
 
 const Container = styled.div`
   min-height: 100vh;

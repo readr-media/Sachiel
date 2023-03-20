@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import Landing from '~/components/about/landing'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
-import { Language } from '~/types/about'
+import type { Language } from '~/types/about'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -14,22 +14,14 @@ import type { NextPageWithLayout } from './_app'
  * This comment specifies that in the English mode, the <b> tags should not be split across lines.
  * However, in the Chinese mode, the <b> tags may still be split across lines due to text wrapping.
  */
-type Wording = {
-  ch: {
-    landing: {
-      title: string
-      content: string
-    }
-  }
-  en: {
-    landing: {
-      title: string
-      content: string
-    }
+type languageWording = {
+  landing: {
+    title: string
+    content: string
   }
 }
 
-const wording: Wording = {
+const wording: Record<Language, languageWording> = {
   ch: {
     landing: {
       title: '關於我們',
