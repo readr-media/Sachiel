@@ -1,7 +1,9 @@
 // 開放資料庫區塊
 
+import { DonateButton } from '@readr-media/react-component'
 import styled from 'styled-components'
 
+import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { DataSetItem } from '~/types/component'
 
 import OpenDataList from './open-data-list'
@@ -20,6 +22,21 @@ const Container = styled.section`
   }
 
   ${sectionMargin}
+
+  // custom style for <DonateButton />
+  > .donation-button {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0px;
+    padding-right: 0px;
+    max-width: min(
+      calc(100vw - 40px -2px),
+      396px
+    ); // keep margin-x being at least 20px
+    font-family: unset;
+  }
 `
 
 const Header = styled.h2`
@@ -59,6 +76,12 @@ export default function OpenDataSection({
     <Container aria-label={sectionTitle}>
       <Header>{sectionTitle}</Header>
       <OpenDataList items={items} totalCount={totalCount} />
+      <DonateButton
+        href={DONATION_PAGE_URL}
+        openNewTab={true}
+        title="贊助 READr 一起媒體實驗改革"
+        className="donation-button"
+      />
     </Container>
   )
 }
