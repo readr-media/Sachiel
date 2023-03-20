@@ -12,14 +12,13 @@ const Container = styled.div`
 `
 
 const MainContainer = styled.div`
-  z-index: 2;
   position: relative;
   margin: 40px 20px;
   width: 100%;
   position: relative;
   ${({ theme }) => `
     ${theme.breakpoint.md} {
-      margin: 40px 48px;
+      margin: 160px 48px;
       display: flex;
       justify-content: space-between;
       max-width: 672px;
@@ -55,6 +54,7 @@ const LandingContent = styled.div`
   line-height: 150%;
   letter-spacing: 0.03em;
   margin-top: 20px;
+  position: relative;
   .decode-text {
     z-index: 2;
     position: relative;
