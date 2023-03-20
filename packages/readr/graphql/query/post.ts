@@ -22,7 +22,7 @@ export type Photo = Pick<
 
 export type RelatedPost = Pick<
   Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime'
+  'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
 >
 
 export type PostDetail = Pick<
@@ -37,6 +37,10 @@ export type PostDetail = Pick<
   | 'content'
   | 'publishTime'
   | 'readingTime'
+  | 'summary'
+  | 'content'
+  | 'actionList'
+  | 'citation'
 > & {
   categories: Category[]
 } & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
@@ -47,6 +51,10 @@ export type PostDetail = Pick<
 const post = gql`
   query ($id: ID!) {
     post(where: { id: $id }) {
+      summary
+      content
+      actionList
+      citation
       id
       slug
       name
@@ -85,6 +93,16 @@ const post = gql`
         name
         publishTime
         readingTime
+        heroImage {
+          id
+          name
+          imageFile {
+            url
+          }
+          resized {
+            ...ResizedImagesField
+          }
+        }
       }
     }
   }

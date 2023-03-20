@@ -58,6 +58,9 @@ export type GenericPost = {
   ogImage?: GenericPhoto | null
   heroCaption?: string
   content?: unknown // it is hard to describe JSON type
+  summary?: unknown // it is hard to describe JSON type
+  actionList?: unknown // it is hard to describe JSON type
+  citation?: unknown // it is hard to describe JSON type
   dataAnalysts?: GenericAuthor[]
   writers?: GenericAuthor[]
   designers?: GenericAuthor[]
