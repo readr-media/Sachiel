@@ -2792,10 +2792,10 @@
     serialize-javascript "^6.0.0"
     uuid "^8.3.2"
 
-"@readr-media/react-image@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.4.0.tgz#fe07408a55c98bc127fb7aec5ed837dff3f33b49"
-  integrity sha512-Rcyyr7rrD7Yj2MDcT9ZuwI9TH0fLWmynQ/+6M72kYCDGQx15D69Owz3fcK5QyNJIqN5UO2Tty5A35QrddNm67w==
+"@readr-media/react-image@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.4.2.tgz#ef3457411b9d88defc1d7b34c16aa840769f219c"
+  integrity sha512-OkmPUFimtiYLir6+kj3snBrbpoBnXI/8qidaSlDP70NCB+5wY903OQ7g7EPiWgLSx3HkeoXghkI8phpKH7KiJA==
 
 "@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
