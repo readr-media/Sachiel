@@ -12,6 +12,8 @@ const Container = styled.div`
 `
 
 const MainContainer = styled.div`
+  z-index: 2;
+  position: relative;
   margin: 40px 20px;
   width: 100%;
   position: relative;
@@ -53,8 +55,10 @@ const LandingContent = styled.div`
   line-height: 150%;
   letter-spacing: 0.03em;
   margin-top: 20px;
-  position: relative;
-  z-index: 2;
+  .decode-text {
+    z-index: 2;
+    position: relative;
+  }
   ${({ theme }) => `
     ${theme.breakpoint.md} {
       margin-top: 0;
