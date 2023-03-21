@@ -1,7 +1,9 @@
 import { RelatedReport } from '@readr-media/react-component'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { GenericPhoto } from '~/types/common'
+import { SITE_URL } from '~/constants/environment-variables'
+import type { RelatedPost } from '~/graphql/query/post'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -12,25 +14,27 @@ const Wrapper = styled.div`
     padding: 48px 0;
   }
 `
-
-type RelatedPost = {
-  id: string | undefined
-  publishTime?: string
-  name?: string
-  readingTime?: number
-  heroImage?: GenericPhoto | null | undefined
-}
-
 interface Props {
-  data?: RelatedPost[]
+  relatedData?: RelatedPost[]
 }
 
-export default function PostContent({ data }: Props): JSX.Element {
+export default function PostContent({ relatedData }: Props): JSX.Element {
+  const [protocol, setProtocol] = useState('http:')
+
+  useEffect(() => {
+    setProtocol(window.location.protocol)
+  }, [])
+
+  const dataWithLink = relatedData?.map((item) => ({
+    ...item,
+    link: `${protocol}//${SITE_URL}/post/${item.id}`,
+  }))
+
   return (
     <>
-      {data?.length !== 0 && (
+      {Array.isArray(relatedData) && relatedData.length > 0 && (
         <Wrapper>
-          <RelatedReport relatedData={data} />
+          <RelatedReport relatedData={dataWithLink} />
         </Wrapper>
       )}
     </>

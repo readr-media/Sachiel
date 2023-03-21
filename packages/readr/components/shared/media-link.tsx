@@ -53,35 +53,41 @@ type ExternalLinkItem = {
 }
 
 export default function MediaLinkList({ margin = '0 auto 48px' }): JSX.Element {
-  const [origin, setOrigin] = useState('')
+  const [href, setHref] = useState('')
 
   useEffect(() => {
-    setOrigin(() => window.location.origin)
+    setHref(() => window.location.href)
   }, [])
 
   const externalLinks: ExternalLinkItem[] = [
     {
       name: 'Facebook',
-      href: `https://www.facebook.com/share.php?u=${origin}`,
+      href: `https://www.facebook.com/share.php?u=${href}`,
       svgIcon: IconFacebook,
       alt: '分享至facebook',
     },
     {
       name: 'Twitter',
-      href: `https://twitter.com/intent/tweet?url=${origin}`,
+      href: `https://twitter.com/intent/tweet?url=${href}`,
       svgIcon: IconTwitter,
       alt: '分享至twitter',
     },
     {
       name: 'Line',
-      href: `https://social-plugins.line.me/lineit/share?url=${origin}`,
+      href: `https://social-plugins.line.me/lineit/share?url=${href}`,
       svgIcon: IconLine,
       alt: '分享至line',
     },
   ]
-
   function handleLinkClick() {
-    alert('連結已複製')
+    navigator.clipboard
+      .writeText(href)
+      .then(() => {
+        alert('連結已複製')
+      })
+      .catch(() => {
+        console.error('Failed to copy URL to clipboard')
+      })
   }
 
   return (
