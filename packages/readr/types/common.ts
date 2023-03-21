@@ -110,6 +110,21 @@ export type GenericCollaboration = {
   heroImage: GenericPhoto | null
 }
 
+export type GenericGallery = {
+  id: string
+  link: string
+  writer: GenericAuthor[]
+  heroImage: GenericPhoto | null
+}
+
+export type GenericDataSet = {
+  id: string
+  name: string
+  title: string
+  link: string
+  gallery: GenericGallery[]
+}
+
 // This utility is for overwriting type without extending it
 // prettier-ignore
 export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U
