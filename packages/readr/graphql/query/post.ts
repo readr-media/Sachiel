@@ -38,6 +38,9 @@ export type PostDetail = Pick<
   | 'manualOrderOfRelatedPosts'
   | 'heroCaption'
   | 'content'
+  | 'summary'
+  | 'actionList'
+  | 'citation'
   | 'publishTime'
   | 'readingTime'
 > & {
@@ -57,6 +60,9 @@ const post = gql`
       sortOrder
       heroCaption
       content
+      summary
+      actionList
+      citation
       publishTime
       readingTime
       categories {
