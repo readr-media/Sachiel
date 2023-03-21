@@ -1,11 +1,16 @@
 // under construction
 
-import { ReactElement, useState } from 'react'
+import errors from '@twreporter/errors'
+import type { GetServerSideProps } from 'next'
+import { ReactElement, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
+import client from '~/apollo-client'
+import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
-import type { Language } from '~/types/about'
+import { awards as awardsGql } from '~/graphql/query/award'
+import type { Award, Language, RenderedAward } from '~/types/about'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -42,7 +47,7 @@ const Page = styled.div`
   background: #000928;
   box-shadow: inset 8px 0px 0px #ebf02c;
   max-width: 100vw;
-  min-widtht: 100vw;
+  min-width: 100vw;
   font-family: 'Noto Sans TC';
   overflow: hidden;
   ${({ theme }) => `
@@ -52,8 +57,46 @@ const Page = styled.div`
   `}
 `
 
-const About: NextPageWithLayout = () => {
+type PageProps = {
+  awardsData: Award[]
+}
+
+const About: NextPageWithLayout<PageProps> = ({ awardsData }) => {
   const [language, setLanguage] = useState<Language>('ch')
+  const renderedAwards: RenderedAward[] = useMemo(() => {
+    return awardsData.map((awardItem: Award) => {
+      const {
+        id,
+        name,
+        name_en,
+        report,
+        report_en,
+        url,
+        desc,
+        desc_en,
+        awardTime,
+      } = awardItem
+      if (language === 'en') {
+        return {
+          id,
+          name: name_en,
+          report: report_en,
+          url,
+          desc: desc_en,
+          awardTime,
+        }
+      } else {
+        return {
+          id,
+          name,
+          report,
+          url,
+          desc,
+          awardTime,
+        }
+      }
+    })
+  }, [awardsData, language])
   return (
     <Page>
       <Landing
@@ -62,8 +105,42 @@ const About: NextPageWithLayout = () => {
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
+      <Awards
+        renderedAwards={renderedAwards}
+        title={language === 'ch' ? '獲獎經歷' : 'Awards'}
+      />
     </Page>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
+  let awardsData: Award[] = []
+  try {
+    const result = await client.query({
+      query: awardsGql,
+    })
+    awardsData = result.data.awards
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+  return {
+    props: {
+      awardsData,
+    },
+  }
 }
 
 About.getLayout = function getLayout(page: ReactElement) {
