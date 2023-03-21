@@ -26,7 +26,7 @@ const MainContainer = styled.div`
   `}
   ${({ theme }) => `
   ${theme.breakpoint.xl} {
-    margin: 40px 52px;
+    margin: 160px 52px;
     max-width: 1096px;
   }
 `}
