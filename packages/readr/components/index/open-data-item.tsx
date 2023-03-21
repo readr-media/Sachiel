@@ -130,7 +130,11 @@ export default function OpenDataItem({
       target="_blank"
       rel="noopener noreferrer"
     >
-      <SharedImage images={item.images} alt={`使用${title}的案例`} />
+      <SharedImage
+        images={item.images}
+        alt={`使用${title}的案例`}
+        defaultImage={'/icons/default/database.svg'}
+      />
     </NextLink>
   ))
 
