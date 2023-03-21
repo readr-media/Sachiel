@@ -21,6 +21,7 @@ const MainContainer = styled.div`
       margin: 160px 48px;
       display: flex;
       justify-content: space-between;
+      // max-width = calc(theme.mediaSize.md - 48px * 2);
       max-width: 672px;
     }
   `}
