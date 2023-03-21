@@ -26,3 +26,17 @@ export type CollaborationItem = {
   requireTime?: number
   endTime?: string
 }
+
+type Gallery = {
+  id: string
+  href?: string
+  images: ResizedImages
+}
+
+export type DataSetItem = {
+  id: string
+  href?: string
+  title?: string
+  writerName?: string
+  galleries: Gallery[]
+}
