@@ -152,7 +152,12 @@ export default function OpenDataItem({
       <GalleryList>
         <span>{galleryText}</span>
         {galleryItems}
-        <Control href={addDataLink} target="_blank" rel="noopener noreferrer">
+        <Control
+          href={addDataLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="READr 使用資料作品分享"
+        >
           <IconPlus>
             <span />
             <span />
