@@ -110,7 +110,6 @@ const Index: NextPageWithLayout<PageProps> = ({
   const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
   const shouldShowCollaborationSection = collaborations.length > 0
-  const shouldShowOpenDataSection = dataSetItems.length > 0
 
   return (
     <>
@@ -124,9 +123,7 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
-      {shouldShowOpenDataSection && (
-        <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
-      )}
+      <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
       <HiddenAnchor ref={anchorRef} />
     </>
   )

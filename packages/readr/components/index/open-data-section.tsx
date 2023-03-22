@@ -10,7 +10,7 @@ import * as gtag from '~/utils/gtag'
 import OpenDataList from './open-data-list'
 import { sectionMargin, sectionStyle } from './share-styles'
 
-const Container = styled.section`
+const Container = styled.div`
   ${sectionStyle}
 
   background-color: rgba(245, 235, 255, 0.2);
@@ -39,6 +39,8 @@ const Container = styled.section`
     font-family: unset;
   }
 `
+
+const Section = styled.section``
 
 const Header = styled.h2`
   width: 100%;
@@ -73,10 +75,16 @@ export default function OpenDataSection({
 }: OpenDataSectionProps): JSX.Element {
   const sectionTitle = '開放資料庫'
 
+  const shouldShowOpenDataSection = items.length > 0
+
   return (
-    <Container aria-label={sectionTitle}>
-      <Header>{sectionTitle}</Header>
-      <OpenDataList items={items} totalCount={totalCount} />
+    <Container>
+      {shouldShowOpenDataSection && (
+        <Section aria-label={sectionTitle}>
+          <Header>{sectionTitle}</Header>
+          <OpenDataList items={items} totalCount={totalCount} />
+        </Section>
+      )}
       <DonateButton
         href={DONATION_PAGE_URL}
         openNewTab={true}
