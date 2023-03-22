@@ -8,6 +8,7 @@ import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import type { ArticleCard } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 import CategoryList from './category-list'
 import CategoryReportCard from './category-report-card'
@@ -69,6 +70,7 @@ export default function LatestReportSection({
   }
 
   const updateActiveCategory = (category: NavCategory) => {
+    gtag.sendEvent('homepage', 'click', `latest-${category.title}`)
     setActiveCategory(category)
   }
 
@@ -96,6 +98,7 @@ export default function LatestReportSection({
         categorySlug={activeCategory.slug}
         highlightColor="#ebf02c"
         headingLevel={2}
+        clickOnMore={() => gtag.sendEvent('homepage', 'click', 'latest-more')}
       />
       <CategoryNav
         currentCategorySlug={activeCategory.slug}

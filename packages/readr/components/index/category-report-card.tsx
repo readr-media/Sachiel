@@ -8,6 +8,7 @@ import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import ReportLabel from '~/components/shared/report-label'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { ArticleCard } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 const Container = styled(NextLink)`
   display: block;
@@ -170,7 +171,11 @@ export default function CategoryReportCard({
   const theme = useTheme()
 
   return (
-    <Container href={href} target="_blank">
+    <Container
+      href={href}
+      target="_blank"
+      onClick={() => gtag.sendEvent('homepage', 'click', `latest-${title}`)}
+    >
       <picture>
         <SharedImage
           images={images}
