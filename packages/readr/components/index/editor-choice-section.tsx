@@ -3,6 +3,7 @@
 import styled from 'styled-components'
 
 import type { ArticleCard } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 import EditorChoiceCard from './editor-choice-card'
 import { sectionMargin } from './share-styles'
@@ -91,16 +92,31 @@ export default function EditorChoiceSection({
 }: EditorChoiceSectionProps): JSX.Element {
   const featuredPost = posts[0] ?? {}
 
-  const otherPostList = posts.slice(1, 3).map((post) => (
+  const otherPostList = posts.slice(1, 3).map((post, index) => (
     <NormalBlock key={post.id}>
-      <EditorChoiceCard {...post} />
+      <EditorChoiceCard
+        {...post}
+        onClick={() =>
+          gtag.sendEvent(
+            'homepage',
+            'click',
+            index === 0 ? 'editorchoice-rightop' : 'editorchoice-rightbottom'
+          )
+        }
+      />
     </NormalBlock>
   ))
 
   return (
     <Container aria-label="編輯精選">
       <FeaturedBlock>
-        <EditorChoiceCard {...featuredPost} isFeatured={true} />
+        <EditorChoiceCard
+          {...featuredPost}
+          isFeatured={true}
+          onClick={() =>
+            gtag.sendEvent('homepage', 'click', 'editorchoice-left')
+          }
+        />
       </FeaturedBlock>
       <ul>{otherPostList}</ul>
     </Container>

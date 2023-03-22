@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { DataSetItem } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 import OpenDataList from './open-data-list'
 import { sectionMargin, sectionStyle } from './share-styles'
@@ -81,6 +82,7 @@ export default function OpenDataSection({
         openNewTab={true}
         title="贊助 READr 一起媒體實驗改革"
         className="donation-button"
+        onClick={() => gtag.sendEvent('homepage', 'click', 'donate')}
       />
     </Container>
   )

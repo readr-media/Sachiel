@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import IconClose from '~/public/icons/ham-close.svg'
+import * as gtag from '~/utils/gtag'
 
 import type { TransformedCategory } from './header-general'
 
@@ -122,12 +123,17 @@ export default function HamburgerMenu({
     }
   }, [])
 
+  function clickHandle(category: TransformedCategory) {
+    gtag.sendEvent('header', 'click', `menu-${category.name}`)
+    closeHandler()
+  }
+
   const categoryItems = categories.map((category) => (
     <CategoryItem key={category.id}>
       <NextLink
         href={{ pathname: '/category/[slug]', query: { slug: category.slug } }}
         shallow={isCategoryPage}
-        onClick={() => closeHandler()}
+        onClick={() => clickHandle(category)}
       >
         <span>{category.name}</span>
       </NextLink>

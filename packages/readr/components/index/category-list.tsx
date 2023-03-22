@@ -4,6 +4,7 @@ import styled, { css, useTheme } from 'styled-components'
 
 import ArticleListCard from '~/components/shared/article-list-card'
 import type { ArticleCard } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 const shareStyle = css`
   width: 100%;
@@ -72,6 +73,9 @@ export default function CategoryList({
             mobile: `${theme.mediaSize.sm - 1}px`,
             tablet: `${theme.mediaSize.xl - 1}px`,
           }}
+          onClick={() =>
+            gtag.sendEvent('homepage', 'click', `latest-${article.title}`)
+          }
         />
       </Item>
     )
