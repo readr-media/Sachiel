@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import IconTailArrow from '~/public/icons/tail-arrow.svg'
@@ -128,7 +129,7 @@ const AwardName = styled.h3`
 `}
 `
 
-const AwardReport = styled.a`
+const AwardReport = styled.span<{ isLink?: string }>`
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 700;
@@ -138,12 +139,17 @@ const AwardReport = styled.a`
   letter-spacing: 0.03em;
   color: rgba(255, 255, 255, 0.87);
   padding-bottom: 3px;
-  border-bottom: 1px solid #ebf02c;
   transition: 0.5s;
   margin-top: 4px;
-  :hover {
-    color: #ebf02c;
-  }
+
+  ${(props) =>
+    props.isLink &&
+    `
+    border-bottom: 1px solid #ebf02c;
+    :hover {
+      color: #ebf02c;
+    }
+  `}
 `
 
 const AwardDesc = styled.p`
@@ -182,7 +188,20 @@ export default function Awards({
               <AwardDate>{formatedDate(award.awardTime)}</AwardDate>
               <AwardLeft>
                 <AwardName>{award.name}</AwardName>
-                <AwardReport>{award.report}</AwardReport>
+                <AwardReport isLink={award.url}>
+                  {award.url ? (
+                    <NextLink
+                      href={award.url}
+                      target="_blank"
+                      rel="noopener noreferrer external nofollow"
+                      aria-label={award.name}
+                    >
+                      {award.report}
+                    </NextLink>
+                  ) : (
+                    award.report
+                  )}
+                </AwardReport>
                 {award.desc && <AwardDesc>{award.desc}</AwardDesc>}
               </AwardLeft>
             </AwardItem>
