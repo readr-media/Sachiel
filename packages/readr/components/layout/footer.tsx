@@ -108,35 +108,40 @@ type ExternalLinkItem = {
   name: string
   href: string
   svgIcon: any
+  clickHandle?: () => void
 }
 
 export default function Footer(): JSX.Element {
+  function sendGAEvent(label?: string): void {
+    gtag.sendEvent('footer', 'click', label)
+  }
+
   const externalLinks: ExternalLinkItem[] = [
     {
       name: 'Facebook',
       href: 'https://www.facebook.com/readr.tw',
       svgIcon: iconFacebook,
+      clickHandle: () => sendGAEvent('fb'),
     },
     {
       name: 'Twitter',
       href: 'https://twitter.com/READr_news',
       svgIcon: iconTwitter,
+      clickHandle: () => sendGAEvent('twitter'),
     },
     {
       name: 'Instagram',
       href: 'https://www.instagram.com/readrteam_daily/',
       svgIcon: iconInstagram,
+      clickHandle: () => sendGAEvent('instagram'),
     },
     {
       name: 'Github',
       href: 'https://github.com/readr-media/readr-data',
       svgIcon: iconGitHub,
+      clickHandle: () => sendGAEvent('github'),
     },
   ]
-
-  function sendGAEvent(label?: string): void {
-    gtag.sendEvent('footer', 'click', label)
-  }
 
   return (
     <Main>
@@ -150,6 +155,7 @@ export default function Footer(): JSX.Element {
                   target="_blank"
                   rel="noopener noreferrer external nofollow"
                   aria-label={item.name}
+                  onClick={item.clickHandle}
                 >
                   <item.svgIcon />
                 </NextLink>
@@ -163,7 +169,7 @@ export default function Footer(): JSX.Element {
               href="/about"
               target="_blank"
               rel="noreferrer author"
-              onClick={() => sendGAEvent('aboutus')}
+              onClick={() => sendGAEvent('about')}
             >
               關於我們
             </NextLink>
@@ -172,7 +178,7 @@ export default function Footer(): JSX.Element {
             <NextLink
               href="mailto:readr@readr.tw"
               rel="author"
-              onClick={() => sendGAEvent('contact')}
+              onClick={() => sendGAEvent('contact us')}
             >
               聯絡我們
             </NextLink>
@@ -182,7 +188,7 @@ export default function Footer(): JSX.Element {
               href="/privacy-rule"
               target="_blank"
               rel="noreferrer license"
-              onClick={() => sendGAEvent('privacy')}
+              onClick={() => sendGAEvent('privacy-rule')}
             >
               隱私政策
             </NextLink>
@@ -192,6 +198,7 @@ export default function Footer(): JSX.Element {
               href="https://forms.gle/C6B5MGYXLzXrmfSe6"
               target="_blank"
               rel="noopener noreferrer external nofollow"
+              onClick={() => sendGAEvent('feedback')}
             >
               意見回饋
             </NextLink>
@@ -206,6 +213,7 @@ export default function Footer(): JSX.Element {
               }}
               target="_blank"
               rel="noreferrer license"
+              onClick={() => sendGAEvent('agreement')}
             >
               服務條款
             </NextLink>
