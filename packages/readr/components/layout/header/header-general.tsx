@@ -274,9 +274,7 @@ export default function HeaderGeneral({
     <Header>
       <Wrapper>
         <LeftPart>
-          <HeaderLogo
-            onClick={() => gtag.sendEvent('header', 'click', 'logo')}
-          />
+          <HeaderLogo />
         </LeftPart>
         <MiddlePart>
           <CategoriesAndRelatedPosts
@@ -292,7 +290,12 @@ export default function HeaderGeneral({
           )}
 
           {!isPostPage && (
-            <DonateLink href="/donate" target="_blank" rel="external nofollow">
+            <DonateLink
+              href="/donate"
+              target="_blank"
+              rel="external nofollow"
+              onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+            >
               贊助我們
             </DonateLink>
           )}

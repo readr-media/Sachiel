@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 import ArticleListCard from '~/components/shared/article-list-card'
 import type { ArticleCard } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 const Container = styled.div<{ $show: boolean }>`
   position: absolute;
@@ -72,6 +73,9 @@ export default function RelatedListInHeader({
         shouldHideBottomInfos={true}
         shouldNotLazyload={true}
         rwd={{ default: '240px' }}
+        onClick={() =>
+          gtag.sendEvent('header', 'click', `menu-${article.title}`)
+        }
       />
     </li>
   ))
