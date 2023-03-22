@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
@@ -171,12 +172,7 @@ export default function Awards({
   title: string
 }): JSX.Element {
   const formatedDate = (date: any): string => {
-    const newDate = new Date(date)
-    const month =
-      newDate.getMonth() + 1 > 9
-        ? newDate.getMonth() + 1
-        : `0${newDate.getMonth() + 1}`
-    return `${newDate.getFullYear()}-${month}`
+    return dayjs(date).format('YYYY-MM')
   }
   return (
     <Container>
