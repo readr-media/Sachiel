@@ -1,6 +1,6 @@
 // under construction
 
-import { ApolloError } from '@apollo/client/core'
+import { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
 import { ReactElement, useMemo, useState } from 'react'
@@ -117,18 +117,10 @@ const About: NextPageWithLayout<PageProps> = ({ awardsData }) => {
   )
 }
 
-interface QueryResult {
-  data: {
-    awards: Award[]
-  }
-  loading: boolean
-  error?: ApolloError
-}
-
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let awardsData: Award[] = []
   try {
-    const result: QueryResult = await client.query({
+    const result: ApolloQueryResult<{ awards: Award[] }> = await client.query({
       query: awardsGql,
     })
     awardsData = result.data.awards
