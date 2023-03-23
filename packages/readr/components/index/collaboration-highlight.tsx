@@ -3,6 +3,8 @@
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 
+import * as gtag from '~/utils/gtag'
+
 const Container = styled(NextLink)``
 
 type Item = {
@@ -31,7 +33,14 @@ export default function CollaborationHighlight(): JSX.Element {
   }
 
   return (
-    <Container href={item.href} target="_blank" rel="noreferrer noopenner">
+    <Container
+      href={item.href}
+      target="_blank"
+      rel="noreferrer noopenner"
+      onClick={() =>
+        gtag.sendEvent('homepage', 'click', 'collaboration-banner')
+      }
+    >
       <picture>
         <source
           srcSet={item.desktopImageSrc}

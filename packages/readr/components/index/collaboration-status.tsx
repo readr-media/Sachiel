@@ -4,6 +4,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import IconUnfold from '~/public/icons/unfold.svg'
+import * as gtag from '~/utils/gtag'
 
 type StyledProps = {
   $isOpen: boolean
@@ -81,6 +82,8 @@ export default function CollaborationStatus({
   const [shouldShowNameList, setShouldShowNameList] = useState(false)
 
   function toggleFold() {
+    gtag.sendEvent('homepage', 'click', 'collaboration-more')
+
     if (loadNames) {
       loadNames()
     }
@@ -96,7 +99,11 @@ export default function CollaborationStatus({
         已有
         <Count>{count}</Count>
         人參與協作，看最新 80 位
-        <Control onClick={toggleFold} $isOpen={shouldShowNameList}>
+        <Control
+          onClick={toggleFold}
+          $isOpen={shouldShowNameList}
+          title="開啟協作者清單"
+        >
           <IconUnfold />
         </Control>
         協作者

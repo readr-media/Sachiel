@@ -9,6 +9,7 @@ import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import IconLoadMore from '~/public/icons/load-more.svg'
 import type { DataSetItem } from '~/types/component'
 import { convertDataSet } from '~/utils/data-set'
+import * as gtag from '~/utils/gtag'
 
 import OpenDataItem from './open-data-item'
 
@@ -120,6 +121,8 @@ export default function OpenDataList({
 
   const loadMoreItems = async () => {
     if (isLoading) return
+
+    gtag.sendEvent('homepage', 'click', 'opendata-more')
 
     setIsLoading(true)
 

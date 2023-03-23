@@ -3,7 +3,9 @@
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
-import type { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
+import { useRef } from 'react'
+import styled from 'styled-components'
 
 import client from '~/apollo-client'
 import CollaborationSection from '~/components/index/collaboration-section'
@@ -37,6 +39,7 @@ import type {
 } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
 import { convertDataSet } from '~/utils/data-set'
+import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
@@ -52,6 +55,14 @@ type PageProps = {
   dataSetCount: number
 }
 
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
+
 const Index: NextPageWithLayout<PageProps> = ({
   editorChoices,
   categories,
@@ -62,11 +73,43 @@ const Index: NextPageWithLayout<PageProps> = ({
   dataSetItems,
   dataSetCount,
 }) => {
+  const anchorRef = useRef<HTMLDivElement>(null)
+
+  const callback = (
+    entries: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        gtag.sendEvent('homepage', 'scroll', 'scroll to end')
+        observer.unobserve(entry.target)
+      }
+    })
+  }
+
+  useEffect(() => {
+    const target = anchorRef.current
+    const observer = new IntersectionObserver(callback, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    })
+
+    if (target) {
+      observer.observe(target)
+    }
+
+    return () => {
+      if (target) {
+        observer.unobserve(target)
+      }
+    }
+  }, [anchorRef])
+
   const shouldShowEditorChoiceSection = editorChoices.length > 0
   const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
   const shouldShowCollaborationSection = collaborations.length > 0
-  const shouldShowOpenDataSection = dataSetItems.length > 0
 
   return (
     <>
@@ -80,9 +123,8 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
-      {shouldShowOpenDataSection && (
-        <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
-      )}
+      <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
+      <HiddenAnchor ref={anchorRef} />
     </>
   )
 }

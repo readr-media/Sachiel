@@ -180,6 +180,7 @@ const FeatureLabel = styled.label`
 
 export type ArticleCardWithIsFeatured = ArticleCard & {
   isFeatured?: boolean
+  onClick?: () => void
 }
 
 export default function EditorChoiceCard({
@@ -190,6 +191,7 @@ export default function EditorChoiceCard({
   readTimeText = '',
   isFeatured = false,
   isReport = false,
+  onClick,
 }: ArticleCardWithIsFeatured): JSX.Element {
   const theme = useTheme()
 
@@ -207,7 +209,12 @@ export default function EditorChoiceCard({
     : { mobile: '100vw', tablet: '50vw', default: '300px' }
 
   return (
-    <Container href={href} target="_blank" $isFeatured={isFeatured}>
+    <Container
+      href={href}
+      target="_blank"
+      $isFeatured={isFeatured}
+      onClick={onClick}
+    >
       <picture>
         <SharedImage
           images={images}

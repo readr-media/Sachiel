@@ -7,6 +7,8 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import * as gtag from '~/utils/gtag'
+
 import type { TransformedCategory } from './header-general'
 import RelatedListInHeader from './related-list-in-header'
 
@@ -99,6 +101,9 @@ export default function CategoriesAndRelatedPosts({
           },
         }}
         shallow={isCategoryPage}
+        onClick={() =>
+          gtag.sendEvent('header', 'click', `menu-${category.name}`)
+        }
       >
         <span>{category.name}</span>
       </NextLink>

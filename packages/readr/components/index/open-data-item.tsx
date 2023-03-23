@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import type { DataSetItem } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 const Container = styled.article`
   ${({ theme }) => theme.breakpoint.md} {
@@ -140,13 +141,23 @@ export default function OpenDataItem({
 
   return (
     <Container>
-      <Title href={href} target="_blank" rel="noopener noreferrer">
+      <Title
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => gtag.sendEvent('hompage', 'click', `opendata-${title}`)}
+      >
         <h3>{title}</h3>
       </Title>
       <GalleryList>
         <span>{galleryText}</span>
         {galleryItems}
-        <Control href={addDataLink} target="_blank" rel="noopener noreferrer">
+        <Control
+          href={addDataLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="READr 使用資料作品分享"
+        >
           <IconPlus>
             <span />
             <span />
