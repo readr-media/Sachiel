@@ -77,9 +77,8 @@ export type GenericCategory = {
 }
 
 export type GenericEditorChoice = {
-  heroImage?: GenericPhoto
-  choices?: GenericPost | null
-  publishTime?: string
+  heroImage: GenericPhoto | null
+  choices: GenericPost | null
 }
 
 export type GenericFeature = {
