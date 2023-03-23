@@ -39,6 +39,9 @@ export type PostDetail = Override<
     | 'heroCaption'
     | 'heroImage'
     | 'content'
+    | 'summary'
+    | 'actionList'
+    | 'citation'
     | 'dataAnalysts'
     | 'writers'
     | 'designers'
@@ -67,6 +70,9 @@ const post = gql`
       sortOrder
       heroCaption
       content
+      summary
+      actionList
+      citation
       publishTime
       readingTime
       categories {

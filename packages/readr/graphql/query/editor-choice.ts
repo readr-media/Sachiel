@@ -11,7 +11,7 @@ import type {
 import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type EditorChoice = Override<
-  Pick<GenericEditorChoice, 'publishTime' | 'choices' | 'heroImage'>,
+  Pick<GenericEditorChoice, 'choices' | 'heroImage'>,
   {
     choices: Post | null
     heroImage: PhotoWithResizedOnly | null
@@ -21,7 +21,7 @@ export type EditorChoice = Override<
 const editorChoices = gql`
   query {
     editorChoices(
-      orderBy: [{ sortOrder: asc }, { publishTime: desc }]
+      orderBy: [{ sortOrder: asc }, { createdAt: desc }]
       take: 3
       where: { state: { equals: "published" } }
     ) {
@@ -33,7 +33,6 @@ const editorChoices = gql`
       choices {
         ...PostFields
       }
-      publishTime
     }
   }
   ${postFragment}
