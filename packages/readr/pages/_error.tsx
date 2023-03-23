@@ -2,8 +2,10 @@
 
 import errors from '@twreporter/errors'
 import type { NextPageContext } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import type { ReactElement } from 'react'
-import styled, { css, useTheme } from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import client from '~/apollo-client'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
@@ -37,10 +39,114 @@ const Page = styled.div`
   background: #ebf02c;
   font-family: 'Noto Sans TC';
   overflow: hidden;
-  height: calc(100vh - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 68px 0;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    padding: 127px 0;
+  }
 `
 
-const Container = styled.div`
+const Wrapper = styled.div`
+  width: 1096px;
+`
+
+const ErrorContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 280px;
+  margin: auto;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    width: 435px;
+    flex-direction: row;
+  }
+`
+
+const Button = styled.button`
+  width: 240px;
+  height: 47px;
+  background: #04295e;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+
+  font-family: 'Noto Sans TC';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 2.5px;
+  color: #ffffff;
+  margin-top: 20px;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    width: 120px;
+    margin-left: 28px;
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+`
+
+const ErrorMsg = styled.div`
+  position: absolute;
+  top: 88px;
+  right: -10px;
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 2.5px;
+  color: #04295e;
+  z-index: 9;
+  ${({ theme }) => theme.breakpoint.sm} {
+    font-size: 24px;
+    line-height: 35px;
+    letter-spacing: 5px;
+
+    top: 92px;
+    right: -12px;
+  }
+
+  :after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 0;
+    width: 220px;
+    border-bottom: 36px solid #ebf02c;
+    border-left: 5px solid transparent;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    z-index: -1;
+    ${({ theme }) => theme.breakpoint.sm} {
+      width: 300px;
+    }
+  }
+`
+
+const Desc = styled.p`
+  font-family: 'Noto Sans TC';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 29px;
+  letter-spacing: 0.03em;
+  color: #000928;
+  text-align: center;
+  margin: 48px 0 16px 0;
+  ${({ theme }) => theme.breakpoint.sm} {
+    font-size: 24px;
+    line-height: 35px;
+    margin: 60px 0 24px 0;
+  }
+`
+
+const PostsContainer = styled.div`
   flex-grow: 1;
   margin: auto;
   overflow: hidden;
@@ -58,7 +164,7 @@ const Container = styled.div`
   }
 
   ${({ theme }) => theme.breakpoint.lg} {
-    max-width: 816px;
+    max-width: 850px;
   }
 
   ${({ theme }) => theme.breakpoint.xl} {
@@ -94,18 +200,16 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
   statusCode,
   latestPosts,
 }) => {
-  let imageSrc = ''
+  let errorImageSrc = ''
   let errorMessage = ''
 
   if (statusCode === 404) {
-    imageSrc = '/icons/404.svg'
+    errorImageSrc = '/icons/404.svg'
     errorMessage = '抱歉，找不到這個網址'
   } else {
-    imageSrc = '/icons/500.svg'
-    errorMessage = '系統忙碌中，請稍後再試'
+    errorImageSrc = '/icons/500.svg'
+    errorMessage = '系統忙碌，請稍後再試'
   }
-
-  const theme = useTheme()
 
   const articleItems: ReactElement<ArticleCard>[] | undefined =
     latestPosts?.map((article) => {
@@ -124,32 +228,33 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
             {...(date !== 'Invalid Date' && { date })}
             title={article.title ?? ''}
             readTimeText={readTimeText}
-            rwd={{
-              mobile: '30vw',
-              tablet: '50vw',
-              default: '256px',
-            }}
-            breakpoint={{
-              mobile: `${theme.mediaSize.sm - 1}px`,
-              tablet: `${theme.mediaSize.xl - 1}px`,
-            }}
           />
         </Item>
       )
     })
 
-  console.log(latestPosts, statusCode)
-
   return (
     <Page>
-      <div>
-        <img src={imageSrc} alt={`Error ${statusCode}`} />
-        <p>{errorMessage}</p>
-      </div>
+      <Wrapper>
+        <ErrorContainer>
+          <Image
+            width={299}
+            height={121}
+            src={errorImageSrc}
+            alt={`Error ${statusCode}`}
+            priority
+          />
+          <Link href="/">
+            <Button>回首頁</Button>
+          </Link>
+          <ErrorMsg>{errorMessage}</ErrorMsg>
+        </ErrorContainer>
 
-      <Container>
-        <ItemList className="category-list">{articleItems}</ItemList>
-      </Container>
+        <Desc>這種時候適合來一篇報導</Desc>
+        <PostsContainer>
+          <ItemList className="category-list">{articleItems}</ItemList>
+        </PostsContainer>
+      </Wrapper>
     </Page>
   )
 }
@@ -160,7 +265,7 @@ Error.getInitialProps = async (
   const { res, err } = context
   let statusCode = res ? res.statusCode : err ? err.statusCode : 404
 
-  //Simulate a 500 error for testing purposes
+  // Simulate a 500 error for testing purposes
   // if (process.env.NODE_ENV === 'development') {
   //   statusCode = 500
   // }
@@ -177,7 +282,6 @@ Error.getInitialProps = async (
 
     if (gqlErrors) {
       const annotatingError = errors.helpers.wrap(
-        // new Error('Errors returned in `latestPosts` query'),
         'GraphQLError',
         'failed to complete `latestPosts`',
         { errors: gqlErrors }
