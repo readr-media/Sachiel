@@ -153,27 +153,43 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
     <Container>
       <Heading postData={postData} />
       <article id="post">
-        <Summary>
-          <p className="title">報導重點摘要</p>
-          <DraftRenderer rawContentBlock={postData.summary} />
-        </Summary>
-
-        <Content>
-          <DraftRenderer rawContentBlock={postData.content} />
-        </Content>
-
-        <ActionList>
-          <p className="title">如果你關心這個議題</p>
-          <DraftRenderer rawContentBlock={postData.actionList} />
-        </ActionList>
+        <>
+          {postData?.summary && (
+            <Summary>
+              <div>
+                <p className="title">報導重點摘要</p>
+                <DraftRenderer rawContentBlock={postData?.summary} />
+              </div>
+            </Summary>
+          )}
+        </>
+        <>
+          {postData?.content && (
+            <Content>
+              <DraftRenderer rawContentBlock={postData?.content} />
+            </Content>
+          )}
+        </>
+        <>
+          {postData?.actionList && (
+            <ActionList>
+              <p className="title">如果你關心這個議題</p>
+              <DraftRenderer rawContentBlock={postData?.actionList} />
+            </ActionList>
+          )}
+        </>
       </article>
       <DonateButton href={DONATION_PAGE_URL} />
       <QuoteAndMedia>
         <MediaLinkList />
-        <Citation>
-          <p className="title">引用資料</p>
-          <DraftRenderer rawContentBlock={postData.citation} />
-        </Citation>
+        <>
+          {postData?.citation && (
+            <Citation>
+              <p className="title">引用資料</p>
+              <DraftRenderer rawContentBlock={postData?.citation} />
+            </Citation>
+          )}
+        </>
       </QuoteAndMedia>
     </Container>
   )
