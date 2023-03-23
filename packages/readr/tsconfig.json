@@ -39,6 +39,7 @@
   ],
   "exclude": [
     "node_modules",
-    "prettier.config.js"
+    "prettier.config.js",
+    "mock-server"
   ]
 }
