@@ -171,20 +171,25 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
           )}
         </>
         <>
-          {postData?.actionList}
-          <ActionList>
-            <p className="title">如果你關心這個議題</p>
-            <DraftRenderer rawContentBlock={postData?.actionList} />
-          </ActionList>
+          {postData?.actionList && (
+            <ActionList>
+              <p className="title">如果你關心這個議題</p>
+              <DraftRenderer rawContentBlock={postData?.actionList} />
+            </ActionList>
+          )}
         </>
       </article>
       <DonateButton href={DONATION_PAGE_URL} />
       <QuoteAndMedia>
         <MediaLinkList />
-        <Citation>
-          <p className="title">引用資料</p>
-          <DraftRenderer rawContentBlock={postData?.citation} />
-        </Citation>
+        <>
+          {postData?.citation && (
+            <Citation>
+              <p className="title">引用資料</p>
+              <DraftRenderer rawContentBlock={postData?.citation} />
+            </Citation>
+          )}
+        </>
       </QuoteAndMedia>
     </Container>
   )
