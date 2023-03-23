@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SectionHeading from '~/components/shared/section-heading'
+import type { Quote } from '~/graphql/query/quote'
 import type { CollaborationItem } from '~/types/component'
 
 import CollaborationHighlight from './collaboration-highlight'
@@ -39,7 +40,7 @@ const HighlightPart = styled.div`
 `
 
 type CollaborationSectionProps = {
-  quotes: Parameters<typeof CollaborationQuoteSlider>[0]['quotes']
+  quotes?: Quote[]
   items: CollaborationItem[]
 }
 

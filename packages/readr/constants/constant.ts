@@ -1,11 +1,11 @@
 // 這裡管理固定數值
 
-import type { GenericCategory } from '~/types/common'
 import { ValidPostStyle } from '~/types/common'
+import type { NavigationCategory } from '~/types/component'
 
 const SITE_TITLE = 'READr 讀+'
 const DEFAULT_POST_IMAGE_PATH = '/icons/default/post.svg'
-const DEFAULT_CATEGORY: GenericCategory = {
+const DEFAULT_CATEGORY: NavigationCategory = {
   id: 'all',
   title: '不分類',
   slug: 'all',

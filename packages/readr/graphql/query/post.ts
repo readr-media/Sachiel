@@ -7,45 +7,55 @@ import type {
   GenericCategory,
   GenericPhoto,
   GenericPost,
+  Override,
 } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
 import { authorFragment } from '../fragments/author'
 import { resizeImagesFragment } from '../fragments/resized-images'
 
-export type Category = Pick<Required<GenericCategory>, 'id' | 'title'>
-export type Author = Pick<Required<GenericAuthor>, 'id' | 'name'>
+export type Category = Pick<GenericCategory, 'id' | 'title'>
+export type Author = Pick<GenericAuthor, 'id' | 'name'>
 
-export type Photo = Pick<
-  Required<GenericPhoto>,
-  'id' | 'name' | 'imageFile' | 'resized'
+export type Photo = Pick<GenericPhoto, 'id' | 'name' | 'imageFile' | 'resized'>
+
+export type RelatedPost = Override<
+  Pick<
+    GenericPost,
+    'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
+  >,
+  { heroImage: Photo | null }
 >
 
-export type RelatedPost = Pick<
-  Required<GenericPost>,
-  'id' | 'publishTime' | 'name' | 'readingTime'
-> & {
-  heroImage: Photo
-}
-
-export type PostDetail = Pick<
-  Required<GenericPost>,
-  | 'id'
-  | 'slug'
-  | 'name'
-  | 'subtitle'
-  | 'sortOrder'
-  | 'manualOrderOfRelatedPosts'
-  | 'heroCaption'
-  | 'content'
-  | 'publishTime'
-  | 'readingTime'
-> & {
-  categories: Category[]
-} & Record<'dataAnalysts' | 'writers' | 'designers', Author[]> & {
-    heroImage: Photo
+export type PostDetail = Override<
+  Pick<
+    GenericPost,
+    | 'id'
+    | 'slug'
+    | 'name'
+    | 'subtitle'
+    | 'sortOrder'
+    | 'manualOrderOfRelatedPosts'
+    | 'heroCaption'
+    | 'heroImage'
+    | 'content'
+    | 'dataAnalysts'
+    | 'writers'
+    | 'designers'
+    | 'relatedPosts'
+    | 'publishTime'
+    | 'readingTime'
+    | 'categories'
+  >,
+  {
+    dataAnalysts: Author[]
+    writers: Author[]
+    designers: Author[]
+    heroImage: Photo | null
     relatedPosts: RelatedPost[]
+    categories: Category[]
   }
+>
 
 const post = gql`
   query ($id: ID!) {

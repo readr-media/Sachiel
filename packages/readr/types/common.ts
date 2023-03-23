@@ -14,14 +14,14 @@ export type ResizedImages = {
 export type keyOfResizedImages = keyof ResizedImages
 
 export type GenericPhoto = {
-  id?: string
-  name?: string
-  urlOriginal?: string
-  resized?: ResizedImages | null
-  imageFile?: GenericImageFile | null
+  id: string
+  name: string
+  urlOriginal: string
+  resized: ResizedImages | null
+  imageFile: GenericImageFile | null
 }
 
-export type PhotoWithResizedOnly = Pick<Required<GenericPhoto>, 'resized'>
+export type PhotoWithResizedOnly = Pick<GenericPhoto, 'resized'>
 
 // ref: https://github.com/mirror-media/Lilith/blob/95bb4f8e9b43bd60515e1ba5b9b77d512f880bca/packages/readr/lists/Post.ts#L139
 /* eslint-disable no-unused-vars */
@@ -42,49 +42,49 @@ export enum ValidPostStyle {
 /* eslint-enable no-unused-vars */
 
 export type GenericAuthor = {
-  id?: string | number
-  name?: string
+  id: string | number
+  name: string
 }
 
 export type GenericPost = {
   id: string
-  slug?: string
-  style?: ValidPostStyle
-  name?: string
-  title?: string // alias to `name`
-  subtitle?: string
-  sortOrder?: number
-  heroImage?: GenericPhoto | null
-  ogImage?: GenericPhoto | null
-  heroCaption?: string
-  content?: unknown // it is hard to describe JSON type
-  dataAnalysts?: GenericAuthor[]
-  writers?: GenericAuthor[]
-  designers?: GenericAuthor[]
-  categories?: GenericCategory[]
-  relatedPosts?: GenericPost[]
-  manualOrderOfRelatedPosts?: unknown // it is hard to describe JSON type
-  publishTime?: string
-  readingTime?: number
+  slug: string
+  style: ValidPostStyle
+  name: string
+  title: string // alias to `name`
+  subtitle: string
+  sortOrder: number
+  heroImage: GenericPhoto | null
+  ogImage: GenericPhoto | null
+  heroCaption: string
+  content: unknown // it is hard to describe JSON type
+  dataAnalysts: GenericAuthor[]
+  writers: GenericAuthor[]
+  designers: GenericAuthor[]
+  categories: GenericCategory[]
+  relatedPosts: GenericPost[]
+  manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
+  publishTime: string
+  readingTime: number
 }
 
 export type GenericCategory = {
   id: string
-  slug?: string
-  title?: string
-  posts?: GenericPost[]
-  reports?: GenericPost[]
+  slug: string
+  title: string
+  posts: GenericPost[]
+  reports: GenericPost[]
 }
 
 export type GenericEditorChoice = {
-  heroImage?: GenericPhoto
-  choices?: GenericPost | null
-  publishTime?: string
+  heroImage: GenericPhoto | null
+  choices: GenericPost | null
+  publishTime: string
 }
 
 export type GenericFeature = {
   description: string
-  featurePost?: GenericPost | null
+  featurePost: GenericPost | null
 }
 
 export type GenericQuote = {
@@ -96,7 +96,7 @@ export type GenericQuote = {
 
 export type GenericCollaboration = {
   id: string
-  title?: string
+  title: string
   name: string
   description: string
   progress: number

@@ -8,20 +8,21 @@ import type {
 
 import { resizeImagesFragment } from '../fragments/resized-images'
 
-type C = Pick<
-  GenericCollaboration,
-  | 'id'
-  | 'title'
-  | 'description'
-  | 'progress'
-  | 'heroImage'
-  | 'achvLink'
-  | 'collabLink'
-  | 'requireTime'
-  | 'endTime'
+export type Collaboration = Override<
+  Pick<
+    GenericCollaboration,
+    | 'id'
+    | 'title'
+    | 'description'
+    | 'progress'
+    | 'heroImage'
+    | 'achvLink'
+    | 'collabLink'
+    | 'requireTime'
+    | 'endTime'
+  >,
+  { heroImage: PhotoWithResizedOnly | null }
 >
-
-export type Collaboration = Override<C, { heroImage: PhotoWithResizedOnly }>
 
 const collaborations = gql`
   query {

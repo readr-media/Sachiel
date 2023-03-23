@@ -3,11 +3,10 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import type { NavCategory } from '~/components/shared/category-nav'
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import type { ArticleCard } from '~/types/component'
+import type { ArticleCard, NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 
 import CategoryList from './category-list'
@@ -42,8 +41,8 @@ const ReportContainer = styled.div`
   }
 `
 
-export type CategoryWithArticleCards = Pick<
-  NavCategory,
+export type NavigationCategoryWithArticleCards = Pick<
+  NavigationCategory,
   'id' | 'slug' | 'title'
 > & {
   posts?: ArticleCard[]
@@ -51,8 +50,8 @@ export type CategoryWithArticleCards = Pick<
 }
 
 type LatestReportSectionProps = {
-  latest: CategoryWithArticleCards
-  categories: CategoryWithArticleCards[]
+  latest: NavigationCategoryWithArticleCards
+  categories: NavigationCategoryWithArticleCards[]
 }
 
 export default function LatestReportSection({
@@ -61,34 +60,35 @@ export default function LatestReportSection({
 }: LatestReportSectionProps): JSX.Element {
   const sectionTitle = '最新報導'
   const [activeCategory, setActiveCategory] =
-    useState<NavCategory>(DEFAULT_CATEGORY)
+    useState<NavigationCategory>(DEFAULT_CATEGORY)
 
-  const getShowMoreText = (category: NavCategory) => {
+  const getShowMoreText = (category: NavigationCategory) => {
     const name = category?.slug === DEFAULT_CATEGORY.slug ? '' : category.title
 
     return `更多${name}報導`
   }
 
-  const updateActiveCategory = (category: NavCategory) => {
+  const updateActiveCategory = (category: NavigationCategory) => {
     gtag.sendEvent('homepage', 'click', `latest-${category.title}`)
     setActiveCategory(category)
   }
 
-  const currentItem: CategoryWithArticleCards | undefined = useMemo(() => {
-    if (activeCategory.slug === DEFAULT_CATEGORY.slug) {
-      return latest
-    }
-    const matchedItem = categories.find(
-      (category) => category.slug === activeCategory.slug
-    )
+  const currentItem: NavigationCategoryWithArticleCards | undefined =
+    useMemo(() => {
+      if (activeCategory.slug === DEFAULT_CATEGORY.slug) {
+        return latest
+      }
+      const matchedItem = categories.find(
+        (category) => category.slug === activeCategory.slug
+      )
 
-    return matchedItem &&
-      Object.hasOwn(matchedItem, 'posts') &&
-      Object.hasOwn(matchedItem, 'reports')
-      ? matchedItem
-      : undefined
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [activeCategory.slug])
+      return matchedItem &&
+        Object.hasOwn(matchedItem, 'posts') &&
+        Object.hasOwn(matchedItem, 'reports')
+        ? matchedItem
+        : undefined
+      /* eslint-disable-next-line react-hooks/exhaustive-deps */
+    }, [activeCategory.slug])
 
   return (
     <Container aria-label={sectionTitle}>

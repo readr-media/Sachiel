@@ -19,6 +19,7 @@ import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-
 import type { Category } from '~/graphql/query/category'
 import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
+import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -32,7 +33,7 @@ type AppPropsWithLayout = AppProps & {
 } & {
   props: {
     categoriesAndRelatedPosts: Category[]
-    categoryList: Category[]
+    categoryList: NavigationCategory[]
   }
 }
 
@@ -91,7 +92,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
 
   const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
   const categoriesAndRelatedPosts: Category[] = []
-  const categoryList: Category[] = []
+  const categoryList: NavigationCategory[] = []
 
   try {
     {
