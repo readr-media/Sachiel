@@ -60,6 +60,7 @@ const ReportList = styled.ul`
     ${theme.breakpoint.xl} {
       width: 724px;
       display: flex;
+      flex-wrap: wrap;
     }
   `}
 `
@@ -129,7 +130,6 @@ const ReportDesc = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  text-align: justify;
   color: rgba(0, 9, 40, 0.5);
 `
 
@@ -195,7 +195,7 @@ export default function More({
                     />
                   </ImageWrapper>
                   <ReportInfo>
-                    <ReportTitle isLink={report.url}>{report.name}</ReportTitle>
+                    <ReportTitle>{report.name}</ReportTitle>
                     {description && <ReportDesc>{description}</ReportDesc>}
                   </ReportInfo>
                 </>

@@ -3,7 +3,7 @@
 import { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
-import { ReactElement, useMemo, useState } from 'react'
+import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import client from '~/apollo-client'
@@ -119,6 +119,34 @@ const About: NextPageWithLayout<PageProps> = ({
       }
     })
   }, [awardsData, language])
+
+  const fetchENMore = useCallback(async () => {
+    let moreReportDataEn: PageVariable[] = []
+    try {
+      const result: ApolloQueryResult<{ pageVariables: PageVariable[] }> =
+        await client.query({
+          query: pageVariablesByPage,
+          variables: {
+            page: 'about-en',
+          },
+        })
+      moreReportDataEn = result.data.pageVariables
+    } catch (err) {
+      console.log(err)
+    }
+    setRenderedMore({
+      ...renderedMore,
+      en: moreReportDataEn,
+    })
+    return moreReportData
+  }, [])
+
+  useEffect(() => {
+    if (!renderedMore[language]?.length) {
+      fetchENMore()
+    }
+  }, [language, renderedMore, fetchENMore])
+
   return (
     <Page>
       <Landing
@@ -132,7 +160,7 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].awardsTitle}
       />
       <More
-        title={wording[language].awardsTitle}
+        title={wording[language].moreTitle}
         renderedMore={renderedMore[language]}
       />
     </Page>
