@@ -7,8 +7,9 @@ import IconLine from '~/public/icons/line-circle.svg'
 import IconLink from '~/public/icons/link-circle.svg'
 import IconTwitter from '~/public/icons/twitter-circle.svg'
 
-interface MediaLinkProps {
+type MediaLinkProps = {
   margin: string
+  className: string
 }
 const MediaLinkWrapper = styled.ul<MediaLinkProps>`
   width: 100%;
@@ -52,7 +53,10 @@ type ExternalLinkItem = {
   alt: string
 }
 
-export default function MediaLinkList({ margin = '0 auto 48px' }): JSX.Element {
+export default function MediaLinkList({
+  margin = '0 auto 48px',
+  className = 'media-link-list',
+}): JSX.Element {
   const [href, setHref] = useState('')
 
   useEffect(() => {
@@ -91,7 +95,7 @@ export default function MediaLinkList({ margin = '0 auto 48px' }): JSX.Element {
   }
 
   return (
-    <MediaLinkWrapper margin={margin} className="media-link-list">
+    <MediaLinkWrapper margin={margin} className={className}>
       {externalLinks.map((item) => {
         return (
           <li key={item.name} aria-label={item.alt}>
