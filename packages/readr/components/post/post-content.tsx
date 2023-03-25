@@ -7,7 +7,7 @@ import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
-import type { GenericBlocks } from '~/types/common'
+import type { GenericContentBlock } from '~/types/common'
 
 const Container = styled.section`
   width: 100%;
@@ -42,6 +42,7 @@ const Container = styled.section`
 
     .desktop-media-link {
       display: flex;
+      margin: 0;
     }
   }
   ${({ theme }) => theme.breakpoint.xl} {
@@ -172,7 +173,7 @@ interface PostProps {
 export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
-  const checkValue = (blocks: GenericBlocks[]) => {
+  const checkValue = (blocks: GenericContentBlock[]) => {
     if (!blocks) {
       //if draft.blocks is undefined, return false
       return false
@@ -228,7 +229,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       </>
       <TagGroup>
         <PostTag tags={postData?.tags} />
-        <MediaLinkList className={'desktop-media-link'} margin={'0'} />
+        <MediaLinkList className={'desktop-media-link'} />
       </TagGroup>
     </Container>
   )

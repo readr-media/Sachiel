@@ -1,3 +1,5 @@
+import type { ContentBlock, Entity } from 'draft-js'
+
 export type GenericImageFile = {
   url: string
 }
@@ -46,6 +48,18 @@ export type GenericAuthor = {
   name: string
 }
 
+// draft-renderer type
+export interface GenericContentBlock extends ContentBlock {
+  key: string
+  text: string
+  type: string
+}
+
+export type GenericEditorState = {
+  blocks: GenericContentBlock[]
+  entityMap: Entity
+}
+
 export type GenericPost = {
   id: string
   slug: string
@@ -57,10 +71,10 @@ export type GenericPost = {
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
   heroCaption: string
-  content: GenericContent // it is hard to describe JSON type
-  summary: GenericContent // it is hard to describe JSON type
-  actionList: GenericContent // it is hard to describe JSON type
-  citation: GenericContent // it is hard to describe JSON type
+  content: GenericEditorState // draft-renderer JSON
+  summary: GenericEditorState // draft-renderer JSON
+  actionList: GenericEditorState // draft-renderer JSON
+  citation: GenericEditorState // draft-renderer JSON
   dataAnalysts: GenericAuthor[]
   writers: GenericAuthor[]
   designers: GenericAuthor[]
@@ -128,21 +142,6 @@ export type GenericDataSet = {
   title: string
   link: string
   gallery: GenericGallery[]
-}
-
-export type GenericContent = {
-  blocks: GenericBlocks[]
-  entity: GenericEntity[]
-}
-
-export type GenericBlocks = {
-  key?: string
-  text?: string
-  type?: string
-}
-
-export type GenericEntity = {
-  type: string
 }
 
 // This utility is for overwriting type without extending it
