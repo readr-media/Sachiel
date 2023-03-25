@@ -3,13 +3,16 @@ import gql from 'graphql-tag'
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import type { GenericCategory } from '~/types/common'
+import type { GenericCategory, Override } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
-export type Category = Pick<GenericCategory, 'id' | 'slug' | 'title'> & {
-  posts?: Post[]
-  reports?: Post[]
-}
+export type Category = Override<
+  Pick<GenericCategory, 'id' | 'slug' | 'title' | 'posts' | 'reports'>,
+  {
+    posts?: Post[]
+    reports?: Post[]
+  }
+>
 
 const categories = gql`
   query (

@@ -213,7 +213,7 @@ const Subtitle = styled.span`
   }
 `
 
-export type FeaturedArticleWithIsFirst = FeaturedArticle & {
+type FeaturedArticleWithIsFirst = Omit<FeaturedArticle, 'id'> & {
   isFirst?: boolean
 }
 

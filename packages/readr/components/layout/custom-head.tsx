@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { SITE_TITLE } from '~/constants/constant'
 import { SITE_URL } from '~/constants/environment-variables'
 
-export type OGProperties = {
+type OGProperties = {
   locale?: 'zh_TW'
   url: string
   title: string
@@ -76,7 +76,7 @@ const OpenGraph = ({ properties }: { properties: OGProperties }) => {
   )
 }
 
-export type HeadProps = {
+type HeadProps = {
   title?: string
   description?: string
 }

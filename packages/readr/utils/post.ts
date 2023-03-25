@@ -2,19 +2,20 @@ import dayjs from 'dayjs'
 
 import { REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
-import {
+import type {
   GenericPhoto,
+  GenericPost,
   keyOfResizedImages,
   ResizedImages,
-  ValidPostStyle,
 } from '~/types/common'
+import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard } from '~/types/component'
 
 export function getHref({
   style,
   id,
   slug,
-}: Pick<Post, 'style' | 'id' | 'slug'>): string {
+}: Partial<Pick<GenericPost, 'style' | 'id' | 'slug'>>): string {
   switch (style) {
     case ValidPostStyle.NEWS:
     case ValidPostStyle.EMBEDDED:
@@ -35,7 +36,7 @@ export function getUid({
   style,
   id,
   slug,
-}: Pick<Post, 'style' | 'id' | 'slug'>): string {
+}: Partial<Pick<GenericPost, 'style' | 'id' | 'slug'>>): string {
   switch (style) {
     case ValidPostStyle.NEWS:
     case ValidPostStyle.EMBEDDED:

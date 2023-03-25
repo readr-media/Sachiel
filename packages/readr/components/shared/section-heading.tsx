@@ -63,14 +63,14 @@ const ShowMoreControl = styled(NextLink)`
   }
 `
 
-type SectionHeadingProps = Partial<{
-  title: string
-  showMoreText: string
-  categorySlug: string
-  highlightColor: string
-  headingLevel: number
+type SectionHeadingProps = {
+  title?: string
+  showMoreText?: string
+  categorySlug?: string
+  highlightColor?: string
+  headingLevel?: number
   clickOnMore?: () => void
-}>
+}
 
 export default function SectionHeading({
   title = '',
