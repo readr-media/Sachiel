@@ -76,7 +76,7 @@ const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
             alt={postData?.heroImage?.name}
             priority={false}
           />
-          <figcaption>測試用HeroImage文字</figcaption>
+          <figcaption>{postData?.heroCaption}</figcaption>
         </HeroImage>
 
         <Content postData={postData} />
