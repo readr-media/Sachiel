@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import { useCategoryListContext } from '~/hooks/useContext'
-import type { GenericCategory } from '~/types/common'
+import type { NavigationCategory } from '~/types/component'
 
 type StyledProps = {
   $isActive: boolean
@@ -66,12 +66,10 @@ const Item = styled.li<StyledProps>`
 
 const Control = styled.button``
 
-export type NavCategory = Pick<GenericCategory, 'id' | 'slug' | 'title'>
-
 type CategoryNavProps = {
   currentCategorySlug?: string
   /* eslint-disable-next-line no-unused-vars */
-  categoryClickHandler: (category: NavCategory) => void
+  categoryClickHandler: (category: NavigationCategory) => void
 }
 
 export default function CategoryNav({
@@ -80,9 +78,12 @@ export default function CategoryNav({
 }: CategoryNavProps): JSX.Element {
   const categoryList = useCategoryListContext()
 
-  const formattedCategories: NavCategory[] = [DEFAULT_CATEGORY, ...categoryList]
+  const formattedCategories: NavigationCategory[] = [
+    DEFAULT_CATEGORY,
+    ...categoryList,
+  ]
 
-  const clickHandler = (category: NavCategory) => {
+  const clickHandler = (category: NavigationCategory) => {
     if (typeof categoryClickHandler === 'function') {
       categoryClickHandler(category)
     }

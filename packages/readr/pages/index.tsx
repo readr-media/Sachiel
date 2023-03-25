@@ -11,7 +11,7 @@ import client from '~/apollo-client'
 import CollaborationSection from '~/components/index/collaboration-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
-import type { CategoryWithArticleCards } from '~/components/index/latest-report-section'
+import type { NavigationCategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LatestReportSection from '~/components/index/latest-report-section'
 import OpenDataSection from '~/components/index/open-data-section'
 import LayoutGeneral from '~/components/layout/layout-general'
@@ -46,8 +46,8 @@ import type { NextPageWithLayout } from './_app'
 
 type PageProps = {
   editorChoices: ArticleCard[]
-  categories: CategoryWithArticleCards[]
-  latest: CategoryWithArticleCards
+  categories: NavigationCategoryWithArticleCards[]
+  latest: NavigationCategoryWithArticleCards
   features: FeaturedArticle[]
   quotes?: Quote[]
   collaborations: CollaborationItem[]
@@ -138,8 +138,8 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   let editorChoices: ArticleCard[] = []
-  let categories: CategoryWithArticleCards[] = []
-  let latest: CategoryWithArticleCards = {
+  let categories: NavigationCategoryWithArticleCards[] = []
+  let latest: NavigationCategoryWithArticleCards = {
     id: DEFAULT_CATEGORY.id,
     title: DEFAULT_CATEGORY.title,
     slug: DEFAULT_CATEGORY.slug,

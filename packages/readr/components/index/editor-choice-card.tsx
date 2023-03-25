@@ -178,7 +178,7 @@ const FeatureLabel = styled.label`
   }
 `
 
-export type ArticleCardWithIsFeatured = ArticleCard & {
+type EditorChoiceCardProps = Omit<ArticleCard, 'id'> & {
   isFeatured?: boolean
   onClick?: () => void
 }
@@ -192,7 +192,7 @@ export default function EditorChoiceCard({
   isFeatured = false,
   isReport = false,
   onClick,
-}: ArticleCardWithIsFeatured): JSX.Element {
+}: EditorChoiceCardProps): JSX.Element {
   const theme = useTheme()
 
   const breakpoint: Breakpoint = isFeatured
