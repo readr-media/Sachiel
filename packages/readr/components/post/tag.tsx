@@ -18,13 +18,17 @@ const TagWrapper = styled.ul`
     border-radius: 2px;
     color: rgba(0, 9, 40, 0.66);
     background-color: #f6f6fb;
-    cursor: pointer;
-    padding: 8px;
     margin: 0 8px 8px 0;
 
     &:hover {
       color: rgba(0, 9, 40, 0.5);
     }
+  }
+
+  a {
+    display: inline-block;
+    padding: 8px;
+    cursor: pointer;
   }
 
   ${({ theme }) => theme.breakpoint.md} {
