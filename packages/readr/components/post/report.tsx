@@ -40,12 +40,14 @@ export default function PostContent({
 
   return (
     <>
-      {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
-        <Wrapper>
+      <Wrapper>
+        {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
           <RelatedReport relatedData={addLinkToPosts(relatedPosts)} />
+        )}
+        {Array.isArray(latestPosts) && latestPosts.length > 0 && (
           <RelatedReport relatedData={addLinkToPosts(latestPosts)} />
-        </Wrapper>
-      )}
+        )}
+      </Wrapper>
     </>
   )
 }
