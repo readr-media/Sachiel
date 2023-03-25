@@ -1,5 +1,3 @@
-// under construction
-
 import errors from '@twreporter/errors'
 import type { NextPageContext } from 'next'
 import Image from 'next/image'
@@ -12,8 +10,7 @@ import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import ArticleListCard from '~/components/shared/article-list-card'
 import type { Post } from '~/graphql/fragments/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
-import type { ArticleCard } from '~/types/component'
-import { formatPostDate, formatReadTime } from '~/utils/post'
+import { convertPostToArticleCard } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -50,7 +47,7 @@ const Page = styled.div`
 `
 
 const Wrapper = styled.div`
-  width: 1096px;
+  width: ${({ theme }) => theme.width.main};
 `
 
 const ErrorContainer = styled.div`
@@ -102,7 +99,7 @@ const ErrorMsg = styled.div`
   line-height: 28px;
   letter-spacing: 2.5px;
   color: #04295e;
-  z-index: 9;
+  z-index: 1;
   ${({ theme }) => theme.breakpoint.sm} {
     font-size: 24px;
     line-height: 35px;
@@ -211,27 +208,27 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
     errorMessage = '系統忙碌，請稍後再試'
   }
 
-  const articleItems: ReactElement<ArticleCard>[] | undefined =
-    latestPosts?.map((article) => {
-      const images = article.heroImage?.resized?.w800 ?? {}
-      const date = formatPostDate(article.publishTime)
-      const readTimeText = formatReadTime(article.readingTime)
+  const articleItems: ReactElement[] | undefined = latestPosts?.map(
+    (article) => {
+      const images = article.heroImage?.resized ?? {}
+      const articleCard = convertPostToArticleCard(article, images)
+
+      // Only show the date if it's a valid date
+      if (articleCard.date === 'Invalid Date') {
+        articleCard.date = ''
+      }
+
       return (
-        <Item key={article.id}>
+        <Item key={articleCard.id}>
           <ArticleListCard
-            {...article}
+            {...articleCard}
             shouldHideBottomInfos={false}
             shouldReverseInMobile={true}
-            href={`/post/${article.id}`}
-            images={images}
-            // Only show the date if it's a valid date
-            {...(date !== 'Invalid Date' && { date })}
-            title={article.title ?? ''}
-            readTimeText={readTimeText}
           />
         </Item>
       )
-    })
+    }
+  )
 
   return (
     <Page>
