@@ -20,7 +20,7 @@ interface Props {
   latestPosts?: Post[]
 }
 
-export default function PostContent({
+export default function Report({
   relatedPosts,
   latestPosts,
 }: Props): JSX.Element {

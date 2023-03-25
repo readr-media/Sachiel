@@ -23,6 +23,7 @@ const HeroImage = styled.figure`
   max-width: 960px;
   margin: 0 auto 24px;
 
+  //style for <SharedImage /> ( @readr-media/react-image )
   .readr-media-react-image {
     max-height: 480px;
   }
