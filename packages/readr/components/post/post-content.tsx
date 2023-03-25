@@ -151,7 +151,7 @@ const Citation = styled.section`
     margin: 0;
   }
 `
-const Test = styled.div`
+const TagGroup = styled.div`
   width: 100%;
   max-width: 568px;
 
@@ -226,10 +226,10 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
           </Citation>
         )}
       </>
-      <Test>
+      <TagGroup>
         <PostTag tags={postData?.tags} />
         <MediaLinkList className={'desktop-media-link'} margin={'0'} />
-      </Test>
+      </TagGroup>
     </Container>
   )
 }
