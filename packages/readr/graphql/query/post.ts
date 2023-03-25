@@ -115,6 +115,10 @@ const post = gql`
           }
         }
       }
+      tags {
+        id
+        name
+      }
     }
   }
   ${resizeImagesFragment}
