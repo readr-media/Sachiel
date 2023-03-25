@@ -49,6 +49,7 @@ export type PostDetail = Override<
     | 'publishTime'
     | 'readingTime'
     | 'categories'
+    | 'tags'
   >,
   {
     dataAnalysts: Author[]
