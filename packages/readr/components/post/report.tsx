@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { SITE_URL } from '~/constants/environment-variables'
+import type { Post } from '~/graphql/fragments/post'
 import type { RelatedPost } from '~/graphql/query/post'
 
 const Wrapper = styled.div`
@@ -15,26 +16,34 @@ const Wrapper = styled.div`
   }
 `
 interface Props {
-  relatedData?: RelatedPost[]
+  relatedPosts?: RelatedPost[]
+  latestPosts?: Post[]
 }
 
-export default function PostContent({ relatedData }: Props): JSX.Element {
+export default function PostContent({
+  relatedPosts,
+  latestPosts,
+}: Props): JSX.Element {
   const [protocol, setProtocol] = useState('http:')
 
   useEffect(() => {
     setProtocol(window.location.protocol)
   }, [])
 
-  const dataWithLink = relatedData?.map((item) => ({
-    ...item,
-    link: `${protocol}//${SITE_URL}/post/${item.id}`,
-  }))
+  function addLinkToPosts(posts: RelatedPost[]) {
+    const dataWithLink = posts?.map((post: RelatedPost) => ({
+      ...post,
+      link: `${protocol}//${SITE_URL}/post/${post.id}`,
+    }))
+    return dataWithLink
+  }
 
   return (
     <>
-      {Array.isArray(relatedData) && relatedData.length > 0 && (
+      {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
         <Wrapper>
-          <RelatedReport relatedData={dataWithLink} />
+          <RelatedReport relatedData={addLinkToPosts(relatedPosts)} />
+          <RelatedReport relatedData={addLinkToPosts(latestPosts)} />
         </Wrapper>
       )}
     </>

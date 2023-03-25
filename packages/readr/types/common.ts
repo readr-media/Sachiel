@@ -57,10 +57,10 @@ export type GenericPost = {
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
   heroCaption: string
-  content: unknown // it is hard to describe JSON type
-  summary: unknown // it is hard to describe JSON type
-  actionList: unknown // it is hard to describe JSON type
-  citation: unknown // it is hard to describe JSON type
+  content: GenericContent // it is hard to describe JSON type
+  summary: GenericContent // it is hard to describe JSON type
+  actionList: GenericContent // it is hard to describe JSON type
+  citation: GenericContent // it is hard to describe JSON type
   dataAnalysts: GenericAuthor[]
   writers: GenericAuthor[]
   designers: GenericAuthor[]
@@ -69,6 +69,7 @@ export type GenericPost = {
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
   publishTime: string
   readingTime: number
+  tags: GenericTag[]
 }
 
 export type GenericCategory = {
@@ -77,6 +78,11 @@ export type GenericCategory = {
   title: string
   posts: GenericPost[]
   reports: GenericPost[]
+}
+
+export type GenericTag = {
+  id: string
+  name: string
 }
 
 export type GenericEditorChoice = {
@@ -122,6 +128,21 @@ export type GenericDataSet = {
   title: string
   link: string
   gallery: GenericGallery[]
+}
+
+export type GenericContent = {
+  blocks: GenericBlocks[]
+  entity: GenericEntity[]
+}
+
+export type GenericBlocks = {
+  key?: string
+  text?: string
+  type?: string
+}
+
+export type GenericEntity = {
+  type: string
 }
 
 // This utility is for overwriting type without extending it
