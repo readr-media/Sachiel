@@ -2773,10 +2773,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@readr-media/react-component@^1.0.2-alpha.6":
-  version "1.0.2-alpha.6"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-1.0.2-alpha.6.tgz#8b72acd63816c38273efcce7c7128f547b9d7903"
-  integrity sha512-MK1nLp4i3BxDyPkQwWF4L8OLi34Gek6I2AyCpaqGkYlKtEwsrfw6Cmj9aE+Iwl+mMaLl8DXeSw7EnS48KaNSjw==
+"@readr-media/react-component@^2.0.0-alpha.1":
+  version "2.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.0.0-alpha.1.tgz#3a13623f9715bbbb1968853033a6f3754914c8c4"
+  integrity sha512-DuCN/VNZIdHa6ZbgpV1INTaOwbr7rdY24PR7aMKJzJeFOepKKTlEpPBr6YdORDtQmGESkEkYHe2xgkh28/z/hg==
 
 "@readr-media/react-election-widgets@1.0.2":
   version "1.0.2"
@@ -10100,11 +10100,6 @@ yargs@^17.4.0:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.0.0"
-
-yarn@^1.22.19:
-  version "1.22.19"
-  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.19.tgz#4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
-  integrity sha512-/0V5q0WbslqnwP91tirOvldvYISzaqhClxzyUKXYxs07yUILIs5jx/k6CFe8bvKSkds5w+eiOqta39Wk3WxdcQ==
 
 yn@3.1.1:
   version "3.1.1"

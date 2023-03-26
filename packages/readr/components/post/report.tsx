@@ -1,10 +1,10 @@
 import { RelatedReport } from '@readr-media/react-component'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { SITE_URL } from '~/constants/environment-variables'
+import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { RelatedPost } from '~/graphql/query/post'
+import { getHref } from '~/utils/post'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -24,16 +24,14 @@ export default function Report({
   relatedPosts,
   latestPosts,
 }: Props): JSX.Element {
-  const [protocol, setProtocol] = useState('http:')
-
-  useEffect(() => {
-    setProtocol(window.location.protocol)
-  }, [])
-
-  function addLinkToPosts(posts: RelatedPost[]) {
-    const dataWithLink = posts?.map((post: RelatedPost) => ({
+  function addLinkToPosts(posts: (RelatedPost | Post)[]) {
+    const dataWithLink = posts?.map((post: RelatedPost | Post) => ({
       ...post,
-      link: `${protocol}//${SITE_URL}/post/${post.id}`,
+      link: getHref({
+        style: post.style,
+        id: post.id,
+        slug: post.slug,
+      }),
     }))
     return dataWithLink
   }
@@ -42,10 +40,18 @@ export default function Report({
     <>
       <Wrapper>
         {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
-          <RelatedReport relatedData={addLinkToPosts(relatedPosts)} />
+          <RelatedReport
+            header="相關報導"
+            postData={addLinkToPosts(relatedPosts)}
+            defaultImage={DEFAULT_POST_IMAGE_PATH}
+          />
         )}
         {Array.isArray(latestPosts) && latestPosts.length > 0 && (
-          <RelatedReport relatedData={addLinkToPosts(latestPosts)} />
+          <RelatedReport
+            header="最新報導"
+            postData={addLinkToPosts(latestPosts)}
+            defaultImage={DEFAULT_POST_IMAGE_PATH}
+          />
         )}
       </Wrapper>
     </>
