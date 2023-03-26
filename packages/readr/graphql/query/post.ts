@@ -7,7 +7,9 @@ import type {
   GenericCategory,
   GenericPhoto,
   GenericPost,
+  GenericTag,
   Override,
+  PhotoWithResizedOnly,
 } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
@@ -16,15 +18,21 @@ import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type Category = Pick<GenericCategory, 'id' | 'title'>
 export type Author = Pick<GenericAuthor, 'id' | 'name'>
-
-export type Photo = Pick<GenericPhoto, 'id' | 'name' | 'imageFile' | 'resized'>
+export type Photo = Pick<GenericPhoto, 'name' | 'resized'>
+export type Tag = Pick<GenericTag, 'id' | 'name'>
 
 export type RelatedPost = Override<
   Pick<
     GenericPost,
-    'id' | 'publishTime' | 'name' | 'readingTime' | 'heroImage'
+    | 'id'
+    | 'slug'
+    | 'style'
+    | 'name'
+    | 'publishTime'
+    | 'readingTime'
+    | 'heroImage'
   >,
-  { heroImage: Photo | null }
+  { heroImage: PhotoWithResizedOnly | null }
 >
 
 export type PostDetail = Override<
@@ -33,9 +41,6 @@ export type PostDetail = Override<
     | 'id'
     | 'slug'
     | 'name'
-    | 'subtitle'
-    | 'sortOrder'
-    | 'manualOrderOfRelatedPosts'
     | 'heroCaption'
     | 'heroImage'
     | 'content'
@@ -50,6 +55,7 @@ export type PostDetail = Override<
     | 'readingTime'
     | 'categories'
     | 'tags'
+    | 'ogImage'
   >,
   {
     dataAnalysts: Author[]
@@ -58,8 +64,12 @@ export type PostDetail = Override<
     heroImage: Photo | null
     relatedPosts: RelatedPost[]
     categories: Category[]
+    ogImage: PhotoWithResizedOnly | null
+    tags: Tag[]
   }
 >
+
+const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const post = gql`
   query ($id: ID!) {
@@ -67,13 +77,6 @@ const post = gql`
       id
       slug
       name
-      subtitle
-      sortOrder
-      heroCaption
-      content
-      summary
-      actionList
-      citation
       publishTime
       readingTime
       categories {
@@ -89,28 +92,38 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      content
+      summary
+      actionList
+      citation
+      heroCaption
       heroImage {
-        id
         name
-        imageFile {
-          url
-        }
         resized {
           ...ResizedImagesField
         }
       }
-      manualOrderOfRelatedPosts
-      relatedPosts {
+      ogImage {
+        resized {
+          ...ResizedImagesField
+        }
+      }
+      relatedPosts ( 
+        where: {
+           state: { equals: "published" }
+           style: {
+             in: [${convertToStringList(postStyles)}]
+           }
+         },  
+        orderBy: { publishTime: desc }
+      ) {
         id
+        slug
+        style
         name
         publishTime
         readingTime
         heroImage {
-          id
-          name
-          imageFile {
-            url
-          }
           resized {
             ...ResizedImagesField
           }
@@ -125,8 +138,6 @@ const post = gql`
   ${resizeImagesFragment}
   ${authorFragment}
 `
-
-const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const latestPosts = gql`
   query ($first: Int! = 3) {
