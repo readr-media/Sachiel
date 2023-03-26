@@ -79,10 +79,10 @@ const About: NextPageWithLayout<PageProps> = ({
 }) => {
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
-    Record<Language, PageVariable[]>
+    Record<Language, { data: PageVariable[]; hasFetched: boolean }>
   >({
-    ch: moreReportData,
-    en: [],
+    ch: { hasFetched: true, data: moreReportData },
+    en: { hasFetched: false, data: moreReportData },
   })
   const renderedAwards: RenderedAward[] = useMemo(() => {
     return awardsData.map((awardItem: Award) => {
@@ -119,7 +119,7 @@ const About: NextPageWithLayout<PageProps> = ({
     })
   }, [awardsData, language])
 
-  const fetchENMore = useCallback(async () => {
+  const fetchENMore = async () => {
     let moreReportDataEn: PageVariable[] = []
     try {
       const result: ApolloQueryResult<{ pageVariables: PageVariable[] }> =
@@ -135,16 +135,15 @@ const About: NextPageWithLayout<PageProps> = ({
     }
     setRenderedMore({
       ...renderedMore,
-      en: moreReportDataEn,
+      en: { data: moreReportDataEn, hasFetched: true },
     })
-    return moreReportData
-  }, [])
+  }
 
   useEffect(() => {
-    if (!renderedMore[language]?.length) {
+    if (!renderedMore[language]?.hasFetched) {
       fetchENMore()
     }
-  }, [language, renderedMore, fetchENMore])
+  }, [language, renderedMore])
 
   return (
     <Page>
@@ -160,7 +159,7 @@ const About: NextPageWithLayout<PageProps> = ({
       />
       <More
         title={wording[language].moreTitle}
-        renderedMore={renderedMore[language]}
+        renderedMore={renderedMore[language].data}
       />
     </Page>
   )

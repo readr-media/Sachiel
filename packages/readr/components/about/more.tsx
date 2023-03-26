@@ -128,7 +128,6 @@ export default function More({
   title: string
   renderedMore: PageVariable[]
 }): JSX.Element {
-  console.log(renderedMore)
   const getDescText = (value: unknown) => {
     if (!value) return ''
     let pureText = ''
