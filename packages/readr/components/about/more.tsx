@@ -7,29 +7,17 @@ import { PageVariable } from '~/graphql/query/page-variable'
 const Container = styled.div`
   position: relative;
   margin: 48px 20px;
-  .tail-arrow {
-    height: 37px;
-    margin-top: 44px;
-  }
   ${({ theme }) => `
     ${theme.breakpoint.md} {
       display: flex;
       justify-content: space-between;
       margin: 80px auto;
       max-width: 672px;
-      .tail-arrow {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-      }
     }
   `}
   ${({ theme }) => `
     ${theme.breakpoint.xl} {
       max-width: 1096px;
-      .tail-arrow {
-        height: 73px;
-      }
     }
   `}
 `
