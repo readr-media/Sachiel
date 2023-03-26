@@ -11,11 +11,10 @@ import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
 import More from '~/components/about/more'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
-import { Award, awards as awardsGql } from '~/graphql/query/award'
-import {
-  PageVariable,
-  pageVariablesByPage,
-} from '~/graphql/query/page-variable'
+import type { Award } from '~/graphql/query/award'
+import { awards as awardsGql } from '~/graphql/query/award'
+import type { PageVariable } from '~/graphql/query/page-variable'
+import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { Language, RenderedAward } from '~/types/about'
 
 import type { NextPageWithLayout } from './_app'

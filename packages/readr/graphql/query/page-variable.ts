@@ -2,10 +2,7 @@ import gql from 'graphql-tag'
 
 import type { GenericPhoto } from '~/types/common'
 
-export type Photo = Pick<
-  Required<GenericPhoto>,
-  'id' | 'name' | 'imageFile' | 'resized'
->
+export type Photo = Pick<Required<GenericPhoto>, 'id' | 'resized'>
 
 export type PageVariable = {
   id: string
@@ -22,7 +19,6 @@ const pageVariablesByPage = gql`
       orderBy: { createdAt: desc }
     ) {
       id
-      page
       name
       relatedImage {
         id
