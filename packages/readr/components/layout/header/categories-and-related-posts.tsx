@@ -7,7 +7,9 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import type { TransformedCategory } from './header-general'
+import * as gtag from '~/utils/gtag'
+
+import type { NavigationCategoryWithRelatedList } from './header-general'
 import RelatedListInHeader from './related-list-in-header'
 
 const Container = styled.ul`
@@ -66,7 +68,7 @@ const CategoryItem = styled.li`
 
 type CategoriesAndRelatedPostsProps = {
   isCategoryPage: boolean
-  categories: TransformedCategory[]
+  categories: NavigationCategoryWithRelatedList[]
 }
 
 export default function CategoriesAndRelatedPosts({
@@ -99,8 +101,11 @@ export default function CategoriesAndRelatedPosts({
           },
         }}
         shallow={isCategoryPage}
+        onClick={() =>
+          gtag.sendEvent('header', 'click', `menu-${category.title}`)
+        }
       >
-        <span>{category.name}</span>
+        <span>{category.title}</span>
       </NextLink>
       <RelatedListInHeader
         show={activeCatgoryId === category.id}

@@ -63,13 +63,14 @@ const ShowMoreControl = styled(NextLink)`
   }
 `
 
-type SectionHeadingProps = Partial<{
-  title: string
-  showMoreText: string
-  categorySlug: string
-  highlightColor: string
-  headingLevel: number
-}>
+type SectionHeadingProps = {
+  title?: string
+  showMoreText?: string
+  categorySlug?: string
+  highlightColor?: string
+  headingLevel?: number
+  clickOnMore?: () => void
+}
 
 export default function SectionHeading({
   title = '',
@@ -77,6 +78,7 @@ export default function SectionHeading({
   categorySlug = '',
   highlightColor = '#fff',
   headingLevel = 2,
+  clickOnMore,
 }: SectionHeadingProps): JSX.Element {
   const shouldShowMoreControl = showMoreText && categorySlug
 
@@ -96,6 +98,7 @@ export default function SectionHeading({
                 },
               }}
               title={showMoreText}
+              onClick={clickOnMore}
             >
               <span>{showMoreText}</span>
               <IconArrowRight className="icon" />

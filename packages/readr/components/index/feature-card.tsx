@@ -10,6 +10,7 @@ import styled, { useTheme } from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { FeaturedArticle } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 type StyledProps = {
   $isFirst: boolean
@@ -212,7 +213,7 @@ const Subtitle = styled.span`
   }
 `
 
-export type FeaturedArticleWithIsFirst = FeaturedArticle & {
+type FeaturedArticleWithIsFirst = Omit<FeaturedArticle, 'id'> & {
   isFirst?: boolean
 }
 
@@ -237,7 +238,12 @@ export default function FeatureCard({
     : { mobile: '100vw', tablet: '50vw', default: '33vw' }
 
   return (
-    <Container href={href} target="_blank" $isFirst={isFirst}>
+    <Container
+      href={href}
+      target="_blank"
+      $isFirst={isFirst}
+      onClick={() => gtag.sendEvent('homepage', 'click', `feature-${title}`)}
+    >
       <picture>
         <SharedImage
           images={images}

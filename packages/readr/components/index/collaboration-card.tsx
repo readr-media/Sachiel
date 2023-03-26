@@ -6,6 +6,7 @@ import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 
 import type { CollaborationItem } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 
 type StyledProps = {
   $isInProgress: boolean
@@ -205,7 +206,13 @@ export default function CollaborationCard({
   const theme = useTheme()
 
   return (
-    <Container href={href} target="_blank">
+    <Container
+      href={href}
+      target="_blank"
+      onClick={() =>
+        gtag.sendEvent('homepage', 'click', `collaboration-${title}`)
+      }
+    >
       <ImageBlock>
         <SharedImage
           images={images}

@@ -11,7 +11,7 @@ import { useHeaderCategoriesAndRelatePostsContext } from '~/hooks/useContext'
 import useWindowSize from '~/hooks/useWindowSize'
 import IconHamburger from '~/public/icons/hamburger.svg'
 import { mediaSize } from '~/styles/theme'
-import type { ArticleCard } from '~/types/component'
+import type { ArticleCard, NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
 
@@ -138,10 +138,7 @@ const ProgressBar = styled.progress`
   }
 `
 
-export type TransformedCategory = {
-  id: string
-  name: string
-  slug: string
+export type NavigationCategoryWithRelatedList = NavigationCategory & {
   relatedList: ArticleCard[]
 }
 
@@ -187,8 +184,8 @@ export default function HeaderGeneral({
   })
 
   // memorize transformedCategories to prevent unwanted re-rendering at child components
-  const transformedCategories: TransformedCategory[] = categories.map(
-    (item) => {
+  const transformedCategories: NavigationCategoryWithRelatedList[] =
+    categories.map((item) => {
       const relatedList =
         item.posts?.map((post) => {
           const { heroImage, ogImage } = post
@@ -198,12 +195,11 @@ export default function HeaderGeneral({
 
       return {
         id: item.id,
-        name: item.title ?? '',
+        title: item.title ?? '',
         slug: item.slug ?? '',
         relatedList,
       }
-    }
-  )
+    })
 
   function openHamburgerMenu() {
     setShouldShowHamburgerMenu(true)
@@ -274,9 +270,7 @@ export default function HeaderGeneral({
     <Header>
       <Wrapper>
         <LeftPart>
-          <HeaderLogo
-            onClick={() => gtag.sendEvent('header', 'click', 'logo')}
-          />
+          <HeaderLogo />
         </LeftPart>
         <MiddlePart>
           <CategoriesAndRelatedPosts
@@ -292,7 +286,12 @@ export default function HeaderGeneral({
           )}
 
           {!isPostPage && (
-            <DonateLink href="/donate" target="_blank" rel="external nofollow">
+            <DonateLink
+              href="/donate"
+              target="_blank"
+              rel="external nofollow"
+              onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+            >
               贊助我們
             </DonateLink>
           )}
