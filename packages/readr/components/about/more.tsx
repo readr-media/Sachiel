@@ -128,6 +128,7 @@ export default function More({
   title: string
   renderedMore: PageVariable[]
 }): JSX.Element {
+  console.log(renderedMore)
   const getDescText = (value: unknown) => {
     if (!value) return ''
     let pureText = ''
@@ -158,7 +159,9 @@ export default function More({
                       alt={report.name}
                       objectFit="cover"
                       rwd={{
+                        default: '100vw',
                         mobile: '441px',
+                        tablet: '352px',
                       }}
                     />
                   </ImageWrapper>
@@ -178,7 +181,9 @@ export default function More({
                       alt={report.name}
                       objectFit="cover"
                       rwd={{
-                        mobile: '352px',
+                        default: '100vw',
+                        mobile: '441px',
+                        tablet: '352px',
                       }}
                     />
                   </ImageWrapper>
