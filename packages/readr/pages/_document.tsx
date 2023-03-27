@@ -43,6 +43,16 @@ export default class MyDocument extends Document {
     return (
       <Html lang="zh-Hant">
         <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+            rel="stylesheet"
+          />
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -72,20 +82,6 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <Script
-            id="adobe-fonts"
-            strategy="beforeInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `(function(d) {
-          var config = {
-            kitId: 'icf3not',
-            scriptTimeout: 3000,
-            async: true
-          },
-          h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-        })(document);`,
-            }}
-          />
         </body>
       </Html>
     )
