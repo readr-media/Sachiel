@@ -82,7 +82,7 @@ const About: NextPageWithLayout<PageProps> = ({
     Record<Language, { data: PageVariable[]; hasFetched: boolean }>
   >({
     ch: { hasFetched: true, data: moreReportData },
-    en: { hasFetched: false, data: moreReportData },
+    en: { hasFetched: false, data: [] },
   })
   const renderedAwards: RenderedAward[] = useMemo(() => {
     return awardsData.map((awardItem: Award) => {
