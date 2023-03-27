@@ -1,4 +1,4 @@
-import type { ContentBlock, Entity } from 'draft-js'
+import type { RawDraftContentState } from 'draft-js'
 
 export type GenericImageFile = {
   url: string
@@ -48,18 +48,6 @@ export type GenericAuthor = {
   name: string
 }
 
-// draft-renderer type
-export interface GenericContentBlock extends ContentBlock {
-  key: string
-  text: string
-  type: string
-}
-
-export type GenericEditorState = {
-  blocks: GenericContentBlock[]
-  entityMap: Entity
-}
-
 export type GenericPost = {
   id: string
   slug: string
@@ -71,10 +59,10 @@ export type GenericPost = {
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
   heroCaption: string
-  content: GenericEditorState // draft-renderer JSON
-  summary: GenericEditorState // draft-renderer JSON
-  actionList: GenericEditorState // draft-renderer JSON
-  citation: GenericEditorState // draft-renderer JSON
+  content: RawDraftContentState // draft-renderer JSON
+  summary: RawDraftContentState // draft-renderer JSON
+  actionList: RawDraftContentState // draft-renderer JSON
+  citation: RawDraftContentState // draft-renderer JSON
   dataAnalysts: GenericAuthor[]
   writers: GenericAuthor[]
   designers: GenericAuthor[]

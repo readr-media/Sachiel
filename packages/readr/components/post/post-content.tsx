@@ -1,5 +1,6 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
+import type { RawDraftContentBlock } from 'draft-js'
 import styled from 'styled-components'
 
 import Heading from '~/components/post/post-heading'
@@ -7,7 +8,6 @@ import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
-import type { GenericContentBlock } from '~/types/common'
 
 const Container = styled.section`
   width: 100%;
@@ -173,7 +173,7 @@ interface PostProps {
 export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
-  const checkValue = (blocks: GenericContentBlock[]) => {
+  const checkValue = (blocks: RawDraftContentBlock[]) => {
     if (!blocks) {
       //if draft.blocks is undefined, return false
       return false
