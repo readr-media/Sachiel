@@ -2,6 +2,8 @@ import gql from 'graphql-tag'
 
 import type { GenericPhoto } from '~/types/common'
 
+import { resizeImagesFragment } from '../fragments/resized-images'
+
 export type Photo = Pick<Required<GenericPhoto>, 'id' | 'resized'>
 
 export type PageVariable = {
@@ -23,18 +25,14 @@ const pageVariablesByPage = gql`
       relatedImage {
         id
         resized {
-          original
-          w480
-          w800
-          w1200
-          w1600
-          w2400
+          ...ResizedImagesField
         }
       }
       value
       url
     }
   }
+  ${resizeImagesFragment}
 `
 
 export { pageVariablesByPage }
