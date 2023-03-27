@@ -63,8 +63,6 @@ const ReportItem = styled.li`
   :hover {
     .title-with-link {
       text-decoration-line: underline;
-      font-size: 18px;
-      line-height: 26px;
     }
     .image-with-link {
       transform: scale(1.1);
