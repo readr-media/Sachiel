@@ -129,9 +129,9 @@ export default function More({
   const getDescText = (value: unknown) => {
     if (!value) return ''
     let pureText = ''
-    value.blocks.forEach((paragraph) => {
-      pureText += paragraph.text
-    })
+    // value.blocks.forEach((paragraph) => {
+    //   pureText += paragraph.text
+    // })
     return pureText
   }
   return (
