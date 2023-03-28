@@ -175,8 +175,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
         const images =
           editorChoice.heroImage?.resized ??
-          heroImage?.resized ??
           ogImage?.resized ??
+          heroImage?.resized ??
           {}
 
         return convertPostToArticleCard(editorChoice?.choices, images)
@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     {
       const postConvertFunc = (post: Post): ArticleCard => {
         const { heroImage, ogImage } = post
-        const images = heroImage?.resized ?? ogImage?.resized ?? {}
+        const images = ogImage?.resized ?? heroImage?.resized ?? {}
         return convertPostToArticleCard(post, images)
       }
 
@@ -301,7 +301,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
         const { description } = feature
         const { subtitle = '', heroImage, ogImage } = feature.featurePost ?? {}
 
-        const images = heroImage?.resized ?? ogImage?.resized ?? {}
+        const images = ogImage?.resized ?? heroImage?.resized ?? {}
 
         const article = convertPostToArticleCard(feature?.featurePost, images)
 
