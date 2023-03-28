@@ -189,7 +189,7 @@ export default function HeaderGeneral({
       const relatedList =
         item.posts?.map((post) => {
           const { heroImage, ogImage } = post
-          const images = heroImage?.resized ?? ogImage?.resized ?? {}
+          const images = ogImage?.resized ?? heroImage?.resized ?? {}
           return convertPostToArticleCard(post, images)
         }) ?? []
 
