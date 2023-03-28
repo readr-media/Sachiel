@@ -2237,11 +2237,12 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mirrormedia/lilith-draft-renderer@^1.1.0-alpha.3":
-  version "1.1.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.1.0-alpha.3.tgz#5907307117243e3ddc20f83f43806ddb730c2705"
-  integrity sha512-FozijCfIUjFaVOuiIiMoBhlvZJNIDM+3R1lqb5I+scTwGJon2zTMiC8DR4IXoMZS7Ba0nnZozlwi6PJASks0Zw==
+"@mirrormedia/lilith-draft-renderer@1.1.0-alpha.4":
+  version "1.1.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.1.0-alpha.4.tgz#3944afbc083ef4d08a58b8fe9111f440f6111770"
+  integrity sha512-3uJpYa5rFBKWDqsVTMYxlv45bp4jUyF0bFCnLhSwguCir/eCYIWC7IZwk0Nuw8Wj/D+zVhwrkODsiSqsDPR8KQ==
   dependencies:
+    "@readr-media/react-image" "^1.5.1"
     draft-js "^0.11.7"
 
 "@next/env@12.3.1":
@@ -2773,7 +2774,7 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@readr-media/react-component@^2.0.0-alpha.1":
+"@readr-media/react-component@2.0.0-alpha.1":
   version "2.0.0-alpha.1"
   resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.0.0-alpha.1.tgz#3a13623f9715bbbb1968853033a6f3754914c8c4"
   integrity sha512-DuCN/VNZIdHa6ZbgpV1INTaOwbr7rdY24PR7aMKJzJeFOepKKTlEpPBr6YdORDtQmGESkEkYHe2xgkh28/z/hg==
