@@ -143,6 +143,12 @@ const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
         border-bottom: 1.5px solid #000928;
       }
     }
+
+    // Display an ellipsis (...) for titles that exceed 4 lines
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
 
   // custom style for <DateAndReadTimeInfo />
