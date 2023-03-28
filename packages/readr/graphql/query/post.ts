@@ -40,6 +40,7 @@ export type PostDetail = Override<
     GenericPost,
     | 'id'
     | 'slug'
+    | 'style'
     | 'name'
     | 'heroCaption'
     | 'heroImage'
@@ -77,6 +78,7 @@ const post = gql`
       id
       slug
       name
+      style
       publishTime
       readingTime
       categories {

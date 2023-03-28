@@ -20,6 +20,7 @@ export function getHref({
     case ValidPostStyle.NEWS:
     case ValidPostStyle.EMBEDDED:
     case ValidPostStyle.FRAME:
+    case ValidPostStyle.SCROLLABLE_VIDEO:
     case ValidPostStyle.BLANK:
       return `/post/${id}`
     case ValidPostStyle.REPORT:

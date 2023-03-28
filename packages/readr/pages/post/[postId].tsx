@@ -1,93 +1,50 @@
 // under construction
 
-import { SubscribeButton } from '@readr-media/react-component'
-import SharedImage from '@readr-media/react-image'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
 import type { ReactElement } from 'react'
-import styled from 'styled-components'
 
 import client from '~/apollo-client'
 import LayoutGeneral from '~/components/layout/layout-general'
-import Content from '~/components/post/post-content'
-import Report from '~/components/post/report'
-import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
+import Blank from '~/components/post/article-type/blank'
+import Frame from '~/components/post/article-type/frame'
+import News from '~/components/post/article-type/news'
+import ScrollableVideo from '~/components/post/article-type/scrollable-video'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 
-const HeroImage = styled.figure`
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto 24px;
-
-  //style for <SharedImage /> ( @readr-media/react-image )
-  .readr-media-react-image {
-    max-height: 480px;
-  }
-
-  figcaption {
-    font-size: 14px;
-    line-height: 21px;
-    color: rgba(0, 9, 40, 0.5);
-    padding: 0 20px;
-    margin: 8px 0 0;
-
-    ${({ theme }) => theme.breakpoint.md} {
-      /* display: block; */
-      width: 568px;
-      padding: 0;
-      margin: 12px auto 0;
-    }
-
-    ${({ theme }) => theme.breakpoint.xl} {
-      width: 960px;
-    }
-  }
-
-  ${({ theme }) => theme.breakpoint.lg} {
-    margin: 30px auto 60px;
-  }
-`
-
-const Subscribe = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #04295e;
-  padding: 0 20px;
-`
-
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
 }
 
-const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
-  return (
-    <>
-      <article>
-        <HeroImage>
-          <SharedImage
-            images={postData?.heroImage?.resized}
-            defaultImage={DEFAULT_POST_IMAGE_PATH}
-            alt={postData?.heroImage?.name}
-            priority={false}
-          />
-          <figcaption>{postData?.heroCaption}</figcaption>
-        </HeroImage>
+const PostPage: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
+  let articleType
 
-        <Content postData={postData} />
-      </article>
-      <Subscribe>
-        <SubscribeButton />
-      </Subscribe>
-      <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
-    </>
-  )
+  switch (postData.style) {
+    case 'news':
+      articleType = <News postData={postData} latestPosts={latestPosts} />
+      break
+    case 'scrollablevideo':
+      articleType = (
+        <ScrollableVideo postData={postData} latestPosts={latestPosts} />
+      )
+      break
+    case 'frame':
+      articleType = <Frame />
+      break
+    case 'blank':
+      articleType = <Blank />
+      break
+    default:
+      articleType = <News postData={postData} latestPosts={latestPosts} />
+      break
+  }
+
+  return <>{articleType}</>
 }
 
 export const getServerSideProps: GetServerSideProps<PostProps> = async ({
@@ -179,8 +136,8 @@ export const getServerSideProps: GetServerSideProps<PostProps> = async ({
   }
 }
 
-Post.getLayout = function getLayout(page: ReactElement) {
+PostPage.getLayout = function getLayout(page: ReactElement) {
   return <LayoutGeneral>{page}</LayoutGeneral>
 }
 
-export default Post
+export default PostPage
