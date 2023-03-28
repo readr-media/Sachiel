@@ -1,13 +1,12 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
+import type { RawDraftContentBlock } from 'draft-js'
 import styled from 'styled-components'
 
-import Heading from '~/components/post/post-heading'
 import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
-import type { GenericContentBlock } from '~/types/common'
 
 const Container = styled.section`
   width: 100%;
@@ -173,52 +172,51 @@ interface PostProps {
 export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
-  const checkValue = (blocks: GenericContentBlock[]) => {
+  const checkValue = (blocks: RawDraftContentBlock[]) => {
     if (!blocks) {
       //if draft.blocks is undefined, return false
       return false
     } else if (
       //if draft.blocks is default empty value, return false
       !blocks[0].text &&
-      blocks[0].type === 'unstyled'
+      blocks[0].type === 'unstyled' &&
+      blocks.length === 1
     ) {
       return false
     } else {
       return true
     }
   }
+
   return (
     <Container>
-      <Heading postData={postData} />
-      <article id="post">
-        <>
-          {checkValue(postData?.summary?.blocks) && (
-            <Summary>
-              <div>
-                <p className="title">報導重點摘要</p>
-                <DraftRenderer rawContentBlock={postData?.summary} />
-              </div>
-            </Summary>
-          )}
-        </>
-        <>
-          {checkValue(postData?.content?.blocks) && (
-            <Content>
-              <DraftRenderer rawContentBlock={postData?.content} />
-            </Content>
-          )}
-        </>
-        <>
-          {checkValue(postData?.actionList?.blocks) && (
-            <ActionList>
-              <p className="title">如果你關心這個議題</p>
-              <DraftRenderer rawContentBlock={postData?.actionList} />
-            </ActionList>
-          )}
-        </>
-      </article>
+      <>
+        {checkValue(postData?.summary?.blocks) && (
+          <Summary>
+            <div>
+              <p className="title">報導重點摘要</p>
+              <DraftRenderer rawContentBlock={postData?.summary} />
+            </div>
+          </Summary>
+        )}
+      </>
+      <>
+        {checkValue(postData?.content?.blocks) && (
+          <Content>
+            <DraftRenderer rawContentBlock={postData?.content} />
+          </Content>
+        )}
+      </>
+      <>
+        {checkValue(postData?.actionList?.blocks) && (
+          <ActionList>
+            <p className="title">如果你關心這個議題</p>
+            <DraftRenderer rawContentBlock={postData?.actionList} />
+          </ActionList>
+        )}
+      </>
       <DonateButton href={DONATION_PAGE_URL} />
-      <MediaLinkList className={'mobile-media-link'} />
+      <MediaLinkList className="mobile-media-link" />
       <>
         {checkValue(postData?.citation?.blocks) && (
           <Citation>
@@ -229,7 +227,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       </>
       <TagGroup>
         <PostTag tags={postData?.tags} />
-        <MediaLinkList className={'desktop-media-link'} />
+        <MediaLinkList className="desktop-media-link" />
       </TagGroup>
     </Container>
   )

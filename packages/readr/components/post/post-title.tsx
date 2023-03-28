@@ -1,10 +1,9 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import DateAndReadTimeInfo from '~/components/shared/date-and-read-time-info'
 import type { PostDetail } from '~/graphql/query/post'
 import { formatPostDate, formatReadTime } from '~/utils/post'
-
-import DateAndReadTimeInfo from '../shared/date-and-read-time-info'
 
 const DotStyle = `
     content: '';
@@ -18,7 +17,7 @@ const DotStyle = `
 const Category = styled.ul`
   display: flex;
   align-items: center;
-  margin: 0 0 8px;
+  margin: 0 0 16px;
   > li {
     display: inline-block;
     cursor: pointer;
@@ -57,12 +56,28 @@ const Category = styled.ul`
     z-index: -1;
   }
 `
+
+const Title = styled.h1`
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0.04em;
+  color: #000928;
+  margin: 0 0 16px;
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 36px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+  }
+`
 interface PostProps {
   postData: PostDetail
+  showTitle: boolean
 }
 
 export default function PostTitle({
   postData: { name, categories, publishTime, readingTime },
+  showTitle = true,
 }: PostProps): JSX.Element {
   const categoryItem = categories.map((item) => {
     return (
@@ -78,7 +93,7 @@ export default function PostTitle({
   return (
     <>
       {categories && <Category>{categoryItem}</Category>}
-      <h1>{name}</h1>
+      {showTitle && <Title>{name}</Title>}
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
     </>
   )
