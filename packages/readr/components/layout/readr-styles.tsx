@@ -5,7 +5,7 @@ import { createGlobalStyle } from 'styled-components'
  */
 export const ReadrStyles = createGlobalStyle`
 html {
-  font-family: source-han-sans-traditional, sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
 }
 
 picture {
