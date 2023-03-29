@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
-import type { RelatedPost } from '~/graphql/query/post'
+import type { ResizedImages } from '~/types/common'
 import { getHref } from '~/utils/post'
 
 const Wrapper = styled.div`
@@ -15,8 +15,25 @@ const Wrapper = styled.div`
     padding: 48px 0;
   }
 `
+
+type RelatedReport = Pick<
+  Post,
+  | 'id'
+  | 'slug'
+  | 'title'
+  | 'style'
+  | 'publishTime'
+  | 'readingTime'
+  | 'heroImage'
+  | 'ogImage'
+> & {
+  name: string
+  link: string
+  images: ResizedImages | null
+}
+
 interface Props {
-  relatedPosts?: RelatedPost[]
+  relatedPosts?: Post[]
   latestPosts?: Post[]
 }
 
@@ -24,23 +41,17 @@ export default function Report({
   relatedPosts,
   latestPosts,
 }: Props): JSX.Element {
-  function convertTitleToName(posts: Post[]) {
-    const modifiedPosts = posts?.map((post: Post) => {
-      const { title, ...rest } = post
-      return { name: title, ...rest }
-    })
-    return modifiedPosts
-  }
-
-  function addLinkToPosts(posts: (RelatedPost | Post)[]) {
-    const dataWithLink = posts?.map((post: RelatedPost | Post) => ({
+  function addLinkInPosts(posts: Post[]) {
+    const dataWithLink = posts?.map((post: Post) => ({
       ...post,
+      name: post.title,
+      images: post.ogImage?.resized || post.heroImage?.resized,
       link: getHref({
         style: post.style,
         id: post.id,
         slug: post.slug,
       }),
-    }))
+    })) as RelatedReport[]
     return dataWithLink
   }
 
@@ -50,14 +61,14 @@ export default function Report({
         {Array.isArray(relatedPosts) && relatedPosts.length > 0 && (
           <RelatedReport
             header="相關報導"
-            postData={addLinkToPosts(relatedPosts)}
+            postData={addLinkInPosts(relatedPosts)}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
           />
         )}
         {Array.isArray(latestPosts) && latestPosts.length > 0 && (
           <RelatedReport
             header="最新報導"
-            postData={addLinkToPosts(convertTitleToName(latestPosts))}
+            postData={addLinkInPosts(latestPosts)}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
           />
         )}
