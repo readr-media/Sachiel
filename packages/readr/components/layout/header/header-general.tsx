@@ -25,7 +25,7 @@ const Header = styled.header`
   top: 0;
   left: 0;
   background-color: #fff;
-  z-index: 499; // legency value, keep it for compatibility
+  z-index: ${({ theme }) => theme.zIndex.headerDesktop};
 `
 
 const Wrapper = styled.div`

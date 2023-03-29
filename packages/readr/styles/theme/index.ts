@@ -26,6 +26,12 @@ export const theme = {
     featuredEditorChoiceCard: '720px',
     editorChoiceCard: '296px',
   },
+  zIndex: {
+    top: 10000,
+    headerMobile: 550, // legency value, keep it for compatibility
+    headerDesktop: 499, // legency value, keep it for compatibility
+    maskOfPicture: 10,
+  },
 }
 
 export default theme
