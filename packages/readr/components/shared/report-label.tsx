@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 
-const Label = styled.label`
+const Label = styled.span`
   position: absolute;
   top: 4px;
   right: 4px;
