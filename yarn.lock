@@ -2774,10 +2774,13 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@readr-media/react-component@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.0.0-alpha.1.tgz#3a13623f9715bbbb1968853033a6f3754914c8c4"
-  integrity sha512-DuCN/VNZIdHa6ZbgpV1INTaOwbr7rdY24PR7aMKJzJeFOepKKTlEpPBr6YdORDtQmGESkEkYHe2xgkh28/z/hg==
+"@readr-media/react-component@2.0.0-alpha.4":
+  version "2.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.0.0-alpha.4.tgz#b1e730242ecf26421ca68a3c9c6f096109aa00f8"
+  integrity sha512-t6PTwp5LXL9uKU/+pzAY27thPf1eCU4hSfRcgkUl6cQdmYPOCfwCfJTD0d5niNC+Pkh/s6abMyzs/6AbHDTYgA==
+  dependencies:
+    "@readr-media/react-image" "^1.5.1"
+    dayjs "^1.11.7"
 
 "@readr-media/react-election-widgets@1.0.2":
   version "1.0.2"
@@ -2802,6 +2805,11 @@
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.5.1.tgz#d04b809416be6a1432a0a3154f2641292d7b6b8d"
   integrity sha512-BExGQWO158vtfox2mkwjT8khZp00KOwAObnZsQVzO4JNO4RlTog/5u7ccw7WuBd1OR07rlh/jKm4ts+qt78saw==
+
+"@readr-media/share-button@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@readr-media/share-button/-/share-button-1.0.3.tgz#a680ecc3546f2b7b4cee66885020d0204483834d"
+  integrity sha512-/WXXZi5PJJ21q7kO008sMnM+Kt/xHfQvFDCbkvihK9WqmquhiQFtIV/NPRYBCUtDWQdEO1KYW2yXsNWVNWs/sA==
 
 "@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"

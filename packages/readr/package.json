@@ -11,8 +11,9 @@
   "dependencies": {
     "@apollo/client": "^3.7.3",
     "@mirrormedia/lilith-draft-renderer": "1.1.0-alpha.4",
-    "@readr-media/react-component": "2.0.0-alpha.1",
+    "@readr-media/react-component": "2.0.0-alpha.4",
     "@readr-media/react-image": "^1.5.1",
+    "@readr-media/share-button": "^1.0.3",
     "@svgr/webpack": "^6.5.1",
     "@twreporter/errors": "^1.1.2",
     "@types/draft-js": "^0.11.10",
