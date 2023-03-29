@@ -74,7 +74,7 @@ const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
           <SharedImage
             images={postData?.heroImage?.resized}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
-            alt={postData?.heroImage?.name}
+            alt={postData?.title}
             priority={false}
           />
           <figcaption>{postData?.heroCaption}</figcaption>
