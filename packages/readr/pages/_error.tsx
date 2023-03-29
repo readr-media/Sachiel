@@ -1,5 +1,6 @@
 import errors from '@twreporter/errors'
 import type { NextPageContext } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactElement } from 'react'
@@ -199,13 +200,16 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 }) => {
   let errorImageSrc = ''
   let errorMessage = ''
+  let pageTitle = ''
 
   if (statusCode === 404) {
     errorImageSrc = '/icons/404.svg'
     errorMessage = '抱歉，找不到這個網址'
+    pageTitle = '找不到頁面'
   } else {
     errorImageSrc = '/icons/500.svg'
     errorMessage = '系統忙碌，請稍後再試'
+    pageTitle = '系統出了點問題'
   }
 
   const articleItems: ReactElement[] | undefined = latestPosts?.map(
@@ -233,6 +237,9 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 
   return (
     <Page>
+      <Head>
+        <title>{`${pageTitle}｜ Oops, something went wrong`}</title>
+      </Head>
       <Wrapper>
         <ErrorContainer>
           <Image
