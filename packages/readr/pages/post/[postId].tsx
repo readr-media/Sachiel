@@ -33,11 +33,11 @@ const PostPage: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
         <ScrollableVideo postData={postData} latestPosts={latestPosts} />
       )
       break
-    case 'frame':
-      articleType = <Frame />
-      break
     case 'blank':
-      articleType = <Blank />
+      articleType = <Blank postData={postData} />
+      break
+    case 'frame':
+      articleType = <Frame postData={postData} latestPosts={latestPosts} />
       break
     default:
       articleType = <News postData={postData} latestPosts={latestPosts} />

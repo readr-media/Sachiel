@@ -51,6 +51,7 @@ export type PostDetail = Override<
     | 'dataAnalysts'
     | 'writers'
     | 'designers'
+    | 'otherByline'
     | 'relatedPosts'
     | 'publishTime'
     | 'readingTime'
@@ -94,6 +95,7 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      otherByline
       content
       summary
       actionList
