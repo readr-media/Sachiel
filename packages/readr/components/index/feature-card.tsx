@@ -33,7 +33,7 @@ const Container = styled(NextLink)<Pick<StyledProps, '$isFirst'>>`
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 50;
+      z-index: 10; // be above picture
       background: linear-gradient(
         180deg,
         rgba(0, 9, 40, 0) 0%,
@@ -55,7 +55,6 @@ const Container = styled(NextLink)<Pick<StyledProps, '$isFirst'>>`
       object-fit: cover;
       object-position: center;
       background-color: #d8d8d8;
-      z-index: 5;
       transition: all 0.3s ease;
       &:hover {
         transform: scale(1.1);
@@ -82,7 +81,7 @@ const TextWrapper = styled.div<Pick<StyledProps, '$isFirst'>>`
   left: 8px;
   right: 8px;
   text-align: left;
-  z-index: 70;
+  z-index: 20; // be above <Container picture::before>
   ${({ theme }) => theme.breakpoint.md} {
     bottom: 16px;
     left: 24px;
@@ -114,7 +113,7 @@ const DescWithEmoji = styled.div<Pick<StyledProps, '$shouldShow'>>`
   display: block;
   top: 0;
   left: 0;
-  z-index: 70;
+  z-index: 20; // be above <Container picture::before>
   font-size: 16px;
   ${SharedDescWithEmojiStyles}
 
