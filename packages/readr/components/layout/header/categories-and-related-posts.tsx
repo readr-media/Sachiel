@@ -30,7 +30,6 @@ const CategoryItem = styled.li`
       line-height: 24px;
       letter-spacing: 2.5px;
       color: #000928;
-      z-index: 100;
     }
   }
 
@@ -46,7 +45,7 @@ const CategoryItem = styled.li`
           right: 0;
           height: 8px;
           background-color: #ebf02c;
-          z-index: -1;
+          z-index: -1; // be behind text
         }
         // triangle
         &:after {
