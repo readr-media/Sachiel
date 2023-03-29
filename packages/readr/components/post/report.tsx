@@ -24,6 +24,14 @@ export default function Report({
   relatedPosts,
   latestPosts,
 }: Props): JSX.Element {
+  function convertTitleToName(posts: Post[]) {
+    const modifiedPosts = posts?.map((post: Post) => {
+      const { title, ...rest } = post
+      return { name: title, ...rest }
+    })
+    return modifiedPosts
+  }
+
   function addLinkToPosts(posts: (RelatedPost | Post)[]) {
     const dataWithLink = posts?.map((post: RelatedPost | Post) => ({
       ...post,
@@ -49,7 +57,7 @@ export default function Report({
         {Array.isArray(latestPosts) && latestPosts.length > 0 && (
           <RelatedReport
             header="最新報導"
-            postData={addLinkToPosts(latestPosts)}
+            postData={addLinkToPosts(convertTitleToName(latestPosts))}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
           />
         )}
