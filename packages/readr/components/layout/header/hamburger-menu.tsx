@@ -22,7 +22,7 @@ const Container = styled.div`
   right: 0;
   background-color: #fff;
   overflow-y: auto;
-  z-index: 550;
+  z-index: 550; // legency value, keep it for compatibility
 
   ${({ theme }) => theme.breakpoint.lg} {
     display: none;
@@ -97,7 +97,7 @@ const CategoryItem = styled.li`
         right: 0;
         height: 20px;
         background-color: #ebf02c;
-        z-index: -1;
+        z-index: -1; // be behind text
       }
     }
   }
