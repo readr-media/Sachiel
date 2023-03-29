@@ -210,7 +210,8 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 
   const articleItems: ReactElement[] | undefined = latestPosts?.map(
     (article) => {
-      const images = article.heroImage?.resized ?? {}
+      const images =
+        article.ogImage?.resized ?? article.heroImage?.resized ?? {}
       const articleCard = convertPostToArticleCard(article, images)
 
       // Only show the date if it's a valid date
