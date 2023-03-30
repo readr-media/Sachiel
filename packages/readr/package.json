@@ -13,6 +13,7 @@
     "@mirrormedia/lilith-draft-renderer": "^1.1.0-alpha.3",
     "@readr-media/react-component": "2.0.0-alpha.5",
     "@readr-media/react-image": "^1.5.1",
+    "@readr-media/share-button": "^1.0.3",
     "@svgr/webpack": "^6.5.1",
     "@twreporter/errors": "^1.1.2",
     "@types/draft-js": "^0.11.10",

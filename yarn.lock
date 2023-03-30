@@ -2805,6 +2805,11 @@
   resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.5.1.tgz#d04b809416be6a1432a0a3154f2641292d7b6b8d"
   integrity sha512-BExGQWO158vtfox2mkwjT8khZp00KOwAObnZsQVzO4JNO4RlTog/5u7ccw7WuBd1OR07rlh/jKm4ts+qt78saw==
 
+"@readr-media/share-button@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@readr-media/share-button/-/share-button-1.0.3.tgz#a680ecc3546f2b7b4cee66885020d0204483834d"
+  integrity sha512-/WXXZi5PJJ21q7kO008sMnM+Kt/xHfQvFDCbkvihK9WqmquhiQFtIV/NPRYBCUtDWQdEO1KYW2yXsNWVNWs/sA==
+
 "@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@repeaterjs/repeater/-/repeater-3.0.4.tgz#a04d63f4d1bf5540a41b01a921c9a7fddc3bd1ca"
