@@ -144,7 +144,7 @@ export default function Footer(): JSX.Element {
   ]
 
   return (
-    <Main>
+    <Main className="layout-footer">
       <Container>
         <MediaLinkList>
           {externalLinks.map((item) => {
