@@ -42,16 +42,16 @@ export default function Report({
   latestPosts,
 }: Props): JSX.Element {
   function addLinkInPosts(posts: Post[]) {
-    const dataWithLink = posts?.map((post: Post) => ({
+    const dataWithLink: RelatedReport[] = posts?.map((post: Post) => ({
       ...post,
       name: post.title,
-      images: post.ogImage?.resized || post.heroImage?.resized,
+      images: post.ogImage?.resized || post.heroImage?.resized || null,
       link: getHref({
         style: post.style,
         id: post.id,
         slug: post.slug,
       }),
-    })) as RelatedReport[]
+    }))
     return dataWithLink
   }
 

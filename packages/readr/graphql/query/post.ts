@@ -20,28 +20,21 @@ export type Author = Pick<GenericAuthor, 'id' | 'name'>
 export type Tag = Pick<GenericTag, 'id' | 'name'>
 
 export type PostDetail = Override<
-  Pick<
-    GenericPost,
-    | 'id'
-    | 'slug'
-    | 'style'
-    | 'title'
-    | 'heroImage'
-    | 'ogImage'
-    | 'publishTime'
-    | 'readingTime'
-    | 'heroCaption'
-    | 'content'
-    | 'summary'
-    | 'actionList'
-    | 'citation'
-    | 'dataAnalysts'
-    | 'writers'
-    | 'designers'
-    | 'relatedPosts'
-    | 'categories'
-    | 'tags'
-  >,
+  Post &
+    Pick<
+      GenericPost,
+      | 'heroCaption'
+      | 'content'
+      | 'summary'
+      | 'actionList'
+      | 'citation'
+      | 'dataAnalysts'
+      | 'writers'
+      | 'designers'
+      | 'relatedPosts'
+      | 'categories'
+      | 'tags'
+    >,
   {
     heroImage: PhotoWithResizedOnly | null
     ogImage: PhotoWithResizedOnly | null
