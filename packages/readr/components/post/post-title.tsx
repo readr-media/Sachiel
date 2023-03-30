@@ -62,7 +62,7 @@ interface PostProps {
 }
 
 export default function PostTitle({
-  postData: { name, categories, publishTime, readingTime },
+  postData: { title, categories, publishTime, readingTime },
 }: PostProps): JSX.Element {
   const categoryItem = categories.map((item) => {
     return (
@@ -78,7 +78,7 @@ export default function PostTitle({
   return (
     <>
       {categories && <Category>{categoryItem}</Category>}
-      <h1>{name}</h1>
+      <h1>{title}</h1>
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
     </>
   )

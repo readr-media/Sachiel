@@ -1,8 +1,10 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
+import type { RawDraftContentBlock } from 'draft-js'
 import styled from 'styled-components'
 
 import Heading from '~/components/post/post-heading'
+import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
@@ -13,13 +15,6 @@ const Container = styled.section`
   margin: 0 auto;
   padding: 0px 20px;
 
-  ${({ theme }) => theme.breakpoint.md} {
-    padding: 0;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    max-width: 600px;
-  }
-
   #quote {
     width: 100%;
     height: 100px;
@@ -29,16 +24,29 @@ const Container = styled.section`
     margin: 0 auto 48px;
     max-width: 568px;
   }
-`
 
-const QuoteAndMedia = styled.section`
-  display: flex;
-  flex-direction: column;
+  .mobile-media-link {
+    display: flex;
+  }
+
+  .desktop-media-link {
+    display: none;
+  }
+
   ${({ theme }) => theme.breakpoint.md} {
-    .media-link-list {
-      order: 2;
-      margin: 0 0 48px auto;
+    padding: 0;
+
+    .mobile-media-link {
+      display: none;
     }
+
+    .desktop-media-link {
+      display: flex;
+      margin: 0;
+    }
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 600px;
   }
 `
 
@@ -111,11 +119,14 @@ const ActionList = styled.section`
 const Citation = styled.section`
   margin: 0 auto 48px;
   max-width: 568px;
-  width: 100%;
   border-radius: 2px;
-  ${({ theme }) => theme.breakpoint.xl} {
-    max-width: 600px;
+  width: calc(100% + 40px);
+  transform: translateX(-20px);
+
+  ${({ theme }) => theme.breakpoint.md} {
+    transform: none;
   }
+
   .title {
     text-align: center;
     background-color: #04295e;
@@ -141,6 +152,19 @@ const Citation = styled.section`
     margin: 0;
   }
 `
+const TagGroup = styled.div`
+  width: 100%;
+  max-width: 568px;
+
+  ${({ theme }) => theme.breakpoint.md} {
+    max-width: 568px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+    margin: 0 auto 52px;
+  }
+`
 
 interface PostProps {
   postData: PostDetail
@@ -149,12 +173,26 @@ interface PostProps {
 export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
+  const checkValue = (blocks: RawDraftContentBlock[]) => {
+    if (!blocks) {
+      //if draft.blocks is undefined, return false
+      return false
+    } else if (
+      //if draft.blocks is default empty value, return false
+      !blocks[0].text &&
+      blocks[0].type === 'unstyled'
+    ) {
+      return false
+    } else {
+      return true
+    }
+  }
   return (
     <Container>
       <Heading postData={postData} />
       <article id="post">
         <>
-          {postData?.summary && (
+          {checkValue(postData?.summary?.blocks) && (
             <Summary>
               <div>
                 <p className="title">報導重點摘要</p>
@@ -164,14 +202,14 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
           )}
         </>
         <>
-          {postData?.content && (
+          {checkValue(postData?.content?.blocks) && (
             <Content>
               <DraftRenderer rawContentBlock={postData?.content} />
             </Content>
           )}
         </>
         <>
-          {postData?.actionList && (
+          {checkValue(postData?.actionList?.blocks) && (
             <ActionList>
               <p className="title">如果你關心這個議題</p>
               <DraftRenderer rawContentBlock={postData?.actionList} />
@@ -180,17 +218,19 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
         </>
       </article>
       <DonateButton href={DONATION_PAGE_URL} />
-      <QuoteAndMedia>
-        <MediaLinkList />
-        <>
-          {postData?.citation && (
-            <Citation>
-              <p className="title">引用資料</p>
-              <DraftRenderer rawContentBlock={postData?.citation} />
-            </Citation>
-          )}
-        </>
-      </QuoteAndMedia>
+      <MediaLinkList className={'mobile-media-link'} />
+      <>
+        {checkValue(postData?.citation?.blocks) && (
+          <Citation>
+            <p className="title">引用資料</p>
+            <DraftRenderer rawContentBlock={postData?.citation} />
+          </Citation>
+        )}
+      </>
+      <TagGroup>
+        <PostTag tags={postData?.tags} />
+        <MediaLinkList className={'desktop-media-link'} />
+      </TagGroup>
     </Container>
   )
 }
