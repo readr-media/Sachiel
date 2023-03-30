@@ -105,7 +105,7 @@ export default function ScrollableVideo({
     }
   }
 
-  //remove first Embedded-Video block from raw data based on
+  //remove first Embedded-Video block from postData?.content based on `scrollVideoIndex`
   const remainBlocks = postData?.content?.blocks.filter((block) => {
     return (
       block.type !== 'atomic' || block.entityRanges[0].key !== scrollVideoIndex
