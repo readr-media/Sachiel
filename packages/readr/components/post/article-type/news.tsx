@@ -15,7 +15,7 @@ const HeroImage = styled.figure`
   max-width: 960px;
   margin: 0 auto 24px;
 
-  //@readr-media/react-image
+  //shared-component of @readr-media/react-image
   .readr-media-react-image {
     max-height: 480px;
   }
@@ -28,7 +28,6 @@ const HeroImage = styled.figure`
     margin: 8px 0 0;
 
     ${({ theme }) => theme.breakpoint.md} {
-      /* display: block; */
       width: 568px;
       padding: 0;
       margin: 12px auto 0;

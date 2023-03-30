@@ -24,12 +24,14 @@ const HeroImage = styled.picture`
   height: 100vh;
   position: absolute;
   top: 0;
-  z-index: 600;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
   margin-top: 0;
 `
 
 const ScrollVideo = styled.section`
   margin-bottom: 20px;
+  position: relative;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
 `
 
 const ScrollTitle = styled.h1`
@@ -38,7 +40,7 @@ const ScrollTitle = styled.h1`
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 650;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
   font-size: 28px;
   font-weight: 700;
   line-height: 36px;
@@ -46,6 +48,12 @@ const ScrollTitle = styled.h1`
   color: #fff;
   margin: 0 0 16px;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 36px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+  }
 `
 
 const PostHeading = styled.section`
@@ -87,9 +95,21 @@ export default function ScrollableVideo({
     blocks: [{ ...embeddedBlocks }],
   }
 
-  // remove first Embedded-Video block from `postData.content`.
+  // get first Embedded-Video key in `entityMap`
+  let scrollVideoIndex = 0
+
+  for (const key in postData?.content?.entityMap) {
+    if (postData?.content?.entityMap[key].type === 'EMBEDDEDCODE') {
+      scrollVideoIndex = parseInt(key, 10)
+      break
+    }
+  }
+
+  //remove first Embedded-Video block from raw data based on
   const remainBlocks = postData?.content?.blocks.filter((block) => {
-    return block.type !== 'atomic' || block.entityRanges[0].key !== 0
+    return (
+      block.type !== 'atomic' || block.entityRanges[0].key !== scrollVideoIndex
+    )
   })
 
   const postDataWithoutFirstScrollVideo = {
