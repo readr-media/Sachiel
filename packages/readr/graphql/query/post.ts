@@ -31,6 +31,7 @@ export type PostDetail = Override<
       | 'dataAnalysts'
       | 'writers'
       | 'designers'
+      | 'otherByline'
       | 'relatedPosts'
       | 'categories'
       | 'tags'
@@ -72,6 +73,7 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      otherByline
       tags {
         id
         name
