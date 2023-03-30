@@ -3,7 +3,6 @@ import { DonateButton } from '@readr-media/react-component'
 import type { RawDraftContentBlock } from 'draft-js'
 import styled from 'styled-components'
 
-import Heading from '~/components/post/post-heading'
 import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
@@ -14,16 +13,6 @@ const Container = styled.section`
   max-width: 568px;
   margin: 0 auto;
   padding: 0px 20px;
-
-  #quote {
-    width: 100%;
-    height: 100px;
-    background-color: rgba(245, 235, 255, 0.5);
-    text-align: center;
-    line-height: 100px;
-    margin: 0 auto 48px;
-    max-width: 568px;
-  }
 
   .mobile-media-link {
     display: flex;
@@ -142,6 +131,7 @@ const Citation = styled.section`
     }
   }
   .DraftEditor-root {
+    outline: 10px solid red;
     background-color: rgba(245, 235, 255, 0.5);
     padding: 12px 24px;
     ${({ theme }) => theme.breakpoint.md} {
@@ -189,34 +179,32 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
   }
   return (
     <Container>
-      <Heading postData={postData} />
-      <article id="post">
-        <>
-          {checkValue(postData?.summary?.blocks) && (
-            <Summary>
-              <div>
-                <p className="title">報導重點摘要</p>
-                <DraftRenderer rawContentBlock={postData?.summary} />
-              </div>
-            </Summary>
-          )}
-        </>
-        <>
-          {checkValue(postData?.content?.blocks) && (
-            <Content>
-              <DraftRenderer rawContentBlock={postData?.content} />
-            </Content>
-          )}
-        </>
-        <>
-          {checkValue(postData?.actionList?.blocks) && (
-            <ActionList>
-              <p className="title">如果你關心這個議題</p>
-              <DraftRenderer rawContentBlock={postData?.actionList} />
-            </ActionList>
-          )}
-        </>
-      </article>
+      <>
+        {checkValue(postData?.summary?.blocks) && (
+          <Summary>
+            <div>
+              <p className="title">報導重點摘要</p>
+              <DraftRenderer rawContentBlock={postData?.summary} />
+            </div>
+          </Summary>
+        )}
+      </>
+      <>
+        {checkValue(postData?.content?.blocks) && (
+          <Content>
+            <DraftRenderer rawContentBlock={postData?.content} />
+          </Content>
+        )}
+      </>
+      <>
+        {checkValue(postData?.actionList?.blocks) && (
+          <ActionList>
+            <p className="title">如果你關心這個議題</p>
+            <DraftRenderer rawContentBlock={postData?.actionList} />
+          </ActionList>
+        )}
+      </>
+
       <DonateButton href={DONATION_PAGE_URL} />
       <MediaLinkList className={'mobile-media-link'} />
       <>

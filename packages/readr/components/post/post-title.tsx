@@ -18,7 +18,7 @@ const DotStyle = `
 const Category = styled.ul`
   display: flex;
   align-items: center;
-  margin: 0 0 8px;
+  margin: 0 0 16px;
   > li {
     display: inline-block;
     cursor: pointer;
@@ -33,13 +33,13 @@ const Category = styled.ul`
     left: 7px;
   }
   a {
+    outline: 1px solid red;
     font-size: 14px;
     line-height: 14px;
     font-weight: 700;
     letter-spacing: 0.05em;
     color: #000928;
     border-bottom: 2px solid #000928;
-    z-index: 100;
     position: relative;
     ${({ theme }) => theme.breakpoint.lg} {
       font-size: 16px;
@@ -57,12 +57,29 @@ const Category = styled.ul`
     z-index: -1;
   }
 `
+
+const Title = styled.h1`
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0.04em;
+  color: #000928;
+  margin: 0 0 16px;
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 36px;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+  }
+`
+
 interface PostProps {
   postData: PostDetail
+  showTitle: boolean
 }
 
 export default function PostTitle({
   postData: { title, categories, publishTime, readingTime },
+  showTitle = true,
 }: PostProps): JSX.Element {
   const categoryItem = categories.map((item) => {
     return (
@@ -78,7 +95,7 @@ export default function PostTitle({
   return (
     <>
       {categories && <Category>{categoryItem}</Category>}
-      <h1>{title}</h1>
+      {showTitle && <Title>{title}</Title>}
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
     </>
   )
