@@ -14,12 +14,17 @@ import { formatPostDate } from '~/utils/post'
 
 const FrameWrapper = styled.div`
   background-color: #f6f6f5;
+
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 700;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
   padding-top: 72px;
+
+  .DraftEditor-root {
+    background-color: #f6f6f5;
+  }
 
   ${({ theme }) => theme.breakpoint.md} {
     padding-top: 88px;
@@ -69,23 +74,12 @@ const FrameCredit = styled.div`
   color: #2b2b2b;
   text-align: center;
 
-  ${({ theme }) => theme.breakpoint.md} {
-    padding: 48px 32px;
-  }
-
   .publish-time {
     margin-top: 16px;
   }
 
-  .credit-list {
-    width: 100%;
-    max-width: 568px;
-    margin: 0 auto;
-
-    ${({ theme }) => theme.breakpoint.xl} {
-      width: 600px;
-      max-width: 600px;
-    }
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 48px 32px;
   }
 `
 
@@ -93,7 +87,7 @@ const Header = styled.div`
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
@@ -119,6 +113,35 @@ const Header = styled.div`
   }
 `
 
+const CreditLists = styled.ul`
+  width: 100%;
+  max-width: 568px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  > li {
+    width: fit-content;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 10px;
+
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 16px;
+    }
+  }
+
+  .credit-title {
+    color: rgba(0, 9, 40, 0.66);
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    width: 600px;
+    max-width: 600px;
+  }
+`
+
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
@@ -130,6 +153,28 @@ export default function Frame({
 }: PostProps): JSX.Element {
   const date = formatPostDate(postData?.publishTime)
 
+  //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
+  //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
+  //change string to [ {title:..., name:...}, {title:..., name:...} ...]
+  let creditLists
+  if (postData?.otherByline.startsWith('*')) {
+    const changeStringToArray = postData?.otherByline.slice(1).split('／')
+
+    creditLists = changeStringToArray.map((credit) => {
+      const [title, name] = credit.split('：')
+      return { title, name }
+    })
+  }
+
+  const frameCreditLists = creditLists?.map((list, index) => {
+    return (
+      <li key={index}>
+        <span className="credit-title">{list.title}：</span>
+        <span>{list.name}</span>
+      </li>
+    )
+  })
+
   return (
     <FrameWrapper>
       <Header>
@@ -137,21 +182,23 @@ export default function Frame({
         <ShareButton />
       </Header>
       <article>
-        <HeroImage>
-          <SharedImage
-            images={postData?.heroImage?.resized}
-            defaultImage={DEFAULT_POST_IMAGE_PATH}
-            alt={postData?.heroCaption}
-            priority={false}
-          />
-          <figcaption>{postData?.heroCaption}</figcaption>
-        </HeroImage>
+        {postData?.heroImage && (
+          <HeroImage>
+            <SharedImage
+              images={postData?.heroImage.resized}
+              defaultImage={DEFAULT_POST_IMAGE_PATH}
+              alt={postData?.heroCaption}
+              priority={false}
+            />
+            <figcaption>{postData?.heroCaption}</figcaption>
+          </HeroImage>
+        )}
         <Content postData={postData} />
       </article>
       <Subscribe />
       <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
       <FrameCredit className="frame-credit">
-        <div className="credit-list">{postData?.otherByline}</div>
+        <CreditLists>{frameCreditLists}</CreditLists>
         <div className="publish-time">{date}</div>
       </FrameCredit>
       <Footer />

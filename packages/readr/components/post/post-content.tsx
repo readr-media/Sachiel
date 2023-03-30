@@ -162,6 +162,7 @@ interface PostProps {
 export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
+  //檢查欄位內是否有資料（因為欄位無資料，依舊會回傳 blocks 和 entityMap）
   const checkValue = (blocks: RawDraftContentBlock[]) => {
     if (!blocks) {
       //if draft.blocks is undefined, return false
@@ -169,7 +170,8 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
     } else if (
       //if draft.blocks is default empty value, return false
       !blocks[0].text &&
-      blocks[0].type === 'unstyled'
+      blocks[0].type === 'unstyled' &&
+      blocks.length === 1
     ) {
       return false
     } else {
