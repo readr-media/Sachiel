@@ -31,6 +31,7 @@ export const theme = {
     headerMobile: 550, // legency value, keep it for compatibility
     headerDesktop: 499, // legency value, keep it for compatibility
     maskOfPicture: 10,
+    articleType: 650, // type: `frame`, `blank`, `scrollablevideo` need to cover `header`
   },
 }
 
