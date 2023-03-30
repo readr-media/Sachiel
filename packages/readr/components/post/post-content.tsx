@@ -131,7 +131,6 @@ const Citation = styled.section`
     }
   }
   .DraftEditor-root {
-    outline: 10px solid red;
     background-color: rgba(245, 235, 255, 0.5);
     padding: 12px 24px;
     ${({ theme }) => theme.breakpoint.md} {

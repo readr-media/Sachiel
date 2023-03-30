@@ -33,7 +33,6 @@ const Category = styled.ul`
     left: 7px;
   }
   a {
-    outline: 1px solid red;
     font-size: 14px;
     line-height: 14px;
     font-weight: 700;
