@@ -22,7 +22,7 @@ const Container = styled.div`
   right: 0;
   background-color: #fff;
   overflow-y: auto;
-  z-index: 550; // legency value, keep it for compatibility
+  z-index: ${({ theme }) => theme.zIndex.headerMobile};
 
   ${({ theme }) => theme.breakpoint.lg} {
     display: none;
