@@ -12,6 +12,7 @@ const BlankWrapper = styled.article`
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
 
+  //modify the style of <Footer />.
   .layout-footer {
     background: #ffffff;
   }
