@@ -2,11 +2,11 @@ import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
-import Content from '~/components/post/post-content'
-import Credit from '~/components/post/post-credit'
-import Title from '~/components/post/post-title'
+import PostContent from '~/components/post/post-content'
+import PostCredit from '~/components/post/post-credit'
+import PostTitle from '~/components/post/post-title'
 import Report from '~/components/post/report'
-import Subscribe from '~/components/post/subscribe-button'
+import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
@@ -33,20 +33,17 @@ const ScrollVideo = styled.section`
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.articleType};
 `
-
 const ScrollTitle = styled.h1`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: ${({ theme }) => theme.zIndex.articleType};
   font-size: 28px;
   font-weight: 700;
   line-height: 36px;
   letter-spacing: 0.04em;
   color: #fff;
-  margin: 0 0 16px;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -130,9 +127,8 @@ export default function ScrollableVideo({
             alt={postData?.heroCaption}
             priority={false}
           />
+          <ScrollTitle>{postData?.title}</ScrollTitle>
         </HeroImage>
-
-        <ScrollTitle>{postData?.title}</ScrollTitle>
 
         {/* first embedded-video of `postData.content` */}
         <ScrollVideo>
@@ -140,15 +136,15 @@ export default function ScrollableVideo({
         </ScrollVideo>
 
         <PostHeading>
-          <Title postData={postData} showTitle={false} />
-          <Credit postData={postData} />
+          <PostTitle postData={postData} showTitle={false} />
+          <PostCredit postData={postData} />
         </PostHeading>
 
         {/* `postData.content` without first embedded-video */}
-        <Content postData={postDataWithoutFirstScrollVideo} />
+        <PostContent postData={postDataWithoutFirstScrollVideo} />
       </Article>
 
-      <Subscribe />
+      <SubscribeButton />
 
       <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
     </>
