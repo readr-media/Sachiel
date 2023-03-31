@@ -13,6 +13,7 @@ import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
+import { ValidPostStyle } from '~/types/common'
 
 interface PostProps {
   postData: PostDetail
@@ -20,21 +21,21 @@ interface PostProps {
 }
 
 const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
-  let articleType
+  let articleType: JSX.Element
 
   switch (postData.style) {
-    case 'news':
+    case ValidPostStyle.NEWS:
       articleType = <News postData={postData} latestPosts={latestPosts} />
       break
-    case 'scrollablevideo':
+    case ValidPostStyle.SCROLLABLE_VIDEO:
       articleType = (
         <ScrollableVideo postData={postData} latestPosts={latestPosts} />
       )
       break
-    case 'blank':
+    case ValidPostStyle.BLANK:
       articleType = <Blank postData={postData} />
       break
-    case 'frame':
+    case ValidPostStyle.FRAME:
       articleType = <Frame postData={postData} latestPosts={latestPosts} />
       break
     default:
@@ -48,66 +49,54 @@ const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
 export const getServerSideProps: GetServerSideProps<PostProps> = async ({
   query,
 }) => {
-  let postData, latestPosts
+  let postData: PostDetail, latestPosts: Post[]
 
-  //get `postData` by id
   try {
-    const { postId } = query
-    const { data, errors: gqlErrors } = await client.query({
-      query: post,
-      variables: { id: postId },
-    })
-
-    if (gqlErrors) {
-      const annotatingError = errors.helpers.wrap(
-        'GraphQLError',
-        'failed to complete `postData`',
-        { errors: gqlErrors }
-      )
-
-      throw annotatingError
-    }
-
-    postData = data.post ?? []
-  } catch (err) {
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
+    {
+      // fetch post data by id
+      const { postId } = query
+      const { data, errors: gqlErrors } = await client.query<{
+        post: PostDetail
+      }>({
+        query: post,
+        variables: { id: postId },
       })
-    )
-    return { notFound: true }
-  }
 
-  //get `latestPosts`
-  try {
-    const { data, errors: gqlErrors } = await client.query<{
-      latestPosts: Post[]
-    }>({
-      query: latestPostsQuery,
-      variables: {
-        first: 4,
-      },
-    })
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          'GraphQLError',
+          'failed to complete `postData`',
+          { errors: gqlErrors }
+        )
 
-    if (gqlErrors) {
-      const annotatingError = errors.helpers.wrap(
-        'GraphQLError',
-        'failed to complete `latestPosts`',
-        { errors: gqlErrors }
-      )
+        throw annotatingError
+      }
 
-      throw annotatingError
+      postData = data.post ?? []
     }
-    latestPosts = data.latestPosts ?? []
+
+    {
+      // fetch the latest 4 reports
+      const { data, errors: gqlErrors } = await client.query<{
+        latestPosts: Post[]
+      }>({
+        query: latestPostsQuery,
+        variables: {
+          first: 4,
+        },
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          'GraphQLError',
+          'failed to complete `latestPosts`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+      latestPosts = data.latestPosts ?? []
+    }
   } catch (err) {
     console.error(
       JSON.stringify({
@@ -128,8 +117,8 @@ export const getServerSideProps: GetServerSideProps<PostProps> = async ({
 
   return {
     props: {
-      postData: postData ?? [],
-      latestPosts: latestPosts ?? [],
+      postData: postData,
+      latestPosts: latestPosts,
     },
   }
 }
