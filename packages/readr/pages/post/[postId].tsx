@@ -25,6 +25,9 @@ const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
 
   switch (postData.style) {
     case ValidPostStyle.NEWS:
+    case ValidPostStyle.PROJECT3:
+    case ValidPostStyle.EMBEDDED:
+    case ValidPostStyle.REPORT:
       articleType = <News postData={postData} latestPosts={latestPosts} />
       break
     case ValidPostStyle.SCROLLABLE_VIDEO:
@@ -72,7 +75,11 @@ export const getServerSideProps: GetServerSideProps<PostProps> = async ({
         throw annotatingError
       }
 
-      postData = data.post ?? []
+      if (!data.post) {
+        return { notFound: true }
+      }
+
+      postData = data.post
     }
 
     {
