@@ -8,7 +8,7 @@ import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
 
-const Container = styled.section`
+const Container = styled.article`
   width: 100%;
   max-width: 568px;
   margin: 0 auto;
@@ -40,7 +40,7 @@ const Container = styled.section`
 `
 
 //重點摘要
-const Summary = styled.section`
+const Summary = styled.article`
   width: 100%;
   position: relative;
   padding: 16px 0 0;
@@ -82,12 +82,12 @@ const Summary = styled.section`
 `
 
 //內文
-const Content = styled.section`
+const Content = styled.article`
   margin: 0 0 32px 0;
 `
 
 //延伸議題
-const ActionList = styled.section`
+const ActionList = styled.article`
   .title {
     font-style: normal;
     font-weight: 700;
@@ -105,7 +105,7 @@ const ActionList = styled.section`
 `
 
 //引用數據
-const Citation = styled.section`
+const Citation = styled.article`
   margin: 0 auto 48px;
   max-width: 568px;
   border-radius: 2px;
@@ -154,7 +154,6 @@ const TagGroup = styled.div`
     margin: 0 auto 52px;
   }
 `
-
 interface PostProps {
   postData: PostDetail
 }
@@ -169,9 +168,9 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       return false
     } else if (
       //if draft.blocks is default empty value, return false
+      blocks.length === 1 &&
       !blocks[0].text &&
-      blocks[0].type === 'unstyled' &&
-      blocks.length === 1
+      blocks[0].type === 'unstyled'
     ) {
       return false
     } else {
@@ -180,42 +179,38 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
   }
   return (
     <Container>
-      <>
-        {checkValue(postData?.summary?.blocks) && (
-          <Summary>
-            <div>
-              <p className="title">報導重點摘要</p>
-              <DraftRenderer rawContentBlock={postData?.summary} />
-            </div>
-          </Summary>
-        )}
-      </>
-      <>
-        {checkValue(postData?.content?.blocks) && (
-          <Content>
-            <DraftRenderer rawContentBlock={postData?.content} />
-          </Content>
-        )}
-      </>
-      <>
-        {checkValue(postData?.actionList?.blocks) && (
-          <ActionList>
-            <p className="title">如果你關心這個議題</p>
-            <DraftRenderer rawContentBlock={postData?.actionList} />
-          </ActionList>
-        )}
-      </>
+      {checkValue(postData?.summary?.blocks) && (
+        <Summary>
+          <div>
+            <p className="title">報導重點摘要</p>
+            <DraftRenderer rawContentBlock={postData?.summary} />
+          </div>
+        </Summary>
+      )}
+
+      {checkValue(postData?.content?.blocks) && (
+        <Content>
+          <DraftRenderer rawContentBlock={postData?.content} />
+        </Content>
+      )}
+
+      {checkValue(postData?.actionList?.blocks) && (
+        <ActionList>
+          <p className="title">如果你關心這個議題</p>
+          <DraftRenderer rawContentBlock={postData?.actionList} />
+        </ActionList>
+      )}
 
       <DonateButton href={DONATION_PAGE_URL} />
       <MediaLinkList className={'mobile-media-link'} />
-      <>
-        {checkValue(postData?.citation?.blocks) && (
-          <Citation>
-            <p className="title">引用資料</p>
-            <DraftRenderer rawContentBlock={postData?.citation} />
-          </Citation>
-        )}
-      </>
+
+      {checkValue(postData?.citation?.blocks) && (
+        <Citation>
+          <p className="title">引用資料</p>
+          <DraftRenderer rawContentBlock={postData?.citation} />
+        </Citation>
+      )}
+
       <TagGroup>
         <PostTag tags={postData?.tags} />
         <MediaLinkList className={'desktop-media-link'} />
