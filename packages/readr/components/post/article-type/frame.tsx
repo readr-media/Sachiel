@@ -4,9 +4,9 @@ import { ShareButton } from '@readr-media/share-button'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
-import Content from '~/components/post/post-content'
+import PostContent from '~/components/post/post-content'
 import Report from '~/components/post/report'
-import Subscribe from '~/components/post/subscribe-button'
+import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
@@ -22,6 +22,7 @@ const FrameWrapper = styled.div`
   z-index: ${({ theme }) => theme.zIndex.articleType};
   padding-top: 72px;
 
+  //rewrite the style of <DraftRenderer> under <PostContent>
   .DraftEditor-root {
     background-color: #f6f6f5;
   }
@@ -87,7 +88,7 @@ const Header = styled.div`
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: ${({ theme }) => theme.zIndex.articleType};
+  z-index: inherit;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
@@ -193,9 +194,9 @@ export default function Frame({
             <figcaption>{postData?.heroCaption}</figcaption>
           </HeroImage>
         )}
-        <Content postData={postData} />
+        <PostContent postData={postData} />
       </article>
-      <Subscribe />
+      <SubscribeButton />
       <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
       <FrameCredit className="frame-credit">
         <CreditLists>{frameCreditLists}</CreditLists>
