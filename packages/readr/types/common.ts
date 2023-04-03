@@ -73,6 +73,7 @@ export type GenericPost = {
   publishTime: string
   readingTime: number
   tags: GenericTag[]
+  state: string
 }
 
 export type GenericCategory = {

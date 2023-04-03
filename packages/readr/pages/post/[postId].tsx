@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps<PostProps> = async ({
         throw annotatingError
       }
 
-      if (!data.post) {
+      if (!data.post || data.post.state !== 'published') {
         return { notFound: true }
       }
 
