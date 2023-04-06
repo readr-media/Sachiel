@@ -80,3 +80,8 @@
 ### Prod
 * [Cloud Build | ]()
 * [Cloud Run | ]()
+
+- - -
+## 備註
+- `/pages/post/[postId]` 頁面透過 `yarn dev` 查看時，如果文章內容含有 embedded-code 內容，出現 Hydration Error 的警示訊息為正常狀況。如希望在 `local` 端查看 embedded-code 文章內容，需透過 `yarn build` + `yarn start` 啟動服務，進行開發測試。 
+

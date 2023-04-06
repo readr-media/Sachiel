@@ -31,9 +31,11 @@ export type PostDetail = Override<
       | 'dataAnalysts'
       | 'writers'
       | 'designers'
+      | 'otherByline'
       | 'relatedPosts'
       | 'categories'
       | 'tags'
+      | 'state'
     >,
   {
     heroImage: PhotoWithResizedOnly | null
@@ -51,9 +53,10 @@ const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const post = gql`
   query ($id: ID!) {
-    post(where: { id: $id }) {
+    post (where: { id: $id }) {
       ...PostFields
-
+      
+      state
       content
       summary
       actionList
@@ -72,6 +75,7 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      otherByline
       tags {
         id
         name
