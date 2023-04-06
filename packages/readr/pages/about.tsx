@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import client from '~/apollo-client'
 import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
+import Members from '~/components/about/members'
 import More from '~/components/about/more'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import type { Award } from '~/graphql/query/award'
@@ -153,6 +154,7 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
+      <Members title="團隊成員" />
       <Awards
         renderedAwards={renderedAwards}
         title={wording[language].awardsTitle}
