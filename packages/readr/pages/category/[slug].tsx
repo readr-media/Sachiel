@@ -155,21 +155,14 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   const [dataAmount, setDataAmount] = useState(0)
 
   //infinite scroll: fetch more latest 12 posts
-  const fetchMoreLatestPosts = async (
-    activeCategory: NavigationCategoryWithArticleCards
-  ) => {
+  const fetchMoreLatestPosts = async () => {
     try {
       const variables: {
         first: number
         skip?: number
-        category?: string[]
       } = {
         first: 12,
         skip: currentItem?.posts?.length,
-      }
-
-      if (activeCategory.slug !== 'all') {
-        variables.category = [activeCategory.slug]
       }
 
       const {
@@ -266,7 +259,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   useEffect(() => {
     if (isAtBottom) {
       activeCategory.slug === 'all'
-        ? fetchMoreLatestPosts(activeCategory)
+        ? fetchMoreLatestPosts()
         : fetchMoreCategoryPosts(activeCategory)
     }
   }, [isAtBottom])

@@ -102,8 +102,7 @@ const post = gql`
 const latestPosts = gql`
   query  (
     $first: Int! = 3, 
-    $skip: Int! = 0, 
-    $category: [String!]
+    $skip: Int! = 0
   ) {
     latestPosts: posts(
       take: $first
@@ -113,10 +112,6 @@ const latestPosts = gql`
         style: {
           in: [${convertToStringList(postStyles)}]
         }
-        OR: [
-          { categories: { some: { slug: { in: $category } } } }
-          { categories:  {}  }
-        ]
       }
       orderBy: { publishTime: desc }
     ) {
