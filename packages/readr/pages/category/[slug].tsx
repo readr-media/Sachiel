@@ -3,7 +3,7 @@ import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
 
 import client from '~/apollo-client'
@@ -21,8 +21,8 @@ import { postStyles } from '~/graphql/query/post'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import type { NavigationCategory } from '~/types/component'
-import type { ArticleCard } from '~/types/component'
-import { convertPostToArticleCard } from '~/utils/post'
+import { postConvertFunc } from '~/utils/post'
+
 const shareStyle = css`
   width: 100%;
   ${({ theme }) => theme.breakpoint.sm} {
@@ -50,15 +50,19 @@ const CategoryWrapper = styled.div`
   }
 `
 const ItemList = styled.div`
-  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 20px;
   width: 100%;
+  margin-top: 20px;
 
   ${({ theme }) => theme.breakpoint.sm} {
     margin-top: 50px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    justify-content: flex-start;
+    gap: calc((100% - 1024px) / 3);
   }
 `
 
@@ -78,162 +82,50 @@ const Item = styled.li`
   ${shareStyle}
 `
 
-const postConvertFunc = (post: Post): ArticleCard => {
-  const { heroImage, ogImage } = post
-  const images = ogImage?.resized ?? heroImage?.resized ?? {}
-  return convertPostToArticleCard(post, images)
-}
-
 type PageProps = {
   categories: NavigationCategoryWithArticleCards[]
   latest: NavigationCategoryWithArticleCards
 }
 
 const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
-  //update title of `SectionHeading` & `CategoryNav` by router.query.slug
+  //update title by router.query.slug
   const router = useRouter()
+
+  const [sectionTitle, setSectionTitle] = useState('所有報導')
 
   const [activeCategory, setActiveCategory] =
     useState<NavigationCategory>(DEFAULT_CATEGORY)
 
-  const [sectionTitle, setSectionTitle] = useState('所有報導')
-
   useEffect(() => {
-    const matchedCategory = categories.find(
+    const matchedItem = categories.find(
       (category) => category.slug === router?.query?.slug
     )
 
-    if (matchedCategory) {
-      setActiveCategory(matchedCategory)
+    if (matchedItem) {
+      setActiveCategory(matchedItem)
       setSectionTitle(
-        matchedCategory.slug === 'all'
-          ? '所有報導'
-          : `所有${matchedCategory.title}報導`
+        matchedItem.slug === 'all' ? '所有報導' : `所有${matchedItem.title}報導`
       )
     }
   }, [])
 
   const updateActiveCategory = (category: NavigationCategory) => {
+    router.push(`/category/${category.slug}`, undefined, { shallow: true })
     setActiveCategory(category)
     setSectionTitle(
       category.slug === 'all' ? '所有報導' : `所有${category.title}報導`
     )
+    setIsAtBottom(false) //infinite scroll: reset `isAtBottom` to false when change category
   }
 
+  //render posts based on `currentItem`
   const [categoryPosts, setCategoryPosts] = useState(categories)
   const [allPosts, setAllPosts] = useState(latest)
 
   const currentItem: NavigationCategoryWithArticleCards | undefined =
-    useMemo(() => {
-      if (activeCategory?.slug === 'all') {
-        return allPosts
-      }
-      const matchedItem = categoryPosts.find(
-        (category) => category.slug === activeCategory.slug
-      )
-
-      return matchedItem
-      /* eslint-disable-next-line react-hooks/exhaustive-deps */
-    }, [activeCategory.slug, allPosts])
-
-  // infinite-scroll
-  const [ref, isAtBottom, setIsAtBottom] = useInfiniteScroll({
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-  })
-
-  //fetch more latest 12 posts
-  const fetchMorePosts = async (
-    activeCategory: NavigationCategoryWithArticleCards
-  ) => {
-    try {
-      const variables: {
-        first: number
-        skip?: number
-        category?: string[]
-      } = {
-        first: 12,
-      }
-      if (activeCategory.slug === 'all') {
-        variables.skip = allPosts?.posts?.length
-      } else {
-        variables.category = [activeCategory.slug]
-        variables.skip = currentItem?.posts?.length
-      }
-
-      const {
-        data: { latestPosts },
-        errors: gqlErrors,
-      } = await client.query<{ latestPosts: Post[] }>({
-        query: latestPostsQuery,
-        variables,
-      })
-
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `latestPosts` query'),
-          'GraphQLError',
-          'failed to complete `latestPosts`',
-          { errors: gqlErrors }
-        )
-
-        throw annotatingError
-      }
-
-      if (activeCategory.slug === 'all') {
-        const newPosts = [
-          ...(allPosts.posts ?? []),
-          ...latestPosts.map(postConvertFunc),
-        ]
-        setAllPosts({
-          ...allPosts,
-          posts: newPosts,
-        })
-      } else {
-        const matchedItem = categoryPosts.find(
-          (category) => category.slug === activeCategory.slug
-        )
-        if (matchedItem) {
-          matchedItem.posts = [
-            ...(matchedItem.posts ?? []),
-            ...latestPosts.map(postConvertFunc),
-          ]
-
-          const updatedCategoryPosts = categoryPosts.map((category) => {
-            if (category.slug === activeCategory.slug) {
-              return matchedItem
-            }
-            return category
-          })
-          setCategoryPosts(updatedCategoryPosts)
-        }
-      }
-    } catch (err) {
-      console.error(
-        JSON.stringify({
-          severity: 'ERROR',
-          message: errors.helpers.printAll(
-            err,
-            {
-              withStack: true,
-              withPayload: true,
-            },
-            0,
-            0
-          ),
-        })
-      )
-      return { notFound: true }
-    }
-  }
-
-  useEffect(() => {
-    if (isAtBottom) {
-      setIsAtBottom(false)
-      fetchMorePosts(activeCategory)
-    }
-  }, [isAtBottom])
+    activeCategory?.slug === 'all'
+      ? allPosts
+      : categoryPosts.find((category) => category.slug === activeCategory.slug)
 
   const theme = useTheme()
   const articleItems = currentItem?.posts?.map((article) => {
@@ -257,6 +149,127 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
       </Item>
     )
   })
+
+  //infinite scroll: check number of posts yet to be displayed.
+  //if number = 0, means all posts are displayed, observer.unobserve.
+  const [dataAmount, setDataAmount] = useState(0)
+
+  //infinite scroll: fetch more latest 12 posts
+  const fetchMoreLatestPosts = async (
+    activeCategory: NavigationCategoryWithArticleCards
+  ) => {
+    try {
+      const variables: {
+        first: number
+        skip?: number
+        category?: string[]
+      } = {
+        first: 12,
+        skip: currentItem?.posts?.length,
+      }
+
+      if (activeCategory.slug !== 'all') {
+        variables.category = [activeCategory.slug]
+      }
+
+      const {
+        data: { latestPosts },
+        errors: gqlErrors,
+      } = await client.query<{ latestPosts: Post[] }>({
+        query: latestPostsQuery,
+        variables,
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `latestPosts` query'),
+          'GraphQLError',
+          'failed to complete `latestPosts`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      const newPosts = [
+        ...(allPosts.posts ?? []),
+        ...latestPosts.map(postConvertFunc),
+      ]
+      setDataAmount(latestPosts.length) //number of posts yet to be displayed.
+
+      setAllPosts({
+        ...allPosts,
+        posts: newPosts,
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  //infinite scroll: fetch more specific category related 12 posts
+  const fetchMoreCategoryPosts = async (
+    activeCategory: NavigationCategoryWithArticleCards
+  ) => {
+    try {
+      {
+        const {
+          data: { categories },
+          error: gqlErrors,
+        } = await client.query<{
+          categories: Category[]
+        }>({
+          query: categoriesQuery,
+          variables: {
+            relatedPostFirst: 12,
+            shouldQueryRelatedPost: true,
+            shouldQueryRelatedReport: false,
+            relatedPostTypes: postStyles,
+            slug: activeCategory?.slug,
+            postSkip: currentItem?.posts?.length,
+          },
+        })
+
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            new Error('Errors returned in `categories` query'),
+            'GraphQLError',
+            'failed to complete `categories`',
+            { errors: gqlErrors }
+          )
+
+          throw annotatingError
+        }
+
+        const newPosts = categories[0]?.posts?.map(postConvertFunc) || []
+
+        setDataAmount(newPosts.length) //number of posts yet to be displayed.
+
+        setCategoryPosts(
+          categoryPosts.map((category) =>
+            category.slug === activeCategory.slug
+              ? { ...category, posts: [...(category.posts ?? []), ...newPosts] }
+              : category
+          )
+        )
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // infinite scroll
+  const [ref, isAtBottom, setIsAtBottom] = useInfiniteScroll({
+    amount: dataAmount,
+    dependency: activeCategory.slug,
+  })
+
+  useEffect(() => {
+    if (isAtBottom) {
+      activeCategory.slug === 'all'
+        ? fetchMoreLatestPosts(activeCategory)
+        : fetchMoreCategoryPosts(activeCategory)
+    }
+  }, [isAtBottom])
 
   return (
     <CategoryWrapper aria-label={sectionTitle}>

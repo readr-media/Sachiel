@@ -136,3 +136,9 @@ export function convertPostToArticleCard(
     images: images ?? {},
   }
 }
+
+export const postConvertFunc = (post: Post): ArticleCard => {
+  const { heroImage, ogImage } = post
+  const images = ogImage?.resized ?? heroImage?.resized ?? {}
+  return convertPostToArticleCard(post, images)
+}
