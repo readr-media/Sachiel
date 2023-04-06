@@ -83,7 +83,7 @@ export default function PostTitle({
   const categoryItem = categories.map((item) => {
     return (
       <li key={item.id}>
-        <Link href={`/category/${item.title}`}>{item.title}</Link>
+        <Link href={`/category/${item.slug}`}>{item.title}</Link>
       </li>
     )
   })
