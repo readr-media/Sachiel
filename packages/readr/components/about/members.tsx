@@ -151,7 +151,14 @@ const Name = styled.p`
     content: attr(
       data-name
     ); // Pass the 'name' variable here to ensure that the text-decoration has the same length as the text.
-    text-decoration: line-through 10px #ebf02c;
+
+    text-decoration-line: line-through;
+    -webkit-text-decoration-line: line-through;
+    text-decoration-color: #ebf02c;
+    -webkit-text-decoration-color: #ebf02c;
+    text-decoration-thickness: 10px;
+    -webkit-text-decoration-thickness: 10px;
+
     position: absolute;
     left: 0;
     right: 0;
@@ -303,7 +310,7 @@ const members = {
       {
         id: '63',
         isMember: true,
-        name: '章魚燒',
+        name: '燒燙燙的章魚燒他名字很長',
         name_en: 'Patrick Star',
         title: 'back-end engineer',
         title_en: 'back-end engineer',
