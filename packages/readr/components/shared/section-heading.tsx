@@ -30,7 +30,7 @@ const Container = styled.div<StyledProps>`
       right: 0;
       height: 10px;
       background-color: ${({ $highlightColor }) => $highlightColor};
-      z-index: -1;
+      z-index: -1; // behind text
     }
   }
 `

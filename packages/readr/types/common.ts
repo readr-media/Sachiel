@@ -1,3 +1,5 @@
+import type { RawDraftContentState } from 'draft-js'
+
 export type GenericImageFile = {
   url: string
 }
@@ -57,18 +59,21 @@ export type GenericPost = {
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
   heroCaption: string
-  content: unknown // it is hard to describe JSON type
-  summary: unknown // it is hard to describe JSON type
-  actionList: unknown // it is hard to describe JSON type
-  citation: unknown // it is hard to describe JSON type
+  content: RawDraftContentState // draft-renderer JSON
+  summary: RawDraftContentState // draft-renderer JSON
+  actionList: RawDraftContentState // draft-renderer JSON
+  citation: RawDraftContentState // draft-renderer JSON
   dataAnalysts: GenericAuthor[]
   writers: GenericAuthor[]
   designers: GenericAuthor[]
   categories: GenericCategory[]
+  otherByline: string
   relatedPosts: GenericPost[]
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
   publishTime: string
   readingTime: number
+  tags: GenericTag[]
+  state: string
 }
 
 export type GenericCategory = {
@@ -77,6 +82,11 @@ export type GenericCategory = {
   title: string
   posts: GenericPost[]
   reports: GenericPost[]
+}
+
+export type GenericTag = {
+  id: string
+  name: string
 }
 
 export type GenericEditorChoice = {

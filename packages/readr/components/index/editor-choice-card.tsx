@@ -149,7 +149,7 @@ const TextWrapper = styled.div<StyledProps>`
   }
 `
 
-const FeatureLabel = styled.label`
+const FeatureLabel = styled.span`
   display: inline-flex;
   align-items: center;
   background-color: #000928;

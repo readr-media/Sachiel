@@ -17,8 +17,7 @@ const Container = styled.div`
   border-top-left-radius: 2px;
   border-top-left-radius: 2px;
   overflow: hidden;
-  // TODO: manage z-index values
-  z-index: 599;
+  z-index: ${({ theme }) => theme.zIndex.top};
 
   ${({ theme }) => theme.breakpoint.md} {
     flex-direction: row;

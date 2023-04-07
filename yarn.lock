@@ -2773,10 +2773,13 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@readr-media/react-component@^1.0.2-alpha.6":
-  version "1.0.2-alpha.6"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-1.0.2-alpha.6.tgz#8b72acd63816c38273efcce7c7128f547b9d7903"
-  integrity sha512-MK1nLp4i3BxDyPkQwWF4L8OLi34Gek6I2AyCpaqGkYlKtEwsrfw6Cmj9aE+Iwl+mMaLl8DXeSw7EnS48KaNSjw==
+"@readr-media/react-component@2.0.0-alpha.5":
+  version "2.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.0.0-alpha.5.tgz#2812445728d7a6ad7ba815f8647768e98e0a2b92"
+  integrity sha512-RbgZimW1RvsYkGj+v8tuHk9s8EtYgZa0tuBQBIsr+aljaQvJGPJyC0f0R9/c5ipsvnlYM1sdm9QIsOcCuThvXw==
+  dependencies:
+    "@readr-media/react-image" "^1.5.1"
+    dayjs "^1.11.7"
 
 "@readr-media/react-election-widgets@1.0.2":
   version "1.0.2"
@@ -2801,6 +2804,11 @@
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.5.1.tgz#d04b809416be6a1432a0a3154f2641292d7b6b8d"
   integrity sha512-BExGQWO158vtfox2mkwjT8khZp00KOwAObnZsQVzO4JNO4RlTog/5u7ccw7WuBd1OR07rlh/jKm4ts+qt78saw==
+
+"@readr-media/share-button@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@readr-media/share-button/-/share-button-1.0.3.tgz#a680ecc3546f2b7b4cee66885020d0204483834d"
+  integrity sha512-/WXXZi5PJJ21q7kO008sMnM+Kt/xHfQvFDCbkvihK9WqmquhiQFtIV/NPRYBCUtDWQdEO1KYW2yXsNWVNWs/sA==
 
 "@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
@@ -3002,6 +3010,14 @@
   integrity sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==
   dependencies:
     "@types/node" "*"
+
+"@types/draft-js@^0.11.10":
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.11.10.tgz#46cf41e142b4b572467f7a78269a630a77e1f19c"
+  integrity sha512-o/DST8x0wNerwhRiaE577UHFIXb6HCywaZOZfj9TF2vU3CONvsCGoQmdOsKqERdXp+3ZNlSvFUH0B8lEEYOT4A==
+  dependencies:
+    "@types/react" "*"
+    immutable "~3.7.4"
 
 "@types/express-serve-static-core@^4.17.30", "@types/express-serve-static-core@^4.17.31":
   version "4.17.32"

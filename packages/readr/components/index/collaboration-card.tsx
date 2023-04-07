@@ -38,7 +38,7 @@ const ImageBlock = styled.div`
     transition: transform 0.3s;
   }
 `
-const InfoLabel = styled.label`
+const InfoLabel = styled.span`
   position: absolute;
   top: 8px;
   left: 7px;
@@ -55,7 +55,7 @@ const InfoLabel = styled.label`
     left: 6px;
   }
 `
-const StatusLabel = styled.label<StyledProps>`
+const StatusLabel = styled.span<StyledProps>`
   position: absolute;
   bottom: 7px;
   left: 50%;

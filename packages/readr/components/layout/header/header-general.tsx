@@ -25,7 +25,7 @@ const Header = styled.header`
   top: 0;
   left: 0;
   background-color: #fff;
-  z-index: 499;
+  z-index: ${({ theme }) => theme.zIndex.headerDesktop};
 `
 
 const Wrapper = styled.div`
@@ -126,7 +126,7 @@ const ProgressBar = styled.progress`
   height: 6px;
   appearance: none;
   border: none;
-  z-index: -5;
+  z-index: -1; // be behind <Wrapper>
   &::-webkit-progress-bar {
     background-color: hsla(0, 0%, 84.7%, 0.5);
   }
@@ -189,7 +189,7 @@ export default function HeaderGeneral({
       const relatedList =
         item.posts?.map((post) => {
           const { heroImage, ogImage } = post
-          const images = heroImage?.resized ?? ogImage?.resized ?? {}
+          const images = ogImage?.resized ?? heroImage?.resized ?? {}
           return convertPostToArticleCard(post, images)
         }) ?? []
 
