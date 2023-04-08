@@ -40,19 +40,22 @@ const Title = styled.h2`
   `}
 `
 const CardsWrapper = styled.div`
-  /* background-color: aqua; */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+  grid-gap: 20px; /* Safari 10-11 */
+  gap: 20px; /* Safari 12+ */
 
   ${({ theme }) => `
     ${theme.breakpoint.md} {
-      margin-left: 5px;
+      grid-template-columns: 1fr 1fr;
+     
   `}
 
   ${({ theme }) => `
     ${theme.breakpoint.xl} {
-      margin-left: 120px;
+      
+      
     }
   `}
 `
@@ -60,13 +63,8 @@ const CardsWrapper = styled.div`
 const Card = styled.div`
   position: relative;
   cursor: pointer;
-  margin: 0 0 20px 0;
-
-  ${({ theme }) => `
-    ${theme.breakpoint.sm} {
-      margin: 0 20px 20px 0;
-    }
-  `}
+  min-height: 160px;
+  width: 280px;
 
   &.flipped {
     .card-front {
@@ -76,13 +74,23 @@ const Card = styled.div`
       transform: rotateY(0deg);
     }
   }
+
+  ${({ theme }) => `
+    ${theme.breakpoint.md} {
+      width: 210.5px;
+  `}
+  ${({ theme }) => `
+    ${theme.breakpoint.xl} {
+      min-height: 166px;
+      width: 352px;
+  `}
 `
 
 const CardFront = styled.div`
   font-family: 'Noto Sans TC';
   background: #fff;
-  width: 280px;
-  min-height: 160px;
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -91,14 +99,6 @@ const CardFront = styled.div`
   position: relative;
   backface-visibility: hidden;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* ${({ theme }) => `
-    ${theme.breakpoint.md} {
-      width: 230px;
-  `}
-  ${({ theme }) => `
-    ${theme.breakpoint.xl} {
-      width: 280px;
-  `} */
 
   .arr-right {
     position: absolute;
@@ -140,7 +140,7 @@ const Name = styled.p`
   margin-top: 6px;
   font-weight: 700;
   font-size: 20px;
-  line-height: 150%;
+  line-height: 30px;
   color: rgba(0, 9, 40, 0.87);
   position: relative;
   z-index: 1;
@@ -164,6 +164,12 @@ const Name = styled.p`
     right: 0;
     z-index: -1;
   }
+
+  ${({ theme }) => `
+    ${theme.breakpoint.xl} {
+      font-size: 24px;
+      line-height: 36px;
+  `}
 `
 const Number = styled.div`
   font-style: normal;
@@ -205,8 +211,8 @@ const Work = styled.div`
 
 const CardBack = styled.div`
   background: #ebf02c;
-  width: 280px;
-  min-height: 160px;
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -217,14 +223,7 @@ const CardBack = styled.div`
   backface-visibility: hidden;
   transform: rotateY(180deg);
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* ${({ theme }) => `
-    ${theme.breakpoint.md} {
-      width: 230px;
-  `}
-  ${({ theme }) => `
-    ${theme.breakpoint.xl} {
-      width: 280px;
-  `} */
+
   .arr-left {
     position: absolute;
     left: 8px;
@@ -311,6 +310,19 @@ const members = {
         id: '63',
         isMember: true,
         name: '燒燙燙的章魚燒他名字很長',
+        name_en: 'Patrick Star',
+        title: 'back-end engineer',
+        title_en: 'back-end engineer',
+        special_number: '2266',
+        number_desc:
+          '如果很長很長，寫成一篇論文的話，如果真的有這麼多話要說的話，會怎麼樣呢？',
+        number_desc_en: 'My working style',
+        projects: [],
+      },
+      {
+        id: '64',
+        isMember: true,
+        name: '燒燙燙的章魚燒',
         name_en: 'Patrick Star',
         title: 'back-end engineer',
         title_en: 'back-end engineer',
