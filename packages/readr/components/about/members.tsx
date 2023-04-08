@@ -39,7 +39,7 @@ const Title = styled.h2`
     }
   `}
 `
-const CardsWrapper = styled.div`
+const CardsList = styled.ul`
   display: grid;
   justify-items: center;
   grid-template-columns: 1fr;
@@ -60,7 +60,7 @@ const CardsWrapper = styled.div`
   `}
 `
 
-const Card = styled.div`
+const Card = styled.li`
   position: relative;
   cursor: pointer;
   min-height: 160px;
@@ -341,7 +341,7 @@ export default function Members({ title }: { title: string }): JSX.Element {
 
   const handleClick = (
     memberId: string,
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>
   ) => {
     if (flippedCards.includes(memberId)) {
       setFlippedCards(flippedCards.filter((id) => id !== memberId))
@@ -356,7 +356,7 @@ export default function Members({ title }: { title: string }): JSX.Element {
   return (
     <Container>
       <Title>{title}</Title>
-      <CardsWrapper>
+      <CardsList>
         {members.data.authors.map((member) => (
           <Card
             key={member.id}
@@ -409,7 +409,7 @@ export default function Members({ title }: { title: string }): JSX.Element {
             </CardBack>
           </Card>
         ))}
-      </CardsWrapper>
+      </CardsList>
     </Container>
   )
 }
