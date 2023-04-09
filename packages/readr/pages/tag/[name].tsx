@@ -210,6 +210,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         throw annotatingError
       }
 
+      //if this tag not exist, return 404
+      if (!tags[0]?.posts) {
+        return { notFound: true }
+      }
+
       tagRelatedPosts = tags[0]?.posts?.map(postConvertFunc) || []
     }
   } catch (err) {
