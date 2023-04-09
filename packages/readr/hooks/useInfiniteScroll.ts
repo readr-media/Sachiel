@@ -1,18 +1,12 @@
-import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import type { Dispatch, MutableRefObject, SetStateAction } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type InfiniteScrollProps = {
   root?: Element | null
   rootMargin?: string
   threshold?: number | number[]
   amount?: number
-  dependency?: any
+  dependency?: unknown
 }
 
 const useInfiniteScroll = ({
@@ -28,7 +22,6 @@ const useInfiniteScroll = ({
 ] => {
   const [isAtBottom, setIsAtBottom] = useState(false)
   const ref = useRef(null)
-  const element = ref.current
 
   const options = {
     root,
@@ -38,7 +31,7 @@ const useInfiniteScroll = ({
 
   const callback: IntersectionObserverCallback = (entries) => {
     for (const entry of entries) {
-      if (element && entry.isIntersecting) {
+      if (ref && entry.isIntersecting) {
         setIsAtBottom(true)
       } else {
         setIsAtBottom(false)
@@ -48,6 +41,7 @@ const useInfiniteScroll = ({
 
   useEffect(() => {
     const observer = new IntersectionObserver(callback, options)
+    const element = ref.current
 
     if (element) {
       observer.observe(element)
@@ -62,7 +56,7 @@ const useInfiniteScroll = ({
         observer.unobserve(element)
       }
     }
-  }, [element, dependency])
+  }, [dependency, amount])
 
   return [ref, isAtBottom, setIsAtBottom]
 }
