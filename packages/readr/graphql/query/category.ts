@@ -17,6 +17,7 @@ export type Category = Override<
 const categories = gql`
   query (
     $first: Int
+    $slug: String
     $relatedPostFirst: Int = 4
     $relatedReportFirst: Int = 1
     $postSkip: Int
@@ -28,7 +29,10 @@ const categories = gql`
   ) {
     categories(
       take: $first
-      where: { state: { equals: "true" } }
+      where: { 
+        state: { equals: "true" } 
+        slug: { equals: $slug }
+      }
       orderBy: { createdAt: asc }
     ) {
       id
