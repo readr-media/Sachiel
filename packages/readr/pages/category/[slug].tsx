@@ -90,6 +90,7 @@ type PageProps = {
 const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   //update title by router.query.slug
   const router = useRouter()
+  const slug = router?.query?.slug
 
   const [sectionTitle, setSectionTitle] = useState('所有報導')
 
@@ -97,9 +98,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
     useState<NavigationCategory>(DEFAULT_CATEGORY)
 
   useEffect(() => {
-    const matchedItem = categories.find(
-      (category) => category.slug === router?.query?.slug
-    )
+    const matchedItem = categories.find((category) => category.slug === slug)
 
     if (matchedItem) {
       setActiveCategory(matchedItem)
@@ -107,7 +106,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
         matchedItem.slug === 'all' ? '所有報導' : `所有${matchedItem.title}報導`
       )
     }
-  }, [])
+  }, [slug])
 
   const updateActiveCategory = (category: NavigationCategory) => {
     router.push(`/category/${category.slug}`, undefined, { shallow: true })
