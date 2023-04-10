@@ -41,6 +41,7 @@ import type { CollaborationItem } from '~/types/component'
 import { convertDataSet } from '~/utils/data-set'
 import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
+import { postConvertFunc } from '~/utils/post'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -184,12 +185,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     }
 
     {
-      const postConvertFunc = (post: Post): ArticleCard => {
-        const { heroImage, ogImage } = post
-        const images = ogImage?.resized ?? heroImage?.resized ?? {}
-        return convertPostToArticleCard(post, images)
-      }
-
       {
         // fetch categories and related latest reports
         const { data, error: gqlErrors } = await client.query<{

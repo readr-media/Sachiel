@@ -15,7 +15,7 @@ import { convertToStringList } from '~/utils/common'
 import { authorFragment } from '../fragments/author'
 import { resizeImagesFragment } from '../fragments/resized-images'
 
-export type Category = Pick<GenericCategory, 'id' | 'title'>
+export type Category = Pick<GenericCategory, 'id' | 'title' | 'slug'>
 export type Author = Pick<GenericAuthor, 'id' | 'name'>
 export type Tag = Pick<GenericTag, 'id' | 'name'>
 
@@ -49,7 +49,7 @@ export type PostDetail = Override<
   }
 >
 
-const postStyles = [...POST_STYLES, ...REPORT_STYLES]
+export const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const post = gql`
   query ($id: ID!) {
@@ -65,6 +65,7 @@ const post = gql`
       categories {
         id
         title
+        slug
       }
       dataAnalysts {
         ...AuthorFields
@@ -99,9 +100,13 @@ const post = gql`
 `
 
 const latestPosts = gql`
-  query ($first: Int! = 3) {
+  query  (
+    $first: Int! = 3, 
+    $skip: Int! = 0
+  ) {
     latestPosts: posts(
       take: $first
+      skip: $skip
       where: {
         state: { equals: "published" }
         style: {
