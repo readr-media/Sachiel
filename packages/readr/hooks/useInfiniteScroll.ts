@@ -31,7 +31,7 @@ const useInfiniteScroll = ({
 
   const callback: IntersectionObserverCallback = (entries) => {
     for (const entry of entries) {
-      if (ref && entry.isIntersecting) {
+      if (ref.current && entry.isIntersecting) {
         setIsAtBottom(true)
       } else {
         setIsAtBottom(false)
