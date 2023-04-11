@@ -26,6 +26,7 @@ const tags = gql`
     } ) {
       id
       name
+      state
       posts (
         take: $relatedPostFirst
         skip: $postSkip
