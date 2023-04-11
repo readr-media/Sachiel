@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import type { Member } from '~/graphql/query/member'
 import ArrowLeft from '~/public/icons/arr-left.svg'
 import ArrowRight from '~/public/icons/arr-right.svg'
 
@@ -51,13 +52,6 @@ const CardsList = styled.ul`
       grid-template-columns: 1fr 1fr;
      
   `}
-
-  ${({ theme }) => `
-    ${theme.breakpoint.xl} {
-      
-      
-    }
-  `}
 `
 
 const Card = styled.li`
@@ -98,6 +92,7 @@ const CardFront = styled.div`
   align-items: center;
   position: relative;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   .arr-right {
@@ -221,6 +216,7 @@ const CardBack = styled.div`
   position: absolute;
   top: 0;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   transform: rotateY(180deg);
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -257,86 +253,16 @@ const Caption = styled.div`
   color: rgba(0, 9, 40, 0.66);
 `
 
-const members = {
-  data: {
-    authors: [
-      {
-        id: '60',
-        isMember: true,
-        name: '海綿寶寶',
-        name_en: 'SpongeBob SquarePants',
-        title: 'front-end engineer',
-        title_en: 'front-end engineer',
-        special_number: '1314',
-        number_desc: '一森一墅',
-        number_desc_en: 'a forest a maison',
-        projects: [
-          {
-            id: '1',
-            name: 'P#新聞實驗室',
-          },
-        ],
-      },
-      {
-        id: '61',
-        isMember: true,
-        name: '派大星',
-        name_en: 'Patrick Star',
-        title: 'back-end engineer',
-        title_en: 'back-end engineer',
-        special_number: '2266',
-        number_desc: '我的工作風格',
-        number_desc_en: 'My working style',
-        projects: [],
-      },
-      {
-        id: '62',
-        isMember: true,
-        name: '章魚哥',
-        name_en: 'Patrick Star',
-        title: 'back-end engineer',
-        title_en: 'back-end engineer',
-        special_number: '2266',
-        number_desc: '我的工作風格',
-        number_desc_en: 'My working style',
-        projects: [
-          {
-            id: '1',
-            name: 'P#新聞實驗室',
-          },
-        ],
-      },
-      {
-        id: '63',
-        isMember: true,
-        name: '燒燙燙的章魚燒他名字很長',
-        name_en: 'Patrick Star',
-        title: 'back-end engineer',
-        title_en: 'back-end engineer',
-        special_number: '2266',
-        number_desc:
-          '如果很長很長，寫成一篇論文的話，如果真的有這麼多話要說的話，會怎麼樣呢？',
-        number_desc_en: 'My working style',
-        projects: [],
-      },
-      {
-        id: '64',
-        isMember: true,
-        name: '燒燙燙的章魚燒',
-        name_en: 'Patrick Star',
-        title: 'back-end engineer',
-        title_en: 'back-end engineer',
-        special_number: '2266',
-        number_desc:
-          '如果很長很長，寫成一篇論文的話，如果真的有這麼多話要說的話，會怎麼樣呢？',
-        number_desc_en: 'My working style',
-        projects: [],
-      },
-    ],
-  },
-}
-
-export default function Members({ title }: { title: string }): JSX.Element {
+export default function Members({
+  title,
+  language,
+  members,
+}: {
+  title: string
+  language: string
+  members: Member[]
+}): JSX.Element {
+  console.log({ language }, members)
   const [flippedCards, setFlippedCards] = useState<string[]>([])
 
   const handleClick = (
@@ -353,11 +279,46 @@ export default function Members({ title }: { title: string }): JSX.Element {
     e.stopPropagation()
   }
 
+  const positionTranslations: {
+    [key: string]: {
+      [key: string]: string
+    }
+  } = {
+    en: {
+      'front-end engineer': 'Front-end Engineer',
+      'social media editor': 'Social Media Editor, Journalist',
+      journalist: 'Journalist',
+      'product designer': 'Product Designer',
+      'back-end engineer': 'Back-end Engineer',
+      'editor in chief': 'Editor in Chief',
+      'full-stack engineer': 'Full-stack Engineer',
+      'Feature Producer': 'Feature Producer, Journalist',
+      'product manager': 'Product Manager',
+      'App engineer': 'App Engineer',
+    },
+    ch: {
+      'front-end engineer': '前端工程師',
+      'social media editor': '社群、記者',
+      journalist: '記者',
+      'product designer': '設計師',
+      'back-end engineer': '後端工程師',
+      'editor in chief': '總編輯',
+      'full-stack engineer': '全端工程師',
+      'Feature Producer': '專題製作人、記者',
+      'product manager': '產品經理',
+      'App engineer': 'App工程師',
+    },
+  }
+
+  const formatPosition = (position: string, language: string): string => {
+    return positionTranslations[language]?.[position] ?? position
+  }
+
   return (
     <Container>
       <Title>{title}</Title>
       <CardsList>
-        {members.data.authors.map((member) => (
+        {members.map((member) => (
           <Card
             key={member.id}
             onClick={(e) => handleClick(member.id, e)}
@@ -366,10 +327,20 @@ export default function Members({ title }: { title: string }): JSX.Element {
             <CardFront className="card-front">
               <InfoWrapper>
                 <ArrowRight className="arr-right" />
-                <Position>前端工程師</Position>
-                <Name data-name={member.name}>{member.name}</Name>
+                <Position>
+                  {formatPosition(member?.title ?? '', language)}
+                </Position>
+                {language === 'en' ? (
+                  <>
+                    <Name data-name={member.name_en}>{member.name_en}</Name>
+                  </>
+                ) : (
+                  <>
+                    <Name data-name={member.name}>{member.name}</Name>
+                  </>
+                )}
                 <Number>
-                  {member.special_number.split('').map((digit, index) => {
+                  {member.special_number?.split('').map((digit, index) => {
                     return (
                       <div className="digit" key={index}>
                         {digit}
@@ -378,7 +349,7 @@ export default function Members({ title }: { title: string }): JSX.Element {
                   })}
                 </Number>
               </InfoWrapper>
-              {member.projects.length === 0 ? (
+              {member.projects?.length === 0 ? (
                 <Work
                   style={{
                     backgroundColor: '#E5E5E5',
@@ -397,7 +368,7 @@ export default function Members({ title }: { title: string }): JSX.Element {
             <CardBack className="card-back">
               <ArrowLeft className="arr-left" />
               <Number className="number-back">
-                {member.special_number.split('').map((digit, index) => {
+                {member.special_number?.split('').map((digit, index) => {
                   return (
                     <div className="digit" key={index}>
                       {digit}
@@ -405,7 +376,11 @@ export default function Members({ title }: { title: string }): JSX.Element {
                   )
                 })}
               </Number>
-              <Caption>{member.number_desc}</Caption>
+              {language === 'en' ? (
+                <Caption>{member.number_desc_en}</Caption>
+              ) : (
+                <Caption>{member.number_desc}</Caption>
+              )}
             </CardBack>
           </Card>
         ))}

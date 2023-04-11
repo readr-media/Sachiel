@@ -3,7 +3,7 @@
 import { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
-import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import client from '~/apollo-client'
@@ -14,6 +14,8 @@ import More from '~/components/about/more'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import type { Award } from '~/graphql/query/award'
 import { awards as awardsGql } from '~/graphql/query/award'
+import type { Member } from '~/graphql/query/member'
+import { members as MembersGql } from '~/graphql/query/member'
 import type { PageVariable } from '~/graphql/query/page-variable'
 import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { Language, RenderedAward } from '~/types/about'
@@ -32,6 +34,7 @@ type languageWording = {
   }
   awardsTitle: string
   moreTitle: string
+  memberTitle: string
 }
 
 const wording: Record<Language, languageWording> = {
@@ -43,6 +46,7 @@ const wording: Record<Language, languageWording> = {
     },
     awardsTitle: '獲獎經歷',
     moreTitle: '更認識我們',
+    memberTitle: '團隊成員',
   },
   en: {
     landing: {
@@ -52,6 +56,7 @@ const wording: Record<Language, languageWording> = {
     },
     awardsTitle: 'Awards',
     moreTitle: 'More',
+    memberTitle: 'Members',
   },
 }
 
@@ -72,11 +77,13 @@ const Page = styled.div`
 type PageProps = {
   awardsData: Award[]
   moreReportData: PageVariable[]
+  membersData: Member[]
 }
 
 const About: NextPageWithLayout<PageProps> = ({
   awardsData,
   moreReportData,
+  membersData,
 }) => {
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
@@ -154,7 +161,11 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
-      <Members title="團隊成員" />
+      <Members
+        language={language}
+        title={wording[language].memberTitle}
+        members={membersData}
+      />
       <Awards
         renderedAwards={renderedAwards}
         title={wording[language].awardsTitle}
@@ -170,6 +181,7 @@ const About: NextPageWithLayout<PageProps> = ({
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
+  let membersData: Member[] = []
   try {
     const result: ApolloQueryResult<{ awards: Award[] }> = await client.query({
       query: awardsGql,
@@ -216,10 +228,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
       })
     )
   }
+  try {
+    const membersResult: ApolloQueryResult<{ authors: Member[] }> =
+      await client.query({
+        query: MembersGql,
+      })
+
+    membersData = membersResult.data.authors
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
   return {
     props: {
       awardsData,
       moreReportData,
+      membersData,
     },
   }
 }
