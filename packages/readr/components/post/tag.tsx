@@ -38,8 +38,10 @@ const TagWrapper = styled.ul`
   }
 `
 
+type PostTag = Pick<GenericTag, 'id' | 'name'>
+
 type TagProps = {
-  tags: GenericTag[]
+  tags: PostTag[]
 }
 
 export default function PostTag({ tags }: TagProps): JSX.Element {

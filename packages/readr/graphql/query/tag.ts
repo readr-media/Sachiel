@@ -1,13 +1,13 @@
 import gql from 'graphql-tag'
 
-import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import { POST_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
 import type { GenericTag, Override } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
 export type Tag = Override<
-  Pick<GenericTag, 'id' | 'name' | 'state' | 'posts'>,
+  Pick<GenericTag, 'id' | 'name' | 'posts'>,
   {
     posts?: Post[]
   }
@@ -26,7 +26,6 @@ const tags = gql`
     } ) {
       id
       name
-      state
       posts (
         take: $relatedPostFirst
         skip: $postSkip
