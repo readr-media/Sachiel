@@ -87,6 +87,8 @@ export type GenericCategory = {
 export type GenericTag = {
   id: string
   name: string
+  state: string
+  posts: GenericPost[]
 }
 
 export type GenericEditorChoice = {
