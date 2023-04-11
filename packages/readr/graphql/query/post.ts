@@ -77,7 +77,11 @@ const post = gql`
         ...AuthorFields
       }
       otherByline
-      tags {
+      tags ( 
+        where: { 
+          state: { equals: "active" } 
+        } 
+      ) {
         id
         name
       }
