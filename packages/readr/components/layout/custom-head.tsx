@@ -79,6 +79,7 @@ const OpenGraph = ({ properties }: { properties: OGProperties }) => {
 type HeadProps = {
   title?: string
   description?: string
+  imageUrl?: string
 }
 
 export default function CustomHead(props: HeadProps): JSX.Element {
@@ -94,7 +95,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
       width: '1200',
       height: '630',
       type: 'images/jpeg',
-      url: `${SITE_URL}/og.jpg`,
+      url: props.imageUrl ?? `${SITE_URL}/og.jpg`,
     },
     card: 'summary_large_image',
   }
