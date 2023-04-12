@@ -58,6 +58,7 @@ export type GenericPost = {
   sortOrder: number
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
+  ogDescription: string | null
   heroCaption: string
   content: RawDraftContentState // draft-renderer JSON
   summary: RawDraftContentState // draft-renderer JSON
@@ -82,6 +83,8 @@ export type GenericCategory = {
   title: string
   posts: GenericPost[]
   reports: GenericPost[]
+  ogImage: GenericPhoto | null
+  ogDescription: string | null
 }
 
 export type GenericTag = {
