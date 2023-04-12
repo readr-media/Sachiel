@@ -381,25 +381,96 @@ export default function Members({
     return positionTranslations[language]?.[position] ?? position
   }
 
-  let indexData: Array<{ position: string; count: string }> = []
+  let indexData: Array<{ position: string; count: number }> = [
+    { position: 'all', count: 0 },
+    { position: 'Chief Editor', count: 0 },
+    { position: 'Product Manager', count: 0 },
+    { position: 'Designer', count: 0 },
+    { position: 'Journalist, Social Media Editor', count: 0 },
+    { position: 'Engineer', count: 0 },
+  ]
 
+  // Count the number of each position
+  let chiefEditorCount = 0
+  let productManagerCount = 0
+  let designerCount = 0
+  let engineerCount = 0
+  let journalistCount = 0
+  let allCount = 0
+
+  members?.forEach((member) => {
+    if (member.title?.includes('editor in chief')) {
+      const chiefEditor = indexData.find(
+        (item) => item.position === 'Chief Editor'
+      )
+      if (chiefEditor) {
+        chiefEditor.count++
+        chiefEditorCount++
+      }
+    } else if (member.title?.includes('product manager')) {
+      const productManager = indexData.find(
+        (item) => item.position === 'Product Manager'
+      )
+      if (productManager) {
+        productManager.count++
+        productManagerCount++
+      }
+    } else if (member.title?.includes('designer')) {
+      const designer = indexData.find((item) => item.position === 'Designer')
+      if (designer) {
+        designer.count++
+        designerCount++
+      }
+    } else if (
+      member.title?.includes('front-end engineer') ||
+      member.title?.includes('back-end engineer') ||
+      member.title?.includes('full-stack engineer') ||
+      member.title?.includes('App engineer')
+    ) {
+      const engineer = indexData.find((item) => item.position === 'Engineer')
+      if (engineer) {
+        engineer.count++
+        engineerCount++
+      }
+    } else if (
+      member.title?.includes('journalist') ||
+      member.title?.includes('social media editor') ||
+      member.title?.includes('Feature Producer')
+    ) {
+      const journalist = indexData.find(
+        (item) => item.position === 'Journalist, Social Media Editor'
+      )
+      if (journalist) {
+        journalist.count++
+        journalistCount++
+      }
+    }
+    // Increment the count for 'all' positions
+    const all = indexData.find((item) => item.position === 'all')
+    if (all) {
+      all.count++
+      allCount++
+    }
+  })
+
+  // Set the indexData array with updated counts for each position
   if (language === 'en') {
     indexData = [
-      { position: 'all', count: '17' },
-      { position: 'Chief Editor', count: '17' },
-      { position: 'Product Manager', count: '17' },
-      { position: 'Designer', count: '17' },
-      { position: 'Journalist, Social Media Editor', count: '17' },
-      { position: 'Engineer', count: '17' },
+      { position: 'all', count: allCount },
+      { position: 'Chief Editor', count: chiefEditorCount },
+      { position: 'Product Manager', count: productManagerCount },
+      { position: 'Designer', count: designerCount },
+      { position: 'Journalist, Social Media Editor', count: journalistCount },
+      { position: 'Engineer', count: engineerCount },
     ]
   } else if (language === 'ch') {
     indexData = [
-      { position: '全體', count: '17人' },
-      { position: '技術長', count: '17人' },
-      { position: '產品經理', count: '17人' },
-      { position: '設計師', count: '17人' },
-      { position: '記者/社群', count: '17人' },
-      { position: '工程師', count: '17人' },
+      { position: '全體', count: allCount },
+      { position: '技術長', count: chiefEditorCount },
+      { position: '產品經理', count: productManagerCount },
+      { position: '設計師', count: designerCount },
+      { position: '記者 / 社群', count: journalistCount },
+      { position: '工程師', count: engineerCount },
     ]
   }
 
