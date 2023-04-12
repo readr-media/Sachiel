@@ -25,6 +25,8 @@ const Container = styled.div`
   `}
 `
 
+const IndexWrapper = styled.div``
+
 const Title = styled.h2`
   font-family: 'Noto Sans TC';
   font-weight: 900;
@@ -40,6 +42,7 @@ const Title = styled.h2`
     }
   `}
 `
+
 const CardsList = styled.ul`
   display: grid;
   justify-items: center;
@@ -80,6 +83,7 @@ const Card = styled.li`
   `}
 `
 
+// Card Front
 const CardFront = styled.div`
   font-family: 'Noto Sans TC';
   background: #fff;
@@ -93,7 +97,7 @@ const CardFront = styled.div`
   position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.8s cubic-bezier(0.18, 0.885, 0.32, 1.28);
 
   .arr-right {
     position: absolute;
@@ -204,6 +208,8 @@ const Work = styled.div`
   }
 `
 
+// Card Back
+
 const CardBack = styled.div`
   background: #ebf02c;
   width: 100%;
@@ -218,7 +224,7 @@ const CardBack = styled.div`
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: rotateY(180deg);
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.8s cubic-bezier(0.18, 0.885, 0.32, 1.28);
 
   .arr-left {
     position: absolute;
@@ -251,6 +257,67 @@ const Caption = styled.div`
   text-align: center;
   padding: 10px 32px;
   color: rgba(0, 9, 40, 0.66);
+`
+
+// Index Filter
+const IndexFilter = styled.table`
+  font-family: 'Noto Sans TC';
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.66);
+  margin: auto;
+  margin-bottom: 32px;
+  width: 259px;
+
+  ${({ theme }) => `
+    ${theme.breakpoint.md} {
+      width: 190px;
+      margin-left: 21px;
+    }
+  `}
+
+  ${({ theme }) => `
+    ${theme.breakpoint.xl} {
+      width: 238px;
+    }
+  `}
+`
+
+const Tr = styled.tr`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 0;
+  border-bottom: 1px solid #ffffff;
+  cursor: pointer;
+  position: relative;
+
+  &.active {
+    border-bottom: 3px solid #ffffff;
+
+    .position {
+      color: #ebf02c;
+    }
+
+    .count {
+      color: #ffffff;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: -18px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 6.5px 0 6.5px 11.3px;
+      border-color: transparent transparent transparent #ebf02c;
+    }
+  }
 `
 
 export default function Members({
@@ -314,9 +381,44 @@ export default function Members({
     return positionTranslations[language]?.[position] ?? position
   }
 
+  let indexData: Array<{ position: string; count: string }> = []
+
+  if (language === 'en') {
+    indexData = [
+      { position: 'all', count: '17' },
+      { position: 'Chief Editor', count: '17' },
+      { position: 'Product Manager', count: '17' },
+      { position: 'Designer', count: '17' },
+      { position: 'Journalist, Social Media Editor', count: '17' },
+      { position: 'Engineer', count: '17' },
+    ]
+  } else if (language === 'ch') {
+    indexData = [
+      { position: '全體', count: '17人' },
+      { position: '技術長', count: '17人' },
+      { position: '產品經理', count: '17人' },
+      { position: '設計師', count: '17人' },
+      { position: '記者/社群', count: '17人' },
+      { position: '工程師', count: '17人' },
+    ]
+  }
+
   return (
     <Container>
-      <Title>{title}</Title>
+      <IndexWrapper>
+        <Title>{title}</Title>
+        <IndexFilter>
+          <tbody>
+            {indexData.map((item, index) => (
+              <Tr key={index}>
+                <td className="position">{item.position}</td>
+                <td className="count">{item.count}</td>
+              </Tr>
+            ))}
+          </tbody>
+        </IndexFilter>
+      </IndexWrapper>
+
       <CardsList>
         {members.map((member) => (
           <Card
