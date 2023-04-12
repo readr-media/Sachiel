@@ -118,7 +118,7 @@ const latestPosts = gql`
   query  (
     $first: Int! = 3, 
     $skip: Int! = 0
-    $skipId: ID!
+    $skipId: ID
   ) {
     latestPosts: posts(
       take: $first
