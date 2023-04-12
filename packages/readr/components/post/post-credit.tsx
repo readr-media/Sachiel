@@ -100,13 +100,19 @@ interface PostProps {
 }
 
 export default function PostCredit({ postData }: PostProps): JSX.Element {
-  function renderNames(people: Author[]) {
-    return people?.map((person) => <span key={person.id}>{person.name}</span>)
+  function renderNames(authors: Author[]) {
+    return authors?.map((author) => <span key={author.id}>{author.name}</span>)
   }
 
-  const writers = renderNames(postData?.writers)
-  const designers = renderNames(postData?.designers)
-  const dataAnalysts = renderNames(postData?.dataAnalysts)
+  const writers = renderNames(
+    postData?.manualOrderOfWriters ?? postData?.writers
+  )
+  const designers = renderNames(
+    postData?.manualOrderOfDesigners ?? postData?.designers
+  )
+  const dataAnalysts = renderNames(
+    postData?.manualOrderOfDataAnalysts ?? postData?.dataAnalysts
+  )
 
   return (
     <Container>

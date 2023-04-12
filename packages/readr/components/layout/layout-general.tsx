@@ -17,6 +17,7 @@ const Main = styled.main`
 type LayoutProps = {
   title?: string
   description?: string
+  imageUrl?: string
   children: React.ReactNode
   onCompleteReadingHandle?: () => void
 }
@@ -25,13 +26,18 @@ export default function LayoutGeneral({
   children,
   title,
   description,
+  imageUrl,
   onCompleteReadingHandle,
 }: LayoutProps) {
   const pageTitle = title ? `${title} - ${SITE_TITLE}` : title
 
   return (
     <>
-      <CustomHead title={pageTitle} description={description}></CustomHead>
+      <CustomHead
+        title={pageTitle}
+        description={description}
+        imageUrl={imageUrl}
+      ></CustomHead>
       <HeaderGeneral onCompleteReadingHandle={onCompleteReadingHandle} />
       <Main>{children}</Main>
     </>

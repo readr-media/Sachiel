@@ -58,6 +58,7 @@ export type GenericPost = {
   sortOrder: number
   heroImage: GenericPhoto | null
   ogImage: GenericPhoto | null
+  ogDescription: string | null
   heroCaption: string
   content: RawDraftContentState // draft-renderer JSON
   summary: RawDraftContentState // draft-renderer JSON
@@ -67,6 +68,9 @@ export type GenericPost = {
   writers: GenericAuthor[]
   designers: GenericAuthor[]
   categories: GenericCategory[]
+  manualOrderOfDataAnalysts: GenericAuthor[] // JSON
+  manualOrderOfWriters: GenericAuthor[] // JSON
+  manualOrderOfDesigners: GenericAuthor[] // JSON
   otherByline: string
   relatedPosts: GenericPost[]
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
@@ -82,6 +86,8 @@ export type GenericCategory = {
   title: string
   posts: GenericPost[]
   reports: GenericPost[]
+  ogImage: GenericPhoto | null
+  ogDescription: string | null
 }
 
 export type GenericTag = {
