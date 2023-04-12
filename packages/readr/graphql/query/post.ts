@@ -28,6 +28,9 @@ export type PostDetail = Override<
       | 'summary'
       | 'actionList'
       | 'citation'
+      | 'manualOrderOfDataAnalysts'
+      | 'manualOrderOfWriters'
+      | 'manualOrderOfDesigners'
       | 'dataAnalysts'
       | 'writers'
       | 'designers'
@@ -41,6 +44,9 @@ export type PostDetail = Override<
   {
     heroImage: PhotoWithResizedOnly | null
     ogImage: PhotoWithResizedOnly | null
+    manualOrderOfDataAnalysts: Author[]
+    manualOrderOfWriters: Author[]
+    manualOrderOfDesigners: Author[]
     dataAnalysts: Author[]
     writers: Author[]
     designers: Author[]
@@ -69,6 +75,9 @@ const post = gql`
         title
         slug
       }
+      manualOrderOfDataAnalysts
+      manualOrderOfWriters
+      manualOrderOfDesigners
       dataAnalysts {
         ...AuthorFields
       }
