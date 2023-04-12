@@ -36,6 +36,7 @@ export type PostDetail = Override<
       | 'categories'
       | 'tags'
       | 'state'
+      | 'ogDescription'
     >,
   {
     heroImage: PhotoWithResizedOnly | null
@@ -62,6 +63,7 @@ const post = gql`
       actionList
       citation
       heroCaption
+      ogDescription
       categories {
         id
         title
