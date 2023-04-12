@@ -85,12 +85,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch the latest 4 reports
+      const postId = params?.id
       const { data, errors: gqlErrors } = await client.query<{
         latestPosts: Post[]
       }>({
         query: latestPostsQuery,
         variables: {
           first: 4,
+          skipId: postId,
         },
       })
 
