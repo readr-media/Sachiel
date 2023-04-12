@@ -15,7 +15,6 @@ import { post } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ResizedImages, ValidPostStyle } from '~/types/common'
-import * as gtag from '~/utils/gtag'
 
 type PageProps = {
   postData: PostDetail
@@ -86,12 +85,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch the latest 4 reports
+      const postId = params?.id
       const { data, errors: gqlErrors } = await client.query<{
         latestPosts: Post[]
       }>({
         query: latestPostsQuery,
         variables: {
           first: 4,
+          skipId: postId,
         },
       })
 
@@ -136,9 +137,12 @@ Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
   const { props } = page
 
   function convertDraftToText(blocks: RawDraftContentBlock[]) {
-    const text = blocks.map((block) => block.text).join('')
-    const ogDescription = text.length > 160 ? text.slice(0, 160) + '...' : text
-    return ogDescription
+    if (blocks) {
+      const text = blocks.map((block) => block.text).join('')
+      const ogDescription =
+        text && text.length > 160 ? text.slice(0, 160) + '...' : text
+      return ogDescription
+    }
   }
 
   function getResizedUrl(
@@ -157,9 +161,9 @@ Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
   const ogTitle = props.postData.title
 
   const ogDescription =
-    props.postData.ogDescription ||
-    convertDraftToText(props.postData.summary.blocks) ||
-    convertDraftToText(props.postData.content.blocks)
+    props.postData?.ogDescription ||
+    convertDraftToText(props.postData?.summary?.blocks) ||
+    convertDraftToText(props.postData?.content?.blocks)
 
   const ogImageUrl =
     getResizedUrl(props.postData?.ogImage?.resized) ||

@@ -68,6 +68,9 @@ export type GenericPost = {
   writers: GenericAuthor[]
   designers: GenericAuthor[]
   categories: GenericCategory[]
+  manualOrderOfDataAnalysts: GenericAuthor[] // JSON
+  manualOrderOfWriters: GenericAuthor[] // JSON
+  manualOrderOfDesigners: GenericAuthor[] // JSON
   otherByline: string
   relatedPosts: GenericPost[]
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
