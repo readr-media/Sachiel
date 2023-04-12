@@ -41,19 +41,19 @@ const useInfiniteScroll = ({
 
   useEffect(() => {
     const observer = new IntersectionObserver(callback, options)
-    const element = ref.current
+    const target = ref.current
 
-    if (element) {
-      observer.observe(element)
+    if (target) {
+      observer.observe(target)
     }
 
-    if (element && isAtBottom && !amount) {
-      observer.unobserve(element)
+    if (target && isAtBottom && !amount) {
+      observer.unobserve(target)
     }
 
     return () => {
-      if (element) {
-        observer.unobserve(element)
+      if (target) {
+        observer.unobserve(target)
       }
     }
   }, [dependency, amount])
