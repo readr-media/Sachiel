@@ -216,8 +216,8 @@ export default function Frame({
         <CreditLists>{frameCreditLists}</CreditLists>
         <div className="publish-time">{date}</div>
       </FrameCredit>
-      <Footer />
       <HiddenAnchor ref={anchorRef} />
+      <Footer />
     </FrameWrapper>
   )
 }
