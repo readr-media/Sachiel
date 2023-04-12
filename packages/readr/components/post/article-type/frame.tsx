@@ -10,6 +10,8 @@ import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
+import useScrollToEnd from '~/hooks/useScrollToEnd'
+import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
 const FrameWrapper = styled.div`
@@ -143,6 +145,14 @@ const CreditLists = styled.ul`
   }
 `
 
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
+
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
@@ -152,6 +162,10 @@ export default function Frame({
   postData,
   latestPosts,
 }: PostProps): JSX.Element {
+  const anchorRef = useScrollToEnd(() =>
+    gtag.sendEvent('post', 'scroll', 'scroll to end')
+  )
+
   const date = formatPostDate(postData?.publishTime)
 
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
@@ -203,6 +217,7 @@ export default function Frame({
         <div className="publish-time">{date}</div>
       </FrameCredit>
       <Footer />
+      <HiddenAnchor ref={anchorRef} />
     </FrameWrapper>
   )
 }

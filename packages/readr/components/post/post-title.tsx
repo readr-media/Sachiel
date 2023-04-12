@@ -2,6 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { PostDetail } from '~/graphql/query/post'
+import * as gtag from '~/utils/gtag'
 import { formatPostDate, formatReadTime } from '~/utils/post'
 
 import DateAndReadTimeInfo from '../shared/date-and-read-time-info'
@@ -82,7 +83,10 @@ export default function PostTitle({
 }: PostProps): JSX.Element {
   const categoryItem = categories.map((item) => {
     return (
-      <li key={item.id}>
+      <li
+        key={item.id}
+        onClick={() => gtag.sendEvent('post', 'click', `post-${item.title}`)}
+      >
         <Link href={`/category/${item.slug}`}>{item.title}</Link>
       </li>
     )

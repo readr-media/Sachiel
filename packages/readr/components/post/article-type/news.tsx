@@ -9,6 +9,8 @@ import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
+import useScrollToEnd from '~/hooks/useScrollToEnd'
+import * as gtag from '~/utils/gtag'
 
 const HeroImage = styled.figure`
   width: 100%;
@@ -55,6 +57,14 @@ const PostHeading = styled.section`
   }
 `
 
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
+
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
@@ -64,6 +74,10 @@ export default function News({
   postData,
   latestPosts,
 }: PostProps): JSX.Element {
+  const anchorRef = useScrollToEnd(() =>
+    gtag.sendEvent('post', 'scroll', 'scroll to end')
+  )
+
   return (
     <>
       <article>
@@ -88,6 +102,7 @@ export default function News({
       <SubscribeButton />
 
       <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
+      <HiddenAnchor ref={anchorRef} />
     </>
   )
 }

@@ -7,6 +7,7 @@ import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
+import * as gtag from '~/utils/gtag'
 
 const Container = styled.article`
   width: 100%;
@@ -201,7 +202,10 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
         </ActionList>
       )}
 
-      <DonateButton href={DONATION_PAGE_URL} />
+      <DonateButton
+        href={DONATION_PAGE_URL}
+        onClick={() => gtag.sendEvent('post', 'click', 'post-donate')}
+      />
       <MediaLinkList className={'mobile-media-link'} />
 
       {checkValue(postData?.citation?.blocks) && (

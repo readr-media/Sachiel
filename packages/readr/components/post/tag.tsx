@@ -2,6 +2,7 @@ import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import type { GenericTag } from '~/types/common'
+import * as gtag from '~/utils/gtag'
 
 const TagWrapper = styled.ul`
   width: 100%;
@@ -49,7 +50,10 @@ export default function PostTag({ tags }: TagProps): JSX.Element {
     <TagWrapper>
       {tags.map((tag) => {
         return (
-          <li key={tag.id}>
+          <li
+            key={tag.id}
+            onClick={() => gtag.sendEvent('post', 'click', `post-${tag.name}`)}
+          >
             <NextLink href={`/tag/${tag.name}`} target="_blank">
               {tag.name}
             </NextLink>
