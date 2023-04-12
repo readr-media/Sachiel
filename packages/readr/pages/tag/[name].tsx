@@ -75,6 +75,7 @@ const Item = styled.li`
 
 type PageProps = {
   tagRelatedPosts?: ArticleCard[]
+  tagName?: string | string[]
 }
 
 const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
@@ -177,14 +178,15 @@ const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
-  query,
+  params,
 }) => {
   let tagRelatedPosts: ArticleCard[] | undefined
+  let tagName: string | string[] | undefined
 
   try {
     {
       // fetch tag and related 12 posts
-      const { name } = query
+      const name = params?.name
       const {
         data: { tags },
         error: gqlErrors,
@@ -215,6 +217,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         return { notFound: true }
       }
 
+      tagName = name // open graph title
       tagRelatedPosts = tags[0]?.posts?.map(postConvertFunc) || []
     }
   } catch (err) {
@@ -238,12 +241,16 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   return {
     props: {
       tagRelatedPosts,
+      tagName,
     },
   }
 }
 
-Tag.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutGeneral>{page}</LayoutGeneral>
+Tag.getLayout = function getLayout(page: ReactElement<PageProps>) {
+  const { props } = page
+  const ogTitle = `搜尋：${props.tagName}`
+
+  return <LayoutGeneral title={ogTitle}>{page}</LayoutGeneral>
 }
 
 export default Tag

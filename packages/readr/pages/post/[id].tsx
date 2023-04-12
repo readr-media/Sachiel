@@ -1,4 +1,5 @@
 import errors from '@twreporter/errors'
+import type { RawDraftContentBlock } from 'draft-js'
 import type { GetServerSideProps } from 'next'
 import type { ReactElement } from 'react'
 
@@ -13,14 +14,15 @@ import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
-import { ValidPostStyle } from '~/types/common'
+import { ResizedImages, ValidPostStyle } from '~/types/common'
+import * as gtag from '~/utils/gtag'
 
-interface PostProps {
+type PageProps = {
   postData: PostDetail
   latestPosts: Post[]
 }
 
-const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
+const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
   let articleType: JSX.Element
 
   switch (postData.style) {
@@ -49,15 +51,15 @@ const Post: NextPageWithLayout<PostProps> = ({ postData, latestPosts }) => {
   return <>{articleType}</>
 }
 
-export const getServerSideProps: GetServerSideProps<PostProps> = async ({
-  query,
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  params,
 }) => {
   let postData: PostDetail, latestPosts: Post[]
 
   try {
     {
       // fetch post data by id
-      const { postId } = query
+      const postId = params?.id
       const { data, errors: gqlErrors } = await client.query<{
         post: PostDetail
       }>({
@@ -130,8 +132,48 @@ export const getServerSideProps: GetServerSideProps<PostProps> = async ({
   }
 }
 
-Post.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutGeneral>{page}</LayoutGeneral>
+Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
+  const { props } = page
+
+  function convertDraftToText(blocks: RawDraftContentBlock[]) {
+    const text = blocks.map((block) => block.text).join('')
+    const ogDescription = text.length > 160 ? text.slice(0, 160) + '...' : text
+    return ogDescription
+  }
+
+  function getResizedUrl(
+    resized: ResizedImages | undefined | null
+  ): string | undefined {
+    return (
+      resized?.w480 ||
+      resized?.w800 ||
+      resized?.w1200 ||
+      resized?.w1600 ||
+      resized?.w2400 ||
+      resized?.original
+    )
+  }
+
+  const ogTitle = props.postData.title
+
+  const ogDescription =
+    props.postData.ogDescription ||
+    convertDraftToText(props.postData.summary.blocks) ||
+    convertDraftToText(props.postData.content.blocks)
+
+  const ogImageUrl =
+    getResizedUrl(props.postData?.ogImage?.resized) ||
+    getResizedUrl(props.postData?.heroImage?.resized)
+
+  return (
+    <LayoutGeneral
+      title={ogTitle}
+      description={ogDescription}
+      imageUrl={ogImageUrl}
+    >
+      {page}
+    </LayoutGeneral>
+  )
 }
 
 export default Post
