@@ -142,3 +142,16 @@ export const postConvertFunc = (post: Post): ArticleCard => {
   const images = ogImage?.resized ?? heroImage?.resized ?? {}
   return convertPostToArticleCard(post, images)
 }
+
+export const getResizedUrl = (
+  resized: ResizedImages | undefined | null
+): string | undefined => {
+  return (
+    resized?.w480 ||
+    resized?.w800 ||
+    resized?.w1200 ||
+    resized?.w1600 ||
+    resized?.w2400 ||
+    resized?.original
+  )
+}
