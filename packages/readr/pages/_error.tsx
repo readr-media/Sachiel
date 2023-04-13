@@ -9,6 +9,7 @@ import styled, { css } from 'styled-components'
 import client from '~/apollo-client'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import ArticleListCard from '~/components/shared/article-list-card'
+import { SITE_TITLE } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import { convertPostToArticleCard } from '~/utils/post'
@@ -238,7 +239,7 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
   return (
     <Page>
       <Head>
-        <title>{`${pageTitle}｜ Oops, something went wrong`}</title>
+        <title>{`${pageTitle}｜${SITE_TITLE}`}</title>
       </Head>
       <Wrapper>
         <ErrorContainer>

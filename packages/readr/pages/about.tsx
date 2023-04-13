@@ -1,6 +1,6 @@
 // under construction
 
-import { ApolloQueryResult } from '@apollo/client/core'
+import type { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
@@ -15,7 +15,7 @@ import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import type { Award } from '~/graphql/query/award'
 import { awards as awardsGql } from '~/graphql/query/award'
 import type { Member } from '~/graphql/query/member'
-import { members as MembersGql } from '~/graphql/query/member'
+import { members as membersGql } from '~/graphql/query/member'
 import type { PageVariable } from '~/graphql/query/page-variable'
 import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { Language, RenderedAward } from '~/types/about'
@@ -182,58 +182,26 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
   let membersData: Member[] = []
-  try {
-    const result: ApolloQueryResult<{ awards: Award[] }> = await client.query({
-      query: awardsGql,
-    })
-    awardsData = result.data.awards
-  } catch (err) {
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
-      })
-    )
-  }
-  try {
-    const result: ApolloQueryResult<{ pageVariables: PageVariable[] }> =
-      await client.query({
-        query: pageVariablesByPage,
-        variables: {
-          page: 'about',
-        },
-      })
-    moreReportData = result.data.pageVariables
-  } catch (err) {
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
-      })
-    )
-  }
-  try {
-    const membersResult: ApolloQueryResult<{ authors: Member[] }> =
-      await client.query({
-        query: MembersGql,
-      })
 
+  try {
+    const [awardsResult, pageVariablesResult, membersResult] =
+      await Promise.all([
+        client.query({
+          query: awardsGql,
+        }),
+        client.query({
+          query: pageVariablesByPage,
+          variables: {
+            page: 'about',
+          },
+        }),
+        client.query({
+          query: membersGql,
+        }),
+      ])
+
+    awardsData = awardsResult.data.awards
+    moreReportData = pageVariablesResult.data.pageVariables
     membersData = membersResult.data.authors
   } catch (err) {
     console.error(
@@ -251,6 +219,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
       })
     )
   }
+
   return {
     props: {
       awardsData,

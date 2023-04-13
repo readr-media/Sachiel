@@ -374,7 +374,6 @@ export default function Members({
         setFilteredMembers(
           members.filter((member) => {
             const jobTitles = [
-              'front-end engineer',
               'journalist',
               'social media editor',
               'Feature Producer',
