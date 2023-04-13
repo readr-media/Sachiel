@@ -6,6 +6,7 @@ import IconFacebook from '~/public/icons/facebook-circle.svg'
 import IconLine from '~/public/icons/line-circle.svg'
 import IconLink from '~/public/icons/link-circle.svg'
 import IconTwitter from '~/public/icons/twitter-circle.svg'
+import * as gtag from '~/utils/gtag'
 
 const MediaLinkWrapper = styled.ul<{ className: string }>`
   width: 100%;
@@ -47,6 +48,7 @@ type ExternalLinkItem = {
   href: string
   svgIcon: any
   alt: string
+  click: () => void
 }
 
 export default function MediaLinkList({
@@ -64,18 +66,21 @@ export default function MediaLinkList({
       href: `https://www.facebook.com/share.php?u=${href}`,
       svgIcon: IconFacebook,
       alt: '分享至facebook',
+      click: () => gtag.sendEvent('post', 'click', 'post-share-fb'),
     },
     {
       name: 'Twitter',
       href: `https://twitter.com/intent/tweet?url=${href}`,
       svgIcon: IconTwitter,
       alt: '分享至twitter',
+      click: () => gtag.sendEvent('post', 'click', 'post-share-twitter'),
     },
     {
       name: 'Line',
       href: `https://social-plugins.line.me/lineit/share?url=${href}`,
       svgIcon: IconLine,
       alt: '分享至line',
+      click: () => gtag.sendEvent('post', 'click', 'post-share-line'),
     },
   ]
   function handleLinkClick() {
@@ -87,13 +92,14 @@ export default function MediaLinkList({
       .catch(() => {
         console.error('Failed to copy URL to clipboard')
       })
+    gtag.sendEvent('post', 'click', 'post-copylink')
   }
 
   return (
     <MediaLinkWrapper className={className}>
       {externalLinks.map((item) => {
         return (
-          <li key={item.name} aria-label={item.alt}>
+          <li key={item.name} aria-label={item.alt} onClick={item.click}>
             <NextLink
               href={item.href}
               target="_blank"

@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
 import type { PostDetail } from '~/graphql/query/post'
+import useScrollToEnd from '~/hooks/useScrollToEnd'
+import * as gtag from '~/utils/gtag'
 
 const BlankWrapper = styled.article`
   background: transparent;
@@ -17,11 +19,23 @@ const BlankWrapper = styled.article`
     background: #ffffff;
   }
 `
+
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
 interface BlankProps {
   postData: PostDetail
 }
 
 export default function Blank({ postData }: BlankProps): JSX.Element {
+  const anchorRef = useScrollToEnd(() =>
+    gtag.sendEvent('post', 'scroll', 'scroll to end')
+  )
+
   const { DraftRenderer } = Readr
 
   //remove blocks[0] to avoid extra empty blank before embedded-code
@@ -34,6 +48,7 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     <BlankWrapper>
       <DraftRenderer rawContentBlock={contentWithoutEmptyBlank} />
       <Footer />
+      <HiddenAnchor ref={anchorRef} />
     </BlankWrapper>
   )
 }

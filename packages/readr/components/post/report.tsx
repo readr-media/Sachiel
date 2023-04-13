@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { ResizedImages } from '~/types/common'
+import * as gtag from '~/utils/gtag'
 import { getHref } from '~/utils/post'
 
 const Wrapper = styled.div`
@@ -63,6 +64,9 @@ export default function Report({
             header="相關報導"
             postData={addLinkInPosts(relatedPosts)}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
+            postClickHandler={(post: Post) =>
+              gtag.sendEvent('post', 'click', `post-related-${post.title}`)
+            }
           />
         )}
         {Array.isArray(latestPosts) && latestPosts.length > 0 && (
@@ -70,6 +74,9 @@ export default function Report({
             header="最新報導"
             postData={addLinkInPosts(latestPosts)}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
+            postClickHandler={(post: Post) =>
+              gtag.sendEvent('post', 'click', `post-latest-${post.title}`)
+            }
           />
         )}
       </Wrapper>

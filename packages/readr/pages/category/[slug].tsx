@@ -21,6 +21,7 @@ import { postStyles } from '~/graphql/query/post'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import type { NavigationCategory } from '~/types/component'
+import * as gtag from '~/utils/gtag'
 import { postConvertFunc } from '~/utils/post'
 
 const shareStyle = css`
@@ -35,14 +36,12 @@ const shareStyle = css`
 
 const CategoryWrapper = styled.div`
   padding: 24px 20px;
-
   ${({ theme }) => theme.breakpoint.sm} {
     padding: 48px 20px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     padding: 48px;
   }
-
   ${({ theme }) => theme.breakpoint.lg} {
     padding: 60px 72px;
     max-width: 1240px;
@@ -55,11 +54,9 @@ const ItemList = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 20px;
-
   ${({ theme }) => theme.breakpoint.sm} {
     margin-top: 50px;
   }
-
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
     gap: calc((100% - 1024px) / 3);
@@ -115,6 +112,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
       category.slug === 'all' ? '所有報導' : `所有${category.title}報導`
     )
     setIsAtBottom(false) //infinite scroll: reset `isAtBottom` to false when change category
+    gtag.sendEvent('listing', 'click', `listing-${category.title}`)
   }
 
   //render posts based on `currentItem`
@@ -144,6 +142,9 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
             mobile: `${theme.mediaSize.sm - 1}px`,
             tablet: `${theme.mediaSize.xl - 1}px`,
           }}
+          onClick={() =>
+            gtag.sendEvent('listing', 'click', `listing-${article.title}`)
+          }
         />
       </Item>
     )

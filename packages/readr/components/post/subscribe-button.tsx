@@ -1,6 +1,8 @@
 import { SubscribeButton } from '@readr-media/react-component'
 import styled from 'styled-components'
 
+import * as gtag from '~/utils/gtag'
+
 const SubscribeWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -13,7 +15,9 @@ const SubscribeWrapper = styled.div`
 export default function Subscribe(): JSX.Element {
   return (
     <SubscribeWrapper>
-      <SubscribeButton />
+      <SubscribeButton
+        onClick={() => gtag.sendEvent('post', 'click', 'post-mailsubscribe')}
+      />
     </SubscribeWrapper>
   )
 }
