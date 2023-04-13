@@ -46,6 +46,7 @@ const Title = styled.h2`
 const CardsList = styled.ul`
   display: grid;
   justify-items: center;
+  align-content: start;
   grid-template-columns: 1fr;
   grid-gap: 20px; /* Safari 10-11 */
   gap: 20px; /* Safari 12+ */
@@ -294,10 +295,11 @@ const Tr = styled.tr`
   border-bottom: 1px solid #ffffff;
   cursor: pointer;
   position: relative;
+  :first-child {
+    border-bottom: 3px solid #ffffff;
+  }
 
   &.active {
-    border-bottom: 3px solid #ffffff;
-
     .position {
       color: #ebf02c;
     }
@@ -329,8 +331,9 @@ export default function Members({
   language: string
   members: Member[]
 }): JSX.Element {
-  console.log({ language }, members)
   const [flippedCards, setFlippedCards] = useState<string[]>([])
+  const [activeFilter, setActiveFilter] = useState('1')
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>(members)
 
   const handleClick = (
     memberId: string,
@@ -338,14 +341,68 @@ export default function Members({
   ) => {
     if (flippedCards.includes(memberId)) {
       setFlippedCards(flippedCards.filter((id) => id !== memberId))
-      console.log(`Card ${memberId} unflipped`)
     } else {
       setFlippedCards([...flippedCards, memberId])
-      console.log(`Card ${memberId} flipped`)
     }
     e.stopPropagation()
   }
 
+  // Filter Cards when different indexFilter clicked
+  const filterHandler = (id: string) => {
+    setActiveFilter(id)
+
+    switch (id) {
+      case '1':
+        setFilteredMembers(members)
+        break
+      case '2':
+        setFilteredMembers(
+          members.filter((member) => member.title?.includes('editor in chief'))
+        )
+        break
+      case '3':
+        setFilteredMembers(
+          members.filter((member) => member.title?.includes('product manager'))
+        )
+        break
+      case '4':
+        setFilteredMembers(
+          members.filter((member) => member.title?.includes('designer'))
+        )
+        break
+      case '5':
+        setFilteredMembers(
+          members.filter((member) => {
+            const jobTitles = [
+              'front-end engineer',
+              'journalist',
+              'social media editor',
+              'Feature Producer',
+            ]
+            return jobTitles.some((title) => member.title?.includes(title))
+          })
+        )
+        break
+      case '6':
+        setFilteredMembers(
+          members.filter((member) => {
+            const jobTitles = [
+              'front-end engineer',
+              'back-end engineer',
+              'full-stack engineer',
+              'App engineer',
+            ]
+            return jobTitles.some((title) => member.title?.includes(title))
+          })
+        )
+        break
+      default:
+        setFilteredMembers(members)
+        break
+    }
+  }
+
+  // Handle position translations and formatting
   const positionTranslations: {
     [key: string]: {
       [key: string]: string
@@ -381,13 +438,13 @@ export default function Members({
     return positionTranslations[language]?.[position] ?? position
   }
 
-  let indexData: Array<{ position: string; count: number }> = [
-    { position: 'all', count: 0 },
-    { position: 'Chief Editor', count: 0 },
-    { position: 'Product Manager', count: 0 },
-    { position: 'Designer', count: 0 },
-    { position: 'Journalist, Social Media Editor', count: 0 },
-    { position: 'Engineer', count: 0 },
+  let indexData: Array<{ position: string; count: number; id: string }> = [
+    { position: 'All', count: 0, id: '1' },
+    { position: 'Chief Editor', count: 0, id: '2' },
+    { position: 'Product Manager', count: 0, id: '3' },
+    { position: 'Designer', count: 0, id: '4' },
+    { position: 'Journalist, Social Media Editor', count: 0, id: '5' },
+    { position: 'Engineer', count: 0, id: '6' },
   ]
 
   // Count the number of each position
@@ -404,7 +461,6 @@ export default function Members({
         (item) => item.position === 'Chief Editor'
       )
       if (chiefEditor) {
-        chiefEditor.count++
         chiefEditorCount++
       }
     } else if (member.title?.includes('product manager')) {
@@ -412,13 +468,11 @@ export default function Members({
         (item) => item.position === 'Product Manager'
       )
       if (productManager) {
-        productManager.count++
         productManagerCount++
       }
     } else if (member.title?.includes('designer')) {
       const designer = indexData.find((item) => item.position === 'Designer')
       if (designer) {
-        designer.count++
         designerCount++
       }
     } else if (
@@ -429,7 +483,6 @@ export default function Members({
     ) {
       const engineer = indexData.find((item) => item.position === 'Engineer')
       if (engineer) {
-        engineer.count++
         engineerCount++
       }
     } else if (
@@ -441,14 +494,12 @@ export default function Members({
         (item) => item.position === 'Journalist, Social Media Editor'
       )
       if (journalist) {
-        journalist.count++
         journalistCount++
       }
     }
     // Increment the count for 'all' positions
-    const all = indexData.find((item) => item.position === 'all')
+    const all = indexData.find((item) => item.position === 'All')
     if (all) {
-      all.count++
       allCount++
     }
   })
@@ -456,21 +507,25 @@ export default function Members({
   // Set the indexData array with updated counts for each position
   if (language === 'en') {
     indexData = [
-      { position: 'all', count: allCount },
-      { position: 'Chief Editor', count: chiefEditorCount },
-      { position: 'Product Manager', count: productManagerCount },
-      { position: 'Designer', count: designerCount },
-      { position: 'Journalist, Social Media Editor', count: journalistCount },
-      { position: 'Engineer', count: engineerCount },
+      { position: 'All', count: allCount, id: '1' },
+      { position: 'Chief Editor', count: chiefEditorCount, id: '2' },
+      { position: 'Product Manager', count: productManagerCount, id: '3' },
+      { position: 'Designer', count: designerCount, id: '4' },
+      {
+        position: 'Journalist, Social Media Editor',
+        count: journalistCount,
+        id: '5',
+      },
+      { position: 'Engineer', count: engineerCount, id: '6' },
     ]
   } else if (language === 'ch') {
     indexData = [
-      { position: '全體', count: allCount },
-      { position: '技術長', count: chiefEditorCount },
-      { position: '產品經理', count: productManagerCount },
-      { position: '設計師', count: designerCount },
-      { position: '記者 / 社群', count: journalistCount },
-      { position: '工程師', count: engineerCount },
+      { position: '全體', count: allCount, id: '1' },
+      { position: '技術長', count: chiefEditorCount, id: '2' },
+      { position: '產品經理', count: productManagerCount, id: '3' },
+      { position: '設計師', count: designerCount, id: '4' },
+      { position: '記者 / 社群', count: journalistCount, id: '5' },
+      { position: '工程師', count: engineerCount, id: '6' },
     ]
   }
 
@@ -480,8 +535,12 @@ export default function Members({
         <Title>{title}</Title>
         <IndexFilter>
           <tbody>
-            {indexData.map((item, index) => (
-              <Tr key={index}>
+            {indexData.map((item) => (
+              <Tr
+                key={item.id}
+                onClick={() => filterHandler(item.id)}
+                className={activeFilter === item.id ? 'active' : ''}
+              >
                 <td className="position">{item.position}</td>
                 <td className="count">{item.count}</td>
               </Tr>
@@ -491,7 +550,7 @@ export default function Members({
       </IndexWrapper>
 
       <CardsList>
-        {members.map((member) => (
+        {filteredMembers.map((member) => (
           <Card
             key={member.id}
             onClick={(e) => handleClick(member.id, e)}
