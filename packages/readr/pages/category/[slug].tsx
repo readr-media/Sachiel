@@ -14,7 +14,7 @@ import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
-import type { Category } from '~/graphql/query/category'
+import type { Category, CategoryWithoutPosts } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import { postStyles } from '~/graphql/query/post'
@@ -22,7 +22,7 @@ import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
-import { postConvertFunc } from '~/utils/post'
+import { getResizedUrl, postConvertFunc } from '~/utils/post'
 
 const shareStyle = css`
   width: 100%;
@@ -81,6 +81,7 @@ const Item = styled.li`
 
 type PageProps = {
   categories: NavigationCategoryWithArticleCards[]
+  categoriesWithoutPosts: CategoryWithoutPosts[]
   latest: NavigationCategoryWithArticleCards
 }
 
@@ -103,6 +104,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
         matchedItem.slug === 'all' ? '所有報導' : `所有${matchedItem.title}報導`
       )
     }
+    // setParams(slug)
   }, [slug])
 
   const updateActiveCategory = (category: NavigationCategory) => {
@@ -289,6 +291,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
     title: DEFAULT_CATEGORY.title,
     slug: DEFAULT_CATEGORY.slug,
   }
+  let categoriesWithoutPosts: CategoryWithoutPosts[] = []
 
   try {
     {
@@ -324,6 +327,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           title: category.title,
           slug: category.slug,
           posts: posts?.map(postConvertFunc),
+        }
+      })
+
+      // data for open graph
+      categoriesWithoutPosts = data.categories.map((category) => {
+        return {
+          id: category.id,
+          title: category.title,
+          slug: category.slug,
+          ogImage: category.ogImage,
+          ogDescription: category.ogDescription,
         }
       })
     }
@@ -375,13 +389,42 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   return {
     props: {
       categories,
+      categoriesWithoutPosts,
       latest,
     },
   }
 }
 
-Category.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutGeneral>{page}</LayoutGeneral>
+Category.getLayout = function getLayout(page: ReactElement<PageProps>) {
+  const { props } = page
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const router = useRouter()
+  const slug = router?.query?.slug
+
+  const allCategoryOG = {
+    title: '所有',
+    ogImage: null, // show default og image
+    ogDescription: null, // show default og desc
+  }
+
+  const currentCategory =
+    slug === 'all'
+      ? allCategoryOG
+      : props.categoriesWithoutPosts.find((category) => category.slug === slug)
+
+  const ogImageUrl = getResizedUrl(currentCategory?.ogImage?.resized)
+  const ogDescription = currentCategory?.ogDescription ?? undefined
+
+  return (
+    <LayoutGeneral
+      title={`${currentCategory?.title}報導`}
+      description={ogDescription}
+      imageUrl={ogImageUrl}
+    >
+      {page}
+    </LayoutGeneral>
+  )
 }
 
 export default Category
