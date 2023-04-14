@@ -39,6 +39,20 @@ export enum ValidPostStyle {
   QA = 'qa',
   SCROLLABLE_VIDEO = 'scrollablevideo',
 }
+
+export enum ValidJobTitles {
+  FRONT_END_ENGINEER = 'front-end engineer',
+  APP_ENGINEER = 'App engineer',
+  FULL_STACK_ENGINEER = 'full-stack engineer',
+  BACK_END_ENGINEER = 'back-end engineer',
+  EDITOR_IN_CHIEF = 'editor in chief',
+  PRODUCT_DESIGNER = 'product designer',
+  JOURNALIST = 'journalist',
+  SOCIAL_MEDIA_EDITOR = 'social media editor',
+  FEATURE_PRODUCER = 'Feature Producer',
+  PRODUCT_MANAGER = 'product manager',
+}
+
 /* eslint-enable no-unused-vars */
 
 export type GenericAuthor = {

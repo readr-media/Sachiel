@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import type { Member } from '~/graphql/query/member'
 import ArrowLeft from '~/public/icons/arr-left.svg'
 import ArrowRight from '~/public/icons/arr-right.svg'
+import { ValidJobTitles } from '~/types/common'
 
 const Container = styled.div`
   position: relative;
@@ -400,15 +401,19 @@ export default function Members({
     '6': string[]
     [key: string]: string[]
   } = {
-    '2': ['editor in chief'],
-    '3': ['product manager'],
-    '4': ['designer'],
-    '5': ['journalist', 'social media editor', 'Feature Producer'],
+    '2': [ValidJobTitles.EDITOR_IN_CHIEF],
+    '3': [ValidJobTitles.PRODUCT_MANAGER],
+    '4': [ValidJobTitles.PRODUCT_DESIGNER],
+    '5': [
+      ValidJobTitles.JOURNALIST,
+      ValidJobTitles.SOCIAL_MEDIA_EDITOR,
+      ValidJobTitles.FEATURE_PRODUCER,
+    ],
     '6': [
-      'front-end engineer',
-      'back-end engineer',
-      'full-stack engineer',
-      'App engineer',
+      ValidJobTitles.FRONT_END_ENGINEER,
+      ValidJobTitles.BACK_END_ENGINEER,
+      ValidJobTitles.FULL_STACK_ENGINEER,
+      ValidJobTitles.APP_ENGINEER,
     ],
   }
 
