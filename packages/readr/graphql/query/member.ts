@@ -1,21 +1,14 @@
 import gql from 'graphql-tag'
 
-export type Member = {
-  id: string
-  isMember: boolean
-  name: string
-  name_en?: string
-  title?: string
-  special_number?: string
-  number_desc?: string
-  number_desc_en?: string
-  projects?: Project[]
-}
+import type { GenericAuthor, Override } from '~/types/common'
 
-export type Project = {
-  id: string
-  name: string
-}
+export type Member = Override<
+  GenericAuthor,
+  {
+    id: string
+    isMember: boolean
+  }
+>
 
 const members = gql`
   query {
