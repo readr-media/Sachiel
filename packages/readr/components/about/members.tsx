@@ -356,33 +356,35 @@ export default function Members({
     }
   } = {
     en: {
-      'front-end engineer': 'Front-end Engineer',
-      'social media editor': 'Social Media Editor, Journalist',
-      journalist: 'Journalist',
-      'product designer': 'Product Designer',
-      'back-end engineer': 'Back-end Engineer',
-      'editor in chief': 'Editor in Chief',
-      'full-stack engineer': 'Full-stack Engineer',
-      'Feature Producer': 'Feature Producer, Journalist',
-      'product manager': 'Product Manager',
-      'App engineer': 'App Engineer',
+      [ValidJobTitles.FRONT_END_ENGINEER]: 'Front-end Engineer',
+      [ValidJobTitles.SOCIAL_MEDIA_EDITOR]: 'Social Media Editor, Journalist',
+      [ValidJobTitles.JOURNALIST]: 'Journalist',
+      [ValidJobTitles.PRODUCT_DESIGNER]: 'Product Designer',
+      [ValidJobTitles.BACK_END_ENGINEER]: 'Back-end Engineer',
+      [ValidJobTitles.EDITOR_IN_CHIEF]: 'Editor in Chief',
+      [ValidJobTitles.FULL_STACK_ENGINEER]: 'Full-stack Engineer',
+      [ValidJobTitles.FEATURE_PRODUCER]: 'Feature Producer, Journalist',
+      [ValidJobTitles.PRODUCT_MANAGER]: 'Product Manager',
+      [ValidJobTitles.APP_ENGINEER]: 'App Engineer',
     },
     ch: {
-      'front-end engineer': '前端工程師',
-      'social media editor': '社群、記者',
-      journalist: '記者',
-      'product designer': '設計師',
-      'back-end engineer': '後端工程師',
-      'editor in chief': '總編輯',
-      'full-stack engineer': '全端工程師',
-      'Feature Producer': '專題製作人、記者',
-      'product manager': '產品經理',
-      'App engineer': 'App工程師',
+      [ValidJobTitles.FRONT_END_ENGINEER]: '前端工程師',
+      [ValidJobTitles.SOCIAL_MEDIA_EDITOR]: '社群、記者',
+      [ValidJobTitles.JOURNALIST]: '記者',
+      [ValidJobTitles.PRODUCT_DESIGNER]: '設計師',
+      [ValidJobTitles.BACK_END_ENGINEER]: '後端工程師',
+      [ValidJobTitles.EDITOR_IN_CHIEF]: '總編輯',
+      [ValidJobTitles.FULL_STACK_ENGINEER]: '全端工程師',
+      [ValidJobTitles.FEATURE_PRODUCER]: '專題製作人、記者',
+      [ValidJobTitles.PRODUCT_MANAGER]: '產品經理',
+      [ValidJobTitles.APP_ENGINEER]: 'App工程師',
     },
   }
 
   const formatPosition = (position: string, language: string): string => {
-    return positionTranslations[language]?.[position] ?? position
+    return (
+      positionTranslations[language]?.[position as ValidJobTitles] ?? position
+    )
   }
 
   // Filter cards by job titles
