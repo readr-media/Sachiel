@@ -14,7 +14,8 @@ import type { PostDetail } from '~/graphql/query/post'
 import { post } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
-import { ResizedImages, ValidPostStyle } from '~/types/common'
+import { ValidPostStyle } from '~/types/common'
+import { getResizedUrl } from '~/utils/post'
 
 type PageProps = {
   postData: PostDetail
@@ -143,19 +144,6 @@ Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
         text && text.length > 160 ? text.slice(0, 160) + '...' : text
       return ogDescription
     }
-  }
-
-  function getResizedUrl(
-    resized: ResizedImages | undefined | null
-  ): string | undefined {
-    return (
-      resized?.w480 ||
-      resized?.w800 ||
-      resized?.w1200 ||
-      resized?.w1600 ||
-      resized?.w2400 ||
-      resized?.original
-    )
   }
 
   const ogTitle = props.postData.title
