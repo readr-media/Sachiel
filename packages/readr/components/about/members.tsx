@@ -396,22 +396,22 @@ export default function Members({
 
   // Mapping members job titles
   const mappingJobTitles: {
-    '2': string[]
-    '3': string[]
-    '4': string[]
-    '5': string[]
-    '6': string[]
+    'index-2': string[]
+    'index-3': string[]
+    'index-4': string[]
+    'index-5': string[]
+    'index-6': string[]
     [key: string]: string[]
   } = {
-    '2': [ValidJobTitles.EDITOR_IN_CHIEF],
-    '3': [ValidJobTitles.PRODUCT_MANAGER],
-    '4': [ValidJobTitles.PRODUCT_DESIGNER],
-    '5': [
+    'index-2': [ValidJobTitles.EDITOR_IN_CHIEF],
+    'index-3': [ValidJobTitles.PRODUCT_MANAGER],
+    'index-4': [ValidJobTitles.PRODUCT_DESIGNER],
+    'index-5': [
       ValidJobTitles.JOURNALIST,
       ValidJobTitles.SOCIAL_MEDIA_EDITOR,
       ValidJobTitles.FEATURE_PRODUCER,
     ],
-    '6': [
+    'index-6': [
       ValidJobTitles.FRONT_END_ENGINEER,
       ValidJobTitles.BACK_END_ENGINEER,
       ValidJobTitles.FULL_STACK_ENGINEER,
@@ -425,12 +425,12 @@ export default function Members({
 
   // Define the indexFilter
   const indexFilter: IndexFilter = {
-    '1': members,
-    '2': filterByJobTitles(members, mappingJobTitles['2']),
-    '3': filterByJobTitles(members, mappingJobTitles['3']),
-    '4': filterByJobTitles(members, mappingJobTitles['4']),
-    '5': filterByJobTitles(members, mappingJobTitles['5']),
-    '6': filterByJobTitles(members, mappingJobTitles['6']),
+    'index-1': members,
+    'index-2': filterByJobTitles(members, mappingJobTitles['index-2']),
+    'index-3': filterByJobTitles(members, mappingJobTitles['index-3']),
+    'index-4': filterByJobTitles(members, mappingJobTitles['index-4']),
+    'index-5': filterByJobTitles(members, mappingJobTitles['index-5']),
+    'index-6': filterByJobTitles(members, mappingJobTitles['index-6']),
   }
 
   // Filter Cards when different indexFilter clicked
@@ -439,25 +439,25 @@ export default function Members({
 
     switch (id) {
       case '1':
-        setFilteredMembers(indexFilter['1'])
+        setFilteredMembers(indexFilter['index-1'])
         break
       case '2':
-        setFilteredMembers(indexFilter['2'])
+        setFilteredMembers(indexFilter['index-2'])
         break
       case '3':
-        setFilteredMembers(indexFilter['3'])
+        setFilteredMembers(indexFilter['index-3'])
         break
       case '4':
-        setFilteredMembers(indexFilter['4'])
+        setFilteredMembers(indexFilter['index-4'])
         break
       case '5':
         setFilteredMembers(
-          filterByJobTitles(indexFilter['5'], mappingJobTitles['5'])
+          filterByJobTitles(indexFilter['index-5'], mappingJobTitles['index-5'])
         )
         break
       case '6':
         setFilteredMembers(
-          filterByJobTitles(indexFilter['6'], mappingJobTitles['6'])
+          filterByJobTitles(indexFilter['index-6'], mappingJobTitles['index-6'])
         )
         break
       default:
@@ -469,7 +469,7 @@ export default function Members({
   // Count the length for each indexFilter
   const indexFilterLengths = Object.keys(indexFilter).reduce(
     (acc: { [key: string]: number }, key) => {
-      acc[key] = indexFilter[key].length
+      acc[`${key}`] = indexFilter[key].length
       return acc
     },
     {}
@@ -477,26 +477,24 @@ export default function Members({
 
   // Pass the indexFilterLengths for each position count
   const indexData: Array<{ position: string; count: number; id: string }> = [
-    { position: 'All', count: indexFilterLengths['1'], id: '1' },
-    { position: 'Chief Editor', count: indexFilterLengths['2'], id: '2' },
-    { position: 'Product Manager', count: indexFilterLengths['3'], id: '3' },
-    { position: 'Designer', count: indexFilterLengths['4'], id: '4' },
+    { position: 'All', count: indexFilterLengths['index-1'], id: '1' },
+    { position: 'Chief Editor', count: indexFilterLengths['index-2'], id: '2' },
+    {
+      position: 'Product Manager',
+      count: indexFilterLengths['index-3'],
+      id: '3',
+    },
+    { position: 'Designer', count: indexFilterLengths['index-4'], id: '4' },
     {
       position: 'Journalist, Social Media Editor',
-      count: indexFilterLengths['5'],
+      count: indexFilterLengths['index-5'],
       id: '5',
     },
-    { position: 'Engineer', count: indexFilterLengths['6'], id: '6' },
+    { position: 'Engineer', count: indexFilterLengths['index-6'], id: '6' },
   ]
 
   // Handle the languages of the indexData
-  if (language === 'en') {
-    indexData[1].position = 'Chief Editor'
-    indexData[2].position = 'Product Manager'
-    indexData[3].position = 'Designer'
-    indexData[4].position = 'Journalist, Social Media Editor'
-    indexData[5].position = 'Engineer'
-  } else if (language === 'ch') {
+  if (language === 'ch') {
     indexData[0].position = '全體'
     indexData[1].position = '技術長'
     indexData[2].position = '產品經理'
