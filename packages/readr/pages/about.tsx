@@ -184,21 +184,24 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let membersData: Member[] = []
 
   try {
-    const [awardsResult, pageVariablesResult, membersResult] =
-      await Promise.all([
-        client.query({
-          query: awardsGql,
-        }),
-        client.query({
-          query: pageVariablesByPage,
-          variables: {
-            page: 'about',
-          },
-        }),
-        client.query({
-          query: membersGql,
-        }),
-      ])
+    const awardsResult: ApolloQueryResult<{ awards: Award[] }> =
+      await client.query({
+        query: awardsGql,
+      })
+
+    const pageVariablesResult: ApolloQueryResult<{
+      pageVariables: PageVariable[]
+    }> = await client.query({
+      query: pageVariablesByPage,
+      variables: {
+        page: 'about',
+      },
+    })
+
+    const membersResult: ApolloQueryResult<{ authors: Member[] }> =
+      await client.query({
+        query: membersGql,
+      })
 
     awardsData = awardsResult.data.awards
     moreReportData = pageVariablesResult.data.pageVariables
