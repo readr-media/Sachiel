@@ -58,13 +58,13 @@ export enum ValidJobTitles {
 export type GenericAuthor = {
   id: string | number
   name: string
-  isMember?: boolean
-  name_en?: string
-  title?: string
-  special_number?: string
-  number_desc?: string
-  number_desc_en?: string
-  projects?: GenericProject[]
+  isMember: boolean
+  name_en: string
+  title: string
+  special_number: string
+  number_desc: string
+  number_desc_en: string
+  projects: GenericProject[]
 }
 
 export type GenericProject = {
