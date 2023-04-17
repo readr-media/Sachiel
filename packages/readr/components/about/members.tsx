@@ -378,10 +378,15 @@ export default function Members({
     },
   }
 
+  const isValidJobTitle = (position: string): position is ValidJobTitles => {
+    return Object.values(ValidJobTitles).includes(position as ValidJobTitles)
+  }
   const formatPosition = (position: string, language: string): string => {
-    return (
-      positionTranslations[language]?.[position as ValidJobTitles] ?? position
-    )
+    if (isValidJobTitle(position)) {
+      return positionTranslations[language][position]
+    } else {
+      return position
+    }
   }
 
   // Filter cards by job titles
