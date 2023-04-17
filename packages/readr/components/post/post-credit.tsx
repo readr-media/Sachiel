@@ -25,19 +25,28 @@ const LineStyle = `
     background-color: rgba(0, 9, 40, 0.66);  
 `
 
-const Container = styled.div`
-  display: block;
+const PostCreditWrapper = styled.div`
   margin-top: 16px;
+  padding: 0px 20px;
+  max-width: 568px;
+
   .media-link-list {
     margin: auto auto auto 0px;
   }
+
   ${({ theme }) => theme.breakpoint.md} {
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+
     .media-link-list {
       margin: auto 0 0 auto;
     }
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 600px;
   }
 `
 
@@ -95,7 +104,7 @@ const CreditName = styled.div`
   }
 `
 
-interface PostProps {
+type PostProps = {
   postData: PostDetail
 }
 
@@ -115,7 +124,7 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
   )
 
   return (
-    <Container>
+    <PostCreditWrapper>
       <CreditList>
         {writers?.length > 0 && (
           <li>
@@ -137,6 +146,6 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
         )}
       </CreditList>
       <MediaLinkList />
-    </Container>
+    </PostCreditWrapper>
   )
 }

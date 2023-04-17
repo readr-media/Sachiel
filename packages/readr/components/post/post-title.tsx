@@ -72,7 +72,19 @@ const Title = styled.h1`
   }
 `
 
-interface PostProps {
+const PostTitleWrapper = styled.div`
+  padding: 0px 20px;
+  max-width: 568px;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 0;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 600px;
+  }
+`
+
+type PostProps = {
   postData: PostDetail
   showTitle: boolean
 }
@@ -96,10 +108,10 @@ export default function PostTitle({
   const readTimeText = formatReadTime(readingTime)
 
   return (
-    <>
+    <PostTitleWrapper>
       {categories && <Category>{categoryItem}</Category>}
       {showTitle && <Title>{title}</Title>}
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
-    </>
+    </PostTitleWrapper>
   )
 }
