@@ -350,11 +350,8 @@ export default function Members({
   }
 
   // Handle position translations and format
-  const positionTranslations: {
-    [key: string]: {
-      [key: string]: string
-    }
-  } = {
+  type PositionTranslations = Record<string, Record<ValidJobTitles, string>>
+  const positionTranslations: PositionTranslations = {
     en: {
       [ValidJobTitles.FRONT_END_ENGINEER]: 'Front-end Engineer',
       [ValidJobTitles.SOCIAL_MEDIA_EDITOR]: 'Social Media Editor, Journalist',
