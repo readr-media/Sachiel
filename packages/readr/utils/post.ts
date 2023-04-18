@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 
 import { REPORT_STYLES } from '~/constants/constant'
+import { SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type {
   GenericPhoto,
@@ -24,9 +25,9 @@ export function getHref({
     case ValidPostStyle.BLANK:
       return `/post/${id}`
     case ValidPostStyle.REPORT:
-      return `/project/${slug}`
+      return `${SITE_URL}/project/${slug}`
     case ValidPostStyle.PROJECT3:
-      return `/project/3/${slug}`
+      return `${SITE_URL}/project/3/${slug}`
     default:
       // undefined value can't be serialized, so set default value to '/'
       return '/'
