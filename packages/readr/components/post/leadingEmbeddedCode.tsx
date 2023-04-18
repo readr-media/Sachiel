@@ -1,36 +1,19 @@
-import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 
 const EmbeddedWrapper = styled.div`
-  background: white;
+  z-index: 1000;
+  outline: 1px solid red;
 `
 
-type FirstEmbeddedCodeProps = {
+type LeadingEmbeddedCodeProps = {
   embeddedCode: string
 }
 
 export default function FirstEmbeddedCode({
   embeddedCode,
-}: FirstEmbeddedCodeProps): JSX.Element {
-  const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gm
-  const srcRegex = /src="([^"]*)"/
-  const srcList = []
-
-  for (const scriptMatch of embeddedCode.matchAll(scriptRegex)) {
-    const srcMatch = scriptMatch?.[0].match(srcRegex)
-    const src = srcMatch?.[1]
-    if (src) {
-      srcList.push(src)
-    }
-  }
-
-  const srcLinks = srcList.map((src, index) => {
-    return <link rel="preload" href={src} as="script" key={index} />
-  })
-
+}: LeadingEmbeddedCodeProps): JSX.Element {
   return (
     <EmbeddedWrapper>
-      <Helmet>{srcLinks}</Helmet>
       <div dangerouslySetInnerHTML={{ __html: embeddedCode }} />
     </EmbeddedWrapper>
   )
