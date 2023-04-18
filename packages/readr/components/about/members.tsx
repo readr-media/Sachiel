@@ -433,7 +433,7 @@ export default function Members({
   useEffect(() => {
     // Compute the length of each member category and store it in state
     const indexFilterLengths: { [key: string]: number } = {}
-    const indexFilterArrays: { [key: string]: any[] } = {}
+    const indexFilterArrays: { [key: string]: Member[] } = {}
     Object.keys(mappingJobTitles).forEach((index) => {
       const jobTitles = mappingJobTitles[index]
       const filtered = filterByJobTitles(members, jobTitles)
