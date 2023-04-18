@@ -1,18 +1,21 @@
 // under construction
 
-import { ApolloQueryResult } from '@apollo/client/core'
+import type { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
-import { ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import client from '~/apollo-client'
 import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
+import Members from '~/components/about/members'
 import More from '~/components/about/more'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import type { Award } from '~/graphql/query/award'
 import { awards as awardsGql } from '~/graphql/query/award'
+import type { Member } from '~/graphql/query/member'
+import { members as membersGql } from '~/graphql/query/member'
 import type { PageVariable } from '~/graphql/query/page-variable'
 import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { Language, RenderedAward } from '~/types/about'
@@ -31,6 +34,7 @@ type languageWording = {
   }
   awardsTitle: string
   moreTitle: string
+  memberTitle: string
 }
 
 const wording: Record<Language, languageWording> = {
@@ -42,6 +46,7 @@ const wording: Record<Language, languageWording> = {
     },
     awardsTitle: '獲獎經歷',
     moreTitle: '更認識我們',
+    memberTitle: '團隊成員',
   },
   en: {
     landing: {
@@ -51,6 +56,7 @@ const wording: Record<Language, languageWording> = {
     },
     awardsTitle: 'Awards',
     moreTitle: 'More',
+    memberTitle: 'Members',
   },
 }
 
@@ -71,11 +77,13 @@ const Page = styled.div`
 type PageProps = {
   awardsData: Award[]
   moreReportData: PageVariable[]
+  membersData: Member[]
 }
 
 const About: NextPageWithLayout<PageProps> = ({
   awardsData,
   moreReportData,
+  membersData,
 }) => {
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
@@ -153,6 +161,11 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
+      <Members
+        language={language}
+        title={wording[language].memberTitle}
+        members={membersData}
+      />
       <Awards
         renderedAwards={renderedAwards}
         title={wording[language].awardsTitle}
@@ -168,36 +181,31 @@ const About: NextPageWithLayout<PageProps> = ({
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
+  let membersData: Member[] = []
+
   try {
-    const result: ApolloQueryResult<{ awards: Award[] }> = await client.query({
-      query: awardsGql,
-    })
-    awardsData = result.data.awards
-  } catch (err) {
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
-      })
-    )
-  }
-  try {
-    const result: ApolloQueryResult<{ pageVariables: PageVariable[] }> =
+    const awardsResult: ApolloQueryResult<{ awards: Award[] }> =
       await client.query({
-        query: pageVariablesByPage,
-        variables: {
-          page: 'about',
-        },
+        query: awardsGql,
       })
-    moreReportData = result.data.pageVariables
+
+    const pageVariablesResult: ApolloQueryResult<{
+      pageVariables: PageVariable[]
+    }> = await client.query({
+      query: pageVariablesByPage,
+      variables: {
+        page: 'about',
+      },
+    })
+
+    const membersResult: ApolloQueryResult<{ authors: Member[] }> =
+      await client.query({
+        query: membersGql,
+      })
+
+    awardsData = awardsResult.data.awards
+    moreReportData = pageVariablesResult.data.pageVariables
+    membersData = membersResult.data.authors
   } catch (err) {
     console.error(
       JSON.stringify({
@@ -214,10 +222,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
       })
     )
   }
+
   return {
     props: {
       awardsData,
       moreReportData,
+      membersData,
     },
   }
 }
