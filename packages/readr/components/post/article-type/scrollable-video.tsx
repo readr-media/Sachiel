@@ -1,7 +1,7 @@
-import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
+import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
 import PostCredit from '~/components/post/post-credit'
 import PostTitle from '~/components/post/post-title'
@@ -88,49 +88,6 @@ export default function ScrollableVideo({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  const { DraftRenderer } = Readr
-
-  // get first Embedded-Video of `postData.content`.
-  const embeddedEntities = Object.values(postData?.content?.entityMap).find(
-    (entity) => entity.type === 'EMBEDDEDCODE'
-  )
-
-  const embeddedBlocks = postData?.content?.blocks.find((block) => {
-    return block.type === 'atomic' && block.entityRanges[0].key === 0
-  })
-
-  const embeddedContentState = {
-    entityMap: {
-      '0': { ...embeddedEntities },
-    },
-    blocks: [{ ...embeddedBlocks }],
-  }
-
-  // get first Embedded-Video key in `entityMap`
-  let scrollVideoIndex = 0
-
-  for (const key in postData?.content?.entityMap) {
-    if (postData?.content?.entityMap[key].type === 'EMBEDDEDCODE') {
-      scrollVideoIndex = parseInt(key, 10)
-      break
-    }
-  }
-
-  //remove first Embedded-Video block from postData?.content based on `scrollVideoIndex`
-  const remainBlocks = postData?.content?.blocks.filter((block) => {
-    return (
-      block.type !== 'atomic' || block.entityRanges[0].key !== scrollVideoIndex
-    )
-  })
-
-  const postDataWithoutFirstScrollVideo = {
-    ...postData,
-    content: {
-      ...postData.content,
-      blocks: remainBlocks,
-    },
-  }
-
   return (
     <>
       <Article>
@@ -144,18 +101,18 @@ export default function ScrollableVideo({
           <ScrollTitle>{postData?.title}</ScrollTitle>
         </HeroImage>
 
-        {/* first embedded-video of `postData.content` */}
-        <ScrollVideo>
-          <DraftRenderer rawContentBlock={embeddedContentState} />
-        </ScrollVideo>
+        {postData?.leadingEmbeddedCode && (
+          <ScrollVideo>
+            <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+          </ScrollVideo>
+        )}
 
         <PostHeading>
           <PostTitle postData={postData} showTitle={false} />
           <PostCredit postData={postData} />
         </PostHeading>
 
-        {/* `postData.content` without first embedded-video */}
-        <PostContent postData={postDataWithoutFirstScrollVideo} />
+        <PostContent postData={postData} />
       </Article>
 
       <SubscribeButton />
