@@ -11,7 +11,7 @@ import type {
 import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type EditorChoice = Override<
-  Pick<GenericEditorChoice, 'choices' | 'heroImage'>,
+  Pick<GenericEditorChoice, 'choices' | 'heroImage' | 'link' | 'name' | 'id'>,
   {
     choices: Post | null
     heroImage: PhotoWithResizedOnly | null
@@ -25,6 +25,9 @@ const editorChoices = gql`
       take: 3
       where: { state: { equals: "published" } }
     ) {
+      id
+      name
+      link
       heroImage {
         resized {
           ...ResizedImagesField

@@ -143,15 +143,30 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       }
 
       editorChoices = data.editorChoices.map((editorChoice) => {
-        const { heroImage, ogImage } = editorChoice.choices ?? {}
+        if (editorChoice.choices) {
+          const { heroImage, ogImage } = editorChoice.choices ?? {}
 
-        const images =
-          editorChoice.heroImage?.resized ??
-          ogImage?.resized ??
-          heroImage?.resized ??
-          {}
+          const images =
+            editorChoice.heroImage?.resized ??
+            ogImage?.resized ??
+            heroImage?.resized ??
+            {}
 
-        return convertPostToArticleCard(editorChoice?.choices, images)
+          return convertPostToArticleCard(editorChoice?.choices, images)
+        } else {
+          const externalLinkEditorChoice = {
+            id: editorChoice.id ?? 'default-uid-undefined--no-id',
+            title: editorChoice.name ?? '',
+            href: editorChoice.link ?? '/',
+            date: 'Invalid Date',
+            isReport: false,
+            images: editorChoice.heroImage?.resized ?? {},
+            readTimeText: '閱讀時間 10 分鐘',
+            shouldHideBottomInfos: true,
+          }
+
+          return externalLinkEditorChoice
+        }
       })
     }
 
