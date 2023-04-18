@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import type { Member } from '~/graphql/query/member'
@@ -335,6 +335,12 @@ export default function Members({
   const [flippedCards, setFlippedCards] = useState<string[]>([])
   const [activeFilter, setActiveFilter] = useState('1')
   const [filteredMembers, setFilteredMembers] = useState<Member[]>(members)
+  const [indexData, setIndexData] = useState<
+    Array<{ position: string; count: number; id: string; members: Member[] }>
+  >([])
+  const [indexFilterArrays, setIndexFilterArrays] = useState<{
+    [key: string]: Member[]
+  }>({})
 
   // Handle cards flip
   const handleClick = (
@@ -381,7 +387,10 @@ export default function Members({
   const isValidJobTitle = (position: string): position is ValidJobTitles => {
     return Object.values(ValidJobTitles).includes(position as ValidJobTitles)
   }
-  const formatPosition = (position: string, language: string): string => {
+  const formatAndTranslatePosition = (
+    position: string,
+    language: string
+  ): string => {
     if (isValidJobTitle(position)) {
       return positionTranslations[language][position]
     } else {
@@ -389,14 +398,8 @@ export default function Members({
     }
   }
 
-  // Filter cards by job titles
-  const filterByJobTitles = (members: Member[], jobTitles: string[]) => {
-    return members.filter((member) => {
-      return jobTitles.some((title: string) => member.title?.includes(title))
-    })
-  }
-
-  // Mapping members job titles
+  /*------- Mapping members and Filtering--------*/
+  // Mapping members by job titles
   const mappingJobTitles: {
     'index-2': string[]
     'index-3': string[]
@@ -421,88 +424,91 @@ export default function Members({
     ],
   }
 
-  interface IndexFilter {
-    [key: string]: Member[]
+  const filterByJobTitles = (members: Member[], jobTitles: string[]) => {
+    return members.filter((member) => {
+      return jobTitles.some((title) => member.title?.includes(title))
+    })
   }
 
-  // Define the indexFilter
-  const indexFilter: IndexFilter = {
-    'index-1': members,
-    'index-2': filterByJobTitles(members, mappingJobTitles['index-2']),
-    'index-3': filterByJobTitles(members, mappingJobTitles['index-3']),
-    'index-4': filterByJobTitles(members, mappingJobTitles['index-4']),
-    'index-5': filterByJobTitles(members, mappingJobTitles['index-5']),
-    'index-6': filterByJobTitles(members, mappingJobTitles['index-6']),
-  }
+  useEffect(() => {
+    // Compute the length of each member category and store it in state
+    const indexFilterLengths: { [key: string]: number } = {}
+    const indexFilterArrays: { [key: string]: any[] } = {}
+    Object.keys(mappingJobTitles).forEach((index) => {
+      const jobTitles = mappingJobTitles[index]
+      const filtered = filterByJobTitles(members, jobTitles)
+      indexFilterLengths[index] = filtered.length
+      indexFilterArrays[index] = filtered
+    })
 
-  // Filter Cards when different indexFilter clicked
+    setIndexData([
+      {
+        position: language === 'ch' ? '全體' : 'All',
+        count: members.length,
+        id: '1',
+        members: members,
+      },
+      {
+        position: language === 'ch' ? '技術長' : 'Chief Editor',
+        count: indexFilterLengths['index-2'],
+        id: '2',
+        members: indexFilterArrays['index-2'],
+      },
+      {
+        position: language === 'ch' ? '產品經理' : 'Product Manager',
+        count: indexFilterLengths['index-3'],
+        id: '3',
+        members: indexFilterArrays['index-3'],
+      },
+      {
+        position: language === 'ch' ? '設計師' : 'Designer',
+        count: indexFilterLengths['index-4'],
+        id: '4',
+        members: indexFilterArrays['index-4'],
+      },
+      {
+        position:
+          language === 'ch' ? '記者 / 社群' : 'Journalist, Social Media Editor',
+        count: indexFilterLengths['index-5'],
+        id: '5',
+        members: indexFilterArrays['index-5'],
+      },
+      {
+        position: language === 'ch' ? '工程師' : 'Engineer',
+        count: indexFilterLengths['index-6'],
+        id: '6',
+        members: indexFilterArrays['index-6'],
+      },
+    ])
+    setIndexFilterArrays(indexFilterArrays)
+  }, [language])
+
   const filterHandler = (id: string) => {
     setActiveFilter(id)
 
     switch (id) {
       case '1':
-        setFilteredMembers(indexFilter['index-1'])
+        setFilteredMembers(members)
         break
       case '2':
-        setFilteredMembers(indexFilter['index-2'])
+        setFilteredMembers(indexFilterArrays['index-2'])
         break
       case '3':
-        setFilteredMembers(indexFilter['index-3'])
+        setFilteredMembers(indexFilterArrays['index-3'])
         break
       case '4':
-        setFilteredMembers(indexFilter['index-4'])
+        setFilteredMembers(indexFilterArrays['index-4'])
         break
       case '5':
-        setFilteredMembers(
-          filterByJobTitles(indexFilter['index-5'], mappingJobTitles['index-5'])
-        )
+        setFilteredMembers(indexFilterArrays['index-5'])
         break
       case '6':
-        setFilteredMembers(
-          filterByJobTitles(indexFilter['index-6'], mappingJobTitles['index-6'])
-        )
+        setFilteredMembers(indexFilterArrays['index-6'])
         break
       default:
         setFilteredMembers(members)
         break
     }
-  }
-
-  // Count the length for each indexFilter
-  const indexFilterLengths = Object.keys(indexFilter).reduce(
-    (acc: { [key: string]: number }, key) => {
-      acc[`${key}`] = indexFilter[key].length
-      return acc
-    },
-    {}
-  )
-
-  // Pass the indexFilterLengths for each position count
-  const indexData: Array<{ position: string; count: number; id: string }> = [
-    { position: 'All', count: indexFilterLengths['index-1'], id: '1' },
-    { position: 'Chief Editor', count: indexFilterLengths['index-2'], id: '2' },
-    {
-      position: 'Product Manager',
-      count: indexFilterLengths['index-3'],
-      id: '3',
-    },
-    { position: 'Designer', count: indexFilterLengths['index-4'], id: '4' },
-    {
-      position: 'Journalist, Social Media Editor',
-      count: indexFilterLengths['index-5'],
-      id: '5',
-    },
-    { position: 'Engineer', count: indexFilterLengths['index-6'], id: '6' },
-  ]
-
-  // Handle the languages of the indexData
-  if (language === 'ch') {
-    indexData[0].position = '全體'
-    indexData[1].position = '技術長'
-    indexData[2].position = '產品經理'
-    indexData[3].position = '設計師'
-    indexData[4].position = '記者 / 社群'
-    indexData[5].position = '工程師'
   }
 
   return (
@@ -536,7 +542,7 @@ export default function Members({
               <InfoWrapper>
                 <ArrowRight className="arr-right" />
                 <Position>
-                  {formatPosition(member?.title ?? '', language)}
+                  {formatAndTranslatePosition(member?.title ?? '', language)}
                 </Position>
                 {language === 'en' ? (
                   <>
