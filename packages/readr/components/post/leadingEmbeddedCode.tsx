@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 const EmbeddedWrapper = styled.div`
   z-index: 1000;
-  outline: 1px solid red;
 `
 
 type LeadingEmbeddedCodeProps = {
