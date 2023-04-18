@@ -335,12 +335,6 @@ export default function Members({
   const [flippedCards, setFlippedCards] = useState<string[]>([])
   const [activeFilter, setActiveFilter] = useState('1')
   const [filteredMembers, setFilteredMembers] = useState<Member[]>(members)
-  const [indexData, setIndexData] = useState<
-    Array<{ position: string; count: number; id: string; members: Member[] }>
-  >([])
-  const [indexFilterArrays, setIndexFilterArrays] = useState<{
-    [key: string]: Member[]
-  }>({})
 
   // Handle cards flip
   const handleClick = (
@@ -424,64 +418,59 @@ export default function Members({
     ],
   }
 
+  // Filter and Compute the length of each member category and store in indexData
   const filterByJobTitles = (members: Member[], jobTitles: string[]) => {
     return members.filter((member) => {
       return jobTitles.some((title) => member.title?.includes(title))
     })
   }
+  const indexFilterArrays: { [key: string]: Member[] } = {}
 
-  useEffect(() => {
-    // Compute the length of each member category and store it in state
-    const indexFilterLengths: { [key: string]: number } = {}
-    const indexFilterArrays: { [key: string]: Member[] } = {}
-    Object.keys(mappingJobTitles).forEach((index) => {
-      const jobTitles = mappingJobTitles[index]
-      const filtered = filterByJobTitles(members, jobTitles)
-      indexFilterLengths[index] = filtered.length
-      indexFilterArrays[index] = filtered
-    })
+  Object.keys(mappingJobTitles).forEach((index) => {
+    const jobTitles = mappingJobTitles[index]
+    const filtered = filterByJobTitles(members, jobTitles)
+    indexFilterArrays[index] = filtered
+  })
 
-    setIndexData([
-      {
-        position: language === 'ch' ? '全體' : 'All',
-        count: members.length,
-        id: '1',
-        members: members,
-      },
-      {
-        position: language === 'ch' ? '技術長' : 'Chief Editor',
-        count: indexFilterLengths['index-2'],
-        id: '2',
-        members: indexFilterArrays['index-2'],
-      },
-      {
-        position: language === 'ch' ? '產品經理' : 'Product Manager',
-        count: indexFilterLengths['index-3'],
-        id: '3',
-        members: indexFilterArrays['index-3'],
-      },
-      {
-        position: language === 'ch' ? '設計師' : 'Designer',
-        count: indexFilterLengths['index-4'],
-        id: '4',
-        members: indexFilterArrays['index-4'],
-      },
-      {
-        position:
-          language === 'ch' ? '記者 / 社群' : 'Journalist, Social Media Editor',
-        count: indexFilterLengths['index-5'],
-        id: '5',
-        members: indexFilterArrays['index-5'],
-      },
-      {
-        position: language === 'ch' ? '工程師' : 'Engineer',
-        count: indexFilterLengths['index-6'],
-        id: '6',
-        members: indexFilterArrays['index-6'],
-      },
-    ])
-    setIndexFilterArrays(indexFilterArrays)
-  }, [language])
+  const indexData = [
+    {
+      id: '1',
+      position: language === 'ch' ? '全體' : 'All',
+      members: members,
+      count: members.length,
+    },
+    {
+      id: '2',
+      position: language === 'ch' ? '技術長' : 'Chief Editor',
+      members: indexFilterArrays['index-2'],
+      count: indexFilterArrays['index-2'].length,
+    },
+    {
+      id: '3',
+      position: language === 'ch' ? '產品經理' : 'Product Manager',
+      members: indexFilterArrays['index-3'],
+      count: indexFilterArrays['index-3'].length,
+    },
+    {
+      id: '4',
+      position: language === 'ch' ? '設計師' : 'Designer',
+      members: indexFilterArrays['index-4'],
+      count: indexFilterArrays['index-4'].length,
+    },
+    {
+      id: '5',
+      position:
+        language === 'ch' ? '記者 / 社群' : 'Journalist, Social Media Editor',
+      members: indexFilterArrays['index-5'],
+      count: indexFilterArrays['index-5'].length,
+    },
+    {
+      id: '6',
+      position: language === 'ch' ? '工程師' : 'Engineer',
+      members: indexFilterArrays['index-6'],
+      count: indexFilterArrays['index-6'].length,
+    },
+  ]
 
   const filterHandler = (id: string) => {
     setActiveFilter(id)
