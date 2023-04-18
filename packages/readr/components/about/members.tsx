@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import type { Member } from '~/graphql/query/member'
@@ -379,7 +379,7 @@ export default function Members({
   }
 
   const isValidJobTitle = (position: string): position is ValidJobTitles => {
-    return Object.values(ValidJobTitles).includes(position as ValidJobTitles)
+    return Object.values<string>(ValidJobTitles).includes(position)
   }
   const formatAndTranslatePosition = (
     position: string,
