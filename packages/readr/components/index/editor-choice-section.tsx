@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 
-import type { ArticleCard } from '~/types/component'
+import type { EditorCard } from '~/graphql/query/editor-choice'
 import * as gtag from '~/utils/gtag'
 
 import EditorChoiceCard from './editor-choice-card'
@@ -84,7 +84,7 @@ const NormalBlock = styled.li`
 `
 
 type EditorChoiceSectionProps = {
-  posts: ArticleCard[]
+  posts: EditorCard[]
 }
 
 export default function EditorChoiceSection({

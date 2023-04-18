@@ -125,6 +125,9 @@ export type GenericTag = {
 }
 
 export type GenericEditorChoice = {
+  id: string
+  name: string
+  link: string
   heroImage: GenericPhoto | null
   choices: GenericPost | null
 }

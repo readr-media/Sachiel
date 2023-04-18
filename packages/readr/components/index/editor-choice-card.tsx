@@ -180,6 +180,7 @@ const FeatureLabel = styled.span`
 
 type EditorChoiceCardProps = Omit<ArticleCard, 'id'> & {
   isFeatured?: boolean
+  shouldHideBottomInfos?: boolean
   onClick?: () => void
 }
 
@@ -191,6 +192,7 @@ export default function EditorChoiceCard({
   readTimeText = '',
   isFeatured = false,
   isReport = false,
+  shouldHideBottomInfos = false,
   onClick,
 }: EditorChoiceCardProps): JSX.Element {
   const theme = useTheme()
@@ -236,7 +238,9 @@ export default function EditorChoiceCard({
         <div className="title">
           <p>{title}</p>
         </div>
-        <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
+        {!shouldHideBottomInfos && (
+          <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
+        )}
       </TextWrapper>
     </Container>
   )

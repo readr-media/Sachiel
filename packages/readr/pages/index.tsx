@@ -24,6 +24,7 @@ import { collaborations as collaborationsQuery } from '~/graphql/query/collabora
 import type { DataSetWithCount } from '~/graphql/query/dataset'
 import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
+import type { EditorCard } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
@@ -32,11 +33,7 @@ import type { Quote } from '~/graphql/query/quote'
 import { quotes as quotesQuery } from '~/graphql/query/quote'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
 import { ValidPostStyle } from '~/types/common'
-import type {
-  ArticleCard,
-  DataSetItem,
-  FeaturedArticle,
-} from '~/types/component'
+import type { DataSetItem, FeaturedArticle } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
 import { convertDataSet } from '~/utils/data-set'
 import * as gtag from '~/utils/gtag'
@@ -46,7 +43,7 @@ import { postConvertFunc } from '~/utils/post'
 import type { NextPageWithLayout } from './_app'
 
 type PageProps = {
-  editorChoices: ArticleCard[]
+  editorChoices: EditorCard[]
   categories: NavigationCategoryWithArticleCards[]
   latest: NavigationCategoryWithArticleCards
   features: FeaturedArticle[]
@@ -109,7 +106,7 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
-  let editorChoices: ArticleCard[] = []
+  let editorChoices: EditorCard[] = []
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
     id: DEFAULT_CATEGORY.id,
@@ -143,15 +140,35 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       }
 
       editorChoices = data.editorChoices.map((editorChoice) => {
-        const { heroImage, ogImage } = editorChoice.choices ?? {}
+        if (editorChoice.choices) {
+          const { heroImage, ogImage } = editorChoice.choices ?? {}
 
-        const images =
-          editorChoice.heroImage?.resized ??
-          ogImage?.resized ??
-          heroImage?.resized ??
-          {}
+          const images =
+            editorChoice.heroImage?.resized ??
+            ogImage?.resized ??
+            heroImage?.resized ??
+            {}
 
-        return convertPostToArticleCard(editorChoice?.choices, images)
+          const choices = {
+            ...convertPostToArticleCard(editorChoice?.choices, images),
+            shouldHideBottomInfos: false,
+          }
+
+          return choices
+        } else {
+          const externalLinkEditorChoice = {
+            id: editorChoice.id ?? 'default-uid-undefined--no-id',
+            title: editorChoice.name ?? '',
+            href: editorChoice.link ?? '/',
+            date: 'Invalid Date',
+            isReport: false,
+            images: editorChoice.heroImage?.resized ?? {},
+            readTimeText: '閱讀時間 10 分鐘',
+            shouldHideBottomInfos: true,
+          }
+
+          return externalLinkEditorChoice
+        }
       })
     }
 
