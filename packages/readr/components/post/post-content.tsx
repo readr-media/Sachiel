@@ -155,7 +155,8 @@ const TagGroup = styled.div`
     margin: 0 auto 52px;
   }
 `
-interface PostProps {
+
+type PostProps = {
   postData: PostDetail
 }
 

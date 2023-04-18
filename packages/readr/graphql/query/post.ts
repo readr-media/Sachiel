@@ -40,6 +40,7 @@ export type PostDetail = Override<
       | 'tags'
       | 'state'
       | 'ogDescription'
+      | 'leadingEmbeddedCode'
     >,
   {
     heroImage: PhotoWithResizedOnly | null
@@ -87,6 +88,7 @@ const post = gql`
       designers {
         ...AuthorFields
       }
+      leadingEmbeddedCode
       otherByline
       tags ( 
         where: { 

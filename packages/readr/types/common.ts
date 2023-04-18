@@ -78,6 +78,7 @@ export type GenericPost = {
   readingTime: number
   tags: GenericTag[]
   state: string
+  leadingEmbeddedCode: string
 }
 
 export type GenericCategory = {

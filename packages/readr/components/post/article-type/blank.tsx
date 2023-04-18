@@ -1,7 +1,7 @@
-import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
+import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
 import * as gtag from '~/utils/gtag'
@@ -36,17 +36,11 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  const { DraftRenderer } = Readr
-
-  //remove blocks[0] to avoid extra empty blank before embedded-code
-  const contentWithoutEmptyBlank = {
-    blocks: postData?.content.blocks.slice(1),
-    entityMap: postData?.content.entityMap,
-  }
-
   return (
     <BlankWrapper>
-      <DraftRenderer rawContentBlock={contentWithoutEmptyBlank} />
+      {postData?.leadingEmbeddedCode && (
+        <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+      )}
       <Footer />
       <HiddenAnchor ref={anchorRef} />
     </BlankWrapper>
