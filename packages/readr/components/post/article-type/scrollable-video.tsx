@@ -89,11 +89,11 @@ export default function ScrollableVideo({
   )
 
   const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(false)
-  
+
   return (
     <>
       <HeaderGeneral />
-      <Article>
+      <Article id="post">
         <HeroImage>
           <SharedImage
             images={postData?.heroImage?.resized}
