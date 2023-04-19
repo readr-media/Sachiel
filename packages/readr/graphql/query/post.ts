@@ -61,7 +61,13 @@ export const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const post = gql`
   query ($id: ID!) {
-    post (where: { id: $id }) {
+    posts ( where: {
+      state: { equals: "published" }
+      id: { equals: $id }  
+      style: {
+        in: [${convertToStringList(postStyles)}]
+      }       
+      })  {
       ...PostFields
       
       state
