@@ -564,7 +564,7 @@ export default function Members({
                 </Work>
               ) : (
                 <Work onClick={(e) => e.stopPropagation()}>
-                  <Link href={'/'}>相關作品</Link>
+                  <Link href={`/author/${member.id}`}>相關作品</Link>
                 </Work>
               )}
             </CardFront>
