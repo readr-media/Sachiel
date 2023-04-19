@@ -1,6 +1,7 @@
 import SharedImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
+import HeaderGeneral from '~/components/layout/header/header-general'
 import PostContent from '~/components/post/post-content'
 import PostCredit from '~/components/post/post-credit'
 import PostTitle from '~/components/post/post-title'
@@ -12,6 +13,13 @@ import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
 import * as gtag from '~/utils/gtag'
 
+const NewsContainer = styled.div`
+  padding-top: 72px;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    padding-top: 86px;
+  }
+`
 const HeroImage = styled.figure`
   width: 100%;
   max-width: 960px;
@@ -80,32 +88,35 @@ export default function News({
 
   return (
     <>
-      <article>
-        <HeroImage>
-          <SharedImage
-            images={postData?.heroImage?.resized}
-            defaultImage={DEFAULT_POST_IMAGE_PATH}
-            alt={postData?.title}
-            priority={false}
-          />
-          <figcaption>{postData?.heroCaption}</figcaption>
-        </HeroImage>
+      <HeaderGeneral />
+      <NewsContainer>
+        <article>
+          <HeroImage>
+            <SharedImage
+              images={postData?.heroImage?.resized}
+              defaultImage={DEFAULT_POST_IMAGE_PATH}
+              alt={postData?.title}
+              priority={false}
+            />
+            <figcaption>{postData?.heroCaption}</figcaption>
+          </HeroImage>
 
-        <PostHeading>
-          <PostTitle postData={postData} showTitle={true} />
-          <PostCredit postData={postData} />
-        </PostHeading>
+          <PostHeading>
+            <PostTitle postData={postData} showTitle={true} />
+            <PostCredit postData={postData} />
+          </PostHeading>
 
-        <PostContent postData={postData} />
-      </article>
+          <PostContent postData={postData} />
+        </article>
 
-      <SubscribeButton />
+        <SubscribeButton />
 
-      <RelatedPosts
-        relatedPosts={postData?.relatedPosts}
-        latestPosts={latestPosts}
-      />
-      <HiddenAnchor ref={anchorRef} />
+        <RelatedPosts
+          relatedPosts={postData?.relatedPosts}
+          latestPosts={latestPosts}
+        />
+        <HiddenAnchor ref={anchorRef} />
+      </NewsContainer>
     </>
   )
 }
