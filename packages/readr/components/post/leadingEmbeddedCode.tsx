@@ -4,6 +4,13 @@ import styled from 'styled-components'
 export const Block = styled.div`
   position: relative;
   min-height: 100vh;
+
+  img.img-responsive {
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 `
 
 export const Caption = styled.div`

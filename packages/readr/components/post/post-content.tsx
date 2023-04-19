@@ -141,6 +141,92 @@ const Citation = styled.article`
   div[data-contents='true'] > * + * {
     margin: 0;
   }
+
+  .public-DraftStyleDefault-block {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(0, 9, 40, 0.87);
+    word-wrap: break-word;
+
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 18px;
+    }
+  }
+
+  //檔案下載
+  .public-DraftStyleDefault-ul {
+    padding: 0;
+    margin-top: 12px !important;
+
+    li {
+      list-style-type: none;
+      padding: 8px 0 8px;
+    }
+
+    a {
+      width: 100%;
+      border: none;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #04295e;
+      display: inline-block;
+      position: relative;
+      padding-right: 60px;
+
+      &:hover {
+        color: rgba(0, 9, 40, 0.87);
+      }
+
+      &::after {
+        content: '';
+        background-image: url('/icons/post-download.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 24px;
+        height: 24px;
+        transform: translate(0%, -12px);
+      }
+
+      ${({ theme }) => theme.breakpoint.md} {
+        font-size: 18px;
+      }
+    }
+
+    ${({ theme }) => theme.breakpoint.md} {
+      margin-top: 20px !important;
+    }
+  }
+
+  .public-DraftStyleDefault-blockquote {
+    padding: 0;
+    width: 100%;
+
+    &::before {
+      background: none;
+      display: none;
+    }
+
+    .public-DraftStyleDefault-block {
+      border-bottom: 1px solid rgba(0, 9, 40, 0.1);
+      padding-bottom: 12px;
+    }
+
+    span {
+      color: rgba(0, 9, 40, 0.5);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      margin: 0;
+
+      ${({ theme }) => theme.breakpoint.md} {
+        font-size: 18px;
+      }
+    }
+  }
 `
 const TagGroup = styled.div`
   width: 100%;
@@ -164,7 +250,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
   const { DraftRenderer } = Readr
 
   //檢查欄位內是否有資料（因為欄位無資料，依舊會回傳 blocks 和 entityMap）
-  const checkValue = (blocks: RawDraftContentBlock[]) => {
+  const shouldShowDraftBlock = (blocks: RawDraftContentBlock[]) => {
     if (!blocks) {
       //if draft.blocks is undefined, return false
       return false
@@ -181,7 +267,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
   }
   return (
     <Container>
-      {checkValue(postData?.summary?.blocks) && (
+      {shouldShowDraftBlock(postData?.summary?.blocks) && (
         <Summary>
           <div>
             <p className="title">報導重點摘要</p>
@@ -190,13 +276,13 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
         </Summary>
       )}
 
-      {checkValue(postData?.content?.blocks) && (
+      {shouldShowDraftBlock(postData?.content?.blocks) && (
         <Content>
           <DraftRenderer rawContentBlock={postData?.content} />
         </Content>
       )}
 
-      {checkValue(postData?.actionList?.blocks) && (
+      {shouldShowDraftBlock(postData?.actionList?.blocks) && (
         <ActionList>
           <p className="title">如果你關心這個議題</p>
           <DraftRenderer rawContentBlock={postData?.actionList} />
@@ -209,7 +295,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       />
       <MediaLinkList className={'mobile-media-link'} />
 
-      {checkValue(postData?.citation?.blocks) && (
+      {shouldShowDraftBlock(postData?.citation?.blocks) && (
         <Citation>
           <p className="title">引用資料</p>
           <DraftRenderer rawContentBlock={postData?.citation} />

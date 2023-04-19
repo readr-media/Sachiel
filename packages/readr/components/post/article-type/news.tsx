@@ -73,7 +73,7 @@ const HiddenAnchor = styled.div`
   margin: 0;
 `
 
-interface PostProps {
+type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
 }
@@ -90,7 +90,7 @@ export default function News({
     <>
       <HeaderGeneral />
       <NewsContainer>
-        <article>
+        <article id="post">
           <HeroImage>
             <SharedImage
               images={postData?.heroImage?.resized}
