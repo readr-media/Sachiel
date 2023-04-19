@@ -9,13 +9,13 @@ import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
 import ScrollableVideo from '~/components/post/article-type/scrollable-video'
+import { SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
-import { post } from '~/graphql/query/post'
+import { post as postQuery } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
-import { ValidPostStyle } from '~/types/common'
-import { getResizedUrl } from '~/utils/post'
+import { ResizedImages, ValidPostStyle } from '~/types/common'
 
 type PageProps = {
   postData: PostDetail
@@ -27,9 +27,7 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
 
   switch (postData.style) {
     case ValidPostStyle.NEWS:
-    case ValidPostStyle.PROJECT3:
     case ValidPostStyle.EMBEDDED:
-    case ValidPostStyle.REPORT:
       articleType = <News postData={postData} latestPosts={latestPosts} />
       break
     case ValidPostStyle.SCROLLABLE_VIDEO:
@@ -61,9 +59,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       // fetch post data by id
       const postId = params?.id
       const { data, errors: gqlErrors } = await client.query<{
-        post: PostDetail
+        posts: PostDetail[]
       }>({
-        query: post,
+        query: postQuery,
         variables: { id: postId },
       })
 
@@ -77,11 +75,30 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         throw annotatingError
       }
 
-      if (!data.post || data.post.state !== 'published') {
+      if (!data.posts[0]) {
         return { notFound: true }
       }
 
-      postData = data.post
+      const postStyle = data.posts[0].style
+      const postSlug = data.posts[0].slug
+
+      if (postStyle === ValidPostStyle.REPORT) {
+        return {
+          redirect: {
+            destination: `https://${SITE_URL}/project/${postSlug}`,
+            permanent: false,
+          },
+        }
+      } else if (postStyle === ValidPostStyle.PROJECT3) {
+        return {
+          redirect: {
+            destination: `https://${SITE_URL}/project/3/${postSlug}`,
+            permanent: false,
+          },
+        }
+      }
+
+      postData = data.posts[0]
     }
 
     {
@@ -144,6 +161,19 @@ Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
         text && text.length > 160 ? text.slice(0, 160) + '...' : text
       return ogDescription
     }
+  }
+
+  function getResizedUrl(
+    resized: ResizedImages | undefined | null
+  ): string | undefined {
+    return (
+      resized?.w480 ||
+      resized?.w800 ||
+      resized?.w1200 ||
+      resized?.w1600 ||
+      resized?.w2400 ||
+      resized?.original
+    )
   }
 
   const ogTitle = props.postData.title

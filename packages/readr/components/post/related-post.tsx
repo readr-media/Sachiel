@@ -33,15 +33,15 @@ type RelatedReport = Pick<
   images: ResizedImages | null
 }
 
-interface Props {
+type RelatedPostProps = {
   relatedPosts?: Post[]
   latestPosts?: Post[]
 }
 
-export default function Report({
+export default function RelatedPost({
   relatedPosts,
   latestPosts,
-}: Props): JSX.Element {
+}: RelatedPostProps): JSX.Element {
   function addLinkInPosts(posts: Post[]) {
     const dataWithLink: RelatedReport[] = posts?.map((post: Post) => ({
       ...post,
@@ -53,6 +53,7 @@ export default function Report({
         slug: post.slug,
       }),
     }))
+
     return dataWithLink
   }
 

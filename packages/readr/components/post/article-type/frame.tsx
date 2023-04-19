@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
 import PostContent from '~/components/post/post-content'
-import Report from '~/components/post/report'
+import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
@@ -211,7 +211,10 @@ export default function Frame({
         <PostContent postData={postData} />
       </article>
       <SubscribeButton />
-      <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
+      <RelatedPosts
+        relatedPosts={postData?.relatedPosts}
+        latestPosts={latestPosts}
+      />
       <FrameCredit className="frame-credit">
         <CreditLists>{frameCreditLists}</CreditLists>
         <div className="publish-time">{date}</div>
