@@ -1,10 +1,9 @@
 import errors from '@twreporter/errors'
 import type { RawDraftContentBlock } from 'draft-js'
 import type { GetServerSideProps } from 'next'
-import type { ReactElement } from 'react'
 
 import client from '~/apollo-client'
-import LayoutGeneral from '~/components/layout/layout-general'
+import CustomHead from '~/components/layout/custom-head'
 import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
@@ -46,7 +45,50 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
       break
   }
 
-  return <>{articleType}</>
+  // head info
+  function convertDraftToText(blocks: RawDraftContentBlock[]) {
+    if (blocks) {
+      const text = blocks.map((block) => block.text).join('')
+      const ogDescription =
+        text && text.length > 160 ? text.slice(0, 160) + '...' : text
+      return ogDescription
+    }
+  }
+
+  function getResizedUrl(
+    resized: ResizedImages | undefined | null
+  ): string | undefined {
+    return (
+      resized?.w480 ||
+      resized?.w800 ||
+      resized?.w1200 ||
+      resized?.w1600 ||
+      resized?.w2400 ||
+      resized?.original
+    )
+  }
+
+  const ogTitle = postData.title
+
+  const ogDescription =
+    postData?.ogDescription ||
+    convertDraftToText(postData?.summary?.blocks) ||
+    convertDraftToText(postData?.content?.blocks)
+
+  const ogImageUrl =
+    getResizedUrl(postData?.ogImage?.resized) ||
+    getResizedUrl(postData?.heroImage?.resized)
+
+  return (
+    <>
+      <CustomHead
+        title={ogTitle}
+        description={ogDescription}
+        imageUrl={ogImageUrl}
+      ></CustomHead>
+      {articleType}
+    </>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
@@ -149,53 +191,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       latestPosts: latestPosts,
     },
   }
-}
-
-Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
-  const { props } = page
-
-  function convertDraftToText(blocks: RawDraftContentBlock[]) {
-    if (blocks) {
-      const text = blocks.map((block) => block.text).join('')
-      const ogDescription =
-        text && text.length > 160 ? text.slice(0, 160) + '...' : text
-      return ogDescription
-    }
-  }
-
-  function getResizedUrl(
-    resized: ResizedImages | undefined | null
-  ): string | undefined {
-    return (
-      resized?.w480 ||
-      resized?.w800 ||
-      resized?.w1200 ||
-      resized?.w1600 ||
-      resized?.w2400 ||
-      resized?.original
-    )
-  }
-
-  const ogTitle = props.postData.title
-
-  const ogDescription =
-    props.postData?.ogDescription ||
-    convertDraftToText(props.postData?.summary?.blocks) ||
-    convertDraftToText(props.postData?.content?.blocks)
-
-  const ogImageUrl =
-    getResizedUrl(props.postData?.ogImage?.resized) ||
-    getResizedUrl(props.postData?.heroImage?.resized)
-
-  return (
-    <LayoutGeneral
-      title={ogTitle}
-      description={ogDescription}
-      imageUrl={ogImageUrl}
-    >
-      {page}
-    </LayoutGeneral>
-  )
 }
 
 export default Post

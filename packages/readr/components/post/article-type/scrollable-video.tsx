@@ -1,6 +1,7 @@
 import SharedImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
+import HeaderGeneral from '~/components/layout/header/header-general'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
 import PostCredit from '~/components/post/post-credit'
@@ -14,16 +15,14 @@ import useScrollToEnd from '~/hooks/useScrollToEnd'
 import * as gtag from '~/utils/gtag'
 
 const Article = styled.article`
-  padding-top: calc(100vh - 72px);
-
-  ${({ theme }) => theme.breakpoint.sm} {
-    padding-top: calc(100vh - 86px);
-  }
+  padding-top: 100vh;
 `
 
 const HeroImage = styled.picture`
   width: 100%;
   height: 100vh;
+  display: block;
+  min-height: 100vh;
   position: absolute;
   top: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
@@ -90,6 +89,7 @@ export default function ScrollableVideo({
 
   return (
     <>
+      <HeaderGeneral />
       <Article>
         <HeroImage>
           <SharedImage
