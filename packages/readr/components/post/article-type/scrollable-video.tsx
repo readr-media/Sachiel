@@ -1,4 +1,5 @@
 import SharedImage from '@readr-media/react-image'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import HeaderGeneral from '~/components/layout/header/header-general'
@@ -87,6 +88,8 @@ export default function ScrollableVideo({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(false)
+  
   return (
     <>
       <HeaderGeneral />
@@ -103,25 +106,35 @@ export default function ScrollableVideo({
 
         {postData?.leadingEmbeddedCode && (
           <ScrollVideo>
-            <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+            <LeadingEmbeddedCode
+              embeddedCode={postData?.leadingEmbeddedCode}
+              setState={setIsEmbeddedFinish}
+            />
           </ScrollVideo>
         )}
+        {isEmbeddedFinish && (
+          <>
+            <PostHeading>
+              <PostTitle postData={postData} showTitle={false} />
+              <PostCredit postData={postData} />
+            </PostHeading>
 
-        <PostHeading>
-          <PostTitle postData={postData} showTitle={false} />
-          <PostCredit postData={postData} />
-        </PostHeading>
-
-        <PostContent postData={postData} />
+            <PostContent postData={postData} />
+          </>
+        )}
       </Article>
 
-      <SubscribeButton />
+      {isEmbeddedFinish && (
+        <>
+          <SubscribeButton />
 
-      <RelatedPosts
-        relatedPosts={postData?.relatedPosts}
-        latestPosts={latestPosts}
-      />
-      <HiddenAnchor ref={anchorRef} />
+          <RelatedPosts
+            relatedPosts={postData?.relatedPosts}
+            latestPosts={latestPosts}
+          />
+          <HiddenAnchor ref={anchorRef} />
+        </>
+      )}
     </>
   )
 }

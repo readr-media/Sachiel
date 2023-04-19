@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
@@ -27,7 +28,7 @@ const HiddenAnchor = styled.div`
   padding: 0;
   margin: 0;
 `
-interface BlankProps {
+type BlankProps = {
   postData: PostDetail
 }
 
@@ -36,13 +37,22 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(false)
+
   return (
     <BlankWrapper>
       {postData?.leadingEmbeddedCode && (
-        <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+        <LeadingEmbeddedCode
+          embeddedCode={postData?.leadingEmbeddedCode}
+          setState={setIsEmbeddedFinish}
+        />
       )}
-      <Footer />
-      <HiddenAnchor ref={anchorRef} />
+      {isEmbeddedFinish && (
+        <>
+          <Footer />
+          <HiddenAnchor ref={anchorRef} />
+        </>
+      )}
     </BlankWrapper>
   )
 }
