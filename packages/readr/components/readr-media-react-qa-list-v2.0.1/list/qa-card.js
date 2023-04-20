@@ -16,7 +16,7 @@ const CardWrapper = styled.div`
   border-radius: 6px;
   max-width: 600px;
   padding: 12px 16px;
-  font-family: 'Noto Sans CJK TC', sans-serif;
+  font-family: 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

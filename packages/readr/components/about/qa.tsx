@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import QAList from '~/components/readr-media-qaLists-components'
+import QAList from '~/components/readr-media-react-qa-list-v2.0.1'
+//Components copied from @readr-media-react-qa-list v2.0.1
 import type { QaList } from '~/graphql/query/qa'
 import IconTailArrow from '~/public/icons/tail-arrow.svg'
 

@@ -7,7 +7,7 @@ const List = styled.div`
   max-width: 100%;
 `
 
-const ListTitle = styled.h2`
+const ListTitle = styled.h3`
   font-family: 'Noto Serif TC', sans-serif;
   font-style: normal;
   font-weight: 700;
