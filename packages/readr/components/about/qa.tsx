@@ -73,14 +73,13 @@ export default function Qa({
   title: string
   qaLists: QaList[]
 }): JSX.Element {
-  const questions = language === 'ch' ? qaLists[1].items : qaLists[0].items
+  const questions = language === 'ch' ? qaLists[1]?.items : qaLists[0]?.items
 
   return (
     <Container>
       <Title>{title}</Title>
-      <QaWrapper>
-        <QAList questions={questions} />
-      </QaWrapper>
+      <QaWrapper>{questions && <QAList questions={questions} />}</QaWrapper>
+
       <IconTailArrow />
     </Container>
   )
