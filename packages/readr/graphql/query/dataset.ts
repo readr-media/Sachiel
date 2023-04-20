@@ -26,7 +26,7 @@ export type DataSetWithCount = {
 const dataSets = gql`
   query ($skip: Int, $first: Int = 3, $shouldQueryCount: Boolean! = true) {
     dataSets(
-      orderBy: { publishTime: desc }
+      orderBy: [{ publishTime: desc }, { id: desc }]
       take: $first
       skip: $skip
       where: { state: { equals: "published" } }
