@@ -34,7 +34,9 @@ switch (ENV) {
 
 const QA_RECORD_CONFIG = {
   variables:
-    ENV === 'local' || 'dev' ? { id1: '8', id2: '9' } : { id1: '6', id2: '7' },
+    ENV === 'local' || ENV === 'dev'
+      ? { id1: '8', id2: '9' }
+      : { id1: '6', id2: '7' },
 }
 
 export { DONATION_PAGE_URL, ENV, GA_TRACKING_ID, QA_RECORD_CONFIG, SITE_URL }
