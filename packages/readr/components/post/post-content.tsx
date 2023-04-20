@@ -144,23 +144,29 @@ const Citation = styled.article`
 
   .public-DraftStyleDefault-block {
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.5;
     color: rgba(0, 9, 40, 0.87);
     word-wrap: break-word;
+    margin: 12px 0 0 0;
 
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 18px;
+      margin: 16px 0 0;
     }
   }
 
   //檔案下載
   .public-DraftStyleDefault-ul {
     padding: 0;
-    margin-top: 12px !important;
+    margin-bottom: 5px;
 
     li {
       list-style-type: none;
       padding: 8px 0 8px;
+
+      > .public-DraftStyleDefault-block {
+        margin: 0;
+      }
     }
 
     a {
@@ -195,15 +201,21 @@ const Citation = styled.article`
         font-size: 18px;
       }
     }
-
-    ${({ theme }) => theme.breakpoint.md} {
-      margin-top: 20px !important;
-    }
   }
 
   .public-DraftStyleDefault-blockquote {
     padding: 0;
     width: 100%;
+
+    & + ul {
+      border-top: 1px solid rgba(0, 9, 40, 0.1);
+      padding-top: 4px;
+      margin: 4px 0 0;
+
+      ${({ theme }) => theme.breakpoint.md} {
+        margin: 8px 0 0;
+      }
+    }
 
     &::before {
       background: none;
@@ -211,8 +223,8 @@ const Citation = styled.article`
     }
 
     .public-DraftStyleDefault-block {
-      border-bottom: 1px solid rgba(0, 9, 40, 0.1);
-      padding-bottom: 12px;
+      padding-bottom: 8px;
+      margin: 0;
     }
 
     span {

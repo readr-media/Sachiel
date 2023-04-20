@@ -23,7 +23,7 @@ const NewsContainer = styled.div`
 const HeroImage = styled.figure`
   width: 100%;
   max-width: 960px;
-  margin: 0 auto 24px;
+  margin: 0 auto;
 
   //shared-component of @readr-media/react-image
   .readr-media-react-image {
@@ -49,19 +49,22 @@ const HeroImage = styled.figure`
   }
 
   ${({ theme }) => theme.breakpoint.lg} {
-    margin: 30px auto 60px;
+    margin: 30px auto 0px;
   }
 `
 
 const PostHeading = styled.section`
   width: 100%;
   max-width: 568px;
-  margin: 0 auto 24px auto;
+  margin: 24px auto;
+
+  ${({ theme }) => theme.breakpoint.lg} {
+    margin: 60px auto 48px;
+  }
 
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 0;
     max-width: 600px;
-    margin: 0 auto 48px;
   }
 `
 
@@ -86,20 +89,24 @@ export default function News({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
+  const shouldShowHeroImage = Boolean(postData?.heroImage?.resized)
+
   return (
     <>
       <HeaderGeneral />
       <NewsContainer>
         <article id="post">
-          <HeroImage>
-            <SharedImage
-              images={postData?.heroImage?.resized}
-              defaultImage={DEFAULT_POST_IMAGE_PATH}
-              alt={postData?.title}
-              priority={false}
-            />
-            <figcaption>{postData?.heroCaption}</figcaption>
-          </HeroImage>
+          {shouldShowHeroImage && (
+            <HeroImage>
+              <SharedImage
+                images={postData?.heroImage?.resized}
+                defaultImage={DEFAULT_POST_IMAGE_PATH}
+                alt={postData?.title}
+                priority={false}
+              />
+              <figcaption>{postData?.heroCaption}</figcaption>
+            </HeroImage>
+          )}
 
           <PostHeading>
             <PostTitle postData={postData} showTitle={true} />
