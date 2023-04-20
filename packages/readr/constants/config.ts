@@ -2,6 +2,7 @@
 const MOCK_API_SERVER_PORT = Number(process.env.MOCK_API_SERVER_PORT ?? 4000)
 const API_ENDPOINT =
   process.env.API_ENDPOINT ?? `http://localhost:${MOCK_API_SERVER_PORT}/`
+const EDITOOLS_API_ENDPOINT = process.env.EDITOOLS_API_ENDPOINT ?? ''
 
 // Google OAuth Client
 const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID ?? ''
@@ -16,6 +17,7 @@ try {
 
 export {
   API_ENDPOINT,
+  EDITOOLS_API_ENDPOINT,
   MOCK_API_SERVER_PORT,
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET,
