@@ -1,5 +1,3 @@
-// under construction
-
 import type { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
@@ -95,7 +93,6 @@ const About: NextPageWithLayout<PageProps> = ({
   membersData,
   qAListsData,
 }) => {
-  console.log(qAListsData)
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
     Record<Language, { data: PageVariable[]; hasFetched: boolean }>
@@ -172,7 +169,11 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
-      <Qa qaLists={qAListsData} title={wording[language].qaTitle} />
+      <Qa
+        language={language}
+        title={wording[language].qaTitle}
+        qaLists={qAListsData}
+      />
       <Members
         language={language}
         title={wording[language].memberTitle}
@@ -237,7 +238,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   }
 
   try {
-    // set the variables object to { id1: '8', id2: '9' } if ENV is dev or local, and to { id1: '6', id2: '7' } if ENV is staging or prod.
+    // set the variables to { id1: '8', id2: '9' } if ENV is dev or local, and to { id1: '6', id2: '7' } if ENV is staging or prod.
     const variables =
       ENV === 'dev' || ENV === 'local'
         ? { id1: '8', id2: '9' }

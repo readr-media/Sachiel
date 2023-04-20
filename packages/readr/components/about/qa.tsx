@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import QAList from '~/components/readr-media-qaLists-components'
 import type { QaList } from '~/graphql/query/qa'
 import IconTailArrow from '~/public/icons/tail-arrow.svg'
 
@@ -49,8 +50,9 @@ const Title = styled.h2`
 `
 
 const QaWrapper = styled.ul`
-  min-height: 200px;
-  background-color: aqua;
+  display: flex;
+  align-items: center;
+  min-height: 100px;
   width: 100%;
   ${({ theme }) => `
     ${theme.breakpoint.md} {
@@ -65,17 +67,22 @@ const QaWrapper = styled.ul`
 `
 
 export default function Qa({
+  language,
   title,
   qaLists,
 }: {
+  language: string
   title: string
   qaLists: QaList[]
 }): JSX.Element {
-  console.log(qaLists)
+  const questions = language === 'ch' ? qaLists[1].items : qaLists[0].items
+
   return (
     <Container>
       <Title>{title}</Title>
-      <QaWrapper>Hi QA</QaWrapper>
+      <QaWrapper>
+        <QAList questions={questions} />
+      </QaWrapper>
       <IconTailArrow />
     </Container>
   )
