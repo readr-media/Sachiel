@@ -11,7 +11,7 @@ import Members from '~/components/about/members'
 import More from '~/components/about/more'
 import Qa from '~/components/about/qa'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
-import { ENV } from '~/constants/environment-variables'
+import { QA_RECORD_CONFIG } from '~/constants/environment-variables'
 import editoolsClient from '~/editools-apollo-client'
 import type { Award } from '~/graphql/query/award'
 import { awards as awardsGql } from '~/graphql/query/award'
@@ -238,16 +238,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   }
 
   try {
-    // set the variables to { id1: '8', id2: '9' } if ENV is dev or local, and to { id1: '6', id2: '7' } if ENV is staging or prod.
-    const variables =
-      ENV === 'dev' || ENV === 'local'
-        ? { id1: '8', id2: '9' }
-        : { id1: '6', id2: '7' }
-
     const qAListsResult: ApolloQueryResult<{ qALists: QaList[] }> =
       await editoolsClient.query({
         query: qAListsGql,
-        variables,
+        variables: QA_RECORD_CONFIG.variables,
       })
 
     qAListsData = qAListsResult.data.qALists

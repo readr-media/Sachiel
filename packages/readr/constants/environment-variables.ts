@@ -30,4 +30,11 @@ switch (ENV) {
     break
 }
 
-export { DONATION_PAGE_URL, ENV, GA_TRACKING_ID, SITE_URL }
+// Set the QA_RECORD_CONFIG variables to { id1: '8', id2: '9' } if ENV is dev or local, and to { id1: '6', id2: '7' } if ENV is staging or prod.
+
+const QA_RECORD_CONFIG = {
+  variables:
+    ENV === 'local' || 'dev' ? { id1: '8', id2: '9' } : { id1: '6', id2: '7' },
+}
+
+export { DONATION_PAGE_URL, ENV, GA_TRACKING_ID, QA_RECORD_CONFIG, SITE_URL }
