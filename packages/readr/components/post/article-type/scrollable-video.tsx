@@ -1,3 +1,4 @@
+import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -88,7 +89,54 @@ export default function ScrollableVideo({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(false)
+  const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
+    !shouldShowLeadingEmbedded
+  )
+
+  const { DraftRenderer } = Readr
+
+  // get first Embedded-Video of `postData.content`.
+  const embeddedEntities = Object.values(postData?.content?.entityMap).find(
+    (entity) => entity.type === 'EMBEDDEDCODE'
+  )
+
+  const embeddedBlocks = postData?.content?.blocks.find((block) => {
+    return block.type === 'atomic' && block.entityRanges[0].key === 0
+  })
+
+  const embeddedContentState = {
+    entityMap: {
+      '0': { ...embeddedEntities },
+    },
+    blocks: [{ ...embeddedBlocks }],
+  }
+
+  // get first Embedded-Video key in `entityMap`
+  let scrollVideoIndex = 0
+
+  for (const key in postData?.content?.entityMap) {
+    if (postData?.content?.entityMap[key].type === 'EMBEDDEDCODE') {
+      scrollVideoIndex = parseInt(key, 10)
+      break
+    }
+  }
+
+  //remove first Embedded-Video block from postData?.content based on `scrollVideoIndex`
+  const remainBlocks = postData?.content?.blocks.filter((block) => {
+    return (
+      block.type !== 'atomic' || block.entityRanges[0].key !== scrollVideoIndex
+    )
+  })
+
+  const postDataWithoutFirstScrollVideo = {
+    ...postData,
+    content: {
+      ...postData.content,
+      blocks: remainBlocks,
+    },
+  }
 
   return (
     <>
@@ -104,14 +152,17 @@ export default function ScrollableVideo({
           <ScrollTitle>{postData?.title}</ScrollTitle>
         </HeroImage>
 
-        {postData?.leadingEmbeddedCode && (
-          <ScrollVideo>
+        <ScrollVideo>
+          {shouldShowLeadingEmbedded ? (
             <LeadingEmbeddedCode
               embeddedCode={postData?.leadingEmbeddedCode}
               setState={setIsEmbeddedFinish}
             />
-          </ScrollVideo>
-        )}
+          ) : (
+            <DraftRenderer rawContentBlock={embeddedContentState} />
+          )}
+        </ScrollVideo>
+
         {isEmbeddedFinish && (
           <>
             <PostHeading>
@@ -119,7 +170,13 @@ export default function ScrollableVideo({
               <PostCredit postData={postData} />
             </PostHeading>
 
-            <PostContent postData={postData} />
+            <PostContent
+              postData={
+                shouldShowLeadingEmbedded
+                  ? postData
+                  : postDataWithoutFirstScrollVideo
+              }
+            />
           </>
         )}
       </Article>
