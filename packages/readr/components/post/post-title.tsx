@@ -107,9 +107,11 @@ export default function PostTitle({
   const date = formatPostDate(publishTime)
   const readTimeText = formatReadTime(readingTime)
 
+  const shouldShowCategories = Boolean(categories?.length)
+
   return (
     <PostTitleWrapper>
-      {categories && <Category>{categoryItem}</Category>}
+      {shouldShowCategories && <Category>{categoryItem}</Category>}
       {showTitle && <Title>{title}</Title>}
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
     </PostTitleWrapper>
