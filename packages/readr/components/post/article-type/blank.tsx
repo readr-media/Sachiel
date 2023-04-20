@@ -1,3 +1,4 @@
+import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -37,16 +38,34 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(false)
+  //if `leadingEmbeddedCode` is null, show embedded-code from `content`
+  const { DraftRenderer } = Readr
+
+  // remove blocks[0] to avoid extra empty blank before embedded-code
+  const contentWithoutEmptyBlank = {
+    blocks: postData?.content.blocks.slice(1),
+    entityMap: postData?.content.entityMap,
+  }
+
+  const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
+    !shouldShowLeadingEmbedded
+  )
 
   return (
     <BlankWrapper>
-      {postData?.leadingEmbeddedCode && (
+      {shouldShowLeadingEmbedded && (
         <LeadingEmbeddedCode
           embeddedCode={postData?.leadingEmbeddedCode}
           setState={setIsEmbeddedFinish}
         />
       )}
+
+      {!shouldShowLeadingEmbedded && (
+        <DraftRenderer rawContentBlock={contentWithoutEmptyBlank} />
+      )}
+
       {isEmbeddedFinish && (
         <>
           <Footer />

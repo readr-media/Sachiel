@@ -121,6 +121,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         return { notFound: true }
       }
 
+      if (data.posts[0].style === ValidPostStyle.EMBEDDED) {
+        return { notFound: true }
+      }
+
       const postStyle = data.posts[0].style
       const postSlug = data.posts[0].slug
 
