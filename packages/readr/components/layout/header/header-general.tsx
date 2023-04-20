@@ -290,7 +290,7 @@ export default function HeaderGeneral({
               href="/donate"
               target="_blank"
               rel="external nofollow"
-              onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+              onClick={() => gtag.sendEvent('header', 'donate', 'donate')}
             >
               贊助我們
             </DonateLink>
