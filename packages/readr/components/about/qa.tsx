@@ -50,8 +50,6 @@ const Title = styled.h2`
 `
 
 const QaWrapper = styled.ul`
-  display: flex;
-  align-items: center;
   min-height: 100px;
   width: 100%;
   ${({ theme }) => `

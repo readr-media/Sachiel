@@ -16,18 +16,16 @@ const CardWrapper = styled.div`
   border-radius: 6px;
   max-width: 600px;
   padding: 12px 16px;
-  margin: 0 8px;
   font-family: 'Noto Sans CJK TC', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   @media screen and (min-width: 768px) {
-    margin: 0 auto;
     padding: 20px 24px;
     font-size: 18px;
   }
   & + & {
-    margin-top: 8px;
+    margin-top: 20px;
   }
 `
 
