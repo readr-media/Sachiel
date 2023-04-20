@@ -85,6 +85,16 @@ const Summary = styled.article`
 //內文
 const Content = styled.article`
   margin: 0 0 32px 0;
+
+  //phase 1: resolve empty block before embedded-code
+  .embedded-code-container {
+    z-index: 1000;
+    transform: translateY(-36px);
+  }
+
+  .embedded-code-container-top {
+    margin-top: -105px;
+  }
 `
 
 //延伸議題
