@@ -54,7 +54,7 @@
 | NEXT_PUBLIC_ENV       | 字串      | 'localhost'              | 環境設定                                         |
 | MOCK_API_SERVER_PORT  | 整數      | '4000'                   | mock GraphQL API server 所使用的 port            |
 | API_ENDPOINT          | 字串      | 'http://localhost:4000/' | GraphQL API 端點                                 |
-| EDITOOLS_API_ENDPOINT | 字串      | ''                       | GraphQL API 端點                                 |
+| EDITOOLS_API_ENDPOINT | 字串      | ''                       | GraphQL API 端點, 用於拿取 editools 資料         |
 | OAUTH_CLIENT_ID       | 字串      | ''                       | Google OAuth Client ID                           |
 | OAUTH_CLIENT_SECRET   | 字串      | ''                       | Google OAuth Client secret                       |
 | OAUTH_REDIRECT_URIS   | 字串      | ''                       | Google OAuth redirect URIs, 每個 URI 用 `,` 分隔 |

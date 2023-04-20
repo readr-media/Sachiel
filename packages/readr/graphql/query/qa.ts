@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 type QaListItem = {
   id: string
   title: string
-  content: string
+  content: unknown // it is hard to describe JSON type
 }
 
 export type QaList = {
