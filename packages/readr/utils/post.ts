@@ -25,9 +25,9 @@ export function getHref({
     case ValidPostStyle.BLANK:
       return `/post/${id}`
     case ValidPostStyle.REPORT:
-      return `https://${SITE_URL}/project/${slug}`
+      return `https://${SITE_URL}/project/${slug}/`
     case ValidPostStyle.PROJECT3:
-      return `https://${SITE_URL}/project/3/${slug}`
+      return `https://${SITE_URL}/project/3/${slug}/`
     default:
       // undefined value can't be serialized, so set default value to '/'
       return '/'
