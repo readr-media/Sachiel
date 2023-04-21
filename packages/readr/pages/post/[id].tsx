@@ -139,14 +139,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       if (postStyle === ValidPostStyle.REPORT) {
         return {
           redirect: {
-            destination: `https://${SITE_URL}/project/${postSlug}`,
+            destination: `https://${SITE_URL}/project/${postSlug}/`,
             permanent: false,
           },
         }
       } else if (postStyle === ValidPostStyle.PROJECT3) {
         return {
           redirect: {
-            destination: `https://${SITE_URL}/project/3/${postSlug}`,
+            destination: `https://${SITE_URL}/project/3/${postSlug}/`,
             permanent: false,
           },
         }
