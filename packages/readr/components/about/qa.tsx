@@ -75,7 +75,7 @@ export default function Qa({
   qaLists: QaList[]
 }): JSX.Element {
   const questions =
-    language === 'ch' ? qaLists[1]?.items || [] : qaLists[0]?.items || []
+    (language === 'ch' ? qaLists[1]?.items : qaLists[0]?.items) ?? []
 
   return (
     <Container>
