@@ -552,7 +552,7 @@ export default function Members({
                   })}
                 </Number>
               </InfoWrapper>
-              {member.projects?.length === 0 ? (
+              {/* {member.projects?.length === 0 ? (
                 <Work
                   style={{
                     backgroundColor: '#E5E5E5',
@@ -566,7 +566,7 @@ export default function Members({
                 <Work onClick={(e) => e.stopPropagation()}>
                   <Link href={`/author/${member.id}`}>相關作品</Link>
                 </Work>
-              )}
+              )} */}
             </CardFront>
             <CardBack className="card-back">
               <ArrowLeft className="arr-left" />
