@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { PostDetail } from '~/graphql/query/post'
@@ -98,8 +99,7 @@ export default function PostTitle({
         key={item.id}
         onClick={() => gtag.sendEvent('post', 'click', `post-${item.title}`)}
       >
-        {/* TODO: replace with next/link after post with embedded code issues got fixed */}
-        <a href={`/category/${item.slug}`}>{item.title}</a>
+        <Link href={`/category/${item.slug}`}>{item.title}</Link>
       </li>
     )
   })

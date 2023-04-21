@@ -3,6 +3,7 @@
  * 展開顯示畫面與類別清單
  */
 
+import NextLink from 'next/link'
 import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
@@ -128,13 +129,13 @@ export default function HamburgerMenu({
 
   const categoryItems = categories.map((category) => (
     <CategoryItem key={category.id}>
-      {/* TODO: replace with next/link after post with embedded code issues got fixed */}
-      <a
-        href={`/category/${category.slug}`}
+      <NextLink
+        href={{ pathname: '/category/[slug]', query: { slug: category.slug } }}
+        shallow={isCategoryPage}
         onClick={() => clickHandle(category)}
       >
         <span>{category.title}</span>
-      </a>
+      </NextLink>
     </CategoryItem>
   ))
 

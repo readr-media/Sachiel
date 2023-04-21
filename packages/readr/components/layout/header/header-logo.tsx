@@ -1,12 +1,12 @@
 // TODO: replace it with share component
 
+import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import ReadrLogo from '~/public/icons/readr-logo.svg'
 import * as gtag from '~/utils/gtag'
 
-// TODO: replace with next/link after post with embedded code issues got fixed
-const Link = styled.a`
+const Link = styled(NextLink)`
   display: block;
 `
 
