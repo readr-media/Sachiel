@@ -1,5 +1,3 @@
-// under construction
-
 import type { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
@@ -11,13 +9,18 @@ import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
 import Members from '~/components/about/members'
 import More from '~/components/about/more'
+import Qa from '~/components/about/qa'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
+import { QA_RECORD_CONFIG } from '~/constants/environment-variables'
+import editoolsClient from '~/editools-apollo-client'
 import type { Award } from '~/graphql/query/award'
 import { awards as awardsGql } from '~/graphql/query/award'
 import type { Member } from '~/graphql/query/member'
 import { members as membersGql } from '~/graphql/query/member'
 import type { PageVariable } from '~/graphql/query/page-variable'
 import { pageVariablesByPage } from '~/graphql/query/page-variable'
+import type { QaList } from '~/graphql/query/qa'
+import { qALists as qAListsGql } from '~/graphql/query/qa'
 import type { Language, RenderedAward } from '~/types/about'
 
 import type { NextPageWithLayout } from './_app'
@@ -35,6 +38,7 @@ type languageWording = {
   awardsTitle: string
   moreTitle: string
   memberTitle: string
+  qaTitle: string
 }
 
 const wording: Record<Language, languageWording> = {
@@ -47,6 +51,7 @@ const wording: Record<Language, languageWording> = {
     awardsTitle: '獲獎經歷',
     moreTitle: '更認識我們',
     memberTitle: '團隊成員',
+    qaTitle: '你可能好奇',
   },
   en: {
     landing: {
@@ -57,6 +62,7 @@ const wording: Record<Language, languageWording> = {
     awardsTitle: 'Awards',
     moreTitle: 'More',
     memberTitle: 'Members',
+    qaTitle: 'Q&A',
   },
 }
 
@@ -78,12 +84,14 @@ type PageProps = {
   awardsData: Award[]
   moreReportData: PageVariable[]
   membersData: Member[]
+  qAListsData: QaList[]
 }
 
 const About: NextPageWithLayout<PageProps> = ({
   awardsData,
   moreReportData,
   membersData,
+  qAListsData,
 }) => {
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
@@ -161,6 +169,11 @@ const About: NextPageWithLayout<PageProps> = ({
         title={wording[language].landing.title}
         content={wording[language].landing.content}
       />
+      <Qa
+        language={language}
+        title={wording[language].qaTitle}
+        qaLists={qAListsData}
+      />
       <Members
         language={language}
         title={wording[language].memberTitle}
@@ -182,6 +195,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
   let membersData: Member[] = []
+  let qAListsData: QaList[] = []
 
   try {
     const awardsResult: ApolloQueryResult<{ awards: Award[] }> =
@@ -223,11 +237,37 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
     )
   }
 
+  try {
+    const qAListsResult: ApolloQueryResult<{ qALists: QaList[] }> =
+      await editoolsClient.query({
+        query: qAListsGql,
+        variables: QA_RECORD_CONFIG.variables,
+      })
+
+    qAListsData = qAListsResult.data.qALists
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: errors.helpers.printAll(
+          err,
+          {
+            withStack: true,
+            withPayload: true,
+          },
+          0,
+          0
+        ),
+      })
+    )
+  }
+
   return {
     props: {
       awardsData,
       moreReportData,
       membersData,
+      qAListsData,
     },
   }
 }
