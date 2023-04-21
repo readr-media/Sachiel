@@ -205,7 +205,9 @@ export default function Frame({
               alt={postData?.heroCaption}
               priority={false}
             />
-            <figcaption>{postData?.heroCaption}</figcaption>
+            {postData?.heroCaption && (
+              <figcaption>{postData?.heroCaption}</figcaption>
+            )}
           </HeroImage>
         )}
         <PostContent postData={postData} />
