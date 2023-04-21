@@ -3,6 +3,7 @@
  *
  */
 
+import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -91,15 +92,20 @@ export default function CategoriesAndRelatedPosts({
       onFocus={() => openRelatedList(category.id)}
       onBlur={() => closeRelatedList()}
     >
-      {/* TODO: replace with next/link after post with embedded code issues got fixed */}
-      <a
-        href={`/category/${category.slug}`}
+      <NextLink
+        href={{
+          pathname: '/category/[slug]',
+          query: {
+            slug: category.slug,
+          },
+        }}
+        shallow={isCategoryPage}
         onClick={() =>
           gtag.sendEvent('header', 'click', `menu-${category.title}`)
         }
       >
         <span>{category.title}</span>
-      </a>
+      </NextLink>
       <RelatedListInHeader
         show={activeCatgoryId === category.id}
         relatedList={category.relatedList}
