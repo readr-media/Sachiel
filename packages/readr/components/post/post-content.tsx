@@ -85,6 +85,15 @@ const Summary = styled.article`
 //內文
 const Content = styled.article`
   margin: 0 0 32px 0;
+
+  //phase 1: resolve empty block before embedded-code
+  .embedded-code-container {
+    transform: translateY(-36px);
+  }
+
+  .embedded-code-container-top {
+    margin-top: -105px;
+  }
 `
 
 //延伸議題
@@ -263,7 +272,7 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
 
   //檢查欄位內是否有資料（因為欄位無資料，依舊會回傳 blocks 和 entityMap）
   const shouldShowDraftBlock = (blocks: RawDraftContentBlock[]) => {
-    if (!blocks) {
+    if (!blocks || !blocks.length) {
       //if draft.blocks is undefined, return false
       return false
     } else if (
