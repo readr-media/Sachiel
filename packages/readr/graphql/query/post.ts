@@ -28,12 +28,18 @@ export type PostDetail = Override<
       | 'summary'
       | 'actionList'
       | 'citation'
-      | 'manualOrderOfDataAnalysts'
       | 'manualOrderOfWriters'
+      | 'manualOrderOfPhotographers'
+      | 'manualOrderOfCameraOperators'
       | 'manualOrderOfDesigners'
-      | 'dataAnalysts'
+      | 'manualOrderOfEngineers'
+      | 'manualOrderOfDataAnalysts'
       | 'writers'
+      | 'photographers'
+      | 'cameraOperators'
       | 'designers'
+      | 'engineers'
+      | 'dataAnalysts'
       | 'otherByline'
       | 'relatedPosts'
       | 'categories'
@@ -45,12 +51,18 @@ export type PostDetail = Override<
   {
     heroImage: PhotoWithResizedOnly | null
     ogImage: PhotoWithResizedOnly | null
-    manualOrderOfDataAnalysts: Author[]
     manualOrderOfWriters: Author[]
+    manualOrderOfPhotographers: Author[]
+    manualOrderOfCameraOperators: Author[]
     manualOrderOfDesigners: Author[]
-    dataAnalysts: Author[]
+    manualOrderOfEngineers: Author[]
+    manualOrderOfDataAnalysts: Author[]
     writers: Author[]
+    photographers: Author[]
+    cameraOperators: Author[]
     designers: Author[]
+    engineers: Author[]
+    dataAnalysts: Author[]
     relatedPosts: Post[]
     categories: Category[]
     tags: Tag[]
@@ -82,18 +94,31 @@ const post = gql`
         title
         slug
       }
-      manualOrderOfDataAnalysts
       manualOrderOfWriters
-      manualOrderOfDesigners
-      dataAnalysts {
+      manualOrderOfPhotographers
+      manualOrderOfCameraOperators 
+      manualOrderOfDesigners 
+      manualOrderOfEngineers 
+      manualOrderOfDataAnalysts 
+      writers {
         ...AuthorFields
       }
-      writers {
+      photographers {
+        ...AuthorFields
+      }
+      cameraOperators  {
         ...AuthorFields
       }
       designers {
         ...AuthorFields
       }
+      engineers {
+        ...AuthorFields
+      }
+      dataAnalysts {
+        ...AuthorFields
+      }
+
       leadingEmbeddedCode
       otherByline
       tags ( 
