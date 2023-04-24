@@ -35,6 +35,7 @@ import useScrollToEnd from '~/hooks/useScrollToEnd'
 import { ValidPostStyle } from '~/types/common'
 import type { DataSetItem, FeaturedArticle } from '~/types/component'
 import type { CollaborationItem } from '~/types/component'
+import { setCacheControl } from '~/utils/common'
 import { convertDataSet } from '~/utils/data-set'
 import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
@@ -105,7 +106,11 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
   return shuffledArr.slice(0, targetSize)
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  res,
+}) => {
+  setCacheControl(res)
+
   let editorChoices: EditorCard[] = []
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
