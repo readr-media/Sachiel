@@ -12,7 +12,7 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-4Z12TPZTMB'
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
-    GLOBAL_CACHE_SETTING = 'private, max-age=300'
+    GLOBAL_CACHE_SETTING = 'public, max-age=300'
     break
 
   case 'staging':
@@ -20,7 +20,7 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-YDKYSDG3RL'
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
-    GLOBAL_CACHE_SETTING = 'private, max-age=300'
+    GLOBAL_CACHE_SETTING = 'public, max-age=300'
     break
 
   case 'dev':
