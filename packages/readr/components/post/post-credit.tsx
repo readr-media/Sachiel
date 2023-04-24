@@ -140,7 +140,7 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
       <CreditList>
         {writers?.length > 0 && (
           <li>
-            <CreditTitle>記者</CreditTitle>
+            <CreditTitle>作者</CreditTitle>
             <CreditName>{writers}</CreditName>
           </li>
         )}
@@ -156,16 +156,16 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
             <CreditName>{cameraOperators}</CreditName>
           </li>
         )}
-        {engineers?.length > 0 && (
-          <li>
-            <CreditTitle>設計</CreditTitle>
-            <CreditName>{engineers}</CreditName>
-          </li>
-        )}
         {designers?.length > 0 && (
           <li>
-            <CreditTitle>工程</CreditTitle>
+            <CreditTitle>設計</CreditTitle>
             <CreditName>{designers}</CreditName>
+          </li>
+        )}
+        {engineers?.length > 0 && (
+          <li>
+            <CreditTitle>工程</CreditTitle>
+            <CreditName>{engineers}</CreditName>
           </li>
         )}
         {dataAnalysts?.length > 0 && (
