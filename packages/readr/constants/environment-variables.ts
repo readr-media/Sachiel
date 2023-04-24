@@ -4,6 +4,7 @@ let SITE_URL: string
 let GA_TRACKING_ID: string
 let DONATION_PAGE_URL: string
 let QA_RECORD_CONFIG: { variables: Record<string, string> }
+let GLOBAL_CACHE_SETTING: string
 
 switch (ENV) {
   case 'prod':
@@ -11,6 +12,7 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-4Z12TPZTMB'
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
+    GLOBAL_CACHE_SETTING = 'public, max-age=300'
     break
 
   case 'staging':
@@ -18,6 +20,7 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-YDKYSDG3RL'
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
+    GLOBAL_CACHE_SETTING = 'public, max-age=300'
     break
 
   case 'dev':
@@ -25,6 +28,7 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-YDKYSDG3RL'
     DONATION_PAGE_URL = 'https://readr.testing.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
+    GLOBAL_CACHE_SETTING = 'no-store'
     break
 
   default:
@@ -32,7 +36,15 @@ switch (ENV) {
     GA_TRACKING_ID = 'G-YDKYSDG3RL'
     DONATION_PAGE_URL = 'https://readr.testing.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
+    GLOBAL_CACHE_SETTING = 'no-store'
     break
 }
 
-export { DONATION_PAGE_URL, ENV, GA_TRACKING_ID, QA_RECORD_CONFIG, SITE_URL }
+export {
+  DONATION_PAGE_URL,
+  ENV,
+  GA_TRACKING_ID,
+  GLOBAL_CACHE_SETTING,
+  QA_RECORD_CONFIG,
+  SITE_URL,
+}
