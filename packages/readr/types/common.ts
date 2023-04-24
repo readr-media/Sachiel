@@ -90,14 +90,20 @@ export type GenericPost = {
   summary: RawDraftContentState // draft-renderer JSON
   actionList: RawDraftContentState // draft-renderer JSON
   citation: RawDraftContentState // draft-renderer JSON
-  dataAnalysts: GenericAuthor[]
-  writers: GenericAuthor[]
-  designers: GenericAuthor[]
   categories: GenericCategory[]
-  manualOrderOfDataAnalysts: GenericAuthor[] // JSON
-  manualOrderOfWriters: GenericAuthor[] // JSON
-  manualOrderOfDesigners: GenericAuthor[] // JSON
-  otherByline: string
+  writers: GenericAuthor[] //作者
+  photographers: GenericAuthor[] //攝影
+  cameraOperators: GenericAuthor[] //影音
+  designers: GenericAuthor[] //設計
+  engineers: GenericAuthor[] //工程
+  dataAnalysts: GenericAuthor[] //資料分析
+  manualOrderOfWriters: GenericAuthor[] //作者 JSON
+  manualOrderOfPhotographers: GenericAuthor[] //攝影 JSON
+  manualOrderOfCameraOperators: GenericAuthor[] //影音 JSON
+  manualOrderOfDesigners: GenericAuthor[] //設計 JSON
+  manualOrderOfEngineers: GenericAuthor[] //工程 JSON
+  manualOrderOfDataAnalysts: GenericAuthor[] //資料分析 JSON
+  otherByline: string //作者（其他）
   relatedPosts: GenericPost[]
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
   publishTime: string
