@@ -56,7 +56,7 @@ const CreditList = styled.ul`
     font-size: 14px;
     line-height: 1.5;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   > li + li {
     margin: 4px 0 0;
@@ -73,6 +73,7 @@ const CreditTitle = styled.div`
   display: block;
   color: rgba(0, 9, 40, 0.66);
   margin-right: 3px;
+  min-width: 32px;
 `
 
 const CreditName = styled.div`
@@ -116,20 +117,43 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
   const writers = renderNames(
     postData?.manualOrderOfWriters ?? postData?.writers
   )
+  const photographers = renderNames(
+    postData?.manualOrderOfPhotographers ?? postData?.photographers
+  )
+  const cameraOperators = renderNames(
+    postData?.manualOrderOfCameraOperators ?? postData?.cameraOperators
+  )
   const designers = renderNames(
     postData?.manualOrderOfDesigners ?? postData?.designers
+  )
+  const engineers = renderNames(
+    postData?.manualOrderOfEngineers ?? postData?.engineers
   )
   const dataAnalysts = renderNames(
     postData?.manualOrderOfDataAnalysts ?? postData?.dataAnalysts
   )
+
+  const otherWriters = postData?.otherByline
 
   return (
     <PostCreditWrapper>
       <CreditList>
         {writers?.length > 0 && (
           <li>
-            <CreditTitle>記者</CreditTitle>
+            <CreditTitle>作者</CreditTitle>
             <CreditName>{writers}</CreditName>
+          </li>
+        )}
+        {photographers?.length > 0 && (
+          <li>
+            <CreditTitle>攝影</CreditTitle>
+            <CreditName>{photographers}</CreditName>
+          </li>
+        )}
+        {cameraOperators?.length > 0 && (
+          <li>
+            <CreditTitle>影音</CreditTitle>
+            <CreditName>{cameraOperators}</CreditName>
           </li>
         )}
         {designers?.length > 0 && (
@@ -138,10 +162,23 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
             <CreditName>{designers}</CreditName>
           </li>
         )}
+        {engineers?.length > 0 && (
+          <li>
+            <CreditTitle>工程</CreditTitle>
+            <CreditName>{engineers}</CreditName>
+          </li>
+        )}
         {dataAnalysts?.length > 0 && (
           <li>
             <CreditTitle>資料分析</CreditTitle>
             <CreditName>{dataAnalysts}</CreditName>
+          </li>
+        )}
+
+        {otherWriters && (
+          <li>
+            <CreditTitle>其他作者</CreditTitle>
+            <CreditName>{otherWriters}</CreditName>
           </li>
         )}
       </CreditList>
