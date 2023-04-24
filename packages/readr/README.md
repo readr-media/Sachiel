@@ -10,10 +10,6 @@
 4. 接著，使用 `yarn dev` 啟動服務，進行開發測試。
 5. 開發完畢後，使用 `yarn build` 來建構正式環境程式，然後再使用 `yarn start` 來執行並驗證。
 
-### 更新 mock GraphQL API server 的 schema
-
-- 在目標 DB 的 schema 更新後，將新版的 [schema.graphql](https://github.com/mirror-media/Lilith/blob/main/packages/readr/schema.graphql) 檔案複製到 `mock-server/typeDefs/` 底下，覆蓋既有 `schema.graphql`，然後重開 mock server 即可。
-
 ---
 
 ## Project Directory Explanation (專案目錄結構說明)
@@ -28,20 +24,17 @@
 |── constants/        - 常數、設定
 |── contexts/         - React Context
 |── graphql/          - GraphQL request schema 檔案
+|   |── fragments/    - GraphQL fragments
 |   |── query/        - GraphQL queries
 |   └── mutation/     - GraphQL mutations
 |── hooks/            - custom React Hooks
 |── styles/           - CSS 檔案、theme
 |── types/            - TypeScript 使用的型別定義
 |── utils/            - 工具類 function
-|── graphql/          - GraphQL query/mutation
-|   |── query/        - query
-|   └── mutation/     - mutation
 |── public/           - 靜態資源
 |   |── icons/        - SVG icons
 |   └── images/       - 圖片
 └── mock-server/      - mock GraphQL API server
-    |── typeDefs/     - GraphQL schema 檔案
     └── mocks/        - mock data 定義
 ```
 
@@ -86,13 +79,13 @@
 
 ### Staging
 
-- [Cloud Build | ]()
-- [Cloud Run | ]()
+- [Cloud Build | sachiel-readr-staging](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/1f92c2c5-b83b-4b69-82b0-c68d132b1ded?authuser=1&hl=zh-tw&project=mirrorlearning-161006)
+- [Cloud Run | readr-next-staging](https://console.cloud.google.com/run/detail/asia-east1/readr-next-staging/metrics?authuser=1&hl=zh-tw&project=mirrorlearning-161006)
 
 ### Prod
 
-- [Cloud Build | ]()
-- [Cloud Run | ]()
+- [Cloud Build | sachiel-readr-prod](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/f488e871-56b1-473e-8dd8-9089dc817f88?authuser=1&hl=zh-tw&project=mirrorlearning-161006)
+- [Cloud Run | readr-next-prod](https://console.cloud.google.com/run/detail/asia-east1/readr-next-prod/metrics?authuser=1&hl=zh-tw&project=mirrorlearning-161006)
 
 ---
 

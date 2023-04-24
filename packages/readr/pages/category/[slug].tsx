@@ -21,6 +21,7 @@ import { postStyles } from '~/graphql/query/post'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import type { NavigationCategory } from '~/types/component'
+import { setCacheControl } from '~/utils/common'
 import * as gtag from '~/utils/gtag'
 import { getResizedUrl, postConvertFunc } from '~/utils/post'
 
@@ -284,7 +285,11 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  res,
+}) => {
+  setCacheControl(res)
+
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
     id: DEFAULT_CATEGORY.id,
