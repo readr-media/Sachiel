@@ -22,6 +22,7 @@ import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { QaList } from '~/graphql/query/qa'
 import { qALists as qAListsGql } from '~/graphql/query/qa'
 import type { Language, RenderedAward } from '~/types/about'
+import { setCacheControl } from '~/utils/common'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -191,7 +192,11 @@ const About: NextPageWithLayout<PageProps> = ({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({}) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  res,
+}) => {
+  setCacheControl(res)
+
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
   let membersData: Member[] = []

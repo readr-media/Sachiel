@@ -15,6 +15,7 @@ import { post as postQuery } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ResizedImages, ValidPostStyle } from '~/types/common'
+import { setCacheControl } from '~/utils/common'
 
 type PageProps = {
   postData: PostDetail
@@ -101,7 +102,10 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
+  res,
 }) => {
+  setCacheControl(res)
+
   let postData: PostDetail, latestPosts: Post[]
 
   try {
