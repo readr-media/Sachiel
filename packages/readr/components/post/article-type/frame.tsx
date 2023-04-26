@@ -172,7 +172,7 @@ export default function Frame({
   //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
   //change string to [ {title:..., name:...}, {title:..., name:...} ...]
   let creditLists
-  if (postData?.otherByline.startsWith('*')) {
+  if (postData?.otherByline?.startsWith('*')) {
     const changeStringToArray = postData?.otherByline.slice(1).split('／')
 
     creditLists = changeStringToArray.map((credit) => {
