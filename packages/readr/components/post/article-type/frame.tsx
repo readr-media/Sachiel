@@ -1,9 +1,11 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
+import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
 import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
@@ -166,6 +168,12 @@ export default function Frame({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
+  const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
+    !shouldShowLeadingEmbedded
+  )
+
   const date = formatPostDate(postData?.publishTime)
 
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
@@ -210,19 +218,29 @@ export default function Frame({
             )}
           </HeroImage>
         )}
-        <PostContent postData={postData} />
+        {shouldShowLeadingEmbedded && (
+          <LeadingEmbeddedCode
+            embeddedCode={postData?.leadingEmbeddedCode}
+            setState={setIsEmbeddedFinish}
+          />
+        )}
+        {isEmbeddedFinish && <PostContent postData={postData} />}
       </article>
-      <SubscribeButton />
-      <RelatedPosts
-        relatedPosts={postData?.relatedPosts}
-        latestPosts={latestPosts}
-      />
-      <FrameCredit className="frame-credit">
-        <CreditLists>{frameCreditLists}</CreditLists>
-        <div className="publish-time">{date}</div>
-      </FrameCredit>
-      <HiddenAnchor ref={anchorRef} />
-      <Footer />
+      {isEmbeddedFinish && (
+        <>
+          <SubscribeButton />
+          <RelatedPosts
+            relatedPosts={postData?.relatedPosts}
+            latestPosts={latestPosts}
+          />
+          <FrameCredit className="frame-credit">
+            <CreditLists>{frameCreditLists}</CreditLists>
+            <div className="publish-time">{date}</div>
+          </FrameCredit>
+          <HiddenAnchor ref={anchorRef} />
+          <Footer />
+        </>
+      )}
     </FrameWrapper>
   )
 }
