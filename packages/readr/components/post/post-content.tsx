@@ -47,7 +47,7 @@ const Summary = styled.article`
   padding: 16px 0 0;
   border: 2px solid #04295e;
   border-radius: 2px;
-  margin: 0 0 24px;
+  margin: 0 0 32px;
   padding: 48px 48px 32px 48px;
   font-size: 16px;
 
@@ -124,6 +124,7 @@ const Citation = styled.article`
 
   ${({ theme }) => theme.breakpoint.md} {
     transform: none;
+    margin: 0 auto 60px;
   }
 
   .title {
@@ -259,7 +260,7 @@ const TagGroup = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     padding: 0;
-    margin: 0 auto 52px;
+    margin: 0 auto 60px;
   }
 `
 
