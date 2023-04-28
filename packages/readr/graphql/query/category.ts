@@ -3,14 +3,30 @@ import gql from 'graphql-tag'
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { postFragment } from '~/graphql/fragments/post'
-import type { GenericCategory, Override } from '~/types/common'
+import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
+import type {
+  GenericCategory,
+  Override,
+  PhotoWithResizedOnly,
+} from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
 export type Category = Override<
-  Pick<GenericCategory, 'id' | 'slug' | 'title' | 'posts' | 'reports'>,
+  Pick<
+    GenericCategory,
+    'id' | 'slug' | 'title' | 'posts' | 'reports' | 'ogImage' | 'ogDescription'
+  >,
   {
     posts?: Post[]
     reports?: Post[]
+    ogImage?: PhotoWithResizedOnly | null
+  }
+>
+
+export type CategoryWithoutPosts = Override<
+  Pick<GenericCategory, 'id' | 'slug' | 'title' | 'ogImage' | 'ogDescription'>,
+  {
+    ogImage?: PhotoWithResizedOnly | null
   }
 >
 
@@ -60,9 +76,17 @@ const categories = gql`
       ) @include(if: $shouldQueryRelatedReport) {
         ...PostFields
       }
+      ogDescription
+      ogImage {
+        resized {
+          ...ResizedImagesField
+        }
+      }
+      
     }
   }
   ${postFragment}
+  ${resizeImagesFragment}
 `
 
 export { categories }

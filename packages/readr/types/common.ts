@@ -41,10 +41,36 @@ export enum ValidPostStyle {
   QA = 'qa',
   SCROLLABLE_VIDEO = 'scrollablevideo',
 }
+
+export enum ValidJobTitles {
+  FRONT_END_ENGINEER = 'front-end engineer',
+  APP_ENGINEER = 'App engineer',
+  FULL_STACK_ENGINEER = 'full-stack engineer',
+  BACK_END_ENGINEER = 'back-end engineer',
+  EDITOR_IN_CHIEF = 'editor in chief',
+  PRODUCT_DESIGNER = 'product designer',
+  JOURNALIST = 'journalist',
+  SOCIAL_MEDIA_EDITOR = 'social media editor',
+  FEATURE_PRODUCER = 'Feature Producer',
+  PRODUCT_MANAGER = 'product manager',
+}
+
 /* eslint-enable no-unused-vars */
 
 export type GenericAuthor = {
   id: string | number
+  name: string
+  isMember: boolean
+  name_en: string
+  title: string
+  special_number: string
+  number_desc: string
+  number_desc_en: string
+  projects: GenericProject[]
+}
+
+export type GenericProject = {
+  id: string
   name: string
 }
 
@@ -64,20 +90,27 @@ export type GenericPost = {
   summary: RawDraftContentState // draft-renderer JSON
   actionList: RawDraftContentState // draft-renderer JSON
   citation: RawDraftContentState // draft-renderer JSON
-  dataAnalysts: GenericAuthor[]
-  writers: GenericAuthor[]
-  designers: GenericAuthor[]
   categories: GenericCategory[]
-  manualOrderOfDataAnalysts: GenericAuthor[] // JSON
-  manualOrderOfWriters: GenericAuthor[] // JSON
-  manualOrderOfDesigners: GenericAuthor[] // JSON
-  otherByline: string
+  writers: GenericAuthor[] //作者
+  photographers: GenericAuthor[] //攝影
+  cameraOperators: GenericAuthor[] //影音
+  designers: GenericAuthor[] //設計
+  engineers: GenericAuthor[] //工程
+  dataAnalysts: GenericAuthor[] //資料分析
+  manualOrderOfWriters: GenericAuthor[] //作者 JSON
+  manualOrderOfPhotographers: GenericAuthor[] //攝影 JSON
+  manualOrderOfCameraOperators: GenericAuthor[] //影音 JSON
+  manualOrderOfDesigners: GenericAuthor[] //設計 JSON
+  manualOrderOfEngineers: GenericAuthor[] //工程 JSON
+  manualOrderOfDataAnalysts: GenericAuthor[] //資料分析 JSON
+  otherByline: string //作者（其他）
   relatedPosts: GenericPost[]
   manualOrderOfRelatedPosts: unknown // it is hard to describe JSON type
   publishTime: string
   readingTime: number
   tags: GenericTag[]
   state: string
+  leadingEmbeddedCode: string
 }
 
 export type GenericCategory = {
@@ -98,6 +131,9 @@ export type GenericTag = {
 }
 
 export type GenericEditorChoice = {
+  id: string
+  name: string
+  link: string
   heroImage: GenericPhoto | null
   choices: GenericPost | null
 }

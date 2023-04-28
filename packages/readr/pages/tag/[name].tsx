@@ -16,6 +16,8 @@ import { tags as tagQuery } from '~/graphql/query/tag'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ArticleCard } from '~/types/component'
+import { setCacheControl } from '~/utils/common'
+import * as gtag from '~/utils/gtag'
 import { postConvertFunc } from '~/utils/post'
 
 const shareStyle = css`
@@ -101,6 +103,7 @@ const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
             mobile: `${theme.mediaSize.sm - 1}px`,
             tablet: `${theme.mediaSize.xl - 1}px`,
           }}
+          onClick={() => gtag.sendEvent('tag', 'click', `tag-${article.title}`)}
         />
       </Item>
     )
@@ -179,7 +182,10 @@ const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
+  res,
 }) => {
+  setCacheControl(res)
+
   let tagRelatedPosts: ArticleCard[] | undefined
   let tagName: string | string[] | undefined
 

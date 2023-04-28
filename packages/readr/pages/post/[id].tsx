@@ -1,20 +1,21 @@
 import errors from '@twreporter/errors'
 import type { RawDraftContentBlock } from 'draft-js'
 import type { GetServerSideProps } from 'next'
-import type { ReactElement } from 'react'
 
 import client from '~/apollo-client'
-import LayoutGeneral from '~/components/layout/layout-general'
+import CustomHead from '~/components/layout/custom-head'
 import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
 import ScrollableVideo from '~/components/post/article-type/scrollable-video'
+import { SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
-import { post } from '~/graphql/query/post'
+import { post as postQuery } from '~/graphql/query/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ResizedImages, ValidPostStyle } from '~/types/common'
+import { setCacheControl } from '~/utils/common'
 
 type PageProps = {
   postData: PostDetail
@@ -26,9 +27,7 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
 
   switch (postData.style) {
     case ValidPostStyle.NEWS:
-    case ValidPostStyle.PROJECT3:
     case ValidPostStyle.EMBEDDED:
-    case ValidPostStyle.REPORT:
       articleType = <News postData={postData} latestPosts={latestPosts} />
       break
     case ValidPostStyle.SCROLLABLE_VIDEO:
@@ -47,12 +46,66 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
       break
   }
 
-  return <>{articleType}</>
+  // head info
+  function convertDraftToText(blocks: RawDraftContentBlock[]) {
+    if (blocks) {
+      const text = blocks.map((block) => block.text).join('')
+      const ogDescription =
+        text && text.length > 160 ? text.slice(0, 160) + '...' : text
+      return ogDescription
+    }
+  }
+
+  // phase 1
+  function getResizedUrl(
+    resized: ResizedImages | undefined | null
+  ): string | undefined {
+    return resized?.original
+  }
+
+  // phase 2 - debug imageUrl onError
+  // function getResizedUrl(
+  //   resized: ResizedImages | undefined | null
+  // ): string | undefined {
+  //   return (
+  //     resized?.w480 ||
+  //     resized?.w800 ||
+  //     resized?.w1200 ||
+  //     resized?.w1600 ||
+  //     resized?.w2400 ||
+  //     resized?.original
+  //   )
+  // }
+
+  const ogTitle = postData.title
+
+  const ogDescription =
+    postData?.ogDescription ||
+    convertDraftToText(postData?.summary?.blocks) ||
+    convertDraftToText(postData?.content?.blocks)
+
+  const ogImageUrl =
+    getResizedUrl(postData?.ogImage?.resized) ||
+    getResizedUrl(postData?.heroImage?.resized)
+
+  return (
+    <>
+      <CustomHead
+        title={ogTitle}
+        description={ogDescription}
+        imageUrl={ogImageUrl}
+      ></CustomHead>
+      {articleType}
+    </>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
+  res,
 }) => {
+  setCacheControl(res)
+
   let postData: PostDetail, latestPosts: Post[]
 
   try {
@@ -60,9 +113,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       // fetch post data by id
       const postId = params?.id
       const { data, errors: gqlErrors } = await client.query<{
-        post: PostDetail
+        posts: PostDetail[]
       }>({
-        query: post,
+        query: postQuery,
         variables: { id: postId },
       })
 
@@ -76,11 +129,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         throw annotatingError
       }
 
-      if (!data.post || data.post.state !== 'published') {
+      if (!data.posts[0]) {
         return { notFound: true }
       }
 
-      postData = data.post
+      if (data.posts[0].style === ValidPostStyle.EMBEDDED) {
+        return { notFound: true }
+      }
+
+      const postStyle = data.posts[0].style
+      const postSlug = data.posts[0].slug
+
+      if (postStyle === ValidPostStyle.REPORT) {
+        return {
+          redirect: {
+            destination: `https://${SITE_URL}/project/${postSlug}/`,
+            permanent: false,
+          },
+        }
+      } else if (postStyle === ValidPostStyle.PROJECT3) {
+        return {
+          redirect: {
+            destination: `https://${SITE_URL}/project/3/${postSlug}/`,
+            permanent: false,
+          },
+        }
+      }
+
+      postData = data.posts[0]
     }
 
     {
@@ -131,53 +207,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       latestPosts: latestPosts,
     },
   }
-}
-
-Post.getLayout = function getLayout(page: ReactElement<PageProps>) {
-  const { props } = page
-
-  function convertDraftToText(blocks: RawDraftContentBlock[]) {
-    if (blocks) {
-      const text = blocks.map((block) => block.text).join('')
-      const ogDescription =
-        text && text.length > 160 ? text.slice(0, 160) + '...' : text
-      return ogDescription
-    }
-  }
-
-  function getResizedUrl(
-    resized: ResizedImages | undefined | null
-  ): string | undefined {
-    return (
-      resized?.w480 ||
-      resized?.w800 ||
-      resized?.w1200 ||
-      resized?.w1600 ||
-      resized?.w2400 ||
-      resized?.original
-    )
-  }
-
-  const ogTitle = props.postData.title
-
-  const ogDescription =
-    props.postData?.ogDescription ||
-    convertDraftToText(props.postData?.summary?.blocks) ||
-    convertDraftToText(props.postData?.content?.blocks)
-
-  const ogImageUrl =
-    getResizedUrl(props.postData?.ogImage?.resized) ||
-    getResizedUrl(props.postData?.heroImage?.resized)
-
-  return (
-    <LayoutGeneral
-      title={ogTitle}
-      description={ogDescription}
-      imageUrl={ogImageUrl}
-    >
-      {page}
-    </LayoutGeneral>
-  )
 }
 
 export default Post

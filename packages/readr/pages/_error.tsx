@@ -1,5 +1,6 @@
 import errors from '@twreporter/errors'
 import type { NextPageContext } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactElement } from 'react'
@@ -8,6 +9,7 @@ import styled, { css } from 'styled-components'
 import client from '~/apollo-client'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import ArticleListCard from '~/components/shared/article-list-card'
+import { SITE_TITLE } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import { convertPostToArticleCard } from '~/utils/post'
@@ -199,13 +201,16 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 }) => {
   let errorImageSrc = ''
   let errorMessage = ''
+  let pageTitle = ''
 
   if (statusCode === 404) {
     errorImageSrc = '/icons/404.svg'
     errorMessage = '抱歉，找不到這個網址'
+    pageTitle = '找不到頁面'
   } else {
     errorImageSrc = '/icons/500.svg'
     errorMessage = '系統忙碌，請稍後再試'
+    pageTitle = '系統出了點問題'
   }
 
   const articleItems: ReactElement[] | undefined = latestPosts?.map(
@@ -233,6 +238,9 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 
   return (
     <Page>
+      <Head>
+        <title>{`${pageTitle}｜${SITE_TITLE}`}</title>
+      </Head>
       <Wrapper>
         <ErrorContainer>
           <Image

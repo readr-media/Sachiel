@@ -7,16 +7,21 @@ import type {
   Override,
   PhotoWithResizedOnly,
 } from '~/types/common'
+import type { ArticleCard } from '~/types/component'
 
 import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type EditorChoice = Override<
-  Pick<GenericEditorChoice, 'choices' | 'heroImage'>,
+  Pick<GenericEditorChoice, 'choices' | 'heroImage' | 'link' | 'name' | 'id'>,
   {
     choices: Post | null
     heroImage: PhotoWithResizedOnly | null
   }
 >
+
+export type EditorCard = ArticleCard & {
+  shouldHideBottomInfos: boolean
+}
 
 const editorChoices = gql`
   query {
@@ -25,6 +30,9 @@ const editorChoices = gql`
       take: 3
       where: { state: { equals: "published" } }
     ) {
+      id
+      name
+      link
       heroImage {
         resized {
           ...ResizedImagesField

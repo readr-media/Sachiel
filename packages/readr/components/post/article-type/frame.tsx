@@ -1,15 +1,19 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
+import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
-import Report from '~/components/post/report'
+import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
+import useScrollToEnd from '~/hooks/useScrollToEnd'
+import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
 const FrameWrapper = styled.div`
@@ -143,6 +147,14 @@ const CreditLists = styled.ul`
   }
 `
 
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
+
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
@@ -152,13 +164,23 @@ export default function Frame({
   postData,
   latestPosts,
 }: PostProps): JSX.Element {
+  const anchorRef = useScrollToEnd(() =>
+    gtag.sendEvent('post', 'scroll', 'scroll to end')
+  )
+
+  const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
+    !shouldShowLeadingEmbedded
+  )
+
   const date = formatPostDate(postData?.publishTime)
 
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
   //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
   //change string to [ {title:..., name:...}, {title:..., name:...} ...]
   let creditLists
-  if (postData?.otherByline.startsWith('*')) {
+  if (postData?.otherByline?.startsWith('*')) {
     const changeStringToArray = postData?.otherByline.slice(1).split('／')
 
     creditLists = changeStringToArray.map((credit) => {
@@ -191,18 +213,34 @@ export default function Frame({
               alt={postData?.heroCaption}
               priority={false}
             />
-            <figcaption>{postData?.heroCaption}</figcaption>
+            {postData?.heroCaption && (
+              <figcaption>{postData?.heroCaption}</figcaption>
+            )}
           </HeroImage>
         )}
-        <PostContent postData={postData} />
+        {shouldShowLeadingEmbedded && (
+          <LeadingEmbeddedCode
+            embeddedCode={postData?.leadingEmbeddedCode}
+            setState={setIsEmbeddedFinish}
+          />
+        )}
+        {isEmbeddedFinish && <PostContent postData={postData} />}
       </article>
-      <SubscribeButton />
-      <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
-      <FrameCredit className="frame-credit">
-        <CreditLists>{frameCreditLists}</CreditLists>
-        <div className="publish-time">{date}</div>
-      </FrameCredit>
-      <Footer />
+      {isEmbeddedFinish && (
+        <>
+          <SubscribeButton />
+          <RelatedPosts
+            relatedPosts={postData?.relatedPosts}
+            latestPosts={latestPosts}
+          />
+          <FrameCredit className="frame-credit">
+            <CreditLists>{frameCreditLists}</CreditLists>
+            <div className="publish-time">{date}</div>
+          </FrameCredit>
+          <HiddenAnchor ref={anchorRef} />
+          <Footer />
+        </>
+      )}
     </FrameWrapper>
   )
 }

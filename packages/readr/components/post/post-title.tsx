@@ -2,6 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import type { PostDetail } from '~/graphql/query/post'
+import * as gtag from '~/utils/gtag'
 import { formatPostDate, formatReadTime } from '~/utils/post'
 
 import DateAndReadTimeInfo from '../shared/date-and-read-time-info'
@@ -71,7 +72,19 @@ const Title = styled.h1`
   }
 `
 
-interface PostProps {
+const PostTitleWrapper = styled.div`
+  padding: 0px 20px;
+  max-width: 568px;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 0;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 600px;
+  }
+`
+
+type PostProps = {
   postData: PostDetail
   showTitle: boolean
 }
@@ -82,7 +95,10 @@ export default function PostTitle({
 }: PostProps): JSX.Element {
   const categoryItem = categories.map((item) => {
     return (
-      <li key={item.id}>
+      <li
+        key={item.id}
+        onClick={() => gtag.sendEvent('post', 'click', `post-${item.title}`)}
+      >
         <Link href={`/category/${item.slug}`}>{item.title}</Link>
       </li>
     )
@@ -91,11 +107,13 @@ export default function PostTitle({
   const date = formatPostDate(publishTime)
   const readTimeText = formatReadTime(readingTime)
 
+  const shouldShowCategories = Boolean(categories?.length)
+
   return (
-    <>
-      {categories && <Category>{categoryItem}</Category>}
+    <PostTitleWrapper>
+      {shouldShowCategories && <Category>{categoryItem}</Category>}
       {showTitle && <Title>{title}</Title>}
       <DateAndReadTimeInfo date={date} readTimeText={readTimeText} />
-    </>
+    </PostTitleWrapper>
   )
 }

@@ -1,27 +1,30 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
+import { useState } from 'react'
 import styled from 'styled-components'
 
+import HeaderGeneral from '~/components/layout/header/header-general'
+import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
 import PostCredit from '~/components/post/post-credit'
 import PostTitle from '~/components/post/post-title'
-import Report from '~/components/post/report'
+import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
+import useScrollToEnd from '~/hooks/useScrollToEnd'
+import * as gtag from '~/utils/gtag'
 
 const Article = styled.article`
-  padding-top: calc(100vh - 72px);
-
-  ${({ theme }) => theme.breakpoint.sm} {
-    padding-top: calc(100vh - 86px);
-  }
+  padding-top: 100vh;
 `
 
 const HeroImage = styled.picture`
   width: 100%;
   height: 100vh;
+  display: block;
+  min-height: 100vh;
   position: absolute;
   top: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
@@ -65,6 +68,14 @@ const PostHeading = styled.section`
   }
 `
 
+const HiddenAnchor = styled.div`
+  display: block;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+`
+
 interface PostProps {
   postData: PostDetail
   latestPosts: Post[]
@@ -74,6 +85,16 @@ export default function ScrollableVideo({
   postData,
   latestPosts,
 }: PostProps): JSX.Element {
+  const anchorRef = useScrollToEnd(() =>
+    gtag.sendEvent('post', 'scroll', 'scroll to end')
+  )
+
+  const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+
+  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
+    !shouldShowLeadingEmbedded
+  )
+
   const { DraftRenderer } = Readr
 
   // get first Embedded-Video of `postData.content`.
@@ -119,7 +140,8 @@ export default function ScrollableVideo({
 
   return (
     <>
-      <Article>
+      <HeaderGeneral />
+      <Article id="post">
         <HeroImage>
           <SharedImage
             images={postData?.heroImage?.resized}
@@ -130,23 +152,46 @@ export default function ScrollableVideo({
           <ScrollTitle>{postData?.title}</ScrollTitle>
         </HeroImage>
 
-        {/* first embedded-video of `postData.content` */}
         <ScrollVideo>
-          <DraftRenderer rawContentBlock={embeddedContentState} />
+          {shouldShowLeadingEmbedded ? (
+            <LeadingEmbeddedCode
+              embeddedCode={postData?.leadingEmbeddedCode}
+              setState={setIsEmbeddedFinish}
+            />
+          ) : (
+            <DraftRenderer rawContentBlock={embeddedContentState} />
+          )}
         </ScrollVideo>
 
-        <PostHeading>
-          <PostTitle postData={postData} showTitle={false} />
-          <PostCredit postData={postData} />
-        </PostHeading>
+        {isEmbeddedFinish && (
+          <>
+            <PostHeading>
+              <PostTitle postData={postData} showTitle={false} />
+              <PostCredit postData={postData} />
+            </PostHeading>
 
-        {/* `postData.content` without first embedded-video */}
-        <PostContent postData={postDataWithoutFirstScrollVideo} />
+            <PostContent
+              postData={
+                shouldShowLeadingEmbedded
+                  ? postData
+                  : postDataWithoutFirstScrollVideo
+              }
+            />
+          </>
+        )}
       </Article>
 
-      <SubscribeButton />
+      {isEmbeddedFinish && (
+        <>
+          <SubscribeButton />
 
-      <Report relatedPosts={postData?.relatedPosts} latestPosts={latestPosts} />
+          <RelatedPosts
+            relatedPosts={postData?.relatedPosts}
+            latestPosts={latestPosts}
+          />
+          <HiddenAnchor ref={anchorRef} />
+        </>
+      )}
     </>
   )
 }

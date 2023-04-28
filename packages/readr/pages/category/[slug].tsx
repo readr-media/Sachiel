@@ -14,14 +14,16 @@ import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
-import type { Category } from '~/graphql/query/category'
+import type { Category, CategoryWithoutPosts } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
 import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import { postStyles } from '~/graphql/query/post'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import type { NavigationCategory } from '~/types/component'
-import { postConvertFunc } from '~/utils/post'
+import { setCacheControl } from '~/utils/common'
+import * as gtag from '~/utils/gtag'
+import { getResizedUrl, postConvertFunc } from '~/utils/post'
 
 const shareStyle = css`
   width: 100%;
@@ -35,14 +37,12 @@ const shareStyle = css`
 
 const CategoryWrapper = styled.div`
   padding: 24px 20px;
-
   ${({ theme }) => theme.breakpoint.sm} {
     padding: 48px 20px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     padding: 48px;
   }
-
   ${({ theme }) => theme.breakpoint.lg} {
     padding: 60px 72px;
     max-width: 1240px;
@@ -55,11 +55,9 @@ const ItemList = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 20px;
-
   ${({ theme }) => theme.breakpoint.sm} {
     margin-top: 50px;
   }
-
   ${({ theme }) => theme.breakpoint.xl} {
     justify-content: flex-start;
     gap: calc((100% - 1024px) / 3);
@@ -84,6 +82,7 @@ const Item = styled.li`
 
 type PageProps = {
   categories: NavigationCategoryWithArticleCards[]
+  categoriesWithoutPosts: CategoryWithoutPosts[]
   latest: NavigationCategoryWithArticleCards
 }
 
@@ -106,6 +105,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
         matchedItem.slug === 'all' ? '所有報導' : `所有${matchedItem.title}報導`
       )
     }
+    // setParams(slug)
   }, [slug])
 
   const updateActiveCategory = (category: NavigationCategory) => {
@@ -115,6 +115,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
       category.slug === 'all' ? '所有報導' : `所有${category.title}報導`
     )
     setIsAtBottom(false) //infinite scroll: reset `isAtBottom` to false when change category
+    gtag.sendEvent('listing', 'click', `listing-${category.title}`)
   }
 
   //render posts based on `currentItem`
@@ -144,6 +145,9 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
             mobile: `${theme.mediaSize.sm - 1}px`,
             tablet: `${theme.mediaSize.xl - 1}px`,
           }}
+          onClick={() =>
+            gtag.sendEvent('listing', 'click', `listing-${article.title}`)
+          }
         />
       </Item>
     )
@@ -281,13 +285,18 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  res,
+}) => {
+  setCacheControl(res)
+
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
     id: DEFAULT_CATEGORY.id,
     title: DEFAULT_CATEGORY.title,
     slug: DEFAULT_CATEGORY.slug,
   }
+  let categoriesWithoutPosts: CategoryWithoutPosts[] = []
 
   try {
     {
@@ -323,6 +332,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
           title: category.title,
           slug: category.slug,
           posts: posts?.map(postConvertFunc),
+        }
+      })
+
+      // data for open graph
+      categoriesWithoutPosts = data.categories.map((category) => {
+        return {
+          id: category.id,
+          title: category.title,
+          slug: category.slug,
+          ogImage: category.ogImage,
+          ogDescription: category.ogDescription,
         }
       })
     }
@@ -374,13 +394,42 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   return {
     props: {
       categories,
+      categoriesWithoutPosts,
       latest,
     },
   }
 }
 
-Category.getLayout = function getLayout(page: ReactElement) {
-  return <LayoutGeneral>{page}</LayoutGeneral>
+Category.getLayout = function getLayout(page: ReactElement<PageProps>) {
+  const { props } = page
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const router = useRouter()
+  const slug = router?.query?.slug
+
+  const allCategoryOG = {
+    title: '所有',
+    ogImage: null, // show default og image
+    ogDescription: null, // show default og desc
+  }
+
+  const currentCategory =
+    slug === 'all'
+      ? allCategoryOG
+      : props.categoriesWithoutPosts.find((category) => category.slug === slug)
+
+  const ogImageUrl = getResizedUrl(currentCategory?.ogImage?.resized)
+  const ogDescription = currentCategory?.ogDescription ?? undefined
+
+  return (
+    <LayoutGeneral
+      title={`${currentCategory?.title}報導`}
+      description={ogDescription}
+      imageUrl={ogImageUrl}
+    >
+      {page}
+    </LayoutGeneral>
+  )
 }
 
 export default Category

@@ -28,28 +28,41 @@ export type PostDetail = Override<
       | 'summary'
       | 'actionList'
       | 'citation'
-      | 'manualOrderOfDataAnalysts'
       | 'manualOrderOfWriters'
+      | 'manualOrderOfPhotographers'
+      | 'manualOrderOfCameraOperators'
       | 'manualOrderOfDesigners'
-      | 'dataAnalysts'
+      | 'manualOrderOfEngineers'
+      | 'manualOrderOfDataAnalysts'
       | 'writers'
+      | 'photographers'
+      | 'cameraOperators'
       | 'designers'
+      | 'engineers'
+      | 'dataAnalysts'
       | 'otherByline'
       | 'relatedPosts'
       | 'categories'
       | 'tags'
       | 'state'
       | 'ogDescription'
+      | 'leadingEmbeddedCode'
     >,
   {
     heroImage: PhotoWithResizedOnly | null
     ogImage: PhotoWithResizedOnly | null
-    manualOrderOfDataAnalysts: Author[]
     manualOrderOfWriters: Author[]
+    manualOrderOfPhotographers: Author[]
+    manualOrderOfCameraOperators: Author[]
     manualOrderOfDesigners: Author[]
-    dataAnalysts: Author[]
+    manualOrderOfEngineers: Author[]
+    manualOrderOfDataAnalysts: Author[]
     writers: Author[]
+    photographers: Author[]
+    cameraOperators: Author[]
     designers: Author[]
+    engineers: Author[]
+    dataAnalysts: Author[]
     relatedPosts: Post[]
     categories: Category[]
     tags: Tag[]
@@ -60,7 +73,13 @@ export const postStyles = [...POST_STYLES, ...REPORT_STYLES]
 
 const post = gql`
   query ($id: ID!) {
-    post (where: { id: $id }) {
+    posts ( where: {
+      state: { equals: "published" }
+      id: { equals: $id }  
+      style: {
+        in: [${convertToStringList(postStyles)}]
+      }       
+      })  {
       ...PostFields
       
       state
@@ -75,18 +94,32 @@ const post = gql`
         title
         slug
       }
-      manualOrderOfDataAnalysts
       manualOrderOfWriters
-      manualOrderOfDesigners
-      dataAnalysts {
+      manualOrderOfPhotographers
+      manualOrderOfCameraOperators 
+      manualOrderOfDesigners 
+      manualOrderOfEngineers 
+      manualOrderOfDataAnalysts 
+      writers {
         ...AuthorFields
       }
-      writers {
+      photographers {
+        ...AuthorFields
+      }
+      cameraOperators  {
         ...AuthorFields
       }
       designers {
         ...AuthorFields
       }
+      engineers {
+        ...AuthorFields
+      }
+      dataAnalysts {
+        ...AuthorFields
+      }
+
+      leadingEmbeddedCode
       otherByline
       tags ( 
         where: { 

@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
-    "@mirrormedia/lilith-draft-renderer": "^1.1.0-alpha.3",
-    "@readr-media/react-component": "2.0.0-alpha.5",
+    "@mirrormedia/lilith-draft-renderer": "^1.1.0-alpha.27",
+    "@readr-media/react-component": "^2.1.2",
     "@readr-media/react-image": "^1.5.1",
     "@readr-media/share-button": "^1.0.3",
     "@svgr/webpack": "^6.5.1",
@@ -29,6 +29,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-ga4": "^2.0.0",
+    "react-helmet": "^6.1.0",
     "sharp": "^0.31.3",
     "styled-components": "^5.3.6",
     "ts-import": "^4.0.0-beta.6"
