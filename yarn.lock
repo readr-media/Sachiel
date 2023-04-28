@@ -2237,12 +2237,13 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mirrormedia/lilith-draft-renderer@^1.1.0-alpha.23":
-  version "1.1.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.1.0-alpha.23.tgz#386a83bc0b0c8b714d10b135b0231a804e80f4e9"
-  integrity sha512-0DbkG6lQWAi2OVIpfAUy6AbcqfJ75WaHOkLtB9Fa+yFXy+XcJFrJTzUEoq0E0fJpyUAKNlb0WAbAczuVQvSF7w==
+"@mirrormedia/lilith-draft-renderer@^1.1.0-alpha.27":
+  version "1.1.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.1.0-alpha.27.tgz#d89b8157d4462f004ae1fd392a56667b8d074101"
+  integrity sha512-JE48RqIssdTaWkfcFiXOzAyJU+BT1EVnIava9vtnItbp8yDmSUeH/6/5VuqQQ2t1OulatnJmenpCVR1uWTpsFA==
   dependencies:
     "@readr-media/react-image" "^1.5.1"
+    body-scroll-lock "3.1.5"
     draft-js "^0.11.7"
     node-html-parser "^6.1.5"
 
@@ -3778,6 +3779,11 @@ body-parser@1.20.1, body-parser@^1.20.0:
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+body-scroll-lock@3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
+  integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
 boolbase@^1.0.0:
   version "1.0.0"
