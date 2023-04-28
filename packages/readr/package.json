@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
-    "@mirrormedia/lilith-draft-renderer": "^1.1.0-alpha.27",
+    "@mirrormedia/lilith-draft-renderer": "^1.1.0-alpha.28",
     "@readr-media/react-component": "^2.1.2",
     "@readr-media/react-image": "^1.5.1",
     "@readr-media/share-button": "^1.0.3",
