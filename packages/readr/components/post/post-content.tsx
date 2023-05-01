@@ -1,13 +1,17 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
 import type { RawDraftContentBlock } from 'draft-js'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
 import * as gtag from '~/utils/gtag'
+
+const defaultMarginBottom = css`
+  margin-bottom: 32px;
+`
 
 const Container = styled.article`
   width: 100%;
@@ -18,7 +22,6 @@ const Container = styled.article`
   .mobile-media-link {
     display: flex;
   }
-
   .desktop-media-link {
     display: none;
   }
@@ -29,7 +32,6 @@ const Container = styled.article`
     .mobile-media-link {
       display: none;
     }
-
     .desktop-media-link {
       display: flex;
       margin: 0;
@@ -42,141 +44,132 @@ const Container = styled.article`
 
 //重點摘要
 const Summary = styled.article`
-  width: 100%;
-  position: relative;
-  padding: 16px 0 0;
-  border: 2px solid #04295e;
+  padding: 20px 24px;
+  border-width: 16px 2px 2px 2px;
+  border-style: solid;
+  border-color: #04295e;
   border-radius: 2px;
-  margin: 0 0 32px;
-  padding: 48px 48px 32px 48px;
-  font-size: 16px;
+  ${defaultMarginBottom}
+
+  .DraftEditor-root {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  *:not(:first-child) {
+    .public-DraftStyleDefault-block,
+    .public-DraftStyleDefault-ul,
+    .public-DraftStyleDefault-ol {
+      margin-top: 12px;
+    }
+  }
+
+  .public-DraftStyleDefault-unorderedListItem,
+  .public-DraftStyleDefault-orderedListItem {
+    .public-DraftStyleDefault-block {
+      margin-top: 4px;
+    }
+  }
 
   .title {
     font-size: 14px;
     line-height: 21px;
     color: #04295e;
-    margin: 0 0 4px;
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 16px;
-    background-color: #04295e;
-  }
-
-  .public-DraftStyleDefault-block {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-
-  .public-DraftStyleDefault-unorderedListItem,
-  .public-DraftStyleDefault-orderedListItem {
-    line-height: 1.4;
-  }
-  div[data-contents='true'] > * + * {
-    margin: 12px 0 0 !important;
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 32px 48px;
   }
 `
 
 //內文
 const Content = styled.article`
-  margin: 0 0 32px 0;
-
-  //phase 1: resolve empty block before embedded-code
-  .embedded-code-container {
-    transform: translateY(-36px);
-  }
-
-  .embedded-code-container-top {
-    margin-top: -105px;
-  }
+  ${defaultMarginBottom}
 `
 
 //延伸議題
 const ActionList = styled.article`
+  ${defaultMarginBottom};
   .title {
-    font-style: normal;
     font-weight: 700;
-    font-size: 28px;
-    line-height: 150%;
-    display: flex;
-    align-items: center;
+    font-size: 24px;
+    line-height: 1.5;
     letter-spacing: 0.032em;
     color: rgba(0, 9, 40, 0.87);
     margin-bottom: 16px;
-  }
-  div[data-contents='true'] > * + * {
-    margin: 0;
+
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 28px;
+    }
   }
 `
 
 //引用數據
 const Citation = styled.article`
-  margin: 0 auto 48px;
-  max-width: 568px;
+  margin-bottom: 48px;
+  max-width: 600px;
   border-radius: 2px;
   width: calc(100% + 40px);
   transform: translateX(-20px);
 
   ${({ theme }) => theme.breakpoint.md} {
+    width: 100%;
     transform: none;
-    margin: 0 auto 60px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    margin-bottom: 60px;
+  }
+
+  .DraftEditor-root {
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: rgba(245, 235, 255, 0.5);
+    padding: 12px 24px;
+
+    ${({ theme }) => theme.breakpoint.md} {
+      padding: 16px 32px;
+    }
   }
 
   .title {
-    text-align: center;
-    background-color: #04295e;
-    padding: 8px 0;
     font-size: 18px;
     font-weight: 700;
     line-height: 27px;
     letter-spacing: 0.03em;
     color: #ebf02c;
+    text-align: center;
+    background-color: #04295e;
+    padding: 8px 0;
+
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 20px;
-      line-height: 30px;
+      line-height: 29px;
     }
   }
-  .DraftEditor-root {
-    background-color: rgba(245, 235, 255, 0.5);
-    padding: 12px 24px;
-    ${({ theme }) => theme.breakpoint.md} {
-      padding: 16px 32px;
+
+  *:not(:first-child) {
+    .public-DraftStyleDefault-block,
+    .public-DraftStyleDefault-ul,
+    .public-DraftStyleDefault-ol {
+      margin-top: 12px;
     }
   }
-  div[data-contents='true'] > * + * {
-    margin: 0;
-  }
 
-  .public-DraftStyleDefault-block {
-    font-size: 16px;
-    line-height: 1.5;
-    color: rgba(0, 9, 40, 0.87);
-    word-wrap: break-word;
-    margin: 12px 0 0 0;
-
-    ${({ theme }) => theme.breakpoint.md} {
-      font-size: 18px;
-      margin: 16px 0 0;
+  .public-DraftStyleDefault-unorderedListItem,
+  .public-DraftStyleDefault-orderedListItem {
+    .public-DraftStyleDefault-block {
+      margin-top: 4px;
     }
   }
 
   //檔案下載
   .public-DraftStyleDefault-ul {
     padding: 0;
-    margin-bottom: 5px;
 
-    li {
+    .public-DraftStyleDefault-unorderedListItem {
       list-style-type: none;
-      padding: 8px 0 8px;
-
-      > .public-DraftStyleDefault-block {
-        margin: 0;
-      }
+      padding: 8px 0;
     }
 
     a {
@@ -206,61 +199,47 @@ const Citation = styled.article`
         height: 24px;
         transform: translate(0%, -12px);
       }
-
-      ${({ theme }) => theme.breakpoint.md} {
-        font-size: 18px;
-      }
     }
   }
 
   .public-DraftStyleDefault-blockquote {
-    padding: 0;
     width: 100%;
+    color: rgba(0, 9, 40, 0.5);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 0;
+
+    & + blockquote {
+      margin-top: 8px;
+    }
 
     & + ul {
       border-top: 1px solid rgba(0, 9, 40, 0.1);
       padding-top: 4px;
-      margin: 4px 0 0;
+      margin-top: 4px;
 
       ${({ theme }) => theme.breakpoint.md} {
-        margin: 8px 0 0;
-      }
-    }
-
-    &::before {
-      background: none;
-      display: none;
-    }
-
-    .public-DraftStyleDefault-block {
-      padding-bottom: 8px;
-      margin: 0;
-    }
-
-    span {
-      color: rgba(0, 9, 40, 0.5);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.6;
-      margin: 0;
-
-      ${({ theme }) => theme.breakpoint.md} {
-        font-size: 18px;
+        margin-top: 8px;
       }
     }
   }
 `
+
 const TagGroup = styled.div`
   width: 100%;
-  max-width: 568px;
+  max-width: 600px;
+  margin-bottom: 48px;
 
   ${({ theme }) => theme.breakpoint.md} {
-    max-width: 568px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 0;
-    margin: 0 auto 60px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    margin-bottom: 60px;
   }
 `
 
@@ -269,45 +248,45 @@ type PostProps = {
 }
 
 export default function PostContent({ postData }: PostProps): JSX.Element {
-  const { DraftRenderer } = Readr
+  const {
+    DraftRenderer,
+    hasContentInRawContentBlock,
+    removeEmptyContentBlock,
+  } = Readr
 
-  //檢查欄位內是否有資料（因為欄位無資料，依舊會回傳 blocks 和 entityMap）
-  const shouldShowDraftBlock = (blocks: RawDraftContentBlock[]) => {
-    if (!blocks || !blocks.length) {
-      //if draft.blocks is undefined, return false
-      return false
-    } else if (
-      //if draft.blocks is default empty value, return false
-      blocks.length === 1 &&
-      !blocks[0].text &&
-      blocks[0].type === 'unstyled'
-    ) {
-      return false
-    } else {
-      return true
-    }
-  }
+  const shouldShowSummary = hasContentInRawContentBlock(postData?.summary)
+  const shouldShowContent = hasContentInRawContentBlock(postData?.content)
+  const shouldShowActionList = hasContentInRawContentBlock(postData?.actionList)
+  const shouldShowCitation = hasContentInRawContentBlock(postData?.citation)
+
   return (
     <Container>
-      {shouldShowDraftBlock(postData?.summary?.blocks) && (
+      {shouldShowSummary && (
         <Summary>
           <div>
             <p className="title">報導重點摘要</p>
-            <DraftRenderer rawContentBlock={postData?.summary} />
+            <DraftRenderer
+              rawContentBlock={removeEmptyContentBlock(postData?.summary)}
+            />
           </div>
         </Summary>
       )}
 
-      {shouldShowDraftBlock(postData?.content?.blocks) && (
+      {shouldShowContent && (
         <Content>
-          <DraftRenderer rawContentBlock={postData?.content} />
+          <DraftRenderer
+            rawContentBlock={removeEmptyContentBlock(postData?.content)}
+          />
+          ju
         </Content>
       )}
 
-      {shouldShowDraftBlock(postData?.actionList?.blocks) && (
+      {shouldShowActionList && (
         <ActionList>
           <p className="title">如果你關心這個議題</p>
-          <DraftRenderer rawContentBlock={postData?.actionList} />
+          <DraftRenderer
+            rawContentBlock={removeEmptyContentBlock(postData?.actionList)}
+          />
         </ActionList>
       )}
 
@@ -317,10 +296,12 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
       />
       <MediaLinkList className={'mobile-media-link'} />
 
-      {shouldShowDraftBlock(postData?.citation?.blocks) && (
+      {shouldShowCitation && (
         <Citation>
           <p className="title">引用資料</p>
-          <DraftRenderer rawContentBlock={postData?.citation} />
+          <DraftRenderer
+            rawContentBlock={removeEmptyContentBlock(postData?.citation)}
+          />
         </Citation>
       )}
 
