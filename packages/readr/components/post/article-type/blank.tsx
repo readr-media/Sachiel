@@ -38,16 +38,16 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  //if `leadingEmbeddedCode` is null, show embedded-code from `content`
-  const { DraftRenderer } = Readr
-
-  // remove blocks[0] to avoid extra empty blank before embedded-code
-  const contentWithoutEmptyBlank = {
-    blocks: postData?.content.blocks.slice(1),
-    entityMap: postData?.content.entityMap,
-  }
+  //if `leadingEmbeddedCode` is null, show embedded-code from `postData.content`
+  const {
+    DraftRenderer,
+    removeEmptyContentBlock,
+    hasContentInRawContentBlock,
+  } = Readr
 
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+  const shouldShowContentBlock =
+    !shouldShowLeadingEmbedded && hasContentInRawContentBlock(postData?.content)
 
   const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
     !shouldShowLeadingEmbedded
@@ -62,8 +62,10 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
         />
       )}
 
-      {!shouldShowLeadingEmbedded && (
-        <DraftRenderer rawContentBlock={contentWithoutEmptyBlank} />
+      {shouldShowContentBlock && (
+        <DraftRenderer
+          rawContentBlock={removeEmptyContentBlock(postData?.content)}
+        />
       )}
 
       {isEmbeddedFinish && (

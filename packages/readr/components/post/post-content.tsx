@@ -1,6 +1,5 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
-import type { RawDraftContentBlock } from 'draft-js'
 import styled, { css } from 'styled-components'
 
 import PostTag from '~/components/post/tag'
@@ -277,7 +276,6 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
           <DraftRenderer
             rawContentBlock={removeEmptyContentBlock(postData?.content)}
           />
-          ju
         </Content>
       )}
 
