@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
+import PostCategory from '~/components/post/post-category'
 import PostContent from '~/components/post/post-content'
 import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
@@ -17,37 +18,21 @@ import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
 const FrameWrapper = styled.div`
-  background-color: #f6f6f5;
-
   position: absolute;
+  background-color: #f6f6f5;
   top: 0;
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
-  padding-top: 72px;
-
-  //rewrite the style of <DraftRenderer> under <PostContent>
-  .DraftEditor-root {
-    background-color: #f6f6f5;
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    padding-top: 88px;
-  }
 `
 
 const HeroImage = styled.figure`
   width: 100%;
   margin: auto;
+  height: calc(100vh - 72px);
 
-  //shared-component of @readr-media/react-image
-  .readr-media-react-image {
-    width: auto;
-    height: calc(100vh - 70px);
-
-    ${({ theme }) => theme.breakpoint.sm} {
-      height: calc(100vh - 86px);
-    }
+  ${({ theme }) => theme.breakpoint.md} {
+    height: calc(100vh - 88px);
   }
 
   figcaption {
@@ -69,30 +54,24 @@ const HeroImage = styled.figure`
   }
 `
 
-const FrameCredit = styled.div`
-  width: 100%;
-  padding: 48px 20px;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.2px;
-  color: #2b2b2b;
-  text-align: center;
-
-  .publish-time {
-    margin-top: 16px;
-  }
+type ArticleProps = {
+  shouldShowHeroImage: boolean
+}
+const Article = styled.article<ArticleProps>`
+  position: relative;
+  padding-top: ${(props) => (props.shouldShowHeroImage ? '72px' : '0px')};
 
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 48px 32px;
+    padding-top: ${(props) => (props.shouldShowHeroImage ? '88px' : '0px')};
   }
 `
 
-const Header = styled.div`
+const Header = styled.header`
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: inherit;
+  left: 0;
+  z-index: ${({ theme }) => theme.zIndex.headerDesktop};
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
@@ -116,6 +95,12 @@ const Header = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 20px 32px;
   }
+`
+
+const LeadingBlock = styled.section`
+  position: relative;
+  background-color: #f6f6f5;
+  z-index: ${({ theme }) => theme.zIndex.articleType};
 `
 
 const CreditLists = styled.ul`
@@ -155,7 +140,37 @@ const HiddenAnchor = styled.div`
   margin: 0;
 `
 
-interface PostProps {
+const FrameCredit = styled.div`
+  width: 100%;
+  padding: 48px 20px;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  color: #2b2b2b;
+  text-align: center;
+
+  .publish-time {
+    margin-top: 16px;
+  }
+
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 48px 32px;
+  }
+`
+
+const PostHeading = styled.section`
+  width: 100%;
+  max-width: 568px;
+  padding-top: 16px;
+  margin: auto;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: 600px;
+  }
+`
+
+type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
 }
@@ -168,13 +183,16 @@ export default function Frame({
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
+  const date = formatPostDate(postData?.publishTime)
+
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
+  const shouldShowHeroImage = Boolean(postData?.heroImage)
+  const shouldShowHeroCaption = Boolean(postData?.heroCaption)
+  const shouldShowCategory = postData?.categories?.length > 0
 
   const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
     !shouldShowLeadingEmbedded
   )
-
-  const date = formatPostDate(postData?.publishTime)
 
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
   //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
@@ -198,34 +216,51 @@ export default function Frame({
     )
   })
 
+  let PostCategoryJsx = null
+
+  if (shouldShowCategory) {
+    PostCategoryJsx = (
+      <PostHeading>
+        <PostCategory category={postData?.categories} />
+      </PostHeading>
+    )
+  }
+
   return (
     <FrameWrapper>
       <Header>
         <Logo iconStyle="black" href="/" openNewTab={true} />
         <ShareButton />
       </Header>
-      <article>
-        {postData?.heroImage && (
+      <Article id="post" shouldShowHeroImage={shouldShowHeroImage}>
+        {shouldShowHeroImage && (
           <HeroImage>
             <SharedImage
-              images={postData?.heroImage.resized}
+              images={postData?.heroImage?.resized}
               defaultImage={DEFAULT_POST_IMAGE_PATH}
               alt={postData?.heroCaption}
               priority={false}
             />
-            {postData?.heroCaption && (
+            {shouldShowHeroCaption && (
               <figcaption>{postData?.heroCaption}</figcaption>
             )}
           </HeroImage>
         )}
         {shouldShowLeadingEmbedded && (
-          <LeadingEmbeddedCode
-            embeddedCode={postData?.leadingEmbeddedCode}
-            setState={setIsEmbeddedFinish}
-          />
+          <LeadingBlock>
+            <LeadingEmbeddedCode
+              embeddedCode={postData?.leadingEmbeddedCode}
+              setState={setIsEmbeddedFinish}
+            />
+          </LeadingBlock>
         )}
-        {isEmbeddedFinish && <PostContent postData={postData} />}
-      </article>
+        {isEmbeddedFinish && (
+          <>
+            {PostCategoryJsx}
+            <PostContent postData={postData} />
+          </>
+        )}
+      </Article>
       {isEmbeddedFinish && (
         <>
           <SubscribeButton />
