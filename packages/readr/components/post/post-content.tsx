@@ -39,6 +39,10 @@ const Container = styled.article`
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: 600px;
   }
+
+  .toc {
+    white-space: normal;
+  }
 `
 
 //重點摘要
