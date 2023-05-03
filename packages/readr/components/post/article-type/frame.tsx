@@ -1,7 +1,6 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
@@ -97,12 +96,6 @@ const Header = styled.header`
   }
 `
 
-const LeadingBlock = styled.section`
-  position: relative;
-  background-color: #f6f6f5;
-  z-index: ${({ theme }) => theme.zIndex.articleType};
-`
-
 const CreditLists = styled.ul`
   width: 100%;
   max-width: 568px;
@@ -190,10 +183,6 @@ export default function Frame({
   const shouldShowHeroCaption = Boolean(postData?.heroCaption)
   const shouldShowCategory = postData?.categories?.length > 0
 
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
-    !shouldShowLeadingEmbedded
-  )
-
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
   //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
   //change string to [ {title:..., name:...}, {title:..., name:...} ...]
@@ -216,16 +205,6 @@ export default function Frame({
     )
   })
 
-  let PostCategoryJsx = null
-
-  if (shouldShowCategory) {
-    PostCategoryJsx = (
-      <PostHeading>
-        <PostCategory category={postData?.categories} />
-      </PostHeading>
-    )
-  }
-
   return (
     <FrameWrapper>
       <Header>
@@ -247,35 +226,31 @@ export default function Frame({
           </HeroImage>
         )}
         {shouldShowLeadingEmbedded && (
-          <LeadingBlock>
-            <LeadingEmbeddedCode
-              embeddedCode={postData?.leadingEmbeddedCode}
-              setState={setIsEmbeddedFinish}
-            />
-          </LeadingBlock>
-        )}
-        {isEmbeddedFinish && (
-          <>
-            {PostCategoryJsx}
-            <PostContent postData={postData} />
-          </>
-        )}
-      </Article>
-      {isEmbeddedFinish && (
-        <>
-          <SubscribeButton />
-          <RelatedPosts
-            relatedPosts={postData?.relatedPosts}
-            latestPosts={latestPosts}
+          <LeadingEmbeddedCode
+            embeddedCode={postData?.leadingEmbeddedCode}
+            backgroundColor="#f6f6f5"
           />
-          <FrameCredit className="frame-credit">
-            <CreditLists>{frameCreditLists}</CreditLists>
-            <div className="publish-time">{date}</div>
-          </FrameCredit>
-          <HiddenAnchor ref={anchorRef} />
-          <Footer />
-        </>
-      )}
+        )}
+
+        {shouldShowCategory && (
+          <PostHeading>
+            <PostCategory category={postData?.categories} />
+          </PostHeading>
+        )}
+        <PostContent postData={postData} />
+      </Article>
+
+      <SubscribeButton />
+      <RelatedPosts
+        relatedPosts={postData?.relatedPosts}
+        latestPosts={latestPosts}
+      />
+      <FrameCredit className="frame-credit">
+        <CreditLists>{frameCreditLists}</CreditLists>
+        <div className="publish-time">{date}</div>
+      </FrameCredit>
+      <HiddenAnchor ref={anchorRef} />
+      <Footer />
     </FrameWrapper>
   )
 }
