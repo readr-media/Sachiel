@@ -1,6 +1,5 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import HeaderGeneral from '~/components/layout/header/header-general'
@@ -30,12 +29,6 @@ const HeroImage = styled.picture`
   z-index: ${({ theme }) => theme.zIndex.articleType};
   margin-top: 0;
 `
-
-const ScrollVideo = styled.section`
-  margin-bottom: 20px;
-  position: relative;
-  z-index: ${({ theme }) => theme.zIndex.articleType};
-`
 const ScrollTitle = styled.h1`
   position: absolute;
   top: 50%;
@@ -48,7 +41,6 @@ const ScrollTitle = styled.h1`
   letter-spacing: 0.04em;
   color: #fff;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
-
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 36px;
     line-height: 1.5;
@@ -59,12 +51,11 @@ const ScrollTitle = styled.h1`
 const PostHeading = styled.section`
   width: 100%;
   max-width: 568px;
-  margin: 0 auto 24px auto;
-
+  margin: 20px auto 24px;
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 0;
     max-width: 600px;
-    margin: 0 auto 48px;
+    margin: 20px auto 48px;
   }
 `
 
@@ -76,7 +67,7 @@ const HiddenAnchor = styled.div`
   margin: 0;
 `
 
-interface PostProps {
+type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
 }
@@ -90,10 +81,6 @@ export default function ScrollableVideo({
   )
 
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
-
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
-    !shouldShowLeadingEmbedded
-  )
 
   const { DraftRenderer } = Readr
 
@@ -152,46 +139,33 @@ export default function ScrollableVideo({
           <ScrollTitle>{postData?.title}</ScrollTitle>
         </HeroImage>
 
-        <ScrollVideo>
-          {shouldShowLeadingEmbedded ? (
-            <LeadingEmbeddedCode
-              embeddedCode={postData?.leadingEmbeddedCode}
-              setState={setIsEmbeddedFinish}
-            />
-          ) : (
-            <DraftRenderer rawContentBlock={embeddedContentState} />
-          )}
-        </ScrollVideo>
-
-        {isEmbeddedFinish && (
-          <>
-            <PostHeading>
-              <PostTitle postData={postData} showTitle={false} />
-              <PostCredit postData={postData} />
-            </PostHeading>
-
-            <PostContent
-              postData={
-                shouldShowLeadingEmbedded
-                  ? postData
-                  : postDataWithoutFirstScrollVideo
-              }
-            />
-          </>
+        {shouldShowLeadingEmbedded ? (
+          <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+        ) : (
+          <DraftRenderer rawContentBlock={embeddedContentState} />
         )}
+
+        <PostHeading>
+          <PostTitle postData={postData} showTitle={false} />
+          <PostCredit postData={postData} />
+        </PostHeading>
+
+        <PostContent
+          postData={
+            shouldShowLeadingEmbedded
+              ? postData
+              : postDataWithoutFirstScrollVideo
+          }
+        />
       </Article>
 
-      {isEmbeddedFinish && (
-        <>
-          <SubscribeButton />
+      <SubscribeButton />
 
-          <RelatedPosts
-            relatedPosts={postData?.relatedPosts}
-            latestPosts={latestPosts}
-          />
-          <HiddenAnchor ref={anchorRef} />
-        </>
-      )}
+      <RelatedPosts
+        relatedPosts={postData?.relatedPosts}
+        latestPosts={latestPosts}
+      />
+      <HiddenAnchor ref={anchorRef} />
     </>
   )
 }
