@@ -172,18 +172,18 @@ const latestPosts = gql`
 `
 
 const authorPosts = gql`
-  query ($id: ID, $first: Int! = 12, $skip: Int! = 0) {
+  query ($authorId: ID, $first: Int! = 12, $skip: Int! = 0) {
     authorPosts: posts(
       take: $first
       skip: $skip
       where: {
         OR: [
-          { writers: { some: { id: { equals: $id } } } }
-          { photographers: { some: { id: { equals: $id } } } }
-          { cameraOperators: { some: { id: { equals: $id } } } }
-          { designers: { some: { id: { equals: $id } } } }
-          { engineers: { some: { id: { equals: $id } } } }
-          { dataAnalysts: { some: { id: { equals: $id } } } }
+          { writers: { some: { id: { equals: $authorId } } } }
+          { photographers: { some: { id: { equals: $authorId } } } }
+          { cameraOperators: { some: { id: { equals: $authorId } } } }
+          { designers: { some: { id: { equals: $authorId } } } }
+          { engineers: { some: { id: { equals: $authorId } } } }
+          { dataAnalysts: { some: { id: { equals: $authorId } } } }
         ]
         state: { equals: "published" }
       }

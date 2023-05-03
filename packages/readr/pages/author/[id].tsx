@@ -11,7 +11,8 @@ import LayoutGeneral from '~/components/layout/layout-general'
 import ArticleListCard from '~/components/shared/article-list-card'
 import SectionHeading from '~/components/shared/section-heading'
 import type { Post } from '~/graphql/fragments/post'
-import { postStyles } from '~/graphql/query/post'
+import { author as authorQuery } from '~/graphql/query/author'
+import type { Author } from '~/graphql/query/post'
 import { authorPosts as authorPostsQuery } from '~/graphql/query/post'
 import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
@@ -77,10 +78,10 @@ const Item = styled.li`
 
 type PageProps = {
   authorPosts?: ArticleCard[]
-  // tagName?: string | string[]
+  authorName: string
 }
 
-const Author: NextPageWithLayout<PageProps> = ({ authorPosts }) => {
+const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
   const router = useRouter()
   const theme = useTheme()
 
@@ -116,22 +117,20 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts }) => {
   const [dataAmount, setDataAmount] = useState(displayPosts?.length)
 
   //fetch more related 12 posts
-  const fetchMoreTagPosts = async (displayPosts: ArticleCard[] | undefined) => {
+  const fetchMoreAuthorPosts = async (
+    displayPosts: ArticleCard[] | undefined
+  ) => {
     try {
       {
-        // fetch tag and related 12 posts
-        const {
-          data: { tags },
-          error: gqlErrors,
-        } = await client.query<{
-          tags: Tag[]
+        // fetch author and related 12 posts
+        const { data, error: gqlErrors } = await client.query<{
+          authorPosts: Post[]
         }>({
-          query: tagQuery,
+          query: authorPostsQuery,
           variables: {
-            tagName: router?.query?.name,
-            postSkip: displayPosts?.length,
-            relatedPostFirst: 12,
-            relatedPostTypes: postStyles,
+            authorId: router?.query?.id,
+            first: 12,
+            skip: displayPosts?.length,
           },
         })
 
@@ -146,7 +145,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts }) => {
           throw annotatingError
         }
 
-        const newPosts = tags[0]?.posts?.map(postConvertFunc) || []
+        const newPosts = data.authorPosts?.map(postConvertFunc) || []
 
         setDataAmount(newPosts.length) //number of posts yet to be displayed.
 
@@ -164,11 +163,11 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts }) => {
 
   useEffect(() => {
     if (isAtBottom) {
-      fetchMoreTagPosts(displayPosts)
+      fetchMoreAuthorPosts(displayPosts)
     }
   }, [isAtBottom])
 
-  const sectionTitle = `${router?.query?.name}`
+  const sectionTitle = authorName
   return (
     <TagWrapper aria-label={sectionTitle}>
       <SectionHeading
@@ -188,18 +187,50 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 }) => {
   setCacheControl(res)
 
-  let authorPosts: Post[]
+  let authorPosts: ArticleCard[] | undefined
+  let authorName: string
 
   try {
     {
-      // fetch author and related 12 posts
+      // fetch author data
+      const id = params?.id
+      const {
+        data: { author },
+        error: gqlErrors,
+      } = await client.query<{
+        author: Author
+      }>({
+        query: authorQuery,
+        variables: { id: id },
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `tags` query'),
+          'GraphQLError',
+          'failed to complete `tags`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      //if author id not exist, return 404
+      if (!author) {
+        return { notFound: true }
+      }
+
+      authorName = author.name
+    }
+    {
+      // fetch author related 12 posts
       const id = params?.id
       const { data, error: gqlErrors } = await client.query<{
         authorPosts: Post[]
       }>({
         query: authorPostsQuery,
         variables: {
-          id: id,
+          authorId: id,
           first: 12,
         },
       })
@@ -215,13 +246,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         throw annotatingError
       }
 
-      // FIXME: 目前好像還沒達到這個效果
-      //if author not exist, return 404
-      if (!data.authorPosts) {
-        return { notFound: true }
-      }
-
-      // tagRelatedPosts = tags[0]?.posts?.map(postConvertFunc) || []
       authorPosts = data.authorPosts?.map(postConvertFunc) ?? []
     }
   } catch (err) {
@@ -245,14 +269,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   return {
     props: {
       authorPosts,
+      authorName,
     },
   }
 }
 
-// TODO: 處理一下 page-title 的部分
 Author.getLayout = function getLayout(page: ReactElement<PageProps>) {
   const { props } = page
-  const ogTitle = `搜尋：${props.tagName}`
+  const ogTitle = `搜尋：${props.authorName}`
 
   return <LayoutGeneral title={ogTitle}>{page}</LayoutGeneral>
 }
