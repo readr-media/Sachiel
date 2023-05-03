@@ -171,4 +171,28 @@ const latestPosts = gql`
   ${postFragment}
 `
 
-export { latestPosts, post }
+const authorPosts = gql`
+  query ($id: ID, $first: Int! = 12, $skip: Int! = 0) {
+    authorPosts: posts(
+      take: $first
+      skip: $skip
+      where: {
+        OR: [
+          { writers: { some: { id: { equals: $id } } } }
+          { photographers: { some: { id: { equals: $id } } } }
+          { cameraOperators: { some: { id: { equals: $id } } } }
+          { designers: { some: { id: { equals: $id } } } }
+          { engineers: { some: { id: { equals: $id } } } }
+          { dataAnalysts: { some: { id: { equals: $id } } } }
+        ]
+        state: { equals: "published" }
+      }
+      orderBy: { publishTime: desc }
+    ) {
+      ...PostFields
+    }
+  }
+  ${postFragment}
+`
+
+export { authorPosts, latestPosts, post }
