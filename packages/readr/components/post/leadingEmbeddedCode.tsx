@@ -1,9 +1,20 @@
-import { useEffect, useRef } from 'react'
+import { parse } from 'node-html-parser'
+import React, { useEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 
-export const Block = styled.div`
+type LeadingBlockProps = {
+  shouldFullScreen: boolean
+  backgroundColor: string
+}
+const LeadingBlock = styled.section<LeadingBlockProps>`
   position: relative;
-  min-height: 100vh;
+  background-color: ${(props) => props.backgroundColor};
+  z-index: ${(props) =>
+    props.shouldFullScreen ? props.theme.zIndex.articleType : 'auto'};
+`
+
+const Block = styled.div`
+  position: relative;
 
   img.img-responsive {
     margin: 0 auto;
@@ -13,88 +24,84 @@ export const Block = styled.div`
   }
 `
 
-export const Caption = styled.div`
-  line-height: 1.43;
-  letter-spacing: 0.4px;
-  font-size: 14px;
-  color: #808080;
-  padding: 15px 15px 0 15px;
-`
-
-type FirstEmbeddedCodeProps = {
+type LeadingEmbeddedCodeProps = {
   embeddedCode: string
-  setState?: (value: boolean) => void
+  backgroundColor?: string
 }
-
 export default function LeadingEmbeddedCode({
   embeddedCode,
-  setState,
-}: FirstEmbeddedCodeProps): JSX.Element {
-  const onEmbeddedFinish = () => {
-    setState && setState(true)
-  }
-
+  backgroundColor = 'transparent',
+}: LeadingEmbeddedCodeProps): JSX.Element {
   const embedded = useRef(null)
 
-  useEffect(() => {
-    if (!embedded.current) return
-    const node: HTMLElement = embedded.current
+  // `embeddedCode` is a string, which may includes
+  // multiple script tags and other html tags.
+  // Here we separate script tags and other html tags
+  // by using the isomorphic html parser 'node-html-parser'
+  // into scripts nodes and non-script nodes.
+  //
+  // For non-script nodes we simply put them into dangerouslySetInnerHtml.
+  //
+  // For scripts nodes we only append them on the client side. So we handle scripts
+  // nodes when useEffect is called.
+  // The reasons we don't insert script tags through dangerouslySetInnerHtml:
+  // 1. Since react use setInnerHtml to append the htmlStirng received from
+  //    dangerouslySetInnerHtml, scripts won't be triggered.
+  // 2. Although the setInnerhtml way won't trigger script tags, those script tags
+  //    will still show on the HTML provided from SSR. When the browser parse the
+  //    html it will run those script and produce unexpected behavior.
+  const nodes = useMemo(() => {
+    const ele = parse(`<div id="draft-embed">${embeddedCode}</div>`)
 
-    const fragment = document.createDocumentFragment()
-
-    // `embeddedCode` is a string, which may includes
-    // multiple '<script>' tags and other html tags.
-    // For executing '<script>' tags on the browser,
-    // we need to extract '<script>' tags from `embeddedCode` string first.
-    //
-    // The approach we have here is to parse html string into elements,
-    // and we could use DOM element built-in functions,
-    // such as `querySelectorAll` method, to query '<script>' elements,
-    // and other non '<script>' elements.
-    const parser = new DOMParser()
-    const ele = parser.parseFromString(
-      `<div id="draft-embed">${embeddedCode}</div>`,
-      'text/html'
-    )
     const scripts = ele.querySelectorAll('script')
-    const nonScripts = ele.querySelectorAll('div#draft-embed > :not(script)')
-
-    nonScripts.forEach((ele) => {
-      fragment.appendChild(ele)
-    })
-
     scripts.forEach((s) => {
-      //preload
-      const scriptHref = s.getAttribute('src')
-      const existingLink = document.querySelector(
-        `link[href="${scriptHref}"][rel="preload"]`
-      )
-      if (existingLink) {
-        return
-      } else {
-        const preloadLink = document.createElement('link')
-        preloadLink.href = scriptHref || ''
-        preloadLink.rel = 'preload'
-        preloadLink.as = 'script'
-        document.head.appendChild(preloadLink)
-      }
-
-      const scriptEle = document.createElement('script')
-
-      const attrs = s.attributes
-      for (let i = 0; i < attrs.length; i++) {
-        scriptEle.setAttribute(attrs[i].name, attrs[i].value)
-      }
-      scriptEle.text = s.text || ''
-      fragment.appendChild(scriptEle)
+      s.remove()
     })
+    const nonScripts = ele.querySelectorAll('div#draft-embed > :not(script)')
+    const nonScriptsHtml = nonScripts.reduce(
+      (prev, next) => prev + next.toString(),
+      ''
+    )
 
-    node.appendChild(fragment)
-    onEmbeddedFinish()
+    let shouldFullScreen = false
+    const elementWithFullScreenAttribute =
+      ele.querySelector('[data-full-screen]')
+
+    if (elementWithFullScreenAttribute) {
+      const fullScreenAttribute =
+        elementWithFullScreenAttribute.getAttribute('data-full-screen')
+      shouldFullScreen = fullScreenAttribute === 'true'
+    }
+
+    return { scripts, nonScripts, nonScriptsHtml, shouldFullScreen }
   }, [embeddedCode])
+  const { scripts, nonScriptsHtml, shouldFullScreen } = nodes
+
+  useEffect(() => {
+    if (embedded.current) {
+      const node: HTMLElement = embedded.current
+
+      const fragment = document.createDocumentFragment()
+
+      scripts.forEach((s) => {
+        const scriptEle = document.createElement('script')
+        const attrs = s.attributes
+        for (const key in attrs) {
+          scriptEle.setAttribute(key, attrs[key])
+        }
+        scriptEle.text = s.text || ''
+        fragment.appendChild(scriptEle)
+      })
+
+      node.appendChild(fragment)
+    }
+  }, [scripts])
 
   return (
-    <>
+    <LeadingBlock
+      shouldFullScreen={shouldFullScreen}
+      backgroundColor={backgroundColor}
+    >
       {
         // WORKAROUND:
         // The following `<input>` is to solve [issue 153](https://github.com/mirror-media/openwarehouse-k6/issues/153).
@@ -105,7 +112,12 @@ export default function LeadingEmbeddedCode({
         // hijacking the users' cursors.
       }
       <input hidden disabled />
-      <Block ref={embedded} />
-    </>
+      <Block
+        ref={embedded}
+        dangerouslySetInnerHTML={{
+          __html: nonScriptsHtml,
+        }}
+      />
+    </LeadingBlock>
   )
 }
