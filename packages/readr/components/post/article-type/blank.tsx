@@ -1,5 +1,4 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
@@ -15,7 +14,6 @@ const BlankWrapper = styled.article`
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
-
   //modify the style of <Footer />.
   .layout-footer {
     background: #ffffff;
@@ -46,20 +44,12 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
   } = Readr
 
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
-  const shouldShowContentBlock =
-    !shouldShowLeadingEmbedded && hasContentInRawContentBlock(postData?.content)
-
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
-    !shouldShowLeadingEmbedded
-  )
+  const shouldShowContentBlock = hasContentInRawContentBlock(postData?.content)
 
   return (
     <BlankWrapper>
       {shouldShowLeadingEmbedded && (
-        <LeadingEmbeddedCode
-          embeddedCode={postData?.leadingEmbeddedCode}
-          setState={setIsEmbeddedFinish}
-        />
+        <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
       )}
 
       {shouldShowContentBlock && (
@@ -68,12 +58,8 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
         />
       )}
 
-      {isEmbeddedFinish && (
-        <>
-          <Footer />
-          <HiddenAnchor ref={anchorRef} />
-        </>
-      )}
+      <Footer />
+      <HiddenAnchor ref={anchorRef} />
     </BlankWrapper>
   )
 }
