@@ -1,29 +1,30 @@
-import styled from 'styled-components'
+import Link from 'next/link'
+import styled, { css } from 'styled-components'
 
 import type { Author } from '~/graphql/fragments/author'
 import type { PostDetail } from '~/graphql/query/post'
 
 import MediaLinkList from '../shared/media-link'
 
-const DotStyle = `
-    content: '';
-    position: absolute;
-    top: 9px;
-    left: 7px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: rgba(0, 9, 40, 0.2);
+const DotStyle = css`
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(0, 9, 40, 0.2);
 `
 
-const LineStyle = `
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 3px;
-    width: 20px;
-    height: 1px;
-    background-color: rgba(0, 9, 40, 0.66);  
+const LineStyle = css`
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 3px;
+  width: 20px;
+  height: 1px;
+  background-color: rgba(0, 9, 40, 0.66);
 `
 
 const PostCreditWrapper = styled.div`
@@ -88,10 +89,12 @@ const CreditName = styled.div`
       top: 13px;
     }
   }
+
   span {
     position: relative;
   }
-  > span + span {
+
+  span + span {
     padding: 0 0 0 20px;
   }
   span + span:after {
@@ -112,7 +115,13 @@ type PostProps = {
 
 export default function PostCredit({ postData }: PostProps): JSX.Element {
   function renderNames(authors: Author[]) {
-    return authors?.map((author) => <span key={author.id}>{author.name}</span>)
+    return authors?.map((author) => (
+      <span key={author.id}>
+        <Link key={author.id} href={`/author/${author.id}`}>
+          {author.name}
+        </Link>
+      </span>
+    ))
   }
 
   const writers = renderNames(
@@ -183,6 +192,7 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
           </li>
         )}
       </CreditList>
+
       <MediaLinkList />
     </PostCreditWrapper>
   )
