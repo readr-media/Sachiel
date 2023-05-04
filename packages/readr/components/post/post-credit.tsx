@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import type { Author, PostDetail } from '~/graphql/query/post'
+import type { Author } from '~/graphql/fragments/author'
+import type { PostDetail } from '~/graphql/query/post'
 
 import MediaLinkList from '../shared/media-link'
 
