@@ -31,7 +31,7 @@ const shareStyle = css`
   }
 `
 
-const TagWrapper = styled.div`
+const AuthorWrapper = styled.div`
   padding: 24px 20px;
   ${({ theme }) => theme.breakpoint.sm} {
     padding: 48px 20px;
@@ -112,8 +112,8 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
     )
   })
 
-  //infinite scroll: check number of posts yet to be displayed.
-  //if number = 0, means all posts are displayed, observer.unobserve.
+  //infinite scroll: check amount of posts yet to be displayed.
+  //if amount = 0, means all posts are displayed, observer.unobserve.
   const [dataAmount, setDataAmount] = useState(displayPosts?.length)
 
   //fetch more related 12 posts
@@ -122,7 +122,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
   ) => {
     try {
       {
-        // fetch author and related 12 posts
+        // fetch author related 12 posts
         const { data, error: gqlErrors } = await client.query<{
           authorPosts: Post[]
         }>({
@@ -136,9 +136,9 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
 
         if (gqlErrors) {
           const annotatingError = errors.helpers.wrap(
-            new Error('Errors returned in `tags` query'),
+            new Error('Errors returned in `author` query'),
             'GraphQLError',
-            'failed to complete `tags`',
+            'failed to complete `author`',
             { errors: gqlErrors }
           )
 
@@ -147,7 +147,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
 
         const newPosts = data.authorPosts?.map(postConvertFunc) || []
 
-        setDataAmount(newPosts.length) //number of posts yet to be displayed.
+        setDataAmount(newPosts.length) //amount of posts yet to be displayed.
 
         setDisplayPosts([...(displayPosts || []), ...newPosts])
       }
@@ -169,7 +169,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
 
   const sectionTitle = authorName
   return (
-    <TagWrapper aria-label={sectionTitle}>
+    <AuthorWrapper aria-label={sectionTitle}>
       <SectionHeading
         title={sectionTitle}
         highlightColor="#ebf02c"
@@ -177,7 +177,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
       />
       <ItemList>{articleItems}</ItemList>
       <span ref={ref} id="scroll-to-bottom-anchor" />
-    </TagWrapper>
+    </AuthorWrapper>
   )
 }
 
@@ -206,9 +206,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `tags` query'),
+          new Error('Errors returned in `author` query'),
           'GraphQLError',
-          'failed to complete `tags`',
+          'failed to complete `author`',
           { errors: gqlErrors }
         )
 
@@ -237,9 +237,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `tags` query'),
+          new Error('Errors returned in `author` query'),
           'GraphQLError',
-          'failed to complete `tags`',
+          'failed to complete `author`',
           { errors: gqlErrors }
         )
 
