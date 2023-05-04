@@ -186,6 +186,9 @@ const authorPosts = gql`
           { dataAnalysts: { some: { id: { equals: $authorId } } } }
         ]
         state: { equals: "published" }
+        style: {
+          in: [${convertToStringList(postStyles)}]
+        }
       }
       orderBy: { publishTime: desc }
     ) {
