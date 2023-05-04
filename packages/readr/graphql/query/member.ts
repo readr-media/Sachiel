@@ -13,7 +13,7 @@ export type Member = Override<
     | 'special_number'
     | 'number_desc'
     | 'number_desc_en'
-    | 'projects'
+    | 'posts'
   >,
   {
     id: string
@@ -31,7 +31,7 @@ const members = gql`
       special_number
       number_desc
       number_desc_en
-      projects {
+      posts {
         id
         name
       }

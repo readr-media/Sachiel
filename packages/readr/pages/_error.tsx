@@ -154,11 +154,10 @@ const PostsContainer = styled.div`
   max-width: 320px;
 
   ${({ theme }) => theme.breakpoint.sm} {
-    height: 320px;
+    height: 300px;
     max-width: 522px;
   }
   ${({ theme }) => theme.breakpoint.md} {
-    height: 350px;
     max-width: 672px;
   }
 
@@ -168,7 +167,6 @@ const PostsContainer = styled.div`
 
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: 1096px;
-    height: 300px;
   }
 `
 
