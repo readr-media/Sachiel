@@ -1,9 +1,10 @@
 import gql from 'graphql-tag'
 
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import { Author, authorFragment } from '~/graphql/fragments/author'
 import { Post, postFragment } from '~/graphql/fragments/post'
+import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
 import type {
-  GenericAuthor,
   GenericCategory,
   GenericPost,
   GenericTag,
@@ -12,11 +13,8 @@ import type {
 } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
 
-import { authorFragment } from '../fragments/author'
-import { resizeImagesFragment } from '../fragments/resized-images'
-
 export type Category = Pick<GenericCategory, 'id' | 'title' | 'slug'>
-export type Author = Pick<GenericAuthor, 'id' | 'name'>
+
 export type Tag = Pick<GenericTag, 'id' | 'name'>
 
 export type PostDetail = Override<
@@ -171,4 +169,31 @@ const latestPosts = gql`
   ${postFragment}
 `
 
-export { latestPosts, post }
+const authorPosts = gql`
+  query ($authorId: ID, $first: Int! = 12, $skip: Int! = 0) {
+    authorPosts: posts(
+      take: $first
+      skip: $skip
+      where: {
+        OR: [
+          { writers: { some: { id: { equals: $authorId } } } }
+          { photographers: { some: { id: { equals: $authorId } } } }
+          { cameraOperators: { some: { id: { equals: $authorId } } } }
+          { designers: { some: { id: { equals: $authorId } } } }
+          { engineers: { some: { id: { equals: $authorId } } } }
+          { dataAnalysts: { some: { id: { equals: $authorId } } } }
+        ]
+        state: { equals: "published" }
+        style: {
+          in: [${convertToStringList(postStyles)}]
+        }
+      }
+      orderBy: { publishTime: desc }
+    ) {
+      ...PostFields
+    }
+  }
+  ${postFragment}
+`
+
+export { authorPosts, latestPosts, post }

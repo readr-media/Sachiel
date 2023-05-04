@@ -41,26 +41,31 @@ const MediaLinkList = styled.ul`
 `
 
 const MiscLinkList = styled.ul`
-  display: flex;
-  justify-content: center;
   font-size: 16px;
-  padding: 0 20px;
   line-height: 1.7;
   margin-bottom: 32px;
+
+  ${({ theme }) => theme.breakpoint.sm} {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+  }
 
   ${({ theme }) => theme.breakpoint.lg} {
     padding: 0;
   }
-
   li {
-    width: 32px;
     ${({ theme }) => theme.breakpoint.sm} {
       width: auto;
     }
   }
-
   li + li {
-    margin-left: 40px;
+    margin-top: 12px;
+    ${({ theme }) => theme.breakpoint.sm} {
+      margin-top: 0px;
+      margin-left: 40px;
+    }
     ${({ theme }) => theme.breakpoint.md} {
       margin-left: 66px;
     }
