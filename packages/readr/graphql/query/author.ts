@@ -1,10 +1,6 @@
 import gql from 'graphql-tag'
 
-import type { GenericAuthor } from '~/types/common'
-
-import { authorFragment } from '../fragments/author'
-
-export type Author = Pick<GenericAuthor, 'id' | 'name'>
+import { authorFragment } from '~/graphql/fragments/author'
 
 const author = gql`
   query ($id: ID) {

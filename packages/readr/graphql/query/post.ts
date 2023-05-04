@@ -1,8 +1,9 @@
 import gql from 'graphql-tag'
 
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import { Author, authorFragment } from '~/graphql/fragments/author'
 import { Post, postFragment } from '~/graphql/fragments/post'
-import type { Author } from '~/graphql/query/author'
+import { resizeImagesFragment } from '~/graphql/fragments/resized-images'
 import type {
   GenericCategory,
   GenericPost,
@@ -11,9 +12,6 @@ import type {
   PhotoWithResizedOnly,
 } from '~/types/common'
 import { convertToStringList } from '~/utils/common'
-
-import { authorFragment } from '../fragments/author'
-import { resizeImagesFragment } from '../fragments/resized-images'
 
 export type Category = Pick<GenericCategory, 'id' | 'title' | 'slug'>
 
