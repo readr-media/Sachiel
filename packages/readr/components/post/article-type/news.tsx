@@ -49,7 +49,7 @@ const HeroImage = styled.figure`
   }
 
   ${({ theme }) => theme.breakpoint.lg} {
-    margin: 30px auto 0px;
+    margin: 24px auto 0px;
   }
 `
 

@@ -1,5 +1,4 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
@@ -15,7 +14,6 @@ const BlankWrapper = styled.article`
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.articleType};
-
   //modify the style of <Footer />.
   .layout-footer {
     background: #ffffff;
@@ -38,40 +36,30 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
 
-  //if `leadingEmbeddedCode` is null, show embedded-code from `content`
-  const { DraftRenderer } = Readr
-
-  // remove blocks[0] to avoid extra empty blank before embedded-code
-  const contentWithoutEmptyBlank = {
-    blocks: postData?.content.blocks.slice(1),
-    entityMap: postData?.content.entityMap,
-  }
+  //if `leadingEmbeddedCode` is null, show embedded-code from `postData.content`
+  const {
+    DraftRenderer,
+    removeEmptyContentBlock,
+    hasContentInRawContentBlock,
+  } = Readr
 
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
-
-  const [isEmbeddedFinish, setIsEmbeddedFinish] = useState<boolean>(
-    !shouldShowLeadingEmbedded
-  )
+  const shouldShowContentBlock = hasContentInRawContentBlock(postData?.content)
 
   return (
     <BlankWrapper>
       {shouldShowLeadingEmbedded && (
-        <LeadingEmbeddedCode
-          embeddedCode={postData?.leadingEmbeddedCode}
-          setState={setIsEmbeddedFinish}
+        <LeadingEmbeddedCode embeddedCode={postData?.leadingEmbeddedCode} />
+      )}
+
+      {shouldShowContentBlock && (
+        <DraftRenderer
+          rawContentBlock={removeEmptyContentBlock(postData?.content)}
         />
       )}
 
-      {!shouldShowLeadingEmbedded && (
-        <DraftRenderer rawContentBlock={contentWithoutEmptyBlank} />
-      )}
-
-      {isEmbeddedFinish && (
-        <>
-          <Footer />
-          <HiddenAnchor ref={anchorRef} />
-        </>
-      )}
+      <Footer />
+      <HiddenAnchor ref={anchorRef} />
     </BlankWrapper>
   )
 }

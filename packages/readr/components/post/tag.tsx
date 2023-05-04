@@ -9,8 +9,7 @@ const TagWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  margin: 0 auto 40px;
-  max-width: 568px;
+  max-width: 600px;
 
   > li {
     font-size: 14px;
