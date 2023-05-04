@@ -167,7 +167,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
     }
   }, [isAtBottom])
 
-  const sectionTitle = authorName
+  const sectionTitle = `文章作者：${authorName}`
   return (
     <AuthorWrapper aria-label={sectionTitle}>
       <SectionHeading
