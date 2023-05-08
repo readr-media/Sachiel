@@ -39,10 +39,6 @@ const Container = styled.article`
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: 600px;
   }
-
-  .toc {
-    white-space: normal;
-  }
 `
 
 //重點摘要
@@ -57,20 +53,18 @@ const Summary = styled.article`
   .DraftEditor-root {
     font-size: 16px;
     line-height: 1.6;
-  }
 
-  *:not(:first-child) {
     .public-DraftStyleDefault-block,
     .public-DraftStyleDefault-ul,
     .public-DraftStyleDefault-ol {
       margin-top: 12px;
     }
-  }
 
-  .public-DraftStyleDefault-unorderedListItem,
-  .public-DraftStyleDefault-orderedListItem {
-    .public-DraftStyleDefault-block {
-      margin-top: 4px;
+    .public-DraftStyleDefault-unorderedListItem,
+    .public-DraftStyleDefault-orderedListItem {
+      .public-DraftStyleDefault-block {
+        margin-top: 4px;
+      }
     }
   }
 
@@ -124,17 +118,6 @@ const Citation = styled.article`
     margin-bottom: 60px;
   }
 
-  .DraftEditor-root {
-    font-size: 16px;
-    line-height: 1.6;
-    background-color: rgba(245, 235, 255, 0.5);
-    padding: 12px 24px;
-
-    ${({ theme }) => theme.breakpoint.md} {
-      padding: 16px 32px;
-    }
-  }
-
   .title {
     font-size: 18px;
     font-weight: 700;
@@ -151,18 +134,27 @@ const Citation = styled.article`
     }
   }
 
-  *:not(:first-child) {
+  .DraftEditor-root {
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: rgba(245, 235, 255, 0.5);
+    padding: 12px 24px;
+
     .public-DraftStyleDefault-block,
     .public-DraftStyleDefault-ul,
     .public-DraftStyleDefault-ol {
       margin-top: 12px;
     }
-  }
 
-  .public-DraftStyleDefault-unorderedListItem,
-  .public-DraftStyleDefault-orderedListItem {
-    .public-DraftStyleDefault-block {
-      margin-top: 4px;
+    .public-DraftStyleDefault-unorderedListItem,
+    .public-DraftStyleDefault-orderedListItem {
+      .public-DraftStyleDefault-block {
+        margin-top: 4px;
+      }
+    }
+
+    ${({ theme }) => theme.breakpoint.md} {
+      padding: 16px 32px;
     }
   }
 
