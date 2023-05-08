@@ -7,6 +7,7 @@ type LeadingBlockProps = {
 }
 const LeadingBlock = styled.section<LeadingBlockProps>`
   position: relative;
+  white-space: normal;
   background-color: ${(props) => props.backgroundColor};
   z-index: ${({ theme }) => theme.zIndex.articleType};
 `

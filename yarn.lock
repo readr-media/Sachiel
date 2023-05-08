@@ -2237,10 +2237,10 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mirrormedia/lilith-draft-renderer@^1.2.0-alpha.12":
-  version "1.2.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.2.0-alpha.12.tgz#8c990e1813cbbda05616bde1e7c3af27692074f8"
-  integrity sha512-wbIH13mI7GkQt4UrOrFnUTxuIKYauYgKUZl3UTNpuaUelfkBuDX2gTlkS0lpFbSNZb7wKnPyLyDJ7NMBWJ0gaw==
+"@mirrormedia/lilith-draft-renderer@^1.2.0-alpha.9":
+  version "1.2.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.2.0-alpha.9.tgz#e6cad57c7d22040cb17fab1052d93553f6fe9476"
+  integrity sha512-2RggpwCTzZnH7IXeQJjxRZl5obW/0UyT/o9umKu5dk3Wxpnh19c1pl08PAljE1AMIKp1hhhqYrYkchVL11ZAzg==
   dependencies:
     "@readr-media/react-image" "^1.5.1"
     body-scroll-lock "3.1.5"

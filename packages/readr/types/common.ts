@@ -66,7 +66,7 @@ export type GenericAuthor = {
   special_number: string
   number_desc: string
   number_desc_en: string
-  projects: GenericProject[]
+  posts: GenericPost[]
 }
 
 export type GenericProject = {
