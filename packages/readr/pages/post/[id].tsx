@@ -94,7 +94,7 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
         title={ogTitle}
         description={ogDescription}
         imageUrl={ogImageUrl}
-      ></CustomHead>
+      />
       {articleType}
     </>
   )
