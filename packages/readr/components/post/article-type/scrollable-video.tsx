@@ -152,7 +152,7 @@ export default function ScrollableVideo({
         </PostHeading>
 
         <PostContent
-          articleAType={ValidPostStyle.SCROLLABLE_VIDEO}
+          articleType={ValidPostStyle.SCROLLABLE_VIDEO}
           postData={
             shouldShowLeadingEmbedded
               ? postData

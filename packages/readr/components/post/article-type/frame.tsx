@@ -205,7 +205,7 @@ export default function Frame({
           />
         )}
 
-        <PostContent postData={postData} articleAType={ValidPostStyle.FRAME} />
+        <PostContent postData={postData} articleType={ValidPostStyle.FRAME} />
       </Article>
 
       <SubscribeButton />

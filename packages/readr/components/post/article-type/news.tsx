@@ -114,7 +114,7 @@ export default function News({
             <PostCredit postData={postData} />
           </PostHeading>
 
-          <PostContent postData={postData} articleAType={ValidPostStyle.NEWS} />
+          <PostContent postData={postData} articleType={ValidPostStyle.NEWS} />
         </article>
 
         <SubscribeButton />
