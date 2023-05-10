@@ -22,7 +22,7 @@ const Container = styled.article<StyleProps>`
   max-width: 568px;
   margin: 0 auto;
   padding: ${(props) =>
-    props.shouldPaddingTop ? '24px 20px 0px' : '0px 20px'};
+    props.shouldPaddingTop ? '32px 20px 0px' : '0px 20px'};
 
   .mobile-media-link {
     display: flex;
@@ -32,7 +32,7 @@ const Container = styled.article<StyleProps>`
   }
 
   ${({ theme }) => theme.breakpoint.md} {
-    padding: ${(props) => (props.shouldPaddingTop ? '24px 0px 0px' : '0px')};
+    padding: ${(props) => (props.shouldPaddingTop ? '32px 0px 0px' : '0px')};
 
     .mobile-media-link {
       display: none;
@@ -44,7 +44,6 @@ const Container = styled.article<StyleProps>`
   }
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: 600px;
-    padding: ${(props) => (props.shouldPaddingTop ? '48px 0px 0px' : '0px')};
   }
 `
 
