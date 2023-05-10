@@ -13,6 +13,7 @@ import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
+import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
 const Article = styled.article`
@@ -151,6 +152,7 @@ export default function ScrollableVideo({
         </PostHeading>
 
         <PostContent
+          articleAType={ValidPostStyle.SCROLLABLE_VIDEO}
           postData={
             shouldShowLeadingEmbedded
               ? postData
