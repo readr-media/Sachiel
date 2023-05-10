@@ -12,6 +12,7 @@ import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
+import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
@@ -136,7 +137,6 @@ const FrameCredit = styled.div`
   }
 `
 
-
 type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
@@ -205,7 +205,7 @@ export default function Frame({
           />
         )}
 
-        <PostContent postData={postData} />
+        <PostContent postData={postData} articleType={ValidPostStyle.FRAME} />
       </Article>
 
       <SubscribeButton />
