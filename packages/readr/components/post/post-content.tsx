@@ -6,17 +6,23 @@ import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
 import type { PostDetail } from '~/graphql/query/post'
+import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
 const defaultMarginBottom = css`
   margin-bottom: 32px;
 `
 
-const Container = styled.article`
+type StyleProps = {
+  shouldPaddingTop: boolean
+}
+
+const Container = styled.article<StyleProps>`
   width: 100%;
   max-width: 568px;
   margin: 0 auto;
-  padding: 0px 20px;
+  padding: ${(props) =>
+    props.shouldPaddingTop ? '24px 20px 0px' : '0px 20px'};
 
   .mobile-media-link {
     display: flex;
@@ -26,7 +32,7 @@ const Container = styled.article`
   }
 
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 0;
+    padding: ${(props) => (props.shouldPaddingTop ? '24px 0px 0px' : '0px')};
 
     .mobile-media-link {
       display: none;
@@ -38,6 +44,7 @@ const Container = styled.article`
   }
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: 600px;
+    padding: ${(props) => (props.shouldPaddingTop ? '48px 0px 0px' : '0px')};
   }
 `
 
@@ -240,9 +247,13 @@ const TagGroup = styled.div`
 
 type PostProps = {
   postData: PostDetail
+  articleType: string
 }
 
-export default function PostContent({ postData }: PostProps): JSX.Element {
+export default function PostContent({
+  postData,
+  articleType,
+}: PostProps): JSX.Element {
   const {
     DraftRenderer,
     hasContentInRawContentBlock,
@@ -254,8 +265,21 @@ export default function PostContent({ postData }: PostProps): JSX.Element {
   const shouldShowActionList = hasContentInRawContentBlock(postData?.actionList)
   const shouldShowCitation = hasContentInRawContentBlock(postData?.citation)
 
+  //When the article type is "frame", and has "summary" or first block of "content" is not an "EMBEDDEDCODE" , "Container" requires "padding-top".
+  const contentWithoutEmpty = removeEmptyContentBlock(postData?.content)
+
+  let firstContentType
+  if (contentWithoutEmpty) {
+    firstContentType = contentWithoutEmpty?.entityMap[0]?.type
+  }
+
+  const shouldPaddingTop =
+    articleType === ValidPostStyle.FRAME &&
+    (shouldShowSummary ||
+      (!shouldShowSummary && firstContentType !== 'EMBEDDEDCODE'))
+
   return (
-    <Container>
+    <Container shouldPaddingTop={shouldPaddingTop}>
       {shouldShowSummary && (
         <Summary>
           <div>
