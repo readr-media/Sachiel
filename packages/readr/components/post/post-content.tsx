@@ -283,9 +283,7 @@ export default function PostContent({
         <Summary>
           <div>
             <p className="title">報導重點摘要</p>
-            <DraftRenderer
-              rawContentBlock={removeEmptyContentBlock(postData?.summary)}
-            />
+            <DraftRenderer rawContentBlock={postData?.summary} />
           </div>
         </Summary>
       )}
@@ -293,7 +291,8 @@ export default function PostContent({
       {shouldShowContent && (
         <Content>
           <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.content)}
+            rawContentBlock={postData?.content}
+            insertRecommend={postData?.relatedPosts}
           />
         </Content>
       )}
@@ -301,9 +300,7 @@ export default function PostContent({
       {shouldShowActionList && (
         <ActionList>
           <p className="title">如果你關心這個議題</p>
-          <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.actionList)}
-          />
+          <DraftRenderer rawContentBlock={postData?.actionList} />
         </ActionList>
       )}
 
@@ -316,9 +313,7 @@ export default function PostContent({
       {shouldShowCitation && (
         <Citation>
           <p className="title">引用資料</p>
-          <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.citation)}
-          />
+          <DraftRenderer rawContentBlock={postData?.citation} />
         </Citation>
       )}
 
