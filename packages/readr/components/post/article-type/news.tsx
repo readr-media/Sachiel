@@ -11,6 +11,7 @@ import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
+import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
 const NewsContainer = styled.div`
@@ -113,7 +114,7 @@ export default function News({
             <PostCredit postData={postData} />
           </PostHeading>
 
-          <PostContent postData={postData} />
+          <PostContent postData={postData} articleType={ValidPostStyle.NEWS} />
         </article>
 
         <SubscribeButton />

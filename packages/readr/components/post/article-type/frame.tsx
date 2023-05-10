@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
-import PostCategory from '~/components/post/post-category'
 import PostContent from '~/components/post/post-content'
 import RelatedPosts from '~/components/post/related-post'
 import SubscribeButton from '~/components/post/subscribe-button'
@@ -13,6 +12,7 @@ import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
+import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
@@ -137,16 +137,6 @@ const FrameCredit = styled.div`
   }
 `
 
-const PostHeading = styled.section`
-  width: 100%;
-  max-width: 568px;
-  padding-top: 16px;
-  margin: auto;
-  ${({ theme }) => theme.breakpoint.xl} {
-    max-width: 600px;
-  }
-`
-
 type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
@@ -165,7 +155,6 @@ export default function Frame({
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
   const shouldShowHeroImage = Boolean(postData?.heroImage)
   const shouldShowHeroCaption = Boolean(postData?.heroCaption)
-  const shouldShowCategory = postData?.categories?.length > 0
 
   //workaround: 特殊頁面需要客製化 credit 清單，在 cms Post 作者（其他）欄位中以星號開頭來啟用，以全形的'／'來產生換行效果
   //ref: https://github.com/readr-media/readr-nuxt/commit/98c4016587ebd4dddb5e92e74c1af24c477d32f7
@@ -216,12 +205,7 @@ export default function Frame({
           />
         )}
 
-        {shouldShowCategory && (
-          <PostHeading>
-            <PostCategory category={postData?.categories} />
-          </PostHeading>
-        )}
-        <PostContent postData={postData} />
+        <PostContent postData={postData} articleType={ValidPostStyle.FRAME} />
       </Article>
 
       <SubscribeButton />

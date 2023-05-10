@@ -2237,10 +2237,10 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mirrormedia/lilith-draft-renderer@^1.2.0-alpha.8":
-  version "1.2.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.2.0-alpha.8.tgz#ff568a24c5cadcf67a1c84355eb3fedde0f75ce2"
-  integrity sha512-88yZZctErCDEZQdMcFSew3kGY1SiB7g6ergis0VWntR9CN+BhfGi0LQsGMJqb0nR9SebGNNYCQVqrOuXfyTeLQ==
+"@mirrormedia/lilith-draft-renderer@^1.2.0-alpha.15":
+  version "1.2.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.2.0-alpha.15.tgz#14d3a45be1d85c305851d7b015f5ebdcb41faf03"
+  integrity sha512-c1lvtgrgBsdwLouahMu9Ap8v7zZkSYSiwqxqJ1+m1nACmGSLQfsFY85PRo+dsm13874M1NpnIdOGMKoU+kg8mA==
   dependencies:
     "@readr-media/react-image" "^1.5.1"
     body-scroll-lock "3.1.5"
@@ -4357,9 +4357,9 @@ core-js-pure@^3.25.1:
   integrity sha512-oml3M22pHM+igfWHDfdLVq2ShWmjM2V4L+dQEBs0DWVIqEm9WHCwGAlZ6BmyBQGy5sFrJmcx+856D9lVKyGWYg==
 
 core-js@^3.6.4:
-  version "3.30.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.1.tgz#fc9c5adcc541d8e9fa3e381179433cbf795628ba"
-  integrity sha512-ZNS5nbiSwDTq4hFosEDqm65izl2CWmLz0hARJMyNQBgkUZMIF51cQiMvIQKA6hvuaeWxQDP3hEedM1JZIgTldQ==
+  version "3.30.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.2.tgz#6528abfda65e5ad728143ea23f7a14f0dcf503fc"
+  integrity sha512-uBJiDmwqsbJCWHAwjrx3cvjbMXP7xD72Dmsn5LOJpiRmE3WbBbN5rCqQ2Qh6Ek6/eOrjlWngEynBWo4VxerQhg==
 
 core-util-is@~1.0.0:
   version "1.0.3"
