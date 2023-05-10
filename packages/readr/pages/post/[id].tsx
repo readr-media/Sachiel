@@ -51,7 +51,9 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
     if (blocks) {
       const text = blocks.map((block) => block.text).join('')
       const ogDescription =
-        text && text.length > 160 ? text.slice(0, 160) + '...' : text
+        text && text.length > 160
+          ? text.trim().slice(0, 160) + '...'
+          : text.trim()
       return ogDescription
     }
   }
