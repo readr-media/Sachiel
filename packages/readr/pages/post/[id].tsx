@@ -8,6 +8,7 @@ import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
 import ScrollableVideo from '~/components/post/article-type/scrollable-video'
+import { SITE_TITLE } from '~/constants/constant'
 import { SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
@@ -79,7 +80,9 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
   //   )
   // }
 
-  const ogTitle = postData.title
+  const ogTitle = postData?.title
+    ? `${postData?.title} - ${SITE_TITLE}`
+    : SITE_TITLE
 
   const ogDescription =
     postData?.ogDescription ||
