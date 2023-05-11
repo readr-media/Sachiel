@@ -37,11 +37,7 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
   )
 
   //if `leadingEmbeddedCode` is null, show embedded-code from `postData.content`
-  const {
-    DraftRenderer,
-    removeEmptyContentBlock,
-    hasContentInRawContentBlock,
-  } = Readr
+  const { DraftRenderer, hasContentInRawContentBlock } = Readr
 
   const shouldShowLeadingEmbedded = Boolean(postData?.leadingEmbeddedCode)
   const shouldShowContentBlock = hasContentInRawContentBlock(postData?.content)
@@ -53,9 +49,7 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
       )}
 
       {shouldShowContentBlock && (
-        <DraftRenderer
-          rawContentBlock={removeEmptyContentBlock(postData?.content)}
-        />
+        <DraftRenderer rawContentBlock={postData?.content} />
       )}
 
       <Footer />
