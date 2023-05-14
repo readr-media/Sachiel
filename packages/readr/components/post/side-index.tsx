@@ -61,6 +61,13 @@ const SideIndexList = styled.li<StyleProps>`
   }
 `
 
+type SideIndexList = {
+  title: string
+  id: string
+  href: string | null
+  isActive: boolean
+}
+
 type SideIndexProps = {
   rawContentBlock: RawDraftContentState
   currentIndex?: string
@@ -85,7 +92,7 @@ export default function SideIndex({
       })
   }
 
-  const sideIndexLists = sideIndexList?.map((list) => {
+  const sideIndexLists = sideIndexList?.map((list: SideIndexList) => {
     const { title, id, href } = list
 
     if (href) {
