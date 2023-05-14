@@ -1,12 +1,14 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/layout/footer'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
 import RelatedPosts from '~/components/post/related-post'
+import SideIndex from '~/components/post/side-index'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
@@ -137,6 +139,25 @@ const FrameCredit = styled.div`
   }
 `
 
+const ContentWrapper = styled.main`
+  display: block;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: flex;
+    justify-content: center;
+  }
+`
+
+const Aside = styled.aside`
+  display: none;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: block;
+    width: 100%;
+    padding-bottom: 250px;
+  }
+`
+
 type PostProps = {
   postData: PostDetail
   latestPosts: Post[]
@@ -149,6 +170,9 @@ export default function Frame({
   const anchorRef = useScrollToEnd(() =>
     gtag.sendEvent('post', 'scroll', 'scroll to end')
   )
+
+  //for Draft Style: side-index-block
+  const [currentSideIndex, setCurrentSideIndex] = useState('')
 
   const date = formatPostDate(postData?.publishTime)
 
@@ -205,7 +229,24 @@ export default function Frame({
           />
         )}
 
-        <PostContent postData={postData} articleType={ValidPostStyle.FRAME} />
+        <ContentWrapper>
+          <Aside>
+            <SideIndex
+              rawContentBlock={postData?.content}
+              currentIndex={currentSideIndex}
+              isAside={true}
+            />
+          </Aside>
+          <main>
+            <PostContent
+              postData={postData}
+              articleType={ValidPostStyle.FRAME}
+              currentSideIndex={currentSideIndex}
+              setCurrentSideIndex={setCurrentSideIndex}
+            />
+          </main>
+          <Aside />
+        </ContentWrapper>
       </Article>
 
       <SubscribeButton />
