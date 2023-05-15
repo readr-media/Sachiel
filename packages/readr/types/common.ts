@@ -55,6 +55,13 @@ export enum ValidJobTitles {
   PRODUCT_MANAGER = 'product manager',
 }
 
+export enum ValidPostContentType {
+  NORMAL = 'normal',
+  SUMMARY = 'summary',
+  ACTIONLIST = 'actionlist',
+  CITATION = 'citation',
+}
+
 /* eslint-enable no-unused-vars */
 
 export type GenericAuthor = {

@@ -1,11 +1,12 @@
 import SharedImage from '@readr-media/react-image'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import HeaderGeneral from '~/components/layout/header/header-general'
 import PostContent from '~/components/post/post-content'
-import PostCredit from '~/components/post/post-credit'
-import PostTitle from '~/components/post/post-title'
+import PostHeading from '~/components/post/post-heading'
 import RelatedPosts from '~/components/post/related-post'
+import SideIndex from '~/components/post/side-index'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
@@ -54,27 +55,31 @@ const HeroImage = styled.figure`
   }
 `
 
-const PostHeading = styled.section`
-  width: 100%;
-  max-width: 568px;
-  margin: 24px auto;
-
-  ${({ theme }) => theme.breakpoint.lg} {
-    margin: 60px auto 48px;
-  }
-
-  ${({ theme }) => theme.breakpoint.xl} {
-    padding: 0;
-    max-width: 600px;
-  }
-`
-
 const HiddenAnchor = styled.div`
   display: block;
   width: 100%;
   height: 0;
   padding: 0;
   margin: 0;
+`
+
+const ContentWrapper = styled.main`
+  display: block;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: flex;
+    justify-content: center;
+  }
+`
+
+const Aside = styled.aside`
+  display: none;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: block;
+    width: 100%;
+    padding-bottom: 250px;
+  }
 `
 
 type PostProps = {
@@ -91,6 +96,9 @@ export default function News({
   )
 
   const shouldShowHeroImage = Boolean(postData?.heroImage?.resized)
+
+  //for Draft Style: side-index-block
+  const [currentSideIndex, setCurrentSideIndex] = useState('')
 
   return (
     <>
@@ -109,12 +117,26 @@ export default function News({
             </HeroImage>
           )}
 
-          <PostHeading>
-            <PostTitle postData={postData} showTitle={true} />
-            <PostCredit postData={postData} />
-          </PostHeading>
+          <ContentWrapper>
+            <Aside>
+              <SideIndex
+                rawContentBlock={postData?.content}
+                currentIndex={currentSideIndex}
+                isAside={true}
+              />
+            </Aside>
+            <main>
+              <PostHeading showTitle={true} postData={postData} />
 
-          <PostContent postData={postData} articleType={ValidPostStyle.NEWS} />
+              <PostContent
+                postData={postData}
+                articleType={ValidPostStyle.NEWS}
+                currentSideIndex={currentSideIndex}
+                setCurrentSideIndex={setCurrentSideIndex}
+              />
+            </main>
+            <Aside />
+          </ContentWrapper>
         </article>
 
         <SubscribeButton />
