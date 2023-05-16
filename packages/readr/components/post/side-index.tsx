@@ -1,5 +1,6 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import type { RawDraftContentState } from 'draft-js'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 type WrapperProps = {
@@ -92,13 +93,25 @@ export default function SideIndex({
       })
   }
 
+  const [siteOrigin, setSiteOrigin] = useState('')
+
+  useEffect(() => {
+    setSiteOrigin(window.location.origin)
+  }, [])
+
   const sideIndexLists = sideIndexList?.map((list: SideIndexList) => {
     const { title, id, href } = list
 
     if (href) {
+      //If origin of href is the same as the origin of the current website, not need to open in a new tab
+      const linkUrl = new URL(href)
+      const target = siteOrigin === linkUrl.origin ? '_self' : '_blank'
+
       return (
         <SideIndexList key={id} isActive={currentIndex === id}>
-          <a href={href}>{title}</a>
+          <a href={href} target={target} rel="noopener noreferrer">
+            {title}
+          </a>
         </SideIndexList>
       )
     } else {
