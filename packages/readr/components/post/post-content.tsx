@@ -1,12 +1,14 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import { DonateButton } from '@readr-media/react-component'
+import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 
+import SideIndex from '~/components/post/side-index'
 import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
 import { DONATION_PAGE_URL } from '~/constants/environment-variables'
-import type { PostDetail } from '~/graphql/query/post'
-import { ValidPostStyle } from '~/types/common'
+import { PostDetail } from '~/graphql/query/post'
+import { ValidPostContentType, ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
 const defaultMarginBottom = css`
@@ -43,7 +45,8 @@ const Container = styled.article<StyleProps>`
     }
   }
   ${({ theme }) => theme.breakpoint.xl} {
-    max-width: 600px;
+    width: 600px;
+    max-width: none;
   }
 `
 
@@ -56,28 +59,11 @@ const Summary = styled.article`
   border-radius: 2px;
   ${defaultMarginBottom}
 
-  .DraftEditor-root {
-    font-size: 16px;
-    line-height: 1.6;
-
-    .public-DraftStyleDefault-block,
-    .public-DraftStyleDefault-ul,
-    .public-DraftStyleDefault-ol {
-      margin-top: 12px;
-    }
-
-    .public-DraftStyleDefault-unorderedListItem,
-    .public-DraftStyleDefault-orderedListItem {
-      .public-DraftStyleDefault-block {
-        margin-top: 4px;
-      }
-    }
-  }
-
   .title {
     font-size: 14px;
     line-height: 21px;
     color: #04295e;
+    margin-bottom: 4px;
   }
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -93,6 +79,7 @@ const Content = styled.article`
 //延伸議題
 const ActionList = styled.article`
   ${defaultMarginBottom};
+
   .title {
     font-weight: 700;
     font-size: 24px;
@@ -140,89 +127,12 @@ const Citation = styled.article`
     }
   }
 
-  .DraftEditor-root {
-    font-size: 16px;
-    line-height: 1.6;
+  .content {
     background-color: rgba(245, 235, 255, 0.5);
     padding: 12px 24px;
 
-    .public-DraftStyleDefault-block,
-    .public-DraftStyleDefault-ul,
-    .public-DraftStyleDefault-ol {
-      margin-top: 12px;
-    }
-
-    .public-DraftStyleDefault-unorderedListItem,
-    .public-DraftStyleDefault-orderedListItem {
-      .public-DraftStyleDefault-block {
-        margin-top: 4px;
-      }
-    }
-
     ${({ theme }) => theme.breakpoint.md} {
       padding: 16px 32px;
-    }
-  }
-
-  //檔案下載
-  .public-DraftStyleDefault-ul {
-    padding: 0;
-
-    .public-DraftStyleDefault-unorderedListItem {
-      list-style-type: none;
-      padding: 8px 0;
-    }
-
-    a {
-      width: 100%;
-      border: none;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 1.5;
-      color: #04295e;
-      display: inline-block;
-      position: relative;
-      padding-right: 60px;
-
-      &:hover {
-        color: rgba(0, 9, 40, 0.87);
-      }
-
-      &::after {
-        content: '';
-        background-image: url('/icons/post-download.svg');
-        background-repeat: no-repeat;
-        background-position: center center;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        width: 24px;
-        height: 24px;
-        transform: translate(0%, -12px);
-      }
-    }
-  }
-
-  .public-DraftStyleDefault-blockquote {
-    width: 100%;
-    color: rgba(0, 9, 40, 0.5);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.6;
-    padding: 0;
-
-    & + blockquote {
-      margin-top: 8px;
-    }
-
-    & + ul {
-      border-top: 1px solid rgba(0, 9, 40, 0.1);
-      padding-top: 4px;
-      margin-top: 4px;
-
-      ${({ theme }) => theme.breakpoint.md} {
-        margin-top: 8px;
-      }
     }
   }
 `
@@ -247,16 +157,20 @@ const TagGroup = styled.div`
 type PostProps = {
   postData: PostDetail
   articleType: string
+  currentSideIndex?: string
+  setCurrentSideIndex?: (id: string) => void
 }
 
 export default function PostContent({
   postData,
   articleType,
+  currentSideIndex = '',
+  setCurrentSideIndex = () => {},
 }: PostProps): JSX.Element {
   const {
     DraftRenderer,
     hasContentInRawContentBlock,
-    removeEmptyContentBlock,
+    getFirstBlockEntityType,
   } = Readr
 
   const shouldShowSummary = hasContentInRawContentBlock(postData?.summary)
@@ -264,27 +178,68 @@ export default function PostContent({
   const shouldShowActionList = hasContentInRawContentBlock(postData?.actionList)
   const shouldShowCitation = hasContentInRawContentBlock(postData?.citation)
 
-  //When the article type is "frame", and has "summary" or first block of "content" is not an "EMBEDDEDCODE" , "Container" requires "padding-top".
-  const contentWithoutEmpty = removeEmptyContentBlock(postData?.content)
-
-  let firstContentType
-  if (contentWithoutEmpty) {
-    firstContentType = contentWithoutEmpty?.entityMap[0]?.type
-  }
-
+  //WORKAROUND：
+  //when article type is `frame`, and has `summary` or first block of `content` is not an "EMBEDDEDCODE" , `<Container>` requires "padding-top".
   const shouldPaddingTop =
     articleType === ValidPostStyle.FRAME &&
     (shouldShowSummary ||
-      (!shouldShowSummary && firstContentType !== 'EMBEDDEDCODE'))
+      (!shouldShowSummary &&
+        getFirstBlockEntityType(postData?.content) !== 'EMBEDDEDCODE'))
+
+  const articleRef = useRef<HTMLElement>(null)
+
+  //Draft Style: add IntersectionObserver to detect side-index titles.
+  //`BLANK` type: hide side-index-block
+  useEffect(() => {
+    if (articleType === ValidPostStyle.BLANK) {
+      return
+    }
+
+    if (!articleRef.current) {
+      return
+    }
+
+    const selectorIdBeginWithHeader = '[id^="header"]'
+    const targets = [
+      ...articleRef.current.querySelectorAll(selectorIdBeginWithHeader),
+    ]
+
+    const indexObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(({ isIntersecting, target }) => {
+          if (isIntersecting) {
+            setCurrentSideIndex(target.id)
+          }
+        })
+      },
+      {
+        threshold: 1,
+        rootMargin: `150px 0px 0px 0px`,
+      }
+    )
+    targets.forEach((element) => {
+      indexObserver.observe(element)
+    })
+    return () => {
+      indexObserver.disconnect()
+    }
+  }, [articleRef, articleType])
 
   return (
-    <Container shouldPaddingTop={shouldPaddingTop}>
+    <Container shouldPaddingTop={shouldPaddingTop} ref={articleRef}>
+      <SideIndex
+        rawContentBlock={postData?.content}
+        currentIndex={currentSideIndex}
+        isAside={false}
+      />
+
       {shouldShowSummary && (
         <Summary>
           <div>
             <p className="title">報導重點摘要</p>
             <DraftRenderer
-              rawContentBlock={removeEmptyContentBlock(postData?.summary)}
+              rawContentBlock={postData?.summary}
+              contentType={ValidPostContentType.SUMMARY}
             />
           </div>
         </Summary>
@@ -293,7 +248,9 @@ export default function PostContent({
       {shouldShowContent && (
         <Content>
           <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.content)}
+            rawContentBlock={postData?.content}
+            insertRecommend={postData?.relatedPosts}
+            contentType={ValidPostContentType.NORMAL}
           />
         </Content>
       )}
@@ -302,7 +259,8 @@ export default function PostContent({
         <ActionList>
           <p className="title">如果你關心這個議題</p>
           <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.actionList)}
+            rawContentBlock={postData?.actionList}
+            contentType={ValidPostContentType.ACTIONLIST}
           />
         </ActionList>
       )}
@@ -316,9 +274,12 @@ export default function PostContent({
       {shouldShowCitation && (
         <Citation>
           <p className="title">引用資料</p>
-          <DraftRenderer
-            rawContentBlock={removeEmptyContentBlock(postData?.citation)}
-          />
+          <div className="content">
+            <DraftRenderer
+              rawContentBlock={postData?.citation}
+              contentType={ValidPostContentType.CITATION}
+            />
+          </div>
         </Citation>
       )}
 

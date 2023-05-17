@@ -138,12 +138,12 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         return { notFound: true }
       }
 
-      if (data.posts[0].style === ValidPostStyle.EMBEDDED) {
-        return { notFound: true }
-      }
-
       const postStyle = data.posts[0].style
       const postSlug = data.posts[0].slug
+
+      if (postStyle === ValidPostStyle.EMBEDDED) {
+        return { notFound: true }
+      }
 
       if (postStyle === ValidPostStyle.REPORT) {
         return {

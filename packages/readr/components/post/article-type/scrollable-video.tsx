@@ -1,13 +1,14 @@
 import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import SharedImage from '@readr-media/react-image'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import HeaderGeneral from '~/components/layout/header/header-general'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
-import PostCredit from '~/components/post/post-credit'
-import PostTitle from '~/components/post/post-title'
+import PostHeading from '~/components/post/post-heading'
 import RelatedPosts from '~/components/post/related-post'
+import SideIndex from '~/components/post/side-index'
 import SubscribeButton from '~/components/post/subscribe-button'
 import { DEFAULT_POST_IMAGE_PATH } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
@@ -49,23 +50,31 @@ const ScrollTitle = styled.h1`
   }
 `
 
-const PostHeading = styled.section`
-  width: 100%;
-  max-width: 568px;
-  margin: 20px auto 24px;
-  ${({ theme }) => theme.breakpoint.xl} {
-    padding: 0;
-    max-width: 600px;
-    margin: 20px auto 48px;
-  }
-`
-
 const HiddenAnchor = styled.div`
   display: block;
   width: 100%;
   height: 0;
   padding: 0;
   margin: 0;
+`
+
+const ContentWrapper = styled.main`
+  display: block;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: flex;
+    justify-content: center;
+  }
+`
+
+const Aside = styled.aside`
+  display: none;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    display: block;
+    width: 100%;
+    padding-bottom: 250px;
+  }
 `
 
 type PostProps = {
@@ -126,6 +135,9 @@ export default function ScrollableVideo({
     },
   }
 
+  //for Draft Style: side-index-block
+  const [currentSideIndex, setCurrentSideIndex] = useState('')
+
   return (
     <>
       <HeaderGeneral />
@@ -146,19 +158,30 @@ export default function ScrollableVideo({
           <DraftRenderer rawContentBlock={embeddedContentState} />
         )}
 
-        <PostHeading>
-          <PostTitle postData={postData} showTitle={false} />
-          <PostCredit postData={postData} />
-        </PostHeading>
+        <ContentWrapper>
+          <Aside>
+            <SideIndex
+              rawContentBlock={postData?.content}
+              currentIndex={currentSideIndex}
+              isAside={true}
+            />
+          </Aside>
+          <main>
+            <PostHeading showTitle={true} postData={postData} />
 
-        <PostContent
-          articleType={ValidPostStyle.SCROLLABLE_VIDEO}
-          postData={
-            shouldShowLeadingEmbedded
-              ? postData
-              : postDataWithoutFirstScrollVideo
-          }
-        />
+            <PostContent
+              articleType={ValidPostStyle.SCROLLABLE_VIDEO}
+              currentSideIndex={currentSideIndex}
+              setCurrentSideIndex={setCurrentSideIndex}
+              postData={
+                shouldShowLeadingEmbedded
+                  ? postData
+                  : postDataWithoutFirstScrollVideo
+              }
+            />
+          </main>
+          <Aside />
+        </ContentWrapper>
       </Article>
 
       <SubscribeButton />
