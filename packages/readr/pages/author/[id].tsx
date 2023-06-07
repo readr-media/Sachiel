@@ -249,21 +249,26 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       authorPosts = data.authorPosts?.map(postConvertFunc) ?? []
     }
   } catch (err) {
+    const annotatingError = errors.helpers.wrap(
+      err,
+      'UnhandledError',
+      'Error occurs while fetching data at Author page'
+    )
+
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
+        message: errors.helpers.printAll(annotatingError, {
+          withStack: false,
+          withPayload: true,
+        }),
       })
     )
-    return { notFound: true }
+
+    throw new Error('Error occurs while fetching data.')
   }
 
   return {
