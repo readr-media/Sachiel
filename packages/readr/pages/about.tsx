@@ -226,20 +226,26 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     moreReportData = pageVariablesResult.data.pageVariables
     membersData = membersResult.data.authors
   } catch (err) {
+    const annotatingError = errors.helpers.wrap(
+      err,
+      'UnhandledError',
+      'Error occurs while fetching data at About page'
+    )
+
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
+        message: errors.helpers.printAll(annotatingError, {
+          withStack: false,
+          withPayload: true,
+        }),
       })
     )
+
+    throw new Error('Error occurs while fetching data.')
   }
 
   try {
@@ -251,20 +257,26 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     qAListsData = qAListsResult.data.qALists
   } catch (err) {
+    const annotatingError = errors.helpers.wrap(
+      err,
+      'UnhandledError',
+      'Error occurs while fetching data at About page'
+    )
+
+    // All exceptions that include a stack trace will be
+    // integrated with Error Reporting.
+    // See https://cloud.google.com/run/docs/error-reporting
     console.error(
       JSON.stringify({
         severity: 'ERROR',
-        message: errors.helpers.printAll(
-          err,
-          {
-            withStack: true,
-            withPayload: true,
-          },
-          0,
-          0
-        ),
+        message: errors.helpers.printAll(annotatingError, {
+          withStack: false,
+          withPayload: true,
+        }),
       })
     )
+
+    throw new Error('Error occurs while fetching data.')
   }
 
   return {
