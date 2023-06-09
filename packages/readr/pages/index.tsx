@@ -6,7 +6,7 @@ import type { GetServerSideProps } from 'next'
 import { ReactElement } from 'react'
 import styled from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import CollaborationSection from '~/components/index/collaboration-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
@@ -110,6 +110,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
 }) => {
   setCacheControl(res)
+
+  const client = getGqlClient()
 
   let editorChoices: EditorCard[] = []
   let categories: NavigationCategoryWithArticleCards[] = []

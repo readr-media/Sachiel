@@ -6,7 +6,7 @@ import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import LayoutGeneral from '~/components/layout/layout-general'
 import ArticleListCard from '~/components/shared/article-list-card'
 import SectionHeading from '~/components/shared/section-heading'
@@ -83,6 +83,7 @@ type PageProps = {
 const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
   const router = useRouter()
   const theme = useTheme()
+  const client = getGqlClient()
 
   const [displayPosts, setDisplayPosts] = useState(tagRelatedPosts)
 
@@ -186,6 +187,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 }) => {
   setCacheControl(res)
 
+  const client = getGqlClient()
   let tagRelatedPosts: ArticleCard[] | undefined
   let tagName: string | string[] | undefined
 
