@@ -8,7 +8,7 @@ import type { ReactElement, ReactNode } from 'react'
 import { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
@@ -38,6 +38,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
+  const client = getGqlClient()
   const router = useRouter()
 
   useEffect(() => {
@@ -88,6 +89,7 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
 
 // getInitialProps runs on both server-side and client-side
 MyApp.getInitialProps = async (context: AppContext) => {
+  const client = getGqlClient()
   const ctx = await App.getInitialProps(context)
 
   const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
