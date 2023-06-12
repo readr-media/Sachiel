@@ -4,7 +4,7 @@ import type { GetServerSideProps } from 'next'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import Awards from '~/components/about/awards'
 import Landing from '~/components/about/landing'
 import Members from '~/components/about/members'
@@ -94,6 +94,7 @@ const About: NextPageWithLayout<PageProps> = ({
   membersData,
   qAListsData,
 }) => {
+  const client = getGqlClient()
   const [language, setLanguage] = useState<Language>('ch')
   const [renderedMore, setRenderedMore] = useState<
     Record<Language, { data: PageVariable[]; hasFetched: boolean }>
@@ -197,6 +198,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 }) => {
   setCacheControl(res)
 
+  const client = getGqlClient()
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
   let membersData: Member[] = []
