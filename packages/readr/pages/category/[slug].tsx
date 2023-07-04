@@ -6,7 +6,7 @@ import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import type { NavigationCategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
 import ArticleListCard from '~/components/shared/article-list-card'
@@ -90,6 +90,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
   //update title by router.query.slug
   const router = useRouter()
   const slug = router?.query?.slug
+  const client = getGqlClient()
 
   const [sectionTitle, setSectionTitle] = useState('所有報導')
 
@@ -289,6 +290,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
 }) => {
   setCacheControl(res)
+
+  const client = getGqlClient()
 
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {

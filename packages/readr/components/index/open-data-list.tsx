@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import type { DataSet } from '~/graphql/query/dataset'
 import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import IconLoadMore from '~/public/icons/load-more.svg'
@@ -115,6 +115,7 @@ export default function OpenDataList({
   items,
   totalCount,
 }: OpenDataListProps): JSX.Element {
+  const client = getGqlClient()
   const [isLoading, setIsLoading] = useState(false)
   const [itemList, setItemList] = useState(items)
   const shouldShowControl = itemList.length < totalCount

@@ -95,7 +95,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
       width: '1200',
       height: '630',
       type: 'images/jpeg',
-      url: props.imageUrl ?? `${SITE_URL}/og.jpg`,
+      url: props.imageUrl ?? `https://${SITE_URL}/og.jpg`,
     },
     card: 'summary_large_image',
   }
