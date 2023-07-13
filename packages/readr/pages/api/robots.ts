@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import { ENV } from '~/constants/environment-variables'
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { host } = req.headers
   res.setHeader('Content-Type', 'text/plain')
-  if (host?.startsWith('www')) {
+  if (ENV === 'prod') {
     res.write(`User-agent: * 
 Allow: / `)
   } else {
