@@ -80,6 +80,10 @@ export default class MyDocument extends Document {
             key="msapplication-TileColor"
           />
           <meta name="theme-color" content="#04295e" key="theme-color" />
+          <meta
+            name="google-site-verification"
+            content="-MwBO0YdSWdyXLTCRzvcfKr-xpY1nBddINN0pGnc7SI"
+          />
           <Script
             id="google-tag-manager"
             strategy="afterInteractive"
