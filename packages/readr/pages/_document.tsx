@@ -96,6 +96,11 @@ export default class MyDocument extends Document {
               })(window,document,'script','dataLayer','${GTM_ID}');`,
             }}
           />
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9990785780499264"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <noscript>
