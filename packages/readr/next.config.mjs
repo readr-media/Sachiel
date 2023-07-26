@@ -22,6 +22,14 @@ const nextConfig = {
       ssr: true,
     },
   },
+  async rewrites() {
+    return [
+      {
+        source: '/robots.txt',
+        destination: '/api/robots',
+      },
+    ]
+  },
   webpack: (config, /* eslint-disable-line no-unused-vars */ options) => {
     // svg files
     config.module.rules.push({

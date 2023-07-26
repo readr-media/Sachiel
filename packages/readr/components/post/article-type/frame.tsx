@@ -31,15 +31,20 @@ const HeroImage = styled.figure`
   width: 100%;
   margin: auto;
   height: calc(100vh - 72px);
+  min-height: calc(100vh - 72px);
+
   ${({ theme }) => theme.breakpoint.md} {
     height: calc(100vh - 88px);
+    min-height: calc(100vh - 88px);
   }
+
   figcaption {
     font-size: 14px;
     line-height: 21px;
     color: rgba(0, 9, 40, 0.5);
     padding: 0 20px;
     margin: 8px 0 0;
+
     ${({ theme }) => theme.breakpoint.md} {
       width: 568px;
       padding: 0;

@@ -2,7 +2,7 @@ import errors from '@twreporter/errors'
 import type { RawDraftContentBlock } from 'draft-js'
 import type { GetServerSideProps } from 'next'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import CustomHead from '~/components/layout/custom-head'
 import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
@@ -111,6 +111,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 }) => {
   setCacheControl(res)
 
+  const client = getGqlClient()
   let postData: PostDetail, latestPosts: Post[]
 
   try {

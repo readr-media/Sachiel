@@ -6,7 +6,7 @@ import Link from 'next/link'
 import type { ReactElement } from 'react'
 import styled, { css } from 'styled-components'
 
-import client from '~/apollo-client'
+import { getGqlClient } from '~/apollo-client'
 import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
 import ArticleListCard from '~/components/shared/article-list-card'
 import { SITE_TITLE } from '~/constants/constant'
@@ -266,6 +266,7 @@ const Error: NextPageWithLayout<ErrorPageProps> = ({
 Error.getInitialProps = async (
   context: NextPageContext
 ): Promise<ErrorPageProps> => {
+  const client = getGqlClient()
   const { res, err } = context
   let statusCode = res ? res.statusCode : err ? err.statusCode : 404
 

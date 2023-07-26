@@ -80,6 +80,10 @@ export default class MyDocument extends Document {
             key="msapplication-TileColor"
           />
           <meta name="theme-color" content="#04295e" key="theme-color" />
+          <meta
+            name="google-site-verification"
+            content="-MwBO0YdSWdyXLTCRzvcfKr-xpY1nBddINN0pGnc7SI"
+          />
           <Script
             id="google-tag-manager"
             strategy="afterInteractive"
@@ -92,6 +96,11 @@ export default class MyDocument extends Document {
               })(window,document,'script','dataLayer','${GTM_ID}');`,
             }}
           />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9990785780499264"
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body>
           <noscript>

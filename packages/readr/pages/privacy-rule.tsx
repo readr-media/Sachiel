@@ -1,3 +1,4 @@
+import type { GetStaticProps } from 'next'
 import NextImage from 'next/image'
 import type { ReactElement } from 'react'
 import styled from 'styled-components'
@@ -198,6 +199,11 @@ PrivacyRule.getLayout = function getLayout(page: ReactElement) {
   const pageTitle = '隱私政策'
 
   return <LayoutWithLogoOnly title={pageTitle}>{page}</LayoutWithLogoOnly>
+}
+
+// force this page to be static
+export const getStaticProps: GetStaticProps = async () => {
+  return { props: {} }
 }
 
 export default PrivacyRule
