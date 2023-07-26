@@ -146,7 +146,6 @@ const FrameCredit = styled.div`
 
 const ContentWrapper = styled.main`
   display: block;
-  overflow: hidden;
 
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
