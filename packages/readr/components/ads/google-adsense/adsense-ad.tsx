@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { GOOGLE_ADSENSE_AD_CLIENT } from '~/constants/environment-variables'
+import { ENV } from '~/constants/environment-variables'
 import { getAdParam, getAdParamBySlot } from '~/utils/ad'
 
 declare global {
@@ -40,7 +41,6 @@ type AdsenseProps = {
   layoutKey?: string
   format?: string
   responsive?: 'true' | 'false'
-  adTest?: 'on' | 'off'
 }
 export default function Adsense({
   pageKey,
@@ -49,7 +49,6 @@ export default function Adsense({
   className,
   format = '',
   responsive = 'false',
-  adTest = 'off',
   layout = '',
   layoutKey = '',
   ...rest
@@ -57,6 +56,11 @@ export default function Adsense({
   const [adUnit, setAdUnit] = useState('')
   const [adSlot, setAdSlot] = useState('')
   const [adSize, setAdSize] = useState([0, 0])
+  const [adTest, setAdTest] = useState('off')
+
+  if (ENV === 'dev') {
+    setAdTest('on')
+  }
 
   useEffect(() => {
     if (pageKey && adKey) {
