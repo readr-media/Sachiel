@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { ADSENSE_UNITS } from '~/constants/ad'
 import { GOOGLE_ADSENSE_AD_CLIENT } from '~/constants/environment-variables'
-
-type AdProps = {
-  pageKey?: string // key to access GPT_UNITS first layer
-  adKey?: string // key to access GPT_UNITS second layer, might need to complete with device
-  adSlot?: string
-  className?: string // for styled-component method to add styles
-  layout?: string
-  layoutKey?: string
-  format?: string
-  responsive?: string
-  adTest?: string
-  width?: string
-  height?: string
-}
+import { getAdParam, getAdParamBySlot } from '~/utils/ad'
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   interface Window {
     adsbygoogle: { [key: string]: unknown }[]
   }
 }
 
-const Ad = styled.ins`
+type StyleProps = {
+  $adSize?: number[]
+}
+
+const Ad = styled.ins<StyleProps>`
   display: block;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  width: ${({ $adSize }) => ($adSize ? `${$adSize[0]}px` : 'unset')};
+  height: ${({ $adSize }) => ($adSize ? `${$adSize[1]}px` : 'unset')};
 
   /**
   * Hide Ad when no ads were returned and the ad unit is empty.
@@ -37,65 +31,87 @@ const Ad = styled.ins`
   }
 `
 
+type AdsenseProps = {
+  pageKey?: string
+  adKey?: string
+  slot?: string
+  className?: string
+  layout?: string
+  layoutKey?: string
+  format?: string
+  responsive?: 'true' | 'false'
+  adTest?: 'on' | 'off'
+}
 export default function Adsense({
   pageKey,
   adKey,
-  adSlot = '',
+  slot,
+  className,
   format = '',
   responsive = 'false',
-  adTest = 'on',
-  className,
+  adTest = 'off',
   layout = '',
   layoutKey = '',
   ...rest
-}: AdProps) {
-  const [slot, setSlot] = useState('')
-  const [adSize, setAdSize] = useState({})
+}: AdsenseProps) {
+  const [adUnit, setAdUnit] = useState('')
+  const [adSlot, setAdSlot] = useState('')
+  const [adSize, setAdSize] = useState([0, 0])
 
   useEffect(() => {
     if (pageKey && adKey) {
-      // built-in ad unit
-      const adSlotParam = (ADSENSE_UNITS[pageKey] as any)[adKey]
-      if (!adSlotParam) {
+      // get adParam by pageKey & adKey
+      const width = window.innerWidth
+      const adParam = getAdParam(pageKey, adKey, width)
+      if (!adParam) {
         return
       }
 
-      const { adSlot, adSize } = adSlotParam
-      setSlot(adSlot)
-      setAdSize({ width: `${adSize[0]}px`, height: `${adSize[1]}px` })
-    } else if (adSlot) {
-      // custom ad unit string
-      setSlot(adSlot)
+      const { adSlot, adSize, adUnit } = adParam
+      setAdSlot(adSlot)
+      setAdSize(adSize)
+      setAdUnit(adUnit)
+    } else if (slot) {
+      // get adParam by slot
+      const adParam = getAdParamBySlot(slot)
+      if (!adParam) {
+        return
+      }
+      const { adSize, adUnit } = adParam
+      setAdSlot(slot)
+      setAdSize(adSize)
+      setAdUnit(adUnit)
     } else {
       console.error(
-        `Adsense Ad not receive necessary pageKey '${pageKey}' and adKey '${adKey}' or '${adSlot}'`
+        `Adsense not receive necessary pageKey '${pageKey}' and adKey '${adKey}' or '${slot}'`
       )
       return
     }
-  }, [adKey, pageKey, adSlot])
+  }, [adKey, pageKey, slot])
 
   useEffect(() => {
     try {
-      if (typeof window === 'object') {
+      if (typeof window === 'object' && adSize && adSlot) {
         ;((window as Window).adsbygoogle =
           (window as Window).adsbygoogle || []).push({})
       }
     } catch (err) {
-      //
+      // console.log(err)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [adSize, adSlot])
 
   return (
     <Ad
+      id={adUnit}
       className={`adsbygoogle ${className}`}
       data-ad-client={GOOGLE_ADSENSE_AD_CLIENT}
-      data-ad-slot={slot}
+      data-ad-slot={adSlot}
       data-ad-format={format}
       data-full-width-responsive={responsive}
       data-adtest={adTest}
       data-ad-layout={layout}
       data-ad-layout-key={layoutKey}
+      $adSize={adSize}
       {...rest}
     />
   )
