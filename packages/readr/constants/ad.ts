@@ -1,3 +1,5 @@
+import type { AdsenseUnits } from '~/types/ad'
+
 import { CATEGORY_SLUGS } from './constant'
 
 const {
@@ -15,7 +17,7 @@ const {
   traffic,
 } = CATEGORY_SLUGS
 
-const ADSENSE_UNITS = {
+const ADSENSE_UNITS: AdsenseUnits = {
   // page key: 首頁, hp
   home: {
     MB_HD: {
