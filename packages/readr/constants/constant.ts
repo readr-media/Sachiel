@@ -11,6 +11,21 @@ const DEFAULT_CATEGORY: NavigationCategory = {
   slug: 'all',
 }
 
+const CATEGORY_SLUGS = {
+  breakingnews: 'breakingnews',
+  education: 'education',
+  politics: 'politics',
+  humanrights: 'humanrights',
+  environment: 'environment',
+  omt: 'omt',
+  data: 'data',
+  note: 'note',
+  covid19: 'covid19',
+  culture: 'culture',
+  international: 'international',
+  traffic: 'traffic',
+}
+
 const POST_STYLES: string[] = [
   ValidPostStyle.NEWS,
   ValidPostStyle.FRAME,
@@ -24,6 +39,7 @@ const REPORT_STYLES: string[] = [
 ]
 
 export {
+  CATEGORY_SLUGS,
   DEFAULT_CATEGORY,
   DEFAULT_POST_IMAGE_PATH,
   POST_STYLES,
