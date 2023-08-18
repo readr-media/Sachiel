@@ -6,7 +6,6 @@ let GTM_ID: string
 let DONATION_PAGE_URL: string
 let QA_RECORD_CONFIG: { variables: Record<string, string> }
 let GLOBAL_CACHE_SETTING: string
-let GOOGLE_ADSENSE_AD_CLIENT: string
 
 switch (ENV) {
   case 'prod':
@@ -16,7 +15,6 @@ switch (ENV) {
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
-    GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     break
 
   case 'staging':
@@ -26,7 +24,6 @@ switch (ENV) {
     DONATION_PAGE_URL = 'https://readr.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
-    GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     break
 
   case 'dev':
@@ -36,7 +33,6 @@ switch (ENV) {
     DONATION_PAGE_URL = 'https://readr.testing.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
     GLOBAL_CACHE_SETTING = 'no-store'
-    GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     break
 
   default:
@@ -46,7 +42,6 @@ switch (ENV) {
     DONATION_PAGE_URL = 'https://readr.testing.oen.tw/good'
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
     GLOBAL_CACHE_SETTING = 'no-store'
-    GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     break
 }
 
@@ -55,7 +50,6 @@ export {
   ENV,
   GA_TRACKING_ID,
   GLOBAL_CACHE_SETTING,
-  GOOGLE_ADSENSE_AD_CLIENT,
   GTM_ID,
   QA_RECORD_CONFIG,
   SITE_URL,

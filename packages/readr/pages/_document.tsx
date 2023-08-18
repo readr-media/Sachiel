@@ -8,8 +8,8 @@ import Document, {
 import Script from 'next/script'
 import { ServerStyleSheet } from 'styled-components'
 
-import AdsenseScript from '~/components/ads/google-adsense/adsense-script'
 import { GTM_ID } from '~/constants/environment-variables'
+
 export default class MyDocument extends Document {
   /* ref:
    *   1. https://styled-components.com/docs/advanced#with-swc
@@ -84,7 +84,6 @@ export default class MyDocument extends Document {
             name="google-site-verification"
             content="-MwBO0YdSWdyXLTCRzvcfKr-xpY1nBddINN0pGnc7SI"
           />
-
           <Script
             id="google-tag-manager"
             strategy="afterInteractive"
@@ -97,8 +96,11 @@ export default class MyDocument extends Document {
               })(window,document,'script','dataLayer','${GTM_ID}');`,
             }}
           />
-
-          <AdsenseScript />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9990785780499264"
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body>
           <noscript>
