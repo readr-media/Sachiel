@@ -7,6 +7,7 @@ import { ReactElement } from 'react'
 import styled from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
+import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import CollaborationSection from '~/components/index/collaboration-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
 import FeatureSection from '~/components/index/feature-section'
@@ -62,6 +63,18 @@ const HiddenAnchor = styled.div`
   margin: 0;
 `
 
+const StyledAdsense_HD = styled(Adsense)`
+  margin-bottom: 40px;
+`
+
+const StyledAdsense_FT = styled(Adsense)`
+  margin-bottom: 40px;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    margin-bottom: 60px;
+  }
+`
+
 const Index: NextPageWithLayout<PageProps> = ({
   editorChoices,
   categories,
@@ -86,6 +99,9 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
+
+      <StyledAdsense_HD pageKey="home" adKey="HD" />
+
       {shouldShowLatestReportSection && (
         <LatestReportSection categories={categories} latest={latest} />
       )}
@@ -93,6 +109,7 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
+      <StyledAdsense_FT pageKey="home" adKey="FT" />
       <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
       <HiddenAnchor ref={anchorRef} />
     </>
