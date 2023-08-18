@@ -100,7 +100,7 @@ const Index: NextPageWithLayout<PageProps> = ({
         <EditorChoiceSection posts={editorChoices} />
       )}
 
-      {/* <StyledAdsense_HD pageKey="home" adKey="HD" /> */}
+      <StyledAdsense_HD pageKey="home" adKey="HD" />
 
       {shouldShowLatestReportSection && (
         <LatestReportSection categories={categories} latest={latest} />
@@ -109,7 +109,7 @@ const Index: NextPageWithLayout<PageProps> = ({
       {shouldShowCollaborationSection && (
         <CollaborationSection quotes={quotes} items={collaborations} />
       )}
-      {/* <StyledAdsense_FT pageKey="home" adKey="FT" /> */}
+      <StyledAdsense_FT pageKey="home" adKey="FT" />
       <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
       <HiddenAnchor ref={anchorRef} />
     </>
