@@ -97,14 +97,16 @@ export default function CollaborationQuoteSlider({
 
   useEffect(() => {
     const interval = 3500
-    let timer: NodeJS.Timer
+    let timer: NodeJS.Timer | undefined
 
     if (quoteIds.length > 0) {
       timer = setInterval(rotateSlide, interval)
     }
 
     return () => {
-      clearInterval(timer)
+      if (timer) {
+        clearInterval(timer)
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
