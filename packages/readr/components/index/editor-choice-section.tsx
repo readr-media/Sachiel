@@ -6,9 +6,10 @@ import type { EditorCard } from '~/graphql/query/editor-choice'
 import * as gtag from '~/utils/gtag'
 
 import EditorChoiceCard from './editor-choice-card'
+import { sectionMargin } from './share-styles'
 
 const Container = styled.section`
-  margin-bottom: 40px;
+  ${sectionMargin}
   width: 100%;
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
