@@ -12,13 +12,18 @@ import CollaborationHighlight from './collaboration-highlight'
 import CollaborationList from './collaboration-list'
 import CollaborationQuoteSlider from './collaboration-quote-slider'
 import CollaborationStatus from './collaboration-status'
-import { sectionMargin, sectionStyle } from './share-styles'
+import { sectionStyle } from './share-styles'
 
 const Container = styled.section`
   ${sectionStyle}
-  ${sectionMargin}
 
   box-sizing: border-box;
+  margin-bottom: 40px;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    margin-bottom: 60px;
+  }
+
   ${({ theme }) => theme.breakpoint.lg} {
     box-sizing: content-box;
   }
