@@ -42,6 +42,54 @@ const ADSENSE_UNITS: AdsenseUnits = {
     },
   },
 
+  // page key: 標籤, tag
+  tag: {
+    MB_HD: {
+      adUnit: 'READr_m_tag_300x250_HD',
+      adSlot: '5279090953',
+      adSize: [300, 250],
+    },
+    MB_FT: {
+      adUnit: 'READr_m_tag_300x250_FT',
+      adSlot: '3582865905',
+      adSize: [300, 250],
+    },
+    PC_HD: {
+      adUnit: 'READr_pc_tag_970x250_HD',
+      adSlot: '5470662642',
+      adSize: [970, 250],
+    },
+    PC_FT: {
+      adUnit: 'READr_pc_tag_970x250_FT',
+      adSlot: '8643620890',
+      adSize: [970, 250],
+    },
+  },
+
+  // page key: 作者, author
+  author: {
+    MB_HD: {
+      adUnit: 'READr_m_author_300x250_HD',
+      adSlot: '6743134296',
+      adSize: [300, 250],
+    },
+    MB_FT: {
+      adUnit: 'READr_m_author_300x250_FT',
+      adSlot: '6017457559',
+      adSize: [300, 250],
+    },
+    PC_HD: {
+      adUnit: 'READr_pc_author_970x250_HD',
+      adSlot: '4918330007',
+      adSize: [970, 250],
+    },
+    PC_FT: {
+      adUnit: 'READr_pc_author_970x250_FT',
+      adSlot: '7864644278',
+      adSize: [970, 250],
+    },
+  },
+
   // page key: 時事, breakingnews
   [breakingnews]: {
     MB_HD: {
