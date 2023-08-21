@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import styled, { css, useTheme } from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
+import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import LayoutGeneral from '~/components/layout/layout-general'
 import ArticleListCard from '~/components/shared/article-list-card'
 import SectionHeading from '~/components/shared/section-heading'
@@ -31,19 +32,26 @@ const shareStyle = css`
 `
 
 const TagWrapper = styled.div`
-  padding: 24px 20px;
+  padding: 20px 20px 24px;
+
   ${({ theme }) => theme.breakpoint.sm} {
-    padding: 48px 20px;
+    padding: 20px 20px 48px;
   }
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 48px;
+    padding: 20px 48px 48px;
   }
+
   ${({ theme }) => theme.breakpoint.lg} {
-    padding: 60px 72px;
+    padding: 20px 72px 60px;
     max-width: 1240px;
     margin: auto;
   }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    padding: 40px 72px 60px;
+  }
 `
+
 const ItemList = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -73,6 +81,14 @@ const Item = styled.li`
     }
   }
   ${shareStyle}
+`
+
+const StyledAdsense_HD = styled(Adsense)`
+  margin-bottom: 20px;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    margin-bottom: 60px;
+  }
 `
 
 type PageProps = {
@@ -170,6 +186,7 @@ const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
   const sectionTitle = `${router?.query?.name}`
   return (
     <TagWrapper aria-label={sectionTitle}>
+      <StyledAdsense_HD pageKey="tag" adKey="HD" />
       <SectionHeading
         title={sectionTitle}
         highlightColor="#ebf02c"
