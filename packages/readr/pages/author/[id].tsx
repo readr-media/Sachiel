@@ -4,12 +4,12 @@ import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
-import styled, { css, useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
 import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import LayoutGeneral from '~/components/layout/layout-general'
-import ArticleListCard from '~/components/shared/article-list-card'
+import ArticleLists from '~/components/shared/article-lists'
 import SectionHeading from '~/components/shared/section-heading'
 import type { Author } from '~/graphql/fragments/author'
 import type { Post } from '~/graphql/fragments/post'
@@ -19,18 +19,7 @@ import useInfiniteScroll from '~/hooks/useInfiniteScroll'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ArticleCard } from '~/types/component'
 import { setCacheControl } from '~/utils/common'
-import * as gtag from '~/utils/gtag'
 import { postConvertFunc } from '~/utils/post'
-
-const shareStyle = css`
-  width: 100%;
-  ${({ theme }) => theme.breakpoint.sm} {
-    width: calc((100% - 24px) / 2);
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    width: 256px;
-  }
-`
 
 const AuthorWrapper = styled.div`
   padding: 20px 20px 24px;
@@ -53,37 +42,6 @@ const AuthorWrapper = styled.div`
   }
 `
 
-const ItemList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 20px;
-  ${({ theme }) => theme.breakpoint.sm} {
-    margin-top: 50px;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    justify-content: flex-start;
-    gap: calc((100% - 1024px) / 3);
-  }
-`
-
-const Item = styled.li`
-  margin: 0 0 16px;
-  list-style: none;
-  ${({ theme }) => theme.breakpoint.sm} {
-    margin: 0 0 32px;
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    margin: 0 0 60px;
-    &:nth-child(3),
-    &:nth-child(4) {
-      margin: 0;
-    }
-  }
-  ${shareStyle}
-`
-
 const StyledAdsense_HD = styled(Adsense)`
   margin-bottom: 20px;
 
@@ -100,34 +58,8 @@ type PageProps = {
 const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
   const client = getGqlClient()
   const router = useRouter()
-  const theme = useTheme()
 
   const [displayPosts, setDisplayPosts] = useState(authorPosts)
-
-  const articleItems = displayPosts?.map((article) => {
-    return (
-      <Item key={article.id}>
-        <ArticleListCard
-          {...article}
-          isReport={article.isReport}
-          shouldHighlightReport={article.isReport}
-          shouldReverseInMobile={true}
-          rwd={{
-            mobile: '30vw',
-            tablet: '50vw',
-            default: '256px',
-          }}
-          breakpoint={{
-            mobile: `${theme.mediaSize.sm - 1}px`,
-            tablet: `${theme.mediaSize.xl - 1}px`,
-          }}
-          onClick={() =>
-            gtag.sendEvent('author', 'click', `author-${article.title}`)
-          }
-        />
-      </Item>
-    )
-  })
 
   //infinite scroll: check amount of posts yet to be displayed.
   //if amount = 0, means all posts are displayed, observer.unobserve.
@@ -193,7 +125,8 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
         highlightColor="#ebf02c"
         headingLevel={2}
       />
-      <ItemList>{articleItems}</ItemList>
+
+      <ArticleLists posts={displayPosts} AdPageKey="author" />
       <span ref={ref} id="scroll-to-bottom-anchor" />
     </AuthorWrapper>
   )
