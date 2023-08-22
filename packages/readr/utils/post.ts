@@ -1,4 +1,6 @@
+import { Readr } from '@mirrormedia/lilith-draft-renderer'
 import dayjs from 'dayjs'
+import type { RawDraftContentState } from 'draft-js'
 
 import { REPORT_STYLES } from '~/constants/constant'
 import { SITE_URL } from '~/constants/environment-variables'
@@ -11,6 +13,7 @@ import type {
 } from '~/types/common'
 import { ValidPostStyle } from '~/types/common'
 import type { ArticleCard } from '~/types/component'
+const { removeEmptyContentBlock, hasContentInRawContentBlock } = Readr
 
 export function getHref({
   style,
@@ -155,4 +158,35 @@ export const getResizedUrl = (
     resized?.w2400 ||
     resized?.original
   )
+}
+
+export const copyAndSliceDraftBlock = (
+  content: RawDraftContentState,
+  startIndex: number,
+  endIndex?: number
+): RawDraftContentState => {
+  const shouldRenderDraft = hasContentInRawContentBlock(content)
+
+  if (shouldRenderDraft) {
+    const contentWithoutEmptyBlock = removeEmptyContentBlock(content)
+    const newContent = JSON.parse(JSON.stringify(contentWithoutEmptyBlock))
+
+    if (endIndex && newContent.blocks.length >= endIndex) {
+      newContent.blocks = newContent.blocks.slice(startIndex, endIndex)
+    } else if (newContent.blocks.length > startIndex) {
+      newContent.blocks = newContent.blocks.slice(startIndex)
+    }
+
+    return newContent
+  }
+
+  return content
+}
+
+export const getBlocksCount = (content: RawDraftContentState): number => {
+  if (hasContentInRawContentBlock(content)) {
+    return removeEmptyContentBlock(content).blocks.length
+  } else {
+    return 0
+  }
 }
