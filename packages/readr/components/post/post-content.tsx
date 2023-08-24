@@ -3,7 +3,7 @@ import { DonateButton } from '@readr-media/react-component'
 import { useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
 
-// import Adsense from '~/components/ad/google-adsense/adsense-ad'
+import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import SideIndex from '~/components/post/side-index'
 import PostTag from '~/components/post/tag'
 import MediaLinkList from '~/components/shared/media-link'
@@ -156,24 +156,24 @@ const TagGroup = styled.div`
   }
 `
 
-// const StyledAdsense_E1 = styled(Adsense)`
-//   margin-bottom: 48px;
+const StyledAdsense_E1 = styled(Adsense)`
+  margin-bottom: 48px;
 
-//   ${({ theme }) => theme.breakpoint.sm} {
-//     margin-bottom: 60px;
-//   }
-//   ${({ theme }) => theme.breakpoint.xl} {
-//     transform: translateX(-20px);
-//   }
-// `
+  ${({ theme }) => theme.breakpoint.sm} {
+    margin-bottom: 60px;
+  }
+  ${({ theme }) => theme.breakpoint.xl} {
+    transform: translateX(-20px);
+  }
+`
 
-// const StyledAdsense_AT = styled(Adsense)`
-//   margin: 30px auto;
+const StyledAdsense_AT = styled(Adsense)`
+  margin: 30px auto;
 
-//   ${({ theme }) => theme.breakpoint.xl} {
-//     transform: translateX(-20px);
-//   }
-// `
+  ${({ theme }) => theme.breakpoint.xl} {
+    transform: translateX(-20px);
+  }
+`
 
 type PostProps = {
   postData: PostDetail
@@ -246,7 +246,7 @@ export default function PostContent({
     }
   }, [articleRef, articleType, setCurrentSideIndex])
 
-  // const categorySlug = postData?.categories[0]?.slug || 'breakingnews'
+  const categorySlug = postData?.categories[0]?.slug || 'breakingnews'
   const blocksLength = getBlocksCount(postData?.content)
 
   return (
@@ -279,7 +279,7 @@ export default function PostContent({
 
           {blocksLength > 5 && (
             <>
-              {/* <StyledAdsense_AT pageKey={categorySlug} adKey="AT1" /> */}
+              <StyledAdsense_AT pageKey={categorySlug} adKey="AT1" />
               <DraftRenderer
                 rawContentBlock={copyAndSliceDraftBlock(
                   postData?.content,
@@ -294,7 +294,7 @@ export default function PostContent({
 
           {blocksLength > 10 && (
             <>
-              {/* <StyledAdsense_AT pageKey={categorySlug} adKey="AT2" /> */}
+              <StyledAdsense_AT pageKey={categorySlug} adKey="AT2" />
               <DraftRenderer
                 rawContentBlock={copyAndSliceDraftBlock(postData?.content, 10)}
                 insertRecommend={postData?.relatedPosts}
@@ -319,7 +319,7 @@ export default function PostContent({
         href={DONATION_PAGE_URL}
         onClick={() => gtag.sendEvent('post', 'click', 'post-donate')}
       />
-      {/* <StyledAdsense_E1 pageKey={categorySlug} adKey="E1" /> */}
+      <StyledAdsense_E1 pageKey={categorySlug} adKey="E1" />
       <MediaLinkList className={'mobile-media-link'} />
 
       {shouldShowCitation && (
