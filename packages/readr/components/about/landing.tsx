@@ -3,6 +3,10 @@ import styled from 'styled-components'
 
 import type { Language } from '~/types/about'
 
+type StyleProps = {
+  $isActive: boolean
+}
+
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -162,7 +166,7 @@ const LanguageSwitchContainer = styled.div`
   `}
 `
 
-const LanguageChoice = styled.button`
+const LanguageChoice = styled.button<StyleProps>`
   margin: 0 20px;
   :first-child {
     margin-left: 0;
@@ -173,9 +177,8 @@ const LanguageChoice = styled.button`
   &:hover {
     color: #ffffff;
   }
-  ${(props: { isActive: boolean }) => {
-    return props.isActive && 'color: #EBF02C;'
-  }}
+
+  ${({ $isActive }) => $isActive && `color: #EBF02C;`}
 `
 
 export default function Landing({
@@ -293,14 +296,14 @@ export default function Landing({
     <Container>
       <LanguageSwitchContainer>
         <LanguageChoice
-          isActive={language === 'ch'}
+          $isActive={language === 'ch'}
           onClick={() => setLanguage('ch')}
         >
           中文
         </LanguageChoice>
         |
         <LanguageChoice
-          isActive={language === 'en'}
+          $isActive={language === 'en'}
           onClick={() => setLanguage('en')}
         >
           EN
