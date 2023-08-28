@@ -4,12 +4,13 @@ import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
-import styled, { css, useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
+import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import type { NavigationCategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LayoutGeneral from '~/components/layout/layout-general'
-import ArticleListCard from '~/components/shared/article-list-card'
+import ArticleLists from '~/components/shared/article-lists'
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
@@ -25,59 +26,33 @@ import { setCacheControl } from '~/utils/common'
 import * as gtag from '~/utils/gtag'
 import { getResizedUrl, postConvertFunc } from '~/utils/post'
 
-const shareStyle = css`
-  width: 100%;
-  ${({ theme }) => theme.breakpoint.sm} {
-    width: calc((100% - 24px) / 2);
-  }
-  ${({ theme }) => theme.breakpoint.xl} {
-    width: 256px;
-  }
-`
-
 const CategoryWrapper = styled.div`
-  padding: 24px 20px;
+  padding: 20px 20px 24px;
+
   ${({ theme }) => theme.breakpoint.sm} {
-    padding: 48px 20px;
+    padding: 20px 20px 48px;
   }
   ${({ theme }) => theme.breakpoint.md} {
-    padding: 48px;
+    padding: 20px 48px 48px;
   }
+
   ${({ theme }) => theme.breakpoint.lg} {
-    padding: 60px 72px;
+    padding: 20px 72px 60px;
     max-width: 1240px;
     margin: auto;
   }
-`
-const ItemList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 20px;
-  ${({ theme }) => theme.breakpoint.sm} {
-    margin-top: 50px;
-  }
+
   ${({ theme }) => theme.breakpoint.xl} {
-    justify-content: flex-start;
-    gap: calc((100% - 1024px) / 3);
+    padding: 40px 72px 60px;
   }
 `
 
-const Item = styled.li`
-  margin: 0 0 16px;
-  list-style: none;
-  ${({ theme }) => theme.breakpoint.sm} {
-    margin: 0 0 32px;
-  }
+const StyledAdsense_HD = styled(Adsense)`
+  margin-bottom: 20px;
+
   ${({ theme }) => theme.breakpoint.xl} {
-    margin: 0 0 60px;
-    &:nth-child(3),
-    &:nth-child(4) {
-      margin: 0;
-    }
+    margin-bottom: 60px;
   }
-  ${shareStyle}
 `
 
 type PageProps = {
@@ -106,8 +81,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
         matchedItem.slug === 'all' ? '所有報導' : `所有${matchedItem.title}報導`
       )
     }
-    // setParams(slug)
-  }, [slug])
+  }, [categories, slug])
 
   const updateActiveCategory = (category: NavigationCategory) => {
     router.push(`/category/${category.slug}`, undefined, { shallow: true })
@@ -127,32 +101,6 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
     activeCategory?.slug === 'all'
       ? allPosts
       : categoryPosts.find((category) => category.slug === activeCategory.slug)
-
-  const theme = useTheme()
-  const articleItems = currentItem?.posts?.map((article) => {
-    return (
-      <Item key={article.id}>
-        <ArticleListCard
-          {...article}
-          isReport={article.isReport}
-          shouldHighlightReport={article.isReport}
-          shouldReverseInMobile={true}
-          rwd={{
-            mobile: '30vw',
-            tablet: '50vw',
-            default: '256px',
-          }}
-          breakpoint={{
-            mobile: `${theme.mediaSize.sm - 1}px`,
-            tablet: `${theme.mediaSize.xl - 1}px`,
-          }}
-          onClick={() =>
-            gtag.sendEvent('listing', 'click', `listing-${article.title}`)
-          }
-        />
-      </Item>
-    )
-  })
 
   //infinite scroll: check number of posts yet to be displayed.
   //if number = 0, means all posts are displayed, observer.unobserve.
@@ -270,6 +218,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
 
   return (
     <CategoryWrapper aria-label={sectionTitle}>
+      <StyledAdsense_HD pageKey={activeCategory.slug} adKey="HD" />
       <SectionHeading
         title={sectionTitle}
         highlightColor="#ebf02c"
@@ -280,7 +229,10 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
         currentCategorySlug={activeCategory.slug}
         categoryClickHandler={updateActiveCategory}
       />
-      <ItemList>{articleItems}</ItemList>
+      <ArticleLists
+        posts={currentItem?.posts}
+        AdPageKey={activeCategory.slug}
+      />
       <span ref={ref} id="scroll-to-bottom-anchor" />
     </CategoryWrapper>
   )
