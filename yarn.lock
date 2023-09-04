@@ -2237,12 +2237,12 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mirrormedia/lilith-draft-renderer@^1.3.0-alpha.1":
-  version "1.3.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.3.0-alpha.1.tgz#5ee96411efaa1f5565bef7f281e259c8e6d39c96"
-  integrity sha512-tFdfYZgR/gAAmsNmF5moXB6YKGGDYDGcd6F0YV/tP+A973lBuw3wcjHQdyA7ygXxrGoW3c3j0gM8J7af2jdQmQ==
+"@mirrormedia/lilith-draft-renderer@^1.3.0-alpha.2":
+  version "1.3.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/lilith-draft-renderer/-/lilith-draft-renderer-1.3.0-alpha.2.tgz#7817063bb1aa61fff5927feab643d82a4dff837b"
+  integrity sha512-Xank+tbnDF1YcHWTjiY9gxaN98WI+N9dKxlTNhL7HzBmBkyVYVI7u7OkK4s/VVEclGau89pb9stFug4sZiqLqQ==
   dependencies:
-    "@readr-media/react-image" "1.6.0"
+    "@readr-media/react-image" "2.1.3"
     body-scroll-lock "3.1.5"
     draft-js "^0.11.7"
     node-html-parser "^6.1.5"
@@ -2803,10 +2803,10 @@
     serialize-javascript "^6.0.0"
     uuid "^8.3.2"
 
-"@readr-media/react-image@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-1.6.0.tgz#1bff81cdaa8b14f255c22b2504df1d09fc783223"
-  integrity sha512-k4FOxVlAdvsFY5zP7nczs11LrJ3mA2T6Y7rwoTjpA9GMhlf3wtLWD84/XwcsGXNvHg0gbxQtmOcNvKE1LsZxwg==
+"@readr-media/react-image@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-2.1.3.tgz#97834255b39f42d15b93449637131d28a3aca168"
+  integrity sha512-XAuKKSqRNSvH/CJAfbBhVE7Ezkaetc0pM3AEKUPydYJP51N6fp8mWfPR0HUSw/7QLElHSGXVKCvyuOpVIXa5eQ==
 
 "@readr-media/react-image@^1.5.1":
   version "1.5.1"
