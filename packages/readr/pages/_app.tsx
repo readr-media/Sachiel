@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
+import axios from 'axios'
 import type { NextPage } from 'next'
 import type { AppContext, AppProps } from 'next/app'
 import App from 'next/app'
@@ -13,11 +14,9 @@ import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
-import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import CategoryListContext from '~/contexts/category-list'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
-import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
 import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
@@ -89,53 +88,54 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
 
 // getInitialProps runs on both server-side and client-side
 MyApp.getInitialProps = async (context: AppContext) => {
-  const client = getGqlClient()
   const ctx = await App.getInitialProps(context)
 
-  const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
-  const categoriesAndRelatedPosts: Category[] = []
-  const categoryList: NavigationCategory[] = []
-
   try {
-    {
-      // fetch categories and related posts for header
-      const { data } = await client.query<{ categories: Category[] }>({
-        query: categories,
-        variables: {
-          first: 6,
-          shouldQueryRelatedPost: true,
-          relatedPostFirst: 5,
-          relatedPostTypes,
-        },
-      })
+    // Fetch data from the JSON file
+    const { data: jsonCategories } = await axios.get(
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections.json'
+    )
 
-      categoriesAndRelatedPosts.push(...data.categories)
-    }
+    // Combine relatedPostTypes and relatedReportTypes into posts for each category
+    const categoriesAndRelatedPosts: Category[] = jsonCategories.categories.map(
+      (category: Category) => {
+        const relatedPostTypes = category.relatedPostTypes || []
+        const relatedReportTypes = category.relatedReportTypes || []
 
-    {
-      // fetch all categories
-      const { data } = await client.query<{ categories: Category[] }>({
-        query: categories,
-        variables: {
-          shouldQueryRelatedPost: true,
-          relatedPostFirst: 1,
-          relatedPostTypes,
-        },
-      })
+        return {
+          ...category,
+          posts: [
+            ...(category.posts || []).slice(0, 5), // Limit to 5 existing posts
+            ...relatedPostTypes.slice(0, 4).map((postType) => ({
+              ...postType,
+            })),
+            ...relatedReportTypes.slice(0, 1).map((reportType) => ({
+              ...reportType,
+            })),
+          ],
+        }
+      }
+    )
 
-      categoryList.push(...data.categories)
+    const categoryList: NavigationCategory[] = categoriesAndRelatedPosts
+
+    return {
+      ...ctx,
+      props: {
+        categoriesAndRelatedPosts,
+        categoryList,
+      },
     }
   } catch (error) {
     const err = error as Error
     console.error(JSON.stringify({ severity: 'ERROR', message: err.stack }))
-  }
-
-  return {
-    ...ctx,
-    props: {
-      categoriesAndRelatedPosts,
-      categoryList,
-    },
+    return {
+      ...ctx,
+      props: {
+        categoriesAndRelatedPosts: [],
+        categoryList: [],
+      },
+    }
   }
 }
 export default MyApp

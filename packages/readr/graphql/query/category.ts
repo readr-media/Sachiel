@@ -20,6 +20,8 @@ export type Category = Override<
     posts?: Post[]
     reports?: Post[]
     ogImage?: PhotoWithResizedOnly | null
+    relatedPostTypes?: Post[]
+    relatedReportTypes?: Post[]
   }
 >
 
