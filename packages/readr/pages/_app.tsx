@@ -22,6 +22,7 @@ import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 
 import { DEFAULT_HEADER_CATEGORY_LIST } from '../constants/constant'
+import { HEADER_JSON_URL } from '../constants/environment-variables'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (
@@ -98,9 +99,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
 
   try {
     // Fetch header data from the JSON file
-    const { data: jsonCategories } = await axios.get(
-      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections.json'
-    )
+    const { data: jsonCategories } = await axios.get(HEADER_JSON_URL)
 
     // Combine relatedPostTypes and relatedReportTypes into posts for each category
     const categoriesAndRelatedPosts: Category[] = jsonCategories.categories.map(
