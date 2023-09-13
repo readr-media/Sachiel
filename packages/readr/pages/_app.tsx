@@ -21,6 +21,8 @@ import theme from '~/styles/theme'
 import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 
+import { DEFAULT_HEADER_CATEGORY_LIST } from '../constants/constant'
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (
     /* eslint-disable-line no-unused-vars */ page: ReactElement
@@ -53,6 +55,10 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page)
 
+  // Use props.categoriesAndRelatedPosts if defined, otherwise use DEFAULT_HEADER_CATEGORY_LIST
+  const headerCategoriesAndRelatedPosts =
+    props.categoriesAndRelatedPosts || DEFAULT_HEADER_CATEGORY_LIST
+
   return (
     <>
       <NormalizeStyles />
@@ -60,7 +66,7 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <HeaderCategoriesAndRelatePostsContext.Provider
-            value={props.categoriesAndRelatedPosts}
+            value={headerCategoriesAndRelatedPosts}
           >
             <CategoryListContext.Provider value={props.categoryList}>
               {getLayout(<Component {...pageProps} />)}
@@ -91,7 +97,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const ctx = await App.getInitialProps(context)
 
   try {
-    // Fetch data from the JSON file
+    // Fetch header data from the JSON file
     const { data: jsonCategories } = await axios.get(
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections.json'
     )
