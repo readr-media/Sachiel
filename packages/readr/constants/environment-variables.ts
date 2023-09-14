@@ -19,7 +19,7 @@ switch (ENV) {
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
-      'https://storage.googleapis.com/statics-readr-tw-prod/json/sections.json'
+      'https://storage.googleapis.com/statics-readr-tw-prod/json/header.json'
     break
 
   case 'staging':
@@ -31,7 +31,7 @@ switch (ENV) {
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
-      'https://storage.googleapis.com/statics-readr-tw-staging/json/sections.json'
+      'https://storage.googleapis.com/statics-readr-tw-staging/json/header.json'
     break
 
   case 'dev':
@@ -43,7 +43,7 @@ switch (ENV) {
     GLOBAL_CACHE_SETTING = 'no-store'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
-      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections.json'
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
     break
 
   default:
@@ -55,7 +55,7 @@ switch (ENV) {
     GLOBAL_CACHE_SETTING = 'no-store'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
-      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections.json'
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
     break
 }
 

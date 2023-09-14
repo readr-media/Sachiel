@@ -102,8 +102,9 @@ MyApp.getInitialProps = async (context: AppContext) => {
     const { data: jsonCategories } = await axios.get(HEADER_JSON_URL)
 
     // Combine relatedPostTypes and relatedReportTypes into posts for each category
-    const categoriesAndRelatedPosts: Category[] = jsonCategories.categories.map(
-      (category: Category) => {
+    const categoriesAndRelatedPosts: Category[] = jsonCategories.categories
+      .slice(0, 6)
+      .map((category: Category) => {
         const relatedPostTypes = category.relatedPostTypes || []
         const relatedReportTypes = category.relatedReportTypes || []
 
@@ -119,8 +120,7 @@ MyApp.getInitialProps = async (context: AppContext) => {
             })),
           ],
         }
-      }
-    )
+      })
 
     const categoryList: NavigationCategory[] = categoriesAndRelatedPosts
 
