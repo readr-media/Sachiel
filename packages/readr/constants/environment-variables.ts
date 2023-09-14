@@ -7,6 +7,7 @@ let DONATION_PAGE_URL: string
 let QA_RECORD_CONFIG: { variables: Record<string, string> }
 let GLOBAL_CACHE_SETTING: string
 let GOOGLE_ADSENSE_AD_CLIENT: string
+let HEADER_JSON_URL: string
 
 switch (ENV) {
   case 'prod':
@@ -17,6 +18,8 @@ switch (ENV) {
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
+    HEADER_JSON_URL =
+      'https://storage.googleapis.com/statics-readr-tw-prod/json/header.json'
     break
 
   case 'staging':
@@ -27,6 +30,8 @@ switch (ENV) {
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
+    HEADER_JSON_URL =
+      'https://storage.googleapis.com/statics-readr-tw-staging/json/header.json'
     break
 
   case 'dev':
@@ -37,6 +42,8 @@ switch (ENV) {
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
     GLOBAL_CACHE_SETTING = 'no-store'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
+    HEADER_JSON_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
     break
 
   default:
@@ -47,6 +54,8 @@ switch (ENV) {
     QA_RECORD_CONFIG = { variables: { id1: '8', id2: '9' } }
     GLOBAL_CACHE_SETTING = 'no-store'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
+    HEADER_JSON_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
     break
 }
 
@@ -57,6 +66,7 @@ export {
   GLOBAL_CACHE_SETTING,
   GOOGLE_ADSENSE_AD_CLIENT,
   GTM_ID,
+  HEADER_JSON_URL,
   QA_RECORD_CONFIG,
   SITE_URL,
 }
