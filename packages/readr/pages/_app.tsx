@@ -104,16 +104,9 @@ MyApp.getInitialProps = async (context: AppContext) => {
     const categoriesAndRelatedPosts: Category[] = jsonCategories.categories
       .slice(0, 6)
       .map((category: Category) => {
-        const relatedPostTypes = category.relatedPostTypes || []
-
         return {
           ...category,
-          posts: [
-            ...(category.posts || []).slice(0, 5), // Limit to 5 existing posts
-            ...relatedPostTypes.map((postType) => ({
-              ...postType,
-            })),
-          ],
+          posts: [...(category.posts || []).slice(0, 5)],
         }
       })
 
