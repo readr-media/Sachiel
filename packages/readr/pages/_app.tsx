@@ -101,22 +101,17 @@ MyApp.getInitialProps = async (context: AppContext) => {
     // Fetch header data from the JSON file
     const { data: jsonCategories } = await axios.get(HEADER_JSON_URL)
 
-    // Combine relatedPostTypes and relatedReportTypes into posts for each category
     const categoriesAndRelatedPosts: Category[] = jsonCategories.categories
       .slice(0, 6)
       .map((category: Category) => {
         const relatedPostTypes = category.relatedPostTypes || []
-        const relatedReportTypes = category.relatedReportTypes || []
 
         return {
           ...category,
           posts: [
             ...(category.posts || []).slice(0, 5), // Limit to 5 existing posts
-            ...relatedPostTypes.slice(0, 4).map((postType) => ({
+            ...relatedPostTypes.map((postType) => ({
               ...postType,
-            })),
-            ...relatedReportTypes.slice(0, 1).map((reportType) => ({
-              ...reportType,
             })),
           ],
         }
