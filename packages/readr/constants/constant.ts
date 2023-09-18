@@ -38,9 +38,61 @@ const REPORT_STYLES: string[] = [
   ValidPostStyle.REPORT,
 ]
 
+const DEFAULT_HEADER_CATEGORY_LIST = [
+  {
+    id: '1',
+    slug: 'breakingnews',
+    title: '時事',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+  {
+    id: '2',
+    slug: 'education',
+    title: '教育',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+  {
+    id: '3',
+    slug: 'politics',
+    title: '政治',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+  {
+    id: '4',
+    slug: 'humanrights',
+    title: '人權',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+  {
+    id: '5',
+    slug: 'environment',
+    title: '環境',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+  {
+    id: '6',
+    slug: 'omt',
+    title: '新鮮事',
+    posts: [],
+    ogDescription: '',
+    ogImage: null,
+  },
+]
+
 export {
   CATEGORY_SLUGS,
   DEFAULT_CATEGORY,
+  DEFAULT_HEADER_CATEGORY_LIST,
   DEFAULT_POST_IMAGE_PATH,
   POST_STYLES,
   REPORT_STYLES,

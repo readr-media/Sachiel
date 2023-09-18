@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
+import axios from 'axios'
 import type { NextPage } from 'next'
 import type { AppContext, AppProps } from 'next/app'
 import App from 'next/app'
@@ -14,6 +15,8 @@ import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
 import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
+import { DEFAULT_HEADER_CATEGORY_LIST } from '~/constants/constant'
+import { HEADER_JSON_URL } from '~/constants/environment-variables'
 import CategoryListContext from '~/contexts/category-list'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
@@ -98,22 +101,26 @@ MyApp.getInitialProps = async (context: AppContext) => {
 
   try {
     {
-      // fetch categories and related posts for header
-      const { data } = await client.query<{ categories: Category[] }>({
-        query: categories,
-        variables: {
-          first: 6,
-          shouldQueryRelatedPost: true,
-          relatedPostFirst: 5,
-          relatedPostTypes,
-        },
-      })
+      // Fetch header data from the JSON file
+      const { data: jsonCategories } = await axios.get(HEADER_JSON_URL)
 
-      categoriesAndRelatedPosts.push(...data.categories)
+      const slicedCategories = jsonCategories.categories
+        .slice(0, 6)
+        .map((category: Category) => {
+          return {
+            ...category,
+            posts: [...(category.posts || []).slice(0, 5)],
+          }
+        })
+
+      // Use `slicedCategories` if defined, otherwise use `DEFAULT_HEADER_CATEGORY_LIST`
+      slicedCategories
+        ? categoriesAndRelatedPosts.push(...slicedCategories)
+        : categoriesAndRelatedPosts.push(...DEFAULT_HEADER_CATEGORY_LIST)
     }
 
     {
-      // fetch all categories
+      // Fetch all categories
       const { data } = await client.query<{ categories: Category[] }>({
         query: categories,
         variables: {
