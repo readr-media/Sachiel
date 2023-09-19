@@ -9,12 +9,9 @@ import IconTwitter from '~/public/icons/twitter-circle.svg'
 import * as gtag from '~/utils/gtag'
 
 const MediaLinkWrapper = styled.ul<{ className: string }>`
-  width: 100%;
-  max-width: 192px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 48px;
+  margin-top: 16px;
 
   > li + li {
     margin-left: 16px;

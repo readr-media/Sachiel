@@ -99,6 +99,10 @@ const Header = styled.header`
 
 const DonateShareWrapper = styled.div`
   display: flex;
+
+  .donate-btn {
+    margin-right: 16px;
+  }
 `
 
 const CreditLists = styled.ul`
@@ -221,6 +225,7 @@ export default function Frame({
         <DonateShareWrapper>
           <DonateBtnRect
             onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+            className="donate-btn"
           />
           <ShareButton />
         </DonateShareWrapper>
