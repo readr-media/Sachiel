@@ -1,7 +1,6 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
-import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -18,6 +17,8 @@ import useScrollToEnd from '~/hooks/useScrollToEnd'
 import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
+
+import DonateBtnRect from '../../shared/donate-btn-rect'
 
 const FrameWrapper = styled.div`
   position: absolute;
@@ -95,28 +96,7 @@ const Header = styled.header`
     padding: 20px 32px;
   }
 `
-const DonateLink = styled(NextLink)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  color: #000928;
-  /* padding: 6px 16px; */
-  background-color: #fff;
-  border: 1px solid #000928;
-  border-radius: 2px;
-  margin-right: 16px;
-  height: 40px;
-  width: 104px;
 
-  &:hover,
-  &:active,
-  &:focus {
-    background-color: #ebf02c;
-  }
-`
 const DonateShareWrapper = styled.div`
   display: flex;
 `
@@ -239,14 +219,9 @@ export default function Frame({
       <Header>
         <Logo iconStyle="black" href="/" openNewTab={true} />
         <DonateShareWrapper>
-          <DonateLink
-            href="/donate"
-            target="_blank"
-            rel="external nofollow"
+          <DonateBtnRect
             onClick={() => gtag.sendEvent('header', 'click', 'donate')}
-          >
-            贊助我們
-          </DonateLink>
+          />
           <ShareButton />
         </DonateShareWrapper>
       </Header>
