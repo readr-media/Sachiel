@@ -18,6 +18,8 @@ import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
 
+import DonateBtnRect from '../../shared/donate-btn-rect'
+
 const FrameWrapper = styled.div`
   position: absolute;
   background-color: #f6f6f5;
@@ -84,13 +86,22 @@ const Header = styled.header`
   }
   //shared-component of @readr-media/share-button
   .share-button {
-    width: 42px;
+    width: 40px;
+    height: 40px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     padding: 20px 24px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 20px 32px;
+  }
+`
+
+const DonateShareWrapper = styled.div`
+  display: flex;
+
+  .donate-btn {
+    margin-right: 16px;
   }
 `
 
@@ -211,7 +222,13 @@ export default function Frame({
     <FrameWrapper>
       <Header>
         <Logo iconStyle="black" href="/" openNewTab={true} />
-        <ShareButton />
+        <DonateShareWrapper>
+          <DonateBtnRect
+            onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+            className="donate-btn"
+          />
+          <ShareButton />
+        </DonateShareWrapper>
       </Header>
       <Article id="post" shouldShowHeroImage={shouldShowHeroImage}>
         {shouldShowHeroImage && (
