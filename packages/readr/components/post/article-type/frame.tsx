@@ -1,6 +1,7 @@
 import { Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
+import NextLink from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -84,7 +85,8 @@ const Header = styled.header`
   }
   //shared-component of @readr-media/share-button
   .share-button {
-    width: 42px;
+    width: 40px;
+    height: 40px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     padding: 20px 24px;
@@ -92,6 +94,31 @@ const Header = styled.header`
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 20px 32px;
   }
+`
+const DonateLink = styled(NextLink)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #000928;
+  /* padding: 6px 16px; */
+  background-color: #fff;
+  border: 1px solid #000928;
+  border-radius: 2px;
+  margin-right: 16px;
+  height: 40px;
+  width: 104px;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #ebf02c;
+  }
+`
+const DonateShareWrapper = styled.div`
+  display: flex;
 `
 
 const CreditLists = styled.ul`
@@ -211,7 +238,17 @@ export default function Frame({
     <FrameWrapper>
       <Header>
         <Logo iconStyle="black" href="/" openNewTab={true} />
-        <ShareButton />
+        <DonateShareWrapper>
+          <DonateLink
+            href="/donate"
+            target="_blank"
+            rel="external nofollow"
+            onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+          >
+            贊助我們
+          </DonateLink>
+          <ShareButton />
+        </DonateShareWrapper>
       </Header>
       <Article id="post" shouldShowHeroImage={shouldShowHeroImage}>
         {shouldShowHeroImage && (
