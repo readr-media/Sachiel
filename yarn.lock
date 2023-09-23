@@ -2776,10 +2776,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@readr-media/react-component@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.1.4.tgz#ea6bc8b044bc0341d647eff3eb1ebb6c68532f4d"
-  integrity sha512-VDurU1pjhY3CcwBgdvtIhZzG0kF7AXj1Ne6lniRRAyb7qr74xoDO79qvNJRb5pcA5U2KsA78mn7fwolaQWNugw==
+"@readr-media/react-component@^2.1.5":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.1.5.tgz#ca41aabc9f112200af86194a87d563843dd6eb5f"
+  integrity sha512-APW3TpJ7P+ou7R2IQ85i8Eoi8DxW6Ju/UbVzsGUvq7Bvqv5Cd/XUR1L7A4guoijj3q85m+XYNct05juchNUupA==
   dependencies:
     "@readr-media/react-image" "^1.5.1"
     dayjs "^1.11.7"
