@@ -1,5 +1,6 @@
 // 該元件作為網站主要的 header 使用，含有 logo、類別清單、捐贈按鈕和閱讀進度
 
+import { DonateBtnRect } from '@readr-media/react-component'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import throttle from 'raf-throttle'
@@ -14,7 +15,6 @@ import type { ArticleCard, NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
 
-import DonateBtnRect from '../../shared/donate-btn-rect'
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
 import HeaderLogo from './header-logo'
 const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
@@ -269,6 +269,7 @@ export default function HeaderGeneral({
           {!isPostPage && (
             <DonateBtnRect
               onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+              href="/donate"
             />
           )}
 

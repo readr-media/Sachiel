@@ -1,4 +1,4 @@
-import { Logo } from '@readr-media/react-component'
+import { DonateBtnRect, Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
 import { useState } from 'react'
@@ -17,8 +17,6 @@ import useScrollToEnd from '~/hooks/useScrollToEnd'
 import { ValidPostStyle } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 import { formatPostDate } from '~/utils/post'
-
-import DonateBtnRect from '../../shared/donate-btn-rect'
 
 const FrameWrapper = styled.div`
   position: absolute;
@@ -226,6 +224,7 @@ export default function Frame({
           <DonateBtnRect
             onClick={() => gtag.sendEvent('header', 'click', 'donate')}
             className="donate-btn"
+            href="/donate"
           />
           <ShareButton />
         </DonateShareWrapper>
