@@ -1,7 +1,7 @@
 // 該元件作為網站主要的 header 使用，含有 logo、類別清單、捐贈按鈕和閱讀進度
 
+import { DonateBtnRect } from '@readr-media/react-component'
 import dynamic from 'next/dynamic'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import throttle from 'raf-throttle'
 import { useEffect, useRef, useState } from 'react'
@@ -16,8 +16,8 @@ import * as gtag from '~/utils/gtag'
 import { convertPostToArticleCard } from '~/utils/post'
 
 import CategoriesAndRelatedPosts from './categories-and-related-posts'
-const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
 import HeaderLogo from './header-logo'
+const HamburgerMenu = dynamic(() => import('./hamburger-menu'))
 
 const Header = styled.header`
   position: fixed;
@@ -83,25 +83,6 @@ const ProgressText = styled.p`
   }
   ${({ theme }) => theme.breakpoint.lg} {
     width: inherit;
-  }
-`
-
-const DonateLink = styled(NextLink)`
-  display: block;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 2.5px;
-  color: #000928;
-  padding: 8px 16px;
-  background-color: #fff;
-  border: 1px solid #000928;
-  border-radius: 2px;
-
-  &:hover,
-  &:active,
-  &:focus {
-    background-color: #ebf02c;
   }
 `
 
@@ -286,14 +267,10 @@ export default function HeaderGeneral({
           )}
 
           {!isPostPage && (
-            <DonateLink
-              href="/donate"
-              target="_blank"
-              rel="external nofollow"
+            <DonateBtnRect
               onClick={() => gtag.sendEvent('header', 'click', 'donate')}
-            >
-              贊助我們
-            </DonateLink>
+              href="/donate"
+            />
           )}
 
           <HamburgerButton

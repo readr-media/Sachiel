@@ -1,4 +1,4 @@
-import { Logo } from '@readr-media/react-component'
+import { DonateBtnRect, Logo } from '@readr-media/react-component'
 import SharedImage from '@readr-media/react-image'
 import { ShareButton } from '@readr-media/share-button'
 import { useState } from 'react'
@@ -84,13 +84,22 @@ const Header = styled.header`
   }
   //shared-component of @readr-media/share-button
   .share-button {
-    width: 42px;
+    width: 40px;
+    height: 40px;
   }
   ${({ theme }) => theme.breakpoint.md} {
     padding: 20px 24px;
   }
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 20px 32px;
+  }
+`
+
+const DonateShareWrapper = styled.div`
+  display: flex;
+
+  .donate-btn {
+    margin-right: 16px;
   }
 `
 
@@ -211,7 +220,14 @@ export default function Frame({
     <FrameWrapper>
       <Header>
         <Logo iconStyle="black" href="/" openNewTab={true} />
-        <ShareButton />
+        <DonateShareWrapper>
+          <DonateBtnRect
+            onClick={() => gtag.sendEvent('header', 'click', 'donate')}
+            className="donate-btn"
+            href="/donate"
+          />
+          <ShareButton />
+        </DonateShareWrapper>
       </Header>
       <Article id="post" shouldShowHeroImage={shouldShowHeroImage}>
         {shouldShowHeroImage && (
