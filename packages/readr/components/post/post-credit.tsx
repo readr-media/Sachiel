@@ -3,7 +3,9 @@ import styled, { css } from 'styled-components'
 
 import type { Author } from '~/graphql/fragments/author'
 import type { PostDetail } from '~/graphql/query/post'
+import * as gtag from '~/utils/gtag'
 
+import DonateBtnOval from '../../components/shared/donate-btn-oval'
 import MediaLinkList from '../shared/media-link'
 
 const DotStyle = css`
@@ -28,32 +30,29 @@ const LineStyle = css`
 `
 
 const PostCreditWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 16px;
   padding: 0px 20px;
-  max-width: 568px;
-
-  .media-link-list {
-    margin: auto auto auto 0px;
-  }
 
   ${({ theme }) => theme.breakpoint.md} {
     padding: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-
-    .media-link-list {
-      margin: auto 0 0 auto;
-    }
   }
+`
 
-  ${({ theme }) => theme.breakpoint.xl} {
-    max-width: 600px;
+const SnsLinksDonateBtnWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  .donate-btn-oval {
+    margin-top: 16px;
   }
 `
 
 const CreditList = styled.ul`
-  margin: 0 0 16px;
   > li {
     font-size: 14px;
     line-height: 1.5;
@@ -193,7 +192,13 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
         )}
       </CreditList>
 
-      <MediaLinkList />
+      <SnsLinksDonateBtnWrapper>
+        <MediaLinkList />
+        <DonateBtnOval
+          onClick={() => gtag.sendEvent('post', 'click', 'donate')}
+          className="donate-btn-oval"
+        />
+      </SnsLinksDonateBtnWrapper>
     </PostCreditWrapper>
   )
 }
