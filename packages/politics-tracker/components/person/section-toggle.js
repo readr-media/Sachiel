@@ -1,8 +1,9 @@
 import React from 'react'
-import { typedHasOwnProperty } from '~/utils/utils'
 import styled from 'styled-components'
+
 import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
+import { typedHasOwnProperty } from '~/utils/utils'
 
 const ToggleWrapper = styled.div`
   padding: 40px 0 0;
