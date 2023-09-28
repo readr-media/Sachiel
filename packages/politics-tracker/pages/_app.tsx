@@ -4,10 +4,11 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import NextNProgress from 'nextjs-progressbar'
-//React-ga
 import { useEffect } from 'react'
+import { ThemeProvider } from 'styled-components'
 
 import { gaTrackingId } from '~/constants/config'
+import theme from '~/styles/theme'
 import { initGA, logPageView } from '~/utils/analytics'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -49,7 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         `}
       </Script>
       <NextNProgress />
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   )
 }

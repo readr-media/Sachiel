@@ -2,7 +2,6 @@ import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
 import React from 'react'
 import styled from 'styled-components'
-import { ThemeProvider } from 'styled-components'
 
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -15,7 +14,6 @@ import GetPersonElections from '~/graphql/query/person/get-person-elections.grap
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import theme from '~/styles/theme'
 import type { PoliticAmount, PoliticDetail } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -90,24 +88,20 @@ export default function PoliticsDetail({
     <DefaultLayout>
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
-        <ThemeProvider theme={theme}>
-          <div>
-            <Main>
-              <Title
-                id={politicData.person.person_id.id}
-                name={politicData.person.person_id.name}
-                avatar={politicData.person.person_id.image}
-                campaign={latestPersonElection}
-                party={politicData.person.party?.name}
-                partyIcon={politicData.person.party?.image}
-                completed={politicAmount.passed}
-                waiting={politicAmount.waiting}
-              />
-              <Section politicData={politicData} />
-            </Main>
-            <Nav {...navProps} />
-          </div>
-        </ThemeProvider>
+        <Main>
+          <Title
+            id={politicData.person.person_id.id}
+            name={politicData.person.person_id.name}
+            avatar={politicData.person.person_id.image}
+            campaign={latestPersonElection}
+            party={politicData.person.party?.name}
+            partyIcon={politicData.person.party?.image}
+            completed={politicAmount.passed}
+            waiting={politicAmount.waiting}
+          />
+          <Section politicData={politicData} />
+        </Main>
+        <Nav {...navProps} />
       </ConfigContext.Provider>
     </DefaultLayout>
   )
