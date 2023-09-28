@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import styled from 'styled-components'
-import { ThemeProvider } from 'styled-components'
 
 import Footer from '~/components/footer'
 //components
@@ -13,7 +12,6 @@ import FrontPage from '~/components/landing/frontpage-main'
 import How from '~/components/landing/how-main'
 import Mayor from '~/components/landing/mayor-main'
 import Report from '~/components/landing/report'
-import theme from '~/styles/theme'
 import { logGAEvent } from '~/utils/analytics'
 
 const Main = styled.main`
@@ -49,47 +47,45 @@ export default function LandingMain({ propsData }) {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        <HeaderWrap>
-          <Header />
-        </HeaderWrap>
-        <Main>
-          <FrontPage
-            // @ts-ignore : fix in the future
-            propsData={propsData}
-          />
-          <How />
-          <Mayor
+    <>
+      <HeaderWrap>
+        <Header />
+      </HeaderWrap>
+      <Main>
+        <FrontPage
+          // @ts-ignore : fix in the future
+          propsData={propsData}
+        />
+        <How />
+        <Mayor
+          // @ts-ignore
+          propsData={propsData}
+        />
+        <Councilor
+          // @ts-ignore
+          propsData={propsData}
+        />
+        <Credit />
+        {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
+          <Report
             // @ts-ignore
-            propsData={propsData}
+            propsData={propsData.postsWithPoliticsTrackerTag}
           />
-          <Councilor
-            // @ts-ignore
-            propsData={propsData}
-          />
-          <Credit />
-          {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
-            <Report
-              // @ts-ignore
-              propsData={propsData.postsWithPoliticsTrackerTag}
-            />
+        )}
+        <TeamIntro />
+      </Main>
+      <InView onChange={handleGaInview}>
+        <>
+          {/* @ts-ignore */}
+          {({ ref, inView }) => (
+            <QaGaAnchorWrapper ref={ref}>
+              <QaGaAnchor ref={ref} />
+              <QaGaAnchor />
+            </QaGaAnchorWrapper>
           )}
-          <TeamIntro />
-        </Main>
-        <InView onChange={handleGaInview}>
-          <>
-            {/* @ts-ignore */}
-            {({ ref, inView }) => (
-              <QaGaAnchorWrapper ref={ref}>
-                <QaGaAnchor ref={ref} />
-                <QaGaAnchor />
-              </QaGaAnchorWrapper>
-            )}
-          </>
-        </InView>
-        <Footer />
-      </div>
-    </ThemeProvider>
+        </>
+      </InView>
+      <Footer />
+    </>
   )
 }

@@ -1,7 +1,6 @@
 import { print } from 'graphql'
 import React from 'react'
 import styled from 'styled-components'
-import { ThemeProvider } from 'styled-components'
 
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -11,7 +10,6 @@ import Title from '~/components/person/title'
 import { cmsApiUrl } from '~/constants/config'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
-import theme from '~/styles/theme'
 import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
@@ -58,18 +56,14 @@ export default function People({ personData, personElectionsData }) {
   return (
     <DefaultLayout>
       <CustomHead {...headProps} />
-      <ThemeProvider theme={theme}>
-        <div>
-          <Main>
-            <Title name={personData.name} image={personData.image} />
-            <Section
-              personData={personData}
-              personElectionsData={personElectionsData}
-            />
-          </Main>
-          <Nav {...navProps} />
-        </div>
-      </ThemeProvider>
+      <Main>
+        <Title name={personData.name} image={personData.image} />
+        <Section
+          personData={personData}
+          personElectionsData={personElectionsData}
+        />
+      </Main>
+      <Nav {...navProps} />
     </DefaultLayout>
   )
 }

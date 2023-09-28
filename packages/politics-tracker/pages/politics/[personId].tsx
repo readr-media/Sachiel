@@ -413,7 +413,6 @@ const Politics = (props: PoliticsPageProps) => {
         </div>
         <Nav {...navProps} />
       </main>
-      {/* </Fragment> */}
     </DefaultLayout>
   )
 }
