@@ -91,7 +91,7 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <ThemeProvider theme={theme}>
-          <>
+          <React.Fragment>
             <Main>
               <Title
                 id={politicData.person.person_id.id}
@@ -106,7 +106,7 @@ export default function PoliticsDetail({
               <Section politicData={politicData} />
             </Main>
             <Nav {...navProps} />
-          </>
+          </React.Fragment>
         </ThemeProvider>
       </ConfigContext.Provider>
     </DefaultLayout>
