@@ -54,7 +54,7 @@ export {
  * @param {Object} props
  * @param {String} [props.title]
  * @param {String} props.content
- * @param {React.ReactElement} [props.children]
+ * @param {React.ReactElement | React.ReactElement[]} [props.children]
  * @returns  {React.ReactElement}
  */
 export default function ContentItem({ title = '', content, children }) {
