@@ -1,7 +1,8 @@
+import Image from 'next/image'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
 import CouncilList from '~/components/landing/council-content'
-import Image from 'next/image'
 import { logGAEvent } from '~/utils/analytics'
 
 const CouncilContainer = styled.div`

@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
+import { InView } from 'react-intersection-observer'
 import styled from 'styled-components'
 import { ThemeProvider } from 'styled-components'
-import theme from '~/styles/theme'
-import { InView } from 'react-intersection-observer'
-import { logGAEvent } from '~/utils/analytics'
 
+import Footer from '~/components/footer'
 //components
 import Header from '~/components/header'
-import Footer from '~/components/footer'
-import FrontPage from '~/components/landing/frontpage-main'
-import How from '~/components/landing/how-main'
+import Councilor from '~/components/landing/council-main'
 import TeamIntro from '~/components/landing/credit'
 import Credit from '~/components/landing/file-download'
+import FrontPage from '~/components/landing/frontpage-main'
+import How from '~/components/landing/how-main'
 import Mayor from '~/components/landing/mayor-main'
-import Councilor from '~/components/landing/council-main'
 import Report from '~/components/landing/report'
+import theme from '~/styles/theme'
+import { logGAEvent } from '~/utils/analytics'
 
 const Main = styled.main`
   width: 100%;
