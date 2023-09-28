@@ -148,6 +148,7 @@ export const getServerSideProps: GetServerSideProps<
 
     const rawPersonElection = [...personElections]
 
+    //@ts-ignore
     const personElectionIds = []
     rawPersonElection.map((item) => {
       personElectionIds.push(item.id)
@@ -161,6 +162,7 @@ export const getServerSideProps: GetServerSideProps<
       data: { politics: allPoliticList },
     } = await fireGqlRequest(
       print(GetPoliticsRelatedToPersonElections),
+      //@ts-ignore
       { ids: personElectionIds },
       cmsApiUrl
     )
