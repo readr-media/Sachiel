@@ -1,8 +1,9 @@
-import type { Politic, PersonElection } from '~/types/politics'
 import { SOURCE_DELIMITER } from '~/constants/politics'
+import type { PersonElection, Politic } from '~/types/politics'
 import { generateSourceMeta } from '~/utils/utils'
-import PoliticBody from './politic-body'
+
 import s from './politic-block.module.css'
+import PoliticBody from './politic-body'
 
 type PoliticBlockProps = Pick<
   PersonElection,

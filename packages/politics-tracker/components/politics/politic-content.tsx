@@ -1,8 +1,10 @@
+import classNames from 'classnames'
 import { useCallback, useRef, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
-import classNames from 'classnames'
-import s from './politic-content.module.css'
+
 import { logGAEvent } from '~/utils/analytics'
+
+import s from './politic-content.module.css'
 
 type PoliticContentProps = {
   children: string

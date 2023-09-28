@@ -1,8 +1,9 @@
+import Icon from '~/components/icon'
 import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
-import Icon from '~/components/icon'
-import s from './section-toggle.module.css'
 import { logGAEvent } from '~/utils/analytics'
+
+import s from './section-toggle.module.css'
 
 type SectionToggleProps = {
   id: string

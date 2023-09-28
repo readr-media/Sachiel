@@ -1,9 +1,11 @@
-import type { PersonElection } from '~/types/politics'
 import { useState } from 'react'
-import SectionToggle from './section-toggle'
-import SectionBody from './section-body'
+
+import type { PersonElection } from '~/types/politics'
+
 import { PersonElectionContext } from './react-context/politics-context'
+import SectionBody from './section-body'
 import s from './section-list.module.css'
+import SectionToggle from './section-toggle'
 
 type SectionListProps = PersonElection & { order: number }
 

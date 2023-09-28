@@ -1,16 +1,18 @@
-import type { Politic } from '~/types/politics'
-import type { RawPolitic } from '~/types/common'
 import { print } from 'graphql'
+
+import CreatePolitic from '~/graphql/mutation/politics/create-politic.graphql'
+import type { RawPolitic } from '~/types/common'
+import type { Politic } from '~/types/politics'
+import { fireGqlRequest } from '~/utils/utils'
+
+import { useToast } from '../toast/use-toast'
+import s from './add-politic-form.module.css'
+import PoliticForm from './politic-form'
 import {
   usePersonElection,
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
-import { useToast } from '../toast/use-toast'
-import { fireGqlRequest } from '~/utils/utils'
-import PoliticForm from './politic-form'
-import CreatePolitic from '~/graphql/mutation/politics/create-politic.graphql'
-import s from './add-politic-form.module.css'
 
 type AddPoliticFormProps = {
   closeForm: () => void
