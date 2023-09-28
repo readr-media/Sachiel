@@ -12,7 +12,7 @@ import SectionToggle from './section-toggle'
  * @param {Function} props.GAClick
  * @param {string} props.color
  * @param {string} props.title
- * @param {React.ReactElement} [props.children]
+ * @param {React.ReactElement | React.ReactElement[]} [props.children]
  * @returns {React.ReactElement}
  */
 export default function SectionList2({

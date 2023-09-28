@@ -29,7 +29,7 @@ const SectionBodyContainer = styled.div`
  *
  * @param {Object} props
  * @param {boolean} [props.shouldShowSectionBody]
- * @param {React.ReactElement |React.ReactElement[]} [props.children]
+ * @param {React.ReactElement | React.ReactElement[]} [props.children]
  * @returns {React.ReactElement}
  */
 export default function SectionBody({
