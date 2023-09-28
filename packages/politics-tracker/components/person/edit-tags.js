@@ -1,19 +1,19 @@
-import React, { Fragment, useState, useMemo } from 'react'
+import { print } from 'graphql'
+import React, { Fragment, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 
-import { SourceInputWrapper } from './edit-source'
-import SourceInput from '../politics/source-input'
 import { useToast } from '~/components/toast/use-toast'
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import CreateTags from '~/graphql/mutation/person/create-tags.graphql'
+import GetExistTags from '~/graphql/query/person/get-exist-tags.graphql'
+import { logGAEvent } from '~/utils/analytics'
+import { fireGqlRequest } from '~/utils/utils'
 
-import styled from 'styled-components'
+import SourceInput from '../politics/source-input'
 import AddInputButton from './add-input-button'
 import EditSendOrCancel from './edit-send-or-cancel'
-import { print } from 'graphql'
-import { fireGqlRequest } from '~/utils/utils'
-import GetExistTags from '~/graphql/query/person/get-exist-tags.graphql'
-import CreateTags from '~/graphql/mutation/person/create-tags.graphql'
-import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
-import { logGAEvent } from '~/utils/analytics'
+import { SourceInputWrapper } from './edit-source'
 
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {

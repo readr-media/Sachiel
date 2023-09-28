@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import SecondArrowUp from '../icons/second-arrow-up'
-import SecondArrowDown from '../icons/second-arrow-down'
+
+import SecondArrowDown from '~/components/icons/second-arrow-down'
+import SecondArrowUp from '~/components/icons/second-arrow-up'
 
 const ToggleContainer = styled.div`
   margin-left: auto;
@@ -39,40 +40,20 @@ const ToggleContainer = styled.div`
     font-size: 18px;
   }
 `
-/**
- *
- * @param {Object} props
- * @param {boolean} props.isOpen
- * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setIsOpen
- * @returns {React.ReactElement}
- */
 
-/**
- *
- * @param {Object} props
- * @param {string} props.title
- * @param {Boolean} props.isActive
- * @param {Function} props.toggleActiveID
- * @param {null|string} props.id
- * @returns {React.ReactElement}
- */
-export default function Toggle({ title, isActive, id, toggleActiveID }) {
+type ToggleTitleProps = {
+  title: string
+  isActive: boolean
+  setActive: () => void
+}
+export default function ToggleTitle({
+  title,
+  isActive,
+  setActive,
+}: ToggleTitleProps): JSX.Element {
   return (
-    <ToggleContainer
-      // @ts-ignore
-      isActive={isActive}
-      onClick={() => {
-        toggleActiveID(id)
-      }}
-    >
-      {isActive ? (
-        // @ts-ignore
-        <SecondArrowUp className="arrow" />
-      ) : (
-        // @ts-ignore
-        <SecondArrowDown className="arrow" />
-      )}
-
+    <ToggleContainer onClick={() => setActive()}>
+      {isActive ? <SecondArrowUp /> : <SecondArrowDown />}
       <span>{title}</span>
     </ToggleContainer>
   )

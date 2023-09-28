@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Image from 'next/future/image'
 
 const ProfileImage = styled.div`
   border-radius: 50%;

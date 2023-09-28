@@ -1,10 +1,11 @@
-import styled from 'styled-components'
+import Image from 'next/future/image'
 import { Fragment, useState } from 'react'
-import SectionBody from './section-body'
+import styled from 'styled-components'
+
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
-import ProfileImage from '../person/profile-image'
-import Image from 'next/future/image'
+
+import ProfileImage from '../../person/profile-image'
 
 const ExpertContainer = styled.div`
   padding-top: 12px;
@@ -164,8 +165,12 @@ const ExpertImage = styled(ProfileImage)`
   }
 `
 
-// @ts-ignore
-export default function PoliticsExpert({ infoList, isActive }) {
+type ExpertPointProps = {
+  infoList: any
+}
+export default function ExpertPoint({
+  infoList,
+}: ExpertPointProps): JSX.Element {
   const [showImage, setShowImage] = useState([])
 
   // @ts-ignore
@@ -257,10 +262,8 @@ export default function PoliticsExpert({ infoList, isActive }) {
     </ExpertList>
   ))
   return (
-    <SectionBody shouldShowSectionBody={isActive}>
-      <ExpertContainer>
-        <ul>{info}</ul>
-      </ExpertContainer>
-    </SectionBody>
+    <ExpertContainer>
+      <ul>{info}</ul>
+    </ExpertContainer>
   )
 }

@@ -1,8 +1,10 @@
-import Facebook from '~/assets/facebook-rect.svg'
-import Twitter from '~/assets/twitter-rect.svg'
-import Instagram from '~/assets/instagram-rect.svg'
-import Github from '~/assets/github-rect.svg'
 import Image from 'next/future/image'
+
+import Facebook from '~/assets/facebook-rect.svg'
+import Github from '~/assets/github-rect.svg'
+import Instagram from '~/assets/instagram-rect.svg'
+import Twitter from '~/assets/twitter-rect.svg'
+
 import s from './footer.module.css'
 
 type LinkIcon = {

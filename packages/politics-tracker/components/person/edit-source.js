@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react'
-import SourceInput from '../politics/source-input'
-import { EditContentItemTitle } from './edit-content-item'
-import AddInputButton from './add-input-button'
-import { getNewSource } from '~/utils/utils'
 import styled from 'styled-components'
+
+import { getNewSource } from '~/utils/utils'
+
+import SourceInput from '../politics/source-input'
+import AddInputButton from './add-input-button'
+import { EditContentItemTitle } from './edit-content-item'
 
 const SourceInputWrapper = styled.div`
   path {

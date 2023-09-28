@@ -1,20 +1,22 @@
-import type { Politic } from '~/types/politics'
+import classNames from 'classnames'
+import { useEffect, useMemo, useState } from 'react'
+
+import ArrowRight from '~/components/icons/arrow-right'
+import Plus from '~/components/icons/plus'
 import type { Source } from '~/types/common'
+import type { Politic } from '~/types/politics'
+import { logGAEvent } from '~/utils/analytics'
 import { useWindowSize } from '~/utils/hooks'
 import {
-  getTailwindConfig,
   getNewSource,
-  stringToSources,
+  getTailwindConfig,
   sourcesToString,
+  stringToSources,
 } from '~/utils/utils'
-import { useEffect, useMemo, useState } from 'react'
-import classNames from 'classnames'
-import SourceInput from './source-input'
+
 import Button from './button'
-import Plus from '~/components/icons/plus'
-import ArrowRight from '~/components/icons/arrow-right'
 import s from './politic-form.module.css'
-import { logGAEvent } from '~/utils/analytics'
+import SourceInput from './source-input'
 
 const fullConfig = getTailwindConfig()
 

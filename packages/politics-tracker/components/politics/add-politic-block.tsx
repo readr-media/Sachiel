@@ -2,11 +2,13 @@ import dynamic from 'next/dynamic'
 const AddPoliticForm = dynamic(() => import('./add-politic-form'), {
   ssr: false,
 })
-import Button from './button'
-import Plus from '~/components/icons/plus'
 import { useState } from 'react'
-import s from './add-politic-block.module.css'
+
+import Plus from '~/components/icons/plus'
 import { logGAEvent } from '~/utils/analytics'
+
+import s from './add-politic-block.module.css'
+import Button from './button'
 
 export default function AddPoliticBlock(): JSX.Element {
   const [showEditArea, setShowEditArea] = useState(false)

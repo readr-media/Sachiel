@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import SectionBody from './section-body'
 
 const TimeContainer = styled.div`
   padding-top: 20px;
@@ -56,19 +55,12 @@ const TimeContainer = styled.div`
     }
   }
 `
-/**
- *
- * @param {Object} props
- * @param {Object[]} props.infoList
- * @param {string} props.infoList[].id
- * @param {string} props.infoList[].eventDate
- * @param {string} props.infoList[].link
- * @param {string} props.infoList[].content
- * @param {Boolean} props.isActive
- * @returns {React.ReactElement}
- */
-export default function PoliticsList({ infoList, isActive }) {
-  const info = infoList.map((value) => (
+
+type TimeLineProps = {
+  infoList: any
+}
+export default function PoliticsList({ infoList }: TimeLineProps): JSX.Element {
+  const info = infoList.map((value: any) => (
     <li key={value.id}>
       <span>{value.eventDate?.substr(0, 10)}</span>
       <a href={value.link} target="_blank" rel="noreferrer">
@@ -77,14 +69,12 @@ export default function PoliticsList({ infoList, isActive }) {
     </li>
   ))
   return (
-    <SectionBody shouldShowSectionBody={isActive}>
-      <TimeContainer>
-        {infoList.length !== 0 ? (
-          <ul>{info}</ul>
-        ) : (
-          <div>還沒有人新增相關進度...</div>
-        )}
-      </TimeContainer>
-    </SectionBody>
+    <TimeContainer>
+      {infoList.length !== 0 ? (
+        <ul>{info}</ul>
+      ) : (
+        <div>還沒有人新增相關進度...</div>
+      )}
+    </TimeContainer>
   )
 }

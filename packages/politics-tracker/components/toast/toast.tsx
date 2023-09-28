@@ -1,10 +1,12 @@
+import classNames from 'classnames'
 import React from 'react'
+
+import Cross from '~/components/icons/cross'
+import Error from '~/components/icons/error'
+import Success from '~/components/icons/success'
 import type { CloseFuction, ToastData } from '~/types/toast'
 import { useTimeout } from '~/utils/hooks'
-import classNames from 'classnames'
-import Success from '~/components/icons/success'
-import Error from '~/components/icons/error'
-import Cross from '~/components/icons/cross'
+
 import s from './style.module.css'
 const LIFE_TIME = 5000
 type ToastProps = { close: CloseFuction } & ToastData

@@ -1,11 +1,13 @@
 import '~/styles/globals.css'
+
 import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 import Script from 'next/script'
-import { gaTrackingId } from '~/constants/config'
 import NextNProgress from 'nextjs-progressbar'
 //React-ga
 import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+
+import { gaTrackingId } from '~/constants/config'
 import { initGA, logPageView } from '~/utils/analytics'
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -1,10 +1,12 @@
-import type { ToastContextValue, ToastData } from '~/types/toast'
-import { v4 as uuidv4 } from 'uuid'
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import ToastContext from './toast-context'
-import Toast from './toast'
+import { v4 as uuidv4 } from 'uuid'
+
+import type { ToastContextValue, ToastData } from '~/types/toast'
+
 import style from './style.module.css'
+import Toast from './toast'
+import ToastContext from './toast-context'
 
 type ToastProviderProps = {
   children: React.ReactNode

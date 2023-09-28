@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import SectionBody from './section-body'
+
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
 
@@ -9,10 +9,12 @@ const DisputeContainer = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 1.3;
+
   span {
     color: #0f2d35;
     display: block;
   }
+
   a {
     color: ${({ theme }) => theme.textColor.brown};
     display: inline-block;
@@ -20,12 +22,14 @@ const DisputeContainer = styled.div`
       text-decoration-line: underline;
     }
   }
+
   li {
     margin-bottom: 9px;
     padding-left: 15px;
     position: relative;
     cursor: pointer;
   }
+
   li:before {
     content: '';
     display: inline-block;
@@ -38,6 +42,7 @@ const DisputeContainer = styled.div`
     left: 0px;
     top: 12px;
   }
+
   div {
     text-align: center;
     color: rgba(15, 45, 53, 0.3);
@@ -45,13 +50,16 @@ const DisputeContainer = styled.div`
     font-size: 18px;
     line-height: 1.8;
   }
+
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 18px;
   }
 `
 
-// @ts-ignore
-export default function PoliticsList({ infoList, isActive }) {
+type DisputeProps = {
+  infoList: any
+}
+export default function Dispute({ infoList }: DisputeProps): JSX.Element {
   const disputeData = infoList ? infoList.split(SOURCE_DELIMITER) : []
   // @ts-ignore
   const disputeList = disputeData.map((content, index) => {
@@ -67,14 +75,12 @@ export default function PoliticsList({ infoList, isActive }) {
     )
   })
   return (
-    <SectionBody shouldShowSectionBody={isActive}>
-      <DisputeContainer>
-        {disputeList.length !== 0 ? (
-          <ul>{disputeList}</ul>
-        ) : (
-          <div>還沒有人新增相關爭議...</div>
-        )}
-      </DisputeContainer>
-    </SectionBody>
+    <DisputeContainer>
+      {disputeList.length > 0 ? (
+        <ul>{disputeList}</ul>
+      ) : (
+        <div>還沒有人新增相關爭議...</div>
+      )}
+    </DisputeContainer>
   )
 }

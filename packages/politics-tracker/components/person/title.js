@@ -1,8 +1,11 @@
+import Image from 'next/future/image'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
 import theme from '~/styles/theme'
+
 import ProfileImage from './profile-image'
-import Image from 'next/future/image'
+
 const TitleWrapper = styled.div`
   width: 100%;
 `

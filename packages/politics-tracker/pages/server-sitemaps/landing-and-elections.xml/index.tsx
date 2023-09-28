@@ -1,14 +1,15 @@
 // dynamic URLs for landing page and election pages
-import { getServerSideSitemap } from 'next-sitemap'
-import { GetServerSideProps } from 'next'
-import { siteUrl, cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
-import axios, { AxiosResponse } from 'axios'
-import { print } from 'graphql'
-import { fireGqlRequest } from '~/utils/utils'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
+import axios, { AxiosResponse } from 'axios'
+import { print } from 'graphql'
+import { GetServerSideProps } from 'next'
+import { getServerSideSitemap } from 'next-sitemap'
+
+import { cmsApiUrl, siteUrl, urlOfJsonForlandingPage } from '~/constants/config'
 import GetElections from '~/graphql/query/sitemap/get-elections.graphql'
 import { GenericGQLData, RawElection } from '~/types/common'
+import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const fields = []

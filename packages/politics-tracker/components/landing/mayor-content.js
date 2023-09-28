@@ -1,7 +1,7 @@
-import React, { useState, Fragment, useEffect } from 'react'
-import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
+import React, { Fragment, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 const DistrictInforBox = styled.div`
   width: 100%;

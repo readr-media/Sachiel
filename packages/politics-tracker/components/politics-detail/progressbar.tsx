@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import type { PoliticDetail } from '~/types/politics-detail'
+
 const ProgressBar = styled.div`
   overflow: hidden;
   height: 44px;
@@ -122,19 +124,13 @@ const ProgressBar = styled.div`
     width: 50%;
   }
 `
-/**
- * @param {Object} props
- * @param {import('../../types/politics-detail').PoliticDetail} props.politicData
- * @param {Object} props.politicData
- * @param {Object} props.politicData.progress
- * @param {String} props.politicData.progress.progress
- * @returns {React.ReactElement}
- */
-export default function SectionTitle({ politicData }) {
-  // @ts-ignore
-  const electResult = politicData.person.elected
 
-  // @ts-ignore
+type ProgressBar = {
+  politicData: PoliticDetail
+}
+export default function Progressbar({ politicData }: ProgressBar): JSX.Element {
+  const electResult = politicData.person.elected
+  //@ts-ignore
   const progressType = politicData.current_progress
 
   return (
