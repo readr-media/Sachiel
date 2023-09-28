@@ -1,12 +1,14 @@
-import { MouseEventHandler, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import Image from 'next/future/image'
-import Logo from '~/assets/READr-logo.svg'
-import ShareButton from '~/assets/share-button.svg'
+import { MouseEventHandler, useEffect, useState } from 'react'
+
 import Facebook from '~/assets/facebook.svg'
 import Line from '~/assets/line.svg'
-import s from './header.module.css'
+import Logo from '~/assets/READr-logo.svg'
+import ShareButton from '~/assets/share-button.svg'
 import { logGAEvent } from '~/utils/analytics'
+
+import s from './header.module.css'
 
 type ButtonConfig = {
   index: number
