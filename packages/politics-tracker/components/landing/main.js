@@ -50,7 +50,7 @@ export default function LandingMain({ propsData }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <React.Fragment>
+      <div>
         <HeaderWrap>
           <Header />
         </HeaderWrap>
@@ -89,7 +89,7 @@ export default function LandingMain({ propsData }) {
           </>
         </InView>
         <Footer />
-      </React.Fragment>
+      </div>
     </ThemeProvider>
   )
 }
