@@ -59,7 +59,7 @@ export default function People({ personData, personElectionsData }) {
     <DefaultLayout>
       <CustomHead {...headProps} />
       <ThemeProvider theme={theme}>
-        <>
+        <React.Fragment>
           <Main>
             <Title name={personData.name} image={personData.image} />
             <Section
@@ -68,7 +68,7 @@ export default function People({ personData, personElectionsData }) {
             />
           </Main>
           <Nav {...navProps} />
-        </>
+        </React.Fragment>
       </ThemeProvider>
     </DefaultLayout>
   )

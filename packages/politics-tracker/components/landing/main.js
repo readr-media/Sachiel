@@ -35,6 +35,7 @@ const QaGaAnchor = styled.div``
  */
 // @ts-ignore : fix in the future
 export default function LandingMain({ propsData }) {
+  // @ts-ignore
   const [inView, setInView] = useState(false)
   const [hasSentGa, setHasSentGa] = useState(false)
 
@@ -49,7 +50,7 @@ export default function LandingMain({ propsData }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <React.Fragment>
         <HeaderWrap>
           <Header />
         </HeaderWrap>
@@ -77,15 +78,18 @@ export default function LandingMain({ propsData }) {
           <TeamIntro />
         </Main>
         <InView onChange={handleGaInview}>
-          {({ ref, inView }) => (
-            <QaGaAnchorWrapper ref={ref}>
-              <QaGaAnchor ref={ref} />
-              <QaGaAnchor />
-            </QaGaAnchorWrapper>
-          )}
+          <>
+            {/* @ts-ignore */}
+            {({ ref, inView }) => (
+              <QaGaAnchorWrapper ref={ref}>
+                <QaGaAnchor ref={ref} />
+                <QaGaAnchor />
+              </QaGaAnchorWrapper>
+            )}
+          </>
         </InView>
         <Footer />
-      </>
+      </React.Fragment>
     </ThemeProvider>
   )
 }
