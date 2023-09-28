@@ -91,20 +91,22 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <ThemeProvider theme={theme}>
-          <Main>
-            <Title
-              id={politicData.person.person_id.id}
-              name={politicData.person.person_id.name}
-              avatar={politicData.person.person_id.image}
-              campaign={latestPersonElection}
-              party={politicData.person.party?.name}
-              partyIcon={politicData.person.party?.image}
-              completed={politicAmount.passed}
-              waiting={politicAmount.waiting}
-            />
-            <Section politicData={politicData} />
-          </Main>
-          <Nav {...navProps} />
+          <>
+            <Main>
+              <Title
+                id={politicData.person.person_id.id}
+                name={politicData.person.person_id.name}
+                avatar={politicData.person.person_id.image}
+                campaign={latestPersonElection}
+                party={politicData.person.party?.name}
+                partyIcon={politicData.person.party?.image}
+                completed={politicAmount.passed}
+                waiting={politicAmount.waiting}
+              />
+              <Section politicData={politicData} />
+            </Main>
+            <Nav {...navProps} />
+          </>
         </ThemeProvider>
       </ConfigContext.Provider>
     </DefaultLayout>
@@ -160,7 +162,7 @@ export const getServerSideProps: GetServerSideProps<
       data: { politics: allPoliticList },
     } = await fireGqlRequest(
       print(GetPoliticsRelatedToPersonElections),
-      // @ts-ignore
+      //@ts-ignore
       { ids: personElectionIds },
       cmsApiUrl
     )
@@ -195,7 +197,7 @@ export const getServerSideProps: GetServerSideProps<
         latestPersonElection:
           personAllElections[personAllElections.length - 1].election.type,
         config: feedbackFormConfig,
-      }, // will be passed to the page component as props
+      },
     }
   } catch (err) {
     console.error(err)

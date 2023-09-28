@@ -59,14 +59,16 @@ export default function People({ personData, personElectionsData }) {
     <DefaultLayout>
       <CustomHead {...headProps} />
       <ThemeProvider theme={theme}>
-        <Main>
-          <Title name={personData.name} image={personData.image} />
-          <Section
-            personData={personData}
-            personElectionsData={personElectionsData}
-          />
-        </Main>
-        <Nav {...navProps} />
+        <>
+          <Main>
+            <Title name={personData.name} image={personData.image} />
+            <Section
+              personData={personData}
+              personElectionsData={personElectionsData}
+            />
+          </Main>
+          <Nav {...navProps} />
+        </>
       </ThemeProvider>
     </DefaultLayout>
   )

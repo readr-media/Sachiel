@@ -3,7 +3,7 @@ import Header from '~/components/header'
 import ToastProvider from '~/components/toast/toast-provider'
 
 type DefaultLayoutProps = {
-  children: React.ReactNode | React.ReactNode[]
+  children: React.ReactElement | React.ReactElement[]
 }
 
 export default function DefaultLayout({
