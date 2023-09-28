@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { InView } from 'react-intersection-observer'
+import React from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/footer'
@@ -12,7 +11,6 @@ import FrontPage from '~/components/landing/frontpage-main'
 import How from '~/components/landing/how-main'
 import Mayor from '~/components/landing/mayor-main'
 import Report from '~/components/landing/report'
-import { logGAEvent } from '~/utils/analytics'
 
 const Main = styled.main`
   width: 100%;
@@ -24,8 +22,6 @@ const Main = styled.main`
 const HeaderWrap = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
 `
-const QaGaAnchorWrapper = styled.div``
-const QaGaAnchor = styled.div``
 
 /**
  * @property {Object} titleData
@@ -33,19 +29,6 @@ const QaGaAnchor = styled.div``
  */
 // @ts-ignore : fix in the future
 export default function LandingMain({ propsData }) {
-  // @ts-ignore
-  const [inView, setInView] = useState(false)
-  const [hasSentGa, setHasSentGa] = useState(false)
-
-  // @ts-ignore
-  const handleGaInview = (isInView) => {
-    setInView(isInView)
-    if (isInView && !hasSentGa) {
-      logGAEvent('click', '頁面滑動至最底端')
-      setHasSentGa(true)
-    }
-  }
-
   return (
     <>
       <HeaderWrap>
@@ -74,17 +57,6 @@ export default function LandingMain({ propsData }) {
         )}
         <TeamIntro />
       </Main>
-      <InView onChange={handleGaInview}>
-        <>
-          {/* @ts-ignore */}
-          {({ ref, inView }) => (
-            <QaGaAnchorWrapper ref={ref}>
-              <QaGaAnchor ref={ref} />
-              <QaGaAnchor />
-            </QaGaAnchorWrapper>
-          )}
-        </>
-      </InView>
       <Footer />
     </>
   )
