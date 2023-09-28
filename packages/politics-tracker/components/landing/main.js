@@ -49,41 +49,43 @@ export default function LandingMain({ propsData }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <HeaderWrap>
-        <Header />
-      </HeaderWrap>
-      <Main>
-        <FrontPage
-          // @ts-ignore : fix in the future
-          propsData={propsData}
-        />
-        <How />
-        <Mayor
-          // @ts-ignore
-          propsData={propsData}
-        />
-        <Councilor
-          // @ts-ignore
-          propsData={propsData}
-        />
-        <Credit />
-        {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
-          <Report
-            // @ts-ignore
-            propsData={propsData.postsWithPoliticsTrackerTag}
+      <>
+        <HeaderWrap>
+          <Header />
+        </HeaderWrap>
+        <Main>
+          <FrontPage
+            // @ts-ignore : fix in the future
+            propsData={propsData}
           />
-        )}
-        <TeamIntro />
-      </Main>
-      <InView onChange={handleGaInview}>
-        {({ ref, inView }) => (
-          <QaGaAnchorWrapper ref={ref}>
-            <QaGaAnchor ref={ref} />
-            <QaGaAnchor />
-          </QaGaAnchorWrapper>
-        )}
-      </InView>
-      <Footer />
+          <How />
+          <Mayor
+            // @ts-ignore
+            propsData={propsData}
+          />
+          <Councilor
+            // @ts-ignore
+            propsData={propsData}
+          />
+          <Credit />
+          {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
+            <Report
+              // @ts-ignore
+              propsData={propsData.postsWithPoliticsTrackerTag}
+            />
+          )}
+          <TeamIntro />
+        </Main>
+        <InView onChange={handleGaInview}>
+          {({ ref, inView }) => (
+            <QaGaAnchorWrapper ref={ref}>
+              <QaGaAnchor ref={ref} />
+              <QaGaAnchor />
+            </QaGaAnchorWrapper>
+          )}
+        </InView>
+        <Footer />
+      </>
     </ThemeProvider>
   )
 }
