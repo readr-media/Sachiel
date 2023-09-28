@@ -1,22 +1,23 @@
-import React, { Fragment } from 'react'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
-import moment from 'moment-timezone'
+import axios from 'axios'
 // @ts-ignore: no definition
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
-import axios from 'axios'
-import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
+import moment from 'moment-timezone'
+import React, { Fragment } from 'react'
+
+import CustomHead from '~/components/custom-head'
+import LandingPage from '~/components/landing/main'
 import {
   cmsApiUrl,
   readrCmsApiUrl,
   urlOfJsonForlandingPage,
 } from '~/constants/config'
-import LandingPage from '~/components/landing/main'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
-import CustomHead from '~/components/custom-head'
+import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
 
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
