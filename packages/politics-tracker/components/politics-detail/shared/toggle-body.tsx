@@ -17,7 +17,7 @@ const Wrapper = styled.div<{ isActive: boolean }>`
 
 type ToggleBodyProps = {
   isActive: boolean
-  children: React.ReactNode | React.ReactNode[]
+  children: React.ReactElement | React.ReactElement[]
 }
 export default function ToggleBody({
   isActive,

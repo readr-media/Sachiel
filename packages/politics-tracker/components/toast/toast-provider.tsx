@@ -9,7 +9,7 @@ import Toast from './toast'
 import ToastContext from './toast-context'
 
 type ToastProviderProps = {
-  children: React.ReactNode | React.ReactNode[]
+  children: React.ReactElement | React.ReactElement[]
 }
 type CompleteToastData = Required<ToastData>
 
