@@ -273,7 +273,6 @@ export default function PostContent({
         <Content>
           <DraftRenderer
             rawContentBlock={copyAndSliceDraftBlock(postData?.content, 0, 5)}
-            insertRecommend={postData?.relatedPosts}
             contentType={ValidPostContentType.NORMAL}
           />
 
@@ -286,7 +285,6 @@ export default function PostContent({
                   5,
                   10
                 )}
-                insertRecommend={postData?.relatedPosts}
                 contentType={ValidPostContentType.NORMAL}
               />
             </>
@@ -297,7 +295,6 @@ export default function PostContent({
               <StyledAdsense_AT pageKey={categorySlug} adKey="AT2" />
               <DraftRenderer
                 rawContentBlock={copyAndSliceDraftBlock(postData?.content, 10)}
-                insertRecommend={postData?.relatedPosts}
                 contentType={ValidPostContentType.NORMAL}
               />
             </>
