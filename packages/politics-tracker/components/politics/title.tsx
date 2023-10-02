@@ -22,7 +22,7 @@ type BlockProps = {
   fontSize: number
   lineHeight: number
   customClass: string
-  children: React.ReactElement | React.ReactElement[]
+  children: React.ReactNode
 }
 type SingleLineBlock = Pick<BlockProps, 'content' | 'customClass'>
 type MultipleLineBlock = Pick<

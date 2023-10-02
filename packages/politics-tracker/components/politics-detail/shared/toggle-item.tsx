@@ -6,7 +6,7 @@ import ToggleTitle from '~/components/politics-detail/shared/toggle-title'
 type ToggleItemProps = {
   order: number // map 的 index 數字
   title: string
-  children: React.ReactElement | React.ReactElement[]
+  children: React.ReactNode
 }
 export default function ToggleItem(props: ToggleItemProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.order === 0)
