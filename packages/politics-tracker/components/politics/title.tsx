@@ -120,8 +120,8 @@ type TextConfig = {
 
 export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderWidth: 2,
     unoptimized: true,
   }
