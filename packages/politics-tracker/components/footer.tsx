@@ -1,44 +1,42 @@
-import Image from 'next/future/image'
-
-import Facebook from '~/assets/facebook-rect.svg'
-import Github from '~/assets/github-rect.svg'
-import Instagram from '~/assets/instagram-rect.svg'
-import Twitter from '~/assets/twitter-rect.svg'
+import Facebook from '~/public/icons/facebook-rect.svg'
+import Github from '~/public/icons/github-rect.svg'
+import Instagram from '~/public/icons/instagram-rect.svg'
+import Twitter from '~/public/icons/twitter-rect.svg'
 
 import s from './footer.module.css'
 
 type LinkIcon = {
   alt: string
-  image: any // Use any to avoid conflicts with @svgr/webpack plugin or babel-plugin-inline-react-svg plugin.
+  icon: any // Use any to avoid conflicts with @svgr/webpack plugin or babel-plugin-inline-react-svg plugin.
   link: string
 }
 
 const linkIcons: LinkIcon[] = [
   {
     alt: 'facebook',
-    image: Facebook,
+    icon: <Facebook />,
     link: 'https://www.facebook.com/readr.tw/',
   },
   {
     alt: 'twitter',
-    image: Twitter,
+    icon: <Twitter />,
     link: 'https://twitter.com/readr_news',
   },
   {
     alt: 'instagram',
-    image: Instagram,
+    icon: <Instagram />,
     link: 'https://www.instagram.com/readrteam_daily/',
   },
   {
     alt: 'github',
-    image: Github,
+    icon: <Github />,
     link: 'https://github.com/readr-media/readr-data',
   },
 ]
 
 const iconLinks = linkIcons.map((data) => (
   <a key={data.alt} href={data.link} target="_blank" rel="noopener noreferrer">
-    <Image src={data.image} alt={data.alt} />
+    {data.icon}
   </a>
 ))
 
