@@ -25,7 +25,7 @@ const ContentTitleContainer = styled.div`
  *
  * @param {Object} props
  * @param {string} props.title
- * @param {React.ReactElement | React.ReactElement[]} [props.children]
+ * @param {React.ReactElement} [props.children]
  * @returns {React.ReactElement}
  */
 export default function ContentTitle({ title = 'list title', children }) {
