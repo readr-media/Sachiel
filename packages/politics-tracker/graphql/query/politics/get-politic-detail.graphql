@@ -52,11 +52,12 @@ query GetPoliticsDetail($politicId: ID!) {
       content
       link
     }
-    positionChange(orderBy: { checkDate: asc }) {
+    positionChange(orderBy: { checkDate: desc }) {
       id
       checkDate
       content
       link
+      isChanged
       factcheckPartner {
         id
         name
