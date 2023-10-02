@@ -1,64 +1,55 @@
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
+import DefaultText from '~/components/politics-detail/shared/default-text'
+import ChangedIcon from '~/public/icons/position-changed.svg'
+import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import type { PositionChange } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
-  padding-top: 20px;
-  margin-bottom: 25px;
-  font-weight: 500;
+  padding: 20px 0px 40px;
   font-size: 16px;
   line-height: 1.5;
+`
 
-  li {
-    margin-bottom: 8px;
-    padding-left: 15px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  li:before {
-    content: '';
-    display: inline-block;
-    background-color: #f7ba31;
-    border-radius: 50%;
-    width: 6px;
-    height: 6px;
-    text-align: center;
-    position: absolute;
-    left: 0px;
-    top: 10px;
-  }
-
-  .default-text {
-    text-align: center;
-    color: rgba(15, 45, 53, 0.3);
-    font-size: 18px;
-    line-height: 1.8;
+const PositionList = styled.li`
+  & + * {
+    margin-top: 15px;
   }
 
   ${({ theme }) => theme.breakpoint.md} {
-    li {
-      display: flex;
-    }
+    display: flex;
   }
 `
 
 const Time = styled.span`
-  color: #0f2d35;
-  display: block;
-  margin-bottom: 4px;
+  color: ${({ theme }) => theme.textColor.black};
+  display: inline-block;
+  margin-bottom: 8px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: ${({ theme }) => theme.backgroundColor.landingYellow};
+    border-radius: 50%;
+    margin-right: 8px;
+    margin-bottom: 3px;
+  }
 
   ${({ theme }) => theme.breakpoint.md} {
     min-width: 100px;
-    margin-right: 5px;
+    margin: 0px 14px 0px 0px;
   }
 `
 
-const Content = styled.div`
-  a {
+const ContentBlock = styled.div`
+  .content-text {
     color: ${({ theme }) => theme.textColor.brown};
     display: inline-block;
     word-break: break-all;
+    cursor: pointer;
 
     &:hover {
       text-decoration-line: underline;
@@ -72,9 +63,26 @@ const Content = styled.div`
   }
 
   .fact-partner {
-    color: rgba(15, 45, 53, 0.5);
+    color: ${({ theme }) => theme.textColor.black50};
     font-size: 14px;
     line-height: 16px;
+  }
+`
+
+const IconBlock = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+
+  .changed {
+    color: rgba(178, 128, 13, 1);
+    margin-left: 5px;
+  }
+
+  .consistent {
+    color: rgba(131, 131, 131, 1);
+    margin-left: 5px;
   }
 `
 
@@ -82,34 +90,66 @@ type PositionChangeProps = {
   positions: PositionChange[]
 }
 export default function PositionChange({
-  positions,
+  positions = [],
 }: PositionChangeProps): JSX.Element {
   const positionLists = positions.map((item: PositionChange) => {
     const { id, checkDate, link, content, factcheckPartner } = item
+    const formattedDate = dayjs(checkDate).format('YYYY-MM-DD')
 
     return (
-      <li key={id}>
-        <Time>{checkDate?.slice(0, 10)}</Time>
-        <Content>
-          <a href={link ? link : '/'} target="_blank" rel="noreferrer">
-            {content}
-          </a>
-
-          {factcheckPartner.name && (
-            <p className="fact-partner">查核單位：{factcheckPartner.name}</p>
+      <PositionList key={id}>
+        {checkDate && <Time>{formattedDate}</Time>}
+        <ContentBlock>
+          {content && (
+            <a
+              className="content-text"
+              href={link ? link : '/'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {content}
+            </a>
           )}
-        </Content>
-      </li>
+
+          {factcheckPartner?.name && (
+            <span className="fact-partner">
+              查核單位：{factcheckPartner.name}
+            </span>
+          )}
+        </ContentBlock>
+      </PositionList>
     )
   })
 
   return (
     <Wrapper>
-      {positions.length > 0 ? (
+      {!!positions.length ? (
         <ul>{positionLists}</ul>
       ) : (
-        <div className="default-text">還沒有人新增立場變化...</div>
+        <DefaultText title="立場變化" />
       )}
     </Wrapper>
+  )
+}
+
+export function PositionChangeIcon({
+  positions = [],
+}: PositionChangeProps): JSX.Element {
+  const hasChangedPosition = positions.some((item) => item.isChanged !== false)
+
+  return (
+    <IconBlock>
+      {hasChangedPosition ? (
+        <>
+          <ChangedIcon />
+          <span className="changed"> 立場轉變</span>
+        </>
+      ) : (
+        <>
+          <ConsistentIcon />
+          <span className="consistent"> 立場一致</span>
+        </>
+      )}
+    </IconBlock>
   )
 }

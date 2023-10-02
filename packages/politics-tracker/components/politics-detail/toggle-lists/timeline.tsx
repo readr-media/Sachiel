@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import DefaultText from '~/components/politics-detail/shared/default-text'
+
 const TimeContainer = styled.div`
   padding-top: 20px;
   margin-bottom: 25px;
@@ -59,7 +61,7 @@ const TimeContainer = styled.div`
 type TimeLineProps = {
   infoList: any
 }
-export default function PoliticsList({ infoList }: TimeLineProps): JSX.Element {
+export default function Timeline({ infoList }: TimeLineProps): JSX.Element {
   const info = infoList.map((value: any) => (
     <li key={value.id}>
       <span>{value.eventDate?.substr(0, 10)}</span>
@@ -73,7 +75,7 @@ export default function PoliticsList({ infoList }: TimeLineProps): JSX.Element {
       {infoList.length !== 0 ? (
         <ul>{info}</ul>
       ) : (
-        <div>還沒有人新增相關進度...</div>
+        <DefaultText title="相關進度" />
       )}
     </TimeContainer>
   )
