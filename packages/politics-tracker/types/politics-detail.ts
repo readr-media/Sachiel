@@ -12,25 +12,26 @@ export type PoliticDetail = {
   positionChange: PositionChange[]
 }
 
-export type PoliticAmount = {
-  waiting: number
-  passed: number
-}
-
-export type FactCheckPartner = {
-  id: string
-  name: string
-}
-
+//立場改變
 export type PositionChange = {
   content: string
   checkDate: string
   id: string
   link: string
   isChanged: boolean
-  factcheckPartner: FactCheckPartner
+  factcheckPartner: FactCheckPartner | null
 }
 
+//事實查核
+export type FactCheck = {
+  id: string
+  checkResultType: 'correct' | 'incorrect' | 'partial'
+  content: string
+  link: string
+  factcheckPartner: FactCheckPartner | null
+}
+
+//專家看點
 export type ExpertPoint = {
   avatar: string
   content: string
@@ -42,11 +43,23 @@ export type ExpertPoint = {
   title: string
 }
 
+//相關進度
 export type TimeLine = {
   content: string
   eventData: string
   id: string
   link: string
+}
+
+export type PoliticAmount = {
+  waiting: number
+  passed: number
+}
+
+export type FactCheckPartner = {
+  id: string
+  name: string
+  logo?: string
 }
 
 export type GenericPerson = {
