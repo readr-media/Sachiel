@@ -22,7 +22,7 @@
 }
 .title {
   @apply sub-text;
-  @apply flex-col flex-nowrap md:mx-auto md:mb-2 md:flex md:w-[54px];
+  @apply flex-col flex-nowrap md:mx-auto  md:flex;
 }
 .content {
   @apply main-text overflow-hidden text-ellipsis;
@@ -35,7 +35,7 @@
 .profile-block {
   @apply relative flex  w-full items-center bg-person px-4 py-5 shadow-bottom;
   @apply md:pl-10 md:pr-20;
-  @apply lg:w-1/2 lg:py-0 lg:shadow-bottom-and-right;
+  @apply lg:w-1/2  lg:shadow-bottom-and-right;
 }
 .avatar-large {
   @apply hidden md:inline;
@@ -47,7 +47,7 @@
   @apply flex grow flex-col pl-3;
 }
 .party {
-  @apply mt-2 flex items-center pr-[60px] md:pr-0 lg:mt-0;
+  @apply mt-2 flex items-center pr-[60px] md:pr-0;
 }
 .party-name {
   @apply name;
@@ -63,15 +63,15 @@
   @apply lg:w-1/2;
 }
 .campaign-block {
-  @apply w-full bg-campaign shadow-bottom;
+  @apply w-full bg-campaign py-[12px] shadow-bottom;
   @apply md:w-3/5 md:shadow-bottom-and-right;
 }
 .statistic-block {
   @apply w-1/2  md:h-auto md:w-2/5;
 }
 .already-block {
-  @apply statistic-block bg-complete shadow-bottom-and-right md:w-1/5;
+  @apply statistic-block bg-complete py-[12px] shadow-bottom-and-right md:w-1/5;
 }
 .waiting-block {
-  @apply statistic-block bg-waiting shadow-bottom md:w-1/5;
+  @apply statistic-block bg-waiting py-[12px] shadow-bottom md:w-1/5;
 }
