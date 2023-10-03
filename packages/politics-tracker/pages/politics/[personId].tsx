@@ -404,7 +404,7 @@ const Politics = (props: PoliticsPageProps) => {
       <CustomHead {...headProps} />
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
-        <div className="my-10 lg:my-[60px]">
+        <div className="my-10 lg:my-[40px]">
           <PoliticAmountContext.Provider
             value={{ amount: politicAmounts, setAmount: setAmount }}
           >

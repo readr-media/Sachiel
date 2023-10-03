@@ -1,6 +1,6 @@
 .section-list {
   @apply flex flex-col;
-  width: min(668px, calc(100vw - 24px));
+  width: min(800px, calc(100vw - 24px));
   & + & {
     @apply mt-10;
   }
