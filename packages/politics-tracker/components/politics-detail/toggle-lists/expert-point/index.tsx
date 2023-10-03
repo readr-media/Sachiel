@@ -12,7 +12,7 @@ type ExpertPointProps = {
   experts: ExpertPoint[]
 }
 export default function ExpertPoint({
-  experts,
+  experts = [],
 }: ExpertPointProps): JSX.Element {
   const expertItems = experts.map((value: ExpertPoint, index: number) => (
     <ExpertItem expertItem={value} key={index} />

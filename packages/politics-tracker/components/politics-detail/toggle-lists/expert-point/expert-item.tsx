@@ -6,7 +6,7 @@ import { SOURCE_DELIMITER } from '~/constants/politics'
 import type { ExpertPoint } from '~/types/politics-detail'
 import { generateSourceMeta } from '~/utils/utils'
 
-const ExpertList = styled.li`
+const ListWrapper = styled.li`
   padding: 20px;
   background: ${({ theme }) => theme.backgroundColor.black5};
   border-radius: 20px;
@@ -16,7 +16,7 @@ const ExpertList = styled.li`
   }
 `
 
-const ExpertHeader = styled.div`
+const Header = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
@@ -138,7 +138,7 @@ export default function ExpertItem({
       )
     })
 
-  const pointsText = content.split(SOURCE_DELIMITER).map((item, index) => {
+  const pointText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (
       <p key={index} className="point">
         {item}
@@ -147,8 +147,8 @@ export default function ExpertItem({
   })
 
   return (
-    <ExpertList>
-      <ExpertHeader>
+    <ListWrapper>
+      <Header>
         <ExpertImage>
           <Image
             images={{ original: avatar }}
@@ -162,13 +162,13 @@ export default function ExpertItem({
           {expert && <Name>{expert}</Name>}
           <Title>{title}</Title>
         </div>
-      </ExpertHeader>
+      </Header>
 
       <Content>
         {contributer && <Contributer>資料由 {contributers} 提供</Contributer>}
-        {pointsText}
+        {pointText}
       </Content>
       <RelatedLinks links={link} />
-    </ExpertList>
+    </ListWrapper>
   )
 }
