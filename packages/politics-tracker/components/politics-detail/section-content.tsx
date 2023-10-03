@@ -9,6 +9,7 @@ import PositionChange, {
   PositionChangeIcon,
 } from '~/components/politics-detail/toggle-lists/position-change'
 import TimeLine from '~/components/politics-detail/toggle-lists/timeline'
+import { ELECTION_2024_FEATURE_TOGGLE } from '~/constants/config'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,6 +20,11 @@ const Wrapper = styled.div`
   }
 `
 
+type ToggleItems = {
+  title: string
+  children: React.ReactNode
+  titleChildren?: React.ReactNode
+}
 type SectionContentProps = {
   politicData: any
 }
@@ -36,30 +42,50 @@ export default function SectionContent({
     factCheck,
   } = politicData
 
-  const toggleItems = [
+  let toggleItems: ToggleItems[] = [
     {
       title: '政見細節',
       children: <Detail politic={desc} additional={content} source={source} />,
-    },
-    {
-      title: '立場變化',
-      titleChildren: <PositionChangeIcon positions={positionChange} />,
-      children: <PositionChange positions={positionChange} />,
-    },
-    {
-      title: '事實釐清',
-      children: <FactCheck facts={factCheck} />,
-    },
-    {
-      title: '專家看點',
-      children: <ExpertPoint experts={expertPoint} />,
     },
     {
       title: '相關進度',
       children: <TimeLine infoList={timeline} />,
     },
     { title: '相關爭議', children: <Dispute infoList={dispute} /> },
+    {
+      title: '專家看點',
+      children: <ExpertPoint experts={expertPoint} />,
+    },
   ]
+
+  if (ELECTION_2024_FEATURE_TOGGLE === 'on') {
+    toggleItems = [
+      {
+        title: '政見細節',
+        children: (
+          <Detail politic={desc} additional={content} source={source} />
+        ),
+      },
+      {
+        title: '立場變化',
+        titleChildren: <PositionChangeIcon positions={positionChange} />,
+        children: <PositionChange positions={positionChange} />,
+      },
+      {
+        title: '事實釐清',
+        children: <FactCheck facts={factCheck} />,
+      },
+      {
+        title: '專家看點',
+        children: <ExpertPoint experts={expertPoint} />,
+      },
+      {
+        title: '相關進度',
+        children: <TimeLine infoList={timeline} />,
+      },
+      { title: '相關爭議', children: <Dispute infoList={dispute} /> },
+    ]
+  }
 
   return (
     <Wrapper>
