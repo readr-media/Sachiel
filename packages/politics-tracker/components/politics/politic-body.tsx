@@ -1,14 +1,16 @@
-import type { Politic } from '~/types/politics'
-import Link from 'next/link'
-import { usePersonElection } from './react-context/use-politics'
 import classNames from 'classnames'
-import { PROGRESS } from '~/types/common'
+import Link from 'next/link'
+
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import SourceItem from './source-item'
-import PoliticContent from './politic-content'
+import { PROGRESS } from '~/types/common'
+import type { Politic } from '~/types/politics'
+import { logGAEvent } from '~/utils/analytics'
+
 import ArrowRight from '../icons/arrow-right'
 import s from './politic-body.module.css'
-import { logGAEvent } from '~/utils/analytics'
+import PoliticContent from './politic-content'
+import { usePersonElection } from './react-context/use-politics'
+import SourceItem from './source-item'
 
 type PoliticBodyProps = Politic & { no: number }
 

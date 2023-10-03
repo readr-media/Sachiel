@@ -1,8 +1,7 @@
 import type { DocumentContext } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import CustomHead from '~/components/custom-head'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

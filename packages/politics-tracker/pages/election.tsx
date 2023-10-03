@@ -1,24 +1,25 @@
+// @ts-ignore: no definition
+import ew from '@readr-media/react-election-widgets'
+// @ts-ignore: no definition
+import errors from '@twreporter/errors'
+import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
-import type { ElectionLink } from '~/types/election'
+
+import CustomHead, { type HeadProps } from '~/components/custom-head'
+import DefaultLayout from '~/components/layout/default'
+import Nav, { type LinkMember, NavProps } from '~/components/nav'
+import { cmsApiUrl, env } from '~/constants/config'
+import { districtsMapping, electionTypesMapping } from '~/constants/election'
+import GetElection from '~/graphql/query/election/get-election.graphql'
+import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import type {
   GenericGQLData,
   RawElection,
   RawPersonElection,
 } from '~/types/common'
-import { print } from 'graphql'
-import { fireGqlRequest, electionName } from '~/utils/utils'
-import { cmsApiUrl, env } from '~/constants/config'
-import { districtsMapping, electionTypesMapping } from '~/constants/election'
-// @ts-ignore: no definition
-import errors from '@twreporter/errors'
-// @ts-ignore: no definition
-import ew from '@readr-media/react-election-widgets'
-import DefaultLayout from '~/components/layout/default'
-import Nav, { type LinkMember, NavProps } from '~/components/nav'
-import GetElection from '~/graphql/query/election/get-election.graphql'
-import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
+import type { ElectionLink } from '~/types/election'
 import { logGAEvent } from '~/utils/analytics'
-import CustomHead, { type HeadProps } from '~/components/custom-head'
+import { electionName, fireGqlRequest } from '~/utils/utils'
 
 const DataLoader = ew.VotesComparison.DataLoader
 

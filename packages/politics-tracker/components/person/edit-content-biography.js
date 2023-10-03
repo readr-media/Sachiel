@@ -1,16 +1,18 @@
-import React, { Fragment, useState, useMemo } from 'react'
-import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
-import { SourceInputWrapper } from './edit-source'
-import SourceInput from '../politics/source-input'
+import { print } from 'graphql'
+import React, { Fragment, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import EditSource from './edit-source'
+
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import { logGAEvent } from '~/utils/analytics'
+import { getNewSource, sourcesToString, stringToSources } from '~/utils/utils'
+import { fireGqlRequest } from '~/utils/utils'
+
+import SourceInput from '../politics/source-input'
+import { useToast } from '../toast/use-toast'
 import AddInputButton from './add-input-button'
 import EditSendOrCancel from './edit-send-or-cancel'
-import { print } from 'graphql'
-import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
-import { fireGqlRequest } from '~/utils/utils'
-import { useToast } from '../toast/use-toast'
-import { logGAEvent } from '~/utils/analytics'
+import { SourceInputWrapper } from './edit-source'
+import EditSource from './edit-source'
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;

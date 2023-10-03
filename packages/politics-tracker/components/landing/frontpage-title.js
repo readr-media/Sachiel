@@ -1,6 +1,6 @@
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
-import Image from 'next/image'
 
 //components
 import TitleButton from '~/components/landing/frontpage-button'

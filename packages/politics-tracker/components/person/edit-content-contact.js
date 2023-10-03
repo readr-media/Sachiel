@@ -1,17 +1,19 @@
-import React, { Fragment, useState, useMemo } from 'react'
-import { EditContentItemTitle } from './edit-content-item'
-import { stringToSources, sourcesToString, getNewSource } from '~/utils/utils'
-import SourceInput from '../politics/source-input'
-import { InputWrapperNoLabel } from './edit-content-biography'
-import AddInputButton from './add-input-button'
-import EditSource from './edit-source'
-import EditSendOrCancel from './edit-send-or-cancel'
 import { print } from 'graphql'
-import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
-import { fireGqlRequest } from '~/utils/utils'
-import { useToast } from '~/components/toast/use-toast'
+import React, { Fragment, useMemo, useState } from 'react'
 import styled from 'styled-components'
+
+import { useToast } from '~/components/toast/use-toast'
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import { getNewSource, sourcesToString, stringToSources } from '~/utils/utils'
+import { fireGqlRequest } from '~/utils/utils'
+
+import SourceInput from '../politics/source-input'
+import AddInputButton from './add-input-button'
+import { InputWrapperNoLabel } from './edit-content-biography'
+import { EditContentItemTitle } from './edit-content-item'
+import EditSendOrCancel from './edit-send-or-cancel'
+import EditSource from './edit-source'
 
 const ErrorMessage = styled.div`
   font-size: 14px;

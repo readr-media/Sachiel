@@ -1,17 +1,68 @@
 export type PoliticDetail = {
-  id: string
-  person: Person
-  desc: string
   content: string
+  current_progress: string
+  desc: string
+  dispute: string
+  expertPoint: ExpertPoint[]
+  id: string
+  person: GenericPerson
+  timeline: TimeLine[]
   source: string
   status: string
-  progress: Array<Object>
-  timeline: Array<Object>
-  expertPoint: Array<Object>
-  dispute: string
+  positionChange: PositionChange[]
 }
 
-export type Person = {
+//立場改變
+export type PositionChange = {
+  content: string
+  checkDate: string
+  id: string
+  link: string
+  isChanged: boolean
+  factcheckPartner: FactCheckPartner | null
+}
+
+//事實查核
+export type FactCheck = {
+  id: string
+  checkResultType: 'correct' | 'incorrect' | 'partial'
+  content: string
+  link: string
+  factcheckPartner: FactCheckPartner | null
+}
+
+//專家看點
+export type ExpertPoint = {
+  avatar: string
+  content: string
+  contributer: string
+  expert: string
+  id: string
+  link: string
+  reviewData: string
+  title: string
+}
+
+//相關進度
+export type TimeLine = {
+  content: string
+  eventData: string
+  id: string
+  link: string
+}
+
+export type PoliticAmount = {
+  waiting: number
+  passed: number
+}
+
+export type FactCheckPartner = {
+  id: string
+  name: string
+  logo?: string
+}
+
+export type GenericPerson = {
   id: string
   electoral_district: ElectoralDistrict
   party: Party
@@ -19,8 +70,8 @@ export type Person = {
   person_id: PersonId
   votes_obtained_number: string
   votes_obtained_percentage: string
-  elected: Boolean
-  incumbent: Boolean
+  elected: boolean
+  incumbent: boolean
 }
 
 export type ElectoralDistrict = {

@@ -1,41 +1,41 @@
+// @ts-ignore: no definition
+import errors from '@twreporter/errors'
+import { print } from 'graphql'
+import moment from 'moment'
 import type { GetServerSideProps } from 'next'
+import { useState } from 'react'
+
+import CustomHead, { type HeadProps } from '~/components/custom-head'
+import DefaultLayout from '~/components/layout/default'
+// import Nav from '~/components/politics/nav'
+import Nav, { type NavProps } from '~/components/nav'
+import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
+import SectionList from '~/components/politics/section-list'
+import Title from '~/components/politics/title'
+import { cmsApiUrl } from '~/constants/config'
+import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
+import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import {
+  GenericGQLData,
+  PROGRESS,
+  RawElection,
+  RawPerson,
+  RawPersonElection,
+  RawPolitic,
+  StatusOptionsB,
+} from '~/types/common'
 import type {
   PersonElection,
   PersonOverview,
-  PoliticAmount,
   Politic,
+  PoliticAmount,
 } from '~/types/politics'
 import {
-  GenericGQLData,
-  RawPersonElection,
-  RawPerson,
-  RawPolitic,
-  RawElection,
-  StatusOptionsB,
-  PROGRESS,
-} from '~/types/common'
-
-import CustomHead, { type HeadProps } from '~/components/custom-head'
-import { useState } from 'react'
-import moment from 'moment'
-import { print } from 'graphql'
-import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
-import {
+  electionName,
   fireGqlRequest,
   hasOwnByArray,
   partyName,
-  electionName,
 } from '~/utils/utils'
-import { cmsApiUrl } from '~/constants/config'
-// @ts-ignore: no definition
-import errors from '@twreporter/errors'
-import DefaultLayout from '~/components/layout/default'
-import Title from '~/components/politics/title'
-import SectionList from '~/components/politics/section-list'
-// import Nav from '~/components/politics/nav'
-import Nav, { type NavProps } from '~/components/nav'
-import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 type PoliticsPageProps = {
   titleProps: PersonOverview
   elections: PersonElection[]
@@ -413,7 +413,6 @@ const Politics = (props: PoliticsPageProps) => {
         </div>
         <Nav {...navProps} />
       </main>
-      {/* </Fragment> */}
     </DefaultLayout>
   )
 }

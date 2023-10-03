@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import Sources from './sources'
-import SectionBody from './section-body'
+
+import Sources from '~/components/politics-detail/sources'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 
 const DetailContainer = styled.div`
   padding: 20px 0px;
+
   > li:nth-child(2) {
     padding-top: 30px;
   }
@@ -53,45 +54,34 @@ const DetailList = styled.li`
   }
 `
 
+type PoliticDetailProps = {
+  politic: any
+  additional: any
+  source: any
+}
 export default function PoliticsDetail({
-  // @ts-ignore
   politic,
-  // @ts-ignore
   additional,
-  // @ts-ignore
-  isActive,
-  // @ts-ignore
   source,
-}) {
+}: PoliticDetailProps): JSX.Element {
   return (
-    <SectionBody shouldShowSectionBody={isActive}>
-      <DetailContainer>
+    <DetailContainer>
+      <DetailList>
+        <span>政見</span>
+        {politic.split(SOURCE_DELIMITER).map((item: any) => {
+          return <p key={item}>{item}</p>
+        })}
+      </DetailList>
+
+      {additional !== '' && (
         <DetailList>
-          <span>政見</span>
-          {politic.split(SOURCE_DELIMITER).map(
-            (
-              // @ts-ignore
-              item
-            ) => {
-              return <p key={item}>{item}</p>
-            }
-          )}
+          <span>補充說明</span>
+          {additional.split(SOURCE_DELIMITER).map((item: any) => {
+            return <p key={item}>{item}</p>
+          })}
         </DetailList>
-        {additional !== '' && (
-          <DetailList>
-            <span>補充說明</span>
-            {additional.split(SOURCE_DELIMITER).map(
-              (
-                // @ts-ignore
-                item
-              ) => {
-                return <p key={item}>{item}</p>
-              }
-            )}
-          </DetailList>
-        )}
-        <Sources sources={source} />
-      </DetailContainer>
-    </SectionBody>
+      )}
+      <Sources sources={source} />
+    </DetailContainer>
   )
 }

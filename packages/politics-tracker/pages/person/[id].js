@@ -1,18 +1,16 @@
+import { print } from 'graphql'
 import React from 'react'
 import styled from 'styled-components'
-import { ThemeProvider } from 'styled-components'
-import CustomHead from '~/components/custom-head'
 
-import theme from '~/styles/theme'
-import Title from '~/components/person/title'
-import Section from '~/components/person/section'
-import { cmsApiUrl } from '~/constants/config'
-import { print } from 'graphql'
-import { fireGqlRequest } from '~/utils/utils'
+import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
+import Section from '~/components/person/section'
+import Title from '~/components/person/title'
+import { cmsApiUrl } from '~/constants/config'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
   background-color: #f3f4ff;
@@ -58,16 +56,14 @@ export default function People({ personData, personElectionsData }) {
   return (
     <DefaultLayout>
       <CustomHead {...headProps} />
-      <ThemeProvider theme={theme}>
-        <Main>
-          <Title name={personData.name} image={personData.image} />
-          <Section
-            personData={personData}
-            personElectionsData={personElectionsData}
-          />
-        </Main>
-        <Nav {...navProps} />
-      </ThemeProvider>
+      <Main>
+        <Title name={personData.name} image={personData.image} />
+        <Section
+          personData={personData}
+          personElectionsData={personElectionsData}
+        />
+      </Main>
+      <Nav {...navProps} />
     </DefaultLayout>
   )
 }

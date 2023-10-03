@@ -1,21 +1,21 @@
+import { print } from 'graphql'
+import type { GetServerSideProps } from 'next'
 import React from 'react'
 import styled from 'styled-components'
-import { ThemeProvider } from 'styled-components'
-import theme from '~/styles/theme'
-import CustomHead from '~/components/custom-head'
 
+import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import Title from '~/components/politics/title'
 import Section from '~/components/politics-detail/section'
-import { fireGqlRequest } from '~/utils/utils'
-import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
-import { print } from 'graphql'
 import { ConfigContext } from '~/components/react-context/global'
-import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
+import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
-import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
+import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
+import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import type { PoliticAmount, PoliticDetail } from '~/types/politics-detail'
+import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -27,26 +27,23 @@ const Main = styled.main`
     margin-top: 80px;
   }
 `
-/**
- * @typedef {import('~/components/nav').NavProps } NavProps
- * @returns {React.ReactElement}
- */
-/**
- * @param {Object} props
- * @param {import('../../../types/politics-detail').PoliticDetail} props.politicData
- * @returns {React.ReactElement}
- */
-// @ts-ignore
+
+type Config = {
+  fieldId?: string
+  formId?: string
+}
+type PoliticDetailPageProps = {
+  politicData: PoliticDetail
+  politicAmount: PoliticAmount
+  latestPersonElection: string
+  config: Config
+}
 export default function PoliticsDetail({
   politicData,
-  // @ts-ignore
   politicAmount,
-  // @ts-ignore
   latestPersonElection,
-  // @ts-ignore
   config,
-}) {
-  /** @type {NavProps} */
+}: PoliticDetailPageProps): JSX.Element {
   const navProps = {
     prev: {
       backgroundColor: 'bg-button',
@@ -62,13 +59,11 @@ export default function PoliticsDetail({
     alwaysShowHome: true,
   }
   if (politicData.person.party === null) {
-    // @ts-ignore
-    politicData.person.party = { name: '無黨籍' }
+    politicData.person.party = { name: '無黨籍', image: '' }
   }
 
   //next/head title & description
   const headProps = { title: '', description: '' }
-
   headProps.title = `${politicData.person.person_id.name} - ${politicData.desc}｜READr 政商人物資料庫`
 
   //get election name
@@ -93,37 +88,37 @@ export default function PoliticsDetail({
     <DefaultLayout>
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
-        <ThemeProvider theme={theme}>
-          <Main>
-            <Title
-              id={politicData.person.person_id.id}
-              name={politicData.person.person_id.name}
-              avatar={politicData.person.person_id.image}
-              campaign={latestPersonElection}
-              party={politicData.person.party?.name}
-              partyIcon={politicData.person.party?.image}
-              completed={politicAmount.passed}
-              waiting={politicAmount.waiting}
-            />
-            <Section politicData={politicData}></Section>
-          </Main>
-          <Nav {...navProps} />
-        </ThemeProvider>
+        <Main>
+          <Title
+            id={politicData.person.person_id.id}
+            name={politicData.person.person_id.name}
+            avatar={politicData.person.person_id.image}
+            campaign={latestPersonElection}
+            party={politicData.person.party?.name}
+            partyIcon={politicData.person.party?.image}
+            completed={politicAmount.passed}
+            waiting={politicAmount.waiting}
+          />
+          <Section politicData={politicData} />
+        </Main>
+        <Nav {...navProps} />
       </ConfigContext.Provider>
     </DefaultLayout>
   )
 }
 
-/** @type { import('next').GetServerSideProps } */
-export async function getServerSideProps({ query, res }) {
-  // cache policy
+export const getServerSideProps: GetServerSideProps<
+  PoliticDetailPageProps
+> = async ({ query, res }) => {
   res.setHeader(
     'Cache-Control',
     'public, max-age=600, stale-while-revalidate=60'
   )
 
   const id = query.politicId
+
   try {
+    //get politic detail info by politicId
     const {
       data: { politics },
     } = await fireGqlRequest(
@@ -131,7 +126,7 @@ export async function getServerSideProps({ query, res }) {
       { politicId: id },
       cmsApiUrl
     )
-    if (politics.length === 0) {
+    if (!politics.length) {
       return {
         notFound: true,
       }
@@ -146,7 +141,8 @@ export async function getServerSideProps({ query, res }) {
     )
 
     const rawPersonElection = [...personElections]
-    // @ts-ignore
+
+    //@ts-ignore
     const personElectionIds = []
     rawPersonElection.map((item) => {
       personElectionIds.push(item.id)
@@ -159,20 +155,20 @@ export async function getServerSideProps({ query, res }) {
     const {
       data: { politics: allPoliticList },
     } = await fireGqlRequest(
-      print(GetPolticsRelatedToPersonElections),
-      // @ts-ignore
+      print(GetPoliticsRelatedToPersonElections),
+      //@ts-ignore
       { ids: personElectionIds },
       cmsApiUrl
     )
 
     const passedAmount = allPoliticList.filter(
-      (value) =>
+      (value: any) =>
         value.status === 'verified' &&
         value.reviewed &&
         value.thread_parent === null
     ).length
     const waitingAmount = allPoliticList.filter(
-      (value) => !value.reviewed
+      (value: any) => !value.reviewed
     ).length
 
     //get latest election type this person join ( put in <Title> component)
@@ -195,7 +191,7 @@ export async function getServerSideProps({ query, res }) {
         latestPersonElection:
           personAllElections[personAllElections.length - 1].election.type,
         config: feedbackFormConfig,
-      }, // will be passed to the page component as props
+      },
     }
   } catch (err) {
     console.error(err)

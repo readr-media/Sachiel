@@ -1,17 +1,19 @@
-import { Fragment, useState, useMemo } from 'react'
+import { print } from 'graphql'
+import { Fragment, useMemo, useState } from 'react'
+
+import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
+import { logGAEvent } from '~/utils/analytics'
+import {
+  getNewSource,
+  stringToSources,
+  typedHasOwnProperty,
+} from '~/utils/utils'
+import { fireGqlRequest } from '~/utils/utils'
+
+import { useToast } from '../toast/use-toast'
 import EditContentItem from './edit-content-item'
 import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
-import {
-  stringToSources,
-  getNewSource,
-  typedHasOwnProperty,
-} from '~/utils/utils'
-import { print } from 'graphql'
-import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
-import { fireGqlRequest } from '~/utils/utils'
-import { useToast } from '../toast/use-toast'
-import { logGAEvent } from '~/utils/analytics'
 /** TODO: refactor jsDoc, make it more clear
  * @typedef {Object} EditContentBasic - Basic information of edit field
  * @property {string} name - name , must be unique

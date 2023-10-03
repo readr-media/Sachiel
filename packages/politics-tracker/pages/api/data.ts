@@ -1,6 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { cmsApiUrl } from '~/constants/config'
 
 const timeout = 5000

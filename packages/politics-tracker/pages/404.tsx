@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+
 import DefaultLayout from '~/components/layout/default'
 
 const Custom404: NextPage = () => {

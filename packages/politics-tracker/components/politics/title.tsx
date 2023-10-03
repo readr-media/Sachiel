@@ -1,13 +1,15 @@
-import type { PersonOverview } from '~/types/politics'
-import type { LinkHref } from '~/types/common'
+import classNames from 'classnames'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import useFitText from 'use-fit-text'
-import classNames from 'classnames'
-import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
+
 import Icon from '~/components/icon'
-import s from './title.module.css'
+import type { LinkHref } from '~/types/common'
+import type { PersonOverview } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
+import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
+
+import s from './title.module.css'
 
 const fullConfig = getTailwindConfig()
 

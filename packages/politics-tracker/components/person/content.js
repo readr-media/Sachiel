@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
+import styled from 'styled-components'
 
 import ContentTitle from './content-title'
 import EditButton from './edit-button'
-import styled from 'styled-components'
 const ContentContainer = styled.div`
   padding: 0 0 20px;
 `
