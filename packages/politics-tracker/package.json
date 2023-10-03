@@ -16,6 +16,7 @@
     "axios": "^1.1.2",
     "chinese-numbers-converter": "^2.3.1",
     "classnames": "^2.3.2",
+    "dayjs": "^1.11.10",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.4",
