@@ -46,7 +46,7 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
   const politcGroup = group.map((g) => (
     <section key={g.name} className={s['group-member']}>
       {g.name !== defaultGroupName && (
-        <span className={s['group-title']}>#{g.name}</span>
+        <span className={s['group-title']}>{g.name}</span>
       )}
       <div className={s['politic']}>
         {g.politics.map((p, i) => (

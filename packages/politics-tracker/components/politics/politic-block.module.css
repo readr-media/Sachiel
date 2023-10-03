@@ -1,8 +1,7 @@
 .container {
-  
 }
 .info {
-  @apply py-3 px-5 mb-5 bg-label bg-opacity-5 text-main text-opacity-50 text-[12px] leading-[1.5] font-medium;
+  @apply mb-5 bg-label bg-opacity-5 py-3 px-5 text-[12px] font-medium leading-[1.5] text-main text-opacity-50;
   @apply md:text-[14px];
 }
 .last-update {
@@ -10,8 +9,8 @@
   @apply md:inline md:pr-2;
 }
 .source {
-  @apply inline pt-1 break-all;
-  @apply md:pt-0 md:pl-2 md:border-l md:border-solid md:border-black md:border-opacity-5;
+  @apply inline break-all pt-1;
+  @apply md:border-l md:border-solid md:border-black md:border-opacity-5 md:pt-0 md:pl-2;
 }
 .source-item {
   * + & {
@@ -19,20 +18,18 @@
   }
 }
 a.source-item {
-  &:hover, &:active {
+  &:hover,
+  &:active {
     @apply text-main opacity-100;
     @apply before:text-main before:text-opacity-50;
   }
 }
 .group-container {
-  @apply px-4 md:px-5 flex flex-col gap-y-5 md:gap-y-10;
-}
-.group-member {
-
+  @apply flex flex-col gap-y-5 px-4 md:gap-y-10 md:px-5;
 }
 .group-title {
-  @apply inline-block mb-2 text-main text-[20px] leading-[1.3] font-bold shadow-[0_2px_0_0_#000000] break-all;
-  @apply md:text-[24px];
+  @apply mb-2 inline-block break-all rounded-[32px] bg-[#0F2D35] py-[4px] px-[8px] text-[12px] font-medium leading-[14px] text-white;
+  @apply md:text-[14px] md:leading-[16px];
 }
 .politic {
   @apply flex flex-col gap-y-5 md:gap-y-10;
