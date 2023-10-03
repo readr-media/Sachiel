@@ -1,8 +1,8 @@
 .main-text {
-  @apply font-bold text-title-main md:text-title-main-md;
+  @apply text-[20px] font-bold  md:text-[24px];
 }
 .sub-text {
-  @apply font-bold text-title-sub md:text-title-sub-md;
+  @apply text-[14px] font-medium;
 }
 .single-line-block {
   @apply overflow-hidden text-ellipsis;
@@ -22,20 +22,20 @@
 }
 .title {
   @apply sub-text;
-  @apply md:flex flex-col flex-nowrap md:mb-2 md:w-[54px] md:mx-auto;
+  @apply flex-col flex-nowrap md:mx-auto  md:flex;
 }
 .content {
   @apply main-text overflow-hidden text-ellipsis;
 }
 .main-container {
-  @apply w-screen mt-header flex flex-row flex-wrap text-white;
+  @apply mt-header flex w-screen flex-row flex-wrap text-white;
   @apply md:mt-header-md;
-  @apply lg:h-40 lg:max-h-40 lg:flex-nowrap;
+  @apply lg:flex-nowrap;
 }
 .profile-block {
-  @apply relative flex min-h-[100px] w-full items-center bg-person px-4 py-5 shadow-bottom;
-  @apply md:min-h-[120px] md:pl-10 md:pr-20;
-  @apply lg:h-full lg:w-1/2 lg:py-0 lg:shadow-bottom-and-right;
+  @apply relative flex  w-full items-center bg-person px-4 py-5 shadow-bottom;
+  @apply md:pl-10 md:pr-20;
+  @apply lg:w-1/2  lg:shadow-bottom-and-right;
 }
 .avatar-large {
   @apply hidden md:inline;
@@ -53,9 +53,9 @@
   @apply name;
 }
 .tab {
-  @apply text-[20px] absolute right-0 bottom-0  bg-button px-3 py-2;
+  @apply absolute right-0 bottom-0 bg-button  px-3 py-2 text-[16px];
   @apply font-bold leading-sub text-main shadow-y-and-left;
-  @apply md:text-[24px] md:top-0 md:bottom-auto md:pt-1 md:shadow-bottom-and-left;
+  @apply md:top-0 md:bottom-auto md:pt-1 md:text-[18px] md:shadow-bottom-and-left;
   @apply lg:shadow-bottom-and-x;
 }
 .data-block {
@@ -63,15 +63,15 @@
   @apply lg:w-1/2;
 }
 .campaign-block {
-  @apply min-h-[70px] w-full bg-campaign shadow-bottom;
-  @apply md:min-h-[124px] md:w-1/2 md:shadow-bottom-and-right;
+  @apply w-full bg-campaign py-[12px] shadow-bottom;
+  @apply md:w-3/5 md:shadow-bottom-and-right;
 }
 .statistic-block {
-  @apply h-[70px] w-1/2 md:h-auto md:w-1/4;
+  @apply w-1/2  md:h-auto md:w-2/5;
 }
 .already-block {
-  @apply statistic-block bg-complete shadow-bottom-and-right;
+  @apply statistic-block bg-complete py-[12px] shadow-bottom-and-right md:w-1/5;
 }
 .waiting-block {
-  @apply statistic-block bg-waiting shadow-bottom;
+  @apply statistic-block bg-waiting py-[12px] shadow-bottom md:w-1/5;
 }
