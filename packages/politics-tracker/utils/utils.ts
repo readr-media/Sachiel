@@ -1,13 +1,15 @@
 import type { Config } from 'tailwindcss'
+
 import type { Source } from '~/types/common'
 const resolveConfig = require('tailwindcss/resolveConfig')
-import tailwindConfig from '~/tailwind.config'
 import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
+
 import {
-  SOURCE_DELIMITER,
   SOURCE_DELEMITER_SECONDARY,
+  SOURCE_DELIMITER,
 } from '~/constants/politics'
+import tailwindConfig from '~/tailwind.config'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -183,17 +185,44 @@ function generateSourceMeta(
   }
 }
 
+type FactCheckResult = {
+  name: string
+  status: boolean
+}
+function parseFactCheckType(factCheckType: string): FactCheckResult {
+  let name: string = ''
+  let status: boolean = false
+
+  switch (factCheckType) {
+    case 'correct':
+      name = '正確'
+      status = true
+      break
+    case 'incorrect':
+      name = '錯誤'
+      status = false
+      break
+    case 'partial':
+      name = '片面訊息'
+      status = false
+      break
+  }
+
+  return { name, status }
+}
+
 export {
-  getLineBreaks,
-  getTailwindConfig,
-  isURL,
-  fireGqlRequest,
-  hasOwnByArray,
-  partyName,
   electionName,
-  typedHasOwnProperty,
+  fireGqlRequest,
+  generateSourceMeta,
+  getLineBreaks,
   getNewSource,
+  getTailwindConfig,
+  hasOwnByArray,
+  isURL,
+  parseFactCheckType,
+  partyName,
   sourcesToString,
   stringToSources,
-  generateSourceMeta,
+  typedHasOwnProperty,
 }

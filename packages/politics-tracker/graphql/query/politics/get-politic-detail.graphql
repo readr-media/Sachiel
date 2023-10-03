@@ -63,6 +63,17 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
+    factCheck(orderBy: { checkDate: asc }) {
+      id
+      checkResultType
+      content
+      link
+      factcheckPartner {
+        id
+        logo
+        name
+      }
+    }
     dispute
   }
 }
