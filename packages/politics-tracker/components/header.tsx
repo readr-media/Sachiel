@@ -1,11 +1,10 @@
 import classNames from 'classnames'
-import Image from 'next/future/image'
 import { MouseEventHandler, useEffect, useState } from 'react'
 
-import Facebook from '~/assets/facebook.svg'
-import Line from '~/assets/line.svg'
-import Logo from '~/assets/READr-logo.svg'
-import ShareButton from '~/assets/share-button.svg'
+import Facebook from '~/public/icons/facebook.svg'
+import Line from '~/public/icons/line.svg'
+import Logo from '~/public/icons/READr-logo.svg'
+import ShareButton from '~/public/icons/share-button.svg'
 import { logGAEvent } from '~/utils/analytics'
 
 import s from './header.module.css'
@@ -33,14 +32,14 @@ export default function Header(): JSX.Element {
   const buttonConfigs: ButtonConfig[] = [
     {
       index: 1,
-      icon: Facebook,
+      icon: <Facebook />,
       link: `https://www.facebook.com/share.php?u=${origin}`,
       class: 'translate-y-[55px]',
       click: () => logGAEvent('click', '點擊分享按鈕（臉書）'),
     },
     {
       index: 2,
-      icon: Line,
+      icon: <Line />,
       link: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
         origin
       )}`,
@@ -60,7 +59,7 @@ export default function Header(): JSX.Element {
         rel="noopener noreferrer"
         onClick={cfg.click}
       >
-        <Image src={cfg.icon} alt="" />
+        {cfg.icon}
       </a>
     )
   })
@@ -74,10 +73,10 @@ export default function Header(): JSX.Element {
         rel="noopener noreferrer"
         onClick={() => logGAEvent('click', '點擊 READr LOGO')}
       >
-        <Image src={Logo} alt="READr" width={40} height={40} />
+        <Logo aria-label="READr" className="h-10 w-10" />
       </a>
       <div className={s.button} onClick={toggleShareIcons}>
-        <Image src={ShareButton} alt="分享" width={40} height={40} />
+        <ShareButton aria-label="分享" className="h-10 w-10" />
         {shareButtons}
       </div>
     </header>

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import DefaultText from '~/components/politics-detail/shared/default-text'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
 
@@ -79,7 +80,7 @@ export default function Dispute({ infoList }: DisputeProps): JSX.Element {
       {disputeList.length > 0 ? (
         <ul>{disputeList}</ul>
       ) : (
-        <div>還沒有人新增相關爭議...</div>
+        <DefaultText title="相關爭議" />
       )}
     </DisputeContainer>
   )

@@ -27,6 +27,7 @@ export type PositionChange = {
   checkDate: string
   id: string
   link: string
+  isChanged: boolean
   factcheckPartner: FactCheckPartner
 }
 
