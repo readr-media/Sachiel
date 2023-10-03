@@ -4,6 +4,7 @@ import ToggleItem from '~/components/politics-detail/shared/toggle-item'
 import Detail from '~/components/politics-detail/toggle-lists/detail'
 import Dispute from '~/components/politics-detail/toggle-lists/dispute'
 import ExpertPoint from '~/components/politics-detail/toggle-lists/expert-point/index'
+import FactCheck from '~/components/politics-detail/toggle-lists/fact-check/index'
 import PositionChange, {
   PositionChangeIcon,
 } from '~/components/politics-detail/toggle-lists/position-change'
@@ -32,6 +33,7 @@ export default function SectionContent({
     timeline,
     dispute,
     expertPoint,
+    factCheck,
   } = politicData
 
   const toggleItems = [
@@ -44,10 +46,10 @@ export default function SectionContent({
       titleChildren: <PositionChangeIcon positions={positionChange} />,
       children: <PositionChange positions={positionChange} />,
     },
-    // {
-    //   title: '事實釐清',
-    //   children: <ExpertPoint experts={expertPoint} />,
-    // },
+    {
+      title: '事實釐清',
+      children: <FactCheck facts={factCheck} />,
+    },
     {
       title: '專家看點',
       children: <ExpertPoint experts={expertPoint} />,
