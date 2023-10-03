@@ -1,6 +1,8 @@
-import styled from 'styled-components'
-import ArrowLeft from '~/components/icons/arrow-left'
 import Link from 'next/link'
+import styled from 'styled-components'
+
+import ArrowLeft from '~/components/icons/arrow-left'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 const Title = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
@@ -81,39 +83,24 @@ const TitlePartyInfo = styled.div`
     }
   }
 `
-const Term = styled.span`
-  border: 1px solid #000000;
-  padding: 4px;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 500;
-  span {
-    letter-spacing: 0.05rem;
-  }
-  ${({ theme }) => theme.breakpoint.sm} {
-    font-size: 14px;
-  }
-`
-/**
- * @param {Object} props
- * @param {import('../../types/politics-detail').PoliticDetail} props.politicData
- * @returns {React.ReactElement}
- */
-export default function SectionTitle({ politicData }) {
+
+type SectionTitleProps = {
+  politicData: PoliticDetail
+}
+export default function SectionTitle({
+  politicData,
+}: SectionTitleProps): JSX.Element {
   const election_area = politicData.person.electoral_district.name.substr(0, 3)
   const linkHref = `/politics/${politicData.person.person_id.id}`
 
   //change election_name's year from RepublicYear to Common Era (+1911)
   const rawElectionName = politicData.person.election.name
-  const electionCenturyYear = ChangeYearToCentury(rawElectionName)
+  const electionCenturyYear = changeYearToCentury(rawElectionName)
   const electionWithoutYear = rawElectionName.slice(
     rawElectionName.indexOf('年') + 1
   )
 
-  /**
-   * @param {string} item
-   */
-  function ChangeYearToCentury(item) {
+  function changeYearToCentury(item: string) {
     const rawYear = item.slice(0, item.indexOf('年'))
     const newYear = Number(+rawYear + 1911)
     return newYear

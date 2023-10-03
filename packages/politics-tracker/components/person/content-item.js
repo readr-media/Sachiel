@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
+
 import { stringToSources } from '~/utils/utils'
 const ContentItemContainer = styled.div`
   display: flex;
@@ -45,9 +46,9 @@ const ContentItemEmpty = styled(ContentItemContent)`
 `
 export {
   ContentItemContainer,
-  ContentItemTitle,
   ContentItemContent,
   ContentItemEmpty,
+  ContentItemTitle,
 }
 /**
  * @param {Object} props

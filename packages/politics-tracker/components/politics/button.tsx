@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+
 import s from './button.module.css'
 
 type ButtonProps = {

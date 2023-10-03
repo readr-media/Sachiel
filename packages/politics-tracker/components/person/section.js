@@ -1,9 +1,11 @@
-import styled from 'styled-components'
 import { useState } from 'react'
-import SectionList from './section-list'
-import SectionBodyPersonalFile from './section-body-personal-file'
-import SectionBodyElection from './section-body-election'
+import styled from 'styled-components'
+
 import { logGAEvent } from '~/utils/analytics'
+
+import SectionBodyElection from './section-body-election'
+import SectionBodyPersonalFile from './section-body-personal-file'
+import SectionList from './section-list'
 const SectionContainer = styled.div`
   max-width: 688px;
   margin: 0 auto;

@@ -1,6 +1,7 @@
-import EditSvg from '../icons/edit'
-import styled from 'styled-components'
 import React from 'react'
+import styled from 'styled-components'
+
+import EditSvg from '../icons/edit'
 /**
  * @param {Object} props
  * @param {function} props.onClick

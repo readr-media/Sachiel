@@ -16,7 +16,33 @@ const nextConfig = {
       ssr: true,
     },
   },
-  webpack: (config, options) => {
+
+  webpack: (config, /* eslint-disable-line no-unused-vars */ options) => {
+    // svg files
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      // viewBox is required to resize SVGs with CSS.
+                      // @see https://github.com/svg/svgo/issues/1128
+                      removeViewBox: false,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    })
     // graphql files
     config.module.rules.push({
       test: /\.(graphql|gql)$/,

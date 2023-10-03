@@ -1,11 +1,13 @@
-import type { PersonElection, Politic } from '~/types/politics'
-import { useState } from 'react'
 import classNames from 'classnames'
+import { useState } from 'react'
+
+import type { PersonElection, Politic } from '~/types/politics'
+
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
-import WaitingPoliticBlock from './waiting-politic-block'
 import { PoliticListContext } from './react-context/politics-context'
 import s from './section-body.module.css'
+import WaitingPoliticBlock from './waiting-politic-block'
 
 type SectionBodyProps = Pick<
   PersonElection,

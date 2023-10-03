@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
+
 import { stringToSources } from '~/utils/utils'
+
 import { ContentItemEmpty } from './content-item'
 
 const UnorderedList = styled.ul`
@@ -26,7 +28,7 @@ const ListItem = styled.li`
     background-color: ${({ theme }) => theme.backgroundColor.blue};
   }
 `
-export { UnorderedList, ListItem }
+export { ListItem, UnorderedList }
 
 /**
  *

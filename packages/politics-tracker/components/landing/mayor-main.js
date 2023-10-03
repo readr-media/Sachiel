@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+
 import MayorContent from '~/components/landing/mayor-content'
 
 const MayorContainer = styled.div`

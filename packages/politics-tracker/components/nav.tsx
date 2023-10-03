@@ -1,11 +1,13 @@
-import type { LinkHref } from '~/types/common'
 import classNames from 'classnames'
 import Link from 'next/link'
-import Home from '~/components/icons/home'
+
 import ArrowLeft from '~/components/icons/arrow-left'
 import ArrowRight from '~/components/icons/arrow-right'
-import s from './nav.module.css'
+import Home from '~/components/icons/home'
+import type { LinkHref } from '~/types/common'
 import { logGAEvent } from '~/utils/analytics'
+
+import s from './nav.module.css'
 
 const GALabelMap: Record<string, string> = {
   '/election': '點擊「往前一屆選舉」',

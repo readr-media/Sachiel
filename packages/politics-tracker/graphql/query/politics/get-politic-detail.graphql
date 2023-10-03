@@ -1,33 +1,33 @@
 query GetPoliticsDetail($politicId: ID!) {
-  politics(where: {id: { equals: $politicId }}) {
+  politics(where: { id: { equals: $politicId } }) {
     id
-    person{
+    person {
       votes_obtained_number
       votes_obtained_percentage
       elected
       incumbent
-      id,
-      electoral_district{
-        id,
+      id
+      electoral_district {
+        id
         name
       }
-      party{
-        name,
-        image,
-      },
-      election{
-       name,
-       type,
-       level,
-       status,
-       election_year_year
-       election_year_month
-       election_year_day
-      },
-      person_id{
-        id,
-        name,
-        image,
+      party {
+        name
+        image
+      }
+      election {
+        name
+        type
+        level
+        status
+        election_year_year
+        election_year_month
+        election_year_day
+      }
+      person_id {
+        id
+        name
+        image
       }
     }
     desc
@@ -36,21 +36,43 @@ query GetPoliticsDetail($politicId: ID!) {
     status
     status
     current_progress
-    timeline(orderBy:{eventDate: asc}){
-      id,
-      eventDate,
-      content,
+    timeline(orderBy: { eventDate: asc }) {
+      id
+      eventDate
+      content
       link
     }
-    expertPoint(orderBy:{reviewDate: desc}){
-      id,
-      expert,
-      avatar,
-      contributer,
-      title,
-      reviewDate,
-      content,
-      link,
+    expertPoint(orderBy: { reviewDate: asc }) {
+      id
+      expert
+      avatar
+      contributer
+      title
+      reviewDate
+      content
+      link
+    }
+    positionChange(orderBy: { checkDate: desc }) {
+      id
+      checkDate
+      content
+      link
+      isChanged
+      factcheckPartner {
+        id
+        name
+      }
+    }
+    factCheck(orderBy: { checkDate: asc }) {
+      id
+      checkResultType
+      content
+      link
+      factcheckPartner {
+        id
+        logo
+        name
+      }
     }
     dispute
   }

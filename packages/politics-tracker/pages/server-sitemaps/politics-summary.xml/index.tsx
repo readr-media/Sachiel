@@ -1,13 +1,14 @@
 // dynamic URLs for politics summary pages
-import { getServerSideSitemap, ISitemapField } from 'next-sitemap'
-import { GetServerSideProps } from 'next'
-import { siteUrl, cmsApiUrl } from '~/constants/config'
-import { print } from 'graphql'
-import { fireGqlRequest } from '~/utils/utils'
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
+import { print } from 'graphql'
+import { GetServerSideProps } from 'next'
+import { getServerSideSitemap, ISitemapField } from 'next-sitemap'
+
+import { cmsApiUrl, siteUrl } from '~/constants/config'
 import GetPeople from '~/graphql/query/sitemap/get-people.graphql'
 import { GenericGQLData, RawPerson } from '~/types/common'
+import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const fields: ISitemapField[] = []

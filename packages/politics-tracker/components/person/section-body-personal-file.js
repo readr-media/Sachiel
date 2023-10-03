@@ -1,22 +1,22 @@
+import moment from 'moment'
+import Image from 'next/future/image'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
-import Image from 'next/future/image'
+import { logGAEvent } from '~/utils/analytics'
 
-import ContentItem, { ContentItemEmpty } from './content-item'
-import ProfileImage from './profile-image'
-import SectionBody from './section-body'
 import Content from './content'
-import ContentList from './content-list'
+import ContentItem, { ContentItemEmpty } from './content-item'
 import ContentLink from './content-link'
-import { useMemo, useState } from 'react'
-import moment from 'moment'
+import ContentList from './content-list'
 import EditContentBasic from './edit-content-basic'
 import EditContentBiography from './edit-content-biography'
 import EditContentContact from './edit-content-contact'
+import EditTags from './edit-tags'
+import ProfileImage from './profile-image'
+import SectionBody from './section-body'
 import Sources from './sources'
 import Tag from './tag'
-import EditTags from './edit-tags'
-import { logGAEvent } from '~/utils/analytics'
 const ContentPersonImage = styled(ProfileImage)`
   min-width: 40px;
   min-height: 40px;

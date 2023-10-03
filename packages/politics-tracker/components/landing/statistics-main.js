@@ -1,9 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
 import Image from 'next/image'
-import { typedHasOwnProperty } from '~/utils/utils'
+import React from 'react'
 import CountUp from 'react-countup'
+import styled from 'styled-components'
+
 import { logGAEvent } from '~/utils/analytics'
+import { typedHasOwnProperty } from '~/utils/utils'
 
 const BoardContainer = styled.div`
   width: 100%;

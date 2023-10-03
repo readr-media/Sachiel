@@ -1,5 +1,6 @@
-import type { PoliticAmount, Politic, PersonElection } from '~/types/politics'
 import { createContext } from 'react'
+
+import type { PersonElection, Politic, PoliticAmount } from '~/types/politics'
 
 const PersonElectionContext = createContext<Partial<PersonElection>>({})
 const PoliticAmountContext = createContext<{

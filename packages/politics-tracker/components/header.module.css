@@ -11,9 +11,15 @@
 .link {
   @apply absolute top-0 left-0 transition-all ease-in-out;
 }
+
+.link svg {
+  @apply h-10 w-10;
+}
+
 .link-show {
   @apply link visible duration-200;
 }
+
 .link-hide {
-  @apply link invisible duration-0 translate-y-[45px];
+  @apply link invisible translate-y-[45px] duration-0;
 }

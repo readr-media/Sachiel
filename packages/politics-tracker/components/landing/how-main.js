@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+
 import HowContent from '~/components/landing/how-content'
 
 const HowContainer = styled.div`

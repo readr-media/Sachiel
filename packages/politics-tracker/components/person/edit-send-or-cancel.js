@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import styled from 'styled-components'
-import { EditIcon } from './edit-button'
-import ArrowRight from '../icons/arrow-right'
 import PulseLoader from 'react-spinners/PulseLoader'
+import styled from 'styled-components'
+
+import ArrowRight from '../icons/arrow-right'
+import { EditIcon } from './edit-button'
 const EditSendOrCancelContainer = styled.div`
   display: flex;
   justify-content: space-between;

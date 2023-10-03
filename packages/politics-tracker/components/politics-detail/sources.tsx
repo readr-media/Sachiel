@@ -1,7 +1,9 @@
 import { Fragment, useMemo } from 'react'
 import styled from 'styled-components'
-import SourceItem from '../politics/source-item'
+
 import { stringToSources } from '~/utils/utils'
+
+import SourceItem from '../politics/source-item'
 
 const SourcesContainer = styled.div`
   margin-top: 20px;
@@ -46,16 +48,16 @@ const SourceItemWrap = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0.5rem 0.3rem 0.5rem 0;
+
   * {
     border-left-width: 1px;
   }
 `
-/**
- * @param {Object} props
- * @param {string} [props.sources]
- * @returns
- */
-export default function Sources({ sources }) {
+
+type SourceProps = {
+  sources: any
+}
+export default function Sources({ sources }: SourceProps): JSX.Element {
   const sourceList = useMemo(
     () => (sources ? stringToSources(sources, '\n') : []),
     [sources]

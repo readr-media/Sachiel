@@ -1,7 +1,8 @@
-import SectionBody from './section-body'
-import { UnorderedList, ListItem } from './content-list'
 import styled from 'styled-components'
+
 import ArrowTilt from '../icons/arrow-tilt'
+import { ListItem, UnorderedList } from './content-list'
+import SectionBody from './section-body'
 
 const ElectionItemContainer = styled(ListItem)`
   display: flex;
