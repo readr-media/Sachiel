@@ -11,6 +11,7 @@
   "dependencies": {
     "@readr-media/react-election-widgets": "1.0.2",
     "@readr-media/react-feedback": "3.3.0",
+    "@readr-media/react-image": "^2.2.1",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
     "chinese-numbers-converter": "^2.3.1",
