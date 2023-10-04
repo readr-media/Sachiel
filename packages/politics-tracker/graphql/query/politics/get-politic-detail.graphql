@@ -1,6 +1,13 @@
 query GetPoliticsDetail($politicId: ID!) {
   politics(where: { id: { equals: $politicId } }) {
     id
+    desc
+    content
+    source
+    status
+    current_progress
+    dispute
+    updatedAt
     person {
       votes_obtained_number
       votes_obtained_percentage
@@ -30,12 +37,6 @@ query GetPoliticsDetail($politicId: ID!) {
         image
       }
     }
-    desc
-    content
-    source
-    status
-    status
-    current_progress
     timeline(orderBy: { eventDate: asc }) {
       id
       eventDate
@@ -63,17 +64,28 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    factCheck(orderBy: { checkDate: asc }) {
+    factCheck(orderBy: { checkDate: desc }) {
       id
       checkResultType
       content
       link
       factcheckPartner {
         id
-        logo
+        sLogo
         name
       }
     }
-    dispute
+    repeat(orderBy: { checkDate: desc }) {
+      id
+      checkResultType
+      content
+      link
+      contributer
+      factcheckPartner {
+        id
+        sLogo
+        name
+      }
+    }
   }
 }
