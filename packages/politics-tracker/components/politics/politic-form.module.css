@@ -1,4 +1,4 @@
-@import "./share.css";
+@import './share.css';
 
 .politic {
   @apply flex flex-col gap-y-2;
@@ -15,8 +15,7 @@
 }
 .btn-add-source {
   @apply flex cursor-pointer flex-row flex-nowrap items-center justify-center py-3;
-  @apply text-[16px] leading-[1.8] text-control font-medium;
-  @apply md:text-[18px];
+  @apply text-[16px] font-medium leading-[1.8] text-control;
 
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='rgba(0, 0, 0, 0.1)' stroke-width='1' stroke-dasharray='10%2c 10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
   &:hover {
@@ -24,12 +23,12 @@
   }
 }
 .icon-add-source {
-  @apply w-5 h-5;
+  @apply h-5 w-5;
 }
 .control-group {
   @apply mt-4 flex flex-row flex-nowrap items-center justify-between;
 }
 .cancel {
   @apply cursor-pointer text-[16px] font-medium leading-[1.8] text-default;
-  @apply hover:text-control md:text-[18px];
+  @apply hover:text-control;
 }
