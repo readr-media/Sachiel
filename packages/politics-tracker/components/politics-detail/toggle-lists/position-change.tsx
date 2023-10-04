@@ -1,10 +1,10 @@
-import dayjs from 'dayjs'
 import styled from 'styled-components'
 
-import DefaultText from '~/components/politics-detail/shared/default-text'
+import DefaultText from '~/components/politics-detail/default-text'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import type { PositionChange } from '~/types/politics-detail'
+import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
   padding: 20px 0px 40px;
@@ -94,11 +94,10 @@ export default function PositionChange({
 }: PositionChangeProps): JSX.Element {
   const positionLists = positions.map((item: PositionChange) => {
     const { id, checkDate, link, content, factcheckPartner } = item
-    const formattedDate = dayjs(checkDate).format('YYYY-MM-DD')
 
     return (
       <PositionList key={id}>
-        {checkDate && <Time>{formattedDate}</Time>}
+        {checkDate && <Time>{getFormattedDate(checkDate)}</Time>}
         <ContentBlock>
           {content && (
             <a
