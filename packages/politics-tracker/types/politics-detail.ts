@@ -22,6 +22,16 @@ export type PositionChange = {
   factcheckPartner: FactCheckPartner | null
 }
 
+//相似政見
+export type Repeat = {
+  id: string
+  checkResultType: boolean
+  content: string
+  link: string
+  contributer: string
+  factcheckPartner: FactCheckPartner | null
+}
+
 //事實查核
 export type FactCheck = {
   id: string
@@ -59,7 +69,7 @@ export type PoliticAmount = {
 export type FactCheckPartner = {
   id: string
   name: string
-  logo?: string
+  sLogo?: string //small logo for `politic-detail` page
 }
 
 export type GenericPerson = {

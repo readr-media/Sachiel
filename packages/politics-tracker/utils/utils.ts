@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import type { Config } from 'tailwindcss'
 
 import type { Source } from '~/types/common'
@@ -211,10 +212,18 @@ function parseFactCheckType(factCheckType: string): FactCheckResult {
   return { name, status }
 }
 
+function getFormattedDate(date: string): string | undefined {
+  if (typeof date !== 'string' || !date) return
+
+  const formattedDate = dayjs(date).format('YYYY-MM-DD')
+  return formattedDate
+}
+
 export {
   electionName,
   fireGqlRequest,
   generateSourceMeta,
+  getFormattedDate,
   getLineBreaks,
   getNewSource,
   getTailwindConfig,

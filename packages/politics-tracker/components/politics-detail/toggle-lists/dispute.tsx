@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import DefaultText from '~/components/politics-detail/shared/default-text'
+import DefaultText from '~/components/politics-detail/default-text'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import { generateSourceMeta } from '~/utils/utils'
 

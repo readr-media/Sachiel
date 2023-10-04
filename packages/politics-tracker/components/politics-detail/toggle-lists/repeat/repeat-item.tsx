@@ -5,8 +5,7 @@ import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import CorrectIcon from '~/public/icons/factcheck-correct.svg'
 import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
-import type { FactCheck } from '~/types/politics-detail'
-import { parseFactCheckType } from '~/utils/utils'
+import type { Repeat } from '~/types/politics-detail'
 
 const ListWrapper = styled.li`
   padding: 20px;
@@ -19,12 +18,19 @@ const ListWrapper = styled.li`
 `
 
 const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.borderColor.black10};
+`
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & + * {
+    margin-top: 8px;
+  }
 `
 
 const Content = styled.div`
@@ -71,7 +77,7 @@ const Name = styled.p`
   }
 `
 
-const Title = styled.div`
+const PartnerInfo = styled.div`
   display: flex;
   align-items: center;
 `
@@ -108,13 +114,29 @@ const SubTitle = styled.span`
   }
 `
 
-type FactItemProps = {
-  factItem: FactCheck
-}
-export default function FactItem({ factItem }: FactItemProps): JSX.Element {
-  const { checkResultType, link, content, factcheckPartner } = factItem
+const Provider = styled.div`
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 4px 8px;
+  background: #e8e8e8;
+  color: ${({ theme }) => theme.textColor.black50};
+  letter-spacing: 0.8px;
 
-  const factType = parseFactCheckType(checkResultType)
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 14px;
+  }
+`
+
+type RepeatItemProps = {
+  repeatItem: Repeat
+}
+export default function RepeatItem({
+  repeatItem,
+}: RepeatItemProps): JSX.Element {
+  const { checkResultType, link, content, factcheckPartner, contributer } =
+    repeatItem
+
   const factText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (
       <p key={index} className="point">
@@ -127,25 +149,29 @@ export default function FactItem({ factItem }: FactItemProps): JSX.Element {
     <ListWrapper>
       <Header>
         <Title>
-          <PartnerImage>
-            <Image
-              images={{ original: factcheckPartner?.sLogo }}
-              defaultImage="/images/default-head-photo.png"
-              alt={factcheckPartner?.name}
-              priority={false}
-            />
-          </PartnerImage>
+          <PartnerInfo>
+            <PartnerImage>
+              <Image
+                images={{ original: factcheckPartner?.sLogo }}
+                defaultImage="/images/default-head-photo.png"
+                alt={factcheckPartner?.name}
+                priority={false}
+              />
+            </PartnerImage>
 
-          {factcheckPartner?.name && <Name>{factcheckPartner?.name}</Name>}
+            {factcheckPartner?.name && <Name>{factcheckPartner?.name}</Name>}
+          </PartnerInfo>
+
+          <SubTitle>查核單位</SubTitle>
         </Title>
 
-        <SubTitle>查核單位</SubTitle>
+        {contributer && <Provider>由{contributer}協助提供資料</Provider>}
       </Header>
 
       <Content>
-        <Status status={factType.status}>
-          {factType.status ? <CorrectIcon /> : <IncorrectIcon />}
-          <span>事實釐清：{factType.name}</span>
+        <Status status={checkResultType}>
+          {checkResultType ? <CorrectIcon /> : <IncorrectIcon />}
+          <span>事實釐清：{checkResultType ? '正確' : '錯誤'}</span>
         </Status>
 
         {factText}

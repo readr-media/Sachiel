@@ -9,11 +9,9 @@ const ToggleContainer = styled.div`
   line-height: 1.3;
   letter-spacing: 0.05rem;
   cursor: pointer;
-
   margin: auto;
   padding: 9px 0px 9px 4px;
   box-shadow: inset 0px -2px 0px #000000;
-
   display: flex;
   justify-content: space-between;
   align-items: center;

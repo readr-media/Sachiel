@@ -20,6 +20,7 @@ try {
 let siteUrl: string
 let gaTrackingId: string
 let urlOfJsonForlandingPage: string
+
 switch (env) {
   case 'dev':
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
@@ -40,11 +41,11 @@ switch (env) {
 }
 
 export {
-  env,
-  siteUrl,
   cmsApiUrl,
-  readrCmsApiUrl,
-  gaTrackingId,
-  urlOfJsonForlandingPage,
+  env,
   feedbackFormConfig,
+  gaTrackingId,
+  readrCmsApiUrl,
+  siteUrl,
+  urlOfJsonForlandingPage,
 }
