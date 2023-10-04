@@ -1,7 +1,7 @@
 import Image from '@readr-media/react-image'
 import styled from 'styled-components'
 
-import RelatedLinks from '~/components/politics-detail/shared/related-links'
+import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import type { ExpertPoint } from '~/types/politics-detail'
 import { generateSourceMeta } from '~/utils/utils'
