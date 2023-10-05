@@ -1,8 +1,5 @@
 import styled from 'styled-components'
 
-import DefaultText from '~/components/politics-detail/default-text'
-import ChangedIcon from '~/public/icons/position-changed.svg'
-import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import type { PositionChange } from '~/types/politics-detail'
 import { getFormattedDate } from '~/utils/utils'
 
@@ -69,23 +66,6 @@ const ContentBlock = styled.div`
   }
 `
 
-const IconBlock = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-
-  .changed {
-    color: rgba(178, 128, 13, 1);
-    margin-left: 5px;
-  }
-
-  .consistent {
-    color: rgba(131, 131, 131, 1);
-    margin-left: 5px;
-  }
-`
-
 type PositionChangeProps = {
   positions: PositionChange[]
 }
@@ -103,7 +83,7 @@ export default function PositionChange({
             <a
               className="content-text"
               href={link ? link : '/'}
-              target="_blank"
+              target={link ? '_blank' : '_self'}
               rel="noopener noreferrer"
             >
               {content}
@@ -122,33 +102,7 @@ export default function PositionChange({
 
   return (
     <Wrapper>
-      {!!positions.length ? (
-        <ul>{positionLists}</ul>
-      ) : (
-        <DefaultText title="立場變化" />
-      )}
+      <ul>{positionLists}</ul>
     </Wrapper>
-  )
-}
-
-export function PositionChangeIcon({
-  positions = [],
-}: PositionChangeProps): JSX.Element {
-  const hasChangedPosition = positions.some((item) => item.isChanged !== false)
-
-  return (
-    <IconBlock>
-      {hasChangedPosition ? (
-        <>
-          <ChangedIcon />
-          <span className="changed"> 立場轉變</span>
-        </>
-      ) : (
-        <>
-          <ConsistentIcon />
-          <span className="consistent"> 立場一致</span>
-        </>
-      )}
-    </IconBlock>
   )
 }

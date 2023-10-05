@@ -3,8 +3,6 @@ import styled from 'styled-components'
 
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import CorrectIcon from '~/public/icons/factcheck-correct.svg'
-import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
 import type { Repeat } from '~/types/politics-detail'
 
 const ListWrapper = styled.li`
@@ -82,25 +80,6 @@ const PartnerInfo = styled.div`
   align-items: center;
 `
 
-const Status = styled.div<{ status: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-weight: 500;
-  font-size: 12px;
-  margin-bottom: 12px;
-  color: ${({ theme, status }) =>
-    status ? theme.textColor.green : theme.textColor.red};
-
-  svg {
-    margin-right: 4px;
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    font-size: 14px;
-  }
-`
-
 const SubTitle = styled.span`
   font-size: 12px;
   color: ${({ theme }) => theme.textColor.black50};
@@ -134,8 +113,7 @@ type RepeatItemProps = {
 export default function RepeatItem({
   repeatItem,
 }: RepeatItemProps): JSX.Element {
-  const { checkResultType, link, content, factcheckPartner, contributer } =
-    repeatItem
+  const { link, content, factcheckPartner, contributer } = repeatItem
 
   const factText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (
@@ -158,7 +136,6 @@ export default function RepeatItem({
                 priority={false}
               />
             </PartnerImage>
-
             {factcheckPartner?.name && <Name>{factcheckPartner?.name}</Name>}
           </PartnerInfo>
 
@@ -168,14 +145,7 @@ export default function RepeatItem({
         {contributer && <Provider>由{contributer}協助提供資料</Provider>}
       </Header>
 
-      <Content>
-        <Status status={checkResultType}>
-          {checkResultType ? <CorrectIcon /> : <IncorrectIcon />}
-          <span>事實釐清：{checkResultType ? '正確' : '錯誤'}</span>
-        </Status>
-
-        {factText}
-      </Content>
+      <Content>{factText}</Content>
       <RelatedLinks links={link} />
     </ListWrapper>
   )

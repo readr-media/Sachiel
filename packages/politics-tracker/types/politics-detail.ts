@@ -25,7 +25,6 @@ export type PositionChange = {
 //相似政見
 export type Repeat = {
   id: string
-  checkResultType: boolean
   content: string
   link: string
   contributer: string
@@ -51,6 +50,16 @@ export type ExpertPoint = {
   link: string
   reviewData: string
   title: string
+}
+
+//候選人回應
+export type Response = {
+  id: string
+  content: string
+  responseName: string
+  responsePic: string
+  responseTitle: string
+  link: string
 }
 
 //相關進度
