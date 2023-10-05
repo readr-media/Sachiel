@@ -54,7 +54,7 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    expertPoint(orderBy: { updatedAt: desc }) {
+    expertPoint(orderBy: { createdAt: desc }) {
       id
       expert
       avatar
@@ -64,7 +64,7 @@ query GetPoliticsDetail($politicId: ID!) {
       content
       link
     }
-    factCheck(orderBy: { updatedAt: desc }) {
+    factCheck(orderBy: { createdAt: desc }) {
       id
       checkResultType
       content
@@ -75,7 +75,7 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    repeat(orderBy: { updatedAt: desc }) {
+    repeat(orderBy: { createdAt: desc }) {
       id
       content
       link
@@ -86,7 +86,7 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    response(orderBy: { updatedAt: desc }) {
+    response(orderBy: { createdAt: desc }) {
       id
       content
       responseName
