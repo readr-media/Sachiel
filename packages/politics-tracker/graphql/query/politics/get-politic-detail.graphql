@@ -43,17 +43,7 @@ query GetPoliticsDetail($politicId: ID!) {
       content
       link
     }
-    expertPoint(orderBy: { reviewDate: asc }) {
-      id
-      expert
-      avatar
-      contributer
-      title
-      reviewDate
-      content
-      link
-    }
-    positionChange(orderBy: { checkDate: desc }) {
+    positionChange(orderBy: { checkDate: asc }) {
       id
       checkDate
       content
@@ -64,7 +54,17 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    factCheck(orderBy: { checkDate: desc }) {
+    expertPoint(orderBy: { updatedAt: desc }) {
+      id
+      expert
+      avatar
+      contributer
+      title
+      reviewDate
+      content
+      link
+    }
+    factCheck(orderBy: { updatedAt: desc }) {
       id
       checkResultType
       content
@@ -75,9 +75,8 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    repeat(orderBy: { checkDate: desc }) {
+    repeat(orderBy: { updatedAt: desc }) {
       id
-      checkResultType
       content
       link
       contributer
@@ -86,6 +85,14 @@ query GetPoliticsDetail($politicId: ID!) {
         sLogo
         name
       }
+    }
+    response(orderBy: { updatedAt: desc }) {
+      id
+      content
+      responseName
+      responsePic
+      responseTitle
+      link
     }
   }
 }

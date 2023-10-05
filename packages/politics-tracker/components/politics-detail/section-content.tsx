@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import ToggleItem from '~/components/politics-detail/shared/toggle-item'
 import Detail from '~/components/politics-detail/toggle-lists/detail'
 import Dispute from '~/components/politics-detail/toggle-lists/dispute'
-import ExpertPoint from '~/components/politics-detail/toggle-lists/expert-point/index'
-import FactCheck from '~/components/politics-detail/toggle-lists/fact-check/index'
-import PositionChange, {
-  PositionChangeIcon,
-} from '~/components/politics-detail/toggle-lists/position-change'
-import Repeat from '~/components/politics-detail/toggle-lists/repeat/index'
+import ExpertPoint from '~/components/politics-detail/toggle-lists/expert-point'
+import FactCheck from '~/components/politics-detail/toggle-lists/fact-check'
+import PositionChange from '~/components/politics-detail/toggle-lists/position-change'
+import PositionChangeIcon from '~/components/politics-detail/toggle-lists/position-change/position-icon'
+import Repeat from '~/components/politics-detail/toggle-lists/repeat'
+import Response from '~/components/politics-detail/toggle-lists/response'
 import TimeLine from '~/components/politics-detail/toggle-lists/timeline'
 
 const Wrapper = styled.div`
@@ -55,6 +55,7 @@ export default function SectionContent({
     factCheck,
     updatedAt,
     repeat,
+    response,
   } = politicData
 
   const toggleItems: ToggleItems[] = [
@@ -82,6 +83,11 @@ export default function SectionContent({
     {
       title: '相似政見',
       children: <Repeat repeats={repeat} />,
+      show: Boolean(repeat.length),
+    },
+    {
+      title: '候選人回應',
+      children: <Response responses={response} />,
       show: Boolean(repeat.length),
     },
     {
