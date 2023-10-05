@@ -55,12 +55,12 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <div className={s['content']}>
           <PoliticContent>{props.desc}</PoliticContent>
         </div>
-        <div className={s['source-group']}>
+        {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
             <span>來源</span>
           </div>
           <div className={s['source-list']}>{sourceList}</div>
-        </div>
+        </div> */}
         <div className={s['control-group']}>
           <Link
             href={{
