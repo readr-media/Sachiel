@@ -12,6 +12,16 @@ export type PoliticDetail = {
   positionChange: PositionChange[]
 }
 
+export type PersonElectionTerm = {
+  id: string
+  start_date_day: string
+  start_date_month: string
+  start_date_year: string
+  end_date_day: string
+  end_date_month: string
+  end_date_year: string
+}
+
 //立場改變
 export type PositionChange = {
   content: string
