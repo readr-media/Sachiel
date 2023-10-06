@@ -43,6 +43,71 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
+export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
+  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
+    waiting: props.titleProps.waiting,
+    completed: props.titleProps.completed,
+  })
+
+  function setAmount(amount: PoliticAmount) {
+    setPoliticAmounts(amount)
+  }
+
+  const navProps: NavProps = {
+    prev: {
+      backgroundColor: 'bg-person',
+      content: '回個人資訊',
+      href: {
+        pathname: '/person/[id]',
+        query: {
+          id: props.person.id,
+        },
+      },
+    },
+    next: {
+      backgroundColor: 'bg-campaign',
+      content: props.latestElection.name,
+      href: {
+        pathname: '/election',
+        query: {
+          year: props.latestElection.year,
+          area: props.latestElection.electionArea,
+          type: props.latestElection.electionType,
+        },
+      },
+    },
+    alwaysShowHome: true,
+  }
+
+  const sections = props.elections.map((e, index) => (
+    <SectionList key={e.id} order={index} {...e} />
+  ))
+
+  const headProps: HeadProps = {
+    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
+    description: `${props.titleProps.name}參選紀錄及相關政見`,
+  }
+
+  return (
+    <DefaultLayout>
+      <CustomHead {...headProps} />
+      <main className="flex w-screen flex-col items-center bg-politics">
+        <Title {...props.titleProps} {...politicAmounts} />
+        <div className="my-10 lg:my-[40px]">
+          <PoliticAmountContext.Provider
+            value={{ amount: politicAmounts, setAmount: setAmount }}
+          >
+            {sections}
+          </PoliticAmountContext.Provider>
+        </div>
+        <Nav {...navProps} />
+      </main>
+    </DefaultLayout>
+  )
+}
+
+// Get titleProps, elections, latestElection and Person
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
 > = async ({ query, res }) => {
@@ -353,68 +418,3 @@ export const getServerSideProps: GetServerSideProps<
     }
   }
 }
-
-const Politics = (props: PoliticsPageProps) => {
-  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
-    waiting: props.titleProps.waiting,
-    completed: props.titleProps.completed,
-  })
-
-  function setAmount(amount: PoliticAmount) {
-    setPoliticAmounts(amount)
-  }
-
-  const navProps: NavProps = {
-    prev: {
-      backgroundColor: 'bg-person',
-      content: '回個人資訊',
-      href: {
-        pathname: '/person/[id]',
-        query: {
-          id: props.person.id,
-        },
-      },
-    },
-    next: {
-      backgroundColor: 'bg-campaign',
-      content: props.latestElection.name,
-      href: {
-        pathname: '/election',
-        query: {
-          year: props.latestElection.year,
-          area: props.latestElection.electionArea,
-          type: props.latestElection.electionType,
-        },
-      },
-    },
-    alwaysShowHome: true,
-  }
-
-  const sections = props.elections.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} />
-  ))
-
-  const headProps: HeadProps = {
-    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
-    description: `${props.titleProps.name}參選紀錄及相關政見`,
-  }
-
-  return (
-    <DefaultLayout>
-      <CustomHead {...headProps} />
-      <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} {...politicAmounts} />
-        <div className="my-10 lg:my-[40px]">
-          <PoliticAmountContext.Provider
-            value={{ amount: politicAmounts, setAmount: setAmount }}
-          >
-            {sections}
-          </PoliticAmountContext.Provider>
-        </div>
-        <Nav {...navProps} />
-      </main>
-    </DefaultLayout>
-  )
-}
-
-export default Politics
