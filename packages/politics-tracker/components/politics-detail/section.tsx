@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
-import type { PoliticDetail } from '~/types/politics-detail'
+import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -31,8 +31,12 @@ const SectionContainer = styled.div`
 
 type SectionProps = {
   politicData: PoliticDetail
+  personOrganization: PersonElectionTerm
 }
-export default function Section({ politicData }: SectionProps): JSX.Element {
+export default function Section({
+  politicData,
+  personOrganization,
+}: SectionProps): JSX.Element {
   // 2024 選舉版本移除，改為心情留言，此塊暫時註解
   // const router = useRouter()
   // const config = useConfig()
@@ -87,7 +91,10 @@ export default function Section({ politicData }: SectionProps): JSX.Element {
   return (
     <SectionContainer>
       <div>
-        <SectionTitle politicData={politicData} />
+        <SectionTitle
+          politicData={politicData}
+          personOrganization={personOrganization}
+        />
         {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
         <SectionContent politicData={politicData} />
 

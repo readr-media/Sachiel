@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import ArrowLeft from '~/components/icons/arrow-left'
-import type { PoliticDetail } from '~/types/politics-detail'
+import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
 const Header = styled.div`
   box-shadow: inset 0px -4px 0px rgba(0, 0, 0, 1);
@@ -115,13 +115,15 @@ const ElectionTerm = styled.div`
 
 type SectionTitleProps = {
   politicData: PoliticDetail
+  personOrganization: PersonElectionTerm
 }
 export default function SectionTitle({
   politicData,
+  personOrganization,
 }: SectionTitleProps): JSX.Element {
   const { person } = politicData
   const { person_id, election, electoral_district, party, elected } = person
-  const election_area = electoral_district.name.slice(0, 3)
+  const election_area = electoral_district?.name.slice(0, 3)
   const linkHref = `/politics/${person_id.id}`
 
   //change election_name's year from RepublicYear to Common Era (+1911)
@@ -136,6 +138,21 @@ export default function SectionTitle({
     const newYear = Number(+rawYear + 1911)
     return newYear
   }
+
+  //election term
+  const {
+    start_date_day,
+    start_date_month,
+    start_date_year,
+    end_date_day,
+    end_date_month,
+    end_date_year,
+  } = personOrganization
+
+  const termStart = `${start_date_year}-${start_date_month}-${start_date_day}`
+  const termEnd = `${end_date_year}-${end_date_month}-${end_date_day}`
+
+  const shouldShowTerm = elected && Object.keys(personOrganization).length !== 0
 
   return (
     <Link href={linkHref}>
@@ -160,8 +177,10 @@ export default function SectionTitle({
               <span>{party?.name || '無黨籍'}</span>
             </PartyInfo>
 
-            {elected && (
-              <ElectionTerm>任期 2022-12-29 ~ 2026-12-27</ElectionTerm>
+            {shouldShowTerm && (
+              <ElectionTerm>
+                任期 {termStart} ~ {termEnd}
+              </ElectionTerm>
             )}
           </SubTitle>
         </div>
