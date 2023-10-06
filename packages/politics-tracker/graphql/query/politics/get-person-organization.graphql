@@ -1,0 +1,11 @@
+query GetPersonOrganization($electionId: ID!) {
+  personOrganizations(where: { election: { id: { equals: $electionId } } }) {
+    id
+    start_date_day
+    start_date_month
+    start_date_year
+    end_date_day
+    end_date_month
+    end_date_year
+  }
+}

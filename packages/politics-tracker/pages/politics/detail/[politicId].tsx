@@ -11,10 +11,15 @@ import Section from '~/components/politics-detail/section'
 import { ConfigContext } from '~/components/react-context/global'
 import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import type { PoliticAmount, PoliticDetail } from '~/types/politics-detail'
+import type {
+  PersonElectionTerm,
+  PoliticAmount,
+  PoliticDetail,
+} from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
@@ -37,12 +42,14 @@ type PoliticDetailPageProps = {
   politicAmount: PoliticAmount
   latestPersonElection: string
   config: Config
+  personOrganization: PersonElectionTerm
 }
 export default function PoliticsDetail({
   politicData,
   politicAmount,
   latestPersonElection,
   config,
+  personOrganization,
 }: PoliticDetailPageProps): JSX.Element {
   const navProps = {
     prev: {
@@ -76,7 +83,7 @@ export default function PoliticsDetail({
   if (politicData.person.election.level === '地方選舉' || 'local') {
     headProps.description = `${politicData.person.person_id.name}在${
       politicData.person.election.election_year_year
-    }${politicData.person.electoral_district.name.slice(
+    }${politicData.person.electoral_district?.name.slice(
       0,
       3
     )}${electionWithoutYear}提出的政見：${politicData.desc}`
@@ -99,7 +106,10 @@ export default function PoliticsDetail({
             completed={politicAmount.passed}
             waiting={politicAmount.waiting}
           />
-          <Section politicData={politicData} />
+          <Section
+            politicData={politicData}
+            personOrganization={personOrganization}
+          />
         </Main>
         <Nav {...navProps} />
       </ConfigContext.Provider>
@@ -131,6 +141,7 @@ export const getServerSideProps: GetServerSideProps<
         notFound: true,
       }
     }
+
     //get all personElections ID this person join
     const {
       data: { personElections },
@@ -181,8 +192,18 @@ export const getServerSideProps: GetServerSideProps<
       cmsApiUrl
     )
 
+    //get election term by person id
+    const {
+      data: { personOrganizations: personOrganization },
+    } = await fireGqlRequest(
+      print(GetPersonOrganization),
+      { electionId: politics[0]?.person?.id },
+      cmsApiUrl
+    )
+
     return {
       props: {
+        personOrganization: personOrganization[0] || {},
         politicData: politics[0],
         politicAmount: {
           passed: passedAmount,
