@@ -9,6 +9,7 @@ import { logGAEvent } from '~/utils/analytics'
 import ArrowRight from '../icons/arrow-right'
 import s from './politic-body.module.css'
 import PoliticContent from './politic-content'
+import FactCheckAbstract from './politic-fact-check'
 import { usePersonElection } from './react-context/use-politics'
 import SourceItem from './source-item'
 
@@ -55,6 +56,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <div className={s['content']}>
           <PoliticContent>{props.desc}</PoliticContent>
         </div>
+        <FactCheckAbstract />
         {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
             <span>來源</span>

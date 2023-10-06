@@ -84,6 +84,8 @@ export default function Politics(props: PoliticsPageProps) {
     <SectionList key={e.id} order={index} {...e} />
   ))
 
+  console.log(sections)
+
   const headProps: HeadProps = {
     title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
     description: `${props.titleProps.name}參選紀錄及相關政見`,
