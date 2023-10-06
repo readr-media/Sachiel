@@ -9,6 +9,7 @@ query GetPoliticsDetail($politicId: ID!) {
     dispute
     updatedAt
     person {
+      id
       votes_obtained_number
       votes_obtained_percentage
       elected
