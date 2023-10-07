@@ -18,7 +18,7 @@ export type Politic = {
   desc: string
   source: string
   content: string
-  progess?: `${PROGRESS}`
+  progress?: `${PROGRESS}`
   tagId: string | null
   tagName: string | null
   createdAt: string | null

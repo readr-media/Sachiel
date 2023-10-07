@@ -25,7 +25,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const personElection = usePersonElection()
 
   const status = personElection.elected
-    ? props.progess ?? PROGRESS.NOT_START
+    ? props.progress ?? PROGRESS.NOT_START
     : 'failed'
   const statusStyle = classNames(s['status'], s[status])
 
