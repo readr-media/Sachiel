@@ -14,7 +14,7 @@ import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 import {
   GenericGQLData,
   PROGRESS,
@@ -170,8 +170,6 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
-      console.log({ personElections })
-
       const now = moment()
 
       // sorted by election date
@@ -262,7 +260,7 @@ export const getServerSideProps: GetServerSideProps<
       // get related politics
       const rawData: GenericGQLData<RawPolitic[], 'politics'> =
         await fireGqlRequest(
-          print(GetPolticsRelatedToPersonElections),
+          print(GetPoliticsRelatedToPersonElections),
           {
             ids: personElectionIds,
           },
@@ -274,10 +272,10 @@ export const getServerSideProps: GetServerSideProps<
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
           new Error(
-            'Errors returned in `GetPolticsRelatedToPersonElections` query'
+            'Errors returned in `GetPoliticsRelatedToPersonElections` query'
           ),
           'GraphQLError',
-          'failed to complete `GetPolticsRelatedToPersonElections`',
+          'failed to complete `GetPoliticsRelatedToPersonElections`',
           { errors: gqlErrors }
         )
 
