@@ -29,6 +29,7 @@ import type {
   PersonOverview,
   Politic,
   PoliticAmount,
+  PositionChange,
 } from '~/types/politics'
 import {
   electionName,
@@ -283,6 +284,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const politicList = rawData.data?.politics || []
+      console.log({ politicList })
       const politicGroup: Record<
         string,
         {
@@ -325,6 +327,7 @@ export const getServerSideProps: GetServerSideProps<
             tagName: null,
             createdAt: String(politic.createdAt),
             updatedAt: politic.updatedAt ?? null,
+            positionChange: [],
           })
         }
       }
@@ -334,6 +337,16 @@ export const getServerSideProps: GetServerSideProps<
       ).map((key) => politicGroup[key].politic)
       for (const politic of verifiedLatestPoliticList) {
         const eId = politic.person?.election?.id as string
+
+        let positionChangeData: PositionChange[] = []
+
+        // @ts-ignore
+        positionChangeData = politic?.positionChange?.map((change) => ({
+          isChanged: change.isChanged,
+          positionChangeSummary: change.positionChangeSummary,
+          factcheckPartner: change.factcheckPartner?.name || null,
+        }))
+
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
@@ -344,6 +357,7 @@ export const getServerSideProps: GetServerSideProps<
           tagName: politic.tag?.name ?? null,
           createdAt: String(politic.createdAt),
           updatedAt: politic.updatedAt ?? null,
+          positionChange: positionChangeData,
         })
       }
 

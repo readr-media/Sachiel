@@ -25,5 +25,12 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       id
       name
     }
+    positionChange {
+      isChanged
+      positionChangeSummary
+      factcheckPartner {
+        name
+      }
+    }
   }
 }
