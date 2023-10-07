@@ -42,4 +42,5 @@ export type PersonElection = {
   lastUpdate: string | null
   politics: Politic[]
   waitingPolitics: Politic[]
+  hidePoliticDetail: string | null
 }

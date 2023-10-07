@@ -170,6 +170,8 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
+      console.log({ personElections })
+
       const now = moment()
 
       // sorted by election date
@@ -210,6 +212,7 @@ export const getServerSideProps: GetServerSideProps<
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
+              hidePoliticDetail: election.hidePoliticDetail ?? null,
             }
           }
 
