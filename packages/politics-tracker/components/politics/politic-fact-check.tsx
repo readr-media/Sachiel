@@ -55,10 +55,14 @@ export default function FactCheckAbstract({
   positionChange,
   factCheck,
 }: FactCheckAbstractProps): JSX.Element {
-  console.log({ factCheck })
-
   // Check if at least one isChanged value is true
   const positionChanged = positionChange.some((change) => change.isChanged)
+
+  // Check if all factCheckCorrect is true
+  const factCheckCorrect = factCheck.every(
+    (item) => item.checkResultType === 'correct'
+  )
+  console.log({ factCheckCorrect })
 
   return (
     <Wrapper>
@@ -88,11 +92,24 @@ export default function FactCheckAbstract({
         </CheckAbstract>
       )}
 
+      {/* 事實釐清*/}
       <CheckAbstract>
-        <CorrectIcon />
-        <span className="fact-correct">事實釐清</span>
-        <IncorrectIcon />
-        <span className="fact-incorrect">事實釐清</span>
+        {factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}
+
+        <span className={factCheckCorrect ? 'fact-correct' : 'fact-incorrect'}>
+          事實釐清：
+          {factCheck.length > 1
+            ? factCheck.map((fact, index) => (
+                <span key={index}>
+                  {fact.factCheckSummary}
+                  {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                  {index < factCheck.length - 1 ? '、' : ''}
+                </span>
+              ))
+            : factCheck.length === 1
+            ? factCheck[0]?.factCheckSummary
+            : ''}
+        </span>
       </CheckAbstract>
 
       <CheckAbstract>
