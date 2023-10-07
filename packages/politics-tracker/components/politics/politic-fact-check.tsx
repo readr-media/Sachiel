@@ -6,6 +6,11 @@ import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
+import type { PositionChange } from '~/types/politics'
+
+interface FactCheckAbstractProps {
+  positionChange: PositionChange[] // Update the prop name and type
+}
 
 const Wrapper = styled.div`
   padding: 12px 0;
@@ -45,15 +50,39 @@ const CheckAbstract = styled.div`
   }
 `
 
-export default function FactCheckAbstract(): JSX.Element {
+export default function FactCheckAbstract({
+  positionChange,
+}: FactCheckAbstractProps): JSX.Element {
+  // Check if at least one isChanged value is true
+  const positionChanged = positionChange.some((change) => change.isChanged)
+
   return (
     <Wrapper>
-      <CheckAbstract>
-        <ChangedIcon />
-        <span className="position-changed">立場變化</span>
-        <ConsistentIcon />
-        <span className="position-consistent">立場變化</span>
-      </CheckAbstract>
+      {/* 立場變化 */}
+      {positionChange.length >= 1 && (
+        <CheckAbstract>
+          {positionChanged ? <ChangedIcon /> : <ConsistentIcon />}
+
+          <span
+            className={
+              positionChanged ? 'position-changed' : 'position-consistent'
+            }
+          >
+            立場變化：
+            {positionChange.length > 1
+              ? positionChange.map((change, index) => (
+                  <span key={index}>
+                    {change.positionChangeSummary}
+                    {change.factcheckPartner && ` (${change.factcheckPartner})`}
+                    {index < positionChange.length - 1 ? '、' : ''}
+                  </span>
+                ))
+              : positionChange.length === 1
+              ? positionChange[0]?.positionChangeSummary
+              : ''}
+          </span>
+        </CheckAbstract>
+      )}
 
       <CheckAbstract>
         <CorrectIcon />
