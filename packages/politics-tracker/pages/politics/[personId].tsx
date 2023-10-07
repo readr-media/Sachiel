@@ -25,6 +25,7 @@ import {
   StatusOptionsB,
 } from '~/types/common'
 import type {
+  FactCheck,
   PersonElection,
   PersonOverview,
   Politic,
@@ -328,6 +329,7 @@ export const getServerSideProps: GetServerSideProps<
             createdAt: String(politic.createdAt),
             updatedAt: politic.updatedAt ?? null,
             positionChange: [],
+            factCheck: [],
           })
         }
       }
@@ -339,12 +341,19 @@ export const getServerSideProps: GetServerSideProps<
         const eId = politic.person?.election?.id as string
 
         let positionChangeData: PositionChange[] = []
-
         // @ts-ignore
         positionChangeData = politic?.positionChange?.map((change) => ({
           isChanged: change.isChanged,
           positionChangeSummary: change.positionChangeSummary,
-          factcheckPartner: change.factcheckPartner?.name || null,
+          factcheckPartner: change.factcheckPartner?.name ?? null,
+        }))
+
+        let factCheckData: FactCheck[] = []
+        // @ts-ignore
+        factCheckData = politic?.factCheck?.map((fact) => ({
+          factCheckSummary: fact.factCheckSummary,
+          checkResultType: fact.checkResultType,
+          factcheckPartner: fact.factcheckPartner?.name ?? null,
         }))
 
         electionMap[eId].politics.push({
@@ -358,6 +367,7 @@ export const getServerSideProps: GetServerSideProps<
           createdAt: String(politic.createdAt),
           updatedAt: politic.updatedAt ?? null,
           positionChange: positionChangeData,
+          factCheck: factCheckData,
         })
       }
 

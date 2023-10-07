@@ -6,10 +6,11 @@ import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
-import type { PositionChange } from '~/types/politics'
+import type { FactCheck, PositionChange } from '~/types/politics'
 
 interface FactCheckAbstractProps {
-  positionChange: PositionChange[] // Update the prop name and type
+  positionChange: PositionChange[]
+  factCheck: FactCheck[]
 }
 
 const Wrapper = styled.div`
@@ -52,7 +53,10 @@ const CheckAbstract = styled.div`
 
 export default function FactCheckAbstract({
   positionChange,
+  factCheck,
 }: FactCheckAbstractProps): JSX.Element {
+  console.log({ factCheck })
+
   // Check if at least one isChanged value is true
   const positionChanged = positionChange.some((change) => change.isChanged)
 

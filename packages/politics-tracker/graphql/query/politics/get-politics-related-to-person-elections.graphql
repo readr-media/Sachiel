@@ -32,5 +32,12 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
         name
       }
     }
+    factCheck {
+      factCheckSummary
+      checkResultType
+      factcheckPartner {
+        name
+      }
+    }
   }
 }

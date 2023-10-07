@@ -25,6 +25,7 @@ export type Politic = {
   updatedAt: string | null
   error?: string
   positionChange: PositionChange[]
+  factCheck: FactCheck[]
 }
 
 //立場改變
@@ -35,8 +36,14 @@ export type PositionChange = {
 }
 
 export type FactCheckPartner = {
-  id: string
   name: string
+}
+
+//事實查核
+export type FactCheck = {
+  factCheckSummary: string
+  checkResultType: string
+  factcheckPartner: FactCheckPartner | null
 }
 
 export type PersonElection = {
