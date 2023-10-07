@@ -32,6 +32,7 @@ import type {
   Politic,
   PoliticAmount,
   PositionChange,
+  Repeat,
 } from '~/types/politics'
 import {
   electionName,
@@ -332,6 +333,7 @@ export const getServerSideProps: GetServerSideProps<
             positionChange: [],
             factCheck: [],
             expertPoint: [],
+            repeat: [],
           })
         }
       }
@@ -365,6 +367,13 @@ export const getServerSideProps: GetServerSideProps<
           expert: point.expert ?? null,
         }))
 
+        let repeatData: Repeat[] = []
+        // @ts-ignore
+        repeatData = politic?.repeat?.map((re) => ({
+          content: re.content,
+          factcheckPartner: re.factcheckPartner?.name ?? null,
+        }))
+
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
@@ -378,6 +387,7 @@ export const getServerSideProps: GetServerSideProps<
           positionChange: positionChangeData,
           factCheck: factCheckData,
           expertPoint: expertPointData,
+          repeat: repeatData,
         })
       }
 

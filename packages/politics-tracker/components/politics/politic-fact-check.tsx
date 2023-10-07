@@ -6,12 +6,18 @@ import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
-import type { ExpertPoint, FactCheck, PositionChange } from '~/types/politics'
+import type {
+  ExpertPoint,
+  FactCheck,
+  PositionChange,
+  Repeat,
+} from '~/types/politics'
 
 interface FactCheckAbstractProps {
   positionChange: PositionChange[]
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
+  repeat: Repeat[]
 }
 
 const Wrapper = styled.div`
@@ -56,15 +62,16 @@ export default function FactCheckAbstract({
   positionChange,
   factCheck,
   expertPoint,
+  repeat,
 }: FactCheckAbstractProps): JSX.Element {
   // Check if at least one isChanged value is true
-  const positionChanged = positionChange.some((change) => change.isChanged)
+  const positionChanged = positionChange?.some((change) => change.isChanged)
 
   // Check if all factCheckCorrect is true
-  const factCheckCorrect = factCheck.every(
+  const factCheckCorrect = factCheck?.every(
     (item) => item.checkResultType === 'correct'
   )
-  console.log({ expertPoint })
+  console.log({ repeat })
 
   return (
     <Wrapper>
@@ -123,7 +130,7 @@ export default function FactCheckAbstract({
         <CheckAbstract>
           <ExpertIcon />
           <span className="expert">
-            專家看點：{' '}
+            專家看點：
             {expertPoint.length > 1
               ? expertPoint.map((expert, index) => (
                   <span key={index}>
@@ -140,10 +147,25 @@ export default function FactCheckAbstract({
       )}
 
       {/* 相似政策摘要 */}
-      <CheckAbstract>
-        <SimilarIcon />
-        <span className="similar">相似政策</span>
-      </CheckAbstract>
+      {repeat.length >= 1 && (
+        <CheckAbstract>
+          <SimilarIcon />
+          <span className="similar">
+            相似政策：
+            {repeat.length > 1
+              ? repeat.map((re, index) => (
+                  <span key={index}>
+                    {re.content}
+                    {re.factcheckPartner && ` (${re.factcheckPartner})`}
+                    {index < repeat.length - 1 ? '、' : ''}
+                  </span>
+                ))
+              : repeat.length === 1
+              ? repeat[0]?.content
+              : ''}
+          </span>
+        </CheckAbstract>
+      )}
     </Wrapper>
   )
 }

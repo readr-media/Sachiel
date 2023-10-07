@@ -27,6 +27,7 @@ export type Politic = {
   positionChange: PositionChange[]
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
+  repeat: Repeat[]
 }
 
 //立場改變摘要
@@ -54,6 +55,10 @@ export type ExpertPoint = {
 }
 
 //相似政策摘要
+export type Repeat = {
+  content: string
+  factcheckPartner: FactCheckPartner | null
+}
 
 export type PersonElection = {
   electionArea: string

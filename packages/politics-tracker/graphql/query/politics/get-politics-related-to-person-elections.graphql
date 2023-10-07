@@ -43,5 +43,11 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       expertPointSummary
       expert
     }
+    repeat {
+      content
+      factcheckPartner {
+        name
+      }
+    }
   }
 }
