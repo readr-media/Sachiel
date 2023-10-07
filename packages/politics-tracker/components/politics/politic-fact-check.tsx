@@ -6,11 +6,12 @@ import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
-import type { FactCheck, PositionChange } from '~/types/politics'
+import type { ExpertPoint, FactCheck, PositionChange } from '~/types/politics'
 
 interface FactCheckAbstractProps {
   positionChange: PositionChange[]
   factCheck: FactCheck[]
+  expertPoint: ExpertPoint[]
 }
 
 const Wrapper = styled.div`
@@ -54,6 +55,7 @@ const CheckAbstract = styled.div`
 export default function FactCheckAbstract({
   positionChange,
   factCheck,
+  expertPoint,
 }: FactCheckAbstractProps): JSX.Element {
   // Check if at least one isChanged value is true
   const positionChanged = positionChange.some((change) => change.isChanged)
@@ -62,11 +64,11 @@ export default function FactCheckAbstract({
   const factCheckCorrect = factCheck.every(
     (item) => item.checkResultType === 'correct'
   )
-  console.log({ factCheckCorrect })
+  console.log({ expertPoint })
 
   return (
     <Wrapper>
-      {/* 立場變化 */}
+      {/* 立場變化摘要 */}
       {positionChange.length >= 1 && (
         <CheckAbstract>
           {positionChanged ? <ChangedIcon /> : <ConsistentIcon />}
@@ -92,31 +94,52 @@ export default function FactCheckAbstract({
         </CheckAbstract>
       )}
 
-      {/* 事實釐清*/}
-      <CheckAbstract>
-        {factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}
+      {/* 事實釐清摘要*/}
+      {factCheck.length >= 1 && (
+        <CheckAbstract>
+          {factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}
 
-        <span className={factCheckCorrect ? 'fact-correct' : 'fact-incorrect'}>
-          事實釐清：
-          {factCheck.length > 1
-            ? factCheck.map((fact, index) => (
-                <span key={index}>
-                  {fact.factCheckSummary}
-                  {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
-                  {index < factCheck.length - 1 ? '、' : ''}
-                </span>
-              ))
-            : factCheck.length === 1
-            ? factCheck[0]?.factCheckSummary
-            : ''}
-        </span>
-      </CheckAbstract>
+          <span
+            className={factCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
+          >
+            事實釐清：
+            {factCheck.length > 1
+              ? factCheck.map((fact, index) => (
+                  <span key={index}>
+                    {fact.factCheckSummary}
+                    {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                    {index < factCheck.length - 1 ? '、' : ''}
+                  </span>
+                ))
+              : factCheck.length === 1
+              ? factCheck[0]?.factCheckSummary
+              : ''}
+          </span>
+        </CheckAbstract>
+      )}
 
-      <CheckAbstract>
-        <ExpertIcon />
-        <span className="expert">專家看點</span>
-      </CheckAbstract>
+      {/* 專家看點摘要 */}
+      {expertPoint.length >= 1 && expertPoint[0].expertPointSummary && (
+        <CheckAbstract>
+          <ExpertIcon />
+          <span className="expert">
+            專家看點：{' '}
+            {expertPoint.length > 1
+              ? expertPoint.map((expert, index) => (
+                  <span key={index}>
+                    {expert.expertPointSummary}
+                    {expert.expert && ` (${expert.expert})`}
+                    {index < expertPoint.length - 1 ? '、' : ''}
+                  </span>
+                ))
+              : expertPoint.length === 1
+              ? expertPoint[0]?.expertPointSummary
+              : ''}
+          </span>
+        </CheckAbstract>
+      )}
 
+      {/* 相似政策摘要 */}
       <CheckAbstract>
         <SimilarIcon />
         <span className="similar">相似政策</span>

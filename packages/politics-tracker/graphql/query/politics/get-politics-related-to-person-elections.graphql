@@ -39,5 +39,9 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
         name
       }
     }
+    expertPoint {
+      expertPointSummary
+      expert
+    }
   }
 }

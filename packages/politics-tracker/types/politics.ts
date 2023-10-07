@@ -26,9 +26,10 @@ export type Politic = {
   error?: string
   positionChange: PositionChange[]
   factCheck: FactCheck[]
+  expertPoint: ExpertPoint[]
 }
 
-//立場改變
+//立場改變摘要
 export type PositionChange = {
   positionChangeSummary: string
   isChanged: boolean
@@ -39,12 +40,20 @@ export type FactCheckPartner = {
   name: string
 }
 
-//事實查核
+//事實釐清摘要
 export type FactCheck = {
   factCheckSummary: string
   checkResultType: string
   factcheckPartner: FactCheckPartner | null
 }
+
+//專家看點摘要
+export type ExpertPoint = {
+  expertPointSummary: string
+  expert: string
+}
+
+//相似政策摘要
 
 export type PersonElection = {
   electionArea: string

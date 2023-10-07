@@ -25,6 +25,7 @@ import {
   StatusOptionsB,
 } from '~/types/common'
 import type {
+  ExpertPoint,
   FactCheck,
   PersonElection,
   PersonOverview,
@@ -330,6 +331,7 @@ export const getServerSideProps: GetServerSideProps<
             updatedAt: politic.updatedAt ?? null,
             positionChange: [],
             factCheck: [],
+            expertPoint: [],
           })
         }
       }
@@ -356,6 +358,13 @@ export const getServerSideProps: GetServerSideProps<
           factcheckPartner: fact.factcheckPartner?.name ?? null,
         }))
 
+        let expertPointData: ExpertPoint[] = []
+        // @ts-ignore
+        expertPointData = politic?.expertPoint?.map((point) => ({
+          expertPointSummary: point.expertPointSummary,
+          expert: point.expert ?? null,
+        }))
+
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
@@ -368,6 +377,7 @@ export const getServerSideProps: GetServerSideProps<
           updatedAt: politic.updatedAt ?? null,
           positionChange: positionChangeData,
           factCheck: factCheckData,
+          expertPoint: expertPointData,
         })
       }
 

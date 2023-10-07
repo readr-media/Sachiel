@@ -57,6 +57,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <FactCheckAbstract
           positionChange={props.positionChange}
           factCheck={props.factCheck}
+          expertPoint={props.expertPoint}
         />
         {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
