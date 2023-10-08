@@ -11,7 +11,9 @@ import PoliticContent from './politic-content'
 import FactCheckAbstract from './politic-fact-check'
 import { usePersonElection } from './react-context/use-politics'
 
-type PoliticBodyProps = Politic & { no: number }
+type PoliticBodyProps = Politic & { no: number } & {
+  hidePoliticDetail: string | null
+}
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const index = `${String(props.no).padStart(2, '0')}.`
@@ -19,6 +21,8 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   // const sourceList = sources.map((s, i) => (
   //   <SourceItem key={i} no={i + 1} content={s} />
   // ))
+
+  console.log(props.hidePoliticDetail)
 
   const personElection = usePersonElection()
 

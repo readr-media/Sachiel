@@ -8,7 +8,7 @@ import PoliticBody from './politic-body'
 type PoliticBlockProps = Pick<
   PersonElection,
   'politics' | 'source' | 'lastUpdate'
->
+> & { hidePoliticDetail: string | null }
 
 type GroupData = {
   name: string
@@ -50,7 +50,12 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
       )}
       <div className={s['politic']}>
         {g.politics.map((p, i) => (
-          <PoliticBody key={p.id} no={i + 1} {...p} />
+          <PoliticBody
+            key={p.id}
+            no={i + 1}
+            {...p}
+            hidePoliticDetail={props.hidePoliticDetail}
+          />
         ))}
       </div>
     </section>

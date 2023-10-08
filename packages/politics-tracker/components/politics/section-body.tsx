@@ -12,7 +12,7 @@ import WaitingPoliticBlock from './waiting-politic-block'
 type SectionBodyProps = Pick<
   PersonElection,
   'source' | 'lastUpdate' | 'politics' | 'waitingPolitics'
-> & { show: boolean }
+> & { show: boolean } & { hidePoliticDetail: string | null }
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const copiedWatingPolitics = props.waitingPolitics

@@ -27,6 +27,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           lastUpdate={props.lastUpdate}
           waitingPolitics={props.waitingPolitics}
           source={props.source}
+          hidePoliticDetail={props.hidePoliticDetail}
         />
       </div>
     </PersonElectionContext.Provider>
