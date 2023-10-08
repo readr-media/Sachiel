@@ -21,6 +21,13 @@ interface FactCheckAbstractProps {
 }
 
 const Wrapper = styled.div`
+  display: grid;
+  row-gap: 4px;
+  column-gap: 20px;
+  ${({ theme }) => theme.breakpoint.md} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   padding: 12px 0;
 
   font-size: 12px;
@@ -34,6 +41,7 @@ const Wrapper = styled.div`
 `
 const CheckAbstract = styled.div`
   display: flex;
+
   span {
     margin-left: 4px;
   }
@@ -71,14 +79,13 @@ export default function FactCheckAbstract({
   const factCheckCorrect = factCheck?.every(
     (item) => item.checkResultType === 'correct'
   )
-  console.log({ repeat })
 
   return (
     <Wrapper>
       {/* 立場變化摘要 */}
       {positionChange.length >= 1 && (
         <CheckAbstract>
-          {positionChanged ? <ChangedIcon /> : <ConsistentIcon />}
+          <div>{positionChanged ? <ChangedIcon /> : <ConsistentIcon />}</div>
 
           <span
             className={
@@ -104,7 +111,7 @@ export default function FactCheckAbstract({
       {/* 事實釐清摘要*/}
       {factCheck.length >= 1 && (
         <CheckAbstract>
-          {factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}
+          <div>{factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}</div>
 
           <span
             className={factCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
@@ -128,7 +135,9 @@ export default function FactCheckAbstract({
       {/* 專家看點摘要 */}
       {expertPoint.length >= 1 && expertPoint[0].expertPointSummary && (
         <CheckAbstract>
-          <ExpertIcon />
+          <div>
+            <ExpertIcon />
+          </div>
           <span className="expert">
             專家看點：
             {expertPoint.length > 1
@@ -149,7 +158,9 @@ export default function FactCheckAbstract({
       {/* 相似政策摘要 */}
       {repeat.length >= 1 && (
         <CheckAbstract>
-          <SimilarIcon />
+          <div>
+            <SimilarIcon />
+          </div>
           <span className="similar">
             相似政策：
             {repeat.length > 1

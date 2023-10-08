@@ -88,8 +88,6 @@ export default function Politics(props: PoliticsPageProps) {
     <SectionList key={e.id} order={index} {...e} />
   ))
 
-  console.log(sections)
-
   const headProps: HeadProps = {
     title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
     description: `${props.titleProps.name}參選紀錄及相關政見`,
@@ -287,7 +285,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const politicList = rawData.data?.politics || []
-      console.log({ politicList })
+
       const politicGroup: Record<
         string,
         {
@@ -295,7 +293,7 @@ export const getServerSideProps: GetServerSideProps<
           politic: RawPolitic
         }
       > = {}
-      // keep latest politc of each politic thread
+      // keep latest politic of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
         const reviewed = politic.reviewed
