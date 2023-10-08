@@ -14,7 +14,7 @@ import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPolticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 import {
   GenericGQLData,
   PROGRESS,
@@ -25,10 +25,14 @@ import {
   StatusOptionsB,
 } from '~/types/common'
 import type {
+  ExpertPoint,
+  FactCheck,
   PersonElection,
   PersonOverview,
   Politic,
   PoliticAmount,
+  PositionChange,
+  Repeat,
 } from '~/types/politics'
 import {
   electionName,
@@ -43,6 +47,71 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
+export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
+  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
+    waiting: props.titleProps.waiting,
+    completed: props.titleProps.completed,
+  })
+
+  function setAmount(amount: PoliticAmount) {
+    setPoliticAmounts(amount)
+  }
+
+  const navProps: NavProps = {
+    prev: {
+      backgroundColor: 'bg-person',
+      content: '回個人資訊',
+      href: {
+        pathname: '/person/[id]',
+        query: {
+          id: props.person.id,
+        },
+      },
+    },
+    next: {
+      backgroundColor: 'bg-campaign',
+      content: props.latestElection.name,
+      href: {
+        pathname: '/election',
+        query: {
+          year: props.latestElection.year,
+          area: props.latestElection.electionArea,
+          type: props.latestElection.electionType,
+        },
+      },
+    },
+    alwaysShowHome: true,
+  }
+
+  const sections = props.elections.map((e, index) => (
+    <SectionList key={e.id} order={index} {...e} />
+  ))
+
+  const headProps: HeadProps = {
+    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
+    description: `${props.titleProps.name}參選紀錄及相關政見`,
+  }
+
+  return (
+    <DefaultLayout>
+      <CustomHead {...headProps} />
+      <main className="flex w-screen flex-col items-center bg-politics">
+        <Title {...props.titleProps} {...politicAmounts} />
+        <div className="my-10 lg:my-[40px]">
+          <PoliticAmountContext.Provider
+            value={{ amount: politicAmounts, setAmount: setAmount }}
+          >
+            {sections}
+          </PoliticAmountContext.Provider>
+        </div>
+        <Nav {...navProps} />
+      </main>
+    </DefaultLayout>
+  )
+}
+
+// Get titleProps, elections, latestElection and Person
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
 > = async ({ query, res }) => {
@@ -143,6 +212,7 @@ export const getServerSideProps: GetServerSideProps<
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
+              hidePoliticDetail: election.hidePoliticDetail ?? null,
             }
           }
 
@@ -192,7 +262,7 @@ export const getServerSideProps: GetServerSideProps<
       // get related politics
       const rawData: GenericGQLData<RawPolitic[], 'politics'> =
         await fireGqlRequest(
-          print(GetPolticsRelatedToPersonElections),
+          print(GetPoliticsRelatedToPersonElections),
           {
             ids: personElectionIds,
           },
@@ -204,10 +274,10 @@ export const getServerSideProps: GetServerSideProps<
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
           new Error(
-            'Errors returned in `GetPolticsRelatedToPersonElections` query'
+            'Errors returned in `GetPoliticsRelatedToPersonElections` query'
           ),
           'GraphQLError',
-          'failed to complete `GetPolticsRelatedToPersonElections`',
+          'failed to complete `GetPoliticsRelatedToPersonElections`',
           { errors: gqlErrors }
         )
 
@@ -215,6 +285,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const politicList = rawData.data?.politics || []
+
       const politicGroup: Record<
         string,
         {
@@ -222,7 +293,7 @@ export const getServerSideProps: GetServerSideProps<
           politic: RawPolitic
         }
       > = {}
-      // keep latest politc of each politic thread
+      // keep latest politic of each politic thread
       for (const politic of politicList) {
         const status = politic.status as StatusOptionsB
         const reviewed = politic.reviewed
@@ -252,11 +323,15 @@ export const getServerSideProps: GetServerSideProps<
             desc: String(politic.desc),
             source: '',
             content: '',
-            progess: PROGRESS.NOT_START,
+            progress: PROGRESS.NOT_START,
             tagId: null,
             tagName: null,
             createdAt: String(politic.createdAt),
             updatedAt: politic.updatedAt ?? null,
+            positionChange: [],
+            factCheck: [],
+            expertPoint: [],
+            repeat: [],
           })
         }
       }
@@ -266,16 +341,51 @@ export const getServerSideProps: GetServerSideProps<
       ).map((key) => politicGroup[key].politic)
       for (const politic of verifiedLatestPoliticList) {
         const eId = politic.person?.election?.id as string
+
+        let positionChangeData: PositionChange[] = []
+        // @ts-ignore
+        positionChangeData = politic?.positionChange?.map((change) => ({
+          isChanged: change.isChanged,
+          positionChangeSummary: change.positionChangeSummary,
+          factcheckPartner: change.factcheckPartner?.name ?? null,
+        }))
+
+        let factCheckData: FactCheck[] = []
+        // @ts-ignore
+        factCheckData = politic?.factCheck?.map((fact) => ({
+          factCheckSummary: fact.factCheckSummary,
+          checkResultType: fact.checkResultType,
+          factcheckPartner: fact.factcheckPartner?.name ?? null,
+        }))
+
+        let expertPointData: ExpertPoint[] = []
+        // @ts-ignore
+        expertPointData = politic?.expertPoint?.map((point) => ({
+          expertPointSummary: point.expertPointSummary,
+          expert: point.expert ?? null,
+        }))
+
+        let repeatData: Repeat[] = []
+        // @ts-ignore
+        repeatData = politic?.repeat?.map((re) => ({
+          content: re.content,
+          factcheckPartner: re.factcheckPartner?.name ?? null,
+        }))
+
         electionMap[eId].politics.push({
           id: String(politic.thread_parent?.id ?? politic.id),
           desc: String(politic.desc),
           source: String(politic.source),
           content: String(politic.content),
-          progess: politic.current_progress ?? PROGRESS.NOT_START,
+          progress: politic.current_progress ?? PROGRESS.NOT_START,
           tagId: politic.tag?.id ?? null,
           tagName: politic.tag?.name ?? null,
           createdAt: String(politic.createdAt),
           updatedAt: politic.updatedAt ?? null,
+          positionChange: positionChangeData,
+          factCheck: factCheckData,
+          expertPoint: expertPointData,
+          repeat: repeatData,
         })
       }
 
@@ -353,68 +463,3 @@ export const getServerSideProps: GetServerSideProps<
     }
   }
 }
-
-const Politics = (props: PoliticsPageProps) => {
-  const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
-    waiting: props.titleProps.waiting,
-    completed: props.titleProps.completed,
-  })
-
-  function setAmount(amount: PoliticAmount) {
-    setPoliticAmounts(amount)
-  }
-
-  const navProps: NavProps = {
-    prev: {
-      backgroundColor: 'bg-person',
-      content: '回個人資訊',
-      href: {
-        pathname: '/person/[id]',
-        query: {
-          id: props.person.id,
-        },
-      },
-    },
-    next: {
-      backgroundColor: 'bg-campaign',
-      content: props.latestElection.name,
-      href: {
-        pathname: '/election',
-        query: {
-          year: props.latestElection.year,
-          area: props.latestElection.electionArea,
-          type: props.latestElection.electionType,
-        },
-      },
-    },
-    alwaysShowHome: true,
-  }
-
-  const sections = props.elections.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} />
-  ))
-
-  const headProps: HeadProps = {
-    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
-    description: `${props.titleProps.name}參選紀錄及相關政見`,
-  }
-
-  return (
-    <DefaultLayout>
-      <CustomHead {...headProps} />
-      <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} {...politicAmounts} />
-        <div className="my-10 lg:my-[40px]">
-          <PoliticAmountContext.Provider
-            value={{ amount: politicAmounts, setAmount: setAmount }}
-          >
-            {sections}
-          </PoliticAmountContext.Provider>
-        </div>
-        <Nav {...navProps} />
-      </main>
-    </DefaultLayout>
-  )
-}
-
-export default Politics

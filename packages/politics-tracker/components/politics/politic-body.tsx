@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 
-import { SOURCE_DELIMITER } from '~/constants/politics'
 import { PROGRESS } from '~/types/common'
 import type { Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
@@ -9,22 +8,22 @@ import { logGAEvent } from '~/utils/analytics'
 import ArrowRight from '../icons/arrow-right'
 import s from './politic-body.module.css'
 import PoliticContent from './politic-content'
+import FactCheckAbstract from './politic-fact-check'
 import { usePersonElection } from './react-context/use-politics'
-import SourceItem from './source-item'
 
 type PoliticBodyProps = Politic & { no: number }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const index = `${String(props.no).padStart(2, '0')}.`
-  const sources = props.source.split(SOURCE_DELIMITER)
-  const sourceList = sources.map((s, i) => (
-    <SourceItem key={i} no={i + 1} content={s} />
-  ))
+  // const sources = props.source.split(SOURCE_DELIMITER)
+  // const sourceList = sources.map((s, i) => (
+  //   <SourceItem key={i} no={i + 1} content={s} />
+  // ))
 
   const personElection = usePersonElection()
 
   const status = personElection.elected
-    ? props.progess ?? PROGRESS.NOT_START
+    ? props.progress ?? PROGRESS.NOT_START
     : 'failed'
   const statusStyle = classNames(s['status'], s[status])
 
@@ -55,6 +54,12 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <div className={s['content']}>
           <PoliticContent>{props.desc}</PoliticContent>
         </div>
+        <FactCheckAbstract
+          positionChange={props.positionChange}
+          factCheck={props.factCheck}
+          expertPoint={props.expertPoint}
+          repeat={props.repeat}
+        />
         {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
             <span>來源</span>

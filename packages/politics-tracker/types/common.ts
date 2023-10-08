@@ -43,6 +43,7 @@ export type RawElection = Partial<{
   updatedAt: string
   createdBy: string
   updatedBy: string
+  hidePoliticDetail: string
 }>
 
 export type RawPerson = Partial<{
