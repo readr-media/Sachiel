@@ -29,6 +29,10 @@ export default function AddPoliticForm(
     tagName: null,
     createdAt: null,
     updatedAt: null,
+    positionChange: [],
+    factCheck: [],
+    expertPoint: [],
+    repeat: [],
   }
 
   const toast = useToast()
@@ -74,6 +78,10 @@ export default function AddPoliticForm(
         tagName: null,
         createdAt: null,
         updatedAt: null,
+        positionChange: [],
+        factCheck: [],
+        expertPoint: [],
+        repeat: [],
       })
 
       toast.open({
