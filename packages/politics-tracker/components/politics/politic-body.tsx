@@ -22,8 +22,6 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   //   <SourceItem key={i} no={i + 1} content={s} />
   // ))
 
-  console.log(props.hidePoliticDetail)
-
   const personElection = usePersonElection()
 
   const status = personElection.elected
@@ -43,6 +41,15 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
     return map[status]
   }
 
+  // Compare the hidingDate with the current date and decide whether to hide the FactCheckAbstract component,
+  const hidingDate = props.hidePoliticDetail
+    ? new Date(props.hidePoliticDetail)
+    : null
+  const currentDate = new Date()
+  const shouldShow =
+    hidingDate !== null &&
+    hidingDate?.toUTCString() >= currentDate.toUTCString()
+
   return (
     <div className={s['container']}>
       <div className={s['header']}>
@@ -58,12 +65,14 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <div className={s['content']}>
           <PoliticContent>{props.desc}</PoliticContent>
         </div>
-        <FactCheckAbstract
-          positionChange={props.positionChange}
-          factCheck={props.factCheck}
-          expertPoint={props.expertPoint}
-          repeat={props.repeat}
-        />
+        {shouldShow && (
+          <FactCheckAbstract
+            positionChange={props.positionChange}
+            factCheck={props.factCheck}
+            expertPoint={props.expertPoint}
+            repeat={props.repeat}
+          />
+        )}
         {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
             <span>來源</span>
