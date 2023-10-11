@@ -43,14 +43,13 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
   // Compare the hidingDate with the current date and decide whether to hide the FactCheckAbstract component.
   // - If hidingDate is null, the FactCheckAbstract component will not be shown, for the shouldShow variable is calculated as false.
-  // - To minimize timezone-related issues, convert both hidingDate and currentDate to UTC before comparing them.
+  // - To compare dates correctly, compare the timestamp values by using getTime()
   const hidingDate = props.hidePoliticDetail
     ? new Date(props.hidePoliticDetail)
     : null
   const currentDate = new Date()
   const shouldShow =
-    hidingDate !== null &&
-    hidingDate?.toUTCString() >= currentDate.toUTCString()
+    hidingDate !== null && hidingDate.getTime() > currentDate.getTime()
 
   return (
     <div className={s['container']}>
