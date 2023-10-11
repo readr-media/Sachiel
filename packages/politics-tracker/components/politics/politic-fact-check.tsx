@@ -77,8 +77,6 @@ export default function FactCheckAbstract({
     (item) => item.checkResultType === 'correct'
   )
 
-  console.log(repeat)
-
   return (
     <Wrapper>
       {/* 立場變化摘要 */}
