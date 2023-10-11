@@ -163,13 +163,17 @@ export default function FactCheckAbstract({
             {repeat.length > 1
               ? repeat.map((re, index) => (
                   <span key={index}>
-                    {re.content}
-                    {re.factcheckPartner && ` (${re.factcheckPartner})`}
-                    {index < repeat.length - 1 ? '、' : ''}
+                    {re.repeatSummary && (
+                      <>
+                        {re.repeatSummary}
+                        {re.factcheckPartner && ` (${re.factcheckPartner})`}
+                        {index < repeat.length - 1 ? '、' : ''}
+                      </>
+                    )}
                   </span>
                 ))
               : repeat.length === 1
-              ? repeat[0]?.content
+              ? repeat[0]?.repeatSummary
               : ''}
           </span>
         </CheckAbstract>
