@@ -367,7 +367,7 @@ export const getServerSideProps: GetServerSideProps<
         let repeatData: Repeat[] = []
         // @ts-ignore
         repeatData = politic?.repeat?.map((re) => ({
-          content: re.content,
+          repeatSummary: re.repeatSummary,
           factcheckPartner: re.factcheckPartner?.name ?? null,
         }))
 

@@ -56,7 +56,7 @@ export type ExpertPoint = {
 
 //相似政策摘要
 export type Repeat = {
-  content: string
+  repeatSummary: string
   factcheckPartner: FactCheckPartner | null
 }
 
