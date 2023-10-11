@@ -71,17 +71,17 @@ export default function FactCheckAbstract({
 }: FactCheckAbstractProps): JSX.Element {
   // If there are multiple position-changing statuses that conflict, show only the changed summaries.
   // Check if at least one 'isChanged' value is true.
-  const positionChanged = positionChange?.some((change) => change.isChanged)
-  const filteredPositionChangeArray = positionChanged
+  const isPositionChanged = positionChange?.some((change) => change.isChanged)
+  const filteredPositionChangeArray = isPositionChanged
     ? positionChange.filter((change) => change.isChanged)
     : positionChange
 
   // If there are multiple fact-checking statuses that conflict, show only the 'incorrect' and 'partial' summaries.
   // Check if all 'factCheckCorrect' values are true.
-  const factCheckCorrect = factCheck?.every(
+  const isFactCheckCorrect = factCheck?.every(
     (item) => item.checkResultType === 'correct'
   )
-  const filteredFactCheckArray = factCheckCorrect
+  const filteredFactCheckArray = isFactCheckCorrect
     ? factCheck
     : factCheck.filter(
         (item) =>
@@ -94,11 +94,11 @@ export default function FactCheckAbstract({
       {/* 立場變化摘要 */}
       {filteredPositionChangeArray.length >= 1 && (
         <CheckAbstract>
-          <div>{positionChanged ? <ChangedIcon /> : <ConsistentIcon />}</div>
+          <div>{isPositionChanged ? <ChangedIcon /> : <ConsistentIcon />}</div>
 
           <span
             className={
-              positionChanged ? 'position-changed' : 'position-consistent'
+              isPositionChanged ? 'position-changed' : 'position-consistent'
             }
           >
             立場變化：
@@ -120,10 +120,10 @@ export default function FactCheckAbstract({
       {/* 事實釐清摘要*/}
       {filteredFactCheckArray.length >= 1 && (
         <CheckAbstract>
-          <div>{factCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}</div>
+          <div>{isFactCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}</div>
 
           <span
-            className={factCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
+            className={isFactCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
           >
             事實釐清：
             {filteredFactCheckArray.length > 1
