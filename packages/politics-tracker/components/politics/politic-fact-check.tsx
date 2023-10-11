@@ -41,10 +41,7 @@ const Wrapper = styled.div`
 `
 const CheckAbstract = styled.div`
   display: flex;
-
-  span {
-    margin-left: 4px;
-  }
+  gap: 4px;
 
   .position-changed {
     color: #b2800d;

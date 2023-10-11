@@ -11,7 +11,9 @@ import PoliticContent from './politic-content'
 import FactCheckAbstract from './politic-fact-check'
 import { usePersonElection } from './react-context/use-politics'
 
-type PoliticBodyProps = Politic & { no: number }
+type PoliticBodyProps = Politic & { no: number } & {
+  hidePoliticDetail: string | null
+}
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const index = `${String(props.no).padStart(2, '0')}.`
@@ -39,6 +41,17 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
     return map[status]
   }
 
+  // Compare the hidingDate with the current date and decide whether to hide the FactCheckAbstract component.
+  // - If hidingDate is null, the FactCheckAbstract component will not be shown, for the shouldShow variable is calculated as false.
+  // - To minimize timezone-related issues, convert both hidingDate and currentDate to UTC before comparing them.
+  const hidingDate = props.hidePoliticDetail
+    ? new Date(props.hidePoliticDetail)
+    : null
+  const currentDate = new Date()
+  const shouldShow =
+    hidingDate !== null &&
+    hidingDate?.toUTCString() >= currentDate.toUTCString()
+
   return (
     <div className={s['container']}>
       <div className={s['header']}>
@@ -54,12 +67,14 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         <div className={s['content']}>
           <PoliticContent>{props.desc}</PoliticContent>
         </div>
-        <FactCheckAbstract
-          positionChange={props.positionChange}
-          factCheck={props.factCheck}
-          expertPoint={props.expertPoint}
-          repeat={props.repeat}
-        />
+        {shouldShow && (
+          <FactCheckAbstract
+            positionChange={props.positionChange}
+            factCheck={props.factCheck}
+            expertPoint={props.expertPoint}
+            repeat={props.repeat}
+          />
+        )}
         {/* <div className={s['source-group']}>
           <div className={s['source-label']}>
             <span>來源</span>
