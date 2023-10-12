@@ -82,8 +82,8 @@ export default function PositionChange({
           {content && (
             <a
               className="content-text"
-              href={link ? link : '/'}
-              target={link ? '_blank' : '_self'}
+              href={link}
+              target="_blank"
               rel="noopener noreferrer"
             >
               {content}

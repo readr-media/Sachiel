@@ -9,9 +9,15 @@ export type PoliticDetail = {
   timeline: TimeLine[]
   source: string
   status: string
+  updatedAt: string
   positionChange: PositionChange[]
+  factCheck: FactCheck[]
+  repeat: Repeat[]
+  response: Response[]
+  controversies: Controversy[]
 }
 
+//任期
 export type PersonElectionTerm = {
   id: string
   start_date_day: string
@@ -58,7 +64,6 @@ export type ExpertPoint = {
   expert: string
   id: string
   link: string
-  reviewData: string
   title: string
 }
 
@@ -75,9 +80,16 @@ export type Response = {
 //相關進度
 export type TimeLine = {
   content: string
-  eventData: string
+  eventDate: string
   id: string
   link: string
+}
+
+//相關爭議
+export type Controversy = {
+  id: string
+  link: string
+  content: string
 }
 
 export type PoliticAmount = {
@@ -88,7 +100,22 @@ export type PoliticAmount = {
 export type FactCheckPartner = {
   id: string
   name: string
-  sLogo?: string //small logo for `politic-detail` page
+  slogo?: Logo //small logo for `politic-detail` page
+}
+
+export type Resized = {
+  original: string
+  w480: string
+  w800: string
+  w1200: string
+  w1600: string
+  w2400: string
+}
+
+export type Logo = {
+  id: string
+  resized: Resized
+  resizedWebp: Resized
 }
 
 export type GenericPerson = {

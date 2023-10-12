@@ -1,5 +1,23 @@
 export type ThemeType = typeof theme
 
+type Theme = {
+  backgroundColor: {
+    [key: string]: string
+  }
+  textColor: {
+    [key: string]: string
+  }
+  borderColor: {
+    [key: string]: string
+  }
+  fontSize: {
+    [key: string]: string
+  }
+  breakpoint: {
+    [key: string]: string
+  }
+}
+
 const mediaSize = {
   xs: 0,
   sm: 576,
@@ -16,7 +34,8 @@ const sharedColor = {
   white: '#FFFFFF',
   green: '#2FB7BF',
 }
-export const theme = {
+
+export const theme: Theme = {
   backgroundColor: {
     blue: '#8379F8',
     gray: sharedColor.gray,

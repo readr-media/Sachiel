@@ -1,9 +1,10 @@
 import dayjs from 'dayjs'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import ToggleItem from '~/components/politics-detail/shared/toggle-item'
+import Controversy from '~/components/politics-detail/toggle-lists/controversy'
 import Detail from '~/components/politics-detail/toggle-lists/detail'
-import Dispute from '~/components/politics-detail/toggle-lists/dispute'
 import ExpertPoint from '~/components/politics-detail/toggle-lists/expert-point'
 import FactCheck from '~/components/politics-detail/toggle-lists/fact-check'
 import PositionChange from '~/components/politics-detail/toggle-lists/position-change'
@@ -11,6 +12,8 @@ import PositionChangeIcon from '~/components/politics-detail/toggle-lists/positi
 import Repeat from '~/components/politics-detail/toggle-lists/repeat'
 import Response from '~/components/politics-detail/toggle-lists/response'
 import TimeLine from '~/components/politics-detail/toggle-lists/timeline'
+import EditButton from '~/components/shared/edit-button'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -39,18 +42,20 @@ type ToggleItems = {
   show: boolean
 }
 type SectionContentProps = {
-  politicData: any
+  politicData: PoliticDetail
 }
 export default function SectionContent({
   politicData,
 }: SectionContentProps): JSX.Element {
+  const [isControEdit, setIsControEdit] = useState(false)
+
   const {
     desc,
     content,
     source,
     positionChange,
     timeline,
-    dispute,
+    controversies,
     expertPoint,
     factCheck,
     updatedAt,
@@ -92,12 +97,25 @@ export default function SectionContent({
     },
     {
       title: '相關進度',
-      children: <TimeLine infoList={timeline} />,
+      children: <TimeLine timelines={timeline} />,
       show: true,
     },
     {
       title: '相關爭議',
-      children: <Dispute infoList={dispute} />,
+      titleChildren: (
+        <EditButton
+          onClick={() => setIsControEdit(true)}
+          colorType="yellow"
+          editMode={isControEdit}
+        />
+      ),
+      children: (
+        <Controversy
+          controversies={controversies}
+          editMode={isControEdit}
+          setEditMode={setIsControEdit}
+        />
+      ),
       show: true,
     },
   ]
