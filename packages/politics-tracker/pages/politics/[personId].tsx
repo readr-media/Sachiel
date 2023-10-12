@@ -317,6 +317,36 @@ export const getServerSideProps: GetServerSideProps<
         } else if (!reviewed) {
           const eId = politic.person?.election?.id as string
 
+          let positionChangeData: PositionChange[] = []
+          // @ts-ignore
+          positionChangeData = politic?.positionChange?.map((change) => ({
+            isChanged: change.isChanged,
+            positionChangeSummary: change.positionChangeSummary,
+            factcheckPartner: change.factcheckPartner?.name ?? null,
+          }))
+
+          let factCheckData: FactCheck[] = []
+          // @ts-ignore
+          factCheckData = politic?.factCheck?.map((fact) => ({
+            factCheckSummary: fact.factCheckSummary,
+            checkResultType: fact.checkResultType,
+            factcheckPartner: fact.factcheckPartner?.name ?? null,
+          }))
+
+          let expertPointData: ExpertPoint[] = []
+          // @ts-ignore
+          expertPointData = politic?.expertPoint?.map((point) => ({
+            expertPointSummary: point.expertPointSummary,
+            expert: point.expert ?? null,
+          }))
+
+          let repeatData: Repeat[] = []
+          // @ts-ignore
+          repeatData = politic?.repeat?.map((re) => ({
+            repeatSummary: re.repeatSummary,
+            factcheckPartner: re.factcheckPartner?.name ?? null,
+          }))
+
           electionMap[eId].waitingPolitics.push({
             id: String(politic.id),
             desc: String(politic.desc),
@@ -327,10 +357,10 @@ export const getServerSideProps: GetServerSideProps<
             tagName: null,
             createdAt: String(politic.createdAt),
             updatedAt: politic.updatedAt ?? null,
-            positionChange: [],
-            factCheck: [],
-            expertPoint: [],
-            repeat: [],
+            positionChange: positionChangeData,
+            factCheck: factCheckData,
+            expertPoint: expertPointData,
+            repeat: repeatData,
           })
         }
       }
