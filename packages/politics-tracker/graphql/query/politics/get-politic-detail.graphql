@@ -61,7 +61,6 @@ query GetPoliticsDetail($politicId: ID!) {
       avatar
       contributer
       title
-      reviewDate
       content
       link
     }
@@ -72,7 +71,25 @@ query GetPoliticsDetail($politicId: ID!) {
       link
       factcheckPartner {
         id
-        sLogo
+        slogo {
+          id
+          resized {
+            original
+            w1200
+            w1600
+            w2400
+            w480
+            w800
+          }
+          resizedWebp {
+            original
+            w1200
+            w1600
+            w2400
+            w480
+            w800
+          }
+        }
         name
       }
     }
@@ -83,7 +100,25 @@ query GetPoliticsDetail($politicId: ID!) {
       contributer
       factcheckPartner {
         id
-        sLogo
+        slogo {
+          id
+          resized {
+            original
+            w1200
+            w1600
+            w2400
+            w480
+            w800
+          }
+          resizedWebp {
+            original
+            w1200
+            w1600
+            w2400
+            w480
+            w800
+          }
+        }
         name
       }
     }
@@ -94,6 +129,11 @@ query GetPoliticsDetail($politicId: ID!) {
       responsePic
       responseTitle
       link
+    }
+    controversies(orderBy: { createdAt: desc }) {
+      id
+      link
+      content
     }
   }
 }
