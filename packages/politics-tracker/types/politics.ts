@@ -32,6 +32,7 @@ export type Politic = {
 
 //立場改變摘要
 export type PositionChange = {
+  id: string
   positionChangeSummary: string
   isChanged: boolean
   factcheckPartner: FactCheckPartner | null
@@ -43,6 +44,7 @@ export type FactCheckPartner = {
 
 //事實釐清摘要
 export type FactCheck = {
+  id: string
   factCheckSummary: string
   checkResultType: string
   factcheckPartner: FactCheckPartner | null
@@ -50,12 +52,14 @@ export type FactCheck = {
 
 //專家看點摘要
 export type ExpertPoint = {
+  id: string
   expertPointSummary: string
   expert: string
 }
 
 //相似政策摘要
 export type Repeat = {
+  id: string
   repeatSummary: string
   factcheckPartner: FactCheckPartner | null
 }

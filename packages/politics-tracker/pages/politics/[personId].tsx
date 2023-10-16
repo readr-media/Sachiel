@@ -320,6 +320,7 @@ export const getServerSideProps: GetServerSideProps<
           let positionChangeData: PositionChange[] = []
           // @ts-ignore
           positionChangeData = politic?.positionChange?.map((change) => ({
+            id: change.id,
             isChanged: change.isChanged,
             positionChangeSummary: change.positionChangeSummary,
             factcheckPartner: change.factcheckPartner?.name ?? null,
@@ -328,6 +329,7 @@ export const getServerSideProps: GetServerSideProps<
           let factCheckData: FactCheck[] = []
           // @ts-ignore
           factCheckData = politic?.factCheck?.map((fact) => ({
+            id: fact.id,
             factCheckSummary: fact.factCheckSummary,
             checkResultType: fact.checkResultType,
             factcheckPartner: fact.factcheckPartner?.name ?? null,
@@ -336,6 +338,7 @@ export const getServerSideProps: GetServerSideProps<
           let expertPointData: ExpertPoint[] = []
           // @ts-ignore
           expertPointData = politic?.expertPoint?.map((point) => ({
+            id: point.id,
             expertPointSummary: point.expertPointSummary,
             expert: point.expert ?? null,
           }))
@@ -343,6 +346,7 @@ export const getServerSideProps: GetServerSideProps<
           let repeatData: Repeat[] = []
           // @ts-ignore
           repeatData = politic?.repeat?.map((re) => ({
+            id: re.id,
             repeatSummary: re.repeatSummary,
             factcheckPartner: re.factcheckPartner?.name ?? null,
           }))
@@ -374,6 +378,7 @@ export const getServerSideProps: GetServerSideProps<
         let positionChangeData: PositionChange[] = []
         // @ts-ignore
         positionChangeData = politic?.positionChange?.map((change) => ({
+          id: change.id,
           isChanged: change.isChanged,
           positionChangeSummary: change.positionChangeSummary,
           factcheckPartner: change.factcheckPartner?.name ?? null,
@@ -382,6 +387,7 @@ export const getServerSideProps: GetServerSideProps<
         let factCheckData: FactCheck[] = []
         // @ts-ignore
         factCheckData = politic?.factCheck?.map((fact) => ({
+          id: fact.id,
           factCheckSummary: fact.factCheckSummary,
           checkResultType: fact.checkResultType,
           factcheckPartner: fact.factcheckPartner?.name ?? null,
@@ -390,6 +396,7 @@ export const getServerSideProps: GetServerSideProps<
         let expertPointData: ExpertPoint[] = []
         // @ts-ignore
         expertPointData = politic?.expertPoint?.map((point) => ({
+          id: point.id,
           expertPointSummary: point.expertPointSummary,
           expert: point.expert ?? null,
         }))
@@ -397,6 +404,7 @@ export const getServerSideProps: GetServerSideProps<
         let repeatData: Repeat[] = []
         // @ts-ignore
         repeatData = politic?.repeat?.map((re) => ({
+          id: re.id,
           repeatSummary: re.repeatSummary,
           factcheckPartner: re.factcheckPartner?.name ?? null,
         }))

@@ -63,6 +63,8 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           content: data.content,
         },
       }
+
+      console.log(data)
       // result is not used currently
       // eslint-disable-next-line
       const result: RawPolitic = await fireGqlRequest(
