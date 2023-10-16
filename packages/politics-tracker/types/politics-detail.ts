@@ -2,7 +2,6 @@ export type PoliticDetail = {
   content: string
   current_progress: string
   desc: string
-  dispute: string
   expertPoint: ExpertPoint[]
   id: string
   person: GenericPerson
