@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import DefaultText from '~/components/politics-detail/default-text'
 import ExpertItem from '~/components/politics-detail/toggle-lists/expert-point/expert-item'
 import type { ExpertPoint } from '~/types/politics-detail'
 
@@ -15,11 +16,15 @@ export default function ExpertPoint({
 }: ExpertPointProps): JSX.Element {
   return (
     <Wrapper>
-      <ul>
-        {experts.map((value: ExpertPoint, index: number) => (
-          <ExpertItem expertItem={value} key={index} />
-        ))}
-      </ul>
+      {experts.length > 0 ? (
+        <ul>
+          {experts.map((value: ExpertPoint, index: number) => (
+            <ExpertItem expertItem={value} key={index} />
+          ))}
+        </ul>
+      ) : (
+        <DefaultText title="專家看點" />
+      )}
     </Wrapper>
   )
 }
