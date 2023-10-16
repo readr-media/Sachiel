@@ -26,6 +26,7 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       name
     }
     positionChange {
+      id
       isChanged
       positionChangeSummary
       factcheckPartner {
@@ -33,6 +34,7 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       }
     }
     factCheck {
+      id
       factCheckSummary
       checkResultType
       factcheckPartner {
@@ -40,10 +42,12 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       }
     }
     expertPoint {
+      id
       expertPointSummary
       expert
     }
     repeat {
+      id
       repeatSummary
       factcheckPartner {
         name
