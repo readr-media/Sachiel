@@ -6,7 +6,6 @@ query GetPoliticsDetail($politicId: ID!) {
     source
     status
     current_progress
-    dispute
     updatedAt
     person {
       id
