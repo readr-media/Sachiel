@@ -32,10 +32,6 @@ type PoliticBodyProps = Politic & { no: number } & {
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const [isEditing, setEditing] = useState<boolean>(false)
   const index = `${String(props.no).padStart(2, '0')}.`
-  // const sources = props.source.split(SOURCE_DELIMITER)
-  // const sourceList = sources.map((s, i) => (
-  //   <SourceItem key={i} no={i + 1} content={s} />
-  // ))
 
   const toast = useToast()
   const politicAmount = usePoliticAmount()
@@ -61,10 +57,27 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           desc: data.desc,
           source: data.source,
           content: data.content,
+          positionChange: {
+            connect: data.positionChange.map((positionChangeItem) => ({
+              id: positionChangeItem.id,
+            })),
+          },
+          factCheck: {
+            connect: data.factCheck.map((factCheckItem) => ({
+              id: factCheckItem.id,
+            })),
+          },
+          expertPoint: {
+            connect: data.expertPoint.map((expertPointItem) => ({
+              id: expertPointItem.id,
+            })),
+          },
+          repeat: {
+            connect: data.repeat.map((repeatItem) => ({ id: repeatItem.id })),
+          },
         },
       }
 
-      console.log(data)
       // result is not used currently
       // eslint-disable-next-line
       const result: RawPolitic = await fireGqlRequest(
