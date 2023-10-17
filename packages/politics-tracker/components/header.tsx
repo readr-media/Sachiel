@@ -1,13 +1,21 @@
 import classNames from 'classnames'
 import { MouseEventHandler, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import Facebook from '~/public/icons/facebook.svg'
 import Line from '~/public/icons/line.svg'
 import Logo from '~/public/icons/READr-logo.svg'
 import ShareButton from '~/public/icons/share-button.svg'
+import Home from '~/public/icons/white-house.svg'
 import { logGAEvent } from '~/utils/analytics'
 
 import s from './header.module.css'
+
+const IconWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+`
 
 type ButtonConfig = {
   index: number
@@ -19,10 +27,10 @@ type ButtonConfig = {
 
 export default function Header(): JSX.Element {
   const [show, setShow] = useState<boolean>(false)
-  const [origin, setOrigin] = useState<string>('')
+  const [href, setHref] = useState<string>('')
 
   useEffect(() => {
-    setOrigin(() => window.location.origin)
+    setHref(() => window.location.href)
   }, [])
 
   function toggleShareIcons() {
@@ -33,7 +41,7 @@ export default function Header(): JSX.Element {
     {
       index: 1,
       icon: <Facebook />,
-      link: `https://www.facebook.com/share.php?u=${origin}`,
+      link: `https://www.facebook.com/share.php?u=${href}`,
       class: 'translate-y-[55px]',
       click: () => logGAEvent('click', '點擊分享按鈕（臉書）'),
     },
@@ -41,7 +49,7 @@ export default function Header(): JSX.Element {
       index: 2,
       icon: <Line />,
       link: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-        origin
+        href
       )}`,
       class: 'translate-y-[110px]',
       click: () => logGAEvent('click', '點擊分享按鈕（LINE）'),
@@ -75,10 +83,15 @@ export default function Header(): JSX.Element {
       >
         <Logo aria-label="READr" className="h-10 w-10" />
       </a>
-      <div className={s.button} onClick={toggleShareIcons}>
-        <ShareButton aria-label="分享" className="h-10 w-10" />
-        {shareButtons}
-      </div>
+      <IconWrapper>
+        <div className={s.button} onClick={toggleShareIcons}>
+          <ShareButton aria-label="分享" className="h-10 w-10" />
+          {shareButtons}
+        </div>
+        <a href="/" className={s.button}>
+          <Home aria-label="回到首頁" />
+        </a>
+      </IconWrapper>
     </header>
   )
 }
