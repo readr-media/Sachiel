@@ -2,15 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Footer from '~/components/footer'
-//components
 import Header from '~/components/header'
-import Councilor from '~/components/landing/council-main'
-import TeamIntro from '~/components/landing/credit'
-import Credit from '~/components/landing/file-download'
-import FrontPage from '~/components/landing/frontpage-main'
-import How from '~/components/landing/how-main'
-import Mayor from '~/components/landing/mayor-main'
-import Report from '~/components/landing/report'
+import Councilor from '~/components/landing/election-2022/council-main'
+import FrontPage from '~/components/landing/election-2022/frontpage-main'
+import Mayor from '~/components/landing/election-2022/mayor-main'
+import Report from '~/components/landing/election-2022/report'
+import FileDownload from '~/components/landing/shared/file-download'
+import How from '~/components/landing/shared/how-main'
+import TeamIntro from '~/components/landing/shared/team-intro'
 
 const Main = styled.main`
   width: 100%;
@@ -48,7 +47,7 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore
           propsData={propsData}
         />
-        <Credit />
+        <FileDownload />
         {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
           <Report
             // @ts-ignore

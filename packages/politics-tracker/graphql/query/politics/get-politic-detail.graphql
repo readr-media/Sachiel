@@ -7,6 +7,7 @@ query GetPoliticsDetail($politicId: ID!) {
     status
     current_progress
     updatedAt
+    contributer
     person {
       id
       votes_obtained_number
@@ -133,6 +134,12 @@ query GetPoliticsDetail($politicId: ID!) {
       id
       link
       content
+    }
+    politicCategory {
+      id
+    }
+    organization {
+      id
     }
   }
 }

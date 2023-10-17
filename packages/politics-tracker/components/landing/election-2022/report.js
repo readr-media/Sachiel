@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ArrowTilt from '../icons/arrow-tilt'
+import ArrowTilt from '~/components/icons/arrow-tilt'
 
 const ReportContainer = styled.div`
   width: 100%;
@@ -163,7 +163,7 @@ const ReportButton = styled.button`
  * @returns {React.ReactElement}
  */
 // @ts-ignore
-export default function TeamIntro({ propsData }) {
+export default function Retro({ propsData }) {
   return (
     <ReportContainer>
       <h1>相關報導</h1>

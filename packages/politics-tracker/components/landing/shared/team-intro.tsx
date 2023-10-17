@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const TeamIntroContainer = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -12,11 +12,12 @@ const TeamIntroContainer = styled.div`
   box-shadow: inset 0px -4px 0px #000000;
 `
 
-const TeamIntroWrap = styled.div`
+const Name = styled.div`
   width: 100%;
   padding-top: 10px;
   text-align: center;
-  h4 {
+
+  p {
     ${({ theme }) => theme.fontSize['title-sub-md']};
     font-weight: 700;
     margin-bottom: 10px;
@@ -28,12 +29,13 @@ const TeamIntroWrap = styled.div`
     justify-content: center;
     flex-wrap: wrap;
     max-width: 850px;
-    h4 {
+
+    p {
       font-size: 18px;
     }
   }
 `
-const TeamSubtitle = styled.div`
+const Title = styled.div`
   width: 100%;
   padding-top: 10px;
   text-align: center;
@@ -41,29 +43,26 @@ const TeamSubtitle = styled.div`
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: 20px;
+
   ${({ theme }) => theme.breakpoint.xl} {
     font-size: 28px;
   }
 `
-const TeamWrap = styled.div``
-/**
- *
- * @returns {React.ReactElement}
- */
 
-export default function TeamIntro() {
+//TODO: 改成可以傳入資料
+export default function TeamIntro(): JSX.Element {
   return (
-    <TeamIntroContainer>
-      <TeamWrap>
-        <TeamSubtitle>製作團隊</TeamSubtitle>
-        <TeamIntroWrap>
-          <h4>監製：簡信昌</h4>
-          <h4>製作人：張蘊方、李又如</h4>
-          <h4>設計：吳曼努</h4>
-          <h4>工程：陳柏維、李法賢、蘇庭葳、傅典洋、張容瑄</h4>
-          <h4>社群：徐湘芸</h4>
-        </TeamIntroWrap>
-      </TeamWrap>
-    </TeamIntroContainer>
+    <Wrapper>
+      <div>
+        <Title>製作團隊</Title>
+        <Name>
+          <p>監製：簡信昌</p>
+          <p>製作人：張蘊方、李又如</p>
+          <p>設計：吳曼努</p>
+          <p>工程：陳柏維、李法賢、蘇庭葳、傅典洋、張容瑄</p>
+          <p>社群：徐湘芸</p>
+        </Name>
+      </div>
+    </Wrapper>
   )
 }

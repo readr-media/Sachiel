@@ -149,7 +149,7 @@ export default function HowContent() {
         <HowItem>
           <Image
             alt="process01"
-            src="/landingpage/process01.svg"
+            src="/icons/landing/process01.svg"
             width="160"
             height="160"
           />
@@ -161,7 +161,7 @@ export default function HowContent() {
         <HowItem>
           <Image
             alt="process02"
-            src="/landingpage/process02.svg"
+            src="/icons/landing/process02.svg"
             width="160"
             height="160"
           />
@@ -175,7 +175,7 @@ export default function HowContent() {
         <HowItem>
           <Image
             alt="process03"
-            src="/landingpage/process03.svg"
+            src="/icons/landing/process03.svg"
             width="160"
             height="160"
           />
@@ -189,7 +189,7 @@ export default function HowContent() {
         <HowItem>
           <Image
             alt="process04"
-            src="/landingpage/process04.svg"
+            src="/icons/landing/process04.svg"
             width="160"
             height="160"
           />
@@ -214,7 +214,7 @@ export default function HowContent() {
           協作指南
           <Image
             alt="obliqueArrow"
-            src="/landingpage/oblique_arrow.svg"
+            src="/icons/landing/oblique_arrow.svg"
             width="20"
             height="20"
           />

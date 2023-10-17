@@ -1,19 +1,26 @@
 export type PoliticDetail = {
-  content: string
-  current_progress: string
-  desc: string
-  expertPoint: ExpertPoint[]
   id: string
-  person: GenericPerson
-  timeline: TimeLine[]
-  source: string
-  status: string
-  updatedAt: string
-  positionChange: PositionChange[]
-  factCheck: FactCheck[]
-  repeat: Repeat[]
-  response: Response[]
-  controversies: Controversy[]
+  content?: string
+  current_progress?: string
+  desc?: string
+  expertPoint?: ExpertPoint[]
+  person?: GenericPerson
+  timeline?: TimeLine[]
+  source?: string
+  status?: string
+  updatedAt?: string
+  positionChange?: PositionChange[]
+  factCheck?: FactCheck[]
+  repeat?: Repeat[]
+  response?: Response[]
+  controversies?: Controversy[]
+  contributer?: string
+  politicCategory?: {
+    id: string
+  }
+  organization?: {
+    id: string
+  }
 }
 
 //任期
@@ -119,14 +126,14 @@ export type Logo = {
 
 export type GenericPerson = {
   id: string
-  electoral_district: ElectoralDistrict
-  party: Party
-  election: Election
-  person_id: PersonId
-  votes_obtained_number: string
-  votes_obtained_percentage: string
-  elected: boolean
-  incumbent: boolean
+  electoral_district?: ElectoralDistrict
+  party?: Party
+  election?: Election
+  person_id?: PersonId
+  votes_obtained_number?: string
+  votes_obtained_percentage?: string
+  elected?: boolean
+  incumbent?: boolean
 }
 
 export type ElectoralDistrict = {

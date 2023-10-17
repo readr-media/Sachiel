@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { logGAEvent } from '~/utils/analytics'
 
-const TeamIntroContainer = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -14,6 +14,7 @@ const TeamIntroContainer = styled.div`
   color: ${({ theme }) => theme.textColor.black};
   box-shadow: inset 0px -4px 0px #000000;
 `
+
 const TeamIntroWrap = styled.div`
   width: 100%;
   text-align: center;
@@ -35,7 +36,7 @@ const TeamIntroWrap = styled.div`
     }
   }
 `
-const TeamSubtitle = styled.div`
+const Title = styled.div`
   width: 100%;
   padding-top: 10px;
   text-align: center;
@@ -85,12 +86,7 @@ const CreditButtonWrap = styled.div`
 `
 const TeamWrap = styled.div``
 
-/**
- *
- * @returns {React.ReactElement}
- */
-
-export default function TeamIntro() {
+export default function FileDownload(): JSX.Element {
   const ButtonData = [
     {
       buttonTitle: '下載縣市長政見',
@@ -107,16 +103,19 @@ export default function TeamIntro() {
       },
     },
   ]
+
   return (
-    <TeamIntroContainer>
+    <Wrapper>
       <TeamWrap>
-        <TeamSubtitle>下載資料</TeamSubtitle>
+        <Title>下載資料</Title>
+
         <TeamIntroWrap>
           <h4>
             READr
             致力於產製資料驅動的新聞報導，並將所使用的資料公開，歡迎加以利用！（License：CC0）
           </h4>
         </TeamIntroWrap>
+
         <CreditButtonWrap>
           {ButtonData.map((v) => {
             return (
@@ -125,7 +124,7 @@ export default function TeamIntro() {
                   <p>{v.buttonTitle}</p>
                   <Image
                     alt="arrowRightblack"
-                    src="/landingpage/arrow_right_black.svg"
+                    src="/icons/landing/arrow_right_black.svg"
                     width="20"
                     height="20"
                   />
@@ -135,6 +134,6 @@ export default function TeamIntro() {
           })}
         </CreditButtonWrap>
       </TeamWrap>
-    </TeamIntroContainer>
+    </Wrapper>
   )
 }

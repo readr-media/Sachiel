@@ -51,6 +51,8 @@ export default function PoliticsDetail({
   config,
   personOrganization,
 }: PoliticDetailPageProps): JSX.Element {
+  const { person } = politicData
+
   const navProps = {
     prev: {
       backgroundColor: 'bg-button',
@@ -59,36 +61,36 @@ export default function PoliticsDetail({
       href: {
         pathname: '/politics/[personId]',
         query: {
-          personId: politicData.person.person_id.id,
+          personId: person?.person_id?.id,
         },
       },
     },
     alwaysShowHome: true,
   }
-  if (politicData.person.party === null) {
-    politicData.person.party = { name: '無黨籍', image: '' }
+  if (person?.party === null) {
+    person.party = { name: '無黨籍', image: '' }
   }
 
   //next/head title & description
   const headProps = { title: '', description: '' }
-  headProps.title = `${politicData.person.person_id.name} - ${politicData.desc}｜READr 政商人物資料庫`
+  headProps.title = `${person?.person_id?.name} - ${politicData.desc}｜READr 政商人物資料庫`
 
   //get election name
-  const rawElectionName = politicData.person.election.name
-  const electionWithoutYear = rawElectionName.slice(
+  const rawElectionName = person?.election?.name
+  const electionWithoutYear = rawElectionName?.slice(
     rawElectionName.indexOf('年') + 1
   )
 
   // if election.level = "地方選舉" add "electoral_district.name"
-  if (politicData.person.election.level === '地方選舉' || 'local') {
-    headProps.description = `${politicData.person.person_id.name}在${
-      politicData.person.election.election_year_year
-    }${politicData.person.electoral_district?.name.slice(
+  if (person?.election?.level === '地方選舉' || 'local') {
+    headProps.description = `${person?.person_id?.name}在${
+      person?.election?.election_year_year
+    }${person?.electoral_district?.name.slice(
       0,
       3
     )}${electionWithoutYear}提出的政見：${politicData.desc}`
   } else {
-    headProps.description = `${politicData.person.person_id.name}在${politicData.person.election.election_year_year}${politicData.person.election.type}選舉提出的政見：${politicData.desc}`
+    headProps.description = `${person?.person_id?.name}在${person?.election?.election_year_year}${person?.election?.type}選舉提出的政見：${politicData.desc}`
   }
 
   return (
@@ -97,12 +99,12 @@ export default function PoliticsDetail({
       <ConfigContext.Provider value={config}>
         <Main>
           <Title
-            id={politicData.person.person_id.id}
-            name={politicData.person.person_id.name}
-            avatar={politicData.person.person_id.image}
+            id={person?.person_id?.id || ''}
+            name={person?.person_id?.name || ''}
+            avatar={person?.person_id?.image || ''}
             campaign={latestPersonElection}
-            party={politicData.person.party?.name}
-            partyIcon={politicData.person.party?.image}
+            party={person?.party?.name || ''}
+            partyIcon={person?.party?.image || ''}
             completed={politicAmount.passed}
             waiting={politicAmount.waiting}
           />
