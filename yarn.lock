@@ -3688,10 +3688,10 @@
     "@twreporter/errors" "^1.1.1"
     axios "^0.27.2"
 
-"@readr-media/react-feedback@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-feedback/-/react-feedback-3.3.0.tgz#2a94325ec4160597f3d5c695fc1d1c2fb1fc1a6f"
-  integrity sha512-aLl3OGcYcEnC0Kmiz/G/AgXIbaTIgOIako04B0jXOT2DE3P7kZfOqFX9mhXCP9ZT35Hm4IQFJJ8yfac4OMWhRA==
+"@readr-media/react-feedback@^3.5.2":
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-feedback/-/react-feedback-3.5.2.tgz#dfdf2cd877dc7537113468095790a2bdc337bf4a"
+  integrity sha512-e5stf4OxZQQWM+Cfa2npxhhXbN12AGHG+mhUeD8cOdHkvKG+ARvxZ52tNwzojMRLLKYkdgYyXEeQhZEpXra9KA==
   dependencies:
     axios "^0.27.2"
     lodash "^4.17.21"
