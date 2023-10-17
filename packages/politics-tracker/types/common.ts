@@ -1,3 +1,4 @@
+import { Option } from '@readr-media/react-feedback/dist/typedef'
 import type { LinkProps } from 'next/link'
 
 export type LinkHref = LinkProps['href']
@@ -173,5 +174,8 @@ export type Source = {
   value: string
   error: string
 }
+
+export type ExtendedOption = Option & { sortOrder: number }
+
 export type FormConfig = Record<'formId' | 'fieldId', string>
 export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
