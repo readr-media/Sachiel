@@ -129,7 +129,7 @@ type ProgressBar = {
   politicData: PoliticDetail
 }
 export default function Progressbar({ politicData }: ProgressBar): JSX.Element {
-  const electResult = politicData.person.elected
+  const electResult = politicData?.person?.elected || false
   //@ts-ignore
   const progressType = politicData.current_progress
 

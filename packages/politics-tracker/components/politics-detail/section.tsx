@@ -72,11 +72,11 @@ export default function Section({
 
   //get election Date (YYYY-MM-DD)
   let electionDate =
-    politicData.person.election.election_year_year +
+    politicData?.person?.election?.election_year_year +
     '-' +
-    politicData.person.election.election_year_month +
+    politicData?.person?.election?.election_year_month +
     '-' +
-    politicData.person.election.election_year_day
+    politicData?.person?.election?.election_year_day
 
   // get current Date (YYYY-MM-DD)
   let currentTime = new Date()

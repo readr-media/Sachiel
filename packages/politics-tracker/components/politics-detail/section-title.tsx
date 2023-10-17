@@ -122,12 +122,12 @@ export default function SectionTitle({
   personOrganization,
 }: SectionTitleProps): JSX.Element {
   const { person } = politicData
-  const { person_id, election, electoral_district, party, elected } = person
-  const election_area = electoral_district?.name.slice(0, 3)
-  const linkHref = `/politics/${person_id.id}`
+
+  const election_area = person?.electoral_district?.name.slice(0, 3)
+  const linkHref = `/politics/${person?.person_id?.id}`
 
   //change election_name's year from RepublicYear to Common Era (+1911)
-  const rawElectionName = election.name
+  const rawElectionName = person?.election?.name || ''
   const electionCenturyYear = changeYearToCentury(rawElectionName)
   const electionWithoutYear = rawElectionName.slice(
     rawElectionName.indexOf('年') + 1
@@ -152,7 +152,8 @@ export default function SectionTitle({
   const termStart = `${start_date_year}-${start_date_month}-${start_date_day}`
   const termEnd = `${end_date_year}-${end_date_month}-${end_date_day}`
 
-  const shouldShowTerm = elected && Object.keys(personOrganization).length !== 0
+  const shouldShowTerm =
+    person?.elected && Object.keys(personOrganization).length !== 0
 
   return (
     <Link href={linkHref}>
@@ -169,12 +170,12 @@ export default function SectionTitle({
             <PartyInfo>
               <PartyImage>
                 <Image
-                  images={{ original: party?.image }}
-                  alt={party?.name}
+                  images={{ original: person?.party?.image }}
+                  alt={person?.party?.name}
                   defaultImage="/images/default-head-photo.png"
                 />
               </PartyImage>
-              <span>{party?.name || '無黨籍'}</span>
+              <span>{person?.party?.name || '無黨籍'}</span>
             </PartyInfo>
 
             {shouldShowTerm && (

@@ -50,17 +50,17 @@ export default function SectionContent({
   const [isControEdit, setIsControEdit] = useState(false)
 
   const {
-    desc,
-    content,
-    source,
-    positionChange,
-    timeline,
-    controversies,
-    expertPoint,
-    factCheck,
-    updatedAt,
-    repeat,
-    response,
+    desc = '',
+    content = '',
+    source = '',
+    positionChange = [],
+    timeline = [],
+    controversies = [],
+    expertPoint = [],
+    factCheck = [],
+    updatedAt = '',
+    repeat = [],
+    response = [],
   } = politicData
 
   const toggleItems: ToggleItems[] = [
@@ -88,12 +88,12 @@ export default function SectionContent({
     {
       title: '相似政見',
       children: <Repeat repeats={repeat} />,
-      show: Boolean(repeat.length),
+      show: Boolean(repeat?.length),
     },
     {
       title: '候選人回應',
       children: <Response responses={response} />,
-      show: Boolean(repeat.length),
+      show: Boolean(repeat?.length),
     },
     {
       title: '相關進度',
@@ -111,6 +111,7 @@ export default function SectionContent({
       ),
       children: (
         <Controversy
+          politicData={politicData}
           controversies={controversies}
           editMode={isControEdit}
           setEditMode={setIsControEdit}
