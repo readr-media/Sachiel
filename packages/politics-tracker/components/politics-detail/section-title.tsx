@@ -3,6 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import ArrowLeft from '~/components/icons/arrow-left'
+import ElectionTerm from '~/components/shared/election-term'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
 const Header = styled.div`
@@ -101,18 +102,6 @@ const PartyImage = styled.div`
   }
 `
 
-const ElectionTerm = styled.div`
-  padding: 4px;
-  border: 1px solid #000000;
-  font-size: 12px;
-  font-weight: 500;
-  display: inline-block;
-
-  ${({ theme }) => theme.breakpoint.md} {
-    font-size: 14px;
-  }
-`
-
 type SectionTitleProps = {
   politicData: PoliticDetail
   personOrganization: PersonElectionTerm
@@ -139,22 +128,6 @@ export default function SectionTitle({
     return newYear
   }
 
-  //election term
-  const {
-    start_date_day,
-    start_date_month,
-    start_date_year,
-    end_date_day,
-    end_date_month,
-    end_date_year,
-  } = personOrganization
-
-  const termStart = `${start_date_year}-${start_date_month}-${start_date_day}`
-  const termEnd = `${end_date_year}-${end_date_month}-${end_date_day}`
-
-  const shouldShowTerm =
-    person?.elected && Object.keys(personOrganization).length !== 0
-
   return (
     <Link href={linkHref}>
       <Header>
@@ -178,11 +151,11 @@ export default function SectionTitle({
               <span>{person?.party?.name || '無黨籍'}</span>
             </PartyInfo>
 
-            {shouldShowTerm && (
-              <ElectionTerm>
-                任期 {termStart} ~ {termEnd}
-              </ElectionTerm>
-            )}
+            <ElectionTerm
+              isElected={person?.elected}
+              isIncumbent={person?.incumbent}
+              termDate={personOrganization}
+            />
           </SubTitle>
         </div>
       </Header>
