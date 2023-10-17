@@ -57,6 +57,7 @@ export const theme: Theme = {
     landingPurple: '#ECEDFF',
     lightPurple: '#F3F4FF',
     skinDark: '#FFF1E8',
+    cornsilk: '#FFFCF3',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
@@ -68,6 +69,7 @@ export const theme: Theme = {
     black: '#0F2D35',
     white: sharedColor.white,
     pink: '#FFF1E8',
+    lightPink: '#FFECED',
     disable: sharedColor.gray,
     black30: 'rgba(15, 45, 53, 0.3)',
     black50: 'rgba(15, 45, 53, 0.5)',
