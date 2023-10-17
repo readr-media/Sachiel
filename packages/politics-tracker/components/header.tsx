@@ -75,22 +75,21 @@ export default function Header(): JSX.Element {
 
   return (
     <header className={s.header}>
-      <a
-        className={s.logo}
+      <Link
         href="https://www.readr.tw/"
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => logGAEvent('click', '點擊 READr LOGO')}
       >
-        <Logo aria-label="READr" className="h-10 w-10" />
-      </a>
+        <Logo aria-label="READr" className={`${s.logo} h-12 w-12`} />
+      </Link>
       <IconWrapper>
         <div className={s.button} onClick={toggleShareIcons}>
           <ShareButton aria-label="分享" className="h-10 w-10" />
           {shareButtons}
         </div>
-        <Link href="/" className={s.button}>
-          <Home aria-label="回到首頁" />
+        <Link href="/">
+          <Home aria-label="回到首頁" className={s.button} />
         </Link>
       </IconWrapper>
     </header>
