@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import Link from 'next/link'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -88,9 +89,9 @@ export default function Header(): JSX.Element {
           <ShareButton aria-label="分享" className="h-10 w-10" />
           {shareButtons}
         </div>
-        <a href="/" className={s.button}>
+        <Link href="/" className={s.button}>
           <Home aria-label="回到首頁" />
-        </a>
+        </Link>
       </IconWrapper>
     </header>
   )
