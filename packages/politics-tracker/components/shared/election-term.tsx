@@ -80,7 +80,6 @@ export default function ElectionTerm({
         day: end_date_day,
       })
 
-  console.log('isIncumbent', isIncumbent)
   return (
     <Term>
       任期 {startTime} ~ {endTime}
