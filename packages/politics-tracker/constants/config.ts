@@ -1,3 +1,5 @@
+import type { FeedbackFormConfig } from '~/types/common'
+
 const envList: string[] = ['dev', 'prod']
 const env: string = envList.includes(String(process.env.NEXT_PUBLIC_ENV))
   ? String(process.env.NEXT_PUBLIC_ENV)
@@ -6,13 +8,20 @@ const env: string = envList.includes(String(process.env.NEXT_PUBLIC_ENV))
 // environment independent
 const cmsApiUrl: string = process.env.CMS_API_URL ?? ''
 const readrCmsApiUrl: string = process.env.READR_CMS_API_URL ?? ''
-let feedbackFormConfig: Partial<Record<'formId' | 'fieldId', string>> = {}
+
+let feedbackFormConfig: FeedbackFormConfig
 try {
   feedbackFormConfig = JSON.parse(process.env.FEEDBACK_FORM_CONFIG ?? '')
 } catch (e) {
   feedbackFormConfig = {
-    formId: '',
-    fieldId: '',
+    emoji: {
+      formId: '',
+      fieldId: '',
+    },
+    text: {
+      formId: '',
+      fieldId: '',
+    },
   }
 }
 

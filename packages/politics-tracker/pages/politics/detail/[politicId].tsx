@@ -15,6 +15,7 @@ import GetPersonOrganization from '~/graphql/query/politics/get-person-organizat
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import { FeedbackFormConfig } from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -33,15 +34,11 @@ const Main = styled.main`
   }
 `
 
-type Config = {
-  fieldId?: string
-  formId?: string
-}
 type PoliticDetailPageProps = {
   politicData: PoliticDetail
   politicAmount: PoliticAmount
   latestPersonElection: string
-  config: Config
+  config: FeedbackFormConfig
   personOrganization: PersonElectionTerm
 }
 export default function PoliticsDetail({

@@ -173,3 +173,5 @@ export type Source = {
   value: string
   error: string
 }
+export type FormConfig = Record<'formId' | 'fieldId', string>
+export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
