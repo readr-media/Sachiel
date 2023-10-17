@@ -18,12 +18,50 @@ export type Politic = {
   desc: string
   source: string
   content: string
-  progess?: `${PROGRESS}`
+  progress?: `${PROGRESS}`
   tagId: string | null
   tagName: string | null
   createdAt: string | null
   updatedAt: string | null
   error?: string
+  positionChange: PositionChange[]
+  factCheck: FactCheck[]
+  expertPoint: ExpertPoint[]
+  repeat: Repeat[]
+}
+
+//立場改變摘要
+export type PositionChange = {
+  id: string
+  positionChangeSummary: string
+  isChanged: boolean
+  factcheckPartner: FactCheckPartner | null
+}
+
+export type FactCheckPartner = {
+  name: string
+}
+
+//事實釐清摘要
+export type FactCheck = {
+  id: string
+  factCheckSummary: string
+  checkResultType: string
+  factcheckPartner: FactCheckPartner | null
+}
+
+//專家看點摘要
+export type ExpertPoint = {
+  id: string
+  expertPointSummary: string
+  expert: string
+}
+
+//相似政策摘要
+export type Repeat = {
+  id: string
+  repeatSummary: string
+  factcheckPartner: FactCheckPartner | null
 }
 
 export type PersonElection = {
@@ -42,4 +80,5 @@ export type PersonElection = {
   lastUpdate: string | null
   politics: Politic[]
   waitingPolitics: Politic[]
+  hidePoliticDetail: string | null
 }

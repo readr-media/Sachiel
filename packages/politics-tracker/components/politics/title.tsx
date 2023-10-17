@@ -80,7 +80,6 @@ const MultipleLineBlock = (props: MultipleLineBlock) => {
           ref={ref}
           style={{
             fontSize,
-            height,
           }}
         >
           {props.content}
@@ -120,8 +119,8 @@ type TextConfig = {
 
 export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderWidth: 2,
     unoptimized: true,
   }
@@ -218,21 +217,13 @@ export default function Title(props: PersonOverview): JSX.Element {
             />
           </MultipleLineBlock>
         </PoliticsBlock>
-        <PoliticsBlock
-          title="目前"
-          subTitle="政見數"
-          customClass={s['already-block']}
-        >
+        <PoliticsBlock title="目前政件數" customClass={s['already-block']}>
           <SingleLineBlock
             content={props.completed}
             customClass={mainTextClass}
           />
         </PoliticsBlock>
-        <PoliticsBlock
-          title="待確認"
-          subTitle="政見數"
-          customClass={s['waiting-block']}
-        >
+        <PoliticsBlock title="待確認政見數" customClass={s['waiting-block']}>
           <SingleLineBlock
             content={props.waiting}
             customClass={mainTextClass}

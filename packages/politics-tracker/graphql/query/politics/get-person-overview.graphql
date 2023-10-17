@@ -1,10 +1,9 @@
 query GetPersonOverView($personId: ID!) {
-  personElections(where: {
-    person_id: {
-      id: { equals: $personId },
-      status: { equals: "verified" }
+  personElections(
+    where: {
+      person_id: { id: { equals: $personId }, status: { equals: "verified" } }
     }
-  }) {
+  ) {
     id
     politicSource
     elected
@@ -21,6 +20,7 @@ query GetPersonOverView($personId: ID!) {
       election_year_day
       level
       type
+      hidePoliticDetail
     }
     party {
       name

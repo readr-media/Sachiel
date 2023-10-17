@@ -15,7 +15,7 @@ import {
   urlOfJsonForlandingPage,
 } from '~/constants/config'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
-import GetPolticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
+import GetPoliticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
 import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
 
@@ -326,7 +326,7 @@ export const getServerSideProps = async ({ res }) => {
       // use politics with ids of personElection to get relations between politics and people,
       // then use it to figure out amount of each people
       const rawData = await fireGqlRequest(
-        print(GetPolticsRelatedToPersonElections),
+        print(GetPoliticsRelatedToPersonElections),
         {
           ids: personElecitonIds,
         },
@@ -338,10 +338,10 @@ export const getServerSideProps = async ({ res }) => {
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
           new Error(
-            'Errors returned in `GetPolticsRelatedToPersonElections` query'
+            'Errors returned in `GetPoliticsRelatedToPersonElections` query'
           ),
           'GraphQLError',
-          'failed to complete `GetPolticsRelatedToPersonElections`',
+          'failed to complete `GetPoliticsRelatedToPersonElections`',
           { errors: gqlErrors }
         )
 

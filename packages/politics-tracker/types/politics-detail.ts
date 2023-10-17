@@ -3,7 +3,6 @@ export type PoliticDetail = {
   content?: string
   current_progress?: string
   desc?: string
-  dispute?: string
   expertPoint?: ExpertPoint[]
   person?: GenericPerson
   timeline?: TimeLine[]

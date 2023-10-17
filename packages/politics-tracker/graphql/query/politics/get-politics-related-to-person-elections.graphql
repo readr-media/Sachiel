@@ -1,5 +1,5 @@
-query GetPolticsRelatedToPersonElections($ids: [ID!]) {
-  politics(where: {person: {id: {in: $ids}}}) {
+query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
+  politics(where: { person: { id: { in: $ids } } }) {
     id
     desc
     content
@@ -13,7 +13,7 @@ query GetPolticsRelatedToPersonElections($ids: [ID!]) {
       id
       desc
       source
-			status
+      status
     }
     person {
       id
@@ -24,6 +24,34 @@ query GetPolticsRelatedToPersonElections($ids: [ID!]) {
     tag {
       id
       name
+    }
+    positionChange {
+      id
+      isChanged
+      positionChangeSummary
+      factcheckPartner {
+        name
+      }
+    }
+    factCheck {
+      id
+      factCheckSummary
+      checkResultType
+      factcheckPartner {
+        name
+      }
+    }
+    expertPoint {
+      id
+      expertPointSummary
+      expert
+    }
+    repeat {
+      id
+      repeatSummary
+      factcheckPartner {
+        name
+      }
     }
   }
 }
