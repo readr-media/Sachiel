@@ -1,0 +1,10 @@
+mutation AddControversies($data: [PoliticControversieCreateInput!]!) {
+  createPoliticControversies(data: $data) {
+    id
+    link
+    content
+    politic {
+      id
+    }
+  }
+}
