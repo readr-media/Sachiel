@@ -45,7 +45,7 @@ export default function TitleButton() {
         <Button>
           <Image
             alt="frontpageButton"
-            src="/landingpage/button_arrow.svg"
+            src="/icons/landing//button_arrow.svg"
             width="20"
             height="20"
           />
@@ -56,7 +56,7 @@ export default function TitleButton() {
         <Button>
           <Image
             alt="frontpageButton"
-            src="/landingpage/button_arrow.svg"
+            src="/icons/landing/button_arrow.svg"
             width="20"
             height="20"
           />

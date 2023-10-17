@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import MayorContent from '~/components/landing/mayor-content'
+import MayorContent from '~/components/landing/election-2022/mayor-content'
 
 const MayorContainer = styled.div`
   width: 100%;

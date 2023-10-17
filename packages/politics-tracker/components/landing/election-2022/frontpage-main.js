@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 //components
-import Title from '~/components/landing/frontpage-title'
-import Statistics from '~/components/landing/statistics-main'
+import Title from '~/components/landing/election-2022/frontpage-title'
+import Statistics from '~/components/landing/election-2022/statistics-main'
 
 const FrontPageContainer = styled.div`
   width: 100%;

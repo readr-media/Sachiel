@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 //components
-import TitleButton from '~/components/landing/frontpage-button'
+import TitleButton from '~/components/landing/election-2022/frontpage-button'
 
 const TitleContainer = styled.div`
   width: 100%;
@@ -153,7 +153,7 @@ export default function Title() {
         <ArrowIcon>
           <Image
             alt="arrowDown"
-            src="/landingpage/arrow_down.svg"
+            src="/icons/landing/arrow_down.svg"
             width="100"
             height="100"
           />
@@ -165,7 +165,7 @@ export default function Title() {
             <LogoIcon>
               <Image
                 alt="Logo"
-                src="/landingpage/frontpagelogo_sm.svg"
+                src="/icons/landing/frontpagelogo_sm.svg"
                 width="200"
                 height="200"
               />

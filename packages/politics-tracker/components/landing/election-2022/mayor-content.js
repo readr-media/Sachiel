@@ -315,7 +315,7 @@ export default function MayorContent({
             {arrowToggle ? (
               <Image
                 alt="arrowGreen"
-                src="/landingpage/arrow_green_down.svg"
+                src="/icons/landing/arrow_green_down.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -323,7 +323,7 @@ export default function MayorContent({
             ) : (
               <Image
                 alt="arrowGreen"
-                src="/landingpage/arrow_green_up.svg"
+                src="/icons/landing/arrow_green_up.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -351,14 +351,14 @@ export default function MayorContent({
                         {v.active ? (
                           <Image
                             alt="arrowDownPurple"
-                            src="/landingpage/arrow_up_green.svg"
+                            src="/icons/landing/arrow_up_green.svg"
                             width="20"
                             height="20"
                           />
                         ) : (
                           <Image
                             alt="arrowDownPurple"
-                            src="/landingpage/arrow_down_green.svg"
+                            src="/icons/landing/arrow_down_green.svg"
                             width="20"
                             height="20"
                           />

@@ -318,7 +318,7 @@ export default function CouncilContent({
             {arrowToggle ? (
               <Image
                 alt="arrowPurple"
-                src="/landingpage/arrow_purple_down.svg"
+                src="/icons/landing/arrow_purple_down.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -326,7 +326,7 @@ export default function CouncilContent({
             ) : (
               <Image
                 alt="arrowPurple"
-                src="/landingpage/arrow_purple_up.svg"
+                src="/icons/landing/arrow_purple_up.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -354,14 +354,14 @@ export default function CouncilContent({
                         {v.active ? (
                           <Image
                             alt="arrowDownPurple"
-                            src="/landingpage/arrow_up_purple.svg"
+                            src="/icons/landing/arrow_up_purple.svg"
                             width="20"
                             height="20"
                           />
                         ) : (
                           <Image
                             alt="arrowDownPurple"
-                            src="/landingpage/arrow_down_purple.svg"
+                            src="/icons/landing/arrow_down_purple.svg"
                             width="20"
                             height="20"
                           />

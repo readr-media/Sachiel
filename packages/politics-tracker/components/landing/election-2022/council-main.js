@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import CouncilList from '~/components/landing/council-content'
+import CouncilList from '~/components/landing/election-2022/council-content'
 import { logGAEvent } from '~/utils/analytics'
 
 const CouncilContainer = styled.div`
@@ -369,7 +369,7 @@ export default function CouncilMain({ propsData }) {
                     {toggle ? (
                       <Image
                         alt="arrowPurple"
-                        src="/landingpage/arrow_down_purple.svg"
+                        src="/icons/landing/arrow_down_purple.svg"
                         width="20"
                         height="20"
                         onClick={() => {}}
@@ -377,7 +377,7 @@ export default function CouncilMain({ propsData }) {
                     ) : (
                       <Image
                         alt="arrowPurple"
-                        src="/landingpage/arrow_up_purple.svg"
+                        src="/icons/landing/arrow_up_purple.svg"
                         width="20"
                         height="20"
                         onClick={() => {}}
