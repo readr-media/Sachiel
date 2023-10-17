@@ -33,7 +33,7 @@
   @apply lg:flex-nowrap;
 }
 .profile-block {
-  @apply relative flex  w-full items-center bg-person px-4 py-5 shadow-bottom;
+  @apply relative flex  w-full items-center bg-person px-4 pb-[20px] pt-[15px] shadow-bottom;
   @apply md:pl-10 md:pr-20;
   @apply lg:w-1/2  lg:shadow-bottom-and-right;
 }
