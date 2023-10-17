@@ -8,7 +8,7 @@ import moment from 'moment-timezone'
 import React, { Fragment } from 'react'
 
 import CustomHead from '~/components/custom-head'
-import LandingPage from '~/components/landing/main'
+import LandingPage from '~/components/landing/election-2022/main'
 import {
   cmsApiUrl,
   readrCmsApiUrl,
