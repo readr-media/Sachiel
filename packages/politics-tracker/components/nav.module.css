@@ -5,7 +5,7 @@
 }
 
 .block-common {
-  @apply flex grow basis-1/2 flex-col gap-3 px-4 pt-3 pb-4 shadow-top cursor-pointer;
+  @apply flex grow basis-1/2 cursor-pointer flex-col gap-3 px-4 pt-3 pb-4 shadow-top;
   @apply md:order-none;
   @apply lg:flex-nowrap lg:items-center lg:px-10 lg:py-5;
 }
@@ -42,7 +42,7 @@
 
 .home {
   @apply order-3 flex shrink-0 items-center justify-center bg-white px-10 py-5;
-  @apply text-black shadow-top md:order-none hover:bg-black hover:text-white;
+  @apply text-black shadow-top transition-all delay-100 ease-linear hover:bg-black hover:text-white md:order-none;
 
   &.default-hidden {
     @apply hidden md:flex;
@@ -51,4 +51,3 @@
 .icon-home {
   @apply h-12 w-12;
 }
-
