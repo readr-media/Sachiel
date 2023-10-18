@@ -161,7 +161,7 @@ export type RawPolitic = Partial<{
   status: StatusOptionsB
   reviewed: Boolean
   thread_parent: RawPolitic
-  tag: RawTag
+  politicCategory: RawTag
   createdAt: string
   updatedAt: string
   createdBy: string
