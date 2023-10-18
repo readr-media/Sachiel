@@ -23,7 +23,7 @@ type ButtonConfig = {
   icon: any
   link: string
   class: string
-  click: MouseEventHandler
+  click?: MouseEventHandler
 }
 
 export default function Header(): JSX.Element {
@@ -79,9 +79,12 @@ export default function Header(): JSX.Element {
         href="https://www.readr.tw/"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => logGAEvent('click', '點擊 READr LOGO')}
       >
-        <Logo aria-label="READr" className={`${s.logo} h-12 w-12`} />
+        <Logo
+          aria-label="READr"
+          className={`${s.logo} h-12 w-12`}
+          onClick={() => logGAEvent('click', '點擊 READr LOGO')}
+        />
       </Link>
       <IconWrapper>
         <div className={s.button} onClick={toggleShareIcons}>
