@@ -20,15 +20,15 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
 
   const groupMap: Record<string, GroupData> = {}
   props.politics.forEach((p) => {
-    const tagName = p.tagName ?? defaultGroupName
+    const politicCategoryName = p.politicCategoryName ?? defaultGroupName
 
-    if (!groupMap.hasOwnProperty(tagName)) {
-      groupMap[tagName] = {
-        name: tagName,
+    if (!groupMap.hasOwnProperty(politicCategoryName)) {
+      groupMap[politicCategoryName] = {
+        name: politicCategoryName,
         politics: [],
       }
     }
-    groupMap[tagName].politics.push(p)
+    groupMap[politicCategoryName].politics.push(p)
   })
   const group = Object.values(groupMap)
     .map((g: GroupData) => {
