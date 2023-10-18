@@ -90,7 +90,9 @@ export default function Header(): JSX.Element {
           {shareButtons}
         </div>
         <Link href="/">
-          <Home aria-label="回到首頁" className={s.button} />
+          <span>
+            <Home aria-label="回到首頁" className={s.button} />
+          </span>
         </Link>
       </IconWrapper>
     </header>
