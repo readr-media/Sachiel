@@ -1,18 +1,11 @@
-import FeedbackForm from '@readr-media/react-feedback'
-import type {
-  Form,
-  SingleField,
-  TextField,
-} from '@readr-media/react-feedback/dist/typedef'
 import styled from 'styled-components'
 
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
-import { EMOTION_FIELD_OPTIONS } from '~/constants/politics'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
-import { useConfig } from '../react-context/use-global'
+import SectionFeedbackForm from './section-feeedback-form'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -21,16 +14,6 @@ const SectionContainer = styled.div`
     background: #ffffff;
     max-width: 688px;
     margin: auto;
-  }
-`
-
-const FeedbackFormContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 12px;
-  box-shadow: inset 0px 4px 0px #000000;
-  > form {
-    display: inline-block;
   }
 `
 
@@ -63,35 +46,6 @@ export default function Section({
   // compare "election Date" & "current Date"
   const electionFinishedOrNot = +new Date(electionDate) < +new Date(currentDate)
 
-  const config = useConfig()
-  const fieldIdentifier = `politic-${politicData.id}`
-
-  const emojiField: SingleField = {
-    id: config?.emoji.fieldId ?? '',
-    name: '這段讓你覺得...',
-    type: 'single',
-    identifier: fieldIdentifier,
-    selectedItem: undefined,
-    options: EMOTION_FIELD_OPTIONS,
-  }
-
-  const inputField: TextField = {
-    id: config?.text.fieldId ?? '',
-    name: '',
-    type: 'text',
-    identifier: fieldIdentifier,
-    commentListTitle: '網友回饋',
-    shouldShowItemControl: false,
-  }
-
-  const feedBackFormSetting: Form[] = [
-    {
-      id: config?.emoji.formId ?? '',
-      name: 'feedback',
-      fields: [emojiField, inputField],
-    },
-  ]
-
   return (
     <SectionContainer>
       <div>
@@ -101,13 +55,7 @@ export default function Section({
         />
         {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
         <SectionContent politicData={politicData} />
-        <FeedbackFormContainer>
-          <FeedbackForm
-            shouldUseRecaptcha={true}
-            forms={feedBackFormSetting}
-            storageKey="politic-tracker-user-id"
-          />
-        </FeedbackFormContainer>
+        <SectionFeedbackForm politicId={politicData?.id} />
       </div>
     </SectionContainer>
   )
