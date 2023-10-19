@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 
-import { logGAEvent } from '~/utils/analytics'
+import ArrowTilt from '~/public/icons/landing/tilt-arrow.svg'
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -90,6 +90,7 @@ const GuideLink = styled.div`
   background: ${({ theme }) => theme.backgroundColor.skinDark};
   font-size: 14px;
   font-weight: 500;
+
   p {
     margin-bottom: 10px;
     color: ${({ theme }) => theme.textColor.black};
@@ -108,6 +109,12 @@ const GuideLink = styled.div`
     &:hover {
       cursor: pointer;
       background: ${({ theme }) => theme.backgroundColor.pink};
+    }
+
+    svg {
+      path {
+        fill: ${({ theme }) => theme.textColor.orange};
+      }
     }
   }
 
@@ -207,17 +214,9 @@ export default function HowContent() {
           href="https://hackmd.io/@readr/H1WmP88Eo"
           target="_blank"
           rel="noreferrer noopener"
-          onClick={() => {
-            logGAEvent('click', '點擊「協作指南」')
-          }}
         >
           協作指南
-          <Image
-            alt="obliqueArrow"
-            src="/icons/landing/oblique_arrow.svg"
-            width="20"
-            height="20"
-          />
+          <ArrowTilt />
         </a>
       </GuideLink>
     </ContentContainer>
