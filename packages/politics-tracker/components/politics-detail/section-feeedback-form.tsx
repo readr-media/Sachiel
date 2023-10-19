@@ -19,9 +19,11 @@ const Container = styled.div`
   box-shadow: inset 0px 4px 0px #000000;
 
   > form {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    margin: 0;
     width: 100%;
-    margin: 0 16px;
     background-color: transparent;
 
     .field-single-option {
@@ -152,14 +154,30 @@ const Container = styled.div`
             }
           }
 
-          .comment-content {
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 1.8;
-            color: rgba(0, 9, 40, 0.87);
+          .comment-content-wrapper {
             margin-top: 8px;
-            // max-height: 84px;
+
+            // ellipsis effect at end of cropping content
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            // show max 3 lines by default
+            max-height: calc(16px * 1.8 * 3);
+
+            &.expanded {
+              -webkit-line-clamp: unset;
+              max-height: unset;
+            }
+
+
+            .comment-content {
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 1.8;
+              color: rgba(0, 9, 40, 0.87);
+            }
           }
 
           .content-expander {
@@ -205,7 +223,7 @@ const Container = styled.div`
 
   ${({ theme }) => theme.breakpoint.md} {
     > form {
-      margin: 0 40px;
+      padding: 0 40px;
 
       .field-single-option {
         p {
@@ -232,7 +250,7 @@ const Container = styled.div`
 
   ${({ theme }) => theme.breakpoint.xl} {
     > form {
-      margin: 0 100px;
+      padding: 0 100px;
     }
   }
 `
@@ -268,7 +286,6 @@ export default function SectionFeedbackForm({
     options: EMOTION_FIELD_OPTIONS,
     selectedItem: selectedOption ?? undefined,
     notifyUpstream(data) {
-      console.log(data)
       updateSelectedOption(data.selectedOption)
     },
   }
