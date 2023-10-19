@@ -2,7 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import React from 'react'
 import styled from 'styled-components'
 
-import type { FactCheckPartner, Logo } from '~/types/politics-detail'
+import type { FactCheckPartner } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -51,7 +51,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* padding: 10px; */ //圖片內間距
+  padding: 10px;
 
   ${({ theme }) => theme.breakpoint.md} {
     width: 157px;
@@ -105,42 +105,6 @@ export default function FactCheckPartners({
 
   const partnersByType = filterPartnersByType(partners)
 
-  const mockImg01 = {
-    original:
-      'https://v3-statics-dev.mirrormedia.mg/images/ca661b5c-a75e-42f9-8201-4ff43eae9f3c.webP',
-    w480: 'https://v3-statics-dev.mirrormedia.mg/images/ca661b5c-a75e-42f9-8201-4ff43eae9f3c-w480.webP',
-    w800: 'https://v3-statics-dev.mirrormedia.mg/images/ca661b5c-a75e-42f9-8201-4ff43eae9f3c-w800.webP',
-    w1200: '',
-    w1600:
-      'https://v3-statics-dev.mirrormedia.mg/images/ca661b5c-a75e-42f9-8201-4ff43eae9f3c-w1600.webP',
-    w2400:
-      'https://v3-statics-dev.mirrormedia.mg/images/ca661b5c-a75e-42f9-8201-4ff43eae9f3c-w2400.webP',
-  }
-
-  const mockImg02 = {
-    original:
-      'https://v3-statics-dev.mirrormedia.mg/images/0c0d2b10-0e05-4a9b-9af3-c23e29ea0577.webP',
-    w480: 'https://v3-statics-dev.mirrormedia.mg/images/0c0d2b10-0e05-4a9b-9af3-c23e29ea0577-w480.webP',
-    w800: 'https://v3-statics-dev.mirrormedia.mg/images/0c0d2b10-0e05-4a9b-9af3-c23e29ea0577-w800.webP',
-    w1200: '',
-    w1600:
-      'https://v3-statics-dev.mirrormedia.mg/images/0c0d2b10-0e05-4a9b-9af3-c23e29ea0577-w1600.webP',
-    w2400:
-      'https://v3-statics-dev.mirrormedia.mg/images/0c0d2b10-0e05-4a9b-9af3-c23e29ea0577-w2400.webP',
-  }
-
-  const mockImg03 = {
-    original:
-      'https://v3-statics-dev.mirrormedia.mg/images/67dc521a-0b45-4982-859c-34a705654d43.webP',
-    w480: 'https://v3-statics-dev.mirrormedia.mg/images/67dc521a-0b45-4982-859c-34a705654d43-w480.webP',
-    w800: 'https://v3-statics-dev.mirrormedia.mg/images/67dc521a-0b45-4982-859c-34a705654d43-w800.webP',
-    w1200: '',
-    w1600:
-      'https://v3-statics-dev.mirrormedia.mg/images/67dc521a-0b45-4982-859c-34a705654d43-w1600.webP',
-    w2400:
-      'https://v3-statics-dev.mirrormedia.mg/images/67dc521a-0b45-4982-859c-34a705654d43-w2400.webP',
-  }
-
   return (
     <>
       {partnersByType.map((item: any, index: number) => {
@@ -148,48 +112,17 @@ export default function FactCheckPartners({
           <Wrapper key={index}>
             <Title>{item.type}</Title>
             <PartnerGroup>
-              {/* {item.partners.map((partner: any) => (
+              {item.partners.map((partner: any) => (
                 <Item key={partner.id}>
                   <CustomImage
-                    images={partner.logo?.resized}
-                    imagesWebP={partner.logo?.resizedWebp}
-                    defaultImage=""
+                    images={{ original: partner?.logo?.resized?.original }}
+                    defaultImage="/images/default-factcheck-partner.svg"
                     priority={true}
                     alt={partner.name}
+                    objectFit="contain"
                   />
                 </Item>
-              ))} */}
-
-              <Item>
-                <CustomImage
-                  // width="80%"
-                  images={{}}
-                  imagesWebP={mockImg01}
-                  priority={true}
-                  alt="mockImg01"
-                  objectFit="contain"
-                />
-              </Item>
-
-              <Item>
-                <CustomImage
-                  images={{}}
-                  imagesWebP={mockImg02}
-                  priority={true}
-                  alt="mockImg02"
-                  objectFit="contain"
-                />
-              </Item>
-
-              <Item>
-                <CustomImage
-                  images={{}}
-                  imagesWebP={mockImg03}
-                  priority={true}
-                  alt="mockImg03"
-                  objectFit="contain"
-                />
-              </Item>
+              ))}
             </PartnerGroup>
           </Wrapper>
         )
