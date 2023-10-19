@@ -224,11 +224,6 @@ function getFormattedDate(date: string): string | undefined {
   return formattedDate
 }
 
-//也要可以傳入 setting 參數，沒傳入就用 global setting
-// function setCacheControl(res: ServerResponse<IncomingMessage>): void {
-//   res.setHeader('Cache-Control', GLOBAL_CACHE_SETTING)
-// }
-
 export {
   electionName,
   fireGqlRequest,
