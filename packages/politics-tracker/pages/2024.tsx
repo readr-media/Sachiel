@@ -12,7 +12,7 @@ import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
-import GetFactCheckPartners from '~/graphql/query/politics/get-factcheck-partners.graphql'
+import GetFactCheckPartners from '~/graphql/query/landing/get-factcheck-partners.graphql'
 import type { FactCheckPartner } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
