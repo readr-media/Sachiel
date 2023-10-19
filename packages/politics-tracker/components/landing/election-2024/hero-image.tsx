@@ -22,10 +22,14 @@ const Main = styled.div`
   justify-content: center;
   padding: 0px 20px;
 
-  ${({ theme }) => theme.breakpoint.md} {
+  ${({ theme }) => theme.breakpoint.xl} {
     padding: 0px;
     display: block;
     height: 100%;
+  }
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    padding-top: 10px;
   }
 `
 
@@ -128,17 +132,16 @@ const Aside = styled.div`
   justify-content: center;
 
   svg {
-    width: 32px;
+    width: 31px;
     height: 32px;
   }
 
-  //1200
   ${({ theme }) => theme.breakpoint.xl} {
     padding: 40px 0px;
   }
 
-  //1440
   ${({ theme }) => theme.breakpoint.xxl} {
+    min-width: 90px;
     width: 6vw;
 
     svg {
