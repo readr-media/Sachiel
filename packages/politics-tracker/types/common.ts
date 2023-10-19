@@ -162,7 +162,7 @@ export type RawPolitic = Partial<{
   status: StatusOptionsB
   reviewed: Boolean
   thread_parent: RawPolitic
-  tag: RawTag
+  politicCategory: RawTag
   createdAt: string
   updatedAt: string
   createdBy: string
@@ -179,3 +179,6 @@ export type ExtendedOption = Option & { sortOrder: number }
 
 export type FormConfig = Record<'formId' | 'fieldId', string>
 export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
+// This utility is for overwriting type without extending it
+// prettier-ignore
+export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U

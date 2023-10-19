@@ -1,27 +1,28 @@
 export type PoliticDetail = {
   id: string
-  content?: string
-  current_progress?: string
-  desc?: string
-  expertPoint?: ExpertPoint[]
-  person?: GenericPerson
-  timeline?: TimeLine[]
-  source?: string
-  status?: string
-  updatedAt?: string
-  positionChange?: PositionChange[]
-  factCheck?: FactCheck[]
-  repeat?: Repeat[]
-  response?: Response[]
-  controversies?: Controversy[]
-  contributer?: string
-  politicCategory?: {
+} & Partial<{
+  content: string
+  current_progress: string
+  desc: string
+  expertPoint: ExpertPoint[]
+  person: GenericPerson
+  timeline: TimeLine[]
+  source: string
+  status: string
+  updatedAt: string
+  positionChange: PositionChange[]
+  factCheck: FactCheck[]
+  repeat: Repeat[]
+  response: Response[]
+  controversies: Controversy[]
+  contributer: string
+  politicCategory: {
     id: string
   }
-  organization?: {
+  organization: {
     id: string
   }
-}
+}>
 
 //任期
 export type PersonElectionTerm = {
@@ -106,35 +107,42 @@ export type PoliticAmount = {
 export type FactCheckPartner = {
   id: string
   name: string
-  slogo?: Logo //small logo for `politic-detail` page
-}
+  type: string
+} & Partial<{
+  logo: Logo // for `landing`
+  slogo: Logo // for `politic-detail`
+}>
 
 export type Resized = {
   original: string
+} & Partial<{
   w480: string
   w800: string
   w1200: string
   w1600: string
   w2400: string
-}
+}>
 
 export type Logo = {
   id: string
   resized: Resized
+} & Partial<{
   resizedWebp: Resized
-}
+}>
 
 export type GenericPerson = {
   id: string
-  electoral_district?: ElectoralDistrict
-  party?: Party
-  election?: Election
-  person_id?: PersonId
-  votes_obtained_number?: string
-  votes_obtained_percentage?: string
-  elected?: boolean
-  incumbent?: boolean
-}
+  resized: Resized
+} & Partial<{
+  electoral_district: ElectoralDistrict
+  party: Party
+  election: Election
+  person_id: PersonId
+  votes_obtained_number: string
+  votes_obtained_percentage: string
+  elected: boolean
+  incumbent: boolean
+}>
 
 export type ElectoralDistrict = {
   id: string

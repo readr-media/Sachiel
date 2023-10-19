@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import Link from 'next/link'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -75,22 +76,24 @@ export default function Header(): JSX.Element {
   return (
     <header className={s.header}>
       <a
-        className={s.logo}
         href="https://www.readr.tw/"
         target="_blank"
         rel="noopener noreferrer"
+        className={`${s.logo} h-12 w-12`}
         onClick={() => logGAEvent('click', '點擊 READr LOGO')}
       >
-        <Logo aria-label="READr" className="h-10 w-10" />
+        <Logo aria-label="READr" />
       </a>
       <IconWrapper>
         <div className={s.button} onClick={toggleShareIcons}>
           <ShareButton aria-label="分享" className="h-10 w-10" />
           {shareButtons}
         </div>
-        <a href="/" className={s.button}>
-          <Home aria-label="回到首頁" />
-        </a>
+        <Link href="/">
+          <span className={s.button}>
+            <Home aria-label="回到首頁" />
+          </span>
+        </Link>
       </IconWrapper>
     </header>
   )

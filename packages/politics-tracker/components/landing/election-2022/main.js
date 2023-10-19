@@ -10,6 +10,7 @@ import Report from '~/components/landing/election-2022/report'
 import FileDownload from '~/components/landing/shared/file-download'
 import How from '~/components/landing/shared/how-main'
 import TeamIntro from '~/components/landing/shared/team-intro'
+import { fileDownload2022, teamIntro2022 } from '~/constants/landing'
 
 const Main = styled.main`
   width: 100%;
@@ -47,14 +48,14 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore
           propsData={propsData}
         />
-        <FileDownload />
+        <FileDownload links={fileDownload2022} />
         {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
           <Report
             // @ts-ignore
             propsData={propsData.postsWithPoliticsTrackerTag}
           />
         )}
-        <TeamIntro />
+        <TeamIntro intro={teamIntro2022} />
       </Main>
       <Footer />
     </>

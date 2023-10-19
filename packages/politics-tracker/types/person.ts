@@ -18,9 +18,15 @@ export type Person = {
   links: string
   source: string
   tags: Tag[] | []
+  politicCategory: PoliticCategory[] | null
 }
 
 type Tag = {
+  id: string
+  name: string
+}
+
+type PoliticCategory = {
   id: string
   name: string
 }

@@ -85,6 +85,11 @@ async function fireGqlRequest<T>(
       'Cache-Control': 'no-cache',
     },
   })
+
+  if (result.errors) {
+    throw new Error('GraphQL errors: ' + JSON.stringify(result.errors))
+  }
+
   return result
 }
 
@@ -231,6 +236,7 @@ export {
   isURL,
   parseFactCheckType,
   partyName,
+  // setCacheControl,
   sourcesToString,
   stringToSources,
   typedHasOwnProperty,

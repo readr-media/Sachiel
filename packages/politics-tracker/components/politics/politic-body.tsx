@@ -95,8 +95,8 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       waitingPoliticList.addToList({
         id: String(new Date().valueOf()),
         ...variables.data,
-        tagId: null,
-        tagName: null,
+        politicCategoryId: null,
+        politicCategoryName: null,
         createdAt: null,
         updatedAt: null,
         positionChange: [],

@@ -124,12 +124,23 @@ export default function EditControversies({
 
   // -------------------------------------------------------
 
-  // 新建一筆帶有既有欄位資料的 Politic
+  //要在 CMS 新增的 controversies
+  const controversyToAdd = getControversyToAdd(list, controversies)
+
+  //紀錄相關爭議編輯內容，傳入 Politics
+  const changeLogData = controversyToAdd.map((item) => ({
+    爭議內容: item.content,
+  }))
+
+  //CMS 現存的 controversy 需要新增 connect
+  const connectControversy = getControversyToConnect(list, controversyToAdd)
+
+  //新建一筆帶有既有欄位資料的 Politic
   async function addPoliticToThread(cmsApiUrl: string) {
     try {
       const variables = {
         data: {
-          changeLog: '相關爭議',
+          changeLog: `相關爭議：${JSON.stringify(changeLogData)}`,
           reviewed: false,
           contributer: contributer,
           thread_parent: {
@@ -209,13 +220,6 @@ export default function EditControversies({
       return []
     }
   }
-
-  //要在 CMS 新增的 controversies
-  const controversyToAdd = getControversyToAdd(list, controversies)
-
-  //CMS 現存的 controversy 需要新增 connect
-  const connectControversy =
-    getControversyToConnect(list, controversyToAdd) || []
 
   async function addControversies(
     controversyList: Controversy[] | [],

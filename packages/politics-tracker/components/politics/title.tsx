@@ -217,7 +217,7 @@ export default function Title(props: PersonOverview): JSX.Element {
             />
           </MultipleLineBlock>
         </PoliticsBlock>
-        <PoliticsBlock title="目前政件數" customClass={s['already-block']}>
+        <PoliticsBlock title="目前政見數" customClass={s['already-block']}>
           <SingleLineBlock
             content={props.completed}
             customClass={mainTextClass}

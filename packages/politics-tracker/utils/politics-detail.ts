@@ -27,14 +27,16 @@ function getControversyToConnect(
   array: Controversy[],
   controversyToAdd: Controversy[]
 ): Controversy[] | [] {
-  return array.filter((item: Controversy) => !controversyToAdd.includes(item))
+  return (
+    array.filter((item: Controversy) => !controversyToAdd.includes(item)) || []
+  )
 }
 
 function getControversyToAdd(
   array: Controversy[],
   controversies: Controversy[]
-) {
-  let listToAdd: Controversy[] | [] = []
+): Controversy[] | [] {
+  let listToAdd = []
 
   const objWithPrefixed = array.filter((item: Controversy) =>
     item.id.startsWith('add-')

@@ -1,23 +1,5 @@
 export type ThemeType = typeof theme
 
-type Theme = {
-  backgroundColor: {
-    [key: string]: string
-  }
-  textColor: {
-    [key: string]: string
-  }
-  borderColor: {
-    [key: string]: string
-  }
-  fontSize: {
-    [key: string]: string
-  }
-  breakpoint: {
-    [key: string]: string
-  }
-}
-
 const mediaSize = {
   xs: 0,
   sm: 576,
@@ -35,7 +17,7 @@ const sharedColor = {
   green: '#2FB7BF',
 }
 
-export const theme: Theme = {
+export const theme: Record<string, Record<string, string>> = {
   backgroundColor: {
     blue: '#8379F8',
     gray: sharedColor.gray,
