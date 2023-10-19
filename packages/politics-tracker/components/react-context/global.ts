@@ -1,5 +1,7 @@
 import { createContext } from 'react'
 
-const ConfigContext = createContext<Record<string, unknown>>({})
+import type { FeedbackFormConfig } from '~/types/common'
+
+const ConfigContext = createContext<FeedbackFormConfig | null>(null)
 
 export { ConfigContext }

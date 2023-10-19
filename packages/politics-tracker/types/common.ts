@@ -1,3 +1,4 @@
+import { Option } from '@readr-media/react-feedback/dist/typedef'
 import type { LinkProps } from 'next/link'
 
 export type LinkHref = LinkProps['href']
@@ -174,6 +175,10 @@ export type Source = {
   error: string
 }
 
+export type ExtendedOption = Option & { sortOrder: number }
+
+export type FormConfig = Record<'formId' | 'fieldId', string>
+export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
 // This utility is for overwriting type without extending it
 // prettier-ignore
 export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U

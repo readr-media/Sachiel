@@ -1,12 +1,11 @@
-// import Feedback from '@readr-media/react-feedback'
-// import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-// import { useConfig } from '../react-context/use-global'
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
+
+import SectionFeedbackForm from './section-feeedback-form'
 
 const SectionContainer = styled.div`
   padding: 40px 15px;
@@ -18,17 +17,6 @@ const SectionContainer = styled.div`
   }
 `
 
-// 2024 選舉版本移除，改為心情留言，此塊暫時註解
-// const FeedbackFormContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   padding-top: 12px;
-//   box-shadow: inset 0px 4px 0px #000000;
-//   > form {
-//     display: inline-block;
-//   }
-// `
-
 type SectionProps = {
   politicData: PoliticDetail
   personOrganization: PersonElectionTerm
@@ -37,36 +25,6 @@ export default function Section({
   politicData,
   personOrganization,
 }: SectionProps): JSX.Element {
-  // 2024 選舉版本移除，改為心情留言，此塊暫時註解
-  // const router = useRouter()
-  // const config = useConfig()
-  // const FeedbackFormProps = {
-  //   forms: [
-  //     {
-  //       id: config.formId,
-  //       name: '',
-  //       type: '',
-  //       active: true,
-  //       fieldsCount: 1,
-  //       fields: [
-  //         {
-  //           id: config.fieldId,
-  //           name: '你覺得這個政見如何？',
-  //           status: '',
-  //           sortOrder: null,
-  //           type: 'single',
-  //           thumbUpLabel: '清楚',
-  //           thumbDownLabel: '模糊',
-  //           identifier: `politics-tracker${router.asPath}`,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   shouldUseRecaptcha: false,
-  //   theme: 'politics-tracker',
-  //   storageKey: 'politics-tracker-user-id',
-  // }
-
   //judge the politic's election is finished or unfinished
   //if finished: show progress-bar; if unfinished: hidden progress-bar
 
@@ -97,11 +55,7 @@ export default function Section({
         />
         {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
         <SectionContent politicData={politicData} />
-
-        {/* 2024 選舉版本移除，改為心情留言 */}
-        {/* <FeedbackFormContainer>
-          <Feedback {...FeedbackFormProps} />
-        </FeedbackFormContainer> */}
+        <SectionFeedbackForm politicId={politicData?.id} />
       </div>
     </SectionContainer>
   )
