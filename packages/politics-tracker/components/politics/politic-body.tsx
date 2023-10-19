@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import Edit from '~/components/icons/edit'
 import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
+import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import { PROGRESS, RawPolitic } from '~/types/common'
 import type { Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
@@ -21,6 +22,7 @@ import {
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
+
 const PoliticForm = dynamic(() => import('./politic-form'), {
   ssr: false,
 })
@@ -38,7 +40,34 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const personElection = usePersonElection()
   const waitingPoliticList = usePoliticList()
 
+  const fetchPoliticData = async () => {
+    const cmsApiUrl = `${window.location.origin}/api/data`
+
+    try {
+      const result = await fireGqlRequest(
+        print(GetPoliticDetail),
+        { politicId: props.id },
+        cmsApiUrl
+      )
+
+      if (result.errors) {
+        console.log(result.errors[0]?.message)
+        return null
+      }
+
+      return result.data
+    } catch (err) {
+      console.error(err)
+      return null
+    }
+  }
+
   async function appendPoliticToThread(data: Politic): Promise<boolean> {
+    const politicData = await fetchPoliticData()
+
+    // Now you have access to the politicData
+    console.log('Politic Data:', politicData)
+
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
