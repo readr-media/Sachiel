@@ -1,27 +1,28 @@
 export type PoliticDetail = {
   id: string
-  content?: string
-  current_progress?: string
-  desc?: string
-  expertPoint?: ExpertPoint[]
-  person?: GenericPerson
-  timeline?: TimeLine[]
-  source?: string
-  status?: string
-  updatedAt?: string
-  positionChange?: PositionChange[]
-  factCheck?: FactCheck[]
-  repeat?: Repeat[]
-  response?: Response[]
-  controversies?: Controversy[]
-  contributer?: string
-  politicCategory?: {
+} & Partial<{
+  content: string
+  current_progress: string
+  desc: string
+  expertPoint: ExpertPoint[]
+  person: GenericPerson
+  timeline: TimeLine[]
+  source: string
+  status: string
+  updatedAt: string
+  positionChange: PositionChange[]
+  factCheck: FactCheck[]
+  repeat: Repeat[]
+  response: Response[]
+  controversies: Controversy[]
+  contributer: string
+  politicCategory: {
     id: string
   }
-  organization?: {
+  organization: {
     id: string
   }
-}
+}>
 
 //任期
 export type PersonElectionTerm = {
@@ -106,6 +107,8 @@ export type PoliticAmount = {
 export type FactCheckPartner = {
   id: string
   name: string
+  type: string
+  logo?: Logo //logo for `landing` page
   slogo?: Logo //small logo for `politic-detail` page
 }
 

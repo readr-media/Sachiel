@@ -1,0 +1,25 @@
+query GetFactCheckPartners($year: String) {
+  factcheckPartners(where: { year: { equals: $year } }, orderBy: { id: asc }) {
+    id
+    name
+    type
+    logo {
+      resized {
+        original
+        w480
+        w800
+        w1200
+        w1600
+        w2400
+      }
+      resizedWebp {
+        original
+        w480
+        w800
+        w1200
+        w1600
+        w2400
+      }
+    }
+  }
+}
