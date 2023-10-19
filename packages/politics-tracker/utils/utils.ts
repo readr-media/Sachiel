@@ -85,6 +85,11 @@ async function fireGqlRequest<T>(
       'Cache-Control': 'no-cache',
     },
   })
+
+  if (result.errors) {
+    throw new Error('GraphQL errors: ' + JSON.stringify(result.errors))
+  }
+
   return result
 }
 
@@ -219,6 +224,11 @@ function getFormattedDate(date: string): string | undefined {
   return formattedDate
 }
 
+//也要可以傳入 setting 參數，沒傳入就用 global setting
+// function setCacheControl(res: ServerResponse<IncomingMessage>): void {
+//   res.setHeader('Cache-Control', GLOBAL_CACHE_SETTING)
+// }
+
 export {
   electionName,
   fireGqlRequest,
@@ -231,6 +241,7 @@ export {
   isURL,
   parseFactCheckType,
   partyName,
+  // setCacheControl,
   sourcesToString,
   stringToSources,
   typedHasOwnProperty,
