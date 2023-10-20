@@ -143,7 +143,7 @@ const GuideLink = styled.div`
   }
 `
 
-export default function HowToEdit(): JSX.Element {
+export default function CollaborateGuideItems(): JSX.Element {
   return (
     <ContentContainer>
       <ItemWrap>
