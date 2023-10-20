@@ -40,7 +40,6 @@ const HowItem = styled.div`
   text-align: center;
   margin-top: 40px;
   h4 {
-    /* TODO: 建檔成theme variable */
     font-size: 20px;
     font-weight: 700;
     color: ${({ theme }) => theme.textColor.black};
@@ -144,12 +143,7 @@ const GuideLink = styled.div`
   }
 `
 
-/**
- *
- * @returns {React.ReactElement}
- */
-
-export default function HowContent() {
+export default function HowToEdit(): JSX.Element {
   return (
     <ContentContainer>
       <ItemWrap>
