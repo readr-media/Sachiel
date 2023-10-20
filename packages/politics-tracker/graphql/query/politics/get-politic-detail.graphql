@@ -1,5 +1,22 @@
-query GetPoliticsDetail($politicId: ID!) {
-  politics(where: { id: { equals: $politicId } }) {
+query GetPoliticDetail($politicId: ID!) {
+  politics(
+    where: {
+      OR: [
+        { AND: [{ id: { equals: $politicId } }, { thread_parent: null }] }
+        {
+          thread_parent: {
+            AND: [
+              { id: { equals: $politicId } }
+              { status: { equals: "verified" } }
+              { reviewed: { equals: true } }
+            ]
+          }
+        }
+      ]
+    }
+    orderBy: { id: desc }
+    take: 1
+  ) {
     id
     desc
     content
