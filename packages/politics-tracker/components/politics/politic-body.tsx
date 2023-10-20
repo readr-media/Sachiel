@@ -182,7 +182,6 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         factCheck: [],
         expertPoint: [],
         repeat: [],
-        politics: [],
       })
 
       toast.open({

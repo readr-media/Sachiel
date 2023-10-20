@@ -14,7 +14,6 @@ export type PersonOverview = {
 export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>
 
 export type Politic = {
-  politics: any
   id?: string
   desc: string
   source: string
