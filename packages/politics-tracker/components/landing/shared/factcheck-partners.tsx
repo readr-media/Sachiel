@@ -115,7 +115,7 @@ export default function FactCheckPartners({
               {item.partners.map((partner: any) => (
                 <Item key={partner.id}>
                   <CustomImage
-                    images={{ original: partner?.logo?.resized?.original }}
+                    images={partner?.logo?.resized}
                     defaultImage="/images/default-factcheck-partner.svg"
                     priority={true}
                     alt={partner.name}
