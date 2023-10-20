@@ -1,5 +1,5 @@
 query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
-  politics(where: { person: { every: { id: { in: $ids } } } }) {
+  politics(where: { person: { id: { in: $ids } } }) {
     id
     desc
     content
