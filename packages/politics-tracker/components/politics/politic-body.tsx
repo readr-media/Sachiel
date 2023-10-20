@@ -6,8 +6,10 @@ import { useState } from 'react'
 
 import Edit from '~/components/icons/edit'
 import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
+import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import { PROGRESS, RawPolitic } from '~/types/common'
 import type { Politic } from '~/types/politics'
+import type { PoliticDetail } from '~/types/politics-detail'
 import { logGAEvent } from '~/utils/analytics'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -21,12 +23,17 @@ import {
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
+
 const PoliticForm = dynamic(() => import('./politic-form'), {
   ssr: false,
 })
 
 type PoliticBodyProps = Politic & { no: number } & {
   hidePoliticDetail: string | null
+}
+
+interface PoliticDetailData {
+  politics: PoliticDetail[]
 }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
@@ -38,7 +45,45 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const personElection = usePersonElection()
   const waitingPoliticList = usePoliticList()
 
+  const fetchPoliticData = async () => {
+    const cmsApiUrl = `${window.location.origin}/api/data`
+
+    try {
+      const result = await fireGqlRequest(
+        print(GetPoliticDetail),
+        { politicId: props.id },
+        cmsApiUrl
+      )
+
+      if (result.errors) {
+        console.log(result.errors[0]?.message)
+        return null
+      }
+
+      return result.data
+    } catch (err) {
+      console.error(err)
+      return null
+    }
+  }
+
   async function appendPoliticToThread(data: Politic): Promise<boolean> {
+    const politicData: PoliticDetailData = await fetchPoliticData()
+    const {
+      status,
+      current_progress,
+      contributer,
+      timeline,
+      positionChange,
+      expertPoint,
+      factCheck,
+      repeat,
+      response,
+      controversies,
+      politicCategory,
+      organization,
+    } = politicData.politics[0]
+
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
@@ -57,24 +102,58 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
           desc: data.desc,
           source: data.source,
           content: data.content,
+          reviewed: false,
+          status: status,
+          current_progress: current_progress,
+          contributer: contributer,
           positionChange: {
-            connect: data.positionChange.map((positionChangeItem) => ({
+            connect: positionChange?.map((positionChangeItem) => ({
               id: positionChangeItem.id,
             })),
           },
           factCheck: {
-            connect: data.factCheck.map((factCheckItem) => ({
+            connect: factCheck?.map((factCheckItem) => ({
               id: factCheckItem.id,
             })),
           },
           expertPoint: {
-            connect: data.expertPoint.map((expertPointItem) => ({
+            connect: expertPoint?.map((expertPointItem) => ({
               id: expertPointItem.id,
             })),
           },
           repeat: {
-            connect: data.repeat.map((repeatItem) => ({ id: repeatItem.id })),
+            connect: repeat?.map((repeatItem) => ({ id: repeatItem.id })),
           },
+          controversies: {
+            connect: controversies?.map((item) => ({
+              id: item.id,
+            })),
+          },
+          response: {
+            connect: response?.map((responseItem) => ({
+              id: responseItem.id,
+            })),
+          },
+          timeline: {
+            connect: timeline?.map((timelineItem) => ({
+              id: timelineItem.id,
+            })),
+          },
+          politicCategory: politicCategory
+            ? {
+                connect: {
+                  id: politicCategory.id,
+                },
+              }
+            : null,
+
+          organization: organization
+            ? {
+                connect: {
+                  id: organization.id,
+                },
+              }
+            : null,
         },
       }
 
@@ -103,6 +182,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         factCheck: [],
         expertPoint: [],
         repeat: [],
+        politics: [],
       })
 
       toast.open({
