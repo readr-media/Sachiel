@@ -39,6 +39,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow: hidden;
 
   ${({ theme }) => theme.breakpoint.xl} {
     max-width: none;
@@ -72,7 +73,7 @@ const Title = styled.h1`
   }
 `
 
-const Image = styled.div`
+const Image = styled.div<{ alt: string }>`
   order: 1;
   background: url('/images/president-candidate-mobile.svg') no-repeat
     center/contain;
@@ -88,6 +89,7 @@ const Image = styled.div`
     aspect-ratio: 16 / 5;
     background: url('/images/president-candidate-desktop.svg') no-repeat
       center/contain;
+    transform: translateY(2px); //prevent image border from showing
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
@@ -123,6 +125,7 @@ const SubTitle = styled.div`
 `
 const Aside = styled.div`
   width: 40px;
+  min-width: 40px;
   height: 100%;
   background: ${({ theme }) => theme.backgroundColor.black};
   padding: 20px 0px;
@@ -179,7 +182,7 @@ export default function HeroImage(): JSX.Element {
       </Aside>
       <Main>
         <Content>
-          <Image />
+          <Image alt="政見不失憶-臺灣 2024 選舉政見事實查核平台" />
           <>
             <Title>政見不失憶</Title>
             <SubTitle>臺灣 2024 選舉政見事實查核平台</SubTitle>

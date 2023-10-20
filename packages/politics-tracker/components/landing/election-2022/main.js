@@ -7,8 +7,8 @@ import Councilor from '~/components/landing/election-2022/council-main'
 import FrontPage from '~/components/landing/election-2022/frontpage-main'
 import Mayor from '~/components/landing/election-2022/mayor-main'
 import Report from '~/components/landing/election-2022/report'
+import CollaborateGuide from '~/components/landing/shared/collaborate-guide'
 import FileDownload from '~/components/landing/shared/file-download'
-import How from '~/components/landing/shared/how-main'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import { fileDownload2022, teamIntro2022 } from '~/constants/landing'
 
@@ -39,7 +39,7 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore : fix in the future
           propsData={propsData}
         />
-        <How />
+        <CollaborateGuide />
         <Mayor
           // @ts-ignore
           propsData={propsData}

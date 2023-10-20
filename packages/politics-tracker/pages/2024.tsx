@@ -5,9 +5,9 @@ import styled from 'styled-components'
 
 import HeroImage from '~/components/landing/election-2024/hero-image'
 import ButtonToLanding from '~/components/landing/shared/button-to-landing'
+import CollaborateGuide from '~/components/landing/shared/collaborate-guide'
 import FactCheckPartners from '~/components/landing/shared/factcheck-partners'
 import FileDownload from '~/components/landing/shared/file-download'
-import HowToEdit from '~/components/landing/shared/how-main'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
@@ -35,7 +35,7 @@ export default function Landing2024({
     <DefaultLayout>
       <Main>
         <HeroImage />
-        <HowToEdit />
+        <CollaborateGuide />
         <FileDownload links={fileDownload2024}>
           <ButtonToLanding
             title="2022 縣市長與議員政見"
