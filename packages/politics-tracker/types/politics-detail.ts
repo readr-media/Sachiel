@@ -5,7 +5,7 @@ export type PoliticDetail = {
   current_progress: string
   desc: string
   expertPoint: ExpertPoint[]
-  person: GenericPerson
+  person: PersonElection
   timeline: TimeLine[]
   source: string
   status: string
@@ -130,7 +130,7 @@ export type Logo = {
   resizedWebp: Resized
 }>
 
-export type GenericPerson = {
+export type PersonElection = {
   id: string
   resized: Resized
 } & Partial<{
