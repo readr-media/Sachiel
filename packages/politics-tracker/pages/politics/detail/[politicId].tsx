@@ -37,18 +37,28 @@ const Main = styled.main`
 type PoliticDetailPageProps = {
   politicData: PoliticDetail
   politicAmount: PoliticAmount
-  latestPersonElection: string
   config: FeedbackFormConfig
-  personOrganization: PersonElectionTerm
+  latestPersonElection: string
+  electionTerm: PersonElectionTerm
 }
 export default function PoliticsDetail({
   politicData,
   politicAmount,
   latestPersonElection,
   config,
-  personOrganization,
+  electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
   const { person } = politicData
+
+  const titleProps = {
+    id: person?.person_id?.id || '',
+    name: person?.person_id?.name || '',
+    avatar: person?.person_id?.image || '',
+    party: person?.party?.name || '',
+    partyIcon: person?.party?.image || '',
+    completed: politicAmount.passed,
+    waiting: politicAmount.waiting,
+  }
 
   const navProps = {
     prev: {
@@ -95,20 +105,8 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <Main>
-          <Title
-            id={person?.person_id?.id || ''}
-            name={person?.person_id?.name || ''}
-            avatar={person?.person_id?.image || ''}
-            campaign={latestPersonElection}
-            party={person?.party?.name || ''}
-            partyIcon={person?.party?.image || ''}
-            completed={politicAmount.passed}
-            waiting={politicAmount.waiting}
-          />
-          <Section
-            politicData={politicData}
-            personOrganization={personOrganization}
-          />
+          <Title campaign={latestPersonElection} {...titleProps} />
+          <Section politicData={politicData} electionTerm={electionTerm} />
         </Main>
         <Nav {...navProps} />
       </ConfigContext.Provider>
@@ -126,91 +124,137 @@ export const getServerSideProps: GetServerSideProps<
 
   const id = query.politicId
 
+  // politicData 需要給預設值嗎？還是給 {} 就好？
+  let politicData: PoliticDetail = {
+    id: '',
+    desc: '',
+    content: '',
+    source: '',
+    status: '',
+    current_progress: '',
+    updatedAt: '',
+    contributer: '',
+    person: null,
+    timeline: [],
+    positionChange: [],
+    expertPoint: [],
+    factCheck: [],
+    repeat: [],
+    response: [],
+    controversies: [],
+    politicCategory: null,
+    organization: null,
+  }
+  let politicAmount: PoliticAmount
+  let latestPersonElection: string
+  let electionTerm: PersonElectionTerm
+  let personElectionIds: string[] = []
+
   try {
-    //get politic detail info by politicId
-    const {
-      data: { politics },
-    } = await fireGqlRequest(
-      print(GetPoliticDetail),
-      { politicId: id },
-      cmsApiUrl
-    )
-    if (!politics.length) {
-      return {
-        notFound: true,
+    {
+      //get politics by politicId
+      const {
+        data: { politics },
+      } = await fireGqlRequest(
+        print(GetPoliticDetail),
+        { politicId: id },
+        cmsApiUrl
+      )
+
+      if (!politics.length) {
+        return {
+          notFound: true,
+        }
+      }
+
+      politicData = politics[0]
+    }
+
+    {
+      //get all personElections ID this person join
+      const {
+        data: { personElections },
+      } = await fireGqlRequest(
+        print(GetPersonElections),
+        { Id: politicData?.person?.person_id?.id },
+        cmsApiUrl
+      )
+
+      const rawPersonElection = [...personElections]
+
+      rawPersonElection.map((item) => {
+        personElectionIds.push(item.id)
+      })
+    }
+
+    {
+      //get passed/waiting politics amount
+      const {
+        data: { politics: allPoliticList },
+      } = await fireGqlRequest(
+        print(GetPoliticsRelatedToPersonElections),
+        { ids: personElectionIds },
+        cmsApiUrl
+      )
+
+      // FIXME: value types
+      const passedAmount = allPoliticList.filter(
+        (value: any) =>
+          value.status === 'verified' &&
+          value.reviewed &&
+          value.thread_parent === null
+      ).length
+      const waitingAmount = allPoliticList.filter(
+        (value: any) => !value.reviewed
+      ).length
+
+      politicAmount = {
+        passed: passedAmount || 0,
+        waiting: waitingAmount || 0,
       }
     }
 
-    //get all personElections ID this person join
-    const {
-      data: { personElections },
-    } = await fireGqlRequest(
-      print(GetPersonElections),
-      { Id: politics[0].person.person_id.id },
-      cmsApiUrl
-    )
+    {
+      //get latest election type this person join (header data)
+      const {
+        data: { personElections: personAllElections },
+      } = await fireGqlRequest(
+        print(GetPersonOverView),
+        { personId: politicData?.person?.person_id?.id },
+        cmsApiUrl
+      )
 
-    const rawPersonElection = [...personElections]
+      latestPersonElection =
+        personAllElections[personAllElections.length - 1].election.type || ''
+    }
 
-    //@ts-ignore
-    const personElectionIds = []
-    rawPersonElection.map((item) => {
-      personElectionIds.push(item.id)
-    })
+    {
+      //get election term by person id
+      const {
+        data: { personOrganizations: personOrganization },
+      } = await fireGqlRequest(
+        print(GetPersonOrganization),
+        { electionId: politicData.person?.id },
+        cmsApiUrl
+      )
 
-    /**
-     * @typedef {import('~/types/common').RawPolitic} RawPolitic
-     * @type {import('axios').AxiosResponse<{politics: RawPolitic[]}>}
-     */
-    const {
-      data: { politics: allPoliticList },
-    } = await fireGqlRequest(
-      print(GetPoliticsRelatedToPersonElections),
-      //@ts-ignore
-      { ids: personElectionIds },
-      cmsApiUrl
-    )
-
-    const passedAmount = allPoliticList.filter(
-      (value: any) =>
-        value.status === 'verified' &&
-        value.reviewed &&
-        value.thread_parent === null
-    ).length
-    const waitingAmount = allPoliticList.filter(
-      (value: any) => !value.reviewed
-    ).length
-
-    //get latest election type this person join ( put in <Title> component)
-    const {
-      data: { personElections: personAllElections },
-    } = await fireGqlRequest(
-      print(GetPersonOverView),
-      // @ts-ignore
-      { personId: politics[0].person.person_id.id },
-      cmsApiUrl
-    )
-
-    //get election term by person id
-    const {
-      data: { personOrganizations: personOrganization },
-    } = await fireGqlRequest(
-      print(GetPersonOrganization),
-      { electionId: politics[0]?.person?.id },
-      cmsApiUrl
-    )
+      electionTerm = personOrganization[0] || {
+        start_date_day: null,
+        start_date_month: null,
+        start_date_year: null,
+        end_date_day: null,
+        end_date_month: null,
+        end_date_year: null,
+      }
+    }
 
     return {
       props: {
-        personOrganization: personOrganization[0] || {},
-        politicData: politics[0],
-        politicAmount: {
-          passed: passedAmount,
-          waiting: waitingAmount,
-        },
-        latestPersonElection:
-          personAllElections[personAllElections.length - 1].election.type,
+        politicData,
+        politicAmount,
         config: feedbackFormConfig,
+        latestPersonElection,
+        electionTerm,
       },
     }
   } catch (err) {
