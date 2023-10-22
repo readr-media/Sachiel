@@ -3,16 +3,10 @@ query GetPoliticDetail($politicId: ID!) {
     where: {
       OR: [
         { AND: [{ id: { equals: $politicId } }, { thread_parent: null }] }
-        {
-          thread_parent: {
-            AND: [
-              { id: { equals: $politicId } }
-              { status: { equals: "verified" } }
-              { reviewed: { equals: true } }
-            ]
-          }
-        }
+        { thread_parent: { id: { equals: $politicId } } }
       ]
+      reviewed: { equals: true }
+      status: { equals: "verified" }
     }
     orderBy: { id: desc }
     take: 1
