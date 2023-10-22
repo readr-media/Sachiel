@@ -126,7 +126,7 @@ export default function SectionContent({
         />
       ),
       showToggle: true,
-      isActive: Boolean(controversies.length),
+      isActive: Boolean(isControEdit || controversies.length > 0),
     },
   ]
 

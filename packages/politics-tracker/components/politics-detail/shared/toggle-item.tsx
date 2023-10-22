@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ToggleBody from '~/components/politics-detail/shared/toggle-body'
 import ToggleTitle from '~/components/politics-detail/shared/toggle-title'
@@ -12,6 +12,10 @@ type ToggleItemProps = {
 }
 export default function ToggleItem(props: ToggleItemProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.isActive)
+
+  useEffect(() => {
+    setIsActive(props.isActive)
+  }, [props.isActive])
 
   return (
     <>
