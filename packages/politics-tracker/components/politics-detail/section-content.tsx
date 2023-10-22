@@ -37,9 +37,10 @@ const UpdatedTime = styled.div`
 
 type ToggleItems = {
   title: string
-  children: React.ReactNode
   titleChildren?: React.ReactNode
-  show: boolean
+  children: React.ReactNode
+  showToggle: boolean
+  isActive: boolean
 }
 type SectionContentProps = {
   politicData: PoliticDetail
@@ -67,38 +68,45 @@ export default function SectionContent({
     {
       title: '政見細節',
       children: <Detail politic={desc} additional={content} source={source} />,
-      show: true,
+      showToggle: true,
+      isActive: true, //政見細節預設展開
     },
     {
       title: '立場變化',
       titleChildren: <PositionChangeIcon positions={positionChange} />,
       children: <PositionChange positions={positionChange} />,
-      show: Boolean(positionChange.length),
+      showToggle: Boolean(positionChange.length),
+      isActive: Boolean(positionChange.length),
     },
     {
       title: '事實釐清',
       children: <FactCheck facts={factCheck} />,
-      show: Boolean(factCheck.length),
+      showToggle: Boolean(factCheck.length),
+      isActive: Boolean(factCheck.length),
     },
     {
       title: '專家看點',
       children: <ExpertPoint experts={expertPoint} />,
-      show: true,
+      showToggle: true,
+      isActive: Boolean(expertPoint.length),
     },
     {
       title: '相似政見',
       children: <Repeat repeats={repeat} />,
-      show: Boolean(repeat?.length),
+      showToggle: Boolean(repeat.length),
+      isActive: Boolean(repeat.length),
     },
     {
       title: '候選人回應',
       children: <Response responses={response} />,
-      show: Boolean(repeat?.length),
+      showToggle: Boolean(response.length),
+      isActive: Boolean(response.length),
     },
     {
       title: '相關進度',
       children: <TimeLine timelines={timeline} />,
-      show: true,
+      showToggle: true,
+      isActive: Boolean(timeline.length),
     },
     {
       title: '相關爭議',
@@ -117,7 +125,8 @@ export default function SectionContent({
           setEditMode={setIsControEdit}
         />
       ),
-      show: true,
+      showToggle: true,
+      isActive: Boolean(controversies.length),
     },
   ]
 
@@ -126,12 +135,13 @@ export default function SectionContent({
   return (
     <Wrapper>
       {toggleItems.map((item, index) =>
-        item.show ? (
+        item.showToggle ? (
           <ToggleItem
             key={index}
             order={index}
             title={item.title}
             titleChildren={item.titleChildren}
+            isActive={item.isActive}
           >
             {item.children}
           </ToggleItem>
