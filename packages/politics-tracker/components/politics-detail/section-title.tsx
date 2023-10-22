@@ -2,8 +2,8 @@ import Image from '@readr-media/react-image'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import ArrowLeft from '~/components/icons/arrow-left'
 import ElectionTerm from '~/components/shared/election-term'
+import ArrowLeft from '~/public/icons/arrow-left.svg'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
 const Header = styled.div`
@@ -19,6 +19,8 @@ const Header = styled.div`
   cursor: pointer;
 
   svg {
+    min-width: 36px;
+    min-height: 36px;
     width: 36px;
     height: 36px;
     margin-right: 15px;
@@ -32,6 +34,8 @@ const Header = styled.div`
   ${({ theme }) => theme.breakpoint.md} {
     padding: 12px 20px;
     svg {
+      min-width: 48px;
+      min-height: 48px;
       width: 48px;
       height: 48px;
     }
@@ -104,29 +108,22 @@ const PartyImage = styled.div`
 
 type SectionTitleProps = {
   politicData: PoliticDetail
-  personOrganization: PersonElectionTerm
+  electionTerm: PersonElectionTerm
 }
 export default function SectionTitle({
   politicData,
-  personOrganization,
+  electionTerm,
 }: SectionTitleProps): JSX.Element {
   const { person } = politicData
 
-  const election_area = person?.electoral_district?.name.slice(0, 3)
-  const linkHref = `/politics/${person?.person_id?.id}`
+  const electionArea = person?.electoral_district?.name.slice(0, 3) || ''
+  const linkHref = `/politics/${person?.person_id?.id}` || '/'
 
   //change election_name's year from RepublicYear to Common Era (+1911)
   const rawElectionName = person?.election?.name || ''
-  const electionCenturyYear = changeYearToCentury(rawElectionName)
-  const electionWithoutYear = rawElectionName.slice(
-    rawElectionName.indexOf('年') + 1
-  )
-
-  function changeYearToCentury(item: string) {
-    const rawYear = item.slice(0, item.indexOf('年'))
-    const newYear = Number(+rawYear + 1911)
-    return newYear
-  }
+  const electionCenturyYear = person?.election?.election_year_year || null
+  const electionWithoutYear =
+    rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
 
   return (
     <Link href={linkHref}>
@@ -134,9 +131,9 @@ export default function SectionTitle({
         <ArrowLeft />
         <div>
           <Title>
-            <span>{electionCenturyYear}</span>
+            {electionCenturyYear && <span>{electionCenturyYear}</span>}
             <span>{electionWithoutYear}</span>
-            <ElectionArea>{election_area}</ElectionArea>
+            <ElectionArea>{electionArea}</ElectionArea>
           </Title>
 
           <SubTitle>
@@ -154,7 +151,7 @@ export default function SectionTitle({
             <ElectionTerm
               isElected={person?.elected}
               isIncumbent={person?.incumbent}
-              termDate={personOrganization}
+              termDate={electionTerm}
             />
           </SubTitle>
         </div>
