@@ -58,19 +58,21 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
     'public, max-age=600, stale-while-revalidate=60'
   )
 
-  let factCheckPartners: FactCheckPartner[] = []
+  let factCheckPartner: FactCheckPartner[] = []
 
   try {
-    // fetch factCheck partners
-    const {
-      data: { factcheckPartners },
-    } = await fireGqlRequest(
-      print(GetFactCheckPartners),
-      { year: '2024' },
-      cmsApiUrl
-    )
+    {
+      // fetch factCheck partners
+      const {
+        data: { factcheckPartners },
+      } = await fireGqlRequest(
+        print(GetFactCheckPartners),
+        { year: '2024' },
+        cmsApiUrl
+      )
 
-    factCheckPartners = [...factcheckPartners]
+      factCheckPartner = factcheckPartners
+    }
   } catch (err) {
     console.error(err)
     return {
@@ -80,7 +82,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
 
   return {
     props: {
-      factCheckPartner: factCheckPartners,
+      factCheckPartner,
     },
   }
 }
