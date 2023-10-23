@@ -55,8 +55,6 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
         cmsApiUrl
       )
 
-      console.log(props.id)
-
       if (result.errors) {
         console.log(result.errors[0]?.message)
         return null
@@ -158,8 +156,6 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
             : null,
         },
       }
-
-      console.log(data)
 
       // result is not used currently
       // eslint-disable-next-line
