@@ -130,10 +130,7 @@ export default function RepeatItem({
           <PartnerInfo>
             <PartnerImage>
               <Image
-                images={
-                  factcheckPartner?.slogo?.resizedWebp ||
-                  factcheckPartner?.slogo?.resized
-                }
+                images={factcheckPartner?.slogo?.resized}
                 defaultImage="/images/default-head-photo.png"
                 alt={factcheckPartner?.name}
                 priority={false}

@@ -129,10 +129,7 @@ export default function FactItem({ factItem }: FactItemProps): JSX.Element {
         <Title>
           <PartnerImage>
             <Image
-              images={
-                factcheckPartner?.slogo?.resizedWebp ||
-                factcheckPartner?.slogo?.resized
-              }
+              images={factcheckPartner?.slogo?.resized}
               defaultImage="/images/default-head-photo.png"
               alt={factcheckPartner?.name}
               priority={false}

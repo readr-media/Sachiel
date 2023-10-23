@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import type { Response } from '~/types/politics-detail'
-// import { generateSourceMeta } from '~/utils/utils'
 
 const ListWrapper = styled.li`
   padding: 20px;
@@ -82,37 +81,6 @@ const Title = styled.p`
   }
 `
 
-// const Contributer = styled.span`
-//   font-weight: 500;
-//   font-size: 12px;
-//   display: inline-block;
-//   margin-bottom: 10px;
-//   color: ${({ theme }) => theme.backgroundColor.black50};
-
-//   a {
-//     color: ${({ theme }) => theme.textColor.brown};
-//     word-break: break-all;
-//     cursor: pointer;
-//     line-height: 1.5;
-
-//     &:hover {
-//       text-decoration-line: underline;
-//       text-underline-offset: 3.5px;
-//       text-decoration-thickness: 1.5px;
-//     }
-
-//     & + a::before,
-//     & + span::before {
-//       content: '、';
-//       color: ${({ theme }) => theme.backgroundColor.black50};
-//     }
-//   }
-
-//   ${({ theme }) => theme.breakpoint.md} {
-//     font-size: 14px;
-//   }
-// `
-
 type ResponseItemProps = {
   responseItem: Response
 }
@@ -121,20 +89,6 @@ export default function ResponseItem({
 }: ResponseItemProps): JSX.Element {
   const { responseName, responsePic, responseTitle, content, link } =
     responseItem
-
-  // const contributers = contributer
-  //   .split(SOURCE_DELIMITER)
-  //   .map((content: string, index: number) => {
-  //     const { isLink, link, text } = generateSourceMeta(content, '', index + 1)
-
-  //     return isLink ? (
-  //       <a key={index} href={link} target="_blank" rel="noopener noreferrer">
-  //         {text}
-  //       </a>
-  //     ) : (
-  //       <span key={index}>{text}</span>
-  //     )
-  //   })
 
   const responseText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return <p key={index}>{item}</p>
@@ -158,10 +112,7 @@ export default function ResponseItem({
         </div>
       </Header>
 
-      <Content>
-        {/* {contributer && <Contributer>資料由 {contributers} 提供</Contributer>} */}
-        {responseText}
-      </Content>
+      <Content>{responseText}</Content>
       <RelatedLinks links={link} />
     </ListWrapper>
   )

@@ -1,11 +1,10 @@
 export type PoliticDetail = {
   id: string
-} & Partial<{
   content: string
   current_progress: string
   desc: string
   expertPoint: ExpertPoint[]
-  person: PersonElection
+  person: PersonElection | null
   timeline: TimeLine[]
   source: string
   status: string
@@ -16,23 +15,18 @@ export type PoliticDetail = {
   response: Response[]
   controversies: Controversy[]
   contributer: string
-  politicCategory: {
-    id: string
-  }
-  organization: {
-    id: string
-  }
-}>
+  politicCategory: Pick<PoliticCategory, 'id'> | null
+  organization: Pick<OrganizationElection, 'id'> | null
+}
 
 //任期
 export type PersonElectionTerm = {
-  id: string
-  start_date_day: string
-  start_date_month: string
-  start_date_year: string
-  end_date_day: string
-  end_date_month: string
-  end_date_year: string
+  start_date_day: string | null
+  start_date_month: string | null
+  start_date_year: string | null
+  end_date_day: string | null
+  end_date_month: string | null
+  end_date_year: string | null
 }
 
 //立場改變
@@ -168,4 +162,13 @@ export type PersonId = {
   id: string
   name: string
   image: string
+}
+
+export type PoliticCategory = {
+  id: string
+  name: String
+}
+
+export type OrganizationElection = {
+  id: string
 }

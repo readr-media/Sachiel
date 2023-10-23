@@ -60,8 +60,8 @@ const nextConfig = {
     return [
       // only for index
       {
-        source: '/politics-tracker',
-        destination: '/',
+        source: '/(politics-tracker|)',
+        destination: '/2024',
       },
       // for other page under /politics-tracker
       {

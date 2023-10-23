@@ -10,8 +10,8 @@ import SectionFeedbackForm from './section-feeedback-form'
 const SectionContainer = styled.div`
   padding: 40px 15px;
   > div {
-    border: 4px solid #000000;
-    background: #ffffff;
+    border: 4px solid ${({ theme }) => theme.borderColor.black};
+    background: ${({ theme }) => theme.backgroundColor.white};
     max-width: 688px;
     margin: auto;
   }
@@ -19,15 +19,12 @@ const SectionContainer = styled.div`
 
 type SectionProps = {
   politicData: PoliticDetail
-  personOrganization: PersonElectionTerm
+  electionTerm: PersonElectionTerm
 }
 export default function Section({
   politicData,
-  personOrganization,
+  electionTerm,
 }: SectionProps): JSX.Element {
-  //judge the politic's election is finished or unfinished
-  //if finished: show progress-bar; if unfinished: hidden progress-bar
-
   //get election Date (YYYY-MM-DD)
   let electionDate =
     politicData?.person?.election?.election_year_year +
@@ -49,10 +46,7 @@ export default function Section({
   return (
     <SectionContainer>
       <div>
-        <SectionTitle
-          politicData={politicData}
-          personOrganization={personOrganization}
-        />
+        <SectionTitle politicData={politicData} electionTerm={electionTerm} />
         {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
         <SectionContent politicData={politicData} />
         <SectionFeedbackForm politicId={politicData?.id} />

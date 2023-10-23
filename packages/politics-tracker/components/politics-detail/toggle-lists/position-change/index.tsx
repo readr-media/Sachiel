@@ -22,7 +22,7 @@ const PositionList = styled.li`
 const Time = styled.span`
   color: ${({ theme }) => theme.textColor.black};
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 
   &::before {
     content: '';
@@ -44,7 +44,7 @@ const Time = styled.span`
 const ContentBlock = styled.div`
   .content-text {
     color: ${({ theme }) => theme.textColor.brown};
-    display: inline-block;
+    display: block;
     word-break: break-all;
     cursor: pointer;
 

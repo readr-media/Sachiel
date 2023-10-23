@@ -1,16 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ToggleBody from '~/components/politics-detail/shared/toggle-body'
 import ToggleTitle from '~/components/politics-detail/shared/toggle-title'
 
 type ToggleItemProps = {
-  order: number // map 的 index 數字
+  order: number // map 的 index number
   title: string
   children: React.ReactNode
+  isActive: boolean
   titleChildren?: React.ReactNode
 }
 export default function ToggleItem(props: ToggleItemProps): JSX.Element {
-  const [isActive, setIsActive] = useState<boolean>(props.order === 0)
+  const [isActive, setIsActive] = useState<boolean>(props.isActive)
+
+  useEffect(() => {
+    setIsActive(props.isActive)
+  }, [props.isActive])
 
   return (
     <>
