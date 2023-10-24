@@ -1,9 +1,9 @@
-import React from 'react'
 import styled from 'styled-components'
 
 const Term = styled.div`
   padding: 4px;
   border: 1px solid ${({ theme }) => theme.borderColor.black};
+  width: fit-content;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

@@ -66,7 +66,7 @@
 }
 
 .party-group {
-  @apply mt-2 flex flex-row flex-nowrap items-center;
+  @apply flex flex-row flex-nowrap items-center;
 }
 
 .party {
