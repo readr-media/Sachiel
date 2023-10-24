@@ -84,6 +84,7 @@ export type PersonElection = {
   month: number
   day: number
   elected: boolean
+  incumbent: boolean
   isFinished: boolean
   source: string | null
   lastUpdate: string | null
