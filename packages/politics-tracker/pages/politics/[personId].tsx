@@ -13,6 +13,7 @@ import { PoliticAmountContext } from '~/components/politics/react-context/politi
 import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
+import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 import {
@@ -28,6 +29,7 @@ import type {
   ExpertPoint,
   FactCheck,
   PersonElection,
+  PersonElectionTerm,
   PersonOverview,
   Politic,
   PoliticAmount,
@@ -48,6 +50,7 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
@@ -138,6 +141,7 @@ export const getServerSideProps: GetServerSideProps<
     const personElectionIds: number[] = []
     let latestPersonElection: RawPersonElection
     let latestPerson: RawPerson
+    let electionTerm: PersonElectionTerm
 
     {
       // get latest election, person and party,
@@ -212,6 +216,7 @@ export const getServerSideProps: GetServerSideProps<
               politics: [],
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
+              electionTerm: electionTerm,
             }
           }
 
@@ -466,6 +471,36 @@ export const getServerSideProps: GetServerSideProps<
           .unix()
         return next - prev
       })
+    }
+
+    // Iterate through each election and query its election term
+    for (const election of elections) {
+      const {
+        data: { personOrganizations: personOrganization },
+      } = await fireGqlRequest(
+        print(GetPersonOrganization),
+        { electionId: election.id },
+        cmsApiUrl
+      )
+
+      electionTerm = personOrganization[0] || {
+        start_date_day: null,
+        start_date_month: null,
+        start_date_year: null,
+        end_date_day: null,
+        end_date_month: null,
+        end_date_year: null,
+      }
+
+      // Push the election term data to the current election object
+      election.electionTerm = {
+        start_date_day: electionTerm.start_date_day,
+        start_date_month: electionTerm.start_date_month,
+        start_date_year: electionTerm.start_date_year,
+        end_date_day: electionTerm.end_date_day,
+        end_date_month: electionTerm.end_date_month,
+        end_date_year: electionTerm.end_date_year,
+      }
     }
 
     return {

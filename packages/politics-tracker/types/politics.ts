@@ -64,6 +64,15 @@ export type Repeat = {
   factcheckPartner: FactCheckPartner | null
 }
 
+export type PersonElectionTerm = {
+  start_date_day: string | null
+  start_date_month: string | null
+  start_date_year: string | null
+  end_date_day: string | null
+  end_date_month: string | null
+  end_date_year: string | null
+}
+
 export type PersonElection = {
   electionArea: string
   electionType: string
@@ -81,4 +90,5 @@ export type PersonElection = {
   politics: Politic[]
   waitingPolitics: Politic[]
   hidePoliticDetail: string | null
+  electionTerm: PersonElectionTerm
 }
