@@ -111,11 +111,10 @@ export default function FactCheckAbstract({
                 <span key={index}>
                   {fact.factCheckSummary && (
                     <>
-                      {`【${
-                        fact.checkResultType !== null
-                          ? getCheckResultString(fact.checkResultType, fact)
-                          : fact.checkResultOther /* default value if checkResultType is null */
-                      }】`}
+                      {`【${getCheckResultString(
+                        fact.checkResultType ?? '10',
+                        fact
+                      )}】`}
                       {fact.factCheckSummary}
                       {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
                       {index < factCheck.length - 1 ? '、' : ''}
