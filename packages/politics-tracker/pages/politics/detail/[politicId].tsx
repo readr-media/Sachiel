@@ -124,7 +124,6 @@ export const getServerSideProps: GetServerSideProps<
 
   const id = query.politicId
 
-  // politicData 需要給預設值嗎？還是給 {} 就好？
   let politicData: PoliticDetail = {
     id: '',
     desc: '',
