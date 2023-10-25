@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import ExpertIcon from '~/public/icons/expert-opinion.svg'
-import CorrectIcon from '~/public/icons/factcheck-correct.svg'
-import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
+import FactCheckIcon from '~/public/icons/fact-check-icon.svg'
 import ChangedIcon from '~/public/icons/position-changed.svg'
 import ConsistentIcon from '~/public/icons/position-consistent.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
@@ -70,6 +69,24 @@ export default function FactCheckAbstract({
   expertPoint,
   repeat,
 }: FactCheckAbstractProps): JSX.Element {
+  function getCheckResultString(checkResultType, factCheck) {
+    // If no match was found or the checkResultType is not '10' or null, use the mapping object.
+    const checkResultMappings = {
+      '1': '與所查資料相符',
+      '2': '數據符合，但推論錯誤',
+      '3': '數據符合，但與推論無關',
+      '4': '數據符合，但僅取片段資訊，無法瞭解全貌',
+      '5': '片面事實，有一些前提或關鍵事實被隱藏',
+      '6': '與所查資料不符合，且推論過於簡化',
+      '7': '不知道數據出處為何',
+      '8': '數據並非例行統計，今年才發布',
+      '9': '其說法並沒有提出證據',
+      '10': factCheck.checkResultOther,
+    }
+
+    return checkResultMappings[checkResultType] || factCheck.checkResultOther
+  }
+
   // If there are multiple position-changing statuses that conflict, show only the changed summaries.
   // Check if at least one 'isChanged' value is true.
   const isPositionChanged = positionChange?.some((change) => change.isChanged)
@@ -77,21 +94,42 @@ export default function FactCheckAbstract({
     ? positionChange.filter((change) => change.isChanged)
     : positionChange
 
-  // If there are multiple fact-checking statuses that conflict, show only the 'incorrect' and 'partial' summaries.
-  // Check if all 'factCheckCorrect' values are true.
-  const isFactCheckCorrect = factCheck?.every(
-    (item) => item.checkResultType === 'correct'
-  )
-  const filteredFactCheckArray = isFactCheckCorrect
-    ? factCheck
-    : factCheck.filter(
-        (item) =>
-          item.checkResultType === 'incorrect' ||
-          item.checkResultType === 'partial'
-      )
-
   return (
     <Wrapper>
+      {/* 事實釐清摘要*/}
+      {factCheck.length >= 1 && (
+        <CheckAbstract>
+          <div>
+            <FactCheckIcon />
+          </div>
+          <span>
+            <span className="title">政見提出背景：</span>
+            <span className="text">
+              {factCheck.length > 1
+                ? factCheck.map((fact, index) => (
+                    <span key={index}>
+                      {fact.factCheckSummary && (
+                        <>
+                          {`【${getCheckResultString(
+                            fact.checkResultType,
+                            fact
+                          )}】`}
+                          {fact.factCheckSummary}
+                          {fact.factcheckPartner &&
+                            ` (${fact.factcheckPartner})`}
+                          {index < factCheck.length - 1 ? '、' : ''}
+                        </>
+                      )}
+                    </span>
+                  ))
+                : factCheck.length === 1
+                ? factCheck[0]?.factCheckSummary
+                : ''}
+            </span>
+          </span>
+        </CheckAbstract>
+      )}
+
       {/* 立場變化摘要 */}
       {filteredPositionChangeArray.length >= 1 && (
         <CheckAbstract>
@@ -118,34 +156,10 @@ export default function FactCheckAbstract({
         </CheckAbstract>
       )}
 
-      {/* 事實釐清摘要*/}
-      {filteredFactCheckArray.length >= 1 && (
-        <CheckAbstract>
-          <div>{isFactCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}</div>
-
-          <span
-            className={isFactCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
-          >
-            事實釐清：
-            {filteredFactCheckArray.length > 1
-              ? filteredFactCheckArray.map((fact, index) => (
-                  <span key={index}>
-                    {fact.factCheckSummary}
-                    {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
-                    {index < filteredFactCheckArray.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : filteredFactCheckArray.length === 1
-              ? filteredFactCheckArray[0]?.factCheckSummary
-              : ''}
-          </span>
-        </CheckAbstract>
-      )}
-
       {/* 專家看點摘要 */}
       {expertPoint.length >= 1 && expertPoint[0].expertPointSummary && (
         <CheckAbstract>
-          <div>
+          <div className="mt-[2px]">
             <ExpertIcon />
           </div>
           <span>
