@@ -8,6 +8,8 @@ let QA_RECORD_CONFIG: { variables: Record<string, string> }
 let GLOBAL_CACHE_SETTING: string
 let GOOGLE_ADSENSE_AD_CLIENT: string
 let HEADER_JSON_URL: string
+let LATEST_POSTS_URL: string
+let LATEST_POSTS_IN_CATEGORIES_URL: string
 
 switch (ENV) {
   case 'prod':
@@ -20,6 +22,10 @@ switch (ENV) {
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
       'https://storage.googleapis.com/statics-readr-tw-prod/json/header.json'
+    LATEST_POSTS_URL =
+      'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts.json'
+    LATEST_POSTS_IN_CATEGORIES_URL =
+      'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts-in-categories.json'
     break
 
   case 'staging':
@@ -32,6 +38,10 @@ switch (ENV) {
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/header.json'
+    LATEST_POSTS_URL =
+      'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts.json'
+    LATEST_POSTS_IN_CATEGORIES_URL =
+      'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts-in-categories.json'
     break
 
   case 'dev':
@@ -44,6 +54,10 @@ switch (ENV) {
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
+    LATEST_POSTS_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts.json'
+    LATEST_POSTS_IN_CATEGORIES_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     break
 
   default:
@@ -56,6 +70,10 @@ switch (ENV) {
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
     HEADER_JSON_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/header.json'
+    LATEST_POSTS_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts.json'
+    LATEST_POSTS_IN_CATEGORIES_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     break
 }
 
@@ -67,6 +85,8 @@ export {
   GOOGLE_ADSENSE_AD_CLIENT,
   GTM_ID,
   HEADER_JSON_URL,
+  LATEST_POSTS_IN_CATEGORIES_URL,
+  LATEST_POSTS_URL,
   QA_RECORD_CONFIG,
   SITE_URL,
 }
