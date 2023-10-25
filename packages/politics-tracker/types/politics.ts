@@ -34,7 +34,7 @@ export type Politic = {
 export type PositionChange = {
   id: string
   positionChangeSummary: string
-  isChanged: boolean
+  isChanged: string
   factcheckPartner: FactCheckPartner | null
 }
 
@@ -46,7 +46,8 @@ export type FactCheckPartner = {
 export type FactCheck = {
   id: string
   factCheckSummary: string
-  checkResultType: string
+  checkResultType: string | null
+  checkResultOther: string
   factcheckPartner: FactCheckPartner | null
 }
 
