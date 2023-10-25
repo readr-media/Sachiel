@@ -167,6 +167,7 @@ export type PersonId = {
 export type PoliticCategory = {
   id: string
   name: String
+  politicsCount: string
 }
 
 export type OrganizationElection = {

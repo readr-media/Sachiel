@@ -1,0 +1,7 @@
+query GetPoliticCategories {
+  politicCategories {
+    id
+    name
+    politicsCount
+  }
+}
