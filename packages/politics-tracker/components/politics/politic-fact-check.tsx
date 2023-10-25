@@ -69,9 +69,8 @@ export default function FactCheckAbstract({
   expertPoint,
   repeat,
 }: FactCheckAbstractProps): JSX.Element {
-  function getCheckResultString(checkResultType, factCheck) {
-    // If no match was found or the checkResultType is not '10' or null, use the mapping object.
-    const checkResultMappings = {
+  function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
+    const checkResultMappings: { [key: string]: string } = {
       '1': '與所查資料相符',
       '2': '數據符合，但推論錯誤',
       '3': '數據符合，但與推論無關',
@@ -81,7 +80,10 @@ export default function FactCheckAbstract({
       '7': '不知道數據出處為何',
       '8': '數據並非例行統計，今年才發布',
       '9': '其說法並沒有提出證據',
-      '10': factCheck.checkResultOther,
+    }
+
+    if (checkResultType === '10' && factCheck.checkResultOther) {
+      return factCheck.checkResultOther
     }
 
     return checkResultMappings[checkResultType] || factCheck.checkResultOther
@@ -96,7 +98,7 @@ export default function FactCheckAbstract({
 
   return (
     <Wrapper>
-      {/* 事實釐清摘要*/}
+      {/* 政見提出背景摘要*/}
       {factCheck.length >= 1 && (
         <CheckAbstract>
           <div>
@@ -105,26 +107,41 @@ export default function FactCheckAbstract({
           <span>
             <span className="title">政見提出背景：</span>
             <span className="text">
-              {factCheck.length > 1
-                ? factCheck.map((fact, index) => (
-                    <span key={index}>
-                      {fact.factCheckSummary && (
-                        <>
-                          {`【${getCheckResultString(
-                            fact.checkResultType,
-                            fact
-                          )}】`}
-                          {fact.factCheckSummary}
-                          {fact.factcheckPartner &&
-                            ` (${fact.factcheckPartner})`}
-                          {index < factCheck.length - 1 ? '、' : ''}
-                        </>
-                      )}
-                    </span>
-                  ))
-                : factCheck.length === 1
-                ? factCheck[0]?.factCheckSummary
-                : ''}
+              {factCheck.length > 1 ? (
+                factCheck.map((fact, index) => (
+                  <span key={index}>
+                    {fact.factCheckSummary && (
+                      <>
+                        {`【${
+                          fact.checkResultType !== null
+                            ? getCheckResultString(fact.checkResultType, fact)
+                            : fact.checkResultOther /* default value if checkResultType is null */
+                        }】`}
+                        {fact.factCheckSummary}
+                        {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                        {index < factCheck.length - 1 ? '、' : ''}
+                      </>
+                    )}
+                  </span>
+                ))
+              ) : factCheck.length === 1 ? (
+                <>
+                  {`【${
+                    factCheck[0].checkResultType !== null
+                      ? getCheckResultString(
+                          factCheck[0].checkResultType,
+                          factCheck[0]
+                        )
+                      : factCheck[0]
+                          .checkResultOther /* default value if checkResultType is null */
+                  }】`}
+                  {factCheck[0]?.factCheckSummary}
+                  {factCheck[0]?.factcheckPartner &&
+                    ` (${factCheck[0]?.factcheckPartner})`}
+                </>
+              ) : (
+                ''
+              )}
             </span>
           </span>
         </CheckAbstract>
@@ -184,7 +201,7 @@ export default function FactCheckAbstract({
       {/* 相似政策摘要 */}
       {repeat.length >= 1 && (
         <CheckAbstract>
-          <div>
+          <div className="mt-[2px]">
             <SimilarIcon />
           </div>
           <span>
