@@ -107,41 +107,22 @@ export default function FactCheckAbstract({
           <span>
             <span className="title">政見提出背景：</span>
             <span className="text">
-              {factCheck.length > 1 ? (
-                factCheck.map((fact, index) => (
-                  <span key={index}>
-                    {fact.factCheckSummary && (
-                      <>
-                        {`【${
-                          fact.checkResultType !== null
-                            ? getCheckResultString(fact.checkResultType, fact)
-                            : fact.checkResultOther /* default value if checkResultType is null */
-                        }】`}
-                        {fact.factCheckSummary}
-                        {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
-                        {index < factCheck.length - 1 ? '、' : ''}
-                      </>
-                    )}
-                  </span>
-                ))
-              ) : factCheck.length === 1 ? (
-                <>
-                  {`【${
-                    factCheck[0].checkResultType !== null
-                      ? getCheckResultString(
-                          factCheck[0].checkResultType,
-                          factCheck[0]
-                        )
-                      : factCheck[0]
-                          .checkResultOther /* default value if checkResultType is null */
-                  }】`}
-                  {factCheck[0]?.factCheckSummary}
-                  {factCheck[0]?.factcheckPartner &&
-                    ` (${factCheck[0]?.factcheckPartner})`}
-                </>
-              ) : (
-                ''
-              )}
+              {factCheck.map((fact, index) => (
+                <span key={index}>
+                  {fact.factCheckSummary && (
+                    <>
+                      {`【${
+                        fact.checkResultType !== null
+                          ? getCheckResultString(fact.checkResultType, fact)
+                          : fact.checkResultOther /* default value if checkResultType is null */
+                      }】`}
+                      {fact.factCheckSummary}
+                      {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                      {index < factCheck.length - 1 ? '、' : ''}
+                    </>
+                  )}
+                </span>
+              ))}
             </span>
           </span>
         </CheckAbstract>
