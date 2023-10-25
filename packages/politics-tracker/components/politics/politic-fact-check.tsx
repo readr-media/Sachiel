@@ -22,7 +22,7 @@ interface FactCheckAbstractProps {
 
 const Wrapper = styled.div`
   display: grid;
-  row-gap: 4px;
+  row-gap: 8px;
   column-gap: 20px;
   ${({ theme }) => theme.breakpoint.md} {
     grid-template-columns: repeat(2, 1fr);
@@ -55,11 +55,12 @@ const CheckAbstract = styled.div`
   .fact-incorrect {
     color: #c0374f;
   }
-  .expert {
-    color: #544ac9;
+
+  .title {
+    color: #0f2d35a8;
   }
-  .similar {
-    color: #838383;
+  .text {
+    color: #544ac9;
   }
 `
 
@@ -147,19 +148,21 @@ export default function FactCheckAbstract({
           <div>
             <ExpertIcon />
           </div>
-          <span className="expert">
-            專家看點：
-            {expertPoint.length > 1
-              ? expertPoint.map((expert, index) => (
-                  <span key={index}>
-                    {expert.expertPointSummary}
-                    {expert.expert && ` (${expert.expert})`}
-                    {index < expertPoint.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : expertPoint.length === 1
-              ? expertPoint[0]?.expertPointSummary
-              : ''}
+          <span>
+            <span className="title">專家看點：</span>
+            <span className="text">
+              {expertPoint.length > 1
+                ? expertPoint.map((expert, index) => (
+                    <span key={index}>
+                      {expert.expertPointSummary}
+                      {expert.expert && ` (${expert.expert})`}
+                      {index < expertPoint.length - 1 ? '、' : ''}
+                    </span>
+                  ))
+                : expertPoint.length === 1
+                ? expertPoint[0]?.expertPointSummary
+                : ''}
+            </span>
           </span>
         </CheckAbstract>
       )}
@@ -170,23 +173,25 @@ export default function FactCheckAbstract({
           <div>
             <SimilarIcon />
           </div>
-          <span className="similar">
-            相似政策：
-            {repeat.length > 1
-              ? repeat.map((re, index) => (
-                  <span key={index}>
-                    {re.repeatSummary && (
-                      <>
-                        {re.repeatSummary}
-                        {re.factcheckPartner && ` (${re.factcheckPartner})`}
-                        {index < repeat.length - 1 ? '、' : ''}
-                      </>
-                    )}
-                  </span>
-                ))
-              : repeat.length === 1
-              ? repeat[0]?.repeatSummary
-              : ''}
+          <span>
+            <span className="title">相似政策：</span>
+            <span className="text">
+              {repeat.length > 1
+                ? repeat.map((re, index) => (
+                    <span key={index}>
+                      {re.repeatSummary && (
+                        <>
+                          {re.repeatSummary}
+                          {re.factcheckPartner && ` (${re.factcheckPartner})`}
+                          {index < repeat.length - 1 ? '、' : ''}
+                        </>
+                      )}
+                    </span>
+                  ))
+                : repeat.length === 1
+                ? repeat[0]?.repeatSummary
+                : ''}
+            </span>
           </span>
         </CheckAbstract>
       )}
