@@ -14,7 +14,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
 
   return (
     <PersonElectionContext.Provider value={props}>
-      <div className={s['section-list']}>
+      <div className={`${s['section-list']} md: px-0 sm:px-8 lg:px-0`}>
         <SectionToggle
           {...props}
           content={props.name}
@@ -27,6 +27,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           lastUpdate={props.lastUpdate}
           waitingPolitics={props.waitingPolitics}
           source={props.source}
+          hidePoliticDetail={props.hidePoliticDetail}
         />
       </div>
     </PersonElectionContext.Provider>

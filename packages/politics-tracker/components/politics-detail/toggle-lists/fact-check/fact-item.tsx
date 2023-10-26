@@ -1,7 +1,7 @@
 import Image from '@readr-media/react-image'
 import styled from 'styled-components'
 
-import RelatedLinks from '~/components/politics-detail/shared/related-links'
+import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import CorrectIcon from '~/public/icons/factcheck-correct.svg'
 import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
@@ -129,7 +129,7 @@ export default function FactItem({ factItem }: FactItemProps): JSX.Element {
         <Title>
           <PartnerImage>
             <Image
-              images={{ original: factcheckPartner?.logo }}
+              images={factcheckPartner?.slogo?.resized}
               defaultImage="/images/default-head-photo.png"
               alt={factcheckPartner?.name}
               priority={false}

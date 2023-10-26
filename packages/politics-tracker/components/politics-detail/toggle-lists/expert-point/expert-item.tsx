@@ -1,7 +1,7 @@
 import Image from '@readr-media/react-image'
 import styled from 'styled-components'
 
-import RelatedLinks from '~/components/politics-detail/shared/related-links'
+import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import type { ExpertPoint } from '~/types/politics-detail'
 import { generateSourceMeta } from '~/utils/utils'
@@ -25,7 +25,7 @@ const Header = styled.div`
 const Content = styled.div`
   margin-bottom: 15px;
 
-  .point {
+  > p {
     font-weight: 500;
     font-size: 16px;
     line-height: 1.8;
@@ -34,12 +34,6 @@ const Content = styled.div`
 
     & + * {
       margin-top: 12px;
-    }
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    .point {
-      font-size: 18px;
     }
   }
 `
@@ -53,6 +47,7 @@ const ExpertImage = styled.div`
   margin-right: 10px;
   border-radius: 50%;
   overflow: hidden;
+  border: 2px solid ${({ theme }) => theme.textColor.white};
 
   ${({ theme }) => theme.breakpoint.md} {
     width: 60px;
@@ -67,7 +62,10 @@ const Name = styled.p`
   font-size: 16px;
   line-height: 1.3;
   color: ${({ theme }) => theme.textColor.black};
-  margin-bottom: 2px;
+
+  & + * {
+    margin-top: 4px;
+  }
 
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 18px;
@@ -76,12 +74,11 @@ const Name = styled.p`
 
 const Title = styled.p`
   font-weight: 500;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 12px;
   color: ${({ theme }) => theme.backgroundColor.black50};
 
   ${({ theme }) => theme.breakpoint.md} {
-    font-size: 16px;
+    font-size: 14px;
   }
 `
 

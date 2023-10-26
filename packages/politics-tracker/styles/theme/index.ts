@@ -16,7 +16,8 @@ const sharedColor = {
   white: '#FFFFFF',
   green: '#2FB7BF',
 }
-export const theme = {
+
+export const theme: Record<string, Record<string, string>> = {
   backgroundColor: {
     blue: '#8379F8',
     gray: sharedColor.gray,
@@ -38,6 +39,7 @@ export const theme = {
     landingPurple: '#ECEDFF',
     lightPurple: '#F3F4FF',
     skinDark: '#FFF1E8',
+    cornsilk: '#FFFCF3',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
@@ -49,6 +51,7 @@ export const theme = {
     black: '#0F2D35',
     white: sharedColor.white,
     pink: '#FFF1E8',
+    lightPink: '#FFECED',
     disable: sharedColor.gray,
     black30: 'rgba(15, 45, 53, 0.3)',
     black50: 'rgba(15, 45, 53, 0.5)',

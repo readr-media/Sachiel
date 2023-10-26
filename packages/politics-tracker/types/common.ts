@@ -1,3 +1,4 @@
+import { Option } from '@readr-media/react-feedback/dist/typedef'
 import type { LinkProps } from 'next/link'
 
 export type LinkHref = LinkProps['href']
@@ -43,6 +44,7 @@ export type RawElection = Partial<{
   updatedAt: string
   createdBy: string
   updatedBy: string
+  hidePoliticDetail: string
 }>
 
 export type RawPerson = Partial<{
@@ -160,7 +162,7 @@ export type RawPolitic = Partial<{
   status: StatusOptionsB
   reviewed: Boolean
   thread_parent: RawPolitic
-  tag: RawTag
+  politicCategory: RawTag
   createdAt: string
   updatedAt: string
   createdBy: string
@@ -172,3 +174,11 @@ export type Source = {
   value: string
   error: string
 }
+
+export type ExtendedOption = Option & { sortOrder: number }
+
+export type FormConfig = Record<'formId' | 'fieldId', string>
+export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
+// This utility is for overwriting type without extending it
+// prettier-ignore
+export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U

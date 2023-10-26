@@ -1,9 +1,24 @@
+import styled from 'styled-components'
+
 import Icon from '~/components/icon'
 import ArrowDown from '~/components/icons/arrow-down'
 import ArrowUp from '~/components/icons/arrow-up'
+import ElectionTerm from '~/components/shared/election-term'
+import type { PersonElectionTerm } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 
 import s from './section-toggle.module.css'
+
+const PartyTermWrapper = styled.div`
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  ${({ theme }) => theme.breakpoint.md} {
+    flex-direction: row;
+    width: fit-content;
+  }
+`
 
 type SectionToggleProps = {
   id: string
@@ -13,6 +28,9 @@ type SectionToggleProps = {
   isActive: boolean
   order: number
   setActive: () => void
+  electionTerm: PersonElectionTerm
+  elected: boolean
+  incumbent: boolean
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   const toggleClass = props.isActive ? s['toggle-active'] : s['toggle']
@@ -37,16 +55,23 @@ export default function SectionToggle(props: SectionToggleProps): JSX.Element {
       <div className={toggleClass} onClick={toggle}>
         <div className={s['content']}>
           <div className={s['text']}>{props.content}</div>
-          <div className={s['party-group']}>
-            <Icon
-              src={props.partyIcon}
-              width={20}
-              height={20}
-              borderWidth={1}
-              unoptimized={true}
+          <PartyTermWrapper>
+            <div className={s['party-group']}>
+              <Icon
+                src={props.partyIcon}
+                width={20}
+                height={20}
+                borderWidth={1}
+                unoptimized={true}
+              />
+              <div className={s['party']}>{props.party}</div>
+            </div>
+            <ElectionTerm
+              isElected={props.elected}
+              isIncumbent={props.incumbent}
+              termDate={props.electionTerm}
             />
-            <div className={s['party']}>{props.party}</div>
-          </div>
+          </PartyTermWrapper>
         </div>
         <span className={s['control']}>
           {props.isActive ? <ArrowUp /> : <ArrowDown />}
