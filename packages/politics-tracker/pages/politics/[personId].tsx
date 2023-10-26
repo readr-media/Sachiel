@@ -50,7 +50,6 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
-  console.log(props)
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
