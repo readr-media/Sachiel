@@ -20,10 +20,12 @@ const SectionContainer = styled.div`
 type SectionProps = {
   politicData: PoliticDetail
   electionTerm: PersonElectionTerm
+  shouldShowFeedbackForm: boolean
 }
 export default function Section({
   politicData,
   electionTerm,
+  shouldShowFeedbackForm = false,
 }: SectionProps): JSX.Element {
   //get election Date (YYYY-MM-DD)
   let electionDate =
@@ -49,7 +51,9 @@ export default function Section({
         <SectionTitle politicData={politicData} electionTerm={electionTerm} />
         {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
         <SectionContent politicData={politicData} />
-        <SectionFeedbackForm politicId={politicData?.id} />
+        {shouldShowFeedbackForm && (
+          <SectionFeedbackForm politicId={politicData?.id} />
+        )}
       </div>
     </SectionContainer>
   )
