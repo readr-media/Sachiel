@@ -2,8 +2,7 @@ import styled from 'styled-components'
 
 import ExpertIcon from '~/public/icons/expert-opinion.svg'
 import FactCheckIcon from '~/public/icons/fact-check-icon.svg'
-import ChangedIcon from '~/public/icons/position-changed.svg'
-import ConsistentIcon from '~/public/icons/position-consistent.svg'
+import PositionIcon from '~/public/icons/position-icon.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
 import type {
   ExpertPoint,
@@ -42,19 +41,6 @@ const CheckAbstract = styled.div`
   display: flex;
   gap: 4px;
 
-  .position-changed {
-    color: #b2800d;
-  }
-  .position-consistent {
-    color: #838383;
-  }
-  .fact-correct {
-    color: #208f96;
-  }
-  .fact-incorrect {
-    color: #c0374f;
-  }
-
   .title {
     color: #0f2d35a8;
   }
@@ -89,12 +75,15 @@ export default function FactCheckAbstract({
     return checkResultMappings[checkResultType] || factCheck.checkResultOther
   }
 
-  // If there are multiple position-changing statuses that conflict, show only the changed summaries.
-  // Check if at least one 'isChanged' value is true.
-  const isPositionChanged = positionChange?.some((change) => change.isChanged)
-  const filteredPositionChangeArray = isPositionChanged
-    ? positionChange.filter((change) => change.isChanged)
-    : positionChange
+  function getPositionChangeString(isChanged: string) {
+    const positionChangeMappings: { [key: string]: string } = {
+      same: '曾持相同意見',
+      changed: '曾持不同意見',
+      noComment: '當時未表態',
+    }
+
+    return positionChangeMappings[isChanged] || '曾持相同意見'
+  }
 
   return (
     <Wrapper>
@@ -128,27 +117,21 @@ export default function FactCheckAbstract({
       )}
 
       {/* 立場變化摘要 */}
-      {filteredPositionChangeArray.length >= 1 && (
+      {positionChange.length >= 1 && (
         <CheckAbstract>
-          <div>{isPositionChanged ? <ChangedIcon /> : <ConsistentIcon />}</div>
+          <div>
+            <PositionIcon />
+          </div>
 
-          <span
-            className={
-              isPositionChanged ? 'position-changed' : 'position-consistent'
-            }
-          >
-            立場變化：
-            {filteredPositionChangeArray.length > 1
-              ? filteredPositionChangeArray.map((change, index) => (
-                  <span key={index}>
-                    {change.positionChangeSummary}
-                    {change.factcheckPartner && ` (${change.factcheckPartner})`}
-                    {index < filteredPositionChangeArray.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : filteredPositionChangeArray.length === 1
-              ? filteredPositionChangeArray[0]?.positionChangeSummary
-              : ''}
+          <span className="text">
+            <span className="title">候選人過去主張：</span>
+            {positionChange.map((change, index) => (
+              <span key={index}>
+                {`【${getPositionChangeString(change.isChanged)}】`}
+                {change.factcheckPartner && ` (${change.factcheckPartner})`}
+                {index < positionChange.length - 1 ? '、' : ''}
+              </span>
+            ))}
           </span>
         </CheckAbstract>
       )}
