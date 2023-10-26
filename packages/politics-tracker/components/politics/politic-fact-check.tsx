@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
 import ExpertIcon from '~/public/icons/expert-opinion.svg'
-import CorrectIcon from '~/public/icons/factcheck-correct.svg'
-import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
-import ChangedIcon from '~/public/icons/position-changed.svg'
-import ConsistentIcon from '~/public/icons/position-consistent.svg'
+import FactCheckIcon from '~/public/icons/fact-check-icon.svg'
+import PositionIcon from '~/public/icons/position-icon.svg'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
 import type {
   ExpertPoint,
@@ -13,7 +11,7 @@ import type {
   Repeat,
 } from '~/types/politics'
 
-interface FactCheckAbstractProps {
+type FactCheckAbstractProps = {
   positionChange: PositionChange[]
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
@@ -22,7 +20,7 @@ interface FactCheckAbstractProps {
 
 const Wrapper = styled.div`
   display: grid;
-  row-gap: 4px;
+  row-gap: 8px;
   column-gap: 20px;
   ${({ theme }) => theme.breakpoint.md} {
     grid-template-columns: repeat(2, 1fr);
@@ -43,23 +41,11 @@ const CheckAbstract = styled.div`
   display: flex;
   gap: 4px;
 
-  .position-changed {
-    color: #b2800d;
+  .title {
+    color: #0f2d35a8;
   }
-  .position-consistent {
-    color: #838383;
-  }
-  .fact-correct {
-    color: #208f96;
-  }
-  .fact-incorrect {
-    color: #c0374f;
-  }
-  .expert {
+  .text {
     color: #544ac9;
-  }
-  .similar {
-    color: #838383;
   }
 `
 
@@ -69,74 +55,114 @@ export default function FactCheckAbstract({
   expertPoint,
   repeat,
 }: FactCheckAbstractProps): JSX.Element {
-  // If there are multiple position-changing statuses that conflict, show only the changed summaries.
-  // Check if at least one 'isChanged' value is true.
-  const isPositionChanged = positionChange?.some((change) => change.isChanged)
-  const filteredPositionChangeArray = isPositionChanged
-    ? positionChange.filter((change) => change.isChanged)
-    : positionChange
+  function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
+    const checkResultMappings: { [key: string]: string } = {
+      '1': '與所查資料相符',
+      '2': '數據符合，但推論錯誤',
+      '3': '數據符合，但與推論無關',
+      '4': '數據符合，但僅取片段資訊，無法瞭解全貌',
+      '5': '片面事實，有一些前提或關鍵事實被隱藏',
+      '6': '與所查資料不符合，且推論過於簡化',
+      '7': '不知道數據出處為何',
+      '8': '數據並非例行統計，今年才發布',
+      '9': '其說法並沒有提出證據',
+    }
 
-  // If there are multiple fact-checking statuses that conflict, show only the 'incorrect' and 'partial' summaries.
-  // Check if all 'factCheckCorrect' values are true.
-  const isFactCheckCorrect = factCheck?.every(
-    (item) => item.checkResultType === 'correct'
-  )
-  const filteredFactCheckArray = isFactCheckCorrect
-    ? factCheck
-    : factCheck.filter(
-        (item) =>
-          item.checkResultType === 'incorrect' ||
-          item.checkResultType === 'partial'
-      )
+    if (checkResultType === '10' && factCheck.checkResultOther) {
+      return factCheck.checkResultOther
+    }
+
+    return checkResultMappings[checkResultType] || factCheck.checkResultOther
+  }
+
+  function getPositionChangeString(isChanged: string) {
+    const positionChangeMappings: { [key: string]: string } = {
+      same: '曾持相同意見',
+      changed: '曾持不同意見',
+      noComment: '當時未表態',
+    }
+
+    return positionChangeMappings[isChanged] || '曾持相同意見'
+  }
+
+  type FactCheckPartner = {
+    name: string
+  }
+
+  // Create an object to group partners by isChanged
+  const groupedPartners: { [key: string]: FactCheckPartner[] } = {}
+
+  positionChange.forEach((change) => {
+    if (!groupedPartners[change.isChanged]) {
+      groupedPartners[change.isChanged] = []
+    }
+    if (change.factcheckPartner) {
+      groupedPartners[change.isChanged].push(change.factcheckPartner)
+    }
+  })
+
+  function renderPositionChanges(groupedPartners: {
+    [key: string]: FactCheckPartner[]
+  }) {
+    const renderedPositionChanges = Object.keys(groupedPartners).map(
+      (key, index) => {
+        const partners = groupedPartners[key]
+        const positionChangeString = getPositionChangeString(key)
+        const partnerString = partners.join('、')
+        return (
+          <span key={key}>
+            {index > 0 ? '、' : ''}
+            {`【${positionChangeString}】`}
+            {partnerString && ` (${partnerString})`}
+          </span>
+        )
+      }
+    )
+
+    return renderedPositionChanges
+  }
 
   return (
     <Wrapper>
-      {/* 立場變化摘要 */}
-      {filteredPositionChangeArray.length >= 1 && (
+      {/* 政見提出背景摘要*/}
+      {factCheck.length >= 1 && (
         <CheckAbstract>
-          <div>{isPositionChanged ? <ChangedIcon /> : <ConsistentIcon />}</div>
-
-          <span
-            className={
-              isPositionChanged ? 'position-changed' : 'position-consistent'
-            }
-          >
-            立場變化：
-            {filteredPositionChangeArray.length > 1
-              ? filteredPositionChangeArray.map((change, index) => (
-                  <span key={index}>
-                    {change.positionChangeSummary}
-                    {change.factcheckPartner && ` (${change.factcheckPartner})`}
-                    {index < filteredPositionChangeArray.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : filteredPositionChangeArray.length === 1
-              ? filteredPositionChangeArray[0]?.positionChangeSummary
-              : ''}
+          <div>
+            <FactCheckIcon />
+          </div>
+          <span>
+            <span className="title">政見提出背景：</span>
+            <span className="text">
+              {factCheck.map((fact, index) => (
+                <span key={index}>
+                  {fact.factCheckSummary && (
+                    <>
+                      {`【${getCheckResultString(
+                        fact.checkResultType ?? '10',
+                        fact
+                      )}】`}
+                      {fact.factCheckSummary}
+                      {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                      {index < factCheck.length - 1 ? '、' : ''}
+                    </>
+                  )}
+                </span>
+              ))}
+            </span>
           </span>
         </CheckAbstract>
       )}
 
-      {/* 事實釐清摘要*/}
-      {filteredFactCheckArray.length >= 1 && (
+      {/* 立場變化摘要 */}
+      {positionChange.length >= 1 && (
         <CheckAbstract>
-          <div>{isFactCheckCorrect ? <CorrectIcon /> : <IncorrectIcon />}</div>
+          <div>
+            <PositionIcon />
+          </div>
 
-          <span
-            className={isFactCheckCorrect ? 'fact-correct' : 'fact-incorrect'}
-          >
-            事實釐清：
-            {filteredFactCheckArray.length > 1
-              ? filteredFactCheckArray.map((fact, index) => (
-                  <span key={index}>
-                    {fact.factCheckSummary}
-                    {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
-                    {index < filteredFactCheckArray.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : filteredFactCheckArray.length === 1
-              ? filteredFactCheckArray[0]?.factCheckSummary
-              : ''}
+          <span className="text">
+            <span className="title">候選人過去主張：</span>
+            {renderPositionChanges(groupedPartners)}
           </span>
         </CheckAbstract>
       )}
@@ -144,22 +170,24 @@ export default function FactCheckAbstract({
       {/* 專家看點摘要 */}
       {expertPoint.length >= 1 && expertPoint[0].expertPointSummary && (
         <CheckAbstract>
-          <div>
+          <div className="mt-[2px]">
             <ExpertIcon />
           </div>
-          <span className="expert">
-            專家看點：
-            {expertPoint.length > 1
-              ? expertPoint.map((expert, index) => (
-                  <span key={index}>
-                    {expert.expertPointSummary}
-                    {expert.expert && ` (${expert.expert})`}
-                    {index < expertPoint.length - 1 ? '、' : ''}
-                  </span>
-                ))
-              : expertPoint.length === 1
-              ? expertPoint[0]?.expertPointSummary
-              : ''}
+          <span>
+            <span className="title">專家看點：</span>
+            <span className="text">
+              {expertPoint.length > 1
+                ? expertPoint.map((expert, index) => (
+                    <span key={index}>
+                      {expert.expertPointSummary}
+                      {expert.expert && ` (${expert.expert})`}
+                      {index < expertPoint.length - 1 ? '、' : ''}
+                    </span>
+                  ))
+                : expertPoint.length === 1
+                ? expertPoint[0]?.expertPointSummary
+                : ''}
+            </span>
           </span>
         </CheckAbstract>
       )}
@@ -167,26 +195,28 @@ export default function FactCheckAbstract({
       {/* 相似政策摘要 */}
       {repeat.length >= 1 && (
         <CheckAbstract>
-          <div>
+          <div className="mt-[2px]">
             <SimilarIcon />
           </div>
-          <span className="similar">
-            相似政策：
-            {repeat.length > 1
-              ? repeat.map((re, index) => (
-                  <span key={index}>
-                    {re.repeatSummary && (
-                      <>
-                        {re.repeatSummary}
-                        {re.factcheckPartner && ` (${re.factcheckPartner})`}
-                        {index < repeat.length - 1 ? '、' : ''}
-                      </>
-                    )}
-                  </span>
-                ))
-              : repeat.length === 1
-              ? repeat[0]?.repeatSummary
-              : ''}
+          <span>
+            <span className="title">相似政策：</span>
+            <span className="text">
+              {repeat.length > 1
+                ? repeat.map((re, index) => (
+                    <span key={index}>
+                      {re.repeatSummary && (
+                        <>
+                          {re.repeatSummary}
+                          {re.factcheckPartner && ` (${re.factcheckPartner})`}
+                          {index < repeat.length - 1 ? '、' : ''}
+                        </>
+                      )}
+                    </span>
+                  ))
+                : repeat.length === 1
+                ? repeat[0]?.repeatSummary
+                : ''}
+            </span>
           </span>
         </CheckAbstract>
       )}

@@ -50,6 +50,7 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
@@ -336,7 +337,8 @@ export const getServerSideProps: GetServerSideProps<
           factCheckData = politic?.factCheck?.map((fact) => ({
             id: fact.id,
             factCheckSummary: fact.factCheckSummary,
-            checkResultType: fact.checkResultType,
+            checkResultType: fact.checkResultType ?? null,
+            checkResultOther: fact.checkResultOther,
             factcheckPartner: fact.factcheckPartner?.name ?? null,
           }))
 
@@ -394,7 +396,8 @@ export const getServerSideProps: GetServerSideProps<
         factCheckData = politic?.factCheck?.map((fact) => ({
           id: fact.id,
           factCheckSummary: fact.factCheckSummary,
-          checkResultType: fact.checkResultType,
+          checkResultType: fact.checkResultType ?? null,
+          checkResultOther: fact.checkResultOther,
           factcheckPartner: fact.factcheckPartner?.name ?? null,
         }))
 
