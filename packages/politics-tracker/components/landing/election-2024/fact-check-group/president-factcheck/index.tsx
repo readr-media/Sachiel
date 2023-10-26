@@ -1,11 +1,11 @@
-// import axios from 'axios'
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import CustomSelect from '~/components/landing/election-2024/fact-check-group/president-factcheck/custom-select'
 import FactCheckItem from '~/components/landing/election-2024/fact-check-group/president-factcheck/factcheck-item'
 import { FactCheckPresident } from '~/components/landing/react-context/landing-2024-context'
-// import { prefixUrlForLanding2024FactCheck } from '~/constants/config'
+// import { prefixOfJSONForLanding2024 } from '~/constants/config'
 import { checkboxLabels } from '~/constants/president'
 import type { PoliticCategory } from '~/types/politics-detail'
 
@@ -241,24 +241,28 @@ export default function PresidentFactCheck({
   const [selectedCategory, setSelectedCategory] = useState(defaultCategory)
 
   // 取得類別 id 各自對應的 JSON --------------------
-
   const [updatedJSON, setUpdatesJSON] = useState(factCheckJSON)
 
-  //FIXME: 目前 JSON 有 CORS 問題
-  // const getUpdateJSON = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${prefixUrlForLanding2024FactCheck}/landing_factcheck_${selectedCategory.id}.json`
-  //     )
-  //     setUpdatesJSON(response.data)
-  //   } catch (error) {
-  //     console.error('JSON errors: Landing2024 President FactCheck Error', error)
-  //   }
-  // }
+  useEffect(() => {
+    const getUpdateJSON = async () => {
+      try {
+        const response = await axios.get(
+          `https://whoru-gcs-dev.readr.tw/json/landing_factcheck_${selectedCategory.id}.json`
+          // `${prefixUrlForLanding2024FactCheck}/landing_factcheck_${selectedCategory.id}.json`
+        )
 
-  // useEffect(() => {
-  //    getUpdateJSON()
-  // }, [selectedCategory])
+        const { personElections } = response.data
+        setUpdatesJSON(personElections)
+      } catch (error) {
+        console.error(
+          'JSON errors: Landing2024 President FactCheck Error',
+          error
+        )
+      }
+    }
+
+    getUpdateJSON()
+  }, [selectedCategory])
 
   // 有被勾選的 checkbox 標籤 --------------------
   const [filterLabels, setFilterLabels] = useState<string[]>([])
@@ -309,7 +313,7 @@ export default function PresidentFactCheck({
             </FilterCategory>
           </FilterPanel>
           <CandidatesWrapper>
-            {factCheckJSON.map((item: any) => (
+            {updatedJSON.map((item: any) => (
               <FactCheckItem
                 candidate={item}
                 key={item.id}
