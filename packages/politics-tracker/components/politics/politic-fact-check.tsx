@@ -11,7 +11,7 @@ import type {
   Repeat,
 } from '~/types/politics'
 
-interface FactCheckAbstractProps {
+type FactCheckAbstractProps = {
   positionChange: PositionChange[]
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
@@ -85,6 +85,43 @@ export default function FactCheckAbstract({
     return positionChangeMappings[isChanged] || '曾持相同意見'
   }
 
+  type FactCheckPartner = {
+    name: string
+  }
+
+  // Create an object to group partners by isChanged
+  const groupedPartners: { [key: string]: FactCheckPartner[] } = {}
+
+  positionChange.forEach((change) => {
+    if (!groupedPartners[change.isChanged]) {
+      groupedPartners[change.isChanged] = []
+    }
+    if (change.factcheckPartner) {
+      groupedPartners[change.isChanged].push(change.factcheckPartner)
+    }
+  })
+
+  function renderPositionChanges(groupedPartners: {
+    [key: string]: FactCheckPartner[]
+  }) {
+    const renderedPositionChanges = Object.keys(groupedPartners).map(
+      (key, index) => {
+        const partners = groupedPartners[key]
+        const positionChangeString = getPositionChangeString(key)
+        const partnerString = partners.join('、')
+        return (
+          <span key={key}>
+            {index > 0 ? '、' : ''}
+            {`【${positionChangeString}】`}
+            {partnerString && ` (${partnerString})`}
+          </span>
+        )
+      }
+    )
+
+    return renderedPositionChanges
+  }
+
   return (
     <Wrapper>
       {/* 政見提出背景摘要*/}
@@ -125,13 +162,7 @@ export default function FactCheckAbstract({
 
           <span className="text">
             <span className="title">候選人過去主張：</span>
-            {positionChange.map((change, index) => (
-              <span key={index}>
-                {`【${getPositionChangeString(change.isChanged)}】`}
-                {change.factcheckPartner && ` (${change.factcheckPartner})`}
-                {index < positionChange.length - 1 ? '、' : ''}
-              </span>
-            ))}
+            {renderPositionChanges(groupedPartners)}
           </span>
         </CheckAbstract>
       )}
