@@ -6,7 +6,8 @@ import CustomSelect from '~/components/landing/election-2024/fact-check-group/pr
 import FactCheckItem from '~/components/landing/election-2024/fact-check-group/president-factcheck/factcheck-item'
 import { FactCheckPresident } from '~/components/landing/react-context/landing-2024-context'
 // import { prefixOfJSONForLanding2024 } from '~/constants/config'
-import { checkboxLabels } from '~/constants/president'
+import { checkboxLabels } from '~/constants/landing'
+import { defaultFactCheckJSON } from '~/constants/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
 
 const Container = styled.div`
@@ -254,6 +255,8 @@ export default function PresidentFactCheck({
         const { personElections } = response.data
         setUpdatesJSON(personElections || [])
       } catch (error) {
+        setUpdatesJSON(defaultFactCheckJSON)
+
         console.error(
           'JSON errors: Landing2024 President FactCheck Error',
           error
