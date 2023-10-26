@@ -13,7 +13,7 @@ import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
-// import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import { prefixOfJSONForLanding2024 } from '~/constants/config'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
 import GetPoliticCategories from '~/graphql/query/landing/get-exit-politic-categories.graphql'
@@ -109,8 +109,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       const {
         data: { personElections },
       } = await axios.get(
-        // `${prefixUrlForLanding2024FactCheck}/landing_factcheck_${categories[0].id}.json`
-        `https://whoru-gcs-dev.readr.tw/json/landing_factcheck_${defaultCategoryId}.json`
+        `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
       )
 
       if (personElections.errors) {
