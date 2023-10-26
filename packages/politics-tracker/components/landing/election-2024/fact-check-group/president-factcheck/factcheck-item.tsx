@@ -194,7 +194,7 @@ export default function FactCheckItem({
 
   useEffect(() => {
     setPoliticNumber(1) // category 如果有切換，政見數起始數字回歸 1
-  }, [selectedCategory, politics])
+  }, [selectedCategory, pickedPolitics])
 
   return (
     <Wrapper>
