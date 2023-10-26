@@ -58,7 +58,7 @@ export default function PresidentComparison(): JSX.Element {
     <Container>
       <TitleWrapper>
         <Sidebar />
-        <Title>總統政見：事實查核</Title>
+        <Title>總統政見：差異比較</Title>
       </TitleWrapper>
     </Container>
   )

@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import {
+  clearAllBodyScrollLocks,
+  disableBodyScroll,
+  enableBodyScroll,
+} from 'body-scroll-lock'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { useFactCheckPresident } from '~/components/landing/react-context/use-landing-2024'
@@ -52,7 +57,7 @@ const SelectedBox = styled.div<{ isOpen: boolean }>`
 `
 
 const LightBox = styled.div<{ isOpen: boolean }>`
-  transition: transform 0.4s, opacity 0.1s;
+  transition: transform 0.4s;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   width: 100%;
   height: 100vh;
@@ -144,6 +149,22 @@ export default function CustomSelect({
     setIsOpen(false)
   }
 
+  const lightBoxRef = useRef(null)
+
+  useEffect(() => {
+    if (lightBoxRef && lightBoxRef.current) {
+      const lightBox = lightBoxRef.current
+      if (isOpen) {
+        disableBodyScroll(lightBox)
+      } else {
+        enableBodyScroll(lightBox)
+      }
+    }
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [isOpen])
+
   return (
     <Container>
       <span className="subtitle">分類</span>
@@ -154,7 +175,7 @@ export default function CustomSelect({
           <DropdownArrow onClick={() => setIsOpen(!isOpen)} />
         </SelectedBox>
 
-        <LightBox isOpen={isOpen}>
+        <LightBox isOpen={isOpen} ref={lightBoxRef}>
           <Options>
             <Title>
               請選擇分類

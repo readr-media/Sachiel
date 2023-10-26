@@ -3,11 +3,10 @@ import styled from 'styled-components'
 
 import type { Politic } from '~/components/landing/election-2024/fact-check-group'
 import CandidateInfo from '~/components/landing/election-2024/fact-check-group/president-factcheck/candidate-info'
+import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-factcheck/link-button'
 import PoliticContent from '~/components/politics/politic-content'
-import ArrowRight from '~/public/icons/landing/arrow-right.svg'
 import SwitchArrowLeft from '~/public/icons/landing/switch-arrow-left.svg'
 import SwitchArrowRight from '~/public/icons/landing/switch-arrow-right.svg'
-import Plus from '~/public/icons/plus.svg'
 import type { PoliticCategory } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
@@ -37,55 +36,6 @@ const PoliticDesc = styled.div`
   font-weight: 500;
   line-height: 1.8;
   margin-bottom: 20px;
-`
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
-
-  > a {
-    border-radius: 24px;
-    padding: 8px 24px 8px 32px;
-    text-align: center;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .politic-detail {
-    border: 2px solid #000000;
-    background: #f6ba31;
-
-    path {
-      fill: #000000;
-    }
-    &:hover {
-      background-color: #b2800d;
-    }
-  }
-
-  .politic-overview {
-    border: 2px solid #b2800d;
-    color: #b2800d;
-
-    path {
-      fill: #b2800d;
-    }
-
-    &:hover {
-      background-color: #fffcf3;
-    }
-  }
 `
 
 const Category = styled.span`
@@ -159,15 +109,42 @@ const DefaultDec = styled.div`
   margin-bottom: 20px;
 `
 
+const Loading = styled.div`
+  width: 100%;
+
+  .skeleton {
+    background: linear-gradient(90deg, #ffffff 25%, #eeeeee 50%, #ffffff 75%);
+    background-size: 200% 100%;
+    animation: loading 3s infinite ease-in-out;
+    margin-bottom: 20px;
+    height: 20px;
+
+    max-width: 240px;
+    margin: auto;
+    margin-bottom: 8px;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+`
+
 type FactCheckItemProps = {
   candidate: any
   selectedCategory: PoliticCategory
   filterLabels: string[]
+  isLoading: boolean
 }
 export default function FactCheckItem({
   candidate,
   selectedCategory,
   filterLabels,
+  isLoading,
 }: FactCheckItemProps): JSX.Element {
   const { person_id, politics } = candidate
 
@@ -217,7 +194,7 @@ export default function FactCheckItem({
 
   useEffect(() => {
     setPoliticNumber(1) // category 如果有切換，政見數起始數字回歸 1
-  }, [selectedCategory, politics])
+  }, [selectedCategory, pickedPolitics])
 
   return (
     <Wrapper>
@@ -230,6 +207,7 @@ export default function FactCheckItem({
           amount={pickedPolitics.length}
           name={person_id.name}
           politicNumber={politicNumber}
+          isLoading={isLoading}
         />
         <SwitchArrowRight
           className="switch-arrow"
@@ -238,61 +216,41 @@ export default function FactCheckItem({
       </SwitchPanel>
 
       <Content>
-        <Category>{selectedCategory.name}</Category>
-
-        {hasPolitics && desc ? (
-          <PoliticDesc>
-            <PoliticContent>{desc}</PoliticContent>
-          </PoliticDesc>
+        {isLoading ? (
+          <Loading>
+            <div className="skeleton" />
+            <div className="skeleton" />
+            <div className="skeleton" />
+          </Loading>
         ) : (
-          <DefaultDec>這個人還沒有被新增政見</DefaultDec>
+          <>
+            <Category>{selectedCategory.name}</Category>
+
+            {hasPolitics && desc ? (
+              <PoliticDesc>
+                <PoliticContent>{desc}</PoliticContent>
+              </PoliticDesc>
+            ) : (
+              <DefaultDec>這個人還沒有被新增政見</DefaultDec>
+            )}
+
+            <DevMode>
+              <p>政見 id：{politicId}</p>
+              <span>立場數{positionChangeCount} |</span>
+              <span>事實數{factCheckCount} |</span>
+              <span>專家數{expertPointCount} |</span>
+              <span>相似數{repeatCount}</span>
+            </DevMode>
+
+            {hasPolitics && <Feedback />}
+
+            <LinkButtons
+              hasPolitics={hasPolitics}
+              politicId={politicId}
+              personId={person_id.id}
+            />
+          </>
         )}
-
-        <DevMode>
-          <p>政見 id：{politicId}</p>
-          <span>立場數{positionChangeCount} |</span>
-          <span>事實數{factCheckCount} |</span>
-          <span>專家數{expertPointCount} |</span>
-          <span>相似數{repeatCount}</span>
-        </DevMode>
-
-        {hasPolitics && <Feedback />}
-
-        <ButtonWrapper>
-          {hasPolitics ? (
-            <>
-              <a
-                href={politicId ? `/politics/detail/${politicId}` : '/'} //FIXME
-                target="_blank"
-                rel="noopener noreferrer"
-                className="politic-detail"
-              >
-                政見細節
-                <ArrowRight />
-              </a>
-
-              <a
-                href={`/politics/${person_id.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="politic-overview"
-              >
-                查看所有政見
-                <ArrowRight />
-              </a>
-            </>
-          ) : (
-            <a
-              href={politicId ? `/politics/detail/${politicId}` : '/'} //FIXME
-              target="_blank"
-              rel="noopener noreferrer"
-              className="politic-detail"
-            >
-              新增政見
-              <Plus />
-            </a>
-          )}
-        </ButtonWrapper>
       </Content>
     </Wrapper>
   )

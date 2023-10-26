@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import CustomSelect from '~/components/landing/election-2024/fact-check-group/president-factcheck/custom-select'
 import FactCheckItem from '~/components/landing/election-2024/fact-check-group/president-factcheck/factcheck-item'
 import { FactCheckPresident } from '~/components/landing/react-context/landing-2024-context'
-// import { prefixOfJSONForLanding2024 } from '~/constants/config'
-import { checkboxLabels } from '~/constants/president'
+import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import { checkboxLabels } from '~/constants/landing'
+import { defaultFactCheckJSON } from '~/constants/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
 
 const Container = styled.div`
@@ -222,12 +223,10 @@ const CandidatesWrapper = styled.div`
     margin: 0px;
   }
 `
-
 type PresidentFactCheckProps = {
   categories: PoliticCategory[]
   factCheckJSON: any
 }
-
 export default function PresidentFactCheck({
   categories = [],
   factCheckJSON = [],
@@ -242,22 +241,27 @@ export default function PresidentFactCheck({
 
   // 取得類別 id 各自對應的 JSON --------------------
   const [updatedJSON, setUpdatesJSON] = useState(factCheckJSON)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getUpdateJSON = async () => {
+      setIsLoading(true)
       try {
         const response = await axios.get(
-          `https://whoru-gcs-dev.readr.tw/json/landing_factcheck_${selectedCategory.id}.json`
-          // `${prefixUrlForLanding2024FactCheck}/landing_factcheck_${selectedCategory.id}.json`
+          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
         )
 
         const { personElections } = response.data
-        setUpdatesJSON(personElections)
+        setUpdatesJSON(personElections || [])
       } catch (error) {
+        setUpdatesJSON(defaultFactCheckJSON)
+
         console.error(
           'JSON errors: Landing2024 President FactCheck Error',
           error
         )
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -319,6 +323,7 @@ export default function PresidentFactCheck({
                 key={item.id}
                 selectedCategory={selectedCategory}
                 filterLabels={filterLabels}
+                isLoading={isLoading}
               />
             ))}
           </CandidatesWrapper>
