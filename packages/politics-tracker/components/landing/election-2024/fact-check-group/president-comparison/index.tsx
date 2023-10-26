@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import ComparisonItem from '~/components/landing/election-2024/fact-check-group/president-comparison/comparison-item'
+import { defaultComparisonJSON } from '~/constants/landing'
+
 const Container = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.backgroundColor.skinColor};
@@ -53,6 +56,29 @@ const Sidebar = styled.div`
   }
 `
 
+const Content = styled.div`
+  width: 100%;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 40px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    padding: 20px 60px 60px;
+  }
+`
+
 export default function PresidentComparison(): JSX.Element {
   return (
     <Container>
@@ -60,6 +86,11 @@ export default function PresidentComparison(): JSX.Element {
         <Sidebar />
         <Title>總統政見：差異比較</Title>
       </TitleWrapper>
+      <Content>
+        {defaultComparisonJSON.map((item, index) => (
+          <ComparisonItem key={index} candidate={item} />
+        ))}
+      </Content>
     </Container>
   )
 }
