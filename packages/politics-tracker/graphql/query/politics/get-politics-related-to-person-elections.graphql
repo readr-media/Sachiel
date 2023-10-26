@@ -37,6 +37,7 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       id
       factCheckSummary
       checkResultType
+      checkResultOther
       factcheckPartner {
         name
       }
