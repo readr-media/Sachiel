@@ -71,3 +71,66 @@ export const fileDownload2024: DownloadItem[] = [
     link: '/',
   },
 ]
+
+//2024首頁：總統政見-事實查核 預設資料
+export const defaultFactCheckJSON = [
+  {
+    id: '76785',
+    number: '1',
+    person_id: {
+      id: '226',
+      name: '賴清德',
+    },
+    politicsCount: 2,
+    politics: [],
+  },
+  {
+    id: '76786',
+    number: '2',
+    person_id: {
+      id: '38254',
+      name: '柯文哲',
+    },
+    politicsCount: 0,
+    politics: [],
+  },
+  {
+    id: '76787',
+    number: '3',
+    person_id: {
+      id: '38255',
+      name: '侯友宜',
+    },
+    politicsCount: 0,
+    politics: [],
+  },
+  {
+    id: '76783',
+    number: '4',
+    person_id: {
+      id: '44206',
+      name: '郭台銘',
+    },
+    politicsCount: 0,
+    politics: [],
+  },
+]
+
+export const checkboxLabels = [
+  {
+    title: '立場變化',
+    value: 'positionChangeCount',
+  },
+  {
+    title: '事實釐清',
+    value: 'factCheckCount',
+  },
+  {
+    title: '專家看點',
+    value: 'expertPointCount',
+  },
+  {
+    title: '相似政見',
+    value: 'repeatCount',
+  },
+]
