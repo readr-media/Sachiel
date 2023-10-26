@@ -1,5 +1,6 @@
 mutation AddPoliticToThread($data: PoliticCreateInput!) {
   createPolitic(data: $data) {
+    id
     desc
     source
     content
@@ -20,5 +21,9 @@ mutation AddPoliticToThread($data: PoliticCreateInput!) {
       desc
       source
     }
+    changeLog
+    checked
+    reviewed
+    contributer
   }
 }

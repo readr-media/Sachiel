@@ -25,10 +25,14 @@ export default function AddPoliticForm(
     desc: '',
     source: '',
     content: '',
-    tagId: null,
-    tagName: null,
+    politicCategoryId: null,
+    politicCategoryName: null,
     createdAt: null,
     updatedAt: null,
+    positionChange: [],
+    factCheck: [],
+    expertPoint: [],
+    repeat: [],
   }
 
   const toast = useToast()
@@ -70,10 +74,14 @@ export default function AddPoliticForm(
       waitingPoliticList.addToList({
         id: String(new Date().valueOf()),
         ...variables.data,
-        tagId: null,
-        tagName: null,
+        politicCategoryId: null,
+        politicCategoryName: null,
         createdAt: null,
         updatedAt: null,
+        positionChange: [],
+        factCheck: [],
+        expertPoint: [],
+        repeat: [],
       })
 
       toast.open({

@@ -2,24 +2,23 @@
   @apply flex flex-col flex-nowrap;
 }
 .content-group {
-  @apply flex flex-col grow overflow-hidden pb-5;
+  @apply flex grow flex-col overflow-hidden pb-5;
 }
 .politic-base {
   @apply text-[16px] font-medium leading-[1.8] text-main;
-  @apply md:text-[18px];
 }
 .header {
-  @apply flex justify-between items-center;
+  @apply flex items-center justify-between;
 }
 .index {
-  @apply politic-base mb-1 shrink-0;
+  @apply mb-1  shrink-0 text-[16px] text-main;
 }
 .politic-status {
-  @apply font-medium leading-[1.5] text-[14px] shrink-0;
+  @apply shrink-0 text-[14px] font-medium leading-[1.5];
   @apply md:text-[16px];
 }
 .text {
-  @apply inline-block mr-2 text-main text-opacity-50;
+  @apply mr-2 inline-block text-main text-opacity-50;
 }
 .status {
   @apply inline-block px-3 py-1;
@@ -46,23 +45,24 @@
   @apply mt-2 flex flex-row flex-nowrap;
 }
 .source-label {
-  @apply inline-flex items-center shrink-0 bg-label p-2 text-[12px] font-medium leading-[14px] text-white opacity-50;
+  @apply inline-flex shrink-0 items-center bg-label p-2 text-[12px] font-medium leading-[14px] text-white opacity-50;
   @apply md:text-[14px] md:leading-[16px];
 }
 .source-list {
-  @apply flex grow flex-row flex-wrap items-center bg-label bg-opacity-5 gap-2 p-2 pl-0;
+  @apply flex grow flex-row flex-wrap items-center gap-2 bg-label bg-opacity-5 p-2 pl-0;
 }
 .control-group {
   @apply mt-2 flex flex-row py-1;
-  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1), inset 0px -1px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1),
+    inset 0px -1px 0px rgba(0, 0, 0, 0.1);
 }
 .button {
-  @apply flex basis-1/3 grow cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
+  @apply flex grow basis-1/3 cursor-pointer flex-row flex-nowrap items-center justify-center gap-1 py-1;
   @apply text-[16px] leading-[1.8] text-control;
-  @apply hover:bg-button-3 active:bg-button-3 md:text-[18px];
+  @apply hover:bg-button-3 active:bg-button-3;
 }
 .button-icon {
-  @apply w-5 h-5;
+  @apply h-5 w-5;
 }
 .divider {
   @apply my-auto mx-1 h-6 w-[1px] bg-label opacity-10;

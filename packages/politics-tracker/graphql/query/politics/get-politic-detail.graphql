@@ -1,7 +1,21 @@
-query GetPoliticsDetail($politicId: ID!) {
-  politics(where: { id: { equals: $politicId } }) {
+query GetPoliticDetail($politicId: ID!) {
+  politics(
+    where: {
+      id: { equals: $politicId }
+      status: { equals: "verified" }
+      reviewed: { equals: true }
+    }
+  ) {
     id
+    desc
+    content
+    source
+    status
+    current_progress
+    updatedAt
+    contributer
     person {
+      id
       votes_obtained_number
       votes_obtained_percentage
       elected
@@ -30,29 +44,13 @@ query GetPoliticsDetail($politicId: ID!) {
         image
       }
     }
-    desc
-    content
-    source
-    status
-    status
-    current_progress
     timeline(orderBy: { eventDate: asc }) {
       id
       eventDate
       content
       link
     }
-    expertPoint(orderBy: { reviewDate: asc }) {
-      id
-      expert
-      avatar
-      contributer
-      title
-      reviewDate
-      content
-      link
-    }
-    positionChange(orderBy: { checkDate: desc }) {
+    positionChange(orderBy: { checkDate: asc }) {
       id
       checkDate
       content
@@ -63,17 +61,65 @@ query GetPoliticsDetail($politicId: ID!) {
         name
       }
     }
-    factCheck(orderBy: { checkDate: asc }) {
+    expertPoint(orderBy: { createdAt: desc }) {
+      id
+      expert
+      avatar
+      contributer
+      title
+      content
+      link
+    }
+    factCheck(orderBy: { createdAt: desc }) {
       id
       checkResultType
       content
       link
       factcheckPartner {
         id
-        logo
+        slogo {
+          id
+          resized {
+            original
+          }
+        }
         name
       }
     }
-    dispute
+    repeat(orderBy: { createdAt: desc }) {
+      id
+      content
+      link
+      contributer
+      factcheckPartner {
+        id
+        slogo {
+          id
+          resized {
+            original
+          }
+        }
+        name
+      }
+    }
+    response(orderBy: { createdAt: desc }) {
+      id
+      content
+      responseName
+      responsePic
+      responseTitle
+      link
+    }
+    controversies(orderBy: { createdAt: desc }) {
+      id
+      link
+      content
+    }
+    politicCategory {
+      id
+    }
+    organization {
+      id
+    }
   }
 }
