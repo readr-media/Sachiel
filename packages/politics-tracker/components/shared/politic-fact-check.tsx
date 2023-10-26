@@ -16,14 +16,16 @@ type FactCheckAbstractProps = {
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
   repeat: Repeat[]
+  landing: boolean
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ landing: boolean }>`
   display: grid;
   row-gap: 8px;
   column-gap: 20px;
   ${({ theme }) => theme.breakpoint.md} {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${(props) =>
+      props.landing ? 'auto' : 'repeat(2, 1fr)'};
   }
 
   padding: 12px 0;
@@ -54,6 +56,7 @@ export default function FactCheckAbstract({
   factCheck,
   expertPoint,
   repeat,
+  landing,
 }: FactCheckAbstractProps): JSX.Element {
   function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
     const checkResultMappings: { [key: string]: string } = {
@@ -123,7 +126,7 @@ export default function FactCheckAbstract({
   }
 
   return (
-    <Wrapper>
+    <Wrapper landing={landing}>
       {/* 政見提出背景摘要*/}
       {factCheck.length >= 1 && (
         <CheckAbstract>
