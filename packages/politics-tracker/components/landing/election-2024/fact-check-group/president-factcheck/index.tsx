@@ -222,12 +222,10 @@ const CandidatesWrapper = styled.div`
     margin: 0px;
   }
 `
-
 type PresidentFactCheckProps = {
   categories: PoliticCategory[]
   factCheckJSON: any
 }
-
 export default function PresidentFactCheck({
   categories = [],
   factCheckJSON = [],
@@ -242,9 +240,11 @@ export default function PresidentFactCheck({
 
   // 取得類別 id 各自對應的 JSON --------------------
   const [updatedJSON, setUpdatesJSON] = useState(factCheckJSON)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getUpdateJSON = async () => {
+      setIsLoading(true)
       try {
         const response = await axios.get(
           `https://whoru-gcs-dev.readr.tw/json/landing_factcheck_${selectedCategory.id}.json`
@@ -252,12 +252,14 @@ export default function PresidentFactCheck({
         )
 
         const { personElections } = response.data
-        setUpdatesJSON(personElections)
+        setUpdatesJSON(personElections || [])
       } catch (error) {
         console.error(
           'JSON errors: Landing2024 President FactCheck Error',
           error
         )
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -319,6 +321,7 @@ export default function PresidentFactCheck({
                 key={item.id}
                 selectedCategory={selectedCategory}
                 filterLabels={filterLabels}
+                isLoading={isLoading}
               />
             ))}
           </CandidatesWrapper>
