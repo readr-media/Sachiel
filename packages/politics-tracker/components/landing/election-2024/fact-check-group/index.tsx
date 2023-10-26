@@ -28,6 +28,7 @@ const Aside = styled.div`
 
     height: 100%;
     height: 910px;
+    height: 1876.5px;
     padding: 40px 0px;
     min-width: 90px;
     width: 6vw;
