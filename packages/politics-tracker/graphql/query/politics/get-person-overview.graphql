@@ -22,6 +22,7 @@ query GetPersonOverView($personId: ID!) {
       level
       type
       hidePoliticDetail
+      addComments
     }
     party {
       name

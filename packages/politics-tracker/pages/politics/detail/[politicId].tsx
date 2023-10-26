@@ -1,3 +1,5 @@
+// @ts-ignore: no definition
+import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
 import React from 'react'
@@ -15,7 +17,11 @@ import GetPersonOrganization from '~/graphql/query/politics/get-person-organizat
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import { FeedbackFormConfig } from '~/types/common'
+import {
+  FeedbackFormConfig,
+  GenericGQLData,
+  RawPersonElection,
+} from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -38,7 +44,7 @@ type PoliticDetailPageProps = {
   politicData: PoliticDetail
   politicAmount: PoliticAmount
   config: FeedbackFormConfig
-  latestPersonElection: string
+  latestPersonElection: RawPersonElection
   electionTerm: PersonElectionTerm
 }
 export default function PoliticsDetail({
@@ -105,8 +111,17 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} />
       <ConfigContext.Provider value={config}>
         <Main>
-          <Title campaign={latestPersonElection} {...titleProps} />
-          <Section politicData={politicData} electionTerm={electionTerm} />
+          <Title
+            campaign={latestPersonElection.election?.type ?? ''}
+            {...titleProps}
+          />
+          <Section
+            politicData={politicData}
+            electionTerm={electionTerm}
+            shouldShowFeedbackForm={
+              latestPersonElection.election?.addComments === true
+            }
+          />
         </Main>
         <Nav {...navProps} />
       </ConfigContext.Provider>
@@ -145,7 +160,7 @@ export const getServerSideProps: GetServerSideProps<
     organization: null,
   }
   let politicAmount: PoliticAmount
-  let latestPersonElection: string
+  let latestPersonElection: RawPersonElection
   let electionTerm: PersonElectionTerm
   let personElectionIds: string[] = []
 
@@ -215,16 +230,35 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       //get latest election type this person join (header data)
-      const {
-        data: { personElections: personAllElections },
-      } = await fireGqlRequest(
-        print(GetPersonOverView),
-        { personId: politicData?.person?.person_id?.id },
-        cmsApiUrl
-      )
+      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
+        await fireGqlRequest(
+          print(GetPersonOverView),
+          { personId: politicData?.person?.person_id?.id },
+          cmsApiUrl
+        )
 
-      latestPersonElection =
-        personAllElections[personAllElections.length - 1].election.type || ''
+      const gqlErrors = rawData.errors
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `GetPersonOverView` query'),
+          'GraphQLError',
+          'failed to complete `GetPersonOverView`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      const personAllElections = rawData.data?.personElections
+
+      if (!personAllElections || personAllElections.length === 0) {
+        return {
+          notFound: true,
+        }
+      }
+
+      latestPersonElection = personAllElections[personAllElections.length - 1]
     }
 
     {
