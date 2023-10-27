@@ -112,10 +112,16 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
         `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
       )
 
+      console.log(
+        'prefix-server-side',
+        `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
+      )
+
       if (personElections.errors) {
         throw new Error(
-          'JSON errors: Landing2024 President FactCheck Error' +
-            JSON.stringify(personElections.errors)
+          'ServerSide - JSON errors: Landing2024 President FactCheck Error' +
+            JSON.stringify(personElections.errors) +
+            `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
         )
       }
 

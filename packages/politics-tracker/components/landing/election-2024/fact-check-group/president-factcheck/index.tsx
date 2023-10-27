@@ -253,11 +253,21 @@ export default function PresidentFactCheck({
 
         const { personElections } = response.data
         setUpdatesJSON(personElections || [])
+
+        console.log(
+          'Successs:prefix-client-side',
+          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
+        )
       } catch (error) {
         setUpdatesJSON(defaultFactCheckJSON)
 
+        console.log(
+          'Error:prefix-client-side',
+          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
+        )
+
         console.error(
-          'JSON errors: Landing2024 President FactCheck Error',
+          'CLientSide - JSON errors: Landing2024 President FactCheck Error',
           error
         )
       } finally {
