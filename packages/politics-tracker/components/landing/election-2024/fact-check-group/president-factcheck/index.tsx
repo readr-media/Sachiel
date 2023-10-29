@@ -5,7 +5,10 @@ import styled from 'styled-components'
 import CustomSelect from '~/components/landing/election-2024/fact-check-group/president-factcheck/custom-select'
 import FactCheckItem from '~/components/landing/election-2024/fact-check-group/president-factcheck/factcheck-item'
 import { FactCheckPresident } from '~/components/landing/react-context/landing-2024-context'
-import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import {
+  prefixOfJSONForLanding2024,
+  prefixOfJSONForLanding2024Test,
+} from '~/constants/config'
 import { checkboxLabels } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
@@ -242,6 +245,13 @@ export default function PresidentFactCheck({
   // 取得類別 id 各自對應的 JSON --------------------
   const [updatedJSON, setUpdatesJSON] = useState(factCheckJSON)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  console.log('prefixOfJSONForLanding2024', prefixOfJSONForLanding2024)
+  console.log('prefixOfJSONForLanding2024Test', prefixOfJSONForLanding2024Test)
+  console.log(
+    'process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024',
+    process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024
+  )
 
   useEffect(() => {
     const getUpdateJSON = async () => {
