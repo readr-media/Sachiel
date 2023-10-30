@@ -52,11 +52,11 @@ const CheckAbstract = styled.div`
 `
 
 export default function FactCheckAbstract({
-  positionChange,
-  factCheck,
-  expertPoint,
-  repeat,
-  landing,
+  positionChange = [],
+  factCheck = [],
+  expertPoint = [],
+  repeat = [],
+  landing = false,
 }: FactCheckAbstractProps): JSX.Element {
   function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
     const checkResultMappings: { [key: string]: string } = {
