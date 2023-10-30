@@ -13,15 +13,15 @@ import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
-import { gaTrackingId, prefixOfJSONForLanding2024 } from '~/constants/config'
+import { prefixOfJSONForLanding2024 } from '~/constants/config'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
 import {
   defaultComparisonJSON,
   defaultFactCheckJSON,
 } from '~/constants/landing'
-import GetPoliticCategories from '~/graphql/query/landing/get-exit-politic-categories.graphql'
 import GetFactCheckPartners from '~/graphql/query/landing/get-factcheck-partners.graphql'
-import type { FactCheckPartner, PoliticCategory } from '~/types/politics-detail'
+import type { FactCheckPartner } from '~/types/politics-detail'
+import { getTopCategoryLists, sortCategoriesByCount } from '~/utils/landing'
 import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
@@ -35,23 +35,22 @@ const Main = styled.main`
 
 type Landing2024Props = {
   factCheckPartner: FactCheckPartner[]
-  categories: PoliticCategory[]
   factCheckJSON: any
   comparisonJSON: any
+  allCategories: any
 }
 export default function Landing2024({
   factCheckPartner = [],
-  categories = [],
-  factCheckJSON = defaultFactCheckJSON,
-  comparisonJSON,
+  factCheckJSON = [],
+  comparisonJSON = [],
+  allCategories = [],
 }: Landing2024Props): JSX.Element {
-  console.log('gaTrackingId', gaTrackingId)
   return (
     <DefaultLayout>
       <Main>
         <HeroImage />
         <FactCheck
-          categories={categories}
+          categories={allCategories}
           factCheckJSON={factCheckJSON}
           comparisonJSON={comparisonJSON}
         />
@@ -79,9 +78,9 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
   )
 
   let factCheckPartner: FactCheckPartner[] = []
-  let categories: PoliticCategory[] = []
   let factCheckJSON: any = []
   let comparisonJSON: any = []
+  let allCategories: any = []
 
   try {
     {
@@ -98,58 +97,20 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
     }
 
     {
-      // get all politics categories
+      //get president:comparison JSON
       const {
-        data: { politicCategories },
-      } = await fireGqlRequest(print(GetPoliticCategories), {}, cmsApiUrl)
-
-      // sort categories by `politicsCount`
-      const orderedCategories = politicCategories.sort(
-        (a: PoliticCategory, b: PoliticCategory) =>
-          Number(b.politicsCount) - Number(a.politicsCount)
-      )
-
-      categories = orderedCategories || []
-    }
-
-    {
-      //get president:factCheck JSON   // FIXME: 錯誤處理：JSON 失效
-
-      const defaultCategoryId = categories[0].id || '1'
-
-      const {
-        data: { personElections },
-      } = await axios.get(
-        `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
-      )
-
-      if (personElections.errors) {
-        throw new Error(
-          'ServerSide - JSON errors: Landing2024 President FactCheck Error' +
-            JSON.stringify(personElections.errors) +
-            `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
-        )
-      }
-
-      factCheckJSON = personElections || defaultFactCheckJSON
-    }
-
-    {
-      //get president:comparison JSON   // FIXME: 錯誤處理：JSON 失效
-
-      const {
-        data: { president_candidates },
+        data: { president_candidates, categories },
       } = await axios.get(
         `${prefixOfJSONForLanding2024}/landing_statitics.json`
       )
 
-      if (president_candidates.errors) {
+      if (president_candidates.errors || categories.errors) {
         throw new Error(
-          'ServerSide - JSON errors: Landing2024 President FactCheck Error' +
-            JSON.stringify(president_candidates.errors) +
-            `${prefixOfJSONForLanding2024}/landing_statitics.json`
+          'Server JSON errors: Landing2024 President Comparison Error' +
+            JSON.stringify(president_candidates.errors || categories.errors)
         )
       }
+
       let sortCandidatesByNumber = []
 
       if (Object.keys(president_candidates).length > 0) {
@@ -158,10 +119,10 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
             const candidateInfo = president_candidates[name]
 
             if (Object.keys(candidateInfo.categories_count).length > 0) {
-              const sortedCategories = sortCategories(
+              const sortedCategories = sortCategoriesByCount(
                 candidateInfo.categories_count
               )
-              const categoryLists = getCategoryLists(sortedCategories)
+              const categoryLists = getTopCategoryLists(sortedCategories)
 
               return { name, ...candidateInfo, categories_count: categoryLists }
             } else {
@@ -171,32 +132,28 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
           .sort((a, b) => a.number - b.number)
       }
 
-      function sortCategories(categories: any) {
-        return Object.keys(categories)
-          .map((categoryName) => {
-            const categoryInfo = categories[categoryName]
-            return { name: categoryName, ...categoryInfo }
-          })
-          .sort((a, b) => b.count - a.count)
-      }
-
-      function getCategoryLists(sortedCategories: any) {
-        const topCategories = sortedCategories.slice(0, 5)
-        const otherTotalCount = sortedCategories
-          .slice(5)
-          .reduce((accumulator: any, item: any) => accumulator + item.count, 0)
-
-        return [
-          ...topCategories,
-          {
-            name: '其他',
-            count: otherTotalCount || 0,
-            displayColor: 'rgba(197, 203, 205, 1)',
-          },
-        ]
-      }
-
       comparisonJSON = sortCandidatesByNumber || defaultComparisonJSON
+      allCategories = sortCategoriesByCount(categories) || []
+    }
+
+    {
+      //get president:factCheck JSON
+      const defaultCategoryId = allCategories[0].id || '2'
+
+      const {
+        data: { personElections },
+      } = await axios.get(
+        `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
+      )
+
+      if (personElections.errors) {
+        throw new Error(
+          'Server JSON errors: Landing2024 President FactCheck Error' +
+            JSON.stringify(personElections.errors)
+        )
+      }
+
+      factCheckJSON = personElections || defaultFactCheckJSON
     }
   } catch (err) {
     console.error(err)
@@ -208,9 +165,9 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
   return {
     props: {
       factCheckPartner,
-      categories,
       factCheckJSON,
       comparisonJSON,
+      allCategories,
     },
   }
 }

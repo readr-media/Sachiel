@@ -35,6 +35,7 @@ const CountList = styled.li`
 
     path {
       fill: rgba(131, 121, 248, 1);
+      fill-opacity: 1;
     }
   }
 

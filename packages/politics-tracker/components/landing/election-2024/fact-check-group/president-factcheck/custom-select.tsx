@@ -190,9 +190,9 @@ export default function CustomSelect({
             </Title>
 
             <Lists>
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <CategoryItem
-                  key={category.id}
+                  key={index}
                   className="item"
                   onClick={() => handleOptionClick(category)}
                 >

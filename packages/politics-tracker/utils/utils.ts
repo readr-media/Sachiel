@@ -236,7 +236,6 @@ export {
   isURL,
   parseFactCheckType,
   partyName,
-  // setCacheControl,
   sourcesToString,
   stringToSources,
   typedHasOwnProperty,

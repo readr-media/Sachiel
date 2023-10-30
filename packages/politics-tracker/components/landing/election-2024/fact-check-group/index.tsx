@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Comparison from '~/components/landing/election-2024/fact-check-group/president-comparison'
+import ComparisonBlock from '~/components/landing/election-2024/fact-check-group/president-comparison'
 import FactCheckBlock from '~/components/landing/election-2024/fact-check-group/president-factcheck'
 import type {
   ExpertPoint,
@@ -59,7 +59,7 @@ export type Politic = {
 }
 
 type FactCheckProps = {
-  categories: PoliticCategory[]
+  categories: any
   factCheckJSON: any
   comparisonJSON: any
 }
@@ -75,7 +75,7 @@ export default function PresidentFactCheck({
       </Aside>
       <Main>
         <FactCheckBlock categories={categories} factCheckJSON={factCheckJSON} />
-        <Comparison comparisonJSON={comparisonJSON} />
+        <ComparisonBlock comparisonJSON={comparisonJSON} />
       </Main>
     </Wrapper>
   )
