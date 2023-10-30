@@ -5,6 +5,7 @@ import type { Politic } from '~/components/landing/election-2024/fact-check-grou
 import CandidateInfo from '~/components/landing/election-2024/fact-check-group/president-factcheck/candidate-info'
 import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-factcheck/link-button'
 import PoliticContent from '~/components/politics/politic-content'
+import FactCheckAbstract from '~/components/shared/politic-fact-check'
 import SwitchArrowLeft from '~/public/icons/landing/switch-arrow-left.svg'
 import SwitchArrowRight from '~/public/icons/landing/switch-arrow-right.svg'
 import type { PoliticCategory } from '~/types/politics-detail'
@@ -89,16 +90,6 @@ const Feedback = styled.div`
   background-color: rgba(15, 45, 53, 0.5);
 `
 
-const DevMode = styled.div`
-  width: 100%;
-  font-size: 12px;
-  margin-bottom: 20px;
-
-  > span {
-    margin-right: 4px;
-  }
-`
-
 //FIXME: combine with PoliticDesc ?
 const DefaultDec = styled.div`
   color: rgba(15, 45, 53, 0.3);
@@ -170,12 +161,10 @@ export default function FactCheckItem({
 
   const politicId = pickedPolitics[politicNumber - 1]?.id || null
   const desc = pickedPolitics[politicNumber - 1]?.desc || ''
-  const positionChangeCount =
-    pickedPolitics[politicNumber - 1]?.positionChangeCount || 0
-  const expertPointCount =
-    pickedPolitics[politicNumber - 1]?.expertPointCount || 0
-  const factCheckCount = pickedPolitics[politicNumber - 1]?.factCheckCount || 0
-  const repeatCount = pickedPolitics[politicNumber - 1]?.repeatCount || 0
+  const positionChange = pickedPolitics[politicNumber - 1]?.positionChange || []
+  const expertPoint = pickedPolitics[politicNumber - 1]?.expertPoint || []
+  const factCheck = pickedPolitics[politicNumber - 1]?.factCheck || []
+  const repeat = pickedPolitics[politicNumber - 1]?.repeat || []
 
   const handlePrevSwitch = (number: number) => {
     if (Number(number - 1) > 0) {
@@ -234,13 +223,13 @@ export default function FactCheckItem({
               <DefaultDec>這個人還沒有被新增政見</DefaultDec>
             )}
 
-            <DevMode>
-              <p>政見 id：{politicId}</p>
-              <span>立場數{positionChangeCount} |</span>
-              <span>事實數{factCheckCount} |</span>
-              <span>專家數{expertPointCount} |</span>
-              <span>相似數{repeatCount}</span>
-            </DevMode>
+            <FactCheckAbstract
+              positionChange={positionChange}
+              factCheck={factCheck}
+              expertPoint={expertPoint}
+              repeat={repeat}
+              landing={true}
+            />
 
             {hasPolitics && <Feedback />}
 
