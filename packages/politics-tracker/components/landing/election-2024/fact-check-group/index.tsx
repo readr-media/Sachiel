@@ -61,10 +61,12 @@ export type Politic = {
 type FactCheckProps = {
   categories: PoliticCategory[]
   factCheckJSON: any
+  comparisonJSON: any
 }
 export default function PresidentFactCheck({
   categories = [],
   factCheckJSON = [],
+  comparisonJSON = [],
 }: FactCheckProps): JSX.Element {
   return (
     <Wrapper>
@@ -73,7 +75,7 @@ export default function PresidentFactCheck({
       </Aside>
       <Main>
         <FactCheckBlock categories={categories} factCheckJSON={factCheckJSON} />
-        <Comparison />
+        <Comparison comparisonJSON={comparisonJSON} />
       </Main>
     </Wrapper>
   )

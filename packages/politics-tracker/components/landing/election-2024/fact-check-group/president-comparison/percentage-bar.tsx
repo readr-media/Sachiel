@@ -63,8 +63,8 @@ const ColorBar = styled.div`
 const CategoryUnit = styled.div<{ count: number; color: string }>`
   width: ${({ count }) => (count / 200) * 100 + '%' || '0%'};
   height: 100%;
-  /* display: ${({ count }) => (count / 200 > 0 ? 'block' : 'none')}; */
   background-color: ${({ color }) => color || '#fffff'};
+  display: ${({ count }) => (count > 0 ? 'block' : 'none')};
 `
 
 type PercentageBarProps = {
@@ -86,11 +86,11 @@ export default function PercentageBar({
       </Title>
       <BarContainer>
         <ColorBar>
-          {categories.map((category: any) => (
+          {categories.map((category: any, index: number) => (
             <CategoryUnit
-              count={category.politicsCount}
+              count={category.count}
               color={category.displayColor}
-              key={category.id}
+              key={index}
             />
           ))}
         </ColorBar>

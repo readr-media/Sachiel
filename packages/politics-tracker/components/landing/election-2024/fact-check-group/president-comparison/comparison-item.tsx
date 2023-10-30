@@ -26,11 +26,6 @@ const Wrapper = styled.div`
     max-width: calc(50% - 8px);
     margin: 0;
   }
-
-  /* ${({ theme }) => theme.breakpoint.xxl} {
-    max-width: 600px;
-    margin: 0;
-  } */
 `
 
 const Top = styled.div`
@@ -95,21 +90,11 @@ const Button = styled.a`
   }
 `
 
-const SortTable = styled.div``
-
 const Categories = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 4px 12px;
   margin-top: 8px;
-
-  > li {
-    display: flex;
-    align-items: center;
-    color: rgba(15, 45, 53, 0.5);
-    font-size: 12px;
-    line-height: 14px;
-  }
 
   .number {
     margin: 0px 4px 8px 0px;
@@ -136,36 +121,47 @@ const CategoryTitle = styled.span<{ color: string }>`
   margin-right: 2px;
 `
 
+const CategoryList = styled.li<{ count: number }>`
+  align-items: center;
+  color: rgba(15, 45, 53, 0.5);
+  font-size: 12px;
+  line-height: 14px;
+  display: ${({ count }) => (count > 0 ? 'flex' : 'none')};
+`
+
 export default function ComparisonItem({ candidate }: any): JSX.Element {
   const {
-    person_id = {},
-    politicCategories = [],
     positionChangeCount = 0,
     factCheckCount = 0,
     expertPointCount = 0,
     repeatCount = 0,
     politicsCount = 0,
+    name = '',
+    person_id = '',
+    categories_count = [],
   } = candidate
 
-  // get president candidate image
   let imageUrl: string = '/images/default-head-phot.png'
 
-  switch (person_id.name) {
-    case '賴清德':
-      imageUrl = '/images/lai-ching-te-colored.png'
-      break
+  {
+    // get president candidate image
+    switch (name) {
+      case '賴清德':
+        imageUrl = '/images/lai-ching-te-colored.png'
+        break
 
-    case '郭台銘':
-      imageUrl = '/images/guo-tai-ming-colored.png'
-      break
+      case '郭台銘':
+        imageUrl = '/images/guo-tai-ming-colored.png'
+        break
 
-    case '侯友宜':
-      imageUrl = '/images/hou-yu-ih-colored.png'
-      break
+      case '侯友宜':
+        imageUrl = '/images/hou-yu-ih-colored.png'
+        break
 
-    case '柯文哲':
-      imageUrl = '/images/ko-wen-je-colored.png'
-      break
+      case '柯文哲':
+        imageUrl = '/images/ko-wen-je-colored.png'
+        break
+    }
   }
 
   return (
@@ -175,30 +171,30 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
           <CustomImage
             images={{ original: imageUrl }}
             priority={true}
-            alt={person_id.name}
+            alt={name}
           />
         </HeadShot>
         <div>
           <PercentageBar
-            categories={politicCategories}
-            candidateName={person_id.name}
+            categories={categories_count}
+            candidateName={name}
             politicCount={politicsCount}
           />
 
-          <SortTable>
+          <div className="sort-table">
             <p>Top 5 類別</p>
             <Categories>
-              {politicCategories.map((category: any, index: number) => (
-                <li key={category.id}>
+              {categories_count.map((category: any, index: number) => (
+                <CategoryList key={index} count={category.count}>
                   <span className="number">{index + 1}</span>
                   <CategoryTitle color={category.displayColor}>
                     {category.name}
                   </CategoryTitle>
-                  ({category.politicsCount})
-                </li>
+                  ({category.count})
+                </CategoryList>
               ))}
             </Categories>
-          </SortTable>
+          </div>
         </div>
       </Top>
 
@@ -211,7 +207,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
         />
 
         <Button
-          href={person_id.id ? `/politics/${person_id.id}/#addPolitic` : '/'}
+          href={person_id ? `/politics/${person_id}/#addPolitic` : '/'}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="add-politics"

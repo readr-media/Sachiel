@@ -251,7 +251,7 @@ export default function PresidentFactCheck({
   console.log('prefixOfJSONForLanding2024Test', prefixOfJSONForLanding2024Test)
   console.log('prefixOfJSONForLanding2024', prefixOfJSONForLanding2024)
   console.log(
-    '  process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024',
+    'process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024',
     process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024
   )
 
