@@ -4019,6 +4019,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/body-scroll-lock@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@types/body-scroll-lock/-/body-scroll-lock-3.1.1.tgz#67b548176d416bd88f8d4a30a7ebb48f5bfa95cd"
+  integrity sha512-W5tM34rxQzEGXomqg5A2V8pHl/NQDCCuf7pygI2+2SZEbFB6zPDuX3uwkUxlVLIF31fob4elEjiMLliq3szk0g==
+
 "@types/connect@*":
   version "3.4.35"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.35.tgz#5fcf6ae445e4021d1fc2219a4873cc73a3bb2ad1"

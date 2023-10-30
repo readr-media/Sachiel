@@ -45,6 +45,7 @@ export type RawElection = Partial<{
   createdBy: string
   updatedBy: string
   hidePoliticDetail: string
+  addComments: boolean
 }>
 
 export type RawPerson = Partial<{

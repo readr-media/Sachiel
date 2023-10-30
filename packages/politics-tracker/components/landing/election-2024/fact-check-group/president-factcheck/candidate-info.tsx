@@ -38,15 +38,37 @@ const HeadShot = styled.div`
   height: 120px;
 `
 
+const Loading = styled.div`
+  .skeleton {
+    background: linear-gradient(90deg, #ffffff 25%, #eeeeee 50%, #ffffff 75%);
+    background-size: 200% 100%;
+    animation: loading 3s infinite ease-in-out;
+    height: 12px;
+    max-width: 128px;
+    margin: auto;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+`
+
 type CandidateInfoProps = {
   amount: number
   name: string
   politicNumber: number
+  isLoading: boolean
 }
 export default function CandidateInfo({
   amount,
   name,
   politicNumber,
+  isLoading,
 }: CandidateInfoProps): JSX.Element {
   let imageUrl: string = '/images/default-head-phot.png'
 
@@ -83,7 +105,14 @@ export default function CandidateInfo({
       </HeadShot>
 
       <h3 className="name">{name}</h3>
-      <span className="amount">{amountInfo}</span>
+
+      {isLoading ? (
+        <Loading>
+          <div className="skeleton" />
+        </Loading>
+      ) : (
+        <span className="amount">{amountInfo}</span>
+      )}
     </Info>
   )
 }

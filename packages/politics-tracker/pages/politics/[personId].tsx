@@ -336,7 +336,8 @@ export const getServerSideProps: GetServerSideProps<
           factCheckData = politic?.factCheck?.map((fact) => ({
             id: fact.id,
             factCheckSummary: fact.factCheckSummary,
-            checkResultType: fact.checkResultType,
+            checkResultType: fact.checkResultType ?? null,
+            checkResultOther: fact.checkResultOther,
             factcheckPartner: fact.factcheckPartner?.name ?? null,
           }))
 
@@ -394,7 +395,8 @@ export const getServerSideProps: GetServerSideProps<
         factCheckData = politic?.factCheck?.map((fact) => ({
           id: fact.id,
           factCheckSummary: fact.factCheckSummary,
-          checkResultType: fact.checkResultType,
+          checkResultType: fact.checkResultType ?? null,
+          checkResultOther: fact.checkResultOther,
           factcheckPartner: fact.factcheckPartner?.name ?? null,
         }))
 
