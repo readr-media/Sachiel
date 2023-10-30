@@ -5,10 +5,7 @@ import styled from 'styled-components'
 import CustomSelect from '~/components/landing/election-2024/fact-check-group/president-factcheck/custom-select'
 import FactCheckItem from '~/components/landing/election-2024/fact-check-group/president-factcheck/factcheck-item'
 import { FactCheckPresident } from '~/components/landing/react-context/landing-2024-context'
-import {
-  prefixOfJSONForLanding2024,
-  prefixOfJSONForLanding2024Test,
-} from '~/constants/config'
+import { prefixOfJSONForLanding2024 } from '~/constants/config'
 import { checkboxLabels } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
@@ -234,7 +231,6 @@ export default function PresidentFactCheck({
   categories = [],
   factCheckJSON = [],
 }: PresidentFactCheckProps): JSX.Element {
-  //類別篩選預設：政見數最多的類別  --------------------
   const defaultCategory = categories[0] || {
     id: '2',
     name: '交通',
@@ -242,20 +238,17 @@ export default function PresidentFactCheck({
   }
   const [selectedCategory, setSelectedCategory] = useState(defaultCategory)
 
-  // 取得類別 id 各自對應的 JSON --------------------
+  // get JSON based on selected category id
   const [updatedJSON, setUpdatesJSON] = useState(factCheckJSON)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  console.log('prefixOfJSONForLanding2024', prefixOfJSONForLanding2024)
-  console.log('prefixOfJSONForLanding2024Test', prefixOfJSONForLanding2024Test)
-  console.log(
-    'process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024',
-    process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024
-  )
+  // check if the dropdown has been clicked for the first time
+  const [isDropdownClicked, setIsDropdownClicked] = useState<boolean>(false)
 
   useEffect(() => {
     const getUpdateJSON = async () => {
       setIsLoading(true)
+
       try {
         const response = await axios.get(
           `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
@@ -263,21 +256,12 @@ export default function PresidentFactCheck({
 
         const { personElections } = response.data
         setUpdatesJSON(personElections || [])
-
-        console.log(
-          'Successs:prefix-client-side',
-          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
-        )
       } catch (error) {
         setUpdatesJSON(defaultFactCheckJSON)
 
         console.log(
           'Error:prefix-client-side',
-          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
-        )
-
-        console.error(
-          'CLientSide - JSON errors: Landing2024 President FactCheck Error',
+          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`,
           error
         )
       } finally {
@@ -285,10 +269,13 @@ export default function PresidentFactCheck({
       }
     }
 
-    getUpdateJSON()
-  }, [selectedCategory])
+    //分類選單有被初次點擊過後，才執行 client-side fetch（避免初次載入的重複執行狀況）
+    if (isDropdownClicked) {
+      getUpdateJSON()
+    }
+  }, [selectedCategory, isDropdownClicked])
 
-  // 有被勾選的 checkbox 標籤 --------------------
+  // picked checkbox values
   const [filterLabels, setFilterLabels] = useState<string[]>([])
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -316,6 +303,7 @@ export default function PresidentFactCheck({
             <CustomSelect
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
+              setIsDropdownClicked={setIsDropdownClicked}
             />
             <FilterCategory>
               <p className="subtitle">查核類別</p>

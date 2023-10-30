@@ -135,17 +135,24 @@ type DropdownProps = {
   selectedCategory: PoliticCategory
   // eslint-disable-next-line
   setSelectedCategory: (value: PoliticCategory) => void
+  // eslint-disable-next-line
+  setIsDropdownClicked: (value: boolean) => void
 }
 export default function CustomSelect({
   selectedCategory,
   setSelectedCategory,
+  setIsDropdownClicked,
 }: DropdownProps): JSX.Element {
   const { categories } = useFactCheckPresident()
   const [isOpen, setIsOpen] = useState(false)
 
-  //FIXME: type any
   const handleOptionClick = (option: PoliticCategory) => {
-    setSelectedCategory(option)
+    //if select the same category, not fetching data again
+    if (option !== selectedCategory) {
+      setSelectedCategory(option)
+      setIsDropdownClicked(true)
+    }
+
     setIsOpen(false)
   }
 
@@ -172,7 +179,7 @@ export default function CustomSelect({
       <DropdownWrapper>
         <SelectedBox onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
           <p>{selectedCategory.name}</p>
-          <DropdownArrow onClick={() => setIsOpen(!isOpen)} />
+          <DropdownArrow />
         </SelectedBox>
 
         <LightBox isOpen={isOpen} ref={lightBoxRef}>

@@ -13,7 +13,10 @@ import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
-import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import {
+  prefixOfJSONForLanding2024,
+  prefixOfJSONForLanding2024Test,
+} from '~/constants/config'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
 import GetPoliticCategories from '~/graphql/query/landing/get-exit-politic-categories.graphql'
@@ -110,6 +113,12 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
         data: { personElections },
       } = await axios.get(
         `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
+      )
+
+      console.log(
+        'Server-prefixOfJSONForLanding2024Test + prefixOfJSONForLanding2024',
+        prefixOfJSONForLanding2024Test,
+        prefixOfJSONForLanding2024
       )
 
       console.log(
