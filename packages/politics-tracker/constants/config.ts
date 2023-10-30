@@ -8,6 +8,7 @@ const env: string = envList.includes(String(process.env.NEXT_PUBLIC_ENV))
 // environment independent
 const cmsApiUrl: string = process.env.CMS_API_URL ?? ''
 const readrCmsApiUrl: string = process.env.READR_CMS_API_URL ?? ''
+const urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
 const prefixOfJSONForLanding2024Test: string =
   process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ?? ''
 
@@ -30,13 +31,11 @@ try {
 // environment dependent
 let siteUrl: string
 let gaTrackingId: string
-let urlOfJsonForlandingPage: string
 let prefixOfJSONForLanding2024: string
 
 switch (env) {
   case 'dev':
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
-    urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
@@ -44,7 +43,6 @@ switch (env) {
     break
   case 'prod': {
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
-    urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-prod.readr.tw/json'
@@ -53,10 +51,9 @@ switch (env) {
   }
   default:
     gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? ''
-    urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
-      'https://whoru-gcs-prod.readr.tw/json'
+      'https://whoru-gcs-dev.readr.tw/json'
     siteUrl = process.env.SITE_URL ?? 'http://localhost:3000'
     break
 }
