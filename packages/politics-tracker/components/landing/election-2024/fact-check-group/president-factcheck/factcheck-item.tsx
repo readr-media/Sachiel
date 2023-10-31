@@ -36,7 +36,7 @@ const PoliticDesc = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 `
 
 const Category = styled.span`
@@ -97,7 +97,7 @@ const DefaultDec = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 `
 
 const Loading = styled.div`

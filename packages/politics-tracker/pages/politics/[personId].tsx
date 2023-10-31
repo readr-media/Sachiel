@@ -328,7 +328,7 @@ export const getServerSideProps: GetServerSideProps<
             id: change.id,
             isChanged: change.isChanged,
             positionChangeSummary: change.positionChangeSummary,
-            factcheckPartner: change.factcheckPartner?.name ?? null,
+            factcheckPartner: change.factcheckPartner ?? null,
           }))
 
           let factCheckData: FactCheck[] = []
@@ -338,7 +338,7 @@ export const getServerSideProps: GetServerSideProps<
             factCheckSummary: fact.factCheckSummary,
             checkResultType: fact.checkResultType ?? null,
             checkResultOther: fact.checkResultOther,
-            factcheckPartner: fact.factcheckPartner?.name ?? null,
+            factcheckPartner: fact.factcheckPartner ?? null,
           }))
 
           let expertPointData: ExpertPoint[] = []
@@ -354,7 +354,7 @@ export const getServerSideProps: GetServerSideProps<
           repeatData = politic?.repeat?.map((re) => ({
             id: re.id,
             repeatSummary: re.repeatSummary,
-            factcheckPartner: re.factcheckPartner?.name ?? null,
+            factcheckPartner: re.factcheckPartner ?? null,
           }))
 
           electionMap[eId].waitingPolitics.push({
@@ -387,7 +387,7 @@ export const getServerSideProps: GetServerSideProps<
           id: change.id,
           isChanged: change.isChanged,
           positionChangeSummary: change.positionChangeSummary,
-          factcheckPartner: change.factcheckPartner?.name ?? null,
+          factcheckPartner: change.factcheckPartner ?? null,
         }))
 
         let factCheckData: FactCheck[] = []
@@ -397,7 +397,7 @@ export const getServerSideProps: GetServerSideProps<
           factCheckSummary: fact.factCheckSummary,
           checkResultType: fact.checkResultType ?? null,
           checkResultOther: fact.checkResultOther,
-          factcheckPartner: fact.factcheckPartner?.name ?? null,
+          factcheckPartner: fact.factcheckPartner ?? null,
         }))
 
         let expertPointData: ExpertPoint[] = []
@@ -413,7 +413,7 @@ export const getServerSideProps: GetServerSideProps<
         repeatData = politic?.repeat?.map((re) => ({
           id: re.id,
           repeatSummary: re.repeatSummary,
-          factcheckPartner: re.factcheckPartner?.name ?? null,
+          factcheckPartner: re.factcheckPartner ?? null,
         }))
 
         electionMap[eId].politics.push({
