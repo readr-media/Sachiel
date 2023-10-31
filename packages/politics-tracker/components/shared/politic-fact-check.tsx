@@ -7,6 +7,7 @@ import SimilarIcon from '~/public/icons/similar-policies.svg'
 import type {
   ExpertPoint,
   FactCheck,
+  FactCheckPartner,
   PositionChange,
   Repeat,
 } from '~/types/politics'
@@ -23,20 +24,16 @@ const Wrapper = styled.div<{ landing: boolean }>`
   display: grid;
   row-gap: 8px;
   column-gap: 20px;
-  ${({ theme }) => theme.breakpoint.md} {
-    grid-template-columns: ${(props) =>
-      props.landing ? 'auto' : 'repeat(2, 1fr)'};
-  }
-
-  padding: 12px 0;
-
   font-size: 12px;
   font-weight: 500;
   line-height: 14px;
+  padding: ${({ landing }) => (landing ? '0 0 8px' : '12px 0')};
 
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 14px;
     line-height: 16px;
+    grid-template-columns: ${({ landing }) =>
+      landing ? 'auto' : 'repeat(2, 1fr)'};
   }
 `
 const CheckAbstract = styled.div`
@@ -57,7 +54,16 @@ export default function FactCheckAbstract({
   expertPoint = [],
   repeat = [],
   landing = false,
-}: FactCheckAbstractProps): JSX.Element {
+}: FactCheckAbstractProps): JSX.Element | null {
+  if (
+    !positionChange.length &&
+    !factCheck.length &&
+    !expertPoint.length &&
+    !repeat.length
+  ) {
+    return null
+  }
+
   function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
     const checkResultMappings: { [key: string]: string } = {
       '1': '與所查資料相符',
@@ -88,10 +94,6 @@ export default function FactCheckAbstract({
     return positionChangeMappings[isChanged] || '曾持相同意見'
   }
 
-  type FactCheckPartner = {
-    name: string
-  }
-
   // Create an object to group partners by isChanged
   const groupedPartners: { [key: string]: FactCheckPartner[] } = {}
 
@@ -111,7 +113,8 @@ export default function FactCheckAbstract({
       (key, index) => {
         const partners = groupedPartners[key]
         const positionChangeString = getPositionChangeString(key)
-        const partnerString = partners.join('、')
+        const partnerString = partners.map((item) => item.name).join('、')
+
         return (
           <span key={key}>
             {index > 0 ? '、' : ''}
@@ -145,7 +148,8 @@ export default function FactCheckAbstract({
                         fact
                       )}】`}
                       {fact.factCheckSummary}
-                      {fact.factcheckPartner && ` (${fact.factcheckPartner})`}
+                      {fact.factcheckPartner &&
+                        ` (${fact.factcheckPartner.name})`}
                       {index < factCheck.length - 1 ? '、' : ''}
                     </>
                   )}
@@ -210,7 +214,8 @@ export default function FactCheckAbstract({
                       {re.repeatSummary && (
                         <>
                           {re.repeatSummary}
-                          {re.factcheckPartner && ` (${re.factcheckPartner})`}
+                          {re.factcheckPartner &&
+                            ` (${re.factcheckPartner.name})`}
                           {index < repeat.length - 1 ? '、' : ''}
                         </>
                       )}
