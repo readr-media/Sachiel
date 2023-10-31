@@ -10,6 +10,7 @@ let GOOGLE_ADSENSE_AD_CLIENT: string
 let HEADER_JSON_URL: string
 let LATEST_POSTS_URL: string
 let LATEST_POSTS_IN_CATEGORIES_URL: string
+let LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL: string
 
 switch (ENV) {
   case 'prod':
@@ -26,6 +27,9 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts.json'
     LATEST_POSTS_IN_CATEGORIES_URL =
       'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts-in-categories.json'
+    LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
+      'https://storage.googleapis.com/statics-readr-tw-prod/json/sections-posts-listing.json'
+
     break
 
   case 'staging':
@@ -42,6 +46,9 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts.json'
     LATEST_POSTS_IN_CATEGORIES_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts-in-categories.json'
+    LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
+      'https://storage.googleapis.com/statics-readr-tw-staging/json/sections-posts-listing.json'
+
     break
 
   case 'dev':
@@ -58,6 +65,9 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts.json'
     LATEST_POSTS_IN_CATEGORIES_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
+    LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
+
     break
 
   default:
@@ -74,6 +84,9 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts.json'
     LATEST_POSTS_IN_CATEGORIES_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
+    LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
+      'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
+
     break
 }
 
@@ -85,6 +98,7 @@ export {
   GOOGLE_ADSENSE_AD_CLIENT,
   GTM_ID,
   HEADER_JSON_URL,
+  LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL,
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
   QA_RECORD_CONFIG,

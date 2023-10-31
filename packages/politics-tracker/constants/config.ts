@@ -35,8 +35,7 @@ let prefixOfJSONForLanding2024: string
 
 switch (env) {
   case 'dev':
-    gaTrackingId =
-      process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'test-UA-83609754-1'
+    gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
@@ -51,7 +50,7 @@ switch (env) {
     break
   }
   default:
-    gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? 'test'
+    gaTrackingId = process.env.GOOGLE_ANALYTICS_TRACKING_ID ?? ''
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'

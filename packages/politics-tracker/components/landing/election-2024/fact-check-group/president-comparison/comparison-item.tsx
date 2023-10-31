@@ -101,13 +101,14 @@ const Categories = styled.div`
   }
 `
 
-//FIXME: adjust style
 const HeadShot = styled.div`
   margin: 0px auto 20px;
   width: 128px;
   height: 120px;
+  height: 100%;
 
   ${({ theme }) => theme.breakpoint.md} {
+    margin: auto;
     min-width: 166px;
     width: 166px;
     height: 156px;
@@ -127,6 +128,12 @@ const CategoryList = styled.li<{ count: number }>`
   font-size: 12px;
   line-height: 14px;
   display: ${({ count }) => (count > 0 ? 'flex' : 'none')};
+`
+
+const StatisticBoard = styled.div`
+  ${({ theme }) => theme.breakpoint.md} {
+    width: calc(100% - 206px);
+  }
 `
 
 export default function ComparisonItem({ candidate }: any): JSX.Element {
@@ -174,7 +181,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
             alt={name}
           />
         </HeadShot>
-        <div>
+        <StatisticBoard>
           <PercentageBar
             categories={categories_count}
             candidateName={name}
@@ -195,7 +202,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
               ))}
             </Categories>
           </div>
-        </div>
+        </StatisticBoard>
       </Top>
 
       <Bottom>
@@ -207,7 +214,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
         />
 
         <Button
-          href={person_id ? `/politics/${person_id}/#addPolitic` : '/'}
+          href={person_id ? `/politics/${person_id}/#add-politic-anchor` : '/'}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="add-politics"

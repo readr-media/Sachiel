@@ -8,7 +8,7 @@ import InputItem from '~/components/politics-detail/edit/input-item'
 import AddInputButton from '~/components/shared/add-input-button'
 import EditSendOrCancel from '~/components/shared/edit-send-or-cancel'
 import { useToast } from '~/components/toast/use-toast'
-import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
+import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import CreateControversies from '~/graphql/mutation/politics-detail/create-controversies.graphql'
 import EditLink from '~/public/icons/edit-link.svg'
 import EditText from '~/public/icons/edit-text.svg'
@@ -52,25 +52,7 @@ export default function EditControversies({
   politicData,
   setEditMode,
 }: EditControversiesProps): JSX.Element {
-  const {
-    id = '',
-    content = '',
-    current_progress = '',
-    desc = '',
-    expertPoint = [],
-    person = null,
-    timeline = [],
-    source = '',
-    status = '',
-    positionChange = [],
-    factCheck = [],
-    repeat = [],
-    response = [],
-    controversies = [],
-    contributer = '',
-    politicCategory = null,
-    organization = null,
-  } = politicData
+  const { id = '', controversies = [] } = politicData
 
   const toast = useToast()
   const [list, setList] = useState(controversies)
@@ -124,89 +106,17 @@ export default function EditControversies({
 
   // -------------------------------------------------------
 
-  //要在 CMS 新增的 controversies
+  //要在 CMS 新增一筆的 controversies（新增、修改）
   const controversyToAdd = getControversyToAdd(list, controversies)
 
-  //紀錄相關爭議編輯內容，傳入 Politics
-  const changeLogData = controversyToAdd.map((item) => ({
-    爭議內容: item.content,
-  }))
-
-  //CMS 現存的 controversy 需要新增 connect
+  //CMS 現有的 controversy 需要新增 connect 到新建立的 edit politic id
   const connectControversy = getControversyToConnect(list, controversyToAdd)
 
   //新建一筆帶有既有欄位資料的 Politic
-  async function addPoliticToThread(cmsApiUrl: string) {
+  async function addEditingPolitic(cmsApiUrl: string, variables: any) {
     try {
-      const variables = {
-        data: {
-          changeLog: `相關爭議：${JSON.stringify(changeLogData)}`,
-          reviewed: false,
-          contributer: contributer,
-          thread_parent: {
-            connect: {
-              id: id,
-            },
-          },
-          person: {
-            connect: {
-              id: person?.id,
-            },
-          },
-          desc: desc,
-          source: source,
-          content: content,
-          status: status,
-          current_progress: current_progress,
-          controversies: {
-            connect: connectControversy.map((item: any) => ({
-              id: item.id,
-            })),
-          },
-          positionChange: {
-            connect: positionChange.map((positionChangeItem) => ({
-              id: positionChangeItem.id,
-            })),
-          },
-          factCheck: {
-            connect: factCheck.map((factCheckItem) => ({
-              id: factCheckItem.id,
-            })),
-          },
-          expertPoint: {
-            connect: expertPoint.map((expertPointItem) => ({
-              id: expertPointItem.id,
-            })),
-          },
-          repeat: {
-            connect: repeat.map((repeatItem) => ({ id: repeatItem.id })),
-          },
-          response: {
-            connect: response.map((responseItem) => ({ id: responseItem.id })),
-          },
-          timeline: {
-            connect: timeline.map((timelineItem) => ({ id: timelineItem.id })),
-          },
-          politicCategory: politicCategory
-            ? {
-                connect: {
-                  id: politicCategory.id,
-                },
-              }
-            : null,
-
-          organization: organization
-            ? {
-                connect: {
-                  id: organization.id,
-                },
-              }
-            : null,
-        },
-      }
-
       const result = await fireGqlRequest(
-        print(AddPoliticToThread),
+        print(AddEditingPolitic),
         variables,
         cmsApiUrl
       )
@@ -231,7 +141,7 @@ export default function EditControversies({
         data: controversyList.map((item: Controversy) => ({
           link: item.link,
           content: item.content,
-          politic: {
+          editingPolitic: {
             connect: { id: politicId },
           },
         })),
@@ -258,15 +168,30 @@ export default function EditControversies({
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
+      const editControversyVariables = {
+        data: {
+          thread_parent: {
+            connect: {
+              id: id,
+            },
+          },
+          controversies: {
+            connect: connectControversy.map((item) => ({
+              id: item.id,
+            })),
+          },
+        },
+      }
+
       const {
-        data: { createPolitic },
-      } = await addPoliticToThread(cmsApiUrl)
+        data: { createEditingPolitic },
+      } = await addEditingPolitic(cmsApiUrl, editControversyVariables)
 
       //create new controversies at CMS
       return await addControversies(
         controversyToAdd,
         cmsApiUrl,
-        createPolitic.id
+        createEditingPolitic.id
       )
     } catch (err) {
       console.error(err)
