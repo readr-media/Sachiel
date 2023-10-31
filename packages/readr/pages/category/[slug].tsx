@@ -1,5 +1,6 @@
 // 列表頁
 import errors from '@twreporter/errors'
+import axios from 'axios'
 import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
@@ -14,6 +15,7 @@ import ArticleLists from '~/components/shared/article-lists'
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
+import { LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category, CategoryWithoutPosts } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
@@ -240,6 +242,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
+  query,
 }) => {
   setCacheControl(res)
 
@@ -252,31 +255,43 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     slug: DEFAULT_CATEGORY.slug,
   }
   let categoriesWithoutPosts: CategoryWithoutPosts[] = []
+  const useGql = query.gql as string
 
   try {
     {
       // fetch categories and related 12 posts
-      const { data, error: gqlErrors } = await client.query<{
-        categories: Category[]
-      }>({
-        query: categoriesQuery,
-        variables: {
-          relatedPostFirst: 12,
-          shouldQueryRelatedPost: true,
-          shouldQueryRelatedReport: false,
-          relatedPostTypes: postStyles,
-        },
-      })
+      let data: { categories: Category[] }
 
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `categories` query'),
-          'GraphQLError',
-          'failed to complete `categories`',
-          { errors: gqlErrors }
+      if (!useGql) {
+        const response = await axios.get<{ categories: Category[] }>(
+          LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL
         )
+        data = response.data
+      } else {
+        const { data: queryData, error: gqlErrors } = await client.query<{
+          categories: Category[]
+        }>({
+          query: categoriesQuery,
+          variables: {
+            relatedPostFirst: 12,
+            shouldQueryRelatedPost: true,
+            shouldQueryRelatedReport: false,
+            relatedPostTypes: postStyles,
+          },
+        })
 
-        throw annotatingError
+        data = queryData
+
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            new Error('Errors returned in `categories` query'),
+            'GraphQLError',
+            'failed to complete `categories`',
+            { errors: gqlErrors }
+          )
+
+          throw annotatingError
+        }
       }
 
       categories = data.categories.map((category) => {
