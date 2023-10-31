@@ -15,7 +15,10 @@ import ArticleLists from '~/components/shared/article-lists'
 import CategoryNav from '~/components/shared/category-nav'
 import SectionHeading from '~/components/shared/section-heading'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import { LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL } from '~/constants/environment-variables'
+import {
+  LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL,
+  LATEST_POSTS_URL,
+} from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category, CategoryWithoutPosts } from '~/graphql/query/category'
 import { categories as categoriesQuery } from '~/graphql/query/category'
@@ -319,25 +322,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch latest 12 posts
-      const {
-        data: { latestPosts },
-        errors: gqlErrors,
-      } = await client.query<{ latestPosts: Post[] }>({
-        query: latestPostsQuery,
-        variables: {
-          first: 12,
-        },
-      })
+      let latestPosts: Post[]
+      if (!useGql) {
+        const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
+        const { posts } = response.data
+        // since the json is shared with the homepage latest, here we only take 12 posts
+        latestPosts = posts.slice(0, 12)
+      } else {
+        const { data, errors: gqlErrors } = await client.query<{
+          latestPosts: Post[]
+        }>({
+          query: latestPostsQuery,
+          variables: {
+            first: 12,
+          },
+        })
 
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `latestPosts` query'),
-          'GraphQLError',
-          'failed to complete `latestPosts`',
-          { errors: gqlErrors }
-        )
+        latestPosts = data.latestPosts
 
-        throw annotatingError
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            new Error('Errors returned in `latestPosts` query'),
+            'GraphQLError',
+            'failed to complete `latestPosts`',
+            { errors: gqlErrors }
+          )
+
+          throw annotatingError
+        }
       }
 
       latest.posts = latestPosts.map(postConvertFunc)
