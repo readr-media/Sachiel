@@ -8,7 +8,6 @@ import Detail from '~/components/politics-detail/toggle-lists/detail'
 import ExpertPoint from '~/components/politics-detail/toggle-lists/expert-point'
 import FactCheck from '~/components/politics-detail/toggle-lists/fact-check'
 import PositionChange from '~/components/politics-detail/toggle-lists/position-change'
-import PositionChangeIcon from '~/components/politics-detail/toggle-lists/position-change/position-icon'
 import Repeat from '~/components/politics-detail/toggle-lists/repeat'
 import Response from '~/components/politics-detail/toggle-lists/response'
 import TimeLine from '~/components/politics-detail/toggle-lists/timeline'
@@ -72,8 +71,7 @@ export default function SectionContent({
       isActive: true, //政見細節預設展開
     },
     {
-      title: '立場變化',
-      titleChildren: <PositionChangeIcon positions={positionChange} />,
+      title: '候選人過去主張',
       children: <PositionChange positions={positionChange} />,
       showToggle: Boolean(positionChange.length),
       isActive: Boolean(positionChange.length),
