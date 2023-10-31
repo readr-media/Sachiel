@@ -87,7 +87,7 @@ export default function SectionContent({
     {
       title: '專家看點',
       children: <ExpertPoint experts={expertPoint} />,
-      showToggle: true,
+      showToggle: Boolean(expertPoint.length),
       isActive: Boolean(expertPoint.length),
     },
     {

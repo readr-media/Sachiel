@@ -14,10 +14,10 @@ import { logGAEvent } from '~/utils/analytics'
 import { fireGqlRequest } from '~/utils/utils'
 
 import ArrowRight from '../icons/arrow-right'
+import FactCheckAbstract from '../shared/politic-fact-check'
 import { useToast } from '../toast/use-toast'
 import s from './politic-body.module.css'
 import PoliticContent from './politic-content'
-import FactCheckAbstract from './politic-fact-check'
 import {
   usePersonElection,
   usePoliticAmount,
@@ -265,6 +265,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                   factCheck={props.factCheck}
                   expertPoint={props.expertPoint}
                   repeat={props.repeat}
+                  landing={false}
                 />
               )}
               <div className={s['control-group']}>

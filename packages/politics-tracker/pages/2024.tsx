@@ -13,8 +13,12 @@ import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
-// import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import { gaTrackingId, prefixOfJSONForLanding2024 } from '~/constants/config'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
+import {
+  defaultComparisonJSON,
+  defaultFactCheckJSON,
+} from '~/constants/landing'
 import GetPoliticCategories from '~/graphql/query/landing/get-exit-politic-categories.graphql'
 import GetFactCheckPartners from '~/graphql/query/landing/get-factcheck-partners.graphql'
 import type { FactCheckPartner, PoliticCategory } from '~/types/politics-detail'
@@ -33,17 +37,24 @@ type Landing2024Props = {
   factCheckPartner: FactCheckPartner[]
   categories: PoliticCategory[]
   factCheckJSON: any
+  comparisonJSON: any
 }
 export default function Landing2024({
   factCheckPartner = [],
   categories = [],
-  factCheckJSON = [],
+  factCheckJSON = defaultFactCheckJSON,
+  comparisonJSON,
 }: Landing2024Props): JSX.Element {
+  console.log('gaTrackingId', gaTrackingId)
   return (
     <DefaultLayout>
       <Main>
         <HeroImage />
-        <FactCheck categories={categories} factCheckJSON={factCheckJSON} />
+        <FactCheck
+          categories={categories}
+          factCheckJSON={factCheckJSON}
+          comparisonJSON={comparisonJSON}
+        />
         <CollaborateGuide />
         <FileDownload links={fileDownload2024}>
           <ButtonToLanding
@@ -70,6 +81,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
   let factCheckPartner: FactCheckPartner[] = []
   let categories: PoliticCategory[] = []
   let factCheckJSON: any = []
+  let comparisonJSON: any = []
 
   try {
     {
@@ -108,18 +120,83 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       const {
         data: { personElections },
       } = await axios.get(
-        // `${prefixUrlForLanding2024FactCheck}/landing_factcheck_${categories[0].id}.json`
-        `https://whoru-gcs-dev.readr.tw/json/landing_factcheck_${defaultCategoryId}.json`
+        `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
       )
 
       if (personElections.errors) {
         throw new Error(
-          'JSON errors: Landing2024 President FactCheck Error' +
-            JSON.stringify(personElections.errors)
+          'ServerSide - JSON errors: Landing2024 President FactCheck Error' +
+            JSON.stringify(personElections.errors) +
+            `${prefixOfJSONForLanding2024}/landing_factcheck_${defaultCategoryId}.json`
         )
       }
 
-      factCheckJSON = personElections || []
+      factCheckJSON = personElections || defaultFactCheckJSON
+    }
+
+    {
+      //get president:comparison JSON   // FIXME: 錯誤處理：JSON 失效
+
+      const {
+        data: { president_candidates },
+      } = await axios.get(
+        `${prefixOfJSONForLanding2024}/landing_statitics.json`
+      )
+
+      if (president_candidates.errors) {
+        throw new Error(
+          'ServerSide - JSON errors: Landing2024 President FactCheck Error' +
+            JSON.stringify(president_candidates.errors) +
+            `${prefixOfJSONForLanding2024}/landing_statitics.json`
+        )
+      }
+      let sortCandidatesByNumber = []
+
+      if (Object.keys(president_candidates).length > 0) {
+        sortCandidatesByNumber = Object.keys(president_candidates)
+          .map((name) => {
+            const candidateInfo = president_candidates[name]
+
+            if (Object.keys(candidateInfo.categories_count).length > 0) {
+              const sortedCategories = sortCategories(
+                candidateInfo.categories_count
+              )
+              const categoryLists = getCategoryLists(sortedCategories)
+
+              return { name, ...candidateInfo, categories_count: categoryLists }
+            } else {
+              return { name, ...candidateInfo }
+            }
+          })
+          .sort((a, b) => a.number - b.number)
+      }
+
+      function sortCategories(categories: any) {
+        return Object.keys(categories)
+          .map((categoryName) => {
+            const categoryInfo = categories[categoryName]
+            return { name: categoryName, ...categoryInfo }
+          })
+          .sort((a, b) => b.count - a.count)
+      }
+
+      function getCategoryLists(sortedCategories: any) {
+        const topCategories = sortedCategories.slice(0, 5)
+        const otherTotalCount = sortedCategories
+          .slice(5)
+          .reduce((accumulator: any, item: any) => accumulator + item.count, 0)
+
+        return [
+          ...topCategories,
+          {
+            name: '其他',
+            count: otherTotalCount || 0,
+            displayColor: 'rgba(197, 203, 205, 1)',
+          },
+        ]
+      }
+
+      comparisonJSON = sortCandidatesByNumber || defaultComparisonJSON
     }
   } catch (err) {
     console.error(err)
@@ -133,6 +210,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       factCheckPartner,
       categories,
       factCheckJSON,
+      comparisonJSON,
     },
   }
 }

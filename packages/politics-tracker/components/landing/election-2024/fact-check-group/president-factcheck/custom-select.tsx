@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import {
+  clearAllBodyScrollLocks,
+  disableBodyScroll,
+  enableBodyScroll,
+} from 'body-scroll-lock'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { useFactCheckPresident } from '~/components/landing/react-context/use-landing-2024'
@@ -52,7 +57,7 @@ const SelectedBox = styled.div<{ isOpen: boolean }>`
 `
 
 const LightBox = styled.div<{ isOpen: boolean }>`
-  transition: transform 0.4s, opacity 0.1s;
+  transition: transform 0.4s;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   width: 100%;
   height: 100vh;
@@ -130,19 +135,42 @@ type DropdownProps = {
   selectedCategory: PoliticCategory
   // eslint-disable-next-line
   setSelectedCategory: (value: PoliticCategory) => void
+  // eslint-disable-next-line
+  setIsDropdownClicked: (value: boolean) => void
 }
 export default function CustomSelect({
   selectedCategory,
   setSelectedCategory,
+  setIsDropdownClicked,
 }: DropdownProps): JSX.Element {
   const { categories } = useFactCheckPresident()
   const [isOpen, setIsOpen] = useState(false)
 
-  //FIXME: type any
   const handleOptionClick = (option: PoliticCategory) => {
-    setSelectedCategory(option)
+    //if select the same category, not fetching data again
+    if (option !== selectedCategory) {
+      setSelectedCategory(option)
+      setIsDropdownClicked(true)
+    }
+
     setIsOpen(false)
   }
+
+  const lightBoxRef = useRef(null)
+
+  useEffect(() => {
+    if (lightBoxRef && lightBoxRef.current) {
+      const lightBox = lightBoxRef.current
+      if (isOpen) {
+        disableBodyScroll(lightBox)
+      } else {
+        enableBodyScroll(lightBox)
+      }
+    }
+    return () => {
+      clearAllBodyScrollLocks()
+    }
+  }, [isOpen])
 
   return (
     <Container>
@@ -151,10 +179,10 @@ export default function CustomSelect({
       <DropdownWrapper>
         <SelectedBox onClick={() => setIsOpen(!isOpen)} isOpen={isOpen}>
           <p>{selectedCategory.name}</p>
-          <DropdownArrow onClick={() => setIsOpen(!isOpen)} />
+          <DropdownArrow />
         </SelectedBox>
 
-        <LightBox isOpen={isOpen}>
+        <LightBox isOpen={isOpen} ref={lightBoxRef}>
           <Options>
             <Title>
               請選擇分類
