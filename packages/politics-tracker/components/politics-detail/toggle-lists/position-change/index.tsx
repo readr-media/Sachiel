@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import type { PositionChange } from '~/types/politics-detail'
+import { getIsChangedText } from '~/utils/politics-detail'
 import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
@@ -19,30 +20,51 @@ const PositionList = styled.li`
   }
 `
 
-const Time = styled.span`
-  color: ${({ theme }) => theme.textColor.black};
-  display: inline-block;
+const Subtitle = styled.div`
+  display: flex;
   margin-bottom: 6px;
 
   &::before {
     content: '';
     display: inline-block;
     width: 6px;
+    min-width: 6px;
     height: 6px;
+    min-height: 6px;
     background-color: ${({ theme }) => theme.backgroundColor.landingYellow};
     border-radius: 50%;
+    margin-top: 10px;
     margin-right: 8px;
-    margin-bottom: 3px;
+  }
+`
+
+const Time = styled.div`
+  color: ${({ theme }) => theme.textColor.black};
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .isChanged {
+    color: #544ac9;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
   }
 
   ${({ theme }) => theme.breakpoint.md} {
+    display: block;
     min-width: 100px;
     margin: 0px 14px 0px 0px;
+
+    .isChanged {
+      margin-top: 4px;
+    }
   }
 `
 
 const ContentBlock = styled.div`
-  .content-text {
+  .summary {
     color: ${({ theme }) => theme.textColor.brown};
     display: block;
     word-break: break-all;
@@ -55,7 +77,23 @@ const ContentBlock = styled.div`
     }
 
     & + * {
-      margin-top: 8px;
+      margin-top: 4px;
+    }
+  }
+
+  .content {
+    color: #0f2d35;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5;
+
+    & + * {
+      margin-top: 4px;
+    }
+
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 14px;
     }
   }
 
@@ -73,22 +111,39 @@ export default function PositionChange({
   positions = [],
 }: PositionChangeProps): JSX.Element {
   const positionLists = positions.map((item: PositionChange) => {
-    const { id, checkDate, link, content, factcheckPartner } = item
+    const {
+      id,
+      checkDate,
+      isChanged,
+      link,
+      content,
+      factcheckPartner,
+      positionChangeSummary,
+    } = item
 
     return (
       <PositionList key={id}>
-        {checkDate && <Time>{getFormattedDate(checkDate)}</Time>}
+        {checkDate && (
+          <Subtitle>
+            <Time>
+              <p>{getFormattedDate(checkDate)}</p>
+              <p className="isChanged">{getIsChangedText(isChanged)}</p>
+            </Time>
+          </Subtitle>
+        )}
         <ContentBlock>
-          {content && (
+          {positionChangeSummary && (
             <a
-              className="content-text"
+              className="summary"
               href={link}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {content}
+              {positionChangeSummary}
             </a>
           )}
+
+          {content && <p className="content">{content}</p>}
 
           {factcheckPartner?.name && (
             <span className="fact-partner">
