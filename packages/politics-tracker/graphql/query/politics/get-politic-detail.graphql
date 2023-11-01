@@ -66,31 +66,34 @@ query GetPoliticDetail($politicId: ID!) {
       id
       expert
       avatar
-      contributer
       title
       content
       link
+      expertPointSummary
     }
     factCheck(orderBy: { createdAt: desc }) {
       id
       checkResultType
       content
+      factCheckSummary
+      checkResultOther
       link
       factcheckPartner {
         id
+        name
         slogo {
           id
           resized {
             original
           }
         }
-        name
       }
     }
     repeat(orderBy: { createdAt: desc }) {
       id
       content
       link
+      repeatSummary
       contributer
       factcheckPartner {
         id

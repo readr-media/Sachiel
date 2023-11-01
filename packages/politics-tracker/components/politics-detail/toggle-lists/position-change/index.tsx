@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 import type { PositionChange } from '~/types/politics-detail'
-import { getIsChangedText } from '~/utils/politics-detail'
-import { getFormattedDate } from '~/utils/utils'
+import { getFormattedDate, getPositionChangeString } from '~/utils/utils'
 
 const Wrapper = styled.div`
   padding: 20px 0px 40px;
@@ -75,6 +74,10 @@ const ContentBlock = styled.div`
       text-underline-offset: 3.5px;
       text-decoration-thickness: 1.5px;
     }
+
+    & + * {
+      margin-top: 2px;
+    }
   }
 
   .content {
@@ -125,7 +128,7 @@ export default function PositionChange({
           <Subtitle>
             <Time>
               <p>{getFormattedDate(checkDate)}</p>
-              <p className="isChanged">{getIsChangedText(isChanged)}</p>
+              <p className="isChanged">{getPositionChangeString(isChanged)}</p>
             </Time>
           </Subtitle>
         )}

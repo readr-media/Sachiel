@@ -11,6 +11,7 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
+import { getCheckResultString, getPositionChangeString } from '~/utils/utils'
 
 type FactCheckAbstractProps = {
   positionChange: PositionChange[]
@@ -62,36 +63,6 @@ export default function FactCheckAbstract({
     !repeat.length
   ) {
     return null
-  }
-
-  function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
-    const checkResultMappings: { [key: string]: string } = {
-      '1': '與所查資料相符',
-      '2': '數據符合，但推論錯誤',
-      '3': '數據符合，但與推論無關',
-      '4': '數據符合，但僅取片段資訊，無法瞭解全貌',
-      '5': '片面事實，有一些前提或關鍵事實被隱藏',
-      '6': '與所查資料不符合，且推論過於簡化',
-      '7': '不知道數據出處為何',
-      '8': '數據並非例行統計，今年才發布',
-      '9': '其說法並沒有提出證據',
-    }
-
-    if (checkResultType === '10' && factCheck.checkResultOther) {
-      return factCheck.checkResultOther
-    }
-
-    return checkResultMappings[checkResultType] || factCheck.checkResultOther
-  }
-
-  function getPositionChangeString(isChanged: string) {
-    const positionChangeMappings: { [key: string]: string } = {
-      same: '曾持相同意見',
-      changed: '曾持不同意見',
-      noComment: '當時未表態',
-    }
-
-    return positionChangeMappings[isChanged] || '曾持相同意見'
   }
 
   // Create an object to group partners by isChanged
