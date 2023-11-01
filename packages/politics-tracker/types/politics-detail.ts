@@ -47,26 +47,29 @@ export type Repeat = {
   link: string
   contributer: string
   factcheckPartner: FactCheckPartner | null
+  repeatSummary: string
 }
 
 //事實查核
 export type FactCheck = {
   id: string
-  checkResultType: 'correct' | 'incorrect' | 'partial'
+  checkResultType: string
   content: string
   link: string
   factcheckPartner: FactCheckPartner | null
+  factCheckSummary: string
+  checkResultOther: string
 }
 
 //專家看點
 export type ExpertPoint = {
   avatar: string
   content: string
-  contributer: string
   expert: string
   id: string
   link: string
   title: string
+  expertPointSummary: string
 }
 
 //候選人回應
