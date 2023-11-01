@@ -75,10 +75,6 @@ const ContentBlock = styled.div`
       text-underline-offset: 3.5px;
       text-decoration-thickness: 1.5px;
     }
-
-    & + * {
-      margin-top: 4px;
-    }
   }
 
   .content {
@@ -88,10 +84,6 @@ const ContentBlock = styled.div`
     font-weight: 500;
     line-height: 1.5;
 
-    & + * {
-      margin-top: 4px;
-    }
-
     ${({ theme }) => theme.breakpoint.md} {
       font-size: 14px;
     }
@@ -99,8 +91,14 @@ const ContentBlock = styled.div`
 
   .fact-partner {
     color: ${({ theme }) => theme.textColor.black50};
-    font-size: 14px;
-    line-height: 16px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 14px;
+    }
   }
 `
 
