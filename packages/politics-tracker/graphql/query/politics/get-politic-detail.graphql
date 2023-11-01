@@ -70,6 +70,7 @@ query GetPoliticDetail($politicId: ID!) {
       content
       link
       expertPointSummary
+      contributer
     }
     factCheck(orderBy: { createdAt: desc }) {
       id

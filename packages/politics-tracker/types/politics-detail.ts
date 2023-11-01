@@ -70,6 +70,7 @@ export type ExpertPoint = {
   link: string
   title: string
   expertPointSummary: string
+  contributer: string
 }
 
 //候選人回應
