@@ -13,7 +13,7 @@ import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
 import { cmsApiUrl } from '~/constants/config'
-import { prefixOfJSONForLanding2024 } from '~/constants/config'
+import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
 import {
   defaultComparisonJSON,

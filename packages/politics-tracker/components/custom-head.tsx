@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import { siteUrl } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 
 export type OGProperties = {
   locale?: 'zh_TW'
