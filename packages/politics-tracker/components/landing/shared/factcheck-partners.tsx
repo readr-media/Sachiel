@@ -51,7 +51,6 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
 
   ${({ theme }) => theme.breakpoint.md} {
     width: 157px;
