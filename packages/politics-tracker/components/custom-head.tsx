@@ -34,7 +34,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
     description:
       props.description ??
       '政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr 協作平台邀請你一起追蹤候選人選舉時提出的政見，並監督他是否在任期內達成。',
-    site_name: '政見不失憶：臺灣 2022 選舉政見協作平台',
+    site_name: props.title ?? '政見不失憶：臺灣 2022 選舉政見協作平台',
     url: siteUrl,
     type: 'website',
     image: {
@@ -54,6 +54,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
         content={siteInformation.description}
         key="description"
       />
+      <meta name="application-name" content={siteInformation.title} />
 
       <meta
         property="og:locale"
@@ -65,6 +66,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
         content={siteInformation.title}
         key="og:title"
       />
+      <meta property="og:url" content={siteInformation.url} />
       <meta property="og:type" content={siteInformation.type} key="og:type" />
       <meta
         property="og:description"
@@ -130,8 +132,6 @@ export default function CustomHead(props: HeadProps): JSX.Element {
         content={siteInformation.description || ''}
         key="twitter:description"
       />
-
-      <meta name="application-name" content={siteInformation.title} />
     </Head>
   )
 }
