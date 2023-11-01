@@ -13,12 +13,13 @@ const DetailContainer = styled.div`
 const DetailList = styled.li`
   list-style: none;
   position: relative;
+  word-break: break-word;
+
   p {
     font-weight: 500;
     font-size: 16px;
     line-height: 1.8;
     color: #0f2d35;
-    text-align: justify;
     margin-bottom: 12px;
   }
   > span {
