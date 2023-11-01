@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
+import SimilarIcon from '~/public/icons/similar-policies.svg'
 import type { Repeat } from '~/types/politics-detail'
 
 const ListWrapper = styled.li`
@@ -107,15 +108,39 @@ const Provider = styled.div`
   }
 `
 
+const Summary = styled.span`
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: ${({ theme }) => theme.textColor.blue};
+  margin-bottom: 12px;
+
+  svg {
+    margin-right: 4px;
+
+    path {
+      fill: ${({ theme }) => theme.textColor.blue};
+      fill-opacity: 1;
+    }
+  }
+
+  ${({ theme }) => theme.breakpoint.md} {
+    font-size: 14px;
+    line-height: 16px;
+  }
+`
 type RepeatItemProps = {
   repeatItem: Repeat
 }
 export default function RepeatItem({
   repeatItem,
 }: RepeatItemProps): JSX.Element {
-  const { link, content, factcheckPartner, contributer } = repeatItem
+  const { link, content, factcheckPartner, contributer, repeatSummary } =
+    repeatItem
 
-  const factText = content.split(SOURCE_DELIMITER).map((item, index) => {
+  const repeatText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (
       <p key={index} className="point">
         {item}
@@ -145,7 +170,16 @@ export default function RepeatItem({
         {contributer && <Provider>由{contributer}協助提供資料</Provider>}
       </Header>
 
-      <Content>{factText}</Content>
+      <Content>
+        {repeatSummary && (
+          <Summary>
+            <SimilarIcon />
+            {repeatSummary}
+          </Summary>
+        )}
+
+        {repeatText}
+      </Content>
       <RelatedLinks links={link} />
     </ListWrapper>
   )
