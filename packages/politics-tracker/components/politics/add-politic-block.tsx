@@ -18,7 +18,8 @@ export default function AddPoliticBlock(): JSX.Element {
       {showEditArea ? (
         <AddPoliticForm closeForm={() => setShowEditArea(false)} />
       ) : (
-        <span className="my-5">
+        <span className="relative my-5">
+          <span id="add-politic-anchor" className="absolute top-[-200px]" />
           <Button
             text="新增政見"
             icon={Plus()}

@@ -235,8 +235,8 @@ export default function PresidentFactCheck({
   factCheckJSON = [],
 }: PresidentFactCheckProps): JSX.Element {
   const defaultCategory = categories[0] || {
-    id: '2',
-    name: '交通',
+    id: '1',
+    name: '環境',
     politicsCount: 0,
   }
   const [selectedCategory, setSelectedCategory] = useState(defaultCategory)
@@ -263,17 +263,10 @@ export default function PresidentFactCheck({
         const response = await axios.get(
           `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`
         )
-
         const { personElections } = response.data
         setUpdatesJSON(personElections || [])
       } catch (error) {
         setUpdatesJSON(defaultFactCheckJSON)
-
-        console.log(
-          'Error:prefix-client-side',
-          `${prefixOfJSONForLanding2024}/landing_factcheck_${selectedCategory.id}.json`,
-          error
-        )
       } finally {
         setIsLoading(false)
       }

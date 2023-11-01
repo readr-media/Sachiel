@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type WindowSize = {
   width: number
@@ -47,4 +47,4 @@ function useTimeout<T extends () => any>(callback: T, delay: number) {
   }, [delay])
 }
 
-export { useWindowSize, useTimeout }
+export { useTimeout, useWindowSize }

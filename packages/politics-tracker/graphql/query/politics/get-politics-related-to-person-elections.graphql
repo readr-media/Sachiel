@@ -25,7 +25,7 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
       id
       name
     }
-    positionChange {
+    positionChange(orderBy: { checkDate: asc }) {
       id
       isChanged
       positionChangeSummary
@@ -33,7 +33,7 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
         name
       }
     }
-    factCheck {
+    factCheck(orderBy: { createdAt: desc }) {
       id
       factCheckSummary
       checkResultType
@@ -42,12 +42,12 @@ query GetPoliticsRelatedToPersonElections($ids: [ID!]) {
         name
       }
     }
-    expertPoint {
+    expertPoint(orderBy: { createdAt: desc }) {
       id
       expertPointSummary
       expert
     }
-    repeat {
+    repeat(orderBy: { createdAt: desc }) {
       id
       repeatSummary
       factcheckPartner {
