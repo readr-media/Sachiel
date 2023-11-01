@@ -54,23 +54,9 @@ function getControversyToAdd(
   return listToAdd
 }
 
-function getIsChangedText(text: string): string | null {
-  switch (text) {
-    case 'same':
-      return '曾持相同意見'
-    case 'changed':
-      return '曾持不同意見'
-    case 'noComment':
-      return '當時未表態'
-    default:
-      return null
-  }
-}
-
 export {
   getControversyToAdd,
   getControversyToConnect,
   getDifferentControversies,
-  getIsChangedText,
   isSameContent,
 }
