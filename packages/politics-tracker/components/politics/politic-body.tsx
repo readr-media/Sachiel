@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import Edit from '~/components/icons/edit'
-import AddPoliticToThread from '~/graphql/mutation/politics/add-politic-to-thread.graphql'
+import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import { PROGRESS, RawPolitic } from '~/types/common'
 import type { Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
@@ -64,7 +64,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       // result is not used currently
       // eslint-disable-next-line
       const result: RawPolitic = await fireGqlRequest(
-        print(AddPoliticToThread),
+        print(AddEditingPoliticToThread),
         variables,
         cmsApiUrl
       )
