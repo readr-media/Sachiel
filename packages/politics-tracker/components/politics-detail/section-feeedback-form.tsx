@@ -157,11 +157,6 @@ const Container = styled.div`
           .comment-content-wrapper {
             margin-top: 8px;
 
-            // ellipsis effect at end of cropping content
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-
             // show max 3 lines by default
             max-height: calc(16px * 1.8 * 3);
 
