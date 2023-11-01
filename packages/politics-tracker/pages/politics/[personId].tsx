@@ -51,6 +51,7 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
@@ -213,6 +214,7 @@ export const getServerSideProps: GetServerSideProps<
               elected: current.elected === true,
               incumbent: current.incumbent === true,
               source: current.politicSource ?? '',
+              mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
