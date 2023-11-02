@@ -64,7 +64,7 @@ export const fileDownload2022: DownloadItem[] = [
 export const fileDownload2024: DownloadItem[] = [
   {
     title: '下載總統政見',
-    link: '/',
+    link: 'https://storage.googleapis.com/whoareyou-gcs-dev.readr.tw/json/2024president.json',
   },
   {
     title: '下載立委政見',
