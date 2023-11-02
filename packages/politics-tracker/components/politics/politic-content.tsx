@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 
 import { logGAEvent } from '~/utils/analytics'
@@ -8,6 +8,7 @@ import s from './politic-content.module.css'
 
 type PoliticContentProps = {
   children: string
+  dependency?: number
 }
 
 export default function PoliticContent(
@@ -16,6 +17,7 @@ export default function PoliticContent(
   const ref = useRef<HTMLDivElement>(null)
   const [isCropped, setIsCropped] = useState<boolean>(false)
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
+
   const onResize = useCallback(() => {
     const current = ref.current
     if (current) {
@@ -26,6 +28,7 @@ export default function PoliticContent(
       }
     }
   }, [])
+
   useResizeDetector({
     targetRef: ref,
     onResize,
@@ -40,6 +43,12 @@ export default function PoliticContent(
     { cropped: isCropped },
     { [s['expanded']]: isExpanded }
   )
+
+  //reset the states of `isCropped` and `isExpanded` when the props.dependency change.
+  useEffect(() => {
+    setIsExpanded(false)
+    onResize()
+  }, [onResize, props.dependency])
 
   function shouldShowControl(isCropped: boolean, isExpanded: boolean): boolean {
     return (isCropped && !isExpanded) || (!isCropped && isExpanded)
