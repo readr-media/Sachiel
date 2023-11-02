@@ -68,7 +68,7 @@ export const fileDownload2024: DownloadItem[] = [
   },
   {
     title: '下載立委政見',
-    link: '/',
+    link: '',
   },
 ]
 
