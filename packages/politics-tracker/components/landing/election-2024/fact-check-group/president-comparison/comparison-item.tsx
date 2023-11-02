@@ -122,12 +122,12 @@ const CategoryTitle = styled.span<{ color: string }>`
   margin-right: 2px;
 `
 
-const CategoryList = styled.li<{ count: number }>`
+const CategoryList = styled.li`
   align-items: center;
   color: rgba(15, 45, 53, 0.5);
   font-size: 12px;
   line-height: 14px;
-  display: ${({ count }) => (count > 0 ? 'flex' : 'none')};
+  display: flex;
 `
 
 const StatisticBoard = styled.div`
@@ -192,7 +192,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
             <p>Top 5 類別</p>
             <Categories>
               {categories_count.map((category: any, index: number) => (
-                <CategoryList key={index} count={category.count}>
+                <CategoryList key={index}>
                   <span className="number">{index + 1}</span>
                   <CategoryTitle color={category.displayColor}>
                     {category.name}
