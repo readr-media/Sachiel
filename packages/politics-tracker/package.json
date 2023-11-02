@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@readr-media/react-election-widgets": "1.0.2",
-    "@readr-media/react-feedback": "^3.7.0",
+    "@readr-media/react-feedback": "^3.8.0",
     "@readr-media/react-image": "^2.2.1",
     "@svgr/webpack": "^8.1.0",
     "@twreporter/errors": "^1.1.1",
@@ -42,11 +42,11 @@
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/axios": "^0.14.0",
+    "@types/body-scroll-lock": "^3.1.1",
     "@types/node": "18.8.1",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
-    "@types/body-scroll-lock": "^3.1.1",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
     "cssnano": "^5.1.13",
