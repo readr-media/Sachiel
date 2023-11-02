@@ -52,7 +52,7 @@ export default function EditControversies({
   politicData,
   setEditMode,
 }: EditControversiesProps): JSX.Element {
-  const { id = '', controversies = [] } = politicData
+  const { id = '', controversies = [], person = null } = politicData
 
   const toast = useToast()
   const [list, setList] = useState(controversies)
@@ -170,6 +170,11 @@ export default function EditControversies({
     try {
       const editControversyVariables = {
         data: {
+          person: {
+            connect: {
+              id: person?.id,
+            },
+          },
           thread_parent: {
             connect: {
               id: id,
