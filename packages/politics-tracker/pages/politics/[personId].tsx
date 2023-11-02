@@ -13,6 +13,7 @@ import { PoliticAmountContext } from '~/components/politics/react-context/politi
 import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
+import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
@@ -50,6 +51,7 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
+  console.log(props)
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
@@ -212,6 +214,7 @@ export const getServerSideProps: GetServerSideProps<
               elected: current.elected === true,
               incumbent: current.incumbent === true,
               source: current.politicSource ?? '',
+              mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
@@ -290,6 +293,36 @@ export const getServerSideProps: GetServerSideProps<
 
       const politicList = rawData.data?.politics || []
 
+      // Fetch 'editingPolitics' data
+      const editingRawData: GenericGQLData<RawPolitic[], 'editingPolitics'> =
+        await fireGqlRequest(
+          print(GetEditingPoliticsRelatedToPersonElections),
+          {
+            ids: personElectionIds,
+          },
+          cmsApiUrl
+        )
+
+      const editingGqlErrors = editingRawData.errors
+
+      if (editingGqlErrors) {
+        const annotatingEditingError = errors.helpers.wrap(
+          new Error(
+            'Errors returned in `GetEditingPoliticsRelatedToPersonElections` query'
+          ),
+          'GraphQLError',
+          'failed to complete `GetEditingPoliticsRelatedToPersonElections`',
+          { errors: editingGqlErrors }
+        )
+
+        throw annotatingEditingError
+      }
+
+      const editingPoliticList = editingRawData.data?.editingPolitics || []
+
+      // Combine 'politics' and 'editingPolitics' arrays
+      const combinedPolitics = politicList.concat(editingPoliticList)
+
       const politicGroup: Record<
         string,
         {
@@ -298,7 +331,7 @@ export const getServerSideProps: GetServerSideProps<
         }
       > = {}
       // keep latest politic of each politic thread
-      for (const politic of politicList) {
+      for (const politic of combinedPolitics) {
         const status = politic.status as StatusOptionsB
         const reviewed = politic.reviewed
 

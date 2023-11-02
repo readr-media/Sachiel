@@ -11,6 +11,7 @@ import {
   SOURCE_DELIMITER,
 } from '~/constants/politics'
 import tailwindConfig from '~/tailwind.config'
+import type { FactCheck } from '~/types/politics'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -191,32 +192,6 @@ function generateSourceMeta(
   }
 }
 
-type FactCheckResult = {
-  name: string
-  status: boolean
-}
-function parseFactCheckType(factCheckType: string): FactCheckResult {
-  let name: string = ''
-  let status: boolean = false
-
-  switch (factCheckType) {
-    case 'correct':
-      name = '正確'
-      status = true
-      break
-    case 'incorrect':
-      name = '錯誤'
-      status = false
-      break
-    case 'partial':
-      name = '片面訊息'
-      status = false
-      break
-  }
-
-  return { name, status }
-}
-
 function getFormattedDate(date: string): string | undefined {
   if (typeof date !== 'string' || !date) return
 
@@ -224,17 +199,48 @@ function getFormattedDate(date: string): string | undefined {
   return formattedDate
 }
 
+function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
+  const checkResultMappings: { [key: string]: string } = {
+    '1': '與所查資料相符',
+    '2': '數據符合，但推論錯誤',
+    '3': '數據符合，但與推論無關',
+    '4': '數據符合，但僅取片段資訊，無法瞭解全貌',
+    '5': '片面事實，有一些前提或關鍵事實被隱藏',
+    '6': '與所查資料不符合，且推論過於簡化',
+    '7': '不知道數據出處為何',
+    '8': '數據並非例行統計，今年才發布',
+    '9': '其說法並沒有提出證據',
+  }
+
+  if (checkResultType === '10' && factCheck.checkResultOther) {
+    return factCheck.checkResultOther
+  }
+
+  return checkResultMappings[checkResultType] || factCheck.checkResultOther
+}
+
+function getPositionChangeString(isChanged: string) {
+  const positionChangeMappings: { [key: string]: string } = {
+    same: '曾持相同意見',
+    changed: '曾持不同意見',
+    noComment: '當時未表態',
+  }
+
+  return positionChangeMappings[isChanged] || '曾持相同意見'
+}
+
 export {
   electionName,
   fireGqlRequest,
   generateSourceMeta,
+  getCheckResultString,
   getFormattedDate,
   getLineBreaks,
   getNewSource,
+  getPositionChangeString,
   getTailwindConfig,
   hasOwnByArray,
   isURL,
-  parseFactCheckType,
   partyName,
   sourcesToString,
   stringToSources,

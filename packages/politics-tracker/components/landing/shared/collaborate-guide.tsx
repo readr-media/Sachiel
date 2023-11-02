@@ -6,6 +6,12 @@ import GuideItems from '~/components/landing/shared/collaborate-guide-items'
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
@@ -38,7 +44,6 @@ const Title = styled.div`
 `
 
 const Aside = styled.div`
-  height: 1323px;
   width: 40px;
   background: ${({ theme }) => theme.textColor.orange};
   padding: 0px;
@@ -56,20 +61,7 @@ const Aside = styled.div`
     }
   }
 
-  ${({ theme }) => theme.breakpoint.sm} {
-    height: 790px;
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    height: 495px;
-  }
-
-  ${({ theme }) => theme.breakpoint.xl} {
-    height: 523px;
-  }
-
   ${({ theme }) => theme.breakpoint.xxl} {
-    height: 543px;
     padding: 40px 0px;
     min-width: 90px;
     width: 6vw;

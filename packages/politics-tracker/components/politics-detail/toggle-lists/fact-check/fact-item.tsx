@@ -3,10 +3,9 @@ import styled from 'styled-components'
 
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import CorrectIcon from '~/public/icons/factcheck-correct.svg'
-import IncorrectIcon from '~/public/icons/factcheck-incorrect.svg'
+import FactCheckIcon from '~/public/icons/fact-check-icon.svg'
 import type { FactCheck } from '~/types/politics-detail'
-import { parseFactCheckType } from '~/utils/utils'
+import { getCheckResultString } from '~/utils/utils'
 
 const ListWrapper = styled.li`
   padding: 20px;
@@ -76,20 +75,23 @@ const Title = styled.div`
   align-items: center;
 `
 
-const Status = styled.div<{ status: boolean }>`
+const Status = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   font-weight: 500;
   font-size: 12px;
   margin-bottom: 12px;
-  color: ${({ theme, status }) =>
-    status ? theme.textColor.green : theme.textColor.red};
+  color: ${({ theme }) => theme.textColor.blue};
 
   svg {
     margin-right: 4px;
-  }
 
+    path {
+      fill: ${({ theme }) => theme.textColor.blue};
+      fill-opacity: 1;
+    }
+  }
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 14px;
   }
@@ -112,9 +114,10 @@ type FactItemProps = {
   factItem: FactCheck
 }
 export default function FactItem({ factItem }: FactItemProps): JSX.Element {
-  const { checkResultType, link, content, factcheckPartner } = factItem
+  const { checkResultType, link, content, factcheckPartner, factCheckSummary } =
+    factItem
 
-  const factType = parseFactCheckType(checkResultType)
+  const factType = getCheckResultString(checkResultType, factItem)
   const factText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (
       <p key={index} className="point">
@@ -131,7 +134,7 @@ export default function FactItem({ factItem }: FactItemProps): JSX.Element {
             <Image
               images={factcheckPartner?.slogo?.resized}
               defaultImage="/images/default-head-photo.png"
-              alt={factcheckPartner?.name}
+              alt={factcheckPartner?.name || 'factcheck-partner-image'}
               priority={false}
             />
           </PartnerImage>
@@ -143,10 +146,14 @@ export default function FactItem({ factItem }: FactItemProps): JSX.Element {
       </Header>
 
       <Content>
-        <Status status={factType.status}>
-          {factType.status ? <CorrectIcon /> : <IncorrectIcon />}
-          <span>事實釐清：{factType.name}</span>
-        </Status>
+        {factCheckSummary && (
+          <Status>
+            <FactCheckIcon />
+            <span>
+              政見提出背景：【{factType}】{factCheckSummary}
+            </span>
+          </Status>
+        )}
 
         {factText}
       </Content>

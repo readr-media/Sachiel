@@ -86,10 +86,9 @@ const Image = styled.div<{ alt: string }>`
     order: 3;
     margin: 20px auto 0px;
     max-width: 1064px;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 7 / 2;
     background: url('/images/president-candidate-desktop.svg') no-repeat
       center/contain;
-    transform: translateY(2px); //prevent image border from showing
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {

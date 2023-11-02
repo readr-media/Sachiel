@@ -74,6 +74,16 @@ export type PersonElectionTerm = {
   end_date_year: string | null
 }
 
+export type MainCandidate = {
+  id: string | null
+  name: string | null
+  person_id: Person
+}
+
+export type Person = {
+  id: string | null
+}
+
 export type PersonElection = {
   electionArea: string
   electionType: string
@@ -93,4 +103,5 @@ export type PersonElection = {
   waitingPolitics: Politic[]
   hidePoliticDetail: string | null
   electionTerm: PersonElectionTerm
+  mainCandidate: MainCandidate | null
 }
