@@ -107,6 +107,7 @@ export type FactCheckPartner = {
   id: string
   name: string
   type: string
+  webUrl: string
 } & Partial<{
   logo: Logo // for `landing`
   slogo: Logo // for `politic-detail`
