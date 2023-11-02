@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
 import { siteUrl } from '~/constants/environment-variables'
+import { FB_PAGES_ID } from '~/constants/index'
 
 export type OGProperties = {
   locale?: 'zh_TW'
@@ -113,6 +114,9 @@ export default function CustomHead(props: HeadProps): JSX.Element {
           />
         </>
       )}
+
+      <meta property="fb:pages" content={FB_PAGES_ID} />
+
       <meta
         name="twitter:card"
         content={siteInformation.card}
