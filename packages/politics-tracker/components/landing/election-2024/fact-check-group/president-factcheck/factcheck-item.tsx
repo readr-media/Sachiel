@@ -84,13 +84,13 @@ const SwitchPanel = styled.div<{ hasPolitics: boolean }>`
   }
 `
 
-const Feedback = styled.div`
-  width: 100%;
-  height: 24px;
-  background-color: rgba(15, 45, 53, 0.5);
-`
+// const Feedback = styled.div`
+//   width: 100%;
+//   height: 24px;
+//   background-color: rgba(15, 45, 53, 0.5);
+// `
 
-//FIXME: combine with PoliticDesc ?
+//FIXME: combine with PoliticDesc
 const DefaultDec = styled.div`
   color: rgba(15, 45, 53, 0.3);
   font-size: 16px;
@@ -231,7 +231,7 @@ export default function FactCheckItem({
               landing={true}
             />
 
-            {hasPolitics && <Feedback />}
+            {/* {hasPolitics && <Feedback />} */}
 
             <LinkButtons
               hasPolitics={hasPolitics}
