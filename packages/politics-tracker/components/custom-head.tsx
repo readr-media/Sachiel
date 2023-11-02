@@ -26,6 +26,7 @@ export type HeadProps = {
   title?: string
   description?: string
   image?: string
+  url?: string
 }
 
 export default function CustomHead(props: HeadProps): JSX.Element {
@@ -35,7 +36,7 @@ export default function CustomHead(props: HeadProps): JSX.Element {
       props.description ??
       '政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr 協作平台邀請你一起追蹤候選人選舉時提出的政見，並監督他是否在任期內達成。',
     site_name: props.title ?? '政見不失憶：臺灣 2022 選舉政見協作平台',
-    url: siteUrl,
+    url: props.url ?? siteUrl,
     type: 'website',
     image: {
       width: '1200',
