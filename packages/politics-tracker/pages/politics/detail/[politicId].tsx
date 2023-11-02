@@ -56,7 +56,7 @@ export default function PoliticsDetail({
   config,
   electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
-  const { asPath } = useRouter() // for custom-head
+  const { asPath } = useRouter()
   const { person } = politicData
 
   const titleProps = {
