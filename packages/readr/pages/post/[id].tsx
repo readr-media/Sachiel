@@ -1,4 +1,5 @@
 import errors from '@twreporter/errors'
+import axios from 'axios'
 import type { RawDraftContentBlock } from 'draft-js'
 import type { GetServerSideProps } from 'next'
 
@@ -9,7 +10,7 @@ import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
 import ScrollableVideo from '~/components/post/article-type/scrollable-video'
 import { SITE_TITLE } from '~/constants/constant'
-import { SITE_URL } from '~/constants/environment-variables'
+import { LATEST_POSTS_URL, SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import { post as postQuery } from '~/graphql/query/post'
@@ -108,6 +109,7 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
   res,
+  query,
 }) => {
   setCacheControl(res)
 
@@ -167,27 +169,36 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch the latest 4 reports
+      const useGql = query.gql as string
       const postId = params?.id
-      const { data, errors: gqlErrors } = await client.query<{
-        latestPosts: Post[]
-      }>({
-        query: latestPostsQuery,
-        variables: {
-          first: 4,
-          skipId: postId,
-        },
-      })
+      if (!useGql) {
+        const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
+        latestPosts =
+          response.data?.posts
+            .filter((post) => post.id !== postId)
+            .slice(0, 4) ?? []
+      } else {
+        const { data, errors: gqlErrors } = await client.query<{
+          latestPosts: Post[]
+        }>({
+          query: latestPostsQuery,
+          variables: {
+            first: 4,
+            skipId: postId,
+          },
+        })
+        latestPosts = data.latestPosts ?? []
 
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          'GraphQLError',
-          'failed to complete `latestPosts`',
-          { errors: gqlErrors }
-        )
+        if (gqlErrors) {
+          const annotatingError = errors.helpers.wrap(
+            'GraphQLError',
+            'failed to complete `latestPosts`',
+            { errors: gqlErrors }
+          )
 
-        throw annotatingError
+          throw annotatingError
+        }
       }
-      latestPosts = data.latestPosts ?? []
     }
   } catch (err) {
     const annotatingError = errors.helpers.wrap(

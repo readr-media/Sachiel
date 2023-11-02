@@ -48,6 +48,16 @@ export type RawElection = Partial<{
   addComments: boolean
 }>
 
+export type MainCandidate = {
+  id: string | null
+  name: string | null
+  person_id: Person
+}
+
+export type Person = {
+  id: string | null
+}
+
 export type RawPerson = Partial<{
   id: string
   name: string
@@ -121,6 +131,7 @@ export type RawPersonElection = Partial<{
   updatedAt: string
   createdBy: string
   updatedBy: string
+  mainCandidate: MainCandidate
 }>
 
 export type JSONValue =

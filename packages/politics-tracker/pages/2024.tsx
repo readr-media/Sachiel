@@ -4,6 +4,7 @@ import type { GetServerSideProps } from 'next'
 import React from 'react'
 import styled from 'styled-components'
 
+import CustomHead from '~/components/custom-head'
 import FactCheck from '~/components/landing/election-2024/fact-check-group'
 import HeroImage from '~/components/landing/election-2024/hero-image'
 import ButtonToLanding from '~/components/landing/shared/button-to-landing'
@@ -47,6 +48,11 @@ export default function Landing2024({
 }: Landing2024Props): JSX.Element {
   return (
     <DefaultLayout>
+      <CustomHead
+        title="2024 政見不失憶：總統暨立委選舉政見資訊追蹤協作平台"
+        description="政治總是選前端牛肉，選後變空頭？談政見嚴肅不討好，認真實踐卻鮮少獲得關注？READr 協作平台在選前與多家媒體針對政見背景事實查核，也邀請你一起追蹤候選人提出的政見，並監督他是否在任期內達成。"
+        image="og-2024.jpg"
+      />
       <Main>
         <HeroImage />
         <FactCheck

@@ -206,43 +206,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       {
         // fetch categories and related latest reports
 
-        // use query string `gql` to control fetch json (Axios) or send gql query
-        // for validation only, remove it when json fetching is all tested on prod
-        const useGql = query.gql as string
         let data: { categories: Category[] }
-        if (!useGql) {
-          const response = await axios.get<{ categories: Category[] }>(
-            LATEST_POSTS_IN_CATEGORIES_URL
-          )
-          data = response.data
-        } else {
-          const { data: queryData, error: gqlErrors } = await client.query<{
-            categories: Category[]
-          }>({
-            query: categoriesQuery,
-            variables: {
-              relatedPostFirst: 8,
-              relatedReportFirst: 1,
-              shouldQueryRelatedPost: true,
-              shouldQueryRelatedReport: true,
-              relatedPostTypes: [ValidPostStyle.NEWS],
-              relatedReportTypes: REPORT_STYLES,
-            },
-          })
-
-          data = queryData
-
-          if (gqlErrors) {
-            const annotatingError = errors.helpers.wrap(
-              new Error('Errors returned in `categories` query'),
-              'GraphQLError',
-              'failed to complete `categories`',
-              { errors: gqlErrors }
-            )
-
-            throw annotatingError
-          }
-        }
+        const response = await axios.get<{ categories: Category[] }>(
+          LATEST_POSTS_IN_CATEGORIES_URL
+        )
+        data = response.data
 
         categories = data.categories.map((category) => {
           const reports = category.reports?.map(postConvertFunc)
@@ -265,36 +233,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       {
         // fetch latest reports
 
-        // use query string `gql` to control fetch json (Axios) or send gql query
-        // for validation only, remove it when json fetching is all tested on prod
-        const useGql = query.gql as string
-        let latestPosts: Post[]
-        if (!useGql) {
-          const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
-          const { posts } = response.data
-          latestPosts = posts
-        } else {
-          const { data, errors: gqlErrors } = await client.query<{
-            latestPosts: Post[]
-          }>({
-            query: latestPostsQuery,
-            variables: {
-              first: 15,
-            },
-          })
-          latestPosts = data.latestPosts
-
-          if (gqlErrors) {
-            const annotatingError = errors.helpers.wrap(
-              new Error('Errors returned in `latestPosts` query'),
-              'GraphQLError',
-              'failed to complete `latestPosts`',
-              { errors: gqlErrors }
-            )
-
-            throw annotatingError
-          }
-        }
+        const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
+        const { posts: latestPosts } = response.data
 
         let postCount = 0
         const report = latestPosts.find(
