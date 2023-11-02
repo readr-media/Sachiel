@@ -217,7 +217,9 @@ export default function FactCheckItem({
 
             {hasPolitics && desc ? (
               <PoliticDesc>
-                <PoliticContent>{desc}</PoliticContent>
+                <PoliticContent dependency={politicNumber}>
+                  {desc}
+                </PoliticContent>
               </PoliticDesc>
             ) : (
               <DefaultDec>這個人還沒有被新增政見</DefaultDec>
