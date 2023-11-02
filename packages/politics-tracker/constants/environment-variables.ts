@@ -26,7 +26,7 @@ switch (env) {
     siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://whoareyou.readr.tw'
     prefixOfJSONForLanding2024 =
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
-      'https://whoru-gcs-prod.readr.tw/json'
+      'https://whoru-gcs.readr.tw/json'
     gtmId = 'GTM-5PG5FN7J'
     break
   }
