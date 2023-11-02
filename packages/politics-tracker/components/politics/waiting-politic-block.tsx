@@ -11,11 +11,14 @@ type Props = Pick<PersonElection, 'waitingPolitics'>
 
 export default function WaitingPoliticBlock(props: Props): JSX.Element {
   const [expanded, setExpanded] = useState<boolean>(true)
-  const politicList = props.waitingPolitics.map((p) => (
-    <li key={p.id} className={s['item']}>
-      {p.desc}
-    </li>
-  ))
+  const politicList = props.waitingPolitics.map(
+    (p) =>
+      p.desc && (
+        <li key={p.id} className={s['item']}>
+          {p.desc}
+        </li>
+      )
+  )
 
   return (
     <div className={s['container']}>
