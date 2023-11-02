@@ -2,6 +2,7 @@
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -12,6 +13,7 @@ import Title from '~/components/politics/title'
 import Section from '~/components/politics-detail/section'
 import { ConfigContext } from '~/components/react-context/global'
 import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
@@ -54,6 +56,7 @@ export default function PoliticsDetail({
   config,
   electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
+  const { asPath } = useRouter() // for custom-head
   const { person } = politicData
 
   const titleProps = {
@@ -108,7 +111,7 @@ export default function PoliticsDetail({
 
   return (
     <DefaultLayout>
-      <CustomHead {...headProps} />
+      <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
       <ConfigContext.Provider value={config}>
         <Main>
           <Title

@@ -4,6 +4,7 @@ import ew from '@readr-media/react-election-widgets'
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 
 import CustomHead, { type HeadProps } from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -11,6 +12,7 @@ import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import { cmsApiUrl } from '~/constants/config'
 import { districtsMapping, electionTypesMapping } from '~/constants/election'
 import { env } from '~/constants/environment-variables'
+import { siteUrl } from '~/constants/environment-variables'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import type {
@@ -228,6 +230,7 @@ function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
 }
 
 const Election = (props: ElectionPageProps) => {
+  const { asPath } = useRouter()
   const navProps: NavProps = {
     prev: getConfigItme(props.prev),
     next: getConfigItme(props.next),
@@ -246,6 +249,7 @@ const Election = (props: ElectionPageProps) => {
   const headProps: HeadProps = {
     title: `${headElectionName}票數資料｜READr 政商人物資料庫`,
     description: `${headElectionName}的各政黨與候選人得票數、得票率、當選狀況一覽`,
+    url: `${siteUrl}${asPath}`,
   }
 
   return (
