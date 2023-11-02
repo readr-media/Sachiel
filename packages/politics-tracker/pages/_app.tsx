@@ -7,7 +7,7 @@ import NextNProgress from 'nextjs-progressbar'
 import { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
-import { gaTrackingId } from '~/constants/config'
+import { gaTrackingId } from '~/constants/environment-variables'
 import theme from '~/styles/theme'
 import { initGA, logPageView } from '~/utils/analytics'
 
@@ -49,6 +49,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           gtag('config', '${gaTrackingId}');
         `}
       </Script>
+      <Script
+        id="comScore"
+        dangerouslySetInnerHTML={{
+          __html: `var _comscore = _comscore || [];
+        _comscore.push({ c1: "2", c2: "24318560" });
+        (function() {
+        var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+        s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+        el.parentNode.insertBefore(s, el);
+        })();`,
+        }}
+      />
       <NextNProgress />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
