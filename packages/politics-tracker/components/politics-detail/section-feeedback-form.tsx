@@ -132,13 +132,22 @@ const Container = styled.div`
         margin-top: 40px;
         margin-bottom: 40px;
 
-        p {
+        .list-title {
           font-size: 18px;
           font-style: normal;
           font-weight: 700;
           line-height: 1.3;
           color: #000928;
           margin-bottom: 4px;
+        }
+
+        .default-text {
+          margin-top: 12px;
+          color: rgba(15, 45, 53, 0.5);
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 21px;
         }
 
         .comment-wrapper {
@@ -291,6 +300,7 @@ export default function SectionFeedbackForm({
     type: 'text',
     identifier: fieldIdentifier,
     commentListTitle: '網友回饋',
+    defaultText: '目前還沒有回饋，成為第一個留言的人吧！',
     shouldShowItemControl: false,
   }
 
