@@ -6,6 +6,7 @@ query GetFactCheckPartners($year: String) {
     id
     name
     type
+    webUrl
     logo {
       resized {
         original
