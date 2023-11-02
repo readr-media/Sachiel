@@ -39,7 +39,11 @@ export default function LandingMain({ propsData }) {
           // @ts-ignore : fix in the future
           propsData={propsData}
         />
-        <CollaborateGuide />
+        <CollaborateGuide
+          linkTitle="需要大量新增政見嗎？請參考"
+          buttonText="協作指南"
+          buttonHref="https://hackmd.io/@readr/H1WmP88Eo"
+        />
         <Mayor
           // @ts-ignore
           propsData={propsData}

@@ -77,7 +77,16 @@ const Aside = styled.div`
   }
 `
 
-export default function CollaborateGuide(): JSX.Element {
+type CollaborateGuideProps = {
+  linkTitle: string
+  buttonText: string
+  buttonHref: string
+}
+export default function CollaborateGuide({
+  linkTitle = '',
+  buttonText = '',
+  buttonHref = '/',
+}: CollaborateGuideProps): JSX.Element {
   return (
     <Wrapper>
       <Aside>
@@ -85,7 +94,11 @@ export default function CollaborateGuide(): JSX.Element {
       </Aside>
       <Main>
         <Title>補坑指南：如何協作政見</Title>
-        <GuideItems />
+        <GuideItems
+          linkTitle={linkTitle}
+          buttonText={buttonText}
+          buttonHref={buttonHref}
+        />
       </Main>
     </Wrapper>
   )

@@ -143,7 +143,16 @@ const GuideLink = styled.div`
   }
 `
 
-export default function CollaborateGuideItems(): JSX.Element {
+type CollaborateGuideItemsProps = {
+  linkTitle: string
+  buttonText: string
+  buttonHref: string
+}
+export default function CollaborateGuideItems({
+  linkTitle = '',
+  buttonText = '',
+  buttonHref = '',
+}: CollaborateGuideItemsProps): JSX.Element {
   return (
     <ContentContainer>
       <ItemWrap>
@@ -203,13 +212,13 @@ export default function CollaborateGuideItems(): JSX.Element {
         </HowItem>
       </ItemWrap>
       <GuideLink>
-        <p>需要大量新增政見嗎？請參考</p>
+        <p>{linkTitle}</p>
         <a
-          href="https://hackmd.io/@readr/H1WmP88Eo"
+          href={buttonHref ? buttonHref : '/'}
           target="_blank"
           rel="noreferrer noopener"
         >
-          協作指南
+          {buttonText}
           <ArrowTilt />
         </a>
       </GuideLink>

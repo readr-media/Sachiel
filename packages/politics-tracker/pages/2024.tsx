@@ -54,7 +54,11 @@ export default function Landing2024({
           factCheckJSON={factCheckJSON}
           comparisonJSON={comparisonJSON}
         />
-        <CollaborateGuide />
+        <CollaborateGuide
+          linkTitle="關於協作、查核準則請參考"
+          buttonText="公開說明"
+          buttonHref="https://hackmd.io/@readr/r1jcxjema"
+        />
         <FileDownload links={fileDownload2024}>
           <ButtonToLanding
             title="2022 縣市長與議員政見"
