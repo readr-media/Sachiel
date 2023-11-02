@@ -1,7 +1,10 @@
 import classNames from 'classnames'
+import Link from 'next/link'
 import { useState } from 'react'
+import styled from 'styled-components'
 
-import type { PersonElection, Politic } from '~/types/politics'
+import ArrowRight from '~/public/icons/landing/arrow-right.svg'
+import type { MainCandidate, PersonElection, Politic } from '~/types/politics'
 
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
@@ -12,7 +15,39 @@ import WaitingPoliticBlock from './waiting-politic-block'
 type SectionBodyProps = Pick<
   PersonElection,
   'source' | 'lastUpdate' | 'politics' | 'waitingPolitics'
-> & { show: boolean } & { hidePoliticDetail: string | null }
+> & { show: boolean } & { hidePoliticDetail: string | null } & {
+  mainCandidate: MainCandidate | null
+}
+
+const Button = styled.button`
+  margin: auto;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border: 2px solid #b2800d;
+  color: #b2800d;
+  border-radius: 24px;
+  padding: 8px 24px 8px 32px;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 180%; /* 28.8px */
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  path {
+    fill: #b2800d;
+  }
+
+  &:hover {
+    background-color: #fffcf3;
+  }
+`
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const copiedWatingPolitics = props.waitingPolitics
@@ -35,14 +70,25 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
       <div className={style}>
         {props.show && (
           <>
-            {props.politics.length > 0 ? (
-              <PoliticBlock {...props} />
+            {props.mainCandidate ? (
+              <Link href={`/politics/${props.mainCandidate.person_id.id}`}>
+                <Button>
+                  查看總統、副總統政見
+                  <ArrowRight />
+                </Button>
+              </Link>
             ) : (
-              <div className={s['default']}>這個人還沒有被新增政見...</div>
-            )}
-            <AddPoliticBlock />
-            {waitingPoliticList.length > 0 && (
-              <WaitingPoliticBlock waitingPolitics={waitingPoliticList} />
+              <>
+                {props.politics.length > 0 ? (
+                  <PoliticBlock {...props} />
+                ) : (
+                  <div className={s['default']}>這個人還沒有被新增政見...</div>
+                )}
+                <AddPoliticBlock />
+                {waitingPoliticList.length > 0 && (
+                  <WaitingPoliticBlock waitingPolitics={waitingPoliticList} />
+                )}
+              </>
             )}
           </>
         )}
