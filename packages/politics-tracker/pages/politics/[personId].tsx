@@ -30,6 +30,7 @@ import {
 import type {
   ExpertPoint,
   FactCheck,
+  OrganizationId,
   PersonElection,
   PersonElectionTerm,
   PersonOverview,
@@ -144,6 +145,7 @@ export const getServerSideProps: GetServerSideProps<
     let latestPersonElection: RawPersonElection
     let latestPerson: RawPerson
     let electionTerm: PersonElectionTerm
+    let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
@@ -221,6 +223,7 @@ export const getServerSideProps: GetServerSideProps<
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
               electionTerm: electionTerm,
+              organizationId: organizationId,
             }
           }
 
@@ -528,6 +531,8 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
+      organizationId = personOrganization[0].organization_id
+
       // Push the election term data to the current election object
       election.electionTerm = {
         start_date_day: electionTerm.start_date_day,
@@ -537,6 +542,8 @@ export const getServerSideProps: GetServerSideProps<
         end_date_month: electionTerm.end_date_month,
         end_date_year: electionTerm.end_date_year,
       }
+      // Push the organizationId data to the current election object
+      election.organizationId = organizationId
     }
 
     return {

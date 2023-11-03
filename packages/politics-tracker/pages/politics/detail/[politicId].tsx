@@ -1,4 +1,5 @@
 // @ts-ignore: no definition
+// eslint-disable-next-line simple-import-sort/imports
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
