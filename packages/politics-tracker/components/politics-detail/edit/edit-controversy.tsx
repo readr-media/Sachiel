@@ -1,3 +1,4 @@
+// eslint-disable-next-line simple-import-sort/imports
 import { print } from 'graphql'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -8,8 +9,8 @@ import InputItem from '~/components/politics-detail/edit/input-item'
 import AddInputButton from '~/components/shared/add-input-button'
 import EditSendOrCancel from '~/components/shared/edit-send-or-cancel'
 import { useToast } from '~/components/toast/use-toast'
-import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import CreateControversies from '~/graphql/mutation/politics-detail/create-controversies.graphql'
+import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import EditLink from '~/public/icons/edit-link.svg'
 import EditText from '~/public/icons/edit-text.svg'
 import { Controversy, PoliticDetail } from '~/types/politics-detail'
@@ -52,7 +53,7 @@ export default function EditControversies({
   politicData,
   setEditMode,
 }: EditControversiesProps): JSX.Element {
-  const { id = '', controversies = [], person = null } = politicData
+  const { id = '', controversies = [] } = politicData
 
   const toast = useToast()
   const [list, setList] = useState(controversies)
@@ -170,11 +171,6 @@ export default function EditControversies({
     try {
       const editControversyVariables = {
         data: {
-          person: {
-            connect: {
-              id: person?.id,
-            },
-          },
           thread_parent: {
             connect: {
               id: id,
