@@ -7,4 +7,11 @@
     font-family: 'Noto Sans TC', sans-serif;
     scroll-behavior: smooth;
   }
+
+  @media (max-width: 1199px) {
+    body[data-modal-opened='true'] {
+      height: 100vh;
+      overflow: hidden;
+    } 
+  }
 }
