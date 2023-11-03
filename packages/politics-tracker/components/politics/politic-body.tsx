@@ -13,6 +13,7 @@ import { fireGqlRequest } from '~/utils/utils'
 
 import ArrowRight from '../icons/arrow-right'
 import FactCheckAbstract from '../shared/politic-fact-check'
+import UserFeedbackToolkit from '../shared/user-feedback-toolkit'
 import { useToast } from '../toast/use-toast'
 import s from './politic-body.module.css'
 import PoliticContent from './politic-content'
@@ -26,7 +27,8 @@ const PoliticForm = dynamic(() => import('./politic-form'), {
   ssr: false,
 })
 
-type PoliticBodyProps = Politic & { no: number } & {
+type PoliticBodyProps = Politic & {
+  no: number
   hidePoliticDetail: string | null
 }
 
@@ -164,13 +166,16 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                 <PoliticContent>{props.desc}</PoliticContent>
               </div>
               {shouldShow && (
-                <FactCheckAbstract
-                  positionChange={props.positionChange}
-                  factCheck={props.factCheck}
-                  expertPoint={props.expertPoint}
-                  repeat={props.repeat}
-                  landing={false}
-                />
+                <>
+                  <FactCheckAbstract
+                    positionChange={props.positionChange}
+                    factCheck={props.factCheck}
+                    expertPoint={props.expertPoint}
+                    repeat={props.repeat}
+                    landing={false}
+                  />
+                  <UserFeedbackToolkit politicId={props.id ?? ''} />
+                </>
               )}
               <div className={s['control-group']}>
                 <div className={s['button']} onClick={() => setEditing(true)}>

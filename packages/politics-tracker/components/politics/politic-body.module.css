@@ -2,7 +2,7 @@
   @apply flex flex-col flex-nowrap;
 }
 .content-group {
-  @apply flex grow flex-col overflow-hidden pb-5;
+  @apply flex grow flex-col pb-5;
 }
 .politic-base {
   @apply text-[16px] font-medium leading-[1.8] text-main;

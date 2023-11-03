@@ -11,8 +11,7 @@ import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import Section from '~/components/politics-detail/section'
 import Title from '~/components/politics/title'
-import { ConfigContext } from '~/components/react-context/global'
-import { cmsApiUrl, feedbackFormConfig } from '~/constants/config'
+import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
@@ -20,11 +19,7 @@ import GetPersonOrganization from '~/graphql/query/politics/get-person-organizat
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import {
-  FeedbackFormConfig,
-  GenericGQLData,
-  RawPersonElection,
-} from '~/types/common'
+import { GenericGQLData, RawPersonElection } from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -46,7 +41,6 @@ const Main = styled.main`
 type PoliticDetailPageProps = {
   politicData: PoliticDetail
   politicAmount: PoliticAmount
-  config: FeedbackFormConfig
   latestPersonElection: RawPersonElection
   electionTerm: PersonElectionTerm
 }
@@ -54,7 +48,6 @@ export default function PoliticsDetail({
   politicData,
   politicAmount,
   latestPersonElection,
-  config,
   electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
   const { asPath } = useRouter()
@@ -113,22 +106,20 @@ export default function PoliticsDetail({
   return (
     <DefaultLayout>
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
-      <ConfigContext.Provider value={config}>
-        <Main>
-          <Title
-            campaign={latestPersonElection.election?.type ?? ''}
-            {...titleProps}
-          />
-          <Section
-            politicData={politicData}
-            electionTerm={electionTerm}
-            shouldShowFeedbackForm={
-              latestPersonElection.election?.addComments === true
-            }
-          />
-        </Main>
-        <Nav {...navProps} />
-      </ConfigContext.Provider>
+      <Main>
+        <Title
+          campaign={latestPersonElection.election?.type ?? ''}
+          {...titleProps}
+        />
+        <Section
+          politicData={politicData}
+          electionTerm={electionTerm}
+          shouldShowFeedbackForm={
+            latestPersonElection.election?.addComments === true
+          }
+        />
+      </Main>
+      <Nav {...navProps} />
     </DefaultLayout>
   )
 }
@@ -301,7 +292,6 @@ export const getServerSideProps: GetServerSideProps<
       props: {
         politicData,
         politicAmount,
-        config: feedbackFormConfig,
         latestPersonElection,
         electionTerm,
       },

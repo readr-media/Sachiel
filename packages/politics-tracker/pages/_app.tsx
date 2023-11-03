@@ -1,17 +1,27 @@
 import '~/styles/globals.css'
 
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
+import App from 'next/app'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import NextNProgress from 'nextjs-progressbar'
 import { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
+import { ConfigContext } from '~/components/react-context/global'
+import { feedbackFormConfig } from '~/constants/config'
 import { gaTrackingId } from '~/constants/environment-variables'
 import theme from '~/styles/theme'
+import type { FeedbackFormConfig } from '~/types/common'
 import { initGA, logPageView } from '~/utils/analytics'
 
-function MyApp({ Component, pageProps }: AppProps) {
+type CustomAppProps = AppProps & {
+  props: {
+    feedbackFormConfig: FeedbackFormConfig
+  }
+}
+
+function MyApp({ Component, pageProps, props }: CustomAppProps) {
   const router = useRouter()
 
   useEffect(() => {
@@ -63,10 +73,23 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <NextNProgress />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <ConfigContext.Provider value={props.feedbackFormConfig}>
+          <Component {...pageProps} />
+        </ConfigContext.Provider>
       </ThemeProvider>
     </>
   )
+}
+
+MyApp.getInitialProps = async (context: AppContext) => {
+  const ctx = App.getInitialProps(context)
+
+  return {
+    ...ctx,
+    props: {
+      feedbackFormConfig,
+    },
+  }
 }
 
 export default MyApp

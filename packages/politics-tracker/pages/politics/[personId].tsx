@@ -531,7 +531,7 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
-      organizationId = personOrganization[0].organization_id
+      organizationId = personOrganization[0]?.organization_id ?? {}
 
       // Push the election term data to the current election object
       election.electionTerm = {
