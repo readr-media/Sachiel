@@ -3,16 +3,17 @@ import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import moment from 'moment'
 import type { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import CustomHead, { type HeadProps } from '~/components/custom-head'
+import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
-// import Nav from '~/components/politics/nav'
 import Nav, { type NavProps } from '~/components/nav'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
 import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
@@ -29,6 +30,7 @@ import {
 import type {
   ExpertPoint,
   FactCheck,
+  OrganizationId,
   PersonElection,
   PersonElectionTerm,
   PersonOverview,
@@ -51,7 +53,8 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
-  console.log(props)
+  const { asPath } = useRouter()
+
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
     waiting: props.titleProps.waiting,
     completed: props.titleProps.completed,
@@ -91,14 +94,13 @@ export default function Politics(props: PoliticsPageProps) {
     <SectionList key={e.id} order={index} {...e} />
   ))
 
-  const headProps: HeadProps = {
-    title: `${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`,
-    description: `${props.titleProps.name}參選紀錄及相關政見`,
-  }
-
   return (
     <DefaultLayout>
-      <CustomHead {...headProps} />
+      <CustomHead
+        title={`${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`}
+        description={`${props.titleProps.name}參選紀錄及相關政見`}
+        url={`${siteUrl}${asPath}`}
+      />
       <main className="flex w-screen flex-col items-center bg-politics">
         <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[40px]">
@@ -143,6 +145,7 @@ export const getServerSideProps: GetServerSideProps<
     let latestPersonElection: RawPersonElection
     let latestPerson: RawPerson
     let electionTerm: PersonElectionTerm
+    let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
@@ -220,6 +223,7 @@ export const getServerSideProps: GetServerSideProps<
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
               electionTerm: electionTerm,
+              organizationId: organizationId,
             }
           }
 
@@ -527,6 +531,8 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
+      organizationId = personOrganization[0].organization_id
+
       // Push the election term data to the current election object
       election.electionTerm = {
         start_date_day: electionTerm.start_date_day,
@@ -536,6 +542,8 @@ export const getServerSideProps: GetServerSideProps<
         end_date_month: electionTerm.end_date_month,
         end_date_year: electionTerm.end_date_year,
       }
+      // Push the organizationId data to the current election object
+      election.organizationId = organizationId
     }
 
     return {

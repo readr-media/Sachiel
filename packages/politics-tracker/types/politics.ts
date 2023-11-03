@@ -84,6 +84,11 @@ export type Person = {
   id: string | null
 }
 
+export type OrganizationId = {
+  id: string | null
+  name: string | null
+}
+
 export type PersonElection = {
   electionArea: string
   electionType: string
@@ -104,4 +109,5 @@ export type PersonElection = {
   hidePoliticDetail: string | null
   electionTerm: PersonElectionTerm
   mainCandidate: MainCandidate | null
+  organizationId: OrganizationId | null
 }

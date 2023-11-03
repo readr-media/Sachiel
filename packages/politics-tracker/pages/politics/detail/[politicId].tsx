@@ -1,17 +1,20 @@
 // @ts-ignore: no definition
+// eslint-disable-next-line simple-import-sort/imports
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
-import React from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
-import Title from '~/components/politics/title'
 import Section from '~/components/politics-detail/section'
+import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
@@ -47,6 +50,7 @@ export default function PoliticsDetail({
   latestPersonElection,
   electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
+  const { asPath } = useRouter()
   const { person } = politicData
 
   const titleProps = {
@@ -101,7 +105,7 @@ export default function PoliticsDetail({
 
   return (
     <DefaultLayout>
-      <CustomHead {...headProps} />
+      <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
       <Main>
         <Title
           campaign={latestPersonElection.election?.type ?? ''}
@@ -195,21 +199,33 @@ export const getServerSideProps: GetServerSideProps<
     {
       //get passed/waiting politics amount
       const {
-        data: { politics: allPoliticList },
+        data: { politics: politicList },
       } = await fireGqlRequest(
         print(GetPoliticsRelatedToPersonElections),
         { ids: personElectionIds },
         cmsApiUrl
       )
 
+      // get passed/waiting editing politics amount
+      const {
+        data: { editingPolitics: editingPoliticLists },
+      } = await fireGqlRequest(
+        print(GetEditingPoliticsRelatedToPersonElections),
+        { ids: personElectionIds },
+        cmsApiUrl
+      )
+
+      // Combine 'politics' and 'editingPolitics' arrays
+      const combinedPolitics = politicList.concat(editingPoliticLists)
+
       // FIXME: value types
-      const passedAmount = allPoliticList.filter(
+      const passedAmount = combinedPolitics.filter(
         (value: any) =>
           value.status === 'verified' &&
           value.reviewed &&
           value.thread_parent === null
       ).length
-      const waitingAmount = allPoliticList.filter(
+      const waitingAmount = combinedPolitics.filter(
         (value: any) => !value.reviewed
       ).length
 

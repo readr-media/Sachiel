@@ -101,13 +101,15 @@ const Title = styled.div`
 `
 
 const Lists = styled.ul`
+  padding-bottom: 20px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   max-height: 420px;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   ${({ theme }) => theme.breakpoint.md} {
+    padding-bottom: 0px;
     gap: 12px 16px;
     overflow-y: hidden;
     max-height: none;

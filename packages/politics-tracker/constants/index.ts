@@ -5,4 +5,6 @@ const Z_INDEX = {
   coverContent: 100,
 }
 
-export { Z_INDEX }
+const FB_PAGES_ID = '563994370665617'
+
+export { FB_PAGES_ID, Z_INDEX }

@@ -5,6 +5,7 @@ import axios from 'axios'
 import ChineseNumber from 'chinese-numbers-converter'
 import { print } from 'graphql'
 import moment from 'moment-timezone'
+import { useRouter } from 'next/router'
 import React, { Fragment } from 'react'
 
 import CustomHead from '~/components/custom-head'
@@ -14,6 +15,7 @@ import {
   readrCmsApiUrl,
   urlOfJsonForlandingPage,
 } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
@@ -519,10 +521,12 @@ export const getServerSideProps = async ({ res }) => {
  * @param {PropsData} props
  * @returns
  */
-export default function Home(props) {
+export default function Landing2022(props) {
+  const { asPath } = useRouter()
+
   return (
     <Fragment>
-      <CustomHead />
+      <CustomHead url={`${siteUrl}${asPath}`} />
       <LandingPage
         // @ts-ignore
         propsData={props}
