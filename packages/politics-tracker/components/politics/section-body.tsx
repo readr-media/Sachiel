@@ -21,7 +21,8 @@ type SectionBodyProps = Pick<
   | 'organizationId'
   | 'mainCandidate'
   | 'hidePoliticDetail'
-> & { show: boolean } & { electionType: string | null }
+  | 'electionType'
+> & { show: boolean }
 
 const Button = styled.button`
   margin: auto;
@@ -67,15 +68,16 @@ const Button = styled.button`
 `
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
-  const copiedWatingPolitics = props.waitingPolitics
+  const copiedWaitingPolitics = props.waitingPolitics
     .slice(0)
     .sort((p1, p2) => Number(p1.id) - Number(p2.id))
 
-  const [waitingPoliticList, setWaitinPoliticList] =
-    useState<Politic[]>(copiedWatingPolitics)
+  const [waitingPoliticList, setWaitingPoliticList] = useState<Politic[]>(
+    copiedWaitingPolitics
+  )
 
   function addToPoliticList(politic: Politic) {
-    setWaitinPoliticList([...waitingPoliticList, politic])
+    setWaitingPoliticList([...waitingPoliticList, politic])
   }
 
   const style = classNames(s['section-body'], { [s['show']]: props.show })
