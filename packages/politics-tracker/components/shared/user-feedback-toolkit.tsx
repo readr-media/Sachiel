@@ -276,7 +276,7 @@ export default function UserFeedbackToolkit({
   }, [storageKey])
 
   return (
-    <Wrapper ref={ref}>
+    <Wrapper ref={ref} className="user-feedback-toolkit-wrapper">
       {inView && (
         <>
           <LeftPart>
@@ -302,7 +302,10 @@ export default function UserFeedbackToolkit({
                 </>
               )}
             </AddEmojiButton>
-            <EmojiFormWrapper isOpened={shouldShowEmojiForm}>
+            <EmojiFormWrapper
+              isOpened={shouldShowEmojiForm}
+              className="emoji-form-wrapper"
+            >
               <HiddenMask className="hidden-mask" onClick={handleClose} />
               <FeedbackForm
                 shouldUseRecaptcha={false}
