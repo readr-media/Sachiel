@@ -52,6 +52,21 @@ const AddEmojiButton = styled.button<{ isActive: boolean }>`
     color: rgba(0, 0, 0, 0.87);
   }
 
+  .selected-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #efefef;
+    border-radius: 50%;
+
+    > img {
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+    }
+  }
+
   ${({ isActive }) =>
     isActive &&
     `
@@ -265,7 +280,7 @@ export default function UserFeedbackToolkit({
           {selectedOption ? (
             <>
               <p>你的心情</p>
-              <span>
+              <span className="selected-emoji">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={optionMap[selectedOption].iconUrl}
