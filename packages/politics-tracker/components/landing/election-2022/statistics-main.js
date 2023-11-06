@@ -218,7 +218,7 @@ export default function StatisticsBoard({ propsData }) {
             <ArrowIcon>
               <Image
                 alt="arrowRight"
-                src="/icons/landing/arrow_right.svg"
+                src="/icons/landing/arrow-right.svg"
                 width="48"
                 height="48"
               />
