@@ -107,11 +107,13 @@ const Lists = styled.ul`
   flex-wrap: wrap;
   max-height: 420px;
   overflow-y: auto;
+  -webkit-overflow-y: auto;
 
   ${({ theme }) => theme.breakpoint.md} {
     padding-bottom: 0px;
     gap: 12px 16px;
     overflow-y: hidden;
+    -webkit-overflow-y: hidden;
     max-height: none;
   }
 `
