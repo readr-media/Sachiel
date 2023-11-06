@@ -132,13 +132,22 @@ const Container = styled.div`
         margin-top: 40px;
         margin-bottom: 40px;
 
-        p {
+        .list-title {
           font-size: 18px;
           font-style: normal;
           font-weight: 700;
           line-height: 1.3;
           color: #000928;
           margin-bottom: 4px;
+        }
+
+        .default-text {
+          margin-top: 12px;
+          color: rgba(15, 45, 53, 0.5);
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 21px;
         }
 
         .comment-wrapper {
@@ -156,11 +165,6 @@ const Container = styled.div`
 
           .comment-content-wrapper {
             margin-top: 8px;
-
-            // ellipsis effect at end of cropping content
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
 
             // show max 3 lines by default
             max-height: calc(16px * 1.8 * 3);
@@ -296,6 +300,7 @@ export default function SectionFeedbackForm({
     type: 'text',
     identifier: fieldIdentifier,
     commentListTitle: '網友回饋',
+    defaultText: '目前還沒有回饋，成為第一個留言的人吧！',
     shouldShowItemControl: false,
   }
 

@@ -6,12 +6,18 @@ import GuideItems from '~/components/landing/shared/collaborate-guide-items'
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
   background: ${({ theme }) => theme.backgroundColor.pink};
   box-shadow: inset 0px -4px 0px #000000;
-  width: calc(100% - 40px);
+  width: 100%;
 `
 const Title = styled.div`
   width: 100%;
@@ -38,7 +44,6 @@ const Title = styled.div`
 `
 
 const Aside = styled.div`
-  height: 1323px;
   width: 40px;
   background: ${({ theme }) => theme.textColor.orange};
   padding: 0px;
@@ -52,32 +57,27 @@ const Aside = styled.div`
       font-weight: 900;
       color: ${({ theme }) => theme.textColor.pink};
       font-size: 48px;
-      transform: rotate(90deg);
+      transform: rotate(90deg) translateX(calc(50% + 40px));
     }
   }
 
-  ${({ theme }) => theme.breakpoint.sm} {
-    height: 790px;
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    height: 495px;
-  }
-
-  ${({ theme }) => theme.breakpoint.xl} {
-    height: 523px;
-  }
-
   ${({ theme }) => theme.breakpoint.xxl} {
-    height: 543px;
-    padding: 40px 0px;
     min-width: 90px;
     width: 6vw;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
   }
 `
 
-export default function CollaborateGuide(): JSX.Element {
+type CollaborateGuideProps = {
+  linkTitle: string
+  buttonText: string
+  buttonHref: string
+}
+export default function CollaborateGuide({
+  linkTitle = '',
+  buttonText = '',
+  buttonHref = '/',
+}: CollaborateGuideProps): JSX.Element {
   return (
     <Wrapper>
       <Aside>
@@ -85,7 +85,11 @@ export default function CollaborateGuide(): JSX.Element {
       </Aside>
       <Main>
         <Title>補坑指南：如何協作政見</Title>
-        <GuideItems />
+        <GuideItems
+          linkTitle={linkTitle}
+          buttonText={buttonText}
+          buttonHref={buttonHref}
+        />
       </Main>
     </Wrapper>
   )

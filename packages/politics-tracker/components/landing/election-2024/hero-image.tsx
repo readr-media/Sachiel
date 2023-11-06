@@ -13,6 +13,12 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     height: calc(100dvh - 80px);
   }
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
@@ -86,10 +92,9 @@ const Image = styled.div<{ alt: string }>`
     order: 3;
     margin: 20px auto 0px;
     max-width: 1064px;
-    aspect-ratio: 16 / 5;
+    aspect-ratio: 7 / 2;
     background: url('/images/president-candidate-desktop.svg') no-repeat
       center/contain;
-    transform: translateY(2px); //prevent image border from showing
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
@@ -180,6 +185,7 @@ export default function HeroImage(): JSX.Element {
       <Aside>
         <ArrowDown />
       </Aside>
+
       <Main>
         <Content>
           <Image alt="政見不失憶-臺灣 2024 選舉政見事實查核平台" />

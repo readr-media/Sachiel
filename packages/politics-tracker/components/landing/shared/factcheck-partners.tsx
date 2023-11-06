@@ -44,14 +44,15 @@ const PartnerGroup = styled.div`
   }
 `
 
-const Item = styled.div`
+const Item = styled.a<{ href: string }>`
+  display: block;
   width: 140px;
   height: 83px;
   background: ${({ theme }) => theme.backgroundColor.white};
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  cursor: ${({ href }) => (href ? 'pointer' : 'auto')};
 
   ${({ theme }) => theme.breakpoint.md} {
     width: 157px;
@@ -69,6 +70,7 @@ type PartnerByType = {
   partners: {
     id: string
     name: string
+    webUrl: string
     logo: Object
   }[]
 }
@@ -87,12 +89,20 @@ export default function FactCheckPartners({
           existingItem.partners.push({
             id: item.id,
             name: item.name,
+            webUrl: item.webUrl,
             logo: item.logo || [],
           })
         } else {
           result.push({
             type: item.type,
-            partners: [{ id: item.id, name: item.name, logo: item.logo || [] }],
+            partners: [
+              {
+                id: item.id,
+                name: item.name,
+                webUrl: item.webUrl,
+                logo: item.logo || [],
+              },
+            ],
           })
         }
         return result
@@ -113,7 +123,12 @@ export default function FactCheckPartners({
             <Title>{item.type}</Title>
             <PartnerGroup>
               {item.partners.map((partner: any) => (
-                <Item key={partner.id}>
+                <Item
+                  key={partner.id}
+                  href={partner.webUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <CustomImage
                     images={partner?.logo?.resized}
                     defaultImage="/images/default-factcheck-partner.svg"

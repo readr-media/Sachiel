@@ -209,7 +209,7 @@ export default function Title(props: PersonOverview): JSX.Element {
         <span className={s.tab}>政見</span>
       </div>
       <div className={s['data-block']}>
-        <PoliticsBlock title="參選" customClass={s['campaign-block']}>
+        <PoliticsBlock title="參選職位類型" customClass={s['campaign-block']}>
           <MultipleLineBlock content={props.campaign} {...mainText}>
             <SingleLineBlock
               content={props.campaign}

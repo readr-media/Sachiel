@@ -64,11 +64,11 @@ export const fileDownload2022: DownloadItem[] = [
 export const fileDownload2024: DownloadItem[] = [
   {
     title: '下載總統政見',
-    link: '/',
+    link: 'https://storage.googleapis.com/whoareyou-gcs-dev.readr.tw/json/2024president.json',
   },
   {
     title: '下載立委政見',
-    link: '/',
+    link: '',
   },
 ]
 
@@ -118,19 +118,19 @@ export const defaultFactCheckJSON = [
 
 export const checkboxLabels = [
   {
-    title: '立場變化',
-    value: 'positionChangeCount',
+    title: '政見提出背景',
+    value: 'factCheckCount',
   },
   {
-    title: '事實釐清',
-    value: 'factCheckCount',
+    title: '候選人過去主張',
+    value: 'positionChangeCount',
   },
   {
     title: '專家看點',
     value: 'expertPointCount',
   },
   {
-    title: '相似政見',
+    title: '相似政策',
     value: 'repeatCount',
   },
 ]
