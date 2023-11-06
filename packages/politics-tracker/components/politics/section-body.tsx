@@ -59,8 +59,11 @@ const Button = styled.button`
     `
     cursor: not-allowed;
     background-color: #ccc;
-    border: 2px solid #ccc;
+    border: 2px solid #777;
     color: #777;
+    path {
+    fill: #777;
+  }
     &:hover {
     background-color: #ccc;
   }
