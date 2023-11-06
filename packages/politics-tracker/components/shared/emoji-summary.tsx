@@ -82,10 +82,10 @@ export default function EmojiSummary({ emojiMap, summary }: EmojiSummaryProps) {
   })
 
   return (
-    <Wrapper>
+    <Wrapper className="emoji-summary-wrapper">
       {emojiList.length > 0 ? (
         <>
-          <EmojiWrapper>{emojiList}</EmojiWrapper>
+          <EmojiWrapper className="emoji-wrapper">{emojiList}</EmojiWrapper>
           <Text>{total}個心情</Text>
         </>
       ) : (
