@@ -130,7 +130,7 @@ export const checkboxLabels = [
     value: 'expertPointCount',
   },
   {
-    title: '相似政見',
+    title: '相似政策',
     value: 'repeatCount',
   },
 ]
