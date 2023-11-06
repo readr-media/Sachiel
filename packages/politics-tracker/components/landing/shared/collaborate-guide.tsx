@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 const Main = styled.div`
   background: ${({ theme }) => theme.backgroundColor.pink};
   box-shadow: inset 0px -4px 0px #000000;
-  width: calc(100% - 40px);
+  width: 100%;
 `
 const Title = styled.div`
   width: 100%;
@@ -57,12 +57,11 @@ const Aside = styled.div`
       font-weight: 900;
       color: ${({ theme }) => theme.textColor.pink};
       font-size: 48px;
-      transform: rotate(90deg);
+      transform: rotate(90deg) translateX(calc(50% + 40px));
     }
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
-    padding: 40px 0px;
     min-width: 90px;
     width: 6vw;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;

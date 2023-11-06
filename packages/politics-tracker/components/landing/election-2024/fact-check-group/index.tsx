@@ -31,7 +31,6 @@ const Aside = styled.div`
   ${({ theme }) => theme.breakpoint.xxl} {
     display: block;
     background: ${({ theme }) => theme.backgroundColor.highlightRed};
-    padding: 40px 0px;
     width: 6vw;
     min-width: 90px;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
@@ -41,7 +40,7 @@ const Aside = styled.div`
       font-weight: 900;
       color: ${({ theme }) => theme.textColor.lightPink};
       font-size: 48px;
-      transform: rotate(90deg);
+      transform: rotate(90deg) translateX(calc(50% + 40px));
     }
   }
 `
