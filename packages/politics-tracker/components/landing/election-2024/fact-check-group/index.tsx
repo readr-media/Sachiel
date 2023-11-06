@@ -13,6 +13,12 @@ import type {
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
@@ -25,13 +31,8 @@ const Aside = styled.div`
   ${({ theme }) => theme.breakpoint.xxl} {
     display: block;
     background: ${({ theme }) => theme.backgroundColor.highlightRed};
-
-    height: 100%;
-    height: 910px;
-    height: 1876.5px;
-    padding: 40px 0px;
-    min-width: 90px;
     width: 6vw;
+    min-width: 90px;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
 
     h3 {
@@ -39,7 +40,7 @@ const Aside = styled.div`
       font-weight: 900;
       color: ${({ theme }) => theme.textColor.lightPink};
       font-size: 48px;
-      transform: rotate(90deg);
+      transform: rotate(90deg) translateX(calc(50% + 40px));
     }
   }
 `

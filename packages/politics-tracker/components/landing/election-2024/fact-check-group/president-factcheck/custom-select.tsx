@@ -2,7 +2,7 @@ import {
   clearAllBodyScrollLocks,
   disableBodyScroll,
   enableBodyScroll,
-} from 'body-scroll-lock'
+} from 'body-scroll-lock-upgrade'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
@@ -62,8 +62,10 @@ const LightBox = styled.div<{ isOpen: boolean }>`
   width: 100%;
   height: 100vh;
   position: fixed;
-  top: 0;
   left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   background: rgba(0, 0, 0, 0.66);
   padding: 12px;
   align-items: center;
@@ -101,15 +103,22 @@ const Title = styled.div`
 `
 
 const Lists = styled.ul`
+  padding-bottom: 20px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   max-height: 420px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  -webkit-overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  min-height: calc(100% + 1px);
 
   ${({ theme }) => theme.breakpoint.md} {
+    padding-bottom: 0px;
     gap: 12px 16px;
     overflow-y: hidden;
+    -webkit-overflow-y: hidden;
     max-height: none;
   }
 `

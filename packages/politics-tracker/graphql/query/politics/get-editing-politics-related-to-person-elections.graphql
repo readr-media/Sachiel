@@ -1,0 +1,58 @@
+query GetEditingPoliticsRelatedToPersonElections($ids: [ID!]) {
+  editingPolitics(where: { person: { id: { in: $ids } } }) {
+    id
+    desc
+    content
+    source
+    status
+    reviewed
+    current_progress
+    createdAt
+    updatedAt
+    thread_parent {
+      id
+      desc
+      source
+      status
+    }
+    person {
+      id
+      election {
+        id
+      }
+    }
+    politicCategory {
+      id
+      name
+    }
+    positionChange(orderBy: { checkDate: asc }) {
+      id
+      isChanged
+      positionChangeSummary
+      factcheckPartner {
+        name
+      }
+    }
+    factCheck(orderBy: { createdAt: desc }) {
+      id
+      factCheckSummary
+      checkResultType
+      checkResultOther
+      factcheckPartner {
+        name
+      }
+    }
+    expertPoint(orderBy: { createdAt: desc }) {
+      id
+      expertPointSummary
+      expert
+    }
+    repeat(orderBy: { createdAt: desc }) {
+      id
+      repeatSummary
+      factcheckPartner {
+        name
+      }
+    }
+  }
+}

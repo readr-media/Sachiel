@@ -56,11 +56,9 @@ const ButtonGroup = styled.div`
   }
 `
 
-const Button = styled.a`
+const Button = styled.a<{ href: string }>`
   min-width: 200px;
   padding: 8px 12px 8px 20px;
-  background: ${({ theme }) => theme.backgroundColor.white};
-  border: 2px solid ${({ theme }) => theme.borderColor.black};
   border-radius: 24px;
   font-size: 16px;
   line-height: 1.8;
@@ -69,12 +67,26 @@ const Button = styled.a`
   justify-content: center;
   align-items: center;
   gap: 4px;
-  cursor: pointer;
   max-width: 200px;
   margin: auto;
 
+  border: 2px solid
+    ${({ theme, href }) =>
+      href ? theme.borderColor.black : 'rgba(15, 45, 53, 0.1)'};
+  color: ${({ href }) => (href ? '#0F2D35' : 'rgba(15, 45, 53, 0.3)')};
+  background: ${({ theme, href }) =>
+    href ? theme.backgroundColor.white : '#c5cbcd'};
+  cursor: ${({ href }) => (href ? 'pointer' : 'not-allowed')};
+
+  svg {
+    path {
+      fill: ${({ href }) => (href ? 'auto' : 'rgba(15, 45, 53, 0.3)')};
+    }
+  }
+
   &:hover {
-    background: ${({ theme }) => theme.backgroundColor.skinDark};
+    background: ${({ theme, href }) =>
+      href ? theme.backgroundColor.skinDark : '#c5cbcd'};
   }
 
   & + a {

@@ -33,5 +33,12 @@ query GetPersonOverView($personId: ID!) {
       name
       city
     }
+    mainCandidate {
+      id
+      name
+      person_id {
+        id
+      }
+    }
   }
 }

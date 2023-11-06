@@ -1,4 +1,5 @@
 import { print } from 'graphql'
+import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -8,6 +9,7 @@ import Nav from '~/components/nav'
 import Section from '~/components/person/section'
 import Title from '~/components/person/title'
 import { cmsApiUrl } from '~/constants/config'
+import { siteUrl } from '~/constants/environment-variables'
 import GetPersonBasicInfo from '~/graphql/query/person/get-person-basic-info.graphql'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
 import { fireGqlRequest } from '~/utils/utils'
@@ -34,6 +36,8 @@ const Main = styled.main`
  * @returns {React.ReactElement}
  */
 export default function People({ personData, personElectionsData }) {
+  const { asPath } = useRouter()
+
   /** @type {NavProps} */
   const navProps = {
     prev: {
@@ -51,6 +55,7 @@ export default function People({ personData, personElectionsData }) {
   const headProps = {
     title: `${personData.name} - 個人資訊｜READr 政商人物資料庫`,
     description: `${personData.name}個人資料、經歷，各種政商關係及記錄`,
+    url: `${siteUrl}${asPath}`,
   }
 
   return (

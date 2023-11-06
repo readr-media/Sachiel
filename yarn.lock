@@ -3688,10 +3688,10 @@
     "@twreporter/errors" "^1.1.1"
     axios "^0.27.2"
 
-"@readr-media/react-feedback@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-feedback/-/react-feedback-3.7.0.tgz#727c107c1b6a18645d7f2f293f860f4c8eb7623e"
-  integrity sha512-7+dKYKUgwc7VHp2SZLHA45WiRUvwG2MTSUpNc/0n5NKc7AN2/JQnDctPHYV8afp6hKk9bZejl/nAfWE6hlynzg==
+"@readr-media/react-feedback@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-feedback/-/react-feedback-4.0.0.tgz#3767c0bc81ac3534504b0717b13b093111277c94"
+  integrity sha512-7wKtnBeOmH1xiVHlhlgul8Pp4CpXYfo13SDobpSaViroOFc6V2VNSC6oB9rlwC5bD1WMS1cfg50pf7EDIS6p/Q==
   dependencies:
     axios "^0.27.2"
     lodash "^4.17.21"
@@ -4820,6 +4820,11 @@ body-parser@1.20.1, body-parser@^1.20.0:
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+body-scroll-lock-upgrade@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock-upgrade/-/body-scroll-lock-upgrade-1.0.4.tgz#43e4df461c487f9b53be2a82b3550a81bed58d00"
+  integrity sha512-Wo3kbzr2yO/c9KFHo/HQ+lRYsBs0DsR0krUtk/R4KWPwaoDwv1sjOYFc3F3vh+7pw4k437R9XiDdHRg1uoOYEA==
 
 body-scroll-lock@3.1.5:
   version "3.1.5"
