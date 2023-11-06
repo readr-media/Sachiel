@@ -111,6 +111,8 @@ const Lists = styled.ul`
   overflow-y: auto;
   -webkit-overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  height: 100%;
+  min-height: calc(100% + 1px);
 
   ${({ theme }) => theme.breakpoint.md} {
     padding-bottom: 0px;
