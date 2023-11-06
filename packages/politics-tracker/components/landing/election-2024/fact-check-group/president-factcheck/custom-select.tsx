@@ -2,7 +2,7 @@ import {
   clearAllBodyScrollLocks,
   disableBodyScroll,
   enableBodyScroll,
-} from 'body-scroll-lock'
+} from 'body-scroll-lock-upgrade'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
