@@ -289,7 +289,7 @@ export default function PresidentFactCheck({
       <Container>
         <TitleWrapper>
           <Sidebar />
-          <Title>總統政見：事實查核</Title>
+          <Title>總統政見：背景事實查核</Title>
         </TitleWrapper>
         <Content>
           <FilterPanel>
