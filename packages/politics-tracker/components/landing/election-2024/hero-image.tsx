@@ -13,6 +13,12 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     height: calc(100dvh - 80px);
   }
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
@@ -179,6 +185,7 @@ export default function HeroImage(): JSX.Element {
       <Aside>
         <ArrowDown />
       </Aside>
+
       <Main>
         <Content>
           <Image alt="政見不失憶-臺灣 2024 選舉政見事實查核平台" />
