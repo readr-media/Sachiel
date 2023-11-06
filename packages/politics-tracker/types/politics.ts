@@ -110,4 +110,5 @@ export type PersonElection = {
   electionTerm: PersonElectionTerm
   mainCandidate: MainCandidate | null
   organizationId: OrganizationId | null
+  shouldShowFeedbackForm?: boolean
 }

@@ -14,10 +14,14 @@ import WaitingPoliticBlock from './waiting-politic-block'
 
 type SectionBodyProps = Pick<
   PersonElection,
-  'source' | 'lastUpdate' | 'politics' | 'waitingPolitics'
-> & { show: boolean } & { hidePoliticDetail: string | null } & {
-  mainCandidate: MainCandidate | null
-}
+  | 'source'
+  | 'lastUpdate'
+  | 'politics'
+  | 'waitingPolitics'
+  | 'mainCandidate'
+  | 'hidePoliticDetail'
+  | 'shouldShowFeedbackForm'
+> & { show: boolean }
 
 const Button = styled.button`
   margin: auto;
