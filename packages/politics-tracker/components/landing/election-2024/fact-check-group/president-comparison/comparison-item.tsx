@@ -3,8 +3,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import CountGroup from '~/components/landing/election-2024/fact-check-group/president-comparison/count-group'
+import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-comparison/link-button'
 import PercentageBar from '~/components/landing/election-2024/fact-check-group/president-comparison/percentage-bar'
-import Plus from '~/public/icons/plus.svg'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -57,36 +57,6 @@ const Bottom = styled.div`
 
   ${({ theme }) => theme.breakpoint.md} {
     padding: 12px 20px 20px;
-  }
-`
-
-const Button = styled.a`
-  border-radius: 24px;
-  padding: 8px 24px 8px 32px;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border: 2px solid #000000;
-  background: #f6ba31;
-
-  color: #0f2d35;
-  font-size: 16px;
-  line-height: 1.8;
-
-  &:hover {
-    background-color: #b2800d;
-  }
-
-  svg {
-    width: 20px;
-    height: 20px;
-
-    path {
-      fill: #000000;
-    }
   }
 `
 
@@ -213,15 +183,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
           repeatCount={repeatCount}
         />
 
-        <Button
-          href={person_id ? `/politics/${person_id}/#add-politic-anchor` : '/'}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="add-politics"
-        >
-          新增更多政見
-          <Plus />
-        </Button>
+        <LinkButtons personId={person_id} />
       </Bottom>
     </Wrapper>
   )
