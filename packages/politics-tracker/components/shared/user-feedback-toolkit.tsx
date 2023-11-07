@@ -85,15 +85,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   height: 100vh;
   z-index: 60; // highter than site's header
 
-  .hidden-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: inherit;
-    height: inherit;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
   .form-feedback {
     position: absolute;
     bottom: 0;
@@ -152,15 +143,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
     white-space: nowrap;
     z-index: 40; // lower than site's header
 
-    .hidden-mask {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 1000vh;
-      opacity: 0;
-    }
-
     .form-feedback {
       width: 344px;
       position: relative;
@@ -193,7 +175,22 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   }
 `
 
-const HiddenMask = styled.div``
+const HiddenMask = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.5);
+  ${({ theme }) => theme.breakpoint.xl} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1000vh;
+    opacity: 0;
+  }
+`
 
 type UserFeedbackToolkitProps = {
   politicId: string
