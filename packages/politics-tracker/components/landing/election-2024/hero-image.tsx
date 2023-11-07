@@ -147,7 +147,6 @@ const Aside = styled.div`
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
-    min-width: 90px;
     width: 6vw;
 
     svg {
