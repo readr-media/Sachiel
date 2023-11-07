@@ -32,7 +32,6 @@ const Aside = styled.div`
     display: block;
     background: ${({ theme }) => theme.backgroundColor.highlightRed};
     width: 6vw;
-    min-width: 90px;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
 
     h3 {

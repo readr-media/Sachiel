@@ -29,6 +29,8 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           source={props.source}
           hidePoliticDetail={props.hidePoliticDetail}
           mainCandidate={props.mainCandidate}
+          electionType={props.electionType}
+          organizationId={props.organizationId}
           shouldShowFeedbackForm={props.shouldShowFeedbackForm}
         />
       </div>

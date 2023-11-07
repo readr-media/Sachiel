@@ -69,7 +69,7 @@ export default function LinkButtons({
       {hasPolitics ? (
         <>
           <a
-            href={politicId ? `/politics/detail/${politicId}` : '/'} //FIXME
+            href={politicId ? `/politics/detail/${politicId}` : '/'}
             target="_blank"
             rel="noopener noreferrer"
             className="politic-detail"
