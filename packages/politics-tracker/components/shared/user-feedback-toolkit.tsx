@@ -8,7 +8,11 @@ import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import styled from 'styled-components'
 
-import { EMOTION_FIELD_OPTIONS } from '~/constants/politics'
+import {
+  EMOTION_FIELD_OPTIONS,
+  PREFIX_FEEDBACK_FORM_INDENIFIER,
+  PREFIX_STORAGE_KEY,
+} from '~/constants/politics'
 import type { ExtendedOption } from '~/types/common'
 
 import SVGAddEmoji from '../../public/icons/emoji-field/add-emoji.svg'
@@ -22,6 +26,7 @@ const Wrapper = styled.div`
   width: 100%;
   margin-top: 12px;
 
+  cursor: default;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
   font-size: 12px;
@@ -85,15 +90,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   height: 100vh;
   z-index: 60; // highter than site's header
 
-  .hidden-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: inherit;
-    height: inherit;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
   .form-feedback {
     position: absolute;
     bottom: 0;
@@ -152,15 +148,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
     white-space: nowrap;
     z-index: 40; // lower than site's header
 
-    .hidden-mask {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 1000vh;
-      opacity: 0;
-    }
-
     .form-feedback {
       width: 344px;
       position: relative;
@@ -193,7 +180,22 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   }
 `
 
-const HiddenMask = styled.div``
+const HiddenMask = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.5);
+  ${({ theme }) => theme.breakpoint.xl} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1000vh;
+    opacity: 0;
+  }
+`
 
 type UserFeedbackToolkitProps = {
   politicId: string
@@ -212,8 +214,8 @@ export default function UserFeedbackToolkit({
     triggerOnce: true,
   })
 
-  const fieldIdentifier = `politic-${politicId}`
-  const storageKey = `politic-feedback-${politicId}`
+  const fieldIdentifier = `${PREFIX_FEEDBACK_FORM_INDENIFIER}-${politicId}`
+  const storageKey = `${PREFIX_STORAGE_KEY}-${politicId}`
   const modalKey = 'data-modal-opened'
 
   const optionMap = EMOTION_FIELD_OPTIONS.reduce(
