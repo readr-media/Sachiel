@@ -22,6 +22,7 @@ const Wrapper = styled.div`
   width: 100%;
   margin-top: 12px;
 
+  cursor: default;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
   font-size: 12px;

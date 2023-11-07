@@ -25,6 +25,7 @@ const Container = styled.div`
     margin: 0;
     width: 100%;
     background-color: transparent;
+    cursor: default;
 
     .field-single-option {
       p {
