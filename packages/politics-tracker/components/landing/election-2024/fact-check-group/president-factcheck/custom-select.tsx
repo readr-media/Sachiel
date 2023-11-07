@@ -1,9 +1,5 @@
-import {
-  clearAllBodyScrollLocks,
-  disableBodyScroll,
-  enableBodyScroll,
-} from 'body-scroll-lock-upgrade'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
+import { RemoveScrollBar } from 'react-remove-scroll-bar'
 import styled from 'styled-components'
 
 import { useFactCheckPresident } from '~/components/landing/react-context/use-landing-2024'
@@ -107,12 +103,11 @@ const Lists = styled.ul`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  height: 100%;
   max-height: 420px;
   overflow-y: auto;
   -webkit-overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: 100%;
-  min-height: calc(100% + 1px);
 
   ${({ theme }) => theme.breakpoint.md} {
     padding-bottom: 0px;
@@ -165,22 +160,6 @@ export default function CustomSelect({
     setIsOpen(false)
   }
 
-  const lightBoxRef = useRef(null)
-
-  useEffect(() => {
-    if (lightBoxRef && lightBoxRef.current) {
-      const lightBox = lightBoxRef.current
-      if (isOpen) {
-        disableBodyScroll(lightBox)
-      } else {
-        enableBodyScroll(lightBox)
-      }
-    }
-    return () => {
-      clearAllBodyScrollLocks()
-    }
-  }, [isOpen])
-
   return (
     <Container>
       <span className="subtitle">分類</span>
@@ -191,7 +170,7 @@ export default function CustomSelect({
           <DropdownArrow />
         </SelectedBox>
 
-        <LightBox isOpen={isOpen} ref={lightBoxRef}>
+        <LightBox isOpen={isOpen}>
           <Options>
             <Title>
               請選擇分類
@@ -211,6 +190,9 @@ export default function CustomSelect({
             </Lists>
           </Options>
         </LightBox>
+
+        {/* forbidden body scroll when light-box open */}
+        {isOpen && <RemoveScrollBar />}
       </DropdownWrapper>
     </Container>
   )
