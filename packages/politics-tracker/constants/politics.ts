@@ -36,3 +36,6 @@ export const EMOTION_FIELD_OPTIONS: ExtendedOption[] = [
     sortOrder: 5,
   },
 ]
+
+export const PREFIX_FEEDBACK_FORM_INDENIFIER = 'politic'
+export const PREFIX_STORAGE_KEY = 'politic-feedback'

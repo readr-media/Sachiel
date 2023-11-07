@@ -8,7 +8,11 @@ import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import styled from 'styled-components'
 
-import { EMOTION_FIELD_OPTIONS } from '~/constants/politics'
+import {
+  EMOTION_FIELD_OPTIONS,
+  PREFIX_FEEDBACK_FORM_INDENIFIER,
+  PREFIX_STORAGE_KEY,
+} from '~/constants/politics'
 import type { ExtendedOption } from '~/types/common'
 
 import SVGAddEmoji from '../../public/icons/emoji-field/add-emoji.svg'
@@ -210,8 +214,8 @@ export default function UserFeedbackToolkit({
     triggerOnce: true,
   })
 
-  const fieldIdentifier = `politic-${politicId}`
-  const storageKey = `politic-feedback-${politicId}`
+  const fieldIdentifier = `${PREFIX_FEEDBACK_FORM_INDENIFIER}-${politicId}`
+  const storageKey = `${PREFIX_STORAGE_KEY}-${politicId}`
   const modalKey = 'data-modal-opened'
 
   const optionMap = EMOTION_FIELD_OPTIONS.reduce(
