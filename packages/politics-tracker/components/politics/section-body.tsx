@@ -22,6 +22,7 @@ type SectionBodyProps = Pick<
   | 'mainCandidate'
   | 'hidePoliticDetail'
   | 'electionType'
+  | 'shouldShowFeedbackForm'
 > & { show: boolean }
 
 const Button = styled.button`

@@ -1,3 +1,5 @@
+import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
+
 export type IntroItem = {
   title: string
   name: string
@@ -64,7 +66,7 @@ export const fileDownload2022: DownloadItem[] = [
 export const fileDownload2024: DownloadItem[] = [
   {
     title: '下載總統政見',
-    link: 'https://storage.googleapis.com/whoareyou-gcs-dev.readr.tw/json/2024president.json',
+    link: `${prefixOfJSONForLanding2024}/2024president.json`,
   },
   {
     title: '下載立委政見',
@@ -130,7 +132,7 @@ export const checkboxLabels = [
     value: 'expertPointCount',
   },
   {
-    title: '相似政見',
+    title: '相似政策',
     value: 'repeatCount',
   },
 ]

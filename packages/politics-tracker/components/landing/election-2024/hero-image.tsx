@@ -13,6 +13,12 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     height: calc(100dvh - 80px);
   }
+
+  ${({ theme }) => theme.breakpoint.xxl} {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 6vw 1fr;
+  }
 `
 
 const Main = styled.div`
@@ -103,9 +109,9 @@ const SubTitle = styled.div`
   color: ${({ theme }) => theme.textColor.lightPink};
   padding: 8px;
   text-align: center;
-  max-width: 317px;
   margin: auto;
   font-weight: 500;
+  width: fit-content;
   ${({ theme }) => theme.fontSize.button};
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -117,8 +123,6 @@ const SubTitle = styled.div`
   ${({ theme }) => theme.breakpoint.xl} {
     order: 2;
     margin: 0px auto;
-    max-width: none;
-    width: 427px;
     ${({ theme }) => theme.fontSize['title-sub-md']};
   }
 `
@@ -179,12 +183,13 @@ export default function HeroImage(): JSX.Element {
       <Aside>
         <ArrowDown />
       </Aside>
+
       <Main>
         <Content>
           <Image alt="政見不失憶-臺灣 2024 選舉政見事實查核平台" />
           <>
             <Title>政見不失憶</Title>
-            <SubTitle>臺灣 2024 選舉政見事實查核平台</SubTitle>
+            <SubTitle>2024 總統暨立委選舉政見資訊追蹤協作平台</SubTitle>
           </>
         </Content>
         <Banner />

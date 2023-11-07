@@ -6,6 +6,7 @@ import CandidateInfo from '~/components/landing/election-2024/fact-check-group/p
 import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-factcheck/link-button'
 import PoliticContent from '~/components/politics/politic-content'
 import FactCheckAbstract from '~/components/shared/politic-fact-check'
+import UserFeedbackToolkit from '~/components/shared/user-feedback-toolkit'
 import SwitchArrowLeft from '~/public/icons/landing/switch-arrow-left.svg'
 import SwitchArrowRight from '~/public/icons/landing/switch-arrow-right.svg'
 import type { PoliticCategory } from '~/types/politics-detail'
@@ -26,6 +27,50 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   padding: 16px;
+
+  // UserFeedbackToolkit
+  .user-feedback-toolkit-wrapper {
+    ${({ theme }) => theme.breakpoint.md} {
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    ${({ theme }) => theme.breakpoint.xl} {
+      .emoji-summary-wrapper {
+        .emoji-wrapper {
+          span {
+            &:nth-child(2),
+            &:nth-child(3) {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .emoji-form-wrapper {
+        .form-feedback {
+          transform: translateX(-75%);
+
+          &::after {
+            left: 75%;
+          }
+        }
+      }
+    }
+
+    ${({ theme }) => theme.breakpoint.xxl} {
+      .emoji-summary-wrapper {
+        .emoji-wrapper {
+          span {
+            &:nth-child(2),
+            &:nth-child(3) {
+              display: inline-flex;
+            }
+          }
+        }
+      }
+    }
+  }
 `
 
 const PoliticDesc = styled.div`
@@ -83,12 +128,6 @@ const SwitchPanel = styled.div<{ hasPolitics: boolean }>`
     }
   }
 `
-
-// const Feedback = styled.div`
-//   width: 100%;
-//   height: 24px;
-//   background-color: rgba(15, 45, 53, 0.5);
-// `
 
 //FIXME: combine with PoliticDesc
 const DefaultDec = styled.div`
@@ -233,7 +272,12 @@ export default function FactCheckItem({
               landing={true}
             />
 
-            {/* {hasPolitics && <Feedback />} */}
+            {hasPolitics && (
+              <>
+                {/* use key to force re-rendering while switching items */}
+                <UserFeedbackToolkit key={politicId} politicId={politicId} />
+              </>
+            )}
 
             <LinkButtons
               hasPolitics={hasPolitics}

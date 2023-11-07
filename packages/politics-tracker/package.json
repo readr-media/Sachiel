@@ -15,7 +15,7 @@
     "@svgr/webpack": "^8.1.0",
     "@twreporter/errors": "^1.1.1",
     "axios": "^1.1.2",
-    "body-scroll-lock": "^4.0.0-beta.0",
+    "body-scroll-lock-upgrade": "^1.0.4",
     "chinese-numbers-converter": "^2.3.1",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
