@@ -62,7 +62,6 @@ const Aside = styled.div`
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
-    min-width: 90px;
     width: 6vw;
     box-shadow: inset -4px 0px 0px #000000, inset 0px -4px 0px #000000;
   }
