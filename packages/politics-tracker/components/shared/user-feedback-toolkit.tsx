@@ -6,7 +6,7 @@ import type {
 } from '@readr-media/react-feedback/dist/typedef'
 import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import {
   EMOTION_FIELD_OPTIONS,
@@ -18,6 +18,11 @@ import type { ExtendedOption } from '~/types/common'
 import SVGAddEmoji from '../../public/icons/emoji-field/add-emoji.svg'
 import { useConfig } from '../react-context/use-global'
 import EmojiSummary from './emoji-summary'
+import { FeedbackListModal } from './feedback-list-modal'
+
+const ActivedEffect = css`
+  color: rgba(0, 0, 0, 0.87);
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,11 +44,31 @@ const Wrapper = styled.div`
 `
 
 const LeftPart = styled.span`
+  display: inline-flex;
+`
+
+const Dot = styled.span`
   display: inline-block;
+  width: 2px;
+  height: 2px;
+  align-self: center;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+`
+
+const ShowComments = styled.button<{ isActive: boolean }>`
+  &:active,
+  &:hover {
+    ${ActivedEffect}
+  }
+
+  ${({ isActive }) => isActive && ActivedEffect}
 `
 
 const RightPart = styled.span`
-  display: inline-block;
+  display: inline-flex;
   position: relative;
 `
 
@@ -55,7 +80,7 @@ const AddEmojiButton = styled.button<{ isActive: boolean }>`
 
   &:active,
   &:hover {
-    color: rgba(0, 0, 0, 0.87);
+    ${ActivedEffect}
   }
 
   .selected-emoji {
@@ -73,11 +98,7 @@ const AddEmojiButton = styled.button<{ isActive: boolean }>`
     }
   }
 
-  ${({ isActive }) =>
-    isActive &&
-    `
-      color: rgba(0, 0, 0, 0.87);
-    `}
+  ${({ isActive }) => isActive && ActivedEffect}
 `
 
 const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
@@ -209,6 +230,9 @@ export default function UserFeedbackToolkit({
   const [summary, setSummary] = useState<Record<string, number>>({})
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [shouldShowEmojiForm, setShouldShowEmojiForm] = useState<boolean>(false)
+  const [shouldShowCommentList, setShouldShowCommentList] =
+    useState<boolean>(false)
+
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: true,
@@ -217,6 +241,7 @@ export default function UserFeedbackToolkit({
   const fieldIdentifier = `${PREFIX_FEEDBACK_FORM_INDENIFIER}-${politicId}`
   const storageKey = `${PREFIX_STORAGE_KEY}-${politicId}`
   const modalKey = 'data-modal-opened'
+  const modalStyleKey = 'data-modal-open-style'
 
   const optionMap = EMOTION_FIELD_OPTIONS.reduce(
     (prev: Record<string, ExtendedOption>, curr: ExtendedOption) => {
@@ -227,12 +252,24 @@ export default function UserFeedbackToolkit({
     {}
   )
 
-  const handleOpen = () => {
+  const handleCommentListOpen = () => {
+    setShouldShowCommentList(true)
+    document.body.setAttribute(modalKey, 'true')
+    document.body.setAttribute(modalStyleKey, 'always-top')
+  }
+
+  const handleCommentListClose = () => {
+    setShouldShowCommentList(false)
+    document.body.setAttribute(modalKey, 'false')
+    document.body.setAttribute(modalStyleKey, '')
+  }
+
+  const handleEmojiFormOpen = () => {
     setShouldShowEmojiForm(true)
     document.body.setAttribute(modalKey, 'true')
   }
 
-  const handleClose = () => {
+  const handleEmojiFormClose = () => {
     setShouldShowEmojiForm(false)
     document.body.setAttribute(modalKey, 'false')
   }
@@ -244,7 +281,7 @@ export default function UserFeedbackToolkit({
       localStorage.removeItem(storageKey)
     }
     setSelectedOption(option)
-    handleClose()
+    handleEmojiFormClose()
   }
 
   const onOptionChanged = (data: NotifyObject) => {
@@ -275,6 +312,11 @@ export default function UserFeedbackToolkit({
   useEffect(() => {
     setSelectedOption(localStorage.getItem(storageKey))
     setInitialized(true)
+
+    return () => {
+      handleCommentListClose()
+      handleEmojiFormClose()
+    }
   }, [storageKey])
 
   return (
@@ -283,9 +325,25 @@ export default function UserFeedbackToolkit({
         <>
           <LeftPart>
             <EmojiSummary emojiMap={optionMap} summary={summary} />
+            <Dot></Dot>
+            <ShowComments
+              isActive={shouldShowCommentList}
+              onClick={handleCommentListOpen}
+            >
+              查看留言
+            </ShowComments>
+            <FeedbackListModal
+              politicId={politicId}
+              fieldIdentifier={fieldIdentifier}
+              isShowed={shouldShowCommentList}
+              onClosed={handleCommentListClose}
+            />
           </LeftPart>
           <RightPart>
-            <AddEmojiButton onClick={handleOpen} isActive={shouldShowEmojiForm}>
+            <AddEmojiButton
+              onClick={handleEmojiFormOpen}
+              isActive={shouldShowEmojiForm}
+            >
               {selectedOption ? (
                 <>
                   <p>你的心情</p>
@@ -308,7 +366,10 @@ export default function UserFeedbackToolkit({
               isOpened={shouldShowEmojiForm}
               className="emoji-form-wrapper"
             >
-              <HiddenMask className="hidden-mask" onClick={handleClose} />
+              <HiddenMask
+                className="hidden-mask"
+                onClick={handleEmojiFormClose}
+              />
               <FeedbackForm
                 shouldUseRecaptcha={false}
                 storageKey="politic-tracker-user-id"
