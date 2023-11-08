@@ -202,7 +202,7 @@ export default function FactCheckItem({
   const hasPolitics = Boolean(pickedPolitics.length > 0)
   const [politicNumber, setPoliticNumber] = useState(hasPolitics ? 1 : 0)
 
-  const politicId = pickedPolitics[politicNumber - 1]?.id || null
+  const politicId = pickedPolitics[politicNumber - 1]?.id || ''
   const desc = pickedPolitics[politicNumber - 1]?.desc || ''
   const positionChange = pickedPolitics[politicNumber - 1]?.positionChange || []
   const expertPoint = pickedPolitics[politicNumber - 1]?.expertPoint || []
