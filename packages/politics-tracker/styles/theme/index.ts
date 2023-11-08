@@ -55,7 +55,6 @@ export const theme: Record<string, Record<string, string>> = {
     disable: sharedColor.gray,
     black30: 'rgba(15, 45, 53, 0.3)',
     black50: 'rgba(15, 45, 53, 0.5)',
-    brown: '#B2800D',
   },
   borderColor: {
     black: sharedColor.black,
