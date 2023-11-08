@@ -48,7 +48,7 @@ const sitemapConfig = {
     additionalSitemaps: [
       `${sitemapBaseUrl}/landing-and-elections.xml`, // landing pages and election pages
       ...getSitemapGroup(sitemapBaseUrl, 'person'), // personal pages
-      ...getSitemapGroup(sitemapBaseUrl, 'politics-summary'), // politics summary pages
+      ...getSitemapGroup(sitemapBaseUrl, 'politics-summary-related-to-person'), // politics summary pages (person)
       `${sitemapBaseUrl}/politics-detail-related-to-person.xml`, // politic detail pages (person)
       `${sitemapBaseUrl}/politics-detail-related-to-party.xml`, // politic detail pages (party)
     ],
