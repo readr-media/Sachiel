@@ -207,7 +207,7 @@ export default function RelatedPosts({
           <PostInfo>
             {partnerStr && <span className="partners">{partnerStr}</span>}
             <p className="title">{name}</p>
-            <span className="date">{getFormattedDate(createdAt)}</span>
+            <span className="date">{getFormattedDate(createdAt, '/')}</span>
           </PostInfo>
         </a>
       </PostList>

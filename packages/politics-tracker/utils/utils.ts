@@ -192,10 +192,17 @@ function generateSourceMeta(
   }
 }
 
-function getFormattedDate(date: string): string | undefined {
+function getFormattedDate(
+  date: string,
+  formatIcon?: string
+): string | undefined {
   if (typeof date !== 'string' || !date) return
 
-  const formattedDate = dayjs(date).format('YYYY-MM-DD')
+  const formatStyle = formatIcon
+    ? `YYYY${formatIcon}MM${formatIcon}DD`
+    : 'YYYY-MM-DD'
+
+  const formattedDate = dayjs(date).format(formatStyle)
   return formattedDate
 }
 
