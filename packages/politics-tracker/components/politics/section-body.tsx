@@ -27,6 +27,7 @@ type SectionBodyProps = Pick<
 
 const Button = styled.button`
   margin: auto;
+  margin-top: 20px;
   display: flex;
   gap: 4px;
   justify-content: center;
