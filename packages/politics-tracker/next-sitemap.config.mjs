@@ -49,7 +49,7 @@ const sitemapConfig = {
       `${sitemapBaseUrl}/landing-and-elections.xml`, // landing pages and election pages
       ...getSitemapGroup(sitemapBaseUrl, 'person'), // personal pages
       ...getSitemapGroup(sitemapBaseUrl, 'politics-summary'), // politics summary pages
-      `${sitemapBaseUrl}/politics-detail.xml`, // politic detail pages
+      `${sitemapBaseUrl}/politics-detail-related-to-person.xml`, // politic detail pages (person)
     ],
   },
 }
