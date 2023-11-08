@@ -75,8 +75,9 @@ const nextConfig = {
       },
       // for personal page sitemaps
       {
-        source: '/server-sitemaps/politics-summary/:year',
-        destination: '/server-sitemaps/politics-summary.xml?=:year',
+        source: '/server-sitemaps/politics-summary-related-to-person/:year',
+        destination:
+          '/server-sitemaps/politics-summary-related-to-person.xml?=:year',
       },
     ]
   },
