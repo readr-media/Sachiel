@@ -50,6 +50,7 @@ const sitemapConfig = {
       ...getSitemapGroup(sitemapBaseUrl, 'person'), // personal pages
       ...getSitemapGroup(sitemapBaseUrl, 'politics-summary'), // politics summary pages
       `${sitemapBaseUrl}/politics-detail-related-to-person.xml`, // politic detail pages (person)
+      `${sitemapBaseUrl}/politics-detail-related-to-party.xml`, // politic detail pages (party)
     ],
   },
 }
