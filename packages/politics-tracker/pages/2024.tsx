@@ -188,8 +188,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       const {
         data: { relatedPosts },
       } = await axios.get(
-        // `${prefixOfJSONForLanding2024}/policy_related_stories.json`
-        'https://storage.googleapis.com/whoareyou-gcs.readr.tw/json/policy_related_stories.json'
+        `${prefixOfJSONForLanding2024}/policy_related_stories.json`
       )
 
       if (relatedPosts.errors) {
