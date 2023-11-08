@@ -162,6 +162,7 @@ type FeedbackListModalProps = {
   fieldIdentifier: string
   isShowed: boolean
   onClosed: () => void
+  onReady: () => void
 }
 
 export function FeedbackListModal({
@@ -169,10 +170,10 @@ export function FeedbackListModal({
   fieldIdentifier,
   isShowed,
   onClosed,
+  onReady,
 }: FeedbackListModalProps) {
   const config = useConfig()
   const apiUrl = `${feedbackFormApi}/api/feedback`
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [comments, setComments] = useState<Comment[]>([])
   const windowSize = useWindowSize()
 
@@ -193,8 +194,6 @@ export function FeedbackListModal({
 
   const fetchComments = useCallback(
     async () => {
-      setIsLoading(true)
-
       try {
         const { data } = await axios.get<ApiResponse>(apiUrl, {
           params: {
@@ -208,10 +207,10 @@ export function FeedbackListModal({
         if (data && data.data.formResults.length > 0) {
           setComments(data.data.formResults.map(rawCommentToComment))
         }
+
+        onReady()
       } catch (e) {
         console.error(e)
-      } finally {
-        setIsLoading(false)
       }
     },
     /* eslint-disable-line react-hooks/exhaustive-deps */ [

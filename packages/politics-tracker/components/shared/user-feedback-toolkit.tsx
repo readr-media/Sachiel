@@ -4,7 +4,7 @@ import type {
   NotifyObject,
   SingleField,
 } from '@readr-media/react-feedback/dist/typedef'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import styled, { css } from 'styled-components'
 
@@ -24,7 +24,8 @@ const ActivedEffect = css`
   color: rgba(0, 0, 0, 0.87);
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isReady: boolean }>`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -41,6 +42,13 @@ const Wrapper = styled.div`
     font-size: 14px;
     line-height: 16px;
   }
+
+  ${({ isReady }) =>
+    !isReady &&
+    `
+      backgroun-color: light-gray;
+      filter: blur(6px);
+    `}
 `
 
 const LeftPart = styled.span`
@@ -218,6 +226,14 @@ const HiddenMask = styled.div`
   }
 `
 
+const NotReadyMask = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -4px;
+  bottom: -4px;
+`
+
 type UserFeedbackToolkitProps = {
   politicId: string
 }
@@ -227,6 +243,8 @@ export default function UserFeedbackToolkit({
 }: UserFeedbackToolkitProps) {
   const config = useConfig()
   const [initialized, setInitialized] = useState<boolean>(false)
+  const [isEmojiFormReady, setIsEmojiFormReady] = useState(false)
+  const [isListModalReady, setIsListModalReady] = useState(false)
   const [summary, setSummary] = useState<Record<string, number>>({})
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [shouldShowEmojiForm, setShouldShowEmojiForm] = useState<boolean>(false)
@@ -252,7 +270,14 @@ export default function UserFeedbackToolkit({
     {}
   )
 
+  const isAllReady = useMemo(
+    () => isEmojiFormReady && isListModalReady,
+    [isEmojiFormReady, isListModalReady]
+  )
+
   const handleCommentListOpen = () => {
+    if (!isAllReady) return
+
     setShouldShowCommentList(true)
     document.body.setAttribute(modalKey, 'true')
     document.body.setAttribute(modalStyleKey, 'always-top')
@@ -265,6 +290,8 @@ export default function UserFeedbackToolkit({
   }
 
   const handleEmojiFormOpen = () => {
+    if (!isAllReady) return
+
     setShouldShowEmojiForm(true)
     document.body.setAttribute(modalKey, 'true')
   }
@@ -289,6 +316,7 @@ export default function UserFeedbackToolkit({
 
     updateSelectedOption(data.selectedOption)
     setSummary(data.optionSummary)
+    setIsEmojiFormReady(true)
   }
 
   const emojiField: SingleField = {
@@ -314,13 +342,18 @@ export default function UserFeedbackToolkit({
     setInitialized(true)
 
     return () => {
+      // remove modal opened side effects
       handleCommentListClose()
       handleEmojiFormClose()
     }
   }, [storageKey])
 
   return (
-    <Wrapper ref={ref} className="user-feedback-toolkit-wrapper">
+    <Wrapper
+      ref={ref}
+      isReady={isAllReady}
+      className="user-feedback-toolkit-wrapper"
+    >
       {inView && (
         <>
           <LeftPart>
@@ -337,6 +370,7 @@ export default function UserFeedbackToolkit({
               fieldIdentifier={fieldIdentifier}
               isShowed={shouldShowCommentList}
               onClosed={handleCommentListClose}
+              onReady={() => setIsListModalReady(true)}
             />
           </LeftPart>
           <RightPart>
@@ -377,6 +411,7 @@ export default function UserFeedbackToolkit({
               />
             </EmojiFormWrapper>
           </RightPart>
+          {!isAllReady && <NotReadyMask />}
         </>
       )}
     </Wrapper>
