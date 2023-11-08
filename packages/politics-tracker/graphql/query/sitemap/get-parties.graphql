@@ -1,0 +1,10 @@
+query GetParties {
+  parties: organizations(where: {
+    status: { equals: "verified" },
+    classification: { equals: "party"}
+  }) {
+    id
+    createdAt
+    updatedAt
+  }
+}
