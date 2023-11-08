@@ -1,4 +1,5 @@
 // @ts-ignore: no definition
+//@ts-nocheck
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import moment from 'moment'
