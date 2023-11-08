@@ -15,9 +15,9 @@ import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
+import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
-import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
+import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import {
   GenericGQLData,
   PROGRESS,
@@ -30,7 +30,6 @@ import {
 import type {
   ExpertPoint,
   FactCheck,
-  OrganizationId,
   PersonElection,
   PersonElectionTerm,
   PersonOverview,
@@ -39,12 +38,7 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
-import {
-  electionName,
-  fireGqlRequest,
-  hasOwnByArray,
-  partyName,
-} from '~/utils/utils'
+import { electionName, fireGqlRequest, hasOwnByArray } from '~/utils/utils'
 type PoliticsPageProps = {
   titleProps: PersonOverview
   elections: PersonElection[]
@@ -52,13 +46,13 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
-export default function Politics(props: PoliticsPageProps) {
+export default function OrganizationPolitics(props: PoliticsPageProps) {
   console.log(props)
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
-    waiting: props.titleProps.waiting,
-    completed: props.titleProps.completed,
+    waiting: props.titleProps?.waiting,
+    completed: props.titleProps?.completed,
   })
 
   function setAmount(amount: PoliticAmount) {
@@ -72,34 +66,34 @@ export default function Politics(props: PoliticsPageProps) {
       href: {
         pathname: '/person/[id]',
         query: {
-          id: props.person.id,
+          id: props.person?.id,
         },
       },
     },
     next: {
       backgroundColor: 'bg-campaign',
-      content: props.latestElection.name,
+      content: props.latestElection?.name,
       href: {
         pathname: '/election',
         query: {
-          year: props.latestElection.year,
-          area: props.latestElection.electionArea,
-          type: props.latestElection.electionType,
+          year: props.latestElection?.year,
+          area: props.latestElection?.electionArea,
+          type: props.latestElection?.electionType,
         },
       },
     },
     alwaysShowHome: true,
   }
 
-  const sections = props.elections.map((e, index) => (
+  const sections = props.elections?.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
 
   return (
     <DefaultLayout>
       <CustomHead
-        title={`${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`}
-        description={`${props.titleProps.name}參選紀錄及相關政見`}
+        title={`${props.titleProps?.name} - 政見總覽｜READr 政商人物資料庫`}
+        description={`${props.titleProps?.name}參選紀錄及相關政見`}
         url={`${siteUrl}${asPath}`}
       />
       <main className="flex w-screen flex-col items-center bg-politics">
@@ -117,7 +111,6 @@ export default function Politics(props: PoliticsPageProps) {
   )
 }
 
-// Get titleProps, elections, latestElection and Person
 export const getServerSideProps: GetServerSideProps<
   PoliticsPageProps
 > = async ({ query, res }) => {
@@ -127,7 +120,8 @@ export const getServerSideProps: GetServerSideProps<
     'public, max-age=600, stale-while-revalidate=60'
   )
 
-  const { personId } = query
+  const { organizationId } = query
+  console.log(organizationId, 'hi')
 
   try {
     const profile: PersonOverview = {
@@ -143,19 +137,19 @@ export const getServerSideProps: GetServerSideProps<
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}
     const personElectionIds: number[] = []
-    let latestPersonElection: RawPersonElection
+    let latestOrganizationElection: RawPersonElection
     let latestPerson: RawPerson
     let electionTerm: PersonElectionTerm
-    let organizationId: OrganizationId
+    // let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
       // also generate personElectionIds for query politics
       const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
         await fireGqlRequest(
-          print(GetPersonOverView),
+          print(GetOrganizationOverView),
           {
-            personId,
+            organizationId,
           },
           cmsApiUrl
         )
@@ -164,17 +158,17 @@ export const getServerSideProps: GetServerSideProps<
 
       if (gqlErrors) {
         const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `GetPersonOverView` query'),
+          new Error('Errors returned in `GetOrganizationOverView` query'),
           'GraphQLError',
-          'failed to complete `GetPersonOverView`',
+          'failed to complete `GetOrganizationOverView`',
           { errors: gqlErrors }
         )
 
         throw annotatingError
       }
 
-      const personElections = rawData.data?.personElections
-      if (!personElections || personElections.length === 0) {
+      const organizationsElections = rawData.data?.organizationsElections
+      if (!organizationsElections || organizationsElections.length === 0) {
         return {
           notFound: true,
         }
@@ -183,29 +177,29 @@ export const getServerSideProps: GetServerSideProps<
       const now = moment()
 
       // sorted by election date
-      latestPersonElection = personElections.reduce(
+      latestOrganizationElection = organizationsElections.reduce(
         (previous: RawPersonElection, current: RawPersonElection) => {
           const id = Number(current.id)
-          personElectionIds.push(id)
+          organizationsElections.push(id)
 
-          const latest = previous.election
-          const election = current.election
-          const party = current.party
-          const electionArea = current.electoral_district
+          const latest = previous.elections
+          const election = current.elections
+          //   const party = current.party
+          //   const electionArea = current.electoral_district
 
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
               electionType: String(election.type),
-              electionArea: String(electionArea?.city),
+              //   electionArea: String(electionArea?.city),
               id: String(current.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
-                election.name,
-                electionArea?.city
+                election.name
+                // electionArea?.city
               ),
-              party: partyName(party?.name),
-              partyIcon: party?.image ?? '',
+              //   party: partyName(party?.name),
+              //   partyIcon: party?.image ?? '',
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
@@ -215,16 +209,16 @@ export const getServerSideProps: GetServerSideProps<
                   'YYYY-M-D'
                 )
               ),
-              elected: current.elected === true,
-              incumbent: current.incumbent === true,
-              source: current.politicSource ?? '',
+              //   elected: current.elected === true,
+              //   incumbent: current.incumbent === true,
+              source: current.source ?? '',
               mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
-              electionTerm: electionTerm,
-              organizationId: organizationId,
+              //   electionTerm: electionTerm,
+              //   organizationId: organizationId,
               shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
@@ -259,23 +253,26 @@ export const getServerSideProps: GetServerSideProps<
         { election: {} }
       )
 
-      const person = latestPersonElection.person_id as RawPerson
-      const election = latestPersonElection.election as RawElection
-      const party = latestPersonElection.party
-      profile.id = person?.id ?? ''
-      profile.name = person?.name ?? ''
-      profile.avatar = person?.image ?? ''
-      profile.party = partyName(party?.name)
-      profile.partyIcon = party?.image ?? ''
+      console.log(latestOrganizationElection, 'latestOrganizationElection')
+
+      const organization =
+        latestOrganizationElection.organization_id as RawPerson
+      const election = latestOrganizationElection.elections as RawElection
+      //   const party = latestOrganizationElection.party
+      profile.id = organization?.id ?? ''
+      profile.name = organization?.name ?? ''
+      profile.avatar = organization?.image ?? ''
+      //   profile.party = partyName(party?.name)
+      //   profile.partyIcon = party?.image ?? ''
       profile.campaign = election?.type ?? ''
-      latestPerson = person
+      latestPerson = organization
     }
 
     {
       // get related politics
       const rawData: GenericGQLData<RawPolitic[], 'politics'> =
         await fireGqlRequest(
-          print(GetPoliticsRelatedToPersonElections),
+          print(GetPoliticsRelatedToOrganizationsElections),
           {
             ids: personElectionIds,
           },
@@ -533,7 +530,7 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
-      organizationId = personOrganization[0]?.organization_id ?? {}
+      //   organizationId = personOrganization[0]?.organization_id ?? {}
 
       // Push the election term data to the current election object
       election.electionTerm = {
@@ -545,7 +542,7 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: electionTerm.end_date_year,
       }
       // Push the organizationId data to the current election object
-      election.organizationId = organizationId
+      //   election.organizationId = organizationId
     }
 
     return {
