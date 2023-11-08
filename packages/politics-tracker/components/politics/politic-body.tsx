@@ -30,6 +30,7 @@ const PoliticForm = dynamic(() => import('./politic-form'), {
 type PoliticBodyProps = Politic & {
   no: number
   hidePoliticDetail: string | null
+  shouldShowFeedbackForm: boolean
 }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
@@ -140,6 +141,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const currentDate = new Date()
   const shouldShow =
     hidingDate !== null && hidingDate.getTime() > currentDate.getTime()
+  const shouldShowFeedbackForm = shouldShow && props.shouldShowFeedbackForm
 
   return (
     <div className={style}>
@@ -166,16 +168,16 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                 <PoliticContent>{props.desc}</PoliticContent>
               </div>
               {shouldShow && (
-                <>
-                  <FactCheckAbstract
-                    positionChange={props.positionChange}
-                    factCheck={props.factCheck}
-                    expertPoint={props.expertPoint}
-                    repeat={props.repeat}
-                    landing={false}
-                  />
-                  <UserFeedbackToolkit politicId={props.id ?? ''} />
-                </>
+                <FactCheckAbstract
+                  positionChange={props.positionChange}
+                  factCheck={props.factCheck}
+                  expertPoint={props.expertPoint}
+                  repeat={props.repeat}
+                  landing={false}
+                />
+              )}
+              {shouldShowFeedbackForm && (
+                <UserFeedbackToolkit politicId={props.id ?? ''} />
               )}
               <div className={s['control-group']}>
                 <div className={s['button']} onClick={() => setEditing(true)}>

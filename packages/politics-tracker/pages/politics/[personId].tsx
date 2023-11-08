@@ -224,6 +224,7 @@ export const getServerSideProps: GetServerSideProps<
               hidePoliticDetail: election.hidePoliticDetail ?? null,
               electionTerm: electionTerm,
               organizationId: organizationId,
+              shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
 

@@ -5,9 +5,14 @@ import type {
   SingleField,
 } from '@readr-media/react-feedback/dist/typedef'
 import { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import styled from 'styled-components'
 
-import { EMOTION_FIELD_OPTIONS } from '~/constants/politics'
+import {
+  EMOTION_FIELD_OPTIONS,
+  PREFIX_FEEDBACK_FORM_INDENIFIER,
+  PREFIX_STORAGE_KEY,
+} from '~/constants/politics'
 import type { ExtendedOption } from '~/types/common'
 
 import SVGAddEmoji from '../../public/icons/emoji-field/add-emoji.svg'
@@ -21,6 +26,7 @@ const Wrapper = styled.div`
   width: 100%;
   margin-top: 12px;
 
+  cursor: default;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
   font-size: 12px;
@@ -52,6 +58,21 @@ const AddEmojiButton = styled.button<{ isActive: boolean }>`
     color: rgba(0, 0, 0, 0.87);
   }
 
+  .selected-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #efefef;
+    border-radius: 50%;
+
+    > img {
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+    }
+  }
+
   ${({ isActive }) =>
     isActive &&
     `
@@ -68,15 +89,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   width: 100vw;
   height: 100vh;
   z-index: 60; // highter than site's header
-
-  .hidden-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: inherit;
-    height: inherit;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
 
   .form-feedback {
     position: absolute;
@@ -136,15 +148,6 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
     white-space: nowrap;
     z-index: 40; // lower than site's header
 
-    .hidden-mask {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 1000vh;
-      opacity: 0;
-    }
-
     .form-feedback {
       width: 344px;
       position: relative;
@@ -177,7 +180,22 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   }
 `
 
-const HiddenMask = styled.div``
+const HiddenMask = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.5);
+  ${({ theme }) => theme.breakpoint.xl} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1000vh;
+    opacity: 0;
+  }
+`
 
 type UserFeedbackToolkitProps = {
   politicId: string
@@ -191,9 +209,13 @@ export default function UserFeedbackToolkit({
   const [summary, setSummary] = useState<Record<string, number>>({})
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [shouldShowEmojiForm, setShouldShowEmojiForm] = useState<boolean>(false)
+  const { ref, inView } = useInView({
+    threshold: 0,
+    triggerOnce: true,
+  })
 
-  const fieldIdentifier = `politic-${politicId}`
-  const storageKey = `politic-feedback-${politicId}`
+  const fieldIdentifier = `${PREFIX_FEEDBACK_FORM_INDENIFIER}-${politicId}`
+  const storageKey = `${PREFIX_STORAGE_KEY}-${politicId}`
   const modalKey = 'data-modal-opened'
 
   const optionMap = EMOTION_FIELD_OPTIONS.reduce(
@@ -256,39 +278,46 @@ export default function UserFeedbackToolkit({
   }, [storageKey])
 
   return (
-    <Wrapper>
-      <LeftPart>
-        <EmojiSummary emojiMap={optionMap} summary={summary} />
-      </LeftPart>
-      <RightPart>
-        <AddEmojiButton onClick={handleOpen} isActive={shouldShowEmojiForm}>
-          {selectedOption ? (
-            <>
-              <p>你的心情</p>
-              <span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={optionMap[selectedOption].iconUrl}
-                  alt={optionMap[selectedOption].name}
-                />
-              </span>
-            </>
-          ) : (
-            <>
-              <SVGAddEmoji />
-              <p>加入心情</p>
-            </>
-          )}
-        </AddEmojiButton>
-        <EmojiFormWrapper isOpened={shouldShowEmojiForm}>
-          <HiddenMask className="hidden-mask" onClick={handleClose} />
-          <FeedbackForm
-            shouldUseRecaptcha={false}
-            storageKey="politic-tracker-user-id"
-            forms={emojiFormSetting}
-          />
-        </EmojiFormWrapper>
-      </RightPart>
+    <Wrapper ref={ref} className="user-feedback-toolkit-wrapper">
+      {inView && (
+        <>
+          <LeftPart>
+            <EmojiSummary emojiMap={optionMap} summary={summary} />
+          </LeftPart>
+          <RightPart>
+            <AddEmojiButton onClick={handleOpen} isActive={shouldShowEmojiForm}>
+              {selectedOption ? (
+                <>
+                  <p>你的心情</p>
+                  <span className="selected-emoji">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={optionMap[selectedOption].iconUrl}
+                      alt={optionMap[selectedOption].name}
+                    />
+                  </span>
+                </>
+              ) : (
+                <>
+                  <SVGAddEmoji />
+                  <p>加入心情</p>
+                </>
+              )}
+            </AddEmojiButton>
+            <EmojiFormWrapper
+              isOpened={shouldShowEmojiForm}
+              className="emoji-form-wrapper"
+            >
+              <HiddenMask className="hidden-mask" onClick={handleClose} />
+              <FeedbackForm
+                shouldUseRecaptcha={false}
+                storageKey="politic-tracker-user-id"
+                forms={emojiFormSetting}
+              />
+            </EmojiFormWrapper>
+          </RightPart>
+        </>
+      )}
     </Wrapper>
   )
 }

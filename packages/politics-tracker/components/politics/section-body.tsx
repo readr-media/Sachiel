@@ -4,7 +4,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
-import type { MainCandidate, PersonElection, Politic } from '~/types/politics'
+import type { PersonElection, Politic } from '~/types/politics'
 
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
@@ -14,10 +14,16 @@ import WaitingPoliticBlock from './waiting-politic-block'
 
 type SectionBodyProps = Pick<
   PersonElection,
-  'source' | 'lastUpdate' | 'politics' | 'waitingPolitics'
-> & { show: boolean } & { hidePoliticDetail: string | null } & {
-  mainCandidate: MainCandidate | null
-}
+  | 'source'
+  | 'lastUpdate'
+  | 'politics'
+  | 'waitingPolitics'
+  | 'organizationId'
+  | 'mainCandidate'
+  | 'hidePoliticDetail'
+  | 'electionType'
+  | 'shouldShowFeedbackForm'
+> & { show: boolean }
 
 const Button = styled.button`
   margin: auto;
@@ -47,21 +53,40 @@ const Button = styled.button`
   &:hover {
     background-color: #fffcf3;
   }
+
+  /* Add a conditional styling for disabled buttons */
+  ${(props) =>
+    props.disabled &&
+    `
+    cursor: not-allowed;
+    background-color: #ccc;
+    border: 2px solid #777;
+    color: #777;
+    path {
+    fill: #777;
+  }
+    &:hover {
+    background-color: #ccc;
+  }
+  `}
 `
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
-  const copiedWatingPolitics = props.waitingPolitics
+  const copiedWaitingPolitics = props.waitingPolitics
     .slice(0)
     .sort((p1, p2) => Number(p1.id) - Number(p2.id))
 
-  const [waitingPoliticList, setWaitinPoliticList] =
-    useState<Politic[]>(copiedWatingPolitics)
+  const [waitingPoliticList, setWaitingPoliticList] = useState<Politic[]>(
+    copiedWaitingPolitics
+  )
 
   function addToPoliticList(politic: Politic) {
-    setWaitinPoliticList([...waitingPoliticList, politic])
+    setWaitingPoliticList([...waitingPoliticList, politic])
   }
 
   const style = classNames(s['section-body'], { [s['show']]: props.show })
+  const isLegislatorAtLarge = props.electionType === '不分區立委'
+  const isVicePresident = !!props.mainCandidate
 
   return (
     <PoliticListContext.Provider
@@ -70,10 +95,18 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
       <div className={style}>
         {props.show && (
           <>
-            {props.mainCandidate ? (
-              <Link href={`/politics/${props.mainCandidate.person_id.id}`}>
-                <Button>
-                  查看總統、副總統政見
+            {isLegislatorAtLarge || isVicePresident ? (
+              <Link
+                href={
+                  isLegislatorAtLarge
+                    ? `/politics/organization/${props.organizationId?.id}`
+                    : `/politics/${props.mainCandidate?.person_id.id}`
+                }
+              >
+                <Button disabled={isLegislatorAtLarge}>
+                  {isLegislatorAtLarge
+                    ? '查看政黨政見'
+                    : '查看總統、副總統政見'}
                   <ArrowRight />
                 </Button>
               </Link>
