@@ -7,7 +7,10 @@ import { GetServerSideProps } from 'next'
 import { getServerSideSitemap } from 'next-sitemap'
 
 import { cmsApiUrl, urlOfJsonForlandingPage } from '~/constants/config'
-import { siteUrl } from '~/constants/environment-variables'
+import {
+  prefixOfJSONForLanding2024,
+  siteUrl,
+} from '~/constants/environment-variables'
 import GetElections from '~/graphql/query/sitemap/get-elections.graphql'
 import { GenericGQLData, RawElection } from '~/types/common'
 import { fireGqlRequest } from '~/utils/utils'
@@ -17,27 +20,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const tasks = []
-    tasks.push(axios.get(urlOfJsonForlandingPage))
-    tasks.push(fireGqlRequest(print(GetElections), undefined, cmsApiUrl))
+    tasks.push(fireGqlRequest(print(GetElections), undefined, cmsApiUrl)) // elections
+    tasks.push(axios.get(urlOfJsonForlandingPage)) // 2022
+    tasks.push(
+      axios.get(`${prefixOfJSONForLanding2024}/landing_statitics.json`)
+    ) // 2024
+
     const results = await Promise.allSettled(tasks)
 
-    // landing page
-    {
-      let lastModified = new Date()
-      const resultOfLanding = results[0] as PromiseSettledResult<AxiosResponse>
-      if (resultOfLanding.status === 'fulfilled') {
-        lastModified = new Date(
-          resultOfLanding.value.headers['last-modified'] ?? lastModified
-        )
-      }
-      fields.push({
-        loc: siteUrl,
-        lastmod: lastModified.toISOString(),
-      })
-    }
     // election page
     {
-      const resultOfElections = results[1] as PromiseSettledResult<
+      const resultOfElections = results[0] as PromiseSettledResult<
         GenericGQLData<RawElection[], 'elections'>
       >
       if (resultOfElections.status === 'fulfilled') {
@@ -63,6 +56,41 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             })
           }
         }
+      }
+    }
+
+    // landing page
+    {
+      // 2022
+      {
+        let lastModified = new Date()
+        const resultOfLanding2022 =
+          results[1] as PromiseSettledResult<AxiosResponse>
+        if (resultOfLanding2022.status === 'fulfilled') {
+          lastModified = new Date(
+            resultOfLanding2022.value.headers['last-modified'] ?? lastModified
+          )
+        }
+        fields.push({
+          loc: `${siteUrl}/2022`,
+          lastmod: lastModified.toISOString(),
+        })
+      }
+
+      // 2024
+      {
+        let lastModified = new Date()
+        const resultOfLanding2024 =
+          results[2] as PromiseSettledResult<AxiosResponse>
+        if (resultOfLanding2024.status === 'fulfilled') {
+          lastModified = new Date(
+            resultOfLanding2024.value.headers['last-modified'] ?? lastModified
+          )
+        }
+        fields.push({
+          loc: siteUrl,
+          lastmod: lastModified.toISOString(),
+        })
       }
     }
   } catch (err) {

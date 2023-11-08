@@ -46,7 +46,7 @@ const sitemapConfig = {
   exclude: ['/server-sitemaps/*'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${sitemapBaseUrl}/landing-and-elections.xml`, // landing page and election pages
+      `${sitemapBaseUrl}/landing-and-elections.xml`, // landing pages and election pages
       ...getSitemapGroup(sitemapBaseUrl, 'person'), // personal pages
       ...getSitemapGroup(sitemapBaseUrl, 'politics-summary'), // politics summary pages
       `${sitemapBaseUrl}/politics-detail.xml`, // politic detail pages
