@@ -7,7 +7,11 @@ import type {
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { EMOTION_FIELD_OPTIONS } from '~/constants/politics'
+import {
+  EMOTION_FIELD_OPTIONS,
+  PREFIX_FEEDBACK_FORM_INDENIFIER,
+  PREFIX_STORAGE_KEY,
+} from '~/constants/politics'
 
 import { useConfig } from '../react-context/use-global'
 
@@ -25,6 +29,7 @@ const Container = styled.div`
     margin: 0;
     width: 100%;
     background-color: transparent;
+    cursor: default;
 
     .field-single-option {
       p {
@@ -267,10 +272,11 @@ export default function SectionFeedbackForm({
   politicId,
 }: SectionFeedbackFormProps): JSX.Element {
   const config = useConfig()
-  const fieldIdentifier = `politic-${politicId}`
-  const storageKey = `politic-feedback-${politicId}`
   const [initialized, setInitialized] = useState(false)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
+
+  const fieldIdentifier = `${PREFIX_FEEDBACK_FORM_INDENIFIER}-${politicId}`
+  const storageKey = `${PREFIX_STORAGE_KEY}-${politicId}`
 
   const updateSelectedOption = (option: string | null) => {
     if (!initialized) return

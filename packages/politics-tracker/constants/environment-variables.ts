@@ -8,6 +8,9 @@ let siteUrl: string
 let gaTrackingId: string
 let prefixOfJSONForLanding2024: string // Used on the client side to fetch.
 let gtmId: string
+let feedbackFormApi: string =
+  process.env.NEXT_PUBLIC_FEEDBACK_FORM_API ??
+  'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 
 switch (env) {
   case 'dev':
@@ -40,4 +43,11 @@ switch (env) {
     break
 }
 
-export { env, gaTrackingId, gtmId, prefixOfJSONForLanding2024, siteUrl }
+export {
+  env,
+  feedbackFormApi,
+  gaTrackingId,
+  gtmId,
+  prefixOfJSONForLanding2024,
+  siteUrl,
+}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import type { Politic } from '~/components/landing/election-2024/fact-check-group'
 import CandidateInfo from '~/components/landing/election-2024/fact-check-group/president-factcheck/candidate-info'
 import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-factcheck/link-button'
 import PoliticContent from '~/components/politics/politic-content'
@@ -9,6 +8,7 @@ import FactCheckAbstract from '~/components/shared/politic-fact-check'
 import UserFeedbackToolkit from '~/components/shared/user-feedback-toolkit'
 import SwitchArrowLeft from '~/public/icons/landing/switch-arrow-left.svg'
 import SwitchArrowRight from '~/public/icons/landing/switch-arrow-right.svg'
+import type { PoliticOfJson, PresidentFactCheckJson } from '~/types/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
@@ -165,7 +165,7 @@ const Loading = styled.div`
 `
 
 type FactCheckItemProps = {
-  candidate: any
+  candidate: PresidentFactCheckJson
   selectedCategory: PoliticCategory
   filterLabels: string[]
   isLoading: boolean
@@ -179,10 +179,14 @@ export default function FactCheckItem({
   const { person_id, politics } = candidate
 
   // 當 filterLabels（ checkbox 篩選條件）變動時，將 politics 重新篩選
-  const [pickedPolitics, setPickedPolitics] = useState(politics)
+  const [pickedPolitics, setPickedPolitics] =
+    useState<PoliticOfJson[]>(politics)
 
   useEffect(() => {
-    const filterPoliticsByCount = (politics: Politic[], labels: string[]) => {
+    const filterPoliticsByCount = (
+      politics: PoliticOfJson[],
+      labels: string[]
+    ) => {
       return politics.filter((politic) =>
         //@ts-ignore
         labels.every((label) => politic[label] > 0)
@@ -198,7 +202,7 @@ export default function FactCheckItem({
   const hasPolitics = Boolean(pickedPolitics.length > 0)
   const [politicNumber, setPoliticNumber] = useState(hasPolitics ? 1 : 0)
 
-  const politicId = pickedPolitics[politicNumber - 1]?.id || null
+  const politicId = pickedPolitics[politicNumber - 1]?.id || ''
   const desc = pickedPolitics[politicNumber - 1]?.desc || ''
   const positionChange = pickedPolitics[politicNumber - 1]?.positionChange || []
   const expertPoint = pickedPolitics[politicNumber - 1]?.expertPoint || []
