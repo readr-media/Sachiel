@@ -4,6 +4,7 @@ import NextLink from 'next/link'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
+import { Z_INDEX } from '~/constants'
 import { feedbackFormApi } from '~/constants/environment-variables'
 import { useWindowSize } from '~/utils/hooks'
 
@@ -22,7 +23,7 @@ const Wrapper = styled.div<{ isOpened: boolean }>`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  z-index: 60; // higher than site's header
+  z-index: ${Z_INDEX.overHeader}; // higher than site's header
 
   ${({ theme }) => theme.breakpoint.xl} {
     background-color: rgba(0, 0, 0, 0.5);

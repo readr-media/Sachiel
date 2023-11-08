@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import styled, { css } from 'styled-components'
 
+import { Z_INDEX } from '~/constants'
 import {
   EMOTION_FIELD_OPTIONS,
   PREFIX_FEEDBACK_FORM_INDENIFIER,
@@ -117,7 +118,7 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 60; // highter than site's header
+  z-index: ${Z_INDEX.overHeader}; // highter than site's header
 
   .form-feedback {
     position: absolute;
@@ -175,7 +176,7 @@ const EmojiFormWrapper = styled.div<{ isOpened: boolean }>`
     top: calc(16px + 8px);
     left: 50%;
     white-space: nowrap;
-    z-index: 40; // lower than site's header
+    z-index: ${Z_INDEX.belowHeader}; // lower than site's header
 
     .form-feedback {
       width: 344px;
