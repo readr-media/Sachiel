@@ -8,6 +8,7 @@ import { FactCheckPresident } from '~/components/landing/react-context/landing-2
 import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
 import { checkboxLabels } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
+import type { PresidentFactCheckJson } from '~/types/landing'
 import type { PoliticCategory } from '~/types/politics-detail'
 
 const Container = styled.div`
@@ -225,7 +226,7 @@ const CandidatesWrapper = styled.div`
 `
 type PresidentFactCheckProps = {
   categories: PoliticCategory[]
-  factCheckJSON: any
+  factCheckJSON: PresidentFactCheckJson[]
 }
 export default function PresidentFactCheck({
   categories = [],

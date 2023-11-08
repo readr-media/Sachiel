@@ -6,7 +6,7 @@ import Header from '~/components/header'
 import Councilor from '~/components/landing/election-2022/council-main'
 import FrontPage from '~/components/landing/election-2022/frontpage-main'
 import Mayor from '~/components/landing/election-2022/mayor-main'
-import Report from '~/components/landing/election-2022/report'
+import RelatedPosts from '~/components/landing/election-2022/related-posts'
 import CollaborateGuide from '~/components/landing/shared/collaborate-guide'
 import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
@@ -53,11 +53,9 @@ export default function LandingMain({ propsData }) {
           propsData={propsData}
         />
         <FileDownload links={fileDownload2022} />
+
         {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (
-          <Report
-            // @ts-ignore
-            propsData={propsData.postsWithPoliticsTrackerTag}
-          />
+          <RelatedPosts posts={propsData.postsWithPoliticsTrackerTag} />
         )}
         <TeamIntro intro={teamIntro2022} />
       </Main>

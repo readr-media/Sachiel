@@ -1,3 +1,6 @@
+import type { PersonElection } from '~/types/politics'
+import type { FactCheckPartner, PoliticDetail } from '~/types/politics-detail'
+
 // 候選人資料
 export type Candidate = {
   id?: string
@@ -61,7 +64,7 @@ export type PropsData = {
 export type allPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
-  state: string // 文章發佈狀態(Draft/Published/Scheduled/Archieved)
+  state: string // 文章發佈狀態(Draft/Published/Scheduled/Archived)
   publishTime: string // 文章發佈時間
   heroImage: null | ImageOfPost
 }
@@ -70,4 +73,57 @@ export type ImageOfPost = {
   id: string
   name: string //文章視覺圖名稱
   urlOriginal: string //文章視覺圖網址
+}
+
+//關係資料庫 Related Posts 相關文章
+export type RelatedPost = {
+  id: string
+  name: string
+  url: string
+  ogIMage: string
+  createdAt: string
+  partner: Pick<FactCheckPartner, 'id' | 'name'>[]
+}
+
+export type CategoryOfJson = {
+  id: string
+  name: string
+  count: number
+  displayColor: string
+}
+
+export type PresidentComparisonJson = {
+  expertPointCount: number
+  factCheckCount: number
+  name: string
+  number: string
+  person_id: string
+  politicsCount: number
+  positionChangeCount: number
+  repeatCount: number
+  categories_count: CategoryOfJson[]
+}
+
+export type PresidentFactCheckJson = {
+  id: string
+  number: string
+  person_id: Pick<PersonElection, 'id' | 'name'>
+  politicsCount: number
+  politics: PoliticOfJson[]
+}
+
+export type PoliticOfJson = Pick<
+  PoliticDetail,
+  | 'id'
+  | 'desc'
+  | 'politicCategory'
+  | 'positionChange'
+  | 'expertPoint'
+  | 'factCheck'
+  | 'repeat'
+> & {
+  positionChangeCount: number
+  expertPointCount: number
+  factCheckCount: number
+  repeatCount: number
 }
