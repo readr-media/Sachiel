@@ -9,6 +9,7 @@ export type PersonOverview = {
   campaign: string
   completed: number
   waiting: number
+  isPartyPage: boolean
 }
 
 export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>

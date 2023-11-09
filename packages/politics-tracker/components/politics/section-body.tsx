@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
@@ -23,7 +23,7 @@ type SectionBodyProps = Pick<
   | 'hidePoliticDetail'
   | 'electionType'
   | 'shouldShowFeedbackForm'
-> & { show: boolean }
+> & { show: boolean } & { isPartyPage: boolean }
 
 const Button = styled.button`
   margin: auto;
@@ -64,7 +64,6 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const [waitingPoliticList, setWaitingPoliticList] = useState<Politic[]>(
     copiedWaitingPolitics
   )
-  const [isOrganizationPolitics, setIsOrganizationPolitics] = useState(false)
 
   function addToPoliticList(politic: Politic) {
     setWaitingPoliticList([...waitingPoliticList, politic])
@@ -73,12 +72,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const style = classNames(s['section-body'], { [s['show']]: props.show })
   const isLegislatorAtLarge = props.electionType === '不分區立委'
   const isVicePresident = !!props.mainCandidate
-
-  useEffect(() => {
-    const currentURL = window?.location.href
-    const isOrgPolitics = currentURL.includes('party')
-    setIsOrganizationPolitics(isOrgPolitics)
-  }, [])
+  const isPartyPage = props.isPartyPage
 
   return (
     <PoliticListContext.Provider
@@ -87,8 +81,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
       <div className={style}>
         {props.show && (
           <>
-            {(!isOrganizationPolitics && isLegislatorAtLarge) ||
-            isVicePresident ? (
+            {(!isPartyPage && isLegislatorAtLarge) || isVicePresident ? (
               <Link
                 href={
                   isLegislatorAtLarge
@@ -106,7 +99,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
             ) : (
               <>
                 {props.politics.length > 0 ? (
-                  <PoliticBlock {...props} />
+                  <PoliticBlock {...props} isPartyPage={isPartyPage} />
                 ) : (
                   <div className={s['default']}>這個人還沒有被新增政見...</div>
                 )}

@@ -46,8 +46,9 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
+const isPartyPage = true
+
 export default function OrganizationPolitics(props: PoliticsPageProps) {
-  console.log(props)
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
@@ -60,16 +61,7 @@ export default function OrganizationPolitics(props: PoliticsPageProps) {
   }
 
   const navProps: NavProps = {
-    prev: {
-      backgroundColor: 'bg-person',
-      content: '回個人資訊',
-      href: {
-        pathname: '/person/[id]',
-        query: {
-          id: props.person?.id,
-        },
-      },
-    },
+    prev: null,
     next: {
       backgroundColor: 'bg-campaign',
       content: props.latestElection?.name,
@@ -86,7 +78,7 @@ export default function OrganizationPolitics(props: PoliticsPageProps) {
   }
 
   const sections = props.elections?.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} />
+    <SectionList key={e.id} order={index} {...e} isPartyPage={isPartyPage} />
   ))
 
   return (
@@ -132,6 +124,7 @@ export const getServerSideProps: GetServerSideProps<
       campaign: '',
       waiting: 0,
       completed: 0,
+      isPartyPage: true,
     }
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}

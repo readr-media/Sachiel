@@ -8,7 +8,7 @@ import PoliticBody from './politic-body'
 type PoliticBlockProps = Pick<
   PersonElection,
   'politics' | 'source' | 'lastUpdate' | 'shouldShowFeedbackForm'
-> & { hidePoliticDetail: string | null }
+> & { hidePoliticDetail: string | null } & { isPartyPage: boolean }
 
 type GroupData = {
   name: string
@@ -56,6 +56,7 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
             {...p}
             hidePoliticDetail={props.hidePoliticDetail}
             shouldShowFeedbackForm={props.shouldShowFeedbackForm ?? false}
+            isPartyPage={props.isPartyPage}
           />
         ))}
       </div>
