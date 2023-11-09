@@ -143,6 +143,14 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const shouldShow =
     hidingDate !== null && hidingDate.getTime() > currentDate.getTime()
   const shouldShowFeedbackForm = shouldShow && props.shouldShowFeedbackForm
+  const linkHref = {
+    pathname: props.isPartyPage
+      ? '/politics/party/detail/[politicId]'
+      : '/politics/detail/[politicId]',
+    query: {
+      politicId: props.id,
+    },
+  }
 
   return (
     <div className={style}>
@@ -189,12 +197,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                 </div>
                 <div className={s['divider']}></div>
                 <Link
-                  href={{
-                    pathname: '/politics/detail/[politicId]',
-                    query: {
-                      politicId: props.id,
-                    },
-                  }}
+                  href={linkHref}
                   legacyBehavior={false}
                   className={s['button']}
                   onClick={() => logGAEvent('click', '點擊「政見細節」')}
