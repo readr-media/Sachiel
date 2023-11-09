@@ -132,6 +132,7 @@ export const getServerSideProps: GetServerSideProps<
       campaign: '',
       waiting: 0,
       completed: 0,
+      isPartyPage: true,
     }
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}
