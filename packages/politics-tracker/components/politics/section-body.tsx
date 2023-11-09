@@ -76,7 +76,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
 
   useEffect(() => {
     const currentURL = window?.location.href
-    const isOrgPolitics = currentURL.includes('organization')
+    const isOrgPolitics = currentURL.includes('party')
     setIsOrganizationPolitics(isOrgPolitics)
   }, [])
 
@@ -92,7 +92,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
               <Link
                 href={
                   isLegislatorAtLarge
-                    ? `/politics/organization/${props.organizationId?.id}`
+                    ? `/politics/party/${props.organizationId?.id}`
                     : `/politics/${props.mainCandidate?.person_id.id}`
                 }
               >
