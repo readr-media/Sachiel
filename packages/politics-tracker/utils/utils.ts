@@ -11,7 +11,7 @@ import {
   SOURCE_DELIMITER,
 } from '~/constants/politics'
 import tailwindConfig from '~/tailwind.config'
-import type { FactCheck } from '~/types/politics'
+import type { PoliticFactCheck } from '~/types/politics-detail'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
 function getLineBreaks(node: ChildNode) {
@@ -206,7 +206,10 @@ function getFormattedDate(
   return formattedDate
 }
 
-function getCheckResultString(checkResultType: string, factCheck: FactCheck) {
+function getCheckResultString(
+  checkResultType: string,
+  factCheck: PoliticFactCheck
+) {
   const checkResultMappings: { [key: string]: string } = {
     '1': '與所查資料相符',
     '2': '數據符合，但推論錯誤',
