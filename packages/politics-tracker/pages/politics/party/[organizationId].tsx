@@ -46,6 +46,8 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
+const isPartyPage = true
+
 export default function OrganizationPolitics(props: PoliticsPageProps) {
   console.log(props)
   const { asPath } = useRouter()
@@ -86,7 +88,7 @@ export default function OrganizationPolitics(props: PoliticsPageProps) {
   }
 
   const sections = props.elections?.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} />
+    <SectionList key={e.id} order={index} {...e} isPartyPage={isPartyPage} />
   ))
 
   return (
