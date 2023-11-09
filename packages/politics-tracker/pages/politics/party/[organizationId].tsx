@@ -39,7 +39,7 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
-import { electionName, fireGqlRequest, hasOwnByArray } from '~/utils/utils'
+import { fireGqlRequest, hasOwnByArray } from '~/utils/utils'
 type PoliticsPageProps = {
   titleProps: PersonOverview
   elections: PersonElection[]
@@ -140,7 +140,6 @@ export const getServerSideProps: GetServerSideProps<
     let latestOrganizationElection: RawPersonElection
     let latestPerson: RawPerson
     let electionTerm: PersonElectionTerm
-    // let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
@@ -184,22 +183,16 @@ export const getServerSideProps: GetServerSideProps<
 
           const latest = previous.elections
           const election = current.elections
-          //   const party = current.party
-          //   const electionArea = current.electoral_district
 
           if (election) {
             const eId = election.id as string
             electionMap[eId] = {
               electionType: String(election.type),
-              //   electionArea: String(electionArea?.city),
+              electionArea: '',
               id: String(current.id),
-              name: electionName<string | number | undefined>(
-                election.election_year_year,
-                election.name
-                // electionArea?.city
-              ),
-              //   party: partyName(party?.name),
-              //   partyIcon: party?.image ?? '',
+              name: String(election.name),
+              party: '',
+              partyIcon: '',
               year: Number(election.election_year_year),
               month: Number(election.election_year_month),
               day: Number(election.election_year_day),
@@ -209,16 +202,16 @@ export const getServerSideProps: GetServerSideProps<
                   'YYYY-M-D'
                 )
               ),
-              //   elected: current.elected === true,
-              //   incumbent: current.incumbent === true,
+              elected: null,
+              incumbent: null,
               source: current.source ?? '',
               mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
-              //   electionTerm: electionTerm,
-              //   organizationId: organizationId,
+              electionTerm: null,
+              organizationId: current.organization_id?.id ?? null,
               shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
@@ -250,18 +243,18 @@ export const getServerSideProps: GetServerSideProps<
           }
           return previous
         },
-        { election: {} }
+        { elections: {} }
       )
 
       const organization =
         latestOrganizationElection.organization_id as RawPerson
       const election = latestOrganizationElection.elections as RawElection
-      //   const party = latestOrganizationElection.party
+
       profile.id = organization?.id ?? ''
       profile.name = organization?.name ?? ''
       profile.avatar = organization?.image ?? ''
-      //   profile.party = partyName(party?.name)
-      //   profile.partyIcon = party?.image ?? ''
+      profile.party = ''
+      profile.partyIcon = ''
       profile.campaign = election?.type ?? ''
       latestPerson = organization
     }
