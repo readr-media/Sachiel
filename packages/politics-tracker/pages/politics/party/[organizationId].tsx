@@ -1,5 +1,5 @@
 // @ts-ignore: no definition
-//@ts-nocheck
+// @ts-nocheck
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import moment from 'moment'
@@ -17,14 +17,14 @@ import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
-import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import {
   GenericGQLData,
   PROGRESS,
   RawElection,
+  RawOrganization,
+  RawOrganizationElection,
   RawPerson,
-  RawPersonElection,
   RawPolitic,
   StatusOptionsB,
 } from '~/types/common'
@@ -32,7 +32,6 @@ import type {
   ExpertPoint,
   FactCheck,
   PersonElection,
-  PersonElectionTerm,
   PersonOverview,
   Politic,
   PoliticAmount,
@@ -137,21 +136,22 @@ export const getServerSideProps: GetServerSideProps<
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}
     const organizationElectionIds: number[] = []
-    let latestOrganizationElection: RawPersonElection
+    let latestOrganizationElection: RawOrganizationElection
     let latestPerson: RawPerson
-    let electionTerm: PersonElectionTerm
 
     {
       // get latest election, person and party,
       // also generate organizationElectionIds for query politics
-      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
-        await fireGqlRequest(
-          print(GetOrganizationOverView),
-          {
-            organizationId,
-          },
-          cmsApiUrl
-        )
+      const rawData: GenericGQLData<
+        RawOrganizationElection[],
+        'organizationElections'
+      > = await fireGqlRequest(
+        print(GetOrganizationOverView),
+        {
+          organizationId,
+        },
+        cmsApiUrl
+      )
 
       const gqlErrors = rawData.errors
 
@@ -177,7 +177,10 @@ export const getServerSideProps: GetServerSideProps<
 
       // sorted by election date
       latestOrganizationElection = organizationsElections.reduce(
-        (previous: RawPersonElection, current: RawPersonElection) => {
+        (
+          previous: RawOrganizationElection,
+          current: RawOrganizationElection
+        ) => {
           const id = Number(current.id)
           organizationElectionIds.push(id)
 
@@ -202,16 +205,12 @@ export const getServerSideProps: GetServerSideProps<
                   'YYYY-M-D'
                 )
               ),
-              elected: null,
-              incumbent: null,
               source: current.source ?? '',
               mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
               politics: [],
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
-              electionTerm: null,
-              organizationId: current.organization_id?.id ?? null,
               shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
@@ -247,7 +246,7 @@ export const getServerSideProps: GetServerSideProps<
       )
 
       const organization =
-        latestOrganizationElection.organization_id as RawPerson
+        latestOrganizationElection.organization_id as RawOrganization
       const election = latestOrganizationElection.elections as RawElection
 
       profile.id = organization?.id ?? ''
@@ -500,40 +499,6 @@ export const getServerSideProps: GetServerSideProps<
           .unix()
         return next - prev
       })
-    }
-
-    // Iterate through each election and query its election term
-    for (const election of elections) {
-      const {
-        data: { personOrganizations: personOrganization },
-      } = await fireGqlRequest(
-        print(GetPersonOrganization),
-        { electionId: election.id },
-        cmsApiUrl
-      )
-
-      electionTerm = personOrganization[0] || {
-        start_date_day: null,
-        start_date_month: null,
-        start_date_year: null,
-        end_date_day: null,
-        end_date_month: null,
-        end_date_year: null,
-      }
-
-      //   organizationId = personOrganization[0]?.organization_id ?? {}
-
-      // Push the election term data to the current election object
-      election.electionTerm = {
-        start_date_day: electionTerm.start_date_day,
-        start_date_month: electionTerm.start_date_month,
-        start_date_year: electionTerm.start_date_year,
-        end_date_day: electionTerm.end_date_day,
-        end_date_month: electionTerm.end_date_month,
-        end_date_year: electionTerm.end_date_year,
-      }
-      // Push the organizationId data to the current election object
-      //   election.organizationId = organizationId
     }
 
     return {
