@@ -1,0 +1,29 @@
+query GetOrganizationOverView($organizationId: ID!) {
+  organizationsElections(
+    where: {
+      organization_id: {
+        id: { equals: $organizationId }
+        status: { equals: "verified" }
+      }
+    }
+  ) {
+    id
+    source
+    organization_id {
+      id
+      image
+      name
+    }
+    elections {
+      id
+      name
+      election_year_year
+      election_year_month
+      election_year_day
+      level
+      type
+      hidePoliticDetail
+      addComments
+    }
+  }
+}
