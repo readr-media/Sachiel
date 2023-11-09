@@ -104,7 +104,11 @@ export default function Politics(props: PoliticsPageProps) {
         url={`${siteUrl}${asPath}`}
       />
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} {...politicAmounts} />
+        <Title
+          {...props.titleProps}
+          {...politicAmounts}
+          isPartyPage={isPartyPage}
+        />
         <div className="my-10 lg:my-[40px]">
           <PoliticAmountContext.Provider
             value={{ amount: politicAmounts, setAmount: setAmount }}
