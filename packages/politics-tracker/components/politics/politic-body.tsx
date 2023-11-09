@@ -31,6 +31,7 @@ type PoliticBodyProps = Politic & {
   no: number
   hidePoliticDetail: string | null
   shouldShowFeedbackForm: boolean
+  isPartyPage: boolean
 }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
@@ -148,7 +149,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       <div className={s['container']}>
         <div className={s['header']}>
           <span className={s['index']}>{index}</span>
-          {personElection.isFinished && (
+          {!props.isPartyPage && personElection.isFinished && (
             <span className={s['politic-status']}>
               <span className={s['text']}>達成進度</span>
               <span className={statusStyle}>{getStatusText(status)}</span>

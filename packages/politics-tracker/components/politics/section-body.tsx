@@ -99,7 +99,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
             ) : (
               <>
                 {props.politics.length > 0 ? (
-                  <PoliticBlock {...props} />
+                  <PoliticBlock {...props} isPartyPage={isPartyPage} />
                 ) : (
                   <div className={s['default']}>這個人還沒有被新增政見...</div>
                 )}
