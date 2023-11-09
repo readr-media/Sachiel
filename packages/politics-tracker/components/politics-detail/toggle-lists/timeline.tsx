@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import DefaultText from '~/components/politics-detail/default-text'
-import type { TimeLine } from '~/types/politics-detail'
+import type { PoliticTimeLine } from '~/types/politics-detail'
 import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
@@ -58,12 +58,12 @@ const ContentBlock = styled.div`
 `
 
 type TimelineProps = {
-  timelines: TimeLine[]
+  timelines: PoliticTimeLine[]
 }
 export default function Timeline({
   timelines = [],
 }: TimelineProps): JSX.Element {
-  const timeLists = timelines.map((item: TimeLine) => {
+  const timeLists = timelines.map((item: PoliticTimeLine) => {
     const { id, eventDate, link, content } = item
 
     return (

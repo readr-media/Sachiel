@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import DefaultText from '~/components/politics-detail/default-text'
 import EditControversy from '~/components/politics-detail/edit/edit-controversy'
-import type { Controversy, PoliticDetail } from '~/types/politics-detail'
+import type { PoliticControversy, PoliticDetail } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
   padding: 20px 0px;
@@ -47,13 +47,13 @@ const List = styled.li`
 `
 
 type ControversyProps = {
-  politicData: PoliticDetail
-  controversies: Controversy[]
+  politic: PoliticDetail
+  controversies: PoliticControversy[]
   editMode: boolean
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function Controversy({
-  politicData,
+  politic,
   controversies = [],
   editMode = false,
   setEditMode,
@@ -76,9 +76,7 @@ export default function Controversy({
   } else if (!editMode) {
     jsx = <DefaultText title="相關爭議" />
   } else {
-    jsx = (
-      <EditControversy politicData={politicData} setEditMode={setEditMode} />
-    )
+    jsx = <EditControversy politic={politic} setEditMode={setEditMode} />
   }
 
   return <Wrapper>{jsx}</Wrapper>

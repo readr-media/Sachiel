@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 import ResponseItem from '~/components/politics-detail/toggle-lists/response/response-item'
-import type { Response } from '~/types/politics-detail'
+import type { PoliticResponse } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
   padding: 12px 0px 40px;
 `
 
 type ResponseProps = {
-  responses: Response[]
+  responses: PoliticResponse[]
 }
 export default function Response({
   responses = [],
@@ -16,7 +16,7 @@ export default function Response({
   return (
     <Wrapper>
       <ul>
-        {responses.map((value: Response, index: number) => (
+        {responses.map((value: PoliticResponse, index: number) => (
           <ResponseItem responseItem={value} key={index} />
         ))}
       </ul>
