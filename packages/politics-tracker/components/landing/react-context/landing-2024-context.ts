@@ -1,10 +1,10 @@
 import { createContext } from 'react'
 
-import type { PoliticCategory } from '~/types/politics-detail'
+import type { CategoryOfJson } from '~/types/landing'
 
 //Provider
 const FactCheckPresident = createContext<{
-  categories: PoliticCategory[]
+  categories: CategoryOfJson[]
   updatedJSON: any
   // this is type definition
   // eslint-disable-next-line
