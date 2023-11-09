@@ -122,7 +122,6 @@ export const getServerSideProps: GetServerSideProps<
   )
 
   const { organizationId } = query
-  console.log(organizationId, 'hi')
 
   try {
     const profile: PersonOverview = {
@@ -137,7 +136,7 @@ export const getServerSideProps: GetServerSideProps<
     }
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}
-    const personElectionIds: number[] = []
+    const organizationElectionIds: number[] = []
     let latestOrganizationElection: RawPersonElection
     let latestPerson: RawPerson
     let electionTerm: PersonElectionTerm
@@ -145,7 +144,7 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       // get latest election, person and party,
-      // also generate personElectionIds for query politics
+      // also generate organizationElectionIds for query politics
       const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
         await fireGqlRequest(
           print(GetOrganizationOverView),
@@ -181,7 +180,7 @@ export const getServerSideProps: GetServerSideProps<
       latestOrganizationElection = organizationsElections.reduce(
         (previous: RawPersonElection, current: RawPersonElection) => {
           const id = Number(current.id)
-          organizationsElections.push(id)
+          organizationElectionIds.push(id)
 
           const latest = previous.elections
           const election = current.elections
@@ -254,8 +253,6 @@ export const getServerSideProps: GetServerSideProps<
         { election: {} }
       )
 
-      console.log(latestOrganizationElection, 'latestOrganizationElection')
-
       const organization =
         latestOrganizationElection.organization_id as RawPerson
       const election = latestOrganizationElection.elections as RawElection
@@ -275,7 +272,7 @@ export const getServerSideProps: GetServerSideProps<
         await fireGqlRequest(
           print(GetPoliticsRelatedToOrganizationsElections),
           {
-            ids: personElectionIds,
+            ids: organizationElectionIds,
           },
           cmsApiUrl
         )
@@ -302,7 +299,7 @@ export const getServerSideProps: GetServerSideProps<
         await fireGqlRequest(
           print(GetEditingPoliticsRelatedToPersonElections),
           {
-            ids: personElectionIds,
+            ids: organizationElectionIds,
           },
           cmsApiUrl
         )
@@ -357,7 +354,7 @@ export const getServerSideProps: GetServerSideProps<
             }
           }
         } else if (!reviewed) {
-          const eId = politic.person?.election?.id as string
+          const eId = politic.organization?.elections?.id as string
 
           let positionChangeData: PositionChange[] = []
           // @ts-ignore
@@ -416,7 +413,7 @@ export const getServerSideProps: GetServerSideProps<
         politicGroup
       ).map((key) => politicGroup[key].politic)
       for (const politic of verifiedLatestPoliticList) {
-        const eId = politic.person?.election?.id as string
+        const eId = politic.organization?.elections?.id as string
 
         let positionChangeData: PositionChange[] = []
         // @ts-ignore
