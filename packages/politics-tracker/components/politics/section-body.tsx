@@ -23,10 +23,11 @@ type SectionBodyProps = Pick<
   | 'hidePoliticDetail'
   | 'electionType'
   | 'shouldShowFeedbackForm'
-> & { show: boolean }
+> & { show: boolean } & { isPartyPage: boolean }
 
 const Button = styled.button`
   margin: auto;
+  margin-top: 20px;
   display: flex;
   gap: 4px;
   justify-content: center;
@@ -53,22 +54,6 @@ const Button = styled.button`
   &:hover {
     background-color: #fffcf3;
   }
-
-  /* Add a conditional styling for disabled buttons */
-  ${(props) =>
-    props.disabled &&
-    `
-    cursor: not-allowed;
-    background-color: #ccc;
-    border: 2px solid #777;
-    color: #777;
-    path {
-    fill: #777;
-  }
-    &:hover {
-    background-color: #ccc;
-  }
-  `}
 `
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
@@ -87,6 +72,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const style = classNames(s['section-body'], { [s['show']]: props.show })
   const isLegislatorAtLarge = props.electionType === '不分區立委'
   const isVicePresident = !!props.mainCandidate
+  const isPartyPage = props.isPartyPage
 
   return (
     <PoliticListContext.Provider
@@ -95,15 +81,15 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
       <div className={style}>
         {props.show && (
           <>
-            {isLegislatorAtLarge || isVicePresident ? (
+            {(!isPartyPage && isLegislatorAtLarge) || isVicePresident ? (
               <Link
                 href={
                   isLegislatorAtLarge
-                    ? `/politics/organization/${props.organizationId?.id}`
+                    ? `/politics/party/${props.organizationId?.id}`
                     : `/politics/${props.mainCandidate?.person_id.id}`
                 }
               >
-                <Button disabled={isLegislatorAtLarge}>
+                <Button>
                   {isLegislatorAtLarge
                     ? '查看政黨政見'
                     : '查看總統、副總統政見'}
@@ -113,7 +99,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
             ) : (
               <>
                 {props.politics.length > 0 ? (
-                  <PoliticBlock {...props} />
+                  <PoliticBlock {...props} isPartyPage={isPartyPage} />
                 ) : (
                   <div className={s['default']}>這個人還沒有被新增政見...</div>
                 )}

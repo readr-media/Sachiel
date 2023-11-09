@@ -154,12 +154,9 @@ export default function Title(props: PersonOverview): JSX.Element {
     customClass: subTextClass,
   }
 
-  const hrefObject: LinkHref = {
-    pathname: '/person/[id]',
-    query: {
-      id: props.id,
-    },
-  }
+  const hrefObject: LinkHref = props.isPartyPage
+    ? { pathname: '/' } // Link to '/' when isPartyPage is true
+    : { pathname: '/person/[id]', query: { id: props.id } } // Link to '/person/[id]' otherwise
 
   return (
     <div className={s['main-container']}>
@@ -193,17 +190,19 @@ export default function Title(props: PersonOverview): JSX.Element {
               />
             </MultipleLineBlock>
           </Link>
-          <div className={s.party}>
-            <Icon src={props.partyIcon} {...party} />
-            <div className={s['party-name']}>
-              <MultipleLineBlock content={props.party} {...subText}>
-                <SingleLineBlock
-                  content={props.party}
-                  customClass={subTextClass}
-                />
-              </MultipleLineBlock>
+          {!props.isPartyPage && (
+            <div className={s.party}>
+              <Icon src={props.partyIcon} {...party} />
+              <div className={s['party-name']}>
+                <MultipleLineBlock content={props.party} {...subText}>
+                  <SingleLineBlock
+                    content={props.party}
+                    customClass={subTextClass}
+                  />
+                </MultipleLineBlock>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <span className={s.tab}>政見</span>

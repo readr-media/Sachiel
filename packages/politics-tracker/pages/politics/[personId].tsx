@@ -52,8 +52,9 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
+const isPartyPage = false
+
 export default function Politics(props: PoliticsPageProps) {
-  console.log(props)
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
@@ -92,7 +93,7 @@ export default function Politics(props: PoliticsPageProps) {
   }
 
   const sections = props.elections.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} />
+    <SectionList key={e.id} order={index} {...e} isPartyPage={isPartyPage} />
   ))
 
   return (
@@ -139,6 +140,7 @@ export const getServerSideProps: GetServerSideProps<
       campaign: '',
       waiting: 0,
       completed: 0,
+      isPartyPage: false,
     }
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}
