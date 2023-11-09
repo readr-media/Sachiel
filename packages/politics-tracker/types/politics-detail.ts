@@ -2,7 +2,6 @@ import type {
   GenericExpert,
   GenericFactCheck,
   GenericFactCheckPartner,
-  GenericOrganizationElection,
   GenericPoliticCategory,
   GenericPositionChange,
   GenericProgressType,
@@ -12,6 +11,7 @@ import type {
   GenericTimeline,
   RawElection,
   RawOrganization,
+  RawOrganizationElection,
   RawPersonElection,
 } from '~/types/common'
 
@@ -37,7 +37,7 @@ export type PoliticDetail = {
 }
 
 export type OrganizationElection = {
-  id: Pick<GenericOrganizationElection, 'id'>
+  id: Pick<RawOrganizationElection, 'id'>
   organization_id: Pick<RawOrganization, 'id' | 'name' | 'image'>
   elections: Pick<
     RawElection,
@@ -110,10 +110,6 @@ export type PersonElection = Pick<
   | 'incumbent'
 >
 
-export type PoliticCategory = Pick<
-  GenericPoliticCategory,
-  'id' | 'name' | 'politicsCount'
->
 export type PoliticResponse = Pick<
   GenericResponse,
   'id' | 'content' | 'responseName' | 'responsePic' | 'responseTitle' | 'link'

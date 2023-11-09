@@ -152,6 +152,12 @@ export type RawOrganizationElection = Partial<{
   updatedBy: string
   mainCandidate: MainCandidate
   addComments: boolean
+  election_year_year: number
+  election_year_month: number
+  election_year_day: number
+  seats: string
+  politics: RawPolitic
+  politicsCount: number
 }>
 
 export type JSONValue =
@@ -225,7 +231,7 @@ export type GenericStatus =
   | 'verified' //已確認
   | 'notverified' //未確認
 
-export type GenericPositionChange = Partial<{
+export type GenericPositionChange = {
   id: string
   positionChangeSummary: string
   isChanged: string
@@ -241,9 +247,9 @@ export type GenericPositionChange = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericFactCheck = Partial<{
+export type GenericFactCheck = {
   id: string
   factCheckSummary: string
   checkResultType: string
@@ -259,9 +265,9 @@ export type GenericFactCheck = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericRepeat = Partial<{
+export type GenericRepeat = {
   id: string
   repeatSummary: string
   factcheckPartner: GenericFactCheckPartner | null
@@ -276,9 +282,9 @@ export type GenericRepeat = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericExpert = Partial<{
+export type GenericExpert = {
   id: string
   expertPointSummary: string
   expert: string
@@ -295,9 +301,9 @@ export type GenericExpert = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericFactCheckPartner = Partial<{
+export type GenericFactCheckPartner = {
   id: string
   name: string
   type: string
@@ -316,18 +322,18 @@ export type GenericFactCheckPartner = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericResizedImages = Partial<{
+export type GenericResizedImages = {
   original: string
   w480: string
   w800: string
   w1200: string
   w1600: string
   w2400: string
-}>
+}
 
-export type GenericPersonOrganization = Partial<{
+export type GenericPersonOrganization = {
   id: string
   person_id: RawPerson
   organization_id: GenericOrganization
@@ -344,9 +350,9 @@ export type GenericPersonOrganization = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericPoliticCategory = Partial<{
+export type GenericPoliticCategory = {
   id: string
   name: string
   brief: string
@@ -360,18 +366,18 @@ export type GenericPoliticCategory = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericUser = Partial<{
+export type GenericUser = {
   id: string
   name: string
   email: string
   password: { isSet: boolean }
   role: string
   isProtected: boolean
-}>
+}
 
-export type GenericOrganization = Partial<{
+export type GenericOrganization = {
   id: string
   name: string
   alternative: string | null
@@ -399,9 +405,9 @@ export type GenericOrganization = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericPhoto = Partial<{
+export type GenericPhoto = {
   id: string
   name: string
   resized: GenericResizedImages
@@ -410,9 +416,9 @@ export type GenericPhoto = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericResponse = Partial<{
+export type GenericResponse = {
   id: string
   politic: RawPolitic
   politicCount: number
@@ -427,9 +433,9 @@ export type GenericResponse = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericTimeline = Partial<{
+export type GenericTimeline = {
   id: string
   politic: RawPolitic
   politicCount: number
@@ -444,9 +450,9 @@ export type GenericTimeline = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}>
+}
 
-export type GenericControversy = Partial<{
+export type GenericControversy = {
   id: string
   politic: RawPolitic
   politicCount: number
@@ -455,25 +461,6 @@ export type GenericControversy = Partial<{
   link: string
   editingPolitic: RawPolitic
   editingPoliticCount: number
-  createdAt: string
-  updatedAt: string
-  createdBy: GenericUser
-  updatedBy: GenericUser
-}>
-
-export type GenericOrganizationElection = {
-  id: string
-  organization_id: RawOrganization
-  election_year_year: number
-  election_year_month: number
-  election_year_day: number
-  number: number
-  votes_obtained_number: number
-  seats: string
-  source: string
-  elections: RawElection
-  politics: RawPolitic
-  politicsCount: number
   createdAt: string
   updatedAt: string
   createdBy: GenericUser
