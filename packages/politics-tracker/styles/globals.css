@@ -14,4 +14,9 @@
       overflow: hidden;
     } 
   }
+
+  body[data-modal-opened='true'][data-modal-open-style="always-top"] {
+    height: 100vh;
+    overflow: hidden;
+  }
 }
