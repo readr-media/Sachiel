@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { useState } from 'react'
 import styled from 'styled-components'
 
@@ -12,7 +11,10 @@ import Repeat from '~/components/politics-detail/toggle-lists/repeat'
 import Response from '~/components/politics-detail/toggle-lists/response'
 import TimeLine from '~/components/politics-detail/toggle-lists/timeline'
 import EditButton from '~/components/shared/edit-button'
+import Legislators from '~/components/shared/legislator-at-large'
+import type { LegislatorAtLarge } from '~/types/politics'
 import type { PoliticDetail } from '~/types/politics-detail'
+import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -42,10 +44,14 @@ type ToggleItems = {
   isActive: boolean
 }
 type SectionContentProps = {
-  politicData: PoliticDetail
+  politic: PoliticDetail
+  legislators?: LegislatorAtLarge[]
+  isElectionFinished?: boolean
 }
 export default function SectionContent({
-  politicData,
+  politic,
+  legislators = [],
+  isElectionFinished = false,
 }: SectionContentProps): JSX.Element {
   const [isControEdit, setIsControEdit] = useState(false)
 
@@ -61,7 +67,7 @@ export default function SectionContent({
     updatedAt = '',
     repeat = [],
     response = [],
-  } = politicData
+  } = politic
 
   const toggleItems: ToggleItems[] = [
     {
@@ -117,7 +123,7 @@ export default function SectionContent({
       ),
       children: (
         <Controversy
-          politicData={politicData}
+          politic={politic}
           controversies={controversies}
           editMode={isControEdit}
           setEditMode={setIsControEdit}
@@ -128,10 +134,15 @@ export default function SectionContent({
     },
   ]
 
-  const formattedDate = dayjs(updatedAt).format('YYYY/MM/DD')
+  //如果選舉類型不是不分區則不要顯示
 
   return (
     <Wrapper>
+      <Legislators
+        isElectionFinished={isElectionFinished}
+        legislators={legislators}
+      />
+
       {toggleItems.map((item, index) =>
         item.showToggle ? (
           <ToggleItem
@@ -146,7 +157,11 @@ export default function SectionContent({
         ) : null
       )}
 
-      {updatedAt && <UpdatedTime>最後更新於：{formattedDate}</UpdatedTime>}
+      {updatedAt && (
+        <UpdatedTime>
+          最後更新於：{getFormattedDate(updatedAt, '/')}
+        </UpdatedTime>
+      )}
     </Wrapper>
   )
 }

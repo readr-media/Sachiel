@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
+import type { LegislatorAtLarge } from '~/types/politics'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
 import SectionFeedbackForm from './section-feeedback-form'
@@ -18,22 +19,39 @@ const SectionContainer = styled.div`
 `
 
 type SectionProps = {
-  politicData: PoliticDetail
+  politic: PoliticDetail
   electionTerm: PersonElectionTerm
   shouldShowFeedbackForm: boolean
+  isPartyPage?: boolean
+  legislators?: LegislatorAtLarge[]
 }
 export default function Section({
-  politicData,
+  politic,
   electionTerm,
   shouldShowFeedbackForm = false,
+  isPartyPage = false,
+  legislators = [],
 }: SectionProps): JSX.Element {
+  const { organization, person } = politic
+
   //get election Date (YYYY-MM-DD)
-  let electionDate =
-    politicData?.person?.election?.election_year_year +
-    '-' +
-    politicData?.person?.election?.election_year_month +
-    '-' +
-    politicData?.person?.election?.election_year_day
+  let electionDate: string = ''
+
+  if (isPartyPage) {
+    electionDate =
+      organization?.elections?.election_year_year +
+      '-' +
+      organization?.elections?.election_year_month +
+      '-' +
+      organization?.elections?.election_year_day
+  } else {
+    electionDate =
+      person?.election?.election_year_year +
+      '-' +
+      person?.election?.election_year_month +
+      '-' +
+      person?.election?.election_year_day
+  }
 
   // get current Date (YYYY-MM-DD)
   let currentTime = new Date()
@@ -43,16 +61,24 @@ export default function Section({
   let currentDate = `${year}-${month}-${day}`
 
   // compare "election Date" & "current Date"
-  const electionFinishedOrNot = +new Date(electionDate) < +new Date(currentDate)
+  const isElectionFinished = +new Date(electionDate) < +new Date(currentDate)
 
   return (
     <SectionContainer>
       <div>
-        <SectionTitle politicData={politicData} electionTerm={electionTerm} />
-        {electionFinishedOrNot && <ProgressBar politicData={politicData} />}
-        <SectionContent politicData={politicData} />
+        <SectionTitle
+          politic={politic}
+          electionTerm={electionTerm}
+          isPartyPage={isPartyPage}
+        />
+        {isElectionFinished && <ProgressBar politic={politic} />}
+        <SectionContent
+          politic={politic}
+          legislators={legislators}
+          isElectionFinished={isElectionFinished}
+        />
         {shouldShowFeedbackForm && (
-          <SectionFeedbackForm politicId={politicData?.id} />
+          <SectionFeedbackForm politicId={politic?.id} />
         )}
       </div>
     </SectionContainer>
