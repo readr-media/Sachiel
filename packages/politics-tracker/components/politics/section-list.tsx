@@ -35,6 +35,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           electionType={props.electionType}
           organizationId={props.organizationId}
           shouldShowFeedbackForm={props.shouldShowFeedbackForm}
+          isPartyPage={props.isPartyPage}
         />
       </div>
     </PersonElectionContext.Provider>
