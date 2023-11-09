@@ -117,11 +117,7 @@ type TextConfig = {
   customClass: string
 }
 
-export default function Title(
-  props: PersonOverview & {
-    isPartyPage: boolean
-  }
-): JSX.Element {
+export default function Title(props: PersonOverview): JSX.Element {
   const personLarge: IconConfig = {
     width: 60,
     height: 60,

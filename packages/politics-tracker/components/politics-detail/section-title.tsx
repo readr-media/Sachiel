@@ -113,7 +113,7 @@ const PartyImage = styled.div`
 type SectionTitleProps = {
   politic: PoliticDetail
   electionTerm: PersonElectionTerm
-  isPartyPage: boolean
+  isPartyPage?: boolean
 }
 export default function SectionTitle({
   politic,

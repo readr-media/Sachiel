@@ -31,7 +31,7 @@ type PoliticBodyProps = Politic & {
   no: number
   hidePoliticDetail: string | null
   shouldShowFeedbackForm: boolean
-  isPartyPage: boolean
+  isPartyPage?: boolean
 }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {

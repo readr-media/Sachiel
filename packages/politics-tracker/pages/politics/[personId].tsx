@@ -52,8 +52,6 @@ type PoliticsPageProps = {
   latestElection: PersonElection
 }
 
-const isPartyPage = false
-
 export default function Politics(props: PoliticsPageProps) {
   const { asPath } = useRouter()
 
@@ -93,7 +91,7 @@ export default function Politics(props: PoliticsPageProps) {
   }
 
   const sections = props.elections.map((e, index) => (
-    <SectionList key={e.id} order={index} {...e} isPartyPage={isPartyPage} />
+    <SectionList key={e.id} order={index} {...e} />
   ))
 
   return (
@@ -104,11 +102,7 @@ export default function Politics(props: PoliticsPageProps) {
         url={`${siteUrl}${asPath}`}
       />
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title
-          {...props.titleProps}
-          {...politicAmounts}
-          isPartyPage={isPartyPage}
-        />
+        <Title {...props.titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[40px]">
           <PoliticAmountContext.Provider
             value={{ amount: politicAmounts, setAmount: setAmount }}
