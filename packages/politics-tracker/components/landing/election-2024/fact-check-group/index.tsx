@@ -4,11 +4,10 @@ import styled from 'styled-components'
 import ComparisonBlock from '~/components/landing/election-2024/fact-check-group/president-comparison'
 import FactCheckBlock from '~/components/landing/election-2024/fact-check-group/president-factcheck'
 import type {
-  ExpertPoint,
-  FactCheck,
-  PoliticCategory,
-  Repeat,
-} from '~/types/politics-detail'
+  CategoryOfJson,
+  PresidentComparisonJson,
+  PresidentFactCheckJson,
+} from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -44,24 +43,10 @@ const Aside = styled.div`
   }
 `
 
-export type Politic = {
-  id: string
-  desc: string
-  politicCategory: PoliticCategory
-  positionChange: []
-  positionChangeCount: number
-  expertPoint: ExpertPoint[]
-  expertPointCount: number
-  factCheck: FactCheck[]
-  factCheckCount: number
-  repeat: Repeat[]
-  repeatCount: number
-}
-
 type FactCheckProps = {
-  categories: any
-  factCheckJSON: any
-  comparisonJSON: any
+  categories: CategoryOfJson[]
+  factCheckJSON: PresidentFactCheckJson[]
+  comparisonJSON: PresidentComparisonJson[]
 }
 export default function PresidentFactCheck({
   categories = [],

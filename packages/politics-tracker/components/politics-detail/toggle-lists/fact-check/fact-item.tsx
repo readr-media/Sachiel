@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import FactCheckIcon from '~/public/icons/fact-check-icon.svg'
-import type { FactCheck } from '~/types/politics-detail'
+import type { PoliticFactCheck } from '~/types/politics-detail'
 import { getCheckResultString } from '~/utils/utils'
 
 const ListWrapper = styled.li`
@@ -111,11 +111,16 @@ const SubTitle = styled.span`
 `
 
 type FactItemProps = {
-  factItem: FactCheck
+  factItem: PoliticFactCheck
 }
 export default function FactItem({ factItem }: FactItemProps): JSX.Element {
-  const { checkResultType, link, content, factcheckPartner, factCheckSummary } =
-    factItem
+  const {
+    checkResultType = '',
+    link = '',
+    content = '',
+    factCheckSummary = '',
+    factcheckPartner,
+  } = factItem
 
   const factType = getCheckResultString(checkResultType, factItem)
   const factText = content.split(SOURCE_DELIMITER).map((item, index) => {

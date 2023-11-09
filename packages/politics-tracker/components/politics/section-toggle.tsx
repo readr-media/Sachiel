@@ -31,7 +31,7 @@ type SectionToggleProps = {
   electionTerm: PersonElectionTerm
   elected: boolean
   incumbent: boolean
-  isPartyPage: boolean
+  isPartyPage?: boolean
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   const toggleClass = props.isActive ? s['toggle-active'] : s['toggle']

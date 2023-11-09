@@ -14,6 +14,7 @@ query GetPoliticDetail($politicId: ID!) {
     current_progress
     updatedAt
     contributer
+
     person {
       id
       votes_obtained_number
@@ -44,6 +45,26 @@ query GetPoliticDetail($politicId: ID!) {
         image
       }
     }
+
+    organization {
+      id
+      organization_id {
+        id
+        name
+        image
+      }
+      elections {
+        id
+        name
+        type
+        level
+        status
+        election_year_year
+        election_year_month
+        election_year_day
+      }
+    }
+
     timeline(orderBy: { eventDate: asc }) {
       id
       eventDate

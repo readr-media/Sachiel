@@ -8,7 +8,7 @@ import PoliticBody from './politic-body'
 type PoliticBlockProps = Pick<
   PersonElection,
   'politics' | 'source' | 'lastUpdate' | 'shouldShowFeedbackForm'
-> & { hidePoliticDetail: string | null } & { isPartyPage: boolean }
+> & { hidePoliticDetail: string | null } & { isPartyPage?: boolean }
 
 type GroupData = {
   name: string

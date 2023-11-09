@@ -23,8 +23,8 @@ export type RawElectionArea = Partial<{
   status: StatusOptionsA
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
 }>
 
 export type RawElection = Partial<{
@@ -42,8 +42,8 @@ export type RawElection = Partial<{
   status: StatusOptionsA
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
   hidePoliticDetail: string
   addComments: boolean
 }>
@@ -82,8 +82,8 @@ export type RawPerson = Partial<{
   thread_parent: RawPerson
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
 }>
 
 export type RawOrganization = Partial<{
@@ -109,12 +109,13 @@ export type RawOrganization = Partial<{
   status: StatusOptionsB
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
 }>
 
 export type RawPersonElection = Partial<{
   id: string
+  name: string
   person_id: RawPerson
   election: RawElection
   party: RawOrganization
@@ -129,8 +130,8 @@ export type RawPersonElection = Partial<{
   politicSource: string
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
   mainCandidate: MainCandidate
 }>
 
@@ -170,8 +171,8 @@ export type RawTag = Partial<{
   isFeatured: boolean
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
 }>
 
 export enum PROGRESS {
@@ -196,8 +197,8 @@ export type RawPolitic = Partial<{
   politicCategory: RawTag
   createdAt: string
   updatedAt: string
-  createdBy: string
-  updatedBy: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
 }>
 
 export type Source = {
@@ -213,3 +214,268 @@ export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
 // This utility is for overwriting type without extending it
 // prettier-ignore
 export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U
+
+export type GenericProgressType =
+  | 'no-progress' // 還沒開始
+  | 'in-progress' // 進行中
+  | 'in-trouble' // 卡關中
+  | 'complete' // 已完成
+
+export type GenericStatus =
+  | 'verified' //已確認
+  | 'notverified' //未確認
+
+export type GenericPositionChange = Partial<{
+  id: string
+  positionChangeSummary: string
+  isChanged: string
+  factcheckPartner: GenericFactCheckPartner | null
+  content: string
+  checkDate: string
+  link: string
+  politic: RawPolitic
+  politicCount: number
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericFactCheck = Partial<{
+  id: string
+  factCheckSummary: string
+  checkResultType: string
+  checkResultOther: string
+  factcheckPartner: GenericFactCheckPartner | null
+  content: string
+  link: string
+  politic: RawPolitic
+  politicCount: number
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericRepeat = Partial<{
+  id: string
+  repeatSummary: string
+  factcheckPartner: GenericFactCheckPartner | null
+  content: string
+  link: string
+  contributer: string
+  politic: RawPolitic
+  politicCount: number
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericExpert = Partial<{
+  id: string
+  expertPointSummary: string
+  expert: string
+  avatar: string
+  content: string
+  link: string
+  title: string
+  contributer: string
+  politic: RawPolitic
+  politicCount: number
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericFactCheckPartner = Partial<{
+  id: string
+  name: string
+  type: string
+  webUrl: string
+  logo: GenericPhoto // for Landing Page
+  slogo: GenericPhoto // for Politic Detail Page
+  year: string
+  postsCount: number
+  positionChange: GenericPositionChange
+  positionChangeCount: number
+  factCheck: GenericFactCheck
+  factCheckCount: number
+  repeat: GenericRepeat
+  repeatCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericResizedImages = Partial<{
+  original: string
+  w480: string
+  w800: string
+  w1200: string
+  w1600: string
+  w2400: string
+}>
+
+export type GenericPersonOrganization = Partial<{
+  id: string
+  person_id: RawPerson
+  organization_id: GenericOrganization
+  election: RawPersonElection
+  role: string
+  start_date_year: string | null
+  start_date_month: string | null
+  start_date_day: string | null
+  end_date_year: string | null
+  end_date_month: string | null
+  end_date_day: string | null
+  source: string
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericPoliticCategory = Partial<{
+  id: string
+  name: string
+  brief: string
+  displayColor: string
+  ogTitle: string
+  ogDescription: string
+  isFeatured: boolean
+  politics: RawPolitic
+  politicsCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericUser = Partial<{
+  id: string
+  name: string
+  email: string
+  password: { isSet: boolean }
+  role: string
+  isProtected: boolean
+}>
+
+export type GenericOrganization = Partial<{
+  id: string
+  name: string
+  alternative: string | null
+  other_names: string | null
+  identifiers: string | null
+  classification: string
+  abstract: string | null
+  description: string | null
+  founding_date_year: string
+  founding_date_month: string
+  founding_date_day: string
+  dissolution_date_year: string
+  dissolution_date_month: string
+  dissolution_date_day: string
+  image: string | null
+  contact_details: string | null
+  links: string | null
+  address: string | null
+  source: string | null
+  status: GenericStatus
+  tags: GenericPoliticCategory
+  tagsCount: number
+  reviewed: boolean
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericPhoto = Partial<{
+  id: string
+  name: string
+  resized: GenericResizedImages
+  urlOriginal: string
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericResponse = Partial<{
+  id: string
+  politic: RawPolitic
+  politicCount: number
+  responseName: string
+  responsePic: string
+  responseTitle: string
+  content: string
+  link: string
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericTimeline = Partial<{
+  id: string
+  politic: RawPolitic
+  politicCount: number
+  eventDate: string
+  sortOrder: number
+  content: string
+  link: string
+  contributer: string
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericControversy = Partial<{
+  id: string
+  politic: RawPolitic
+  politicCount: number
+  content: string
+  factcheckPartner: GenericFactCheckPartner | null
+  link: string
+  editingPolitic: RawPolitic
+  editingPoliticCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}>
+
+export type GenericOrganizationElection = {
+  id: string
+  organization_id: RawOrganization
+  election_year_year: number
+  election_year_month: number
+  election_year_day: number
+  number: number
+  votes_obtained_number: number
+  seats: string
+  source: string
+  elections: RawElection
+  politics: RawPolitic
+  politicsCount: number
+  createdAt: string
+  updatedAt: string
+  createdBy: GenericUser
+  updatedBy: GenericUser
+}

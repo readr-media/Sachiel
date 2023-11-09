@@ -23,7 +23,7 @@ type SectionBodyProps = Pick<
   | 'hidePoliticDetail'
   | 'electionType'
   | 'shouldShowFeedbackForm'
-> & { show: boolean } & { isPartyPage: boolean }
+> & { show: boolean } & { isPartyPage?: boolean }
 
 const Button = styled.button`
   margin: auto;
