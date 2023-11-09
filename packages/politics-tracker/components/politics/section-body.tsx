@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
@@ -27,6 +27,7 @@ type SectionBodyProps = Pick<
 
 const Button = styled.button`
   margin: auto;
+  margin-top: 20px;
   display: flex;
   gap: 4px;
   justify-content: center;
@@ -53,22 +54,6 @@ const Button = styled.button`
   &:hover {
     background-color: #fffcf3;
   }
-
-  /* Add a conditional styling for disabled buttons */
-  ${(props) =>
-    props.disabled &&
-    `
-    cursor: not-allowed;
-    background-color: #ccc;
-    border: 2px solid #777;
-    color: #777;
-    path {
-    fill: #777;
-  }
-    &:hover {
-    background-color: #ccc;
-  }
-  `}
 `
 
 export default function SectionBody(props: SectionBodyProps): JSX.Element {
@@ -79,6 +64,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const [waitingPoliticList, setWaitingPoliticList] = useState<Politic[]>(
     copiedWaitingPolitics
   )
+  const [isOrganizationPolitics, setIsOrganizationPolitics] = useState(false)
 
   function addToPoliticList(politic: Politic) {
     setWaitingPoliticList([...waitingPoliticList, politic])
@@ -88,6 +74,12 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
   const isLegislatorAtLarge = props.electionType === '不分區立委'
   const isVicePresident = !!props.mainCandidate
 
+  useEffect(() => {
+    const currentURL = window?.location.href
+    const isOrgPolitics = currentURL.includes('party')
+    setIsOrganizationPolitics(isOrgPolitics)
+  }, [])
+
   return (
     <PoliticListContext.Provider
       value={{ politicList: waitingPoliticList, addToList: addToPoliticList }}
@@ -95,15 +87,16 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
       <div className={style}>
         {props.show && (
           <>
-            {isLegislatorAtLarge || isVicePresident ? (
+            {(!isOrganizationPolitics && isLegislatorAtLarge) ||
+            isVicePresident ? (
               <Link
                 href={
                   isLegislatorAtLarge
-                    ? `/politics/organization/${props.organizationId?.id}`
+                    ? `/politics/party/${props.organizationId?.id}`
                     : `/politics/${props.mainCandidate?.person_id.id}`
                 }
               >
-                <Button disabled={isLegislatorAtLarge}>
+                <Button>
                   {isLegislatorAtLarge
                     ? '查看政黨政見'
                     : '查看總統、副總統政見'}

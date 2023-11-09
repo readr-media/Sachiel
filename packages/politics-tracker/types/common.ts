@@ -134,6 +134,25 @@ export type RawPersonElection = Partial<{
   mainCandidate: MainCandidate
 }>
 
+export type RawOrganizationElection = Partial<{
+  id: string
+  organization_id: RawOrganization
+  elections: RawElection
+  party: RawOrganization
+  legislatoratlarge_number: string
+  number: string
+  electionArea: RawElectionArea
+  votes_obtained_number: string
+  votes_obtained_percentage: string
+  source: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  mainCandidate: MainCandidate
+  addComments: boolean
+}>
+
 export type JSONValue =
   | string
   | number

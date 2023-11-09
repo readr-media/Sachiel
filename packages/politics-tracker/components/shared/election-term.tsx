@@ -33,6 +33,9 @@ export default function ElectionTerm({
   isElected = false,
   isIncumbent = false,
 }: ElectionTermProps): JSX.Element | null {
+  if (!termDate || termDate === null) {
+    return null
+  }
   const isValuesNull = Object.values(termDate).every((value) => value === null)
 
   //不顯示任期狀況：（1)未當選 (2) termDate 為空物件 (3)有 termDate 但所有任期時間皆為 null
