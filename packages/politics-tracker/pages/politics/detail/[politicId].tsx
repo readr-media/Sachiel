@@ -108,6 +108,7 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
       <Main>
         <Title
+          isPartyPage={false}
           campaign={latestPersonElection.election?.type ?? ''}
           {...titleProps}
         />
