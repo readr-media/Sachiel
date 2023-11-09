@@ -134,8 +134,6 @@ export default function SectionContent({
     },
   ]
 
-  //如果選舉類型不是不分區則不要顯示
-
   return (
     <Wrapper>
       <Legislators
