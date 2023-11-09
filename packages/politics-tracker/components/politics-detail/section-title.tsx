@@ -132,7 +132,7 @@ export default function SectionTitle({
 
   if (isPartyPage) {
     electionArea = ''
-    linkHref = `/politics/party/${organization?.id}` || '/'
+    linkHref = `/politics/party/${organization?.organization_id?.id}` || '/'
 
     rawElectionName = organization?.elections?.name || ''
     electionCenturyYear =

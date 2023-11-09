@@ -9,7 +9,7 @@ import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
 import { checkboxLabels } from '~/constants/landing'
 import { defaultFactCheckJSON } from '~/constants/landing'
 import type { PresidentFactCheckJson } from '~/types/landing'
-import type { PoliticCategory } from '~/types/politics-detail'
+import type { CategoryOfJson } from '~/types/landing'
 
 const Container = styled.div`
   width: 100%;
@@ -225,7 +225,7 @@ const CandidatesWrapper = styled.div`
   }
 `
 type PresidentFactCheckProps = {
-  categories: PoliticCategory[]
+  categories: CategoryOfJson[]
   factCheckJSON: PresidentFactCheckJson[]
 }
 export default function PresidentFactCheck({

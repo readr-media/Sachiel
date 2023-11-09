@@ -6,7 +6,7 @@ import { useFactCheckPresident } from '~/components/landing/react-context/use-la
 import { Z_INDEX } from '~/constants'
 import CloseCross from '~/public/icons/close-cross.svg'
 import DropdownArrow from '~/public/icons/landing/dropdown-arrow.svg'
-import { PoliticCategory } from '~/types/politics-detail'
+import { CategoryOfJson } from '~/types/landing'
 
 const Container = styled.div`
   outline: 2px solid ${({ theme }) => theme.borderColor.black};
@@ -136,9 +136,9 @@ const CategoryItem = styled.div`
 `
 
 type DropdownProps = {
-  selectedCategory: PoliticCategory
+  selectedCategory: CategoryOfJson
   // eslint-disable-next-line
-  setSelectedCategory: (value: PoliticCategory) => void
+  setSelectedCategory: (value: CategoryOfJson) => void
   // eslint-disable-next-line
   setIsDropdownClicked: (value: boolean) => void
 }
@@ -150,7 +150,7 @@ export default function CustomSelect({
   const { categories } = useFactCheckPresident()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleOptionClick = (option: PoliticCategory) => {
+  const handleOptionClick = (option: CategoryOfJson) => {
     //if select the same category, not fetching data again
     if (option !== selectedCategory) {
       setSelectedCategory(option)
