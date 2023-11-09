@@ -1,6 +1,6 @@
 import * as tsImport from 'ts-import'
 
-const { siteUrl } = await tsImport.load('./constants/config.ts')
+const { siteUrl } = await tsImport.load('./constants/environment-variables.ts')
 const sitemapBaseUrl = `${siteUrl}/server-sitemaps`
 
 /** @type {(string|number)[]} */
