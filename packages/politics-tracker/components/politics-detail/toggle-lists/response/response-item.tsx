@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import type { Response } from '~/types/politics-detail'
+import type { PoliticResponse } from '~/types/politics-detail'
 
 const ListWrapper = styled.li`
   padding: 20px;
@@ -82,13 +82,18 @@ const Title = styled.p`
 `
 
 type ResponseItemProps = {
-  responseItem: Response
+  responseItem: PoliticResponse
 }
 export default function ResponseItem({
   responseItem,
 }: ResponseItemProps): JSX.Element {
-  const { responseName, responsePic, responseTitle, content, link } =
-    responseItem
+  const {
+    responseName = '',
+    responsePic = '',
+    responseTitle = '',
+    content = '',
+    link = '',
+  } = responseItem
 
   const responseText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return <p key={index}>{item}</p>

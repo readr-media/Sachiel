@@ -87,19 +87,19 @@ export default function FactCheckPartners({
 
         if (existingItem) {
           existingItem.partners.push({
-            id: item.id,
-            name: item.name,
-            webUrl: item.webUrl,
+            id: item.id || '',
+            name: item.name || '',
+            webUrl: item.webUrl || '',
             logo: item.logo || [],
           })
         } else {
           result.push({
-            type: item.type,
+            type: item.type || '',
             partners: [
               {
-                id: item.id,
-                name: item.name,
-                webUrl: item.webUrl,
+                id: item.id || '',
+                name: item.name || '',
+                webUrl: item.webUrl || '',
                 logo: item.logo || [],
               },
             ],

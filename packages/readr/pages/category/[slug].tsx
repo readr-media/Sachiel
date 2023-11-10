@@ -245,11 +245,8 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
-  query,
 }) => {
   setCacheControl(res)
-
-  const client = getGqlClient()
 
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
@@ -258,44 +255,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     slug: DEFAULT_CATEGORY.slug,
   }
   let categoriesWithoutPosts: CategoryWithoutPosts[] = []
-  const useGql = query.gql as string
 
   try {
     {
       // fetch categories and related 12 posts
-      let data: { categories: Category[] }
-
-      if (!useGql) {
-        const response = await axios.get<{ categories: Category[] }>(
-          LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL
-        )
-        data = response.data
-      } else {
-        const { data: queryData, error: gqlErrors } = await client.query<{
-          categories: Category[]
-        }>({
-          query: categoriesQuery,
-          variables: {
-            relatedPostFirst: 12,
-            shouldQueryRelatedPost: true,
-            shouldQueryRelatedReport: false,
-            relatedPostTypes: postStyles,
-          },
-        })
-
-        data = queryData
-
-        if (gqlErrors) {
-          const annotatingError = errors.helpers.wrap(
-            new Error('Errors returned in `categories` query'),
-            'GraphQLError',
-            'failed to complete `categories`',
-            { errors: gqlErrors }
-          )
-
-          throw annotatingError
-        }
-      }
+      const response = await axios.get<{ categories: Category[] }>(
+        LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL
+      )
+      let data = response.data
 
       categories = data.categories.map((category) => {
         const posts = category.posts
@@ -322,35 +289,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch latest 12 posts
-      let latestPosts: Post[]
-      if (!useGql) {
-        const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
-        const { posts } = response.data
-        // since the json is shared with the homepage latest, here we only take 12 posts
-        latestPosts = posts.slice(0, 12)
-      } else {
-        const { data, errors: gqlErrors } = await client.query<{
-          latestPosts: Post[]
-        }>({
-          query: latestPostsQuery,
-          variables: {
-            first: 12,
-          },
-        })
-
-        latestPosts = data.latestPosts
-
-        if (gqlErrors) {
-          const annotatingError = errors.helpers.wrap(
-            new Error('Errors returned in `latestPosts` query'),
-            'GraphQLError',
-            'failed to complete `latestPosts`',
-            { errors: gqlErrors }
-          )
-
-          throw annotatingError
-        }
-      }
+      const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
+      const { posts } = response.data
+      // since the json is shared with the homepage latest, here we only take 12 posts
+      let latestPosts = posts.slice(0, 12)
 
       latest.posts = latestPosts.map(postConvertFunc)
       latest.reports = []

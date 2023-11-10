@@ -31,6 +31,7 @@ type SectionToggleProps = {
   electionTerm: PersonElectionTerm
   elected: boolean
   incumbent: boolean
+  isPartyPage?: boolean
 }
 export default function SectionToggle(props: SectionToggleProps): JSX.Element {
   const toggleClass = props.isActive ? s['toggle-active'] : s['toggle']
@@ -55,23 +56,25 @@ export default function SectionToggle(props: SectionToggleProps): JSX.Element {
       <div className={toggleClass} onClick={toggle}>
         <div className={s['content']}>
           <div className={s['text']}>{props.content}</div>
-          <PartyTermWrapper>
-            <div className={s['party-group']}>
-              <Icon
-                src={props.partyIcon}
-                width={20}
-                height={20}
-                borderWidth={1}
-                unoptimized={true}
+          {!props.isPartyPage && (
+            <PartyTermWrapper>
+              <div className={s['party-group']}>
+                <Icon
+                  src={props.partyIcon}
+                  width={20}
+                  height={20}
+                  borderWidth={1}
+                  unoptimized={true}
+                />
+                <div className={s['party']}>{props.party}</div>
+              </div>
+              <ElectionTerm
+                isElected={props.elected}
+                isIncumbent={props.incumbent}
+                termDate={props.electionTerm}
               />
-              <div className={s['party']}>{props.party}</div>
-            </div>
-            <ElectionTerm
-              isElected={props.elected}
-              isIncumbent={props.incumbent}
-              termDate={props.electionTerm}
-            />
-          </PartyTermWrapper>
+            </PartyTermWrapper>
+          )}
         </div>
         <span className={s['control']}>
           {props.isActive ? <ArrowUp /> : <ArrowDown />}

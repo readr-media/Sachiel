@@ -1,0 +1,16 @@
+query GetPersonElectionsRelatedToParty($electionId: ID!, $partyId: ID!) {
+  personElections(
+    where: {
+      election: { id: { equals: $electionId } }
+      party: { id: { equals: $partyId } }
+    }
+    orderBy: { legislatoratlarge_number: asc }
+  ) {
+    id
+    elected
+    person_id {
+      id
+      name
+    }
+  }
+}

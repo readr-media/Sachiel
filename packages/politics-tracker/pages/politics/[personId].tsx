@@ -53,7 +53,6 @@ type PoliticsPageProps = {
 }
 
 export default function Politics(props: PoliticsPageProps) {
-  console.log(props)
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
@@ -139,6 +138,7 @@ export const getServerSideProps: GetServerSideProps<
       campaign: '',
       waiting: 0,
       completed: 0,
+      isPartyPage: false,
     }
     const elections: PersonElection[] = []
     const electionMap: Record<string, PersonElection> = {}

@@ -7,8 +7,10 @@ import SectionBody from './section-body'
 import s from './section-list.module.css'
 import SectionToggle from './section-toggle'
 
-type SectionListProps = PersonElection & { order: number }
-
+type SectionListProps = PersonElection & {
+  order: number
+  isPartyPage?: boolean
+}
 export default function SectionList(props: SectionListProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.order === 0)
 
@@ -32,6 +34,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           electionType={props.electionType}
           organizationId={props.organizationId}
           shouldShowFeedbackForm={props.shouldShowFeedbackForm}
+          isPartyPage={props.isPartyPage}
         />
       </div>
     </PersonElectionContext.Provider>

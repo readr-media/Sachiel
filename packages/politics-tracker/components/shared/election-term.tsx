@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { PersonElectionTerm } from '~/types/politics-detail'
+
 const Term = styled.div`
   padding: 4px;
   border: 1px solid ${({ theme }) => theme.borderColor.black};
@@ -14,28 +16,22 @@ const Term = styled.div`
   }
 `
 
-type TermDate = {
-  start_date_day: string | null
-  start_date_month: string | null
-  start_date_year: string | null
-  end_date_day: string | null
-  end_date_month: string | null
-  end_date_year: string | null
-}
 type ElectionTermProps = {
-  termDate: TermDate
+  termDate: PersonElectionTerm
   isElected?: boolean
   isIncumbent?: boolean
 }
-
 export default function ElectionTerm({
   termDate,
   isElected = false,
   isIncumbent = false,
 }: ElectionTermProps): JSX.Element | null {
+  if (!termDate || termDate === null) {
+    return null
+  }
+  //不顯示任期狀況：（1)候選人未當選 (2) termDate 為空物件 (3)有 termDate 但所有任期時間皆為 null (4)政黨頁面
   const isValuesNull = Object.values(termDate).every((value) => value === null)
 
-  //不顯示任期狀況：（1)未當選 (2) termDate 為空物件 (3)有 termDate 但所有任期時間皆為 null
   if (!isElected || Object.keys(termDate).length === 0 || isValuesNull) {
     return null
   }

@@ -9,7 +9,7 @@ import UserFeedbackToolkit from '~/components/shared/user-feedback-toolkit'
 import SwitchArrowLeft from '~/public/icons/landing/switch-arrow-left.svg'
 import SwitchArrowRight from '~/public/icons/landing/switch-arrow-right.svg'
 import type { PoliticOfJson, PresidentFactCheckJson } from '~/types/landing'
-import type { PoliticCategory } from '~/types/politics-detail'
+import type { CategoryOfJson } from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -166,7 +166,7 @@ const Loading = styled.div`
 
 type FactCheckItemProps = {
   candidate: PresidentFactCheckJson
-  selectedCategory: PoliticCategory
+  selectedCategory: CategoryOfJson
   filterLabels: string[]
   isLoading: boolean
 }

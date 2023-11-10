@@ -1,3 +1,5 @@
+import type { RawPersonElection } from '~/types/common'
+
 import { PROGRESS } from './common'
 
 export type PersonOverview = {
@@ -9,6 +11,7 @@ export type PersonOverview = {
   campaign: string
   completed: number
   waiting: number
+  isPartyPage?: boolean
 }
 
 export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>
@@ -46,7 +49,7 @@ export type FactCheckPartner = {
 export type FactCheck = {
   id: string
   factCheckSummary: string
-  checkResultType: string | null
+  checkResultType: string
   checkResultOther: string
   factcheckPartner: FactCheckPartner | null
 }
@@ -111,4 +114,10 @@ export type PersonElection = {
   mainCandidate: MainCandidate | null
   organizationId: OrganizationId | null
   shouldShowFeedbackForm?: boolean
+}
+
+export type LegislatorAtLarge = {
+  elected: boolean
+  id: string
+  person_id: Pick<RawPersonElection, 'id' | 'name'>
 }

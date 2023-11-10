@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import SimilarIcon from '~/public/icons/similar-policies.svg'
-import type { Repeat } from '~/types/politics-detail'
+import type { PoliticRepeat } from '~/types/politics-detail'
 
 const ListWrapper = styled.li`
   padding: 20px;
@@ -132,13 +132,18 @@ const Summary = styled.span`
   }
 `
 type RepeatItemProps = {
-  repeatItem: Repeat
+  repeatItem: PoliticRepeat
 }
 export default function RepeatItem({
   repeatItem,
 }: RepeatItemProps): JSX.Element {
-  const { link, content, factcheckPartner, contributer, repeatSummary } =
-    repeatItem
+  const {
+    link = '',
+    content = '',
+    contributer = '',
+    repeatSummary = '',
+    factcheckPartner,
+  } = repeatItem
 
   const repeatText = content.split(SOURCE_DELIMITER).map((item, index) => {
     return (

@@ -31,6 +31,7 @@ type PoliticBodyProps = Politic & {
   no: number
   hidePoliticDetail: string | null
   shouldShowFeedbackForm: boolean
+  isPartyPage?: boolean
 }
 
 export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
@@ -142,13 +143,21 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const shouldShow =
     hidingDate !== null && hidingDate.getTime() > currentDate.getTime()
   const shouldShowFeedbackForm = shouldShow && props.shouldShowFeedbackForm
+  const linkHref = {
+    pathname: props.isPartyPage
+      ? '/politics/party/detail/[politicId]'
+      : '/politics/detail/[politicId]',
+    query: {
+      politicId: props.id,
+    },
+  }
 
   return (
     <div className={style}>
       <div className={s['container']}>
         <div className={s['header']}>
           <span className={s['index']}>{index}</span>
-          {personElection.isFinished && (
+          {!props.isPartyPage && personElection.isFinished && (
             <span className={s['politic-status']}>
               <span className={s['text']}>達成進度</span>
               <span className={statusStyle}>{getStatusText(status)}</span>
@@ -188,12 +197,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
                 </div>
                 <div className={s['divider']}></div>
                 <Link
-                  href={{
-                    pathname: '/politics/detail/[politicId]',
-                    query: {
-                      politicId: props.id,
-                    },
-                  }}
+                  href={linkHref}
                   legacyBehavior={false}
                   className={s['button']}
                   onClick={() => logGAEvent('click', '點擊「政見細節」')}
