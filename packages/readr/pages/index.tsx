@@ -24,7 +24,6 @@ import {
 } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category } from '~/graphql/query/category'
-import { categories as categoriesQuery } from '~/graphql/query/category'
 import type { Collaboration } from '~/graphql/query/collaboration'
 import { collaborations as collaborationsQuery } from '~/graphql/query/collaboration'
 import type { DataSetWithCount } from '~/graphql/query/dataset'
@@ -34,7 +33,6 @@ import type { EditorCard } from '~/graphql/query/editor-choice'
 import { editorChoices as editorChoicesQuery } from '~/graphql/query/editor-choice'
 import type { Feature } from '~/graphql/query/feature'
 import { features as featuresQuery } from '~/graphql/query/feature'
-import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { Quote } from '~/graphql/query/quote'
 import { quotes as quotesQuery } from '~/graphql/query/quote'
 import useScrollToEnd from '~/hooks/useScrollToEnd'
@@ -130,7 +128,6 @@ function arrayRandomFilter<T>(arr: T[] = [], targetSize: number = 0): T[] {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
-  query,
 }) => {
   setCacheControl(res)
 
