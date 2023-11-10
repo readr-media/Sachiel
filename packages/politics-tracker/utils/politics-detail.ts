@@ -1,21 +1,27 @@
-import type { Controversy } from '~/types/politics-detail'
+import type { PoliticControversy } from '~/types/politics-detail'
 
-function isSameContent(obj1: Controversy, obj2: Controversy): boolean {
+function isSameContent(
+  obj1: PoliticControversy,
+  obj2: PoliticControversy
+): boolean {
   return JSON.stringify(obj1) === JSON.stringify(obj2)
 }
 
 function getDifferentControversies(
-  array: Controversy[],
-  controversies: Controversy[]
-): Controversy[] | [] {
+  array: PoliticControversy[],
+  controversies: PoliticControversy[]
+): PoliticControversy[] | [] {
   const differentControversies = []
 
   for (const obj of array) {
-    const matchingControversy = controversies.find(
-      (controversy) => controversy.id === obj.id
+    const matchingPoliticControversy = controversies.find(
+      (PoliticControversy) => PoliticControversy.id === obj.id
     )
 
-    if (matchingControversy && !isSameContent(obj, matchingControversy)) {
+    if (
+      matchingPoliticControversy &&
+      !isSameContent(obj, matchingPoliticControversy)
+    ) {
       differentControversies.push(obj)
     }
   }
@@ -24,25 +30,27 @@ function getDifferentControversies(
 }
 
 function getControversyToConnect(
-  array: Controversy[],
-  controversyToAdd: Controversy[]
-): Controversy[] | [] {
+  array: PoliticControversy[],
+  PoliticControversyToAdd: PoliticControversy[]
+): PoliticControversy[] | [] {
   return (
-    array.filter((item: Controversy) => !controversyToAdd.includes(item)) || []
+    array.filter(
+      (item: PoliticControversy) => !PoliticControversyToAdd.includes(item)
+    ) || []
   )
 }
 
 function getControversyToAdd(
-  array: Controversy[],
-  controversies: Controversy[]
-): Controversy[] | [] {
+  array: PoliticControversy[],
+  controversies: PoliticControversy[]
+): PoliticControversy[] | [] {
   let listToAdd = []
 
-  const objWithPrefixed = array.filter((item: Controversy) =>
+  const objWithPrefixed = array.filter((item: PoliticControversy) =>
     item.id.startsWith('add-')
   )
   const objWithoutPrefixed = array.filter(
-    (item: Controversy) => !item.id.startsWith('add-')
+    (item: PoliticControversy) => !item.id.startsWith('add-')
   )
   const differentObjects = getDifferentControversies(
     objWithoutPrefixed,

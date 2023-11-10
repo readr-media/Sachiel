@@ -1,9 +1,9 @@
 .section-body {
   --button-height: 10px;
-  @apply flex flex-col flex-nowrap bg-white shadow-bottom-and-x ml-[var(--button-height)] transition-all duration-300 ease-in-out max-h-0 min-h-0;
+  @apply ml-[var(--button-height)] flex max-h-0 min-h-0 flex-col flex-nowrap bg-white shadow-bottom-and-x transition-all duration-300 ease-in-out;
 
   &.show {
-    @apply min-h-[150px];
+    @apply min-h-[92px];
     max-height: unset;
   }
 }

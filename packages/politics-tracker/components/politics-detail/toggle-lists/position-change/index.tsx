@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import type { PositionChange } from '~/types/politics-detail'
+import type { PoliticPositionChange } from '~/types/politics-detail'
 import { getFormattedDate, getPositionChangeString } from '~/utils/utils'
 
 const Wrapper = styled.div`
@@ -106,20 +106,20 @@ const ContentBlock = styled.div`
 `
 
 type PositionChangeProps = {
-  positions: PositionChange[]
+  positions: PoliticPositionChange[]
 }
 export default function PositionChange({
   positions = [],
 }: PositionChangeProps): JSX.Element {
-  const positionLists = positions.map((item: PositionChange) => {
+  const positionLists = positions.map((item: PoliticPositionChange) => {
     const {
-      id,
-      checkDate,
-      isChanged,
-      link,
-      content,
+      id = '',
+      checkDate = '',
+      isChanged = '',
+      link = '',
+      content = '',
+      positionChangeSummary = '',
       factcheckPartner,
-      positionChangeSummary,
     } = item
 
     return (
