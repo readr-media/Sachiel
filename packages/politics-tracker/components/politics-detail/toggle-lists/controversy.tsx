@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   line-height: 1.5;
 
   a {
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     display: inline-block;
     word-break: break-all;
     cursor: pointer;

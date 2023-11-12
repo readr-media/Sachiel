@@ -14,7 +14,7 @@ const dotStyle = css`
 const ListItem = styled.a`
   position: relative;
   display: block;
-  color: ${({ theme }) => theme.textColor.brown};
+  color: ${({ theme }) => theme.textColor.yellow};
   word-break: break-all;
   cursor: pointer;
   font-size: 16px;

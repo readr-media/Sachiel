@@ -44,7 +44,7 @@ const Time = styled.span`
 
 const ContentBlock = styled.div`
   .content-text {
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     display: inline-block;
     word-break: break-all;
     cursor: pointer;
