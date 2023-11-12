@@ -221,10 +221,7 @@ export const getServerSideProps: GetServerSideProps<
       const combinedPolitics = politicList.concat(editingPoliticLists)
 
       const passedAmount = combinedPolitics.filter(
-        (value: RawPolitic) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
+        (value: RawPolitic) => value.status === 'verified' && value.reviewed
       ).length
 
       const waitingAmount = combinedPolitics.filter(
