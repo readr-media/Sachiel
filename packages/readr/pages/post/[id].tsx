@@ -14,7 +14,6 @@ import { LATEST_POSTS_URL, SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { PostDetail } from '~/graphql/query/post'
 import { post as postQuery } from '~/graphql/query/post'
-import { latestPosts as latestPostsQuery } from '~/graphql/query/post'
 import type { NextPageWithLayout } from '~/pages/_app'
 import { ResizedImages, ValidPostStyle } from '~/types/common'
 import { setCacheControl } from '~/utils/common'
@@ -109,7 +108,6 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
   res,
-  query,
 }) => {
   setCacheControl(res)
 
@@ -169,36 +167,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
     {
       // fetch the latest 4 reports
-      const useGql = query.gql as string
       const postId = params?.id
-      if (!useGql) {
-        const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
-        latestPosts =
-          response.data?.posts
-            .filter((post) => post.id !== postId)
-            .slice(0, 4) ?? []
-      } else {
-        const { data, errors: gqlErrors } = await client.query<{
-          latestPosts: Post[]
-        }>({
-          query: latestPostsQuery,
-          variables: {
-            first: 4,
-            skipId: postId,
-          },
-        })
-        latestPosts = data.latestPosts ?? []
-
-        if (gqlErrors) {
-          const annotatingError = errors.helpers.wrap(
-            'GraphQLError',
-            'failed to complete `latestPosts`',
-            { errors: gqlErrors }
-          )
-
-          throw annotatingError
-        }
-      }
+      const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
+      latestPosts =
+        response.data?.posts.filter((post) => post.id !== postId).slice(0, 4) ??
+        []
     }
   } catch (err) {
     const annotatingError = errors.helpers.wrap(

@@ -38,7 +38,7 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
-import { fireGqlRequest, hasOwnByArray } from '~/utils/utils'
+import { electionName, fireGqlRequest, hasOwnByArray } from '~/utils/utils'
 type PoliticsPageProps = {
   titleProps: PersonOverview
   elections: PersonElection[]
@@ -190,7 +190,11 @@ export const getServerSideProps: GetServerSideProps<
               electionType: String(election.type),
               electionArea: '',
               id: String(current.id),
-              name: String(election.name),
+              name: electionName<string | number | undefined>(
+                election.election_year_year,
+                election.name,
+                ''
+              ),
               party: '',
               partyIcon: '',
               year: Number(election.election_year_year),

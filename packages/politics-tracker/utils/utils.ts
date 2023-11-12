@@ -1,10 +1,10 @@
+import axios from 'axios'
 import dayjs from 'dayjs'
 import type { Config } from 'tailwindcss'
+import { v4 as uuidv4 } from 'uuid'
 
 import type { Source } from '~/types/common'
 const resolveConfig = require('tailwindcss/resolveConfig')
-import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid'
 
 import {
   SOURCE_DELEMITER_SECONDARY,
@@ -117,7 +117,7 @@ function partyName(party: string | null | undefined): string {
 function electionName<T extends string | number | undefined>(
   year: T,
   name: T,
-  area: T
+  area?: T
 ): string {
   // replace year info in election.name with emepty string
   return [year, String(name).replace(/^\d+年/, ''), area]
