@@ -55,21 +55,21 @@ const DetailList = styled.li`
   }
 `
 
-type PoliticDetailProps = {
-  politic: any
-  additional: any
-  source: any
+type DetailsProps = {
+  desc: string
+  additional: string
+  source: string
 }
-export default function PoliticsDetail({
-  politic,
-  additional,
-  source,
-}: PoliticDetailProps): JSX.Element {
+export default function Details({
+  desc = '',
+  additional = '',
+  source = '',
+}: DetailsProps): JSX.Element {
   return (
     <DetailContainer>
       <DetailList>
         <span>政見</span>
-        {politic.split(SOURCE_DELIMITER).map((item: any) => {
+        {desc.split(SOURCE_DELIMITER).map((item) => {
           return <p key={item}>{item}</p>
         })}
       </DetailList>
@@ -77,7 +77,7 @@ export default function PoliticsDetail({
       {additional !== '' && (
         <DetailList>
           <span>補充說明</span>
-          {additional.split(SOURCE_DELIMITER).map((item: any) => {
+          {additional.split(SOURCE_DELIMITER).map((item) => {
             return <p key={item}>{item}</p>
           })}
         </DetailList>

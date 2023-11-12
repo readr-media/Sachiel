@@ -2,6 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import React from 'react'
 import styled from 'styled-components'
 
+import type { GenericPhoto } from '~/types/common'
 import type { FactCheckPartner } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
@@ -64,14 +65,13 @@ const Item = styled.a<{ href: string }>`
   }
 `
 
-// FIXME: modify type structure
 type PartnerByType = {
   type: string
   partners: {
     id: string
     name: string
     webUrl: string
-    logo: Object
+    logo: GenericPhoto
   }[]
 }
 type FactCheckPartnersProps = {
@@ -117,12 +117,12 @@ export default function FactCheckPartners({
 
   return (
     <>
-      {partnersByType.map((item: any, index: number) => {
+      {partnersByType.map((item, index: number) => {
         return (
           <Wrapper key={index}>
             <Title>{item.type}</Title>
             <PartnerGroup>
-              {item.partners.map((partner: any) => (
+              {item.partners.map((partner) => (
                 <Item
                   key={partner.id}
                   href={partner.webUrl}
