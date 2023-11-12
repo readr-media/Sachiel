@@ -223,16 +223,11 @@ export const getServerSideProps: GetServerSideProps<
         cmsApiUrl
       )
 
-      // Combine 'politics' and 'editingPolitics' arrays
-      const combinedPolitics = politicList.concat(editingPoliticLists)
-
-      const passedAmount = combinedPolitics.filter(
+      const passedAmount = politicList.filter(
         (value: RawPolitic) => value.status === 'verified' && value.reviewed
       ).length
 
-      const waitingAmount = combinedPolitics.filter(
-        (value: RawPolitic) => !value.reviewed
-      ).length
+      const waitingAmount = editingPoliticLists.length
 
       politicAmount = {
         passed: passedAmount || 0,
