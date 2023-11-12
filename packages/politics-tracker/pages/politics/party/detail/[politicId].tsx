@@ -79,8 +79,14 @@ export default function PartyPoliticsDetail({
   }
 
   //OG title & desc
-  const headProps = { title: '', description: '' }
-  headProps.title = `${organization?.organization_id?.name} - ${politic.desc}｜READr 政商人物資料庫`
+  const partyName = organization?.organization_id?.name || '' //政黨名稱
+  const electionYear = organization?.elections?.election_year_year || '' //選舉年份
+  const electionType = organization?.elections?.type || '' //選舉目的（種類）
+
+  const headProps = {
+    title: `${partyName} - ${politic.desc}｜READr 政商人物資料庫` || '',
+    description: `${partyName}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`,
+  }
 
   return (
     <DefaultLayout>

@@ -82,27 +82,33 @@ export default function PoliticsDetail({
   }
 
   //OG title & desc
-  const headProps = { title: '', description: '' }
-  headProps.title = `${person?.person_id?.name} - ${politic.desc}｜READr 政商人物資料庫`
+  let headProps = { title: '', description: '' }
+
+  const candidateName = person?.person_id?.name || '' //候選人名稱
+  const electionYear = person?.election?.election_year_year || '' //選舉年份
+  const districtName = person?.electoral_district?.name || '' //選舉區名稱
+  const electionType = person?.election?.type || '' //選舉目的（種類）
 
   //get election name
   const rawElectionName = person?.election?.name
   const electionWithoutYear = rawElectionName?.slice(
     rawElectionName.indexOf('年') + 1
   )
-  const name = person?.person_id?.name || ''
-  const electionYear = person?.election?.election_year_year || ''
-  const districtName = person?.electoral_district?.name || ''
-  const electionType = person?.election?.type || ''
 
   // if election.level = "地方選舉" add "electoral_district.name"
   if (person?.election?.level === '地方選舉' || 'local') {
-    headProps.description = `${name}在${electionYear}${districtName.slice(
-      0,
-      3
-    )}${electionWithoutYear}提出的政見：${politic.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${districtName.slice(
+        0,
+        3
+      )}${electionWithoutYear}提出的政見：${politic.desc}`,
+    }
   } else {
-    headProps.description = `${name}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`,
+    }
   }
 
   return (
