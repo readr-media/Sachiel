@@ -6,7 +6,7 @@ export type Person = {
   image: string
   gender: string
   biography: string
-  birth_date_year: any
+  birth_date_year: number | null
   birth_date_month: number | null
   birth_date_day: number | null
   death_date_year: number | null
