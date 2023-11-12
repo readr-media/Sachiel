@@ -19,7 +19,7 @@ import GetPersonOrganization from '~/graphql/query/politics/get-person-organizat
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import { GenericGQLData, RawPersonElection } from '~/types/common'
+import { GenericGQLData, RawPersonElection, RawPolitic } from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -81,7 +81,7 @@ export default function PoliticsDetail({
     person.party = { name: '無黨籍', image: '' }
   }
 
-  //next/head title & description
+  //OG title & desc
   const headProps = { title: '', description: '' }
   headProps.title = `${person?.person_id?.name} - ${politic.desc}｜READr 政商人物資料庫`
 
@@ -220,15 +220,15 @@ export const getServerSideProps: GetServerSideProps<
       // Combine 'politics' and 'editingPolitics' arrays
       const combinedPolitics = politicList.concat(editingPoliticLists)
 
-      // FIXME: value types
       const passedAmount = combinedPolitics.filter(
-        (value: any) =>
+        (value: RawPolitic) =>
           value.status === 'verified' &&
           value.reviewed &&
           value.thread_parent === null
       ).length
+
       const waitingAmount = combinedPolitics.filter(
-        (value: any) => !value.reviewed
+        (value: RawPolitic) => !value.reviewed
       ).length
 
       politicAmount = {
