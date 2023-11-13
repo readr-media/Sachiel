@@ -2,6 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
 import ArrowTilt from '~/components/icons/arrow-tilt'
+import type { allPostsWithPoliticsTrackerTag } from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -181,7 +182,7 @@ const Button = styled.button`
 `
 
 type RelatedPostsProps = {
-  posts: any
+  posts: allPostsWithPoliticsTrackerTag[]
 }
 
 export default function RelatedPosts({
@@ -192,7 +193,7 @@ export default function RelatedPosts({
       <Title className="title">相關報導</Title>
 
       <PostContainer>
-        {posts?.map((item: any) => {
+        {posts?.map((item) => {
           return (
             <PostList key={item.id}>
               <a
@@ -210,9 +211,7 @@ export default function RelatedPosts({
 
                 <PostInfo>
                   <p className="title">{item.name}</p>
-                  <span className="date">
-                    {item.publishTime || item.createdAt}
-                  </span>
+                  <span className="date">{item.publishTime}</span>
                 </PostInfo>
               </a>
             </PostList>

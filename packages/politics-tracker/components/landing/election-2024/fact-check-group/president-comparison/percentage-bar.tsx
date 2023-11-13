@@ -5,6 +5,7 @@ import Scale50 from '~/public/icons/landing/scale-50.svg'
 import Scale100 from '~/public/icons/landing/scale-100.svg'
 import Scale150 from '~/public/icons/landing/scale-150.svg'
 import Scale200 from '~/public/icons/landing/scale-200.svg'
+import type { CategoryOfJson } from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -68,7 +69,7 @@ const CategoryUnit = styled.div<{ count: number; color: string }>`
 `
 
 type PercentageBarProps = {
-  categories: any
+  categories: CategoryOfJson[]
   candidateName: string
   politicCount: number
 }
@@ -86,7 +87,7 @@ export default function PercentageBar({
       </Title>
       <BarContainer>
         <ColorBar>
-          {categories.map((category: any, index: number) => (
+          {categories.map((category, index) => (
             <CategoryUnit
               count={category.count}
               color={category.displayColor}

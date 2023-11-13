@@ -72,7 +72,7 @@ export default function SectionContent({
   const toggleItems: ToggleItems[] = [
     {
       title: '政見細節',
-      children: <Detail politic={desc} additional={content} source={source} />,
+      children: <Detail desc={desc} additional={content} source={source} />,
       showToggle: true,
       isActive: true, //政見細節預設展開
     },

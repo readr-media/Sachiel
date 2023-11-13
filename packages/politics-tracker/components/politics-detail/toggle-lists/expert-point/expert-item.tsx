@@ -115,7 +115,7 @@ const Contributer = styled.span`
   color: ${({ theme }) => theme.backgroundColor.black50};
 
   a {
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     word-break: break-all;
     cursor: pointer;
     line-height: 1.5;

@@ -319,7 +319,7 @@ export default function PresidentFactCheck({
             </FilterCategory>
           </FilterPanel>
           <CandidatesWrapper>
-            {updatedJSON.map((item: any) => (
+            {updatedJSON.map((item) => (
               <FactCheckItem
                 candidate={item}
                 key={item.id}

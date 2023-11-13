@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import ArrowDown from '~/public/icons/arrow-down-yellow.svg'
@@ -106,7 +106,7 @@ export default function LegislatorAtLarge({
         <Group>
           <span className="subtitle">當選</span>
           {electedList.map((legislator, index) => (
-            <>
+            <React.Fragment key={index}>
               <List
                 href={`/person/${legislator.person_id.id}`}
                 target="_blank"
@@ -115,7 +115,7 @@ export default function LegislatorAtLarge({
                 <li>{legislator.person_id.name}</li>
               </List>
               {index < electedList.length - 1 && <span>、</span>}
-            </>
+            </React.Fragment>
           ))}
         </Group>
       )}
@@ -124,7 +124,7 @@ export default function LegislatorAtLarge({
         <Group>
           <span className="subtitle">未當選</span>
           {notElectedList.map((legislator, index) => (
-            <>
+            <React.Fragment key={index}>
               <List
                 href={`/person/${legislator.person_id.id}`}
                 target="_blank"
@@ -133,7 +133,7 @@ export default function LegislatorAtLarge({
                 <li>{legislator.person_id.name}</li>
               </List>
               {index < notElectedList.length - 1 && <span>、</span>}
-            </>
+            </React.Fragment>
           ))}
         </Group>
       )}
@@ -142,7 +142,7 @@ export default function LegislatorAtLarge({
     <Group>
       <span className="subtitle">提名</span>
       {legislators.map((legislator, index) => (
-        <>
+        <React.Fragment key={index}>
           <List
             href={`/person/${legislator.person_id.id}`}
             key={index}
@@ -152,7 +152,7 @@ export default function LegislatorAtLarge({
             <li>{legislator.person_id.name}</li>
           </List>
           {index < legislators.length - 1 && <span>、</span>}
-        </>
+        </React.Fragment>
       ))}
     </Group>
   )

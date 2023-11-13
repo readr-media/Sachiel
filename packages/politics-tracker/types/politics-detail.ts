@@ -120,16 +120,16 @@ export type PoliticTimeLine = Pick<
   'id' | 'link' | 'content' | 'eventDate'
 >
 
+export type FactCheckPartner = Pick<
+  GenericFactCheckPartner,
+  'id' | 'logo' | 'name' | 'type' | 'webUrl'
+>
+
 export type PoliticControversy = {
   id: string
   link: string
   content: string
 }
-
-export type FactCheckPartner = Pick<
-  GenericFactCheckPartner,
-  'id' | 'logo' | 'name' | 'type' | 'webUrl'
->
 
 export type PersonElectionTerm = {
   start_date_year: string | null

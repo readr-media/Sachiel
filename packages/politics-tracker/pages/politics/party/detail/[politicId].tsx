@@ -14,10 +14,18 @@ import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
-import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
+import type {
+  PersonElectionTerm,
+  PoliticDetail,
+  PoliticAmount,
+} from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import type { LegislatorAtLarge } from '~/types/politics'
+import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
+import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-organization-elections.graphql'
+import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
+import { RawPolitic } from '~/types/common'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -34,11 +42,13 @@ type PartyPoliticsDetailProps = {
   politic: PoliticDetail
   electionTerm: PersonElectionTerm
   legisLatorAtLarge: LegislatorAtLarge[]
+  politicAmount: PoliticAmount
 }
 export default function PartyPoliticsDetail({
   politic,
   electionTerm,
   legisLatorAtLarge,
+  politicAmount,
 }: PartyPoliticsDetailProps): JSX.Element {
   const { asPath } = useRouter()
   const { organization } = politic
@@ -49,8 +59,8 @@ export default function PartyPoliticsDetail({
     avatar: organization?.organization_id.image || '',
     party: '',
     partyIcon: '',
-    completed: 0, //FIXME
-    waiting: 0, //FIXME
+    completed: politicAmount.passed,
+    waiting: politicAmount.waiting,
   }
 
   const navProps = {
@@ -69,8 +79,14 @@ export default function PartyPoliticsDetail({
   }
 
   //OG title & desc
-  const headProps = { title: '', description: '' }
-  headProps.title = `${organization?.organization_id?.name} - ${politic.desc}｜READr 政商人物資料庫`
+  const partyName = organization?.organization_id?.name || '' //政黨名稱
+  const electionYear = organization?.elections?.election_year_year || '' //選舉年份
+  const electionType = organization?.elections?.type || '' //選舉目的（種類）
+
+  const headProps = {
+    title: `${partyName} - ${politic.desc}｜READr 政商人物資料庫` || '',
+    description: `${partyName}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`,
+  }
 
   return (
     <DefaultLayout>
@@ -135,6 +151,9 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   let legisLatorAtLarge: LegislatorAtLarge[] = []
+  let politicAmount: PoliticAmount
+  let partyElectionIds: string[] = []
+  let partyId: string = ''
 
   try {
     {
@@ -161,6 +180,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       politic = politics[0] || []
+      partyId = politic.organization?.organization_id.id || ''
     }
 
     {
@@ -173,7 +193,7 @@ export const getServerSideProps: GetServerSideProps<
         print(GetPersonElectionsRelatedToParty),
         {
           electionId: organization?.elections?.id,
-          partyId: organization?.organization_id.id,
+          partyId: partyId,
         },
         cmsApiUrl
       )
@@ -194,11 +214,60 @@ export const getServerSideProps: GetServerSideProps<
       legisLatorAtLarge = personElections || []
     }
 
+    {
+      //get all organizationElections ID this organization join
+      const {
+        data: { organizationsElections },
+      } = await fireGqlRequest(
+        print(GetOrganizationOverView),
+        { organizationId: partyId },
+        cmsApiUrl
+      )
+
+      const rawOrganizationElection = [...organizationsElections]
+
+      rawOrganizationElection.map((item) => {
+        partyElectionIds.push(item.id)
+      })
+    }
+
+    {
+      //get `politics` amount (passed/waiting)
+      const {
+        data: { politics: politicList },
+      } = await fireGqlRequest(
+        print(GetPoliticsRelatedToOrganizationsElections),
+        { ids: partyElectionIds },
+        cmsApiUrl
+      )
+
+      // get `editing politics` amount (passed/waiting)
+      const {
+        data: { editingPolitics: editingPoliticLists },
+      } = await fireGqlRequest(
+        print(GetEditingPoliticsRelatedToOrganizationElections),
+        { ids: partyElectionIds },
+        cmsApiUrl
+      )
+
+      const passedAmount = politicList.filter(
+        (value: RawPolitic) => value.status === 'verified' && value.reviewed
+      ).length
+
+      const waitingAmount = editingPoliticLists.length
+
+      politicAmount = {
+        passed: passedAmount || 0,
+        waiting: waitingAmount || 0,
+      }
+    }
+
     return {
       props: {
         politic,
         electionTerm,
         legisLatorAtLarge,
+        politicAmount,
       },
     }
   } catch (err) {
