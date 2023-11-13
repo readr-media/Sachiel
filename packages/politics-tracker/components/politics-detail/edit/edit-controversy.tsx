@@ -13,7 +13,7 @@ import CreateControversies from '~/graphql/mutation/politics-detail/create-contr
 import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import EditLink from '~/public/icons/edit-link.svg'
 import EditText from '~/public/icons/edit-text.svg'
-import { Controversy, PoliticDetail } from '~/types/politics-detail'
+import { PoliticControversy, PoliticDetail } from '~/types/politics-detail'
 import {
   getControversyToAdd,
   getControversyToConnect,
@@ -46,21 +46,21 @@ const InputGroup = styled.div`
 `
 
 type EditControversiesProps = {
-  politicData: PoliticDetail
+  politic: PoliticDetail
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function EditControversies({
-  politicData,
+  politic,
   setEditMode,
 }: EditControversiesProps): JSX.Element {
-  const { id = '', controversies = [] } = politicData
+  const { id = '', controversies = [] } = politic
 
   const toast = useToast()
   const [list, setList] = useState(controversies)
 
   //「新增」填寫欄位
   function addList() {
-    const extended: Controversy[] = [
+    const extended: PoliticControversy[] = [
       ...list,
       { id: `add-${uuidv4()}`, content: '', link: '' },
     ]
@@ -133,13 +133,13 @@ export default function EditControversies({
   }
 
   async function addControversies(
-    controversyList: Controversy[] | [],
+    controversyList: PoliticControversy[] | [],
     cmsApiUrl: string,
     politicId: number
   ) {
     try {
       const variables = {
-        data: controversyList.map((item: Controversy) => ({
+        data: controversyList.map((item: PoliticControversy) => ({
           link: item.link,
           content: item.content,
           editingPolitic: {

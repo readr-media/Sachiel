@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowDown from '~/public/icons/arrow-down-yellow.svg'
+import type { GenericFactCheckPartner } from '~/types/common'
 import type { RelatedPost } from '~/types/landing'
-import type { FactCheckPartner } from '~/types/politics-detail'
 import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
@@ -184,7 +184,9 @@ export default function RelatedPosts({
     return null
   }
 
-  function jointPartnerName(partners: Pick<FactCheckPartner, 'id' | 'name'>[]) {
+  function jointPartnerName(
+    partners: Pick<GenericFactCheckPartner, 'id' | 'name'>[]
+  ) {
     const names = partners.map((partner) => partner.name)
     return names.join('、')
   }
@@ -207,7 +209,7 @@ export default function RelatedPosts({
           <PostInfo>
             {partnerStr && <span className="partners">{partnerStr}</span>}
             <p className="title">{name}</p>
-            <span className="date">{getFormattedDate(createdAt)}</span>
+            <span className="date">{getFormattedDate(createdAt, '/')}</span>
           </PostInfo>
         </a>
       </PostList>

@@ -10,7 +10,6 @@ const SourcesContainer = styled.div`
   display: flex;
   background-color: ${({ theme }) => theme.backgroundColor.black5};
   position: relative;
-  /* TODO:: update style here */
   padding-left: 34px;
   overflow: hidden;
   ${({ theme }) => theme.breakpoint.md} {
@@ -55,13 +54,14 @@ const SourceItemWrap = styled.div`
 `
 
 type SourceProps = {
-  sources: any
+  sources: string
 }
-export default function Sources({ sources }: SourceProps): JSX.Element {
+export default function Sources({ sources = '' }: SourceProps): JSX.Element {
   const sourceList = useMemo(
     () => (sources ? stringToSources(sources, '\n') : []),
     [sources]
   )
+
   return (
     <>
       {sourceList.length !== 0 && (

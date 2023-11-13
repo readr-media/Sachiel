@@ -45,7 +45,11 @@ const Header = styled.div`
 const Title = styled.div`
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 8px;
+
+  & + * {
+    margin-top: 8px;
+  }
+
   > span {
     margin-right: 5px;
   }
@@ -107,23 +111,43 @@ const PartyImage = styled.div`
 `
 
 type SectionTitleProps = {
-  politicData: PoliticDetail
+  politic: PoliticDetail
   electionTerm: PersonElectionTerm
+  isPartyPage?: boolean
 }
 export default function SectionTitle({
-  politicData,
+  politic,
   electionTerm,
+  isPartyPage = false,
 }: SectionTitleProps): JSX.Element {
-  const { person } = politicData
+  const { person, organization } = politic
 
-  const electionArea = person?.electoral_district?.name.slice(0, 3) || ''
-  const linkHref = `/politics/${person?.person_id?.id}` || '/'
+  let electionArea: string = ''
+  let linkHref: string = ''
+  let rawElectionName: string = ''
+  let electionCenturyYear: string = ''
+  let electionWithoutYear: string = ''
 
   //change election_name's year from RepublicYear to Common Era (+1911)
-  const rawElectionName = person?.election?.name || ''
-  const electionCenturyYear = person?.election?.election_year_year || null
-  const electionWithoutYear =
-    rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+
+  if (isPartyPage) {
+    electionArea = ''
+    linkHref = `/politics/party/${organization?.organization_id?.id}` || '/'
+
+    rawElectionName = organization?.elections?.name || ''
+    electionCenturyYear =
+      organization?.elections?.election_year_year?.toString() || ''
+    electionWithoutYear =
+      rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+  } else {
+    const districtName = person?.electoral_district?.name || ''
+    electionArea = districtName.slice(0, 3) || ''
+    linkHref = `/politics/${person?.person_id?.id}` || '/'
+    rawElectionName = person?.election?.name || ''
+    electionCenturyYear = person?.election?.election_year_year?.toString() || ''
+    electionWithoutYear =
+      rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+  }
 
   return (
     <Link href={linkHref}>
@@ -136,24 +160,26 @@ export default function SectionTitle({
             <ElectionArea>{electionArea}</ElectionArea>
           </Title>
 
-          <SubTitle>
-            <PartyInfo>
-              <PartyImage>
-                <Image
-                  images={{ original: person?.party?.image }}
-                  alt={person?.party?.name}
-                  defaultImage="/images/default-head-photo.png"
-                />
-              </PartyImage>
-              <span>{person?.party?.name || '無黨籍'}</span>
-            </PartyInfo>
+          {!isPartyPage && (
+            <SubTitle>
+              <PartyInfo>
+                <PartyImage>
+                  <Image
+                    images={{ original: person?.party?.image }}
+                    alt={person?.party?.name}
+                    defaultImage="/images/default-head-photo.png"
+                  />
+                </PartyImage>
+                <span>{person?.party?.name || '無黨籍'}</span>
+              </PartyInfo>
 
-            <ElectionTerm
-              isElected={person?.elected}
-              isIncumbent={person?.incumbent}
-              termDate={electionTerm}
-            />
-          </SubTitle>
+              <ElectionTerm
+                isElected={person?.elected}
+                isIncumbent={person?.incumbent}
+                termDate={electionTerm}
+              />
+            </SubTitle>
+          )}
         </div>
       </Header>
     </Link>

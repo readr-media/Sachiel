@@ -17,9 +17,9 @@ import GetPersonElections from '~/graphql/query/person/get-person-elections.grap
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPoliticDetail from '~/graphql/query/politics/get-politic-detail.graphql'
+import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import { GenericGQLData, RawPersonElection } from '~/types/common'
+import { GenericGQLData, RawPersonElection, RawPolitic } from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -39,19 +39,19 @@ const Main = styled.main`
 `
 
 type PoliticDetailPageProps = {
-  politicData: PoliticDetail
+  politic: PoliticDetail
   politicAmount: PoliticAmount
   latestPersonElection: RawPersonElection
   electionTerm: PersonElectionTerm
 }
 export default function PoliticsDetail({
-  politicData,
+  politic,
   politicAmount,
   latestPersonElection,
   electionTerm,
 }: PoliticDetailPageProps): JSX.Element {
   const { asPath } = useRouter()
-  const { person } = politicData
+  const { person } = politic
 
   const titleProps = {
     id: person?.person_id?.id || '',
@@ -81,9 +81,13 @@ export default function PoliticsDetail({
     person.party = { name: '無黨籍', image: '' }
   }
 
-  //next/head title & description
-  const headProps = { title: '', description: '' }
-  headProps.title = `${person?.person_id?.name} - ${politicData.desc}｜READr 政商人物資料庫`
+  //OG title & desc
+  let headProps = { title: '', description: '' }
+
+  const candidateName = person?.person_id?.name || '' //候選人名稱
+  const electionYear = person?.election?.election_year_year || '' //選舉年份
+  const districtName = person?.electoral_district?.name || '' //選舉區名稱
+  const electionType = person?.election?.type || '' //選舉目的（種類）
 
   //get election name
   const rawElectionName = person?.election?.name
@@ -93,14 +97,18 @@ export default function PoliticsDetail({
 
   // if election.level = "地方選舉" add "electoral_district.name"
   if (person?.election?.level === '地方選舉' || 'local') {
-    headProps.description = `${person?.person_id?.name}在${
-      person?.election?.election_year_year
-    }${person?.electoral_district?.name.slice(
-      0,
-      3
-    )}${electionWithoutYear}提出的政見：${politicData.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${districtName.slice(
+        0,
+        3
+      )}${electionWithoutYear}提出的政見：${politic.desc}`,
+    }
   } else {
-    headProps.description = `${person?.person_id?.name}在${person?.election?.election_year_year}${person?.election?.type}選舉提出的政見：${politicData.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`,
+    }
   }
 
   return (
@@ -112,7 +120,7 @@ export default function PoliticsDetail({
           {...titleProps}
         />
         <Section
-          politicData={politicData}
+          politic={politic}
           electionTerm={electionTerm}
           shouldShowFeedbackForm={
             latestPersonElection.election?.addComments === true
@@ -134,13 +142,13 @@ export const getServerSideProps: GetServerSideProps<
 
   const id = query.politicId
 
-  let politicData: PoliticDetail = {
+  let politic: PoliticDetail = {
     id: '',
     desc: '',
     content: '',
     source: '',
-    status: '',
-    current_progress: '',
+    status: 'notverified',
+    current_progress: 'no-progress',
     updatedAt: '',
     contributer: '',
     person: null,
@@ -176,7 +184,7 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
-      politicData = politics[0]
+      politic = politics[0]
     }
 
     {
@@ -185,7 +193,7 @@ export const getServerSideProps: GetServerSideProps<
         data: { personElections },
       } = await fireGqlRequest(
         print(GetPersonElections),
-        { Id: politicData?.person?.person_id?.id },
+        { Id: politic?.person?.person_id?.id },
         cmsApiUrl
       )
 
@@ -215,19 +223,11 @@ export const getServerSideProps: GetServerSideProps<
         cmsApiUrl
       )
 
-      // Combine 'politics' and 'editingPolitics' arrays
-      const combinedPolitics = politicList.concat(editingPoliticLists)
+      const passedAmount = politicList.filter(
+        (value: RawPolitic) => value.status === 'verified' && value.reviewed
+      ).length
 
-      // FIXME: value types
-      const passedAmount = combinedPolitics.filter(
-        (value: any) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
-      ).length
-      const waitingAmount = combinedPolitics.filter(
-        (value: any) => !value.reviewed
-      ).length
+      const waitingAmount = editingPoliticLists.length
 
       politicAmount = {
         passed: passedAmount || 0,
@@ -240,7 +240,7 @@ export const getServerSideProps: GetServerSideProps<
       const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
         await fireGqlRequest(
           print(GetPersonOverView),
-          { personId: politicData?.person?.person_id?.id },
+          { personId: politic?.person?.person_id?.id },
           cmsApiUrl
         )
 
@@ -274,7 +274,7 @@ export const getServerSideProps: GetServerSideProps<
         data: { personOrganizations: personOrganization },
       } = await fireGqlRequest(
         print(GetPersonOrganization),
-        { electionId: politicData.person?.id },
+        { electionId: politic.person?.id },
         cmsApiUrl
       )
 
@@ -290,7 +290,7 @@ export const getServerSideProps: GetServerSideProps<
 
     return {
       props: {
-        politicData,
+        politic,
         politicAmount,
         latestPersonElection,
         electionTerm,

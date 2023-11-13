@@ -1,181 +1,146 @@
+import type {
+  GenericExpert,
+  GenericFactCheck,
+  GenericFactCheckPartner,
+  GenericPoliticCategory,
+  GenericPositionChange,
+  GenericProgressType,
+  GenericRepeat,
+  GenericResponse,
+  GenericStatus,
+  GenericTimeline,
+  RawElection,
+  RawOrganization,
+  RawOrganizationElection,
+  RawPersonElection,
+} from '~/types/common'
+
 export type PoliticDetail = {
   id: string
-  content: string
-  current_progress: string
-  desc: string
-  expertPoint: ExpertPoint[]
+  desc: string //政見內容
+  content: string //政策補充說明
+  source: string //資料來源
+  status: GenericStatus //狀態
+  current_progress: GenericProgressType //政見進度
+  updatedAt: string //更新時間
+  contributer: string // 資料提供
+  politicCategory: Pick<GenericPoliticCategory, 'id'> | null //類別
+  expertPoint: PoliticExpert[] //專家看點
+  positionChange: PoliticPositionChange[] //立場變化
+  factCheck: PoliticFactCheck[] //事實查核
+  repeat: PoliticRepeat[] //重複政見
+  response: PoliticResponse[] //政見回應
+  controversies: PoliticControversy[] //爭議內容
+  timeline: PoliticTimeLine[] //時間軸（相關進度）
+  organization: OrganizationElection | null
   person: PersonElection | null
-  timeline: TimeLine[]
-  source: string
-  status: string
-  updatedAt: string
-  positionChange: PositionChange[]
-  factCheck: FactCheck[]
-  repeat: Repeat[]
-  response: Response[]
-  controversies: Controversy[]
-  contributer: string
-  politicCategory: Pick<PoliticCategory, 'id'> | null
-  organization: Pick<OrganizationElection, 'id'> | null
 }
 
-//任期
+export type OrganizationElection = {
+  id: Pick<RawOrganizationElection, 'id'>
+  organization_id: Pick<RawOrganization, 'id' | 'name' | 'image'>
+  elections: Pick<
+    RawElection,
+    | 'id'
+    | 'name'
+    | 'type'
+    | 'level'
+    | 'status'
+    | 'election_year_year'
+    | 'election_year_month'
+    | 'election_year_day'
+  >
+  electoral_district: string
+}
+
+export type PoliticFactCheck = Pick<
+  GenericFactCheck,
+  | 'id'
+  | 'factCheckSummary'
+  | 'checkResultType'
+  | 'checkResultOther'
+  | 'factcheckPartner'
+  | 'content'
+  | 'link'
+>
+
+export type PoliticPositionChange = Pick<
+  GenericPositionChange,
+  | 'id'
+  | 'positionChangeSummary'
+  | 'isChanged'
+  | 'factcheckPartner'
+  | 'content'
+  | 'checkDate'
+  | 'link'
+>
+
+export type PoliticRepeat = Pick<
+  GenericRepeat,
+  | 'id'
+  | 'repeatSummary'
+  | 'factcheckPartner'
+  | 'content'
+  | 'link'
+  | 'contributer'
+>
+
+export type PoliticExpert = Pick<
+  GenericExpert,
+  | 'id'
+  | 'expertPointSummary'
+  | 'expert'
+  | 'avatar'
+  | 'content'
+  | 'link'
+  | 'title'
+  | 'contributer'
+>
+
+export type PersonElection = Pick<
+  RawPersonElection,
+  | 'id'
+  | 'electoral_district'
+  | 'party'
+  | 'election'
+  | 'person_id'
+  | 'votes_obtained_number'
+  | 'votes_obtained_percentage'
+  | 'elected'
+  | 'incumbent'
+>
+
+export type PoliticResponse = Pick<
+  GenericResponse,
+  'id' | 'content' | 'responseName' | 'responsePic' | 'responseTitle' | 'link'
+>
+
+export type PoliticTimeLine = Pick<
+  GenericTimeline,
+  'id' | 'link' | 'content' | 'eventDate'
+>
+
+export type FactCheckPartner = Pick<
+  GenericFactCheckPartner,
+  'id' | 'logo' | 'name' | 'type' | 'webUrl'
+>
+
+export type PoliticControversy = {
+  id: string
+  link: string
+  content: string
+}
+
 export type PersonElectionTerm = {
-  start_date_day: string | null
-  start_date_month: string | null
   start_date_year: string | null
-  end_date_day: string | null
-  end_date_month: string | null
+  start_date_month: string | null
+  start_date_day: string | null
   end_date_year: string | null
-}
-
-//立場改變
-export type PositionChange = {
-  content: string
-  checkDate: string
-  id: string
-  link: string
-  isChanged: string
-  positionChangeSummary: string
-  factcheckPartner: FactCheckPartner | null
-}
-
-//相似政見
-export type Repeat = {
-  id: string
-  content: string
-  link: string
-  contributer: string
-  factcheckPartner: FactCheckPartner | null
-  repeatSummary: string
-}
-
-//事實查核
-export type FactCheck = {
-  id: string
-  checkResultType: string
-  content: string
-  link: string
-  factcheckPartner: FactCheckPartner | null
-  factCheckSummary: string
-  checkResultOther: string
-}
-
-//專家看點
-export type ExpertPoint = {
-  avatar: string
-  content: string
-  expert: string
-  id: string
-  link: string
-  title: string
-  expertPointSummary: string
-  contributer: string
-}
-
-//候選人回應
-export type Response = {
-  id: string
-  content: string
-  responseName: string
-  responsePic: string
-  responseTitle: string
-  link: string
-}
-
-//相關進度
-export type TimeLine = {
-  content: string
-  eventDate: string
-  id: string
-  link: string
-}
-
-//相關爭議
-export type Controversy = {
-  id: string
-  link: string
-  content: string
+  end_date_month: string | null
+  end_date_day: string | null
 }
 
 export type PoliticAmount = {
   waiting: number
   passed: number
-}
-
-export type FactCheckPartner = {
-  id: string
-  name: string
-  type: string
-  webUrl: string
-} & Partial<{
-  logo: Logo // for `landing`
-  slogo: Logo // for `politic-detail`
-}>
-
-export type Resized = {
-  original: string
-} & Partial<{
-  w480: string
-  w800: string
-  w1200: string
-  w1600: string
-  w2400: string
-}>
-
-export type Logo = {
-  id: string
-  resized: Resized
-} & Partial<{
-  resizedWebp: Resized
-}>
-
-export type PersonElection = {
-  id: string
-  resized: Resized
-} & Partial<{
-  electoral_district: ElectoralDistrict
-  party: Party
-  election: Election
-  person_id: PersonId
-  votes_obtained_number: string
-  votes_obtained_percentage: string
-  elected: boolean
-  incumbent: boolean
-}>
-
-export type ElectoralDistrict = {
-  id: string
-  name: string
-}
-
-export type Party = {
-  name: string
-  image: string
-}
-
-export type Election = {
-  name: string
-  type: string
-  level: string
-  status: string
-  election_year_year: string
-  election_year_month: string
-  election_year_day: string
-}
-
-export type PersonId = {
-  id: string
-  name: string
-  image: string
-}
-
-export type PoliticCategory = {
-  id: string
-  name: String
-  politicsCount: string
-}
-
-export type OrganizationElection = {
-  id: string
 }

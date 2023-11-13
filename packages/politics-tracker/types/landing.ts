@@ -1,5 +1,15 @@
-import type { PersonElection } from '~/types/politics'
-import type { FactCheckPartner, PoliticDetail } from '~/types/politics-detail'
+import type {
+  GenericFactCheckPartner,
+  GenericPoliticCategory,
+} from '~/types/common'
+import type {
+  ExpertPoint,
+  FactCheck,
+  PersonElection,
+  PositionChange,
+  Repeat,
+} from '~/types/politics'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 // 候選人資料
 export type Candidate = {
@@ -60,7 +70,7 @@ export type PropsData = {
   postsWithPoliticsTrackerTag: allPostsWithPoliticsTrackerTag[]
 }
 
-// Readr內符合指定標籤(tag)的文章(post)資料
+// Landing 2022 - READr 內符合指定標籤(tag)的文章(post)資料
 export type allPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
@@ -75,14 +85,14 @@ export type ImageOfPost = {
   urlOriginal: string //文章視覺圖網址
 }
 
-//關係資料庫 Related Posts 相關文章
+// Landing 2024：CMS - Related Posts 的文章資料
 export type RelatedPost = {
   id: string
   name: string
   url: string
   ogIMage: string
   createdAt: string
-  partner: Pick<FactCheckPartner, 'id' | 'name'>[]
+  partner: Pick<GenericFactCheckPartner, 'id' | 'name'>[]
 }
 
 export type CategoryOfJson = {
@@ -112,18 +122,14 @@ export type PresidentFactCheckJson = {
   politics: PoliticOfJson[]
 }
 
-export type PoliticOfJson = Pick<
-  PoliticDetail,
-  | 'id'
-  | 'desc'
-  | 'politicCategory'
-  | 'positionChange'
-  | 'expertPoint'
-  | 'factCheck'
-  | 'repeat'
-> & {
+export type PoliticOfJson = Pick<PoliticDetail, 'id' | 'desc'> & {
   positionChangeCount: number
   expertPointCount: number
   factCheckCount: number
   repeatCount: number
+  positionChange: PositionChange[]
+  factCheck: FactCheck[]
+  expertPoint: ExpertPoint[]
+  repeat: Repeat[]
+  politicCategory: Pick<GenericPoliticCategory, 'id' | 'name'> | null
 }

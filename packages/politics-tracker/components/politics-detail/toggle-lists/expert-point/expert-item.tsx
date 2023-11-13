@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import RelatedLinks from '~/components/politics-detail/related-links'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import ExpertIcon from '~/public/icons/expert-opinion.svg'
-import type { ExpertPoint } from '~/types/politics-detail'
+import type { PoliticExpert } from '~/types/politics-detail'
 import { generateSourceMeta } from '~/utils/utils'
 
 const ListWrapper = styled.li`
@@ -115,7 +115,7 @@ const Contributer = styled.span`
   color: ${({ theme }) => theme.backgroundColor.black50};
 
   a {
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     word-break: break-all;
     cursor: pointer;
     line-height: 1.5;
@@ -139,19 +139,19 @@ const Contributer = styled.span`
 `
 
 type ExpertItemProps = {
-  expertItem: ExpertPoint
+  expertItem: PoliticExpert
 }
 export default function ExpertItem({
   expertItem,
 }: ExpertItemProps): JSX.Element {
   const {
-    avatar,
-    expert,
-    title,
-    content,
-    link,
-    expertPointSummary,
-    contributer,
+    avatar = '',
+    expert = '',
+    title = '',
+    content = '',
+    link = '',
+    expertPointSummary = ' ',
+    contributer = '',
   } = expertItem
 
   const pointText = content.split(SOURCE_DELIMITER).map((item, index) => {
