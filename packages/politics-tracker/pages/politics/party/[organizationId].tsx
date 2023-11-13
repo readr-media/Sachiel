@@ -166,6 +166,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const organizationsElections = rawData.data?.organizationsElections
+
       if (!organizationsElections || organizationsElections.length === 0) {
         return {
           notFound: true,
@@ -208,6 +209,8 @@ export const getServerSideProps: GetServerSideProps<
                   'YYYY-M-D'
                 )
               ),
+              // 針對不分區立委，若席次 >=1 則視為當選
+              elected: Number(current.seats) >= 1,
               source: current.source ?? '',
               mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,

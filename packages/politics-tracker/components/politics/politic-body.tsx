@@ -127,7 +127,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       'in-progress': '進行中',
       'in-trouble': '卡關中',
       complete: '已完成',
-      failed: '未當選',
+      failed: props.isPartyPage ? '未分配席次' : '未當選',
     }
 
     return map[status]
@@ -157,7 +157,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       <div className={s['container']}>
         <div className={s['header']}>
           <span className={s['index']}>{index}</span>
-          {!props.isPartyPage && personElection.isFinished && (
+          {personElection.isFinished && (
             <span className={s['politic-status']}>
               <span className={s['text']}>達成進度</span>
               <span className={statusStyle}>{getStatusText(status)}</span>
