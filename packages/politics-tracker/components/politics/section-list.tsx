@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { PersonElection } from '~/types/politics'
+import type { LegislatorAtLarge, PersonElection } from '~/types/politics'
 
 import { PersonElectionContext } from './react-context/politics-context'
 import SectionBody from './section-body'
@@ -10,7 +10,11 @@ import SectionToggle from './section-toggle'
 type SectionListProps = PersonElection & {
   order: number
   isPartyPage?: boolean
+  isFinished: boolean
+} & {
+  legisLatorAtLarge?: LegislatorAtLarge[]
 }
+
 export default function SectionList(props: SectionListProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.order === 0)
 
@@ -35,6 +39,8 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           organizationId={props.organizationId}
           shouldShowFeedbackForm={props.shouldShowFeedbackForm}
           isPartyPage={props.isPartyPage}
+          legisLatorAtLarge={props.legisLatorAtLarge}
+          isFinished={props.isFinished}
         />
       </div>
     </PersonElectionContext.Provider>
