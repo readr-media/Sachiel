@@ -127,7 +127,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       'in-progress': '進行中',
       'in-trouble': '卡關中',
       complete: '已完成',
-      failed: props.isPartyPage ? '未分配席次' : '未當選',
+      failed: props.isPartyPage ? '未取得席次' : '未當選',
     }
 
     return map[status]
