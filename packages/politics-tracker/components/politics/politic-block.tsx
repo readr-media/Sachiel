@@ -1,5 +1,10 @@
+import Legislators from '~/components/shared/legislator-at-large'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import type { PersonElection, Politic } from '~/types/politics'
+import type {
+  LegislatorAtLarge,
+  PersonElection,
+  Politic,
+} from '~/types/politics'
 import { generateSourceMeta } from '~/utils/utils'
 
 import s from './politic-block.module.css'
@@ -7,8 +12,10 @@ import PoliticBody from './politic-body'
 
 type PoliticBlockProps = Pick<
   PersonElection,
-  'politics' | 'source' | 'lastUpdate' | 'shouldShowFeedbackForm'
-> & { hidePoliticDetail: string | null } & { isPartyPage?: boolean }
+  'politics' | 'source' | 'lastUpdate' | 'shouldShowFeedbackForm' | 'isFinished'
+> & { hidePoliticDetail: string | null } & { isPartyPage?: boolean } & {
+  legisLatorAtLarge?: LegislatorAtLarge[]
+}
 
 type GroupData = {
   name: string
@@ -90,6 +97,12 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
       <div className={s['info']}>
         <span className={s['last-update']}>{props.lastUpdate} 更新</span>
         <span className={s['source']}>來源：{sourceList}</span>
+      </div>
+      <div className={s['group-container']}>
+        <Legislators
+          isElectionFinished={props.isFinished}
+          legislators={props.legisLatorAtLarge}
+        />
       </div>
       <div className={s['group-container']}>{politcGroup}</div>
     </div>

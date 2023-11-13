@@ -50,7 +50,6 @@ type PoliticsPageProps = {
 const isPartyPage = true
 
 export default function OrganizationPolitics(props: PoliticsPageProps) {
-  console.log(props)
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
