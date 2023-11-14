@@ -325,7 +325,6 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const editingPoliticList = editingRawData.data?.editingPolitics || []
-      console.log(personElectionIds, editingPoliticList)
 
       // Combine 'politics' and 'editingPolitics' arrays
       const combinedPolitics = politicList.concat(editingPoliticList)
