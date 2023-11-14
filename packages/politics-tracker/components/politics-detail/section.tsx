@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import ProgressBar from '~/components/politics-detail/progressbar'
@@ -55,19 +56,26 @@ export default function Section({
 
   // get current Date (YYYY-MM-DD)
   let currentTime = new Date()
-  let day = currentTime.getDate()
-  let month = currentTime.getMonth() + 1
-  let year = currentTime.getFullYear()
-  let currentDate = `${year}-${month}-${day}`
+  let currentDate = `${currentTime.getFullYear()}-${
+    currentTime.getMonth() + 1
+  }-${currentTime.getDate()}`
+
+  function compareDates(dateStr1: string, dateStr2: string) {
+    const date1 = dayjs(dateStr1)
+    const date2 = dayjs(dateStr2)
+
+    return Boolean(date1.isBefore(date2))
+  }
 
   // compare "election Date" & "current Date"
-  const isElectionFinished = +new Date(electionDate) < +new Date(currentDate)
+  const isElectionFinished = compareDates(electionDate, currentDate)
 
   return (
     <SectionContainer>
       <div>
         <SectionTitle politic={politic} electionTerm={electionTerm} />
         {isElectionFinished && <ProgressBar politic={politic} />}
+
         <SectionContent
           politic={politic}
           legislators={legislators}
