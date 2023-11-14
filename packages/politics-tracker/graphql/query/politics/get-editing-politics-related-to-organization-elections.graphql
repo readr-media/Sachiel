@@ -15,9 +15,9 @@ query GetEditingPoliticsRelatedToOrganizationElections($ids: [ID!]) {
       source
       status
     }
-    person {
+    organization {
       id
-      election {
+      elections {
         id
       }
     }
