@@ -262,7 +262,9 @@ export const getServerSideProps: GetServerSideProps<
         (value: RawPolitic) => value.status === 'verified' && value.reviewed
       ).length
 
-      const waitingAmount = editingPoliticLists.length
+      const waitingAmount = editingPoliticLists.filter(
+        (value: RawPolitic) => value.status !== 'verified' && !value.reviewed
+      ).length
 
       politicAmount = {
         passed: passedAmount || 0,
