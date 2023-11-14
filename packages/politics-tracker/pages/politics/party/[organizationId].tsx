@@ -15,7 +15,7 @@ import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
-import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
+import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
@@ -291,11 +291,12 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const politicList = rawData.data?.politics || []
+      console.log(politicList, organizationElectionIds)
 
       // Fetch 'editingPolitics' data
       const editingRawData: GenericGQLData<RawPolitic[], 'editingPolitics'> =
         await fireGqlRequest(
-          print(GetEditingPoliticsRelatedToPersonElections),
+          print(GetEditingPoliticsRelatedToOrganizationElections),
           {
             ids: organizationElectionIds,
           },
@@ -318,6 +319,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const editingPoliticList = editingRawData.data?.editingPolitics || []
+      console.log(editingRawData, organizationElectionIds)
 
       // Combine 'politics' and 'editingPolitics' arrays
       const combinedPolitics = politicList.concat(editingPoliticList)
