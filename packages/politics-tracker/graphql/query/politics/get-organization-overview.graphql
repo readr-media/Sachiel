@@ -24,6 +24,12 @@ query GetOrganizationOverView($organizationId: ID!) {
       type
       hidePoliticDetail
       addComments
+      electionArea {
+        id
+        name
+        city
+      }
     }
+    seats
   }
 }

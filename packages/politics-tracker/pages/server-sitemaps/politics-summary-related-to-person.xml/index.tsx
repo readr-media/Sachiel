@@ -1,4 +1,4 @@
-// dynamic URLs for politics summary pages
+// dynamic URLs for politics summary pages (person)
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     tasks.push(fireGqlRequest(print(GetPeople), { customFilter }, cmsApiUrl))
     const results = await Promise.allSettled(tasks)
 
-    // politic summary page
+    // politic summary page (person)
     const resultOfPeople = results[0] as PromiseSettledResult<
       GenericGQLData<RawPerson[], 'people'>
     >
@@ -110,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   console.log(
     JSON.stringify({
       severity: 'DEBUG',
-      message: `There are ${fields.length} URLs about politic summary pages.`,
+      message: `There are ${fields.length} URLs about politic summary pages (person).`,
       debugPayload: {
         query,
         match: {

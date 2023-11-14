@@ -17,6 +17,7 @@ import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
+import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import {
   GenericGQLData,
@@ -135,6 +136,7 @@ export const getServerSideProps: GetServerSideProps<
     const organizationElectionIds: number[] = []
     let latestOrganizationElection: RawOrganizationElection
     let latestPerson: RawPerson
+    let legisLatorAtLarge: LegislatorAtLarge[] = []
 
     {
       // get latest election, person and party,
@@ -164,6 +166,7 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       const organizationsElections = rawData.data?.organizationsElections
+
       if (!organizationsElections || organizationsElections.length === 0) {
         return {
           notFound: true,
@@ -189,7 +192,7 @@ export const getServerSideProps: GetServerSideProps<
             electionMap[eId] = {
               electionType: String(election.type),
               electionArea: '',
-              id: String(current.id),
+              id: String(election.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
@@ -206,6 +209,8 @@ export const getServerSideProps: GetServerSideProps<
                   'YYYY-M-D'
                 )
               ),
+              // 針對不分區立委，若席次 >=1 則視為當選
+              elected: Number(current.seats) >= 1,
               source: current.source ?? '',
               mainCandidate: current.mainCandidate ?? null,
               lastUpdate: null,
@@ -500,6 +505,35 @@ export const getServerSideProps: GetServerSideProps<
           .unix()
         return next - prev
       })
+    }
+
+    // Iterate through each election and query its legisLatorAtLarge list
+    for (const election of elections) {
+      const {
+        data: { personElections },
+      } = await fireGqlRequest(
+        print(GetPersonElectionsRelatedToParty),
+        { electionId: election.id, partyId: organizationId },
+        cmsApiUrl
+      )
+
+      if (personElections.errors) {
+        throw new Error(
+          'GraphQLerrors: Party Detail personElections Error' +
+            JSON.stringify(personElections.errors)
+        )
+      }
+
+      if (!personElections.length) {
+        return {
+          notFound: true,
+        }
+      }
+
+      legisLatorAtLarge = personElections || []
+
+      // Push the legisLatorAtLarge list to the current elections object
+      election.legisLatorAtLarge = legisLatorAtLarge
     }
 
     return {

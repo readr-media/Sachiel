@@ -83,7 +83,7 @@ const List = styled.a`
 `
 
 type LegislatorAtLargeProps = {
-  legislators: LegislatorAtLarge[]
+  legislators?: LegislatorAtLarge[]
   isElectionFinished: boolean
 }
 export default function LegislatorAtLarge({
