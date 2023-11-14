@@ -93,13 +93,13 @@ const ListWrapDesk = styled.div`
 `
 const ItemWrap = styled.div`
   width: 100%;
-  background: ${({ theme }) => theme.backgroundColor.lightPurple};
+  background: ${({ theme }) => theme.backgroundColor.purpleLight};
   box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.1);
 `
 const FilterBar = styled.div`
   width: 100%;
   box-shadow: inset 0px -2px 0px #000000;
-  background: ${({ theme }) => theme.backgroundColor.lightPurple};
+  background: ${({ theme }) => theme.backgroundColor.purpleLight};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -199,10 +199,10 @@ const SubtitleWrap = styled.div`
 `
 const ItemGroup = styled.div`
   > div:nth-child(odd) {
-    background: ${({ theme }) => theme.backgroundColor.lightPurple};
+    background: ${({ theme }) => theme.backgroundColor.purpleLight};
   }
   > div:nth-child(even) {
-    background: ${({ theme }) => theme.backgroundColor.landingPurple};
+    background: ${({ theme }) => theme.backgroundColor.purpleMedium};
   }
 `
 const HoverWrap = styled.div`
@@ -318,7 +318,7 @@ export default function CouncilContent({
             {arrowToggle ? (
               <Image
                 alt="arrowPurple"
-                src="/icons/landing/arrow_purple_down.svg"
+                src="/icons/landing/arrow-purple-down.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -326,7 +326,7 @@ export default function CouncilContent({
             ) : (
               <Image
                 alt="arrowPurple"
-                src="/icons/landing/arrow_purple_up.svg"
+                src="/icons/landing/arrow-purple-up.svg"
                 width="20"
                 height="20"
                 onClick={() => {}}
@@ -354,14 +354,14 @@ export default function CouncilContent({
                         {v.active ? (
                           <Image
                             alt="arrowDownPurple"
-                            src="/icons/landing/arrow_up_purple.svg"
+                            src="/icons/landing/arrow-up-purple.svg"
                             width="20"
                             height="20"
                           />
                         ) : (
                           <Image
                             alt="arrowDownPurple"
-                            src="/icons/landing/arrow_down_purple.svg"
+                            src="/icons/landing/arrow-down-purple.svg"
                             width="20"
                             height="20"
                           />

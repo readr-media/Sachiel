@@ -36,10 +36,11 @@ export const theme: Record<string, Record<string, string>> = {
     skinColor: '#FFF5E7',
     disable: '#C5CBCD',
     landingGreen: '#F3FDFF',
-    landingPurple: '#ECEDFF',
-    lightPurple: '#F3F4FF',
     skinDark: '#FFF1E8',
     cornsilk: '#FFFCF3',
+    purpleDark: 'rgba(84, 74, 201, 1)',
+    purpleMedium: '#ECEDFF',
+    purpleLight: '#F3F4FF',
   },
   textColor: {
     blue: '#544AC9', //different with backgroundColor.blue
@@ -55,6 +56,11 @@ export const theme: Record<string, Record<string, string>> = {
     disable: sharedColor.gray,
     black30: 'rgba(15, 45, 53, 0.3)',
     black50: 'rgba(15, 45, 53, 0.5)',
+    landingGreen: '#F3FDFF',
+    yellow30: '#FFF5E7',
+    purpleDark: 'rgba(84, 74, 201, 1)',
+    purpleMedium: '#ECEDFF',
+    purpleLight: '#F3F4FF',
   },
   borderColor: {
     black: sharedColor.black,
