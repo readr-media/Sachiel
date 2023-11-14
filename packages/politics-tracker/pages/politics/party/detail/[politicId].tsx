@@ -26,6 +26,7 @@ import GetOrganizationOverView from '~/graphql/query/politics/get-organization-o
 import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-organization-elections.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import { RawPolitic } from '~/types/common'
+import { CheckPartyPage } from '~/components/react-context/use-check-party-page'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -91,20 +92,27 @@ export default function PartyPoliticsDetail({
   return (
     <DefaultLayout>
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
-      <Main>
-        <Title
-          campaign={organization?.elections?.type || ''}
-          isPartyPage={true}
-          {...titleProps}
-        />
-        <Section
-          politic={politic}
-          electionTerm={electionTerm}
-          shouldShowFeedbackForm={true}
-          isPartyPage={true}
-          legislators={legisLatorAtLarge}
-        />
-      </Main>
+
+      <CheckPartyPage.Provider
+        value={{
+          isPartyPage: true,
+        }}
+      >
+        <Main>
+          <Title
+            campaign={organization?.elections?.type || ''}
+            isPartyPage={true}
+            {...titleProps}
+          />
+          <Section
+            politic={politic}
+            electionTerm={electionTerm}
+            shouldShowFeedbackForm={true}
+            legislators={legisLatorAtLarge}
+          />
+        </Main>
+      </CheckPartyPage.Provider>
+
       <Nav {...navProps} />
     </DefaultLayout>
   )

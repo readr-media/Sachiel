@@ -48,6 +48,7 @@ query GetPoliticDetail($politicId: ID!) {
 
     organization {
       id
+      seats
       organization_id {
         id
         name
