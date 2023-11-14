@@ -47,22 +47,44 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
-      const variables = {
-        data: {
-          thread_parent: {
-            connect: {
-              id: data.id,
+      let variables: any
+
+      if (props.isPartyPage) {
+        variables = {
+          data: {
+            thread_parent: {
+              connect: {
+                id: data.id,
+              },
             },
-          },
-          person: {
-            connect: {
-              id: personElection.id,
+            organization: {
+              connect: {
+                id: personElection.id,
+              },
             },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
           },
-          desc: data.desc,
-          source: data.source,
-          content: data.content,
-        },
+        }
+      } else {
+        variables = {
+          data: {
+            thread_parent: {
+              connect: {
+                id: data.id,
+              },
+            },
+            person: {
+              connect: {
+                id: personElection.id,
+              },
+            },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
+          },
+        }
       }
 
       // result is not used currently

@@ -1,5 +1,6 @@
 // @ts-ignore: no definition
 // @ts-nocheck
+
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import moment from 'moment'
@@ -15,7 +16,7 @@ import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
-import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
+import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-organization-elections.graphql'
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
@@ -32,6 +33,7 @@ import {
 import type {
   ExpertPoint,
   FactCheck,
+  LegislatorAtLarge,
   PersonElection,
   PersonOverview,
   Politic,
@@ -192,7 +194,8 @@ export const getServerSideProps: GetServerSideProps<
             electionMap[eId] = {
               electionType: String(election.type),
               electionArea: '',
-              id: String(election.id),
+              id: String(current.id),
+              electionId: String(election.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
@@ -295,7 +298,7 @@ export const getServerSideProps: GetServerSideProps<
       // Fetch 'editingPolitics' data
       const editingRawData: GenericGQLData<RawPolitic[], 'editingPolitics'> =
         await fireGqlRequest(
-          print(GetEditingPoliticsRelatedToPersonElections),
+          print(GetEditingPoliticsRelatedToOrganizationElections),
           {
             ids: organizationElectionIds,
           },
@@ -513,7 +516,7 @@ export const getServerSideProps: GetServerSideProps<
         data: { personElections },
       } = await fireGqlRequest(
         print(GetPersonElectionsRelatedToParty),
-        { electionId: election.id, partyId: organizationId },
+        { electionId: election.electionId, partyId: organizationId },
         cmsApiUrl
       )
 

@@ -16,6 +16,12 @@ mutation AddEditingPoliticToThread($data: EditingPoliticCreateInput!) {
         name
       }
     }
+    organization {
+      id
+      organization_id {
+        name
+      }
+    }
     thread_parent {
       id
       desc
