@@ -259,7 +259,10 @@ export const getServerSideProps: GetServerSideProps<
       )
 
       const passedAmount = politicList.filter(
-        (value: RawPolitic) => value.status === 'verified' && value.reviewed
+        (value: RawPolitic) =>
+          value.status === 'verified' &&
+          value.reviewed &&
+          value.thread_parent === null
       ).length
 
       const waitingAmount = editingPoliticLists.filter(
