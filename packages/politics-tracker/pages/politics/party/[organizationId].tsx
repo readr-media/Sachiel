@@ -194,7 +194,8 @@ export const getServerSideProps: GetServerSideProps<
             electionMap[eId] = {
               electionType: String(election.type),
               electionArea: '',
-              id: String(election.id),
+              id: String(current.id),
+              electionId: String(election.id),
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
@@ -515,7 +516,7 @@ export const getServerSideProps: GetServerSideProps<
         data: { personElections },
       } = await fireGqlRequest(
         print(GetPersonElectionsRelatedToParty),
-        { electionId: election.id, partyId: organizationId },
+        { electionId: election.electionId, partyId: organizationId },
         cmsApiUrl
       )
 
