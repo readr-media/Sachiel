@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import CustomHead from '~/components/custom-head'
 import FactCheck from '~/components/landing/election-2024/fact-check-group'
 import HeroImage from '~/components/landing/election-2024/hero-image'
+import Legislators from '~/components/landing/election-2024/legislators/index'
 import RelatedPosts from '~/components/landing/election-2024/related-posts'
 import ButtonToLanding from '~/components/landing/shared/button-to-landing'
 import CollaborateGuide from '~/components/landing/shared/collaborate-guide'
@@ -76,6 +77,8 @@ export default function Landing2024({
           buttonText="公開說明"
           buttonHref="https://hackmd.io/@readr/r1jcxjema"
         />
+
+        <Legislators />
 
         <RelatedPosts posts={posts} />
 

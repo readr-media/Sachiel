@@ -92,7 +92,7 @@ export default function PresidentComparison({
         <Title>總統政見：差異比較</Title>
       </TitleWrapper>
       <Content>
-        {comparisonJSON.map((item, index: number) => (
+        {comparisonJSON.map((item, index) => (
           <ComparisonItem key={index} candidate={item} />
         ))}
       </Content>
