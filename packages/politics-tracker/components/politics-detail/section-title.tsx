@@ -2,6 +2,7 @@ import Image from '@readr-media/react-image'
 import Link from 'next/link'
 import styled from 'styled-components'
 
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import ElectionTerm from '~/components/shared/election-term'
 import ArrowLeft from '~/public/icons/arrow-left.svg'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
@@ -113,13 +114,12 @@ const PartyImage = styled.div`
 type SectionTitleProps = {
   politic: PoliticDetail
   electionTerm: PersonElectionTerm
-  isPartyPage?: boolean
 }
 export default function SectionTitle({
   politic,
   electionTerm,
-  isPartyPage = false,
 }: SectionTitleProps): JSX.Element {
+  const { isPartyPage } = useIsPartyPage()
   const { person, organization } = politic
 
   let electionArea: string = ''

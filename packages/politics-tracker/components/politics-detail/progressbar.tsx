@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import type { PoliticDetail } from '~/types/politics-detail'
 
 const ProgressBar = styled.div`
   overflow: hidden;
   height: 44px;
   box-shadow: inset 0px -4px 0px #000000;
+
   .clearfix:after {
     content: '';
     display: block;
@@ -125,18 +127,28 @@ const ProgressBar = styled.div`
   }
 `
 
-type ProgressBar = {
+type ProgressBarProps = {
   politic: PoliticDetail
 }
-export default function Progressbar({ politic }: ProgressBar): JSX.Element {
-  const electResult = politic?.person?.elected || false
-  //@ts-ignore
+export default function Progressbar({
+  politic,
+}: ProgressBarProps): JSX.Element {
+  const { isPartyPage } = useIsPartyPage()
+
+  let isElected: boolean = false
+
+  if (isPartyPage) {
+    isElected = Number(politic.organization?.seats) > 0
+  } else {
+    isElected = politic?.person?.elected || false
+  }
+
   const progressType = politic.current_progress
 
   return (
     <ProgressBar>
       <div className="arrow-steps clearfix">
-        {electResult ? (
+        {isElected ? (
           <>
             <div className="step step1">
               <span>提出政見</span>
@@ -173,7 +185,7 @@ export default function Progressbar({ politic }: ProgressBar): JSX.Element {
               <span>提出政見</span>
             </div>
             <div className="step step3">
-              <span>未當選</span>
+              <span>{isPartyPage ? '未取得席次' : '未當選'}</span>
             </div>
           </>
         )}

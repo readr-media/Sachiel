@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import type { LegislatorAtLarge } from '~/types/politics'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
@@ -22,16 +23,15 @@ type SectionProps = {
   politic: PoliticDetail
   electionTerm: PersonElectionTerm
   shouldShowFeedbackForm: boolean
-  isPartyPage?: boolean
   legislators?: LegislatorAtLarge[]
 }
 export default function Section({
   politic,
   electionTerm,
   shouldShowFeedbackForm = false,
-  isPartyPage = false,
   legislators = [],
 }: SectionProps): JSX.Element {
+  const { isPartyPage } = useIsPartyPage()
   const { organization, person } = politic
 
   //get election Date (YYYY-MM-DD)
@@ -66,11 +66,7 @@ export default function Section({
   return (
     <SectionContainer>
       <div>
-        <SectionTitle
-          politic={politic}
-          electionTerm={electionTerm}
-          isPartyPage={isPartyPage}
-        />
+        <SectionTitle politic={politic} electionTerm={electionTerm} />
         {isElectionFinished && <ProgressBar politic={politic} />}
         <SectionContent
           politic={politic}
