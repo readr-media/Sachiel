@@ -38,6 +38,8 @@ export type PoliticDetail = {
 
 export type OrganizationElection = {
   id: Pick<RawOrganizationElection, 'id'>
+  seats: Pick<RawOrganizationElection, 'seats'>
+  electoral_district: string
   organization_id: Pick<RawOrganization, 'id' | 'name' | 'image'>
   elections: Pick<
     RawElection,
@@ -50,7 +52,6 @@ export type OrganizationElection = {
     | 'election_year_month'
     | 'election_year_day'
   >
-  electoral_district: string
 }
 
 export type PoliticFactCheck = Pick<
