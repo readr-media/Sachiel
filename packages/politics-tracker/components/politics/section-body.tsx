@@ -28,6 +28,7 @@ type SectionBodyProps = Pick<
   | 'electionType'
   | 'shouldShowFeedbackForm'
   | 'isFinished'
+  | 'partyId'
 > & { show: boolean } & { isPartyPage?: boolean } & {
   legisLatorAtLarge?: LegislatorAtLarge[]
 }
@@ -92,7 +93,7 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
               <Link
                 href={
                   isLegislatorAtLarge
-                    ? `/politics/party/${props.organizationId?.id}`
+                    ? `/politics/party/${props.partyId}`
                     : `/politics/${props.mainCandidate?.person_id.id}`
                 }
               >
