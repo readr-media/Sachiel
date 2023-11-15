@@ -50,13 +50,15 @@ export default function SectionList(props: SectionListProps): JSX.Element {
 
   return (
     <PersonElectionContext.Provider value={props}>
-      <div className={`${s['section-list']} md: px-0 sm:px-8 lg:px-0`}>
+      <div
+        id={String(props.year)}
+        className={`${s['section-list']} md: px-0 sm:px-8 lg:px-0`}
+      >
         <SectionToggle
           {...props}
           content={props.name}
           isActive={isActive}
           setActive={() => setIsActive(!isActive)}
-          id={String(props.year)}
         />
         <SectionBody
           show={isActive}
