@@ -70,7 +70,7 @@ const ProgressBar = styled.div`
     display: inline-block;
   }
 
-  //progress-1
+  /* progress-1 */
   .step1 {
     color: ${({ theme }) => theme.textColor.white};
     background-color: #8379f8;
@@ -80,7 +80,7 @@ const ProgressBar = styled.div`
     border-left: 17px solid #8379f8;
   }
 
-  //progress-2
+  /* progress-2 */
   .step2 {
     color: ${({ theme }) => theme.textColor.white};
     background-color: #db4c65;
@@ -107,7 +107,7 @@ const ProgressBar = styled.div`
     border-left: 17px solid #db4c65;
   }
 
-  //progress-3
+  /* progress-3 */
   .step3 {
     color: rgba(15, 45, 53, 0.3);
     background-color: #c5cbcd;
@@ -121,7 +121,7 @@ const ProgressBar = styled.div`
     color: #ffffff;
   }
 
-  //progress: no election
+  /* progress: no election */
   .step4 {
     width: 50%;
   }
@@ -134,6 +134,7 @@ export default function Progressbar({
   politic,
 }: ProgressBarProps): JSX.Element {
   const { isPartyPage } = useIsPartyPage()
+  const progressType = politic.current_progress
 
   let isElected: boolean = false
 
@@ -142,8 +143,6 @@ export default function Progressbar({
   } else {
     isElected = politic?.person?.elected || false
   }
-
-  const progressType = politic.current_progress
 
   return (
     <ProgressBar>
