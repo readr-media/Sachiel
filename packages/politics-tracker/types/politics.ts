@@ -8,6 +8,7 @@ export type PersonOverview = {
   avatar: string
   party: string
   partyIcon: string
+  partyId: string
   campaign: string
   completed: number
   waiting: number
@@ -98,6 +99,7 @@ export type PersonElection = {
   id: string
   party: string
   partyIcon: string
+  partyId: string
   name: string
   year: number
   month: number

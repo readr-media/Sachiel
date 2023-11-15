@@ -27,6 +27,7 @@ query GetPersonOverView($personId: ID!) {
     party {
       name
       image
+      id
     }
     electoral_district {
       id
