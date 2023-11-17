@@ -27,6 +27,7 @@ import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/po
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import { RawPolitic } from '~/types/common'
 import { CheckPartyPage } from '~/components/react-context/use-check-party-page'
+import Head from 'next/head'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -91,6 +92,15 @@ export default function PartyPoliticsDetail({
 
   return (
     <DefaultLayout>
+      <Head>
+        <meta
+          name="election:year"
+          content={`${electionYear}`}
+          key="election:year"
+        />
+        <meta name="election:type" content={electionType} key="election:type" />
+      </Head>
+
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
 
       <CheckPartyPage.Provider
