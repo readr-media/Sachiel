@@ -5,6 +5,7 @@ import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import Head from 'next/head'
 
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -113,6 +114,15 @@ export default function PoliticsDetail({
 
   return (
     <DefaultLayout>
+      <Head>
+        <meta
+          name="election:year"
+          content={`${electionYear}`}
+          key="election:year"
+        />
+        <meta name="election:area" content={districtName} key="election:area" />
+        <meta name="election:type" content={electionType} key="election:type" />
+      </Head>
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
       <Main>
         <Title
