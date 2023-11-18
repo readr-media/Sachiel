@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import type { LegislatorAtLarge, PersonElection } from '~/types/politics'
 
@@ -15,6 +16,12 @@ type SectionListProps = PersonElection & {
 } & {
   legisLatorAtLarge?: LegislatorAtLarge[]
 }
+
+const Anchor = styled.div`
+  height: 80px;
+  margin-top: -80px;
+  position: absolute;
+`
 
 export default function SectionList(props: SectionListProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.order === 0)
@@ -40,16 +47,14 @@ export default function SectionList(props: SectionListProps): JSX.Element {
 
   return (
     <PersonElectionContext.Provider value={props}>
-      <div
-        id={String(props.year)}
-        className={`${s['section-list']} md: px-0 sm:px-8 lg:px-0`}
-      >
+      <div className={`${s['section-list']} md: relative px-0 sm:px-8 lg:px-0`}>
         <SectionToggle
           {...props}
           content={props.name}
           isActive={isActive}
           setActive={() => setIsActive(!isActive)}
         />
+        <Anchor id={String(props.year)} />
         <SectionBody
           show={isActive}
           politics={props.politics}
