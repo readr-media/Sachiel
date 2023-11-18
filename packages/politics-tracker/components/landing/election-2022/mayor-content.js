@@ -408,7 +408,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                   >
@@ -449,7 +449,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                   >
@@ -488,7 +488,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                   >
@@ -529,7 +529,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                     onClick={(e) => e.stopPropagation()}
@@ -571,7 +571,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                     onClick={(e) => e.stopPropagation()}
@@ -611,7 +611,7 @@ export default function MayorContent({
                                     href={{
                                       pathname: `politics/[personId]`,
                                     }}
-                                    as={`/politics/${value.id}`}
+                                    as={`/politics/${value.id}#2022`}
                                     key={value.name}
                                     legacyBehavior={false}
                                     onClick={(e) => e.stopPropagation()}
