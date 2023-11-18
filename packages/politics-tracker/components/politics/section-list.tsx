@@ -17,7 +17,7 @@ type SectionListProps = PersonElection & {
 }
 
 export default function SectionList(props: SectionListProps): JSX.Element {
-  const [isActive, setIsActive] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(props.order === 0)
   const router = useRouter()
 
   useEffect(() => {
