@@ -82,7 +82,7 @@ export default function LinkButtons({ personId }: ButtonProps): JSX.Element {
       </a>
 
       <a
-        href={`/politics/${personId}`}
+        href={`/politics/${personId}#2024`}
         target="_blank"
         rel="noopener noreferrer"
         className="politic-overview"
