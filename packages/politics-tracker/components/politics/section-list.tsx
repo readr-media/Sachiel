@@ -18,9 +18,15 @@ type SectionListProps = PersonElection & {
 }
 
 const Anchor = styled.div`
-  height: 80px;
-  margin-top: -80px;
+  width: 10px;
+  background-color: aqua;
+  height: 50px;
+  margin-top: -50px;
   position: absolute;
+  ${({ theme }) => theme.breakpoint.md} {
+    height: 80px;
+    margin-top: -80px;
+  }
 `
 
 export default function SectionList(props: SectionListProps): JSX.Element {
