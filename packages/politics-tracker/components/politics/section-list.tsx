@@ -74,6 +74,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           legisLatorAtLarge={props.legisLatorAtLarge}
           isFinished={props.isFinished}
           partyId={props.partyId}
+          year={props.year}
         />
       </div>
     </PersonElectionContext.Provider>
