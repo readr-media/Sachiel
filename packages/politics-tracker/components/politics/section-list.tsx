@@ -18,8 +18,6 @@ type SectionListProps = PersonElection & {
 }
 
 const Anchor = styled.div`
-  width: 10px;
-  background-color: aqua;
   height: 50px;
   margin-top: -50px;
   position: absolute;
