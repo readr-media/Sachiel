@@ -12,40 +12,126 @@ const Container = styled.div`
   background: ${({ theme }) => theme.backgroundColor.cornsilk};
   width: 100%;
   padding: 84px 16px 40px;
+  font-family: 'Noto Sans TC';
 
-  .gsc-control-cse {
-    background: ${({ theme }) => theme.backgroundColor.cornsilk};
+  //隱藏「贊助商廣告」功能
+  .gsc-adBlock {
+    display: none;
   }
 
-  .gsc-search-box,
-  .gsc-orderby {
+  //隱藏「你是不是要查...」 FIXME
+  .gs-spelling {
     display: none;
+  }
+
+  //共找到 0 項結果
+  .gs-no-results-result {
+    outline: 1px solid red;
   }
 
   .gsc-above-wrapper-area {
     border-bottom: none;
-  }
+    padding: 0px;
 
-  .gs-title {
-    color: #b2800d !important;
-    margin-bottom: 8px;
+    //「約有幾筆搜尋結果」文字樣式
+    .gsc-result-info {
+      color: rgba(15, 45, 53, 0.5);
+      font-family: 'Noto Sans TC';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
 
-    > * {
-      color: #b2800d !important;
+      ${({ theme }) => theme.breakpoint.md} {
+        font-size: 14px;
+        line-height: 16px;
+      }
     }
   }
 
-  .gs-visibleUrl {
+  //單筆搜尋結果項目
+  .gsc-webResult.gsc-result {
+    padding: 16px 0;
+
+    //標題
+    .gs-title {
+      margin-bottom: 8px;
+      font-family: 'Noto Sans TC';
+      font-style: normal;
+      font-weight: 700;
+      line-height: 1.3;
+
+      &:hover {
+        text-decoration: underline 1px;
+        text-underline-offset: 2px;
+      }
+    }
+
+    //隱藏「搜尋結果網址」
+    .gs-visibleUrl {
+      display: none;
+    }
+
+    //「搜尋結果片段」
+    .gs-snippet {
+      color: rgba(15, 45, 53, 0.66) !important;
+      font-family: 'Noto Sans TC';
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.5;
+
+      > b {
+        color: #c0374f;
+      }
+    }
+  }
+
+  //隱藏「透過 google 搜尋...」
+  .gcsc-find-more-on-google {
     display: none;
   }
 
-  .gs-image-box {
-    display: none;
-  }
+  //頁籤
+  .gsc-results {
+    .gsc-cursor-box {
+      text-align: center;
+      margin: 24px auto 0px;
+    }
 
-  .gs-snippet {
-    > * {
-      color: #c0374f;
+    .gsc-cursor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Noto Sans TC';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 16px;
+
+      .gsc-cursor-page {
+        margin: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        color: rgba(15, 45, 53, 0.5);
+
+        &:hover {
+          color: rgba(15, 45, 53, 1);
+          text-decoration: none;
+        }
+      }
+
+      .gsc-cursor-current-page {
+        background: rgba(246, 186, 49, 1);
+        color: rgba(15, 45, 53, 1);
+        font-weight: 500;
+      }
     }
   }
 
@@ -121,8 +207,7 @@ export default function GcseSearch(): JSX.Element {
   return (
     <DefaultLayout>
       <Container>
-        {/* <Result className="gcse-searchresults-only"></Result> */}
-        <div className="gcse-search"></div>
+        <div className="gcse-searchresults-only"></div>
 
         <SearchInput onSubmit={handleSubmit}>
           <SearchIcon onClick={handleSubmit} />
