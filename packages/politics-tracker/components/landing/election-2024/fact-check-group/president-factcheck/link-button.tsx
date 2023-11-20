@@ -79,7 +79,7 @@ export default function LinkButtons({
           </a>
 
           <a
-            href={`/politics/${personId}`}
+            href={`/politics/${personId}#2024`}
             target="_blank"
             rel="noopener noreferrer"
             className="politic-overview"

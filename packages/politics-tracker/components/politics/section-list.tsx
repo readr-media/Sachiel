@@ -18,9 +18,13 @@ type SectionListProps = PersonElection & {
 }
 
 const Anchor = styled.div`
-  height: 80px;
-  margin-top: -80px;
+  height: 50px;
+  margin-top: -50px;
   position: absolute;
+  ${({ theme }) => theme.breakpoint.md} {
+    height: 80px;
+    margin-top: -80px;
+  }
 `
 
 export default function SectionList(props: SectionListProps): JSX.Element {
@@ -70,6 +74,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           legisLatorAtLarge={props.legisLatorAtLarge}
           isFinished={props.isFinished}
           partyId={props.partyId}
+          year={props.year}
         />
       </div>
     </PersonElectionContext.Provider>
