@@ -3,9 +3,9 @@
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import Head from 'next/head'
 
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -15,10 +15,10 @@ import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
 import { GenericGQLData, RawPersonElection, RawPolitic } from '~/types/common'
 import type {
@@ -66,6 +66,7 @@ export default function PoliticsDetail({
 
   const navProps = {
     prev: {
+      electionYear: person?.election?.election_year_year || '',
       backgroundColor: 'bg-button',
       textColor: 'text-black',
       content: '回政見總覽',
