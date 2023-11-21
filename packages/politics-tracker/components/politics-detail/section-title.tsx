@@ -132,21 +132,23 @@ export default function SectionTitle({
 
   if (isPartyPage) {
     electionArea = ''
-    linkHref = `/politics/party/${organization?.organization_id?.id}` || '/'
-
     rawElectionName = organization?.elections?.name || ''
     electionCenturyYear =
       organization?.elections?.election_year_year?.toString() || ''
     electionWithoutYear =
       rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+    linkHref =
+      `/politics/party/${organization?.organization_id?.id}#${electionCenturyYear}` ||
+      '/'
   } else {
     const districtName = person?.electoral_district?.name || ''
     electionArea = districtName.slice(0, 3) || ''
-    linkHref = `/politics/${person?.person_id?.id}` || '/'
     rawElectionName = person?.election?.name || ''
     electionCenturyYear = person?.election?.election_year_year?.toString() || ''
     electionWithoutYear =
       rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+    linkHref =
+      `/politics/${person?.person_id?.id}#${electionCenturyYear}` || '/'
   }
 
   return (
