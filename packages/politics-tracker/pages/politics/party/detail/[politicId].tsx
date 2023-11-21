@@ -6,28 +6,28 @@ import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
+import Head from 'next/head'
 import CustomHead from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import Section from '~/components/politics-detail/section'
 import Title from '~/components/politics/title'
+import { CheckPartyPage } from '~/components/react-context/use-check-party-page'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
-import type {
-  PersonElectionTerm,
-  PoliticDetail,
-  PoliticAmount,
-} from '~/types/politics-detail'
-import { fireGqlRequest } from '~/utils/utils'
-import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
-import type { LegislatorAtLarge } from '~/types/politics'
-import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-organization-elections.graphql'
+import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
+import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import { RawPolitic } from '~/types/common'
-import { CheckPartyPage } from '~/components/react-context/use-check-party-page'
-import Head from 'next/head'
+import type { LegislatorAtLarge } from '~/types/politics'
+import type {
+  PersonElectionTerm,
+  PoliticAmount,
+  PoliticDetail,
+} from '~/types/politics-detail'
+import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -67,6 +67,7 @@ export default function PartyPoliticsDetail({
 
   const navProps = {
     prev: {
+      electionYear: organization?.elections?.election_year_year || '',
       backgroundColor: 'bg-button',
       textColor: 'text-black',
       content: '回政見總覽',
