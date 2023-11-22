@@ -15,5 +15,11 @@ mutation CreatePolitic($data: PoliticCreateInput!) {
         name
       }
     }
+    organization {
+      id
+      organization_id {
+        name
+      }
+    }
   }
 }

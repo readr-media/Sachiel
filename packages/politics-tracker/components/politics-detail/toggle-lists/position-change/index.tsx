@@ -64,7 +64,7 @@ const Time = styled.div`
 
 const ContentBlock = styled.div`
   .summary {
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     display: block;
     word-break: break-all;
     cursor: pointer;

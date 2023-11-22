@@ -47,22 +47,44 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
-      const variables = {
-        data: {
-          thread_parent: {
-            connect: {
-              id: data.id,
+      let variables: any
+
+      if (props.isPartyPage) {
+        variables = {
+          data: {
+            thread_parent: {
+              connect: {
+                id: data.id,
+              },
             },
-          },
-          person: {
-            connect: {
-              id: personElection.id,
+            organization: {
+              connect: {
+                id: personElection.id,
+              },
             },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
           },
-          desc: data.desc,
-          source: data.source,
-          content: data.content,
-        },
+        }
+      } else {
+        variables = {
+          data: {
+            thread_parent: {
+              connect: {
+                id: data.id,
+              },
+            },
+            person: {
+              connect: {
+                id: personElection.id,
+              },
+            },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
+          },
+        }
       }
 
       // result is not used currently
@@ -127,7 +149,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       'in-progress': '進行中',
       'in-trouble': '卡關中',
       complete: '已完成',
-      failed: '未當選',
+      failed: props.isPartyPage ? '未取得席次' : '未當選',
     }
 
     return map[status]
@@ -157,7 +179,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       <div className={s['container']}>
         <div className={s['header']}>
           <span className={s['index']}>{index}</span>
-          {!props.isPartyPage && personElection.isFinished && (
+          {personElection.isFinished && (
             <span className={s['politic-status']}>
               <span className={s['text']}>達成進度</span>
               <span className={statusStyle}>{getStatusText(status)}</span>

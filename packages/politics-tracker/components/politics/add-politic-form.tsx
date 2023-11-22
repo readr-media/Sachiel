@@ -1,4 +1,5 @@
 import { print } from 'graphql'
+import { useEffect, useState } from 'react'
 
 import CreatePolitic from '~/graphql/mutation/politics/create-politic.graphql'
 import type { RawPolitic } from '~/types/common'
@@ -35,6 +36,13 @@ export default function AddPoliticForm(
     repeat: [],
   }
 
+  const [isPartyPage, setIsPartyPage] = useState(false)
+  useEffect(() => {
+    const currentURL = window?.location.href
+    const isOrgPolitics = currentURL.includes('party')
+    setIsPartyPage(isOrgPolitics)
+  }, [])
+
   const toast = useToast()
   const politicAmount = usePoliticAmount()
   const personElection = usePersonElection()
@@ -45,18 +53,36 @@ export default function AddPoliticForm(
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
-      const variables = {
-        data: {
-          person: {
-            connect: {
-              id: personElection.id,
+      let variables: any
+
+      if (isPartyPage) {
+        variables = {
+          data: {
+            organization: {
+              connect: {
+                id: personElection.id,
+              },
             },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
           },
-          desc: data.desc,
-          source: data.source,
-          content: data.content,
-        },
+        }
+      } else {
+        variables = {
+          data: {
+            person: {
+              connect: {
+                id: personElection.id,
+              },
+            },
+            desc: data.desc,
+            source: data.source,
+            content: data.content,
+          },
+        }
       }
+
       // result is not used currently
       // eslint-disable-next-line
       const result: RawPolitic = await fireGqlRequest(

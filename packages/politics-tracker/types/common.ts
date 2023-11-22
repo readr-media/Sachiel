@@ -58,6 +58,7 @@ export type Person = {
   id: string | null
 }
 
+// CMS: People
 export type RawPerson = Partial<{
   id: string
   name: string
@@ -86,6 +87,7 @@ export type RawPerson = Partial<{
   updatedBy: GenericUser
 }>
 
+// CMS: Organizations
 export type RawOrganization = Partial<{
   id: string
   name: string
@@ -111,6 +113,9 @@ export type RawOrganization = Partial<{
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
+  tags: RawTag[]
+  tagsCount: number
+  reviewed: boolean
 }>
 
 export type RawPersonElection = Partial<{
@@ -191,6 +196,7 @@ export enum PROGRESS {
 export type RawPolitic = Partial<{
   id: string
   person: RawPersonElection
+  organization: RawOrganizationElection
   desc: string
   source: string
   content: string
@@ -198,13 +204,30 @@ export type RawPolitic = Partial<{
   current_progress: `${PROGRESS}`
   progressCount: number
   status: StatusOptionsB
+  checked: boolean
   reviewed: Boolean
   thread_parent: RawPolitic
-  politicCategory: RawTag
+  tags: RawTag
+  politicCategory: GenericPoliticCategory
   createdAt: string
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
+  changeLog: string
+  positionChange: GenericPositionChange[]
+  positionChangeCount: number
+  factCheck: GenericFactCheck[]
+  factCheckCount: number
+  expertPoint: GenericExpert[]
+  expertPointCount: number
+  repeat: GenericRepeat[]
+  repeatCount: number
+  controversies: GenericControversy[]
+  controversiesCount: number
+  response: GenericResponse[]
+  responseCount: number
+  timeline: GenericTimeline[]
+  timelineCount: number
 }>
 
 export type Source = {
@@ -336,7 +359,7 @@ export type GenericResizedImages = {
 export type GenericPersonOrganization = {
   id: string
   person_id: RawPerson
-  organization_id: GenericOrganization
+  organization_id: RawOrganization
   election: RawPersonElection
   role: string
   start_date_year: string | null
@@ -352,7 +375,7 @@ export type GenericPersonOrganization = {
   updatedBy: GenericUser
 }
 
-export type GenericPoliticCategory = {
+export type GenericPoliticCategory = Partial<{
   id: string
   name: string
   brief: string
@@ -366,7 +389,7 @@ export type GenericPoliticCategory = {
   updatedAt: string
   createdBy: GenericUser
   updatedBy: GenericUser
-}
+}>
 
 export type GenericUser = {
   id: string
@@ -375,36 +398,6 @@ export type GenericUser = {
   password: { isSet: boolean }
   role: string
   isProtected: boolean
-}
-
-export type GenericOrganization = {
-  id: string
-  name: string
-  alternative: string | null
-  other_names: string | null
-  identifiers: string | null
-  classification: string
-  abstract: string | null
-  description: string | null
-  founding_date_year: string
-  founding_date_month: string
-  founding_date_day: string
-  dissolution_date_year: string
-  dissolution_date_month: string
-  dissolution_date_day: string
-  image: string | null
-  contact_details: string | null
-  links: string | null
-  address: string | null
-  source: string | null
-  status: GenericStatus
-  tags: GenericPoliticCategory
-  tagsCount: number
-  reviewed: boolean
-  createdAt: string
-  updatedAt: string
-  createdBy: GenericUser
-  updatedBy: GenericUser
 }
 
 export type GenericPhoto = {

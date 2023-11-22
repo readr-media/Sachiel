@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import CountGroup from '~/components/landing/election-2024/fact-check-group/president-comparison/count-group'
 import LinkButtons from '~/components/landing/election-2024/fact-check-group/president-comparison/link-button'
 import PercentageBar from '~/components/landing/election-2024/fact-check-group/president-comparison/percentage-bar'
+import type { PresidentComparisonJson } from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -106,7 +107,12 @@ const StatisticBoard = styled.div`
   }
 `
 
-export default function ComparisonItem({ candidate }: any): JSX.Element {
+type ComparisonItemProps = {
+  candidate: PresidentComparisonJson
+}
+export default function ComparisonItem({
+  candidate,
+}: ComparisonItemProps): JSX.Element {
   const {
     positionChangeCount = 0,
     factCheckCount = 0,
@@ -161,7 +167,7 @@ export default function ComparisonItem({ candidate }: any): JSX.Element {
           <div className="sort-table">
             <p>Top 5 類別</p>
             <Categories>
-              {categories_count.map((category: any, index: number) => (
+              {categories_count.map((category, index: number) => (
                 <CategoryList key={index}>
                   <span className="number">{index + 1}</span>
                   <CategoryTitle color={category.displayColor}>

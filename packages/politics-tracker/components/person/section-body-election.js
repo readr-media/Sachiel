@@ -88,7 +88,9 @@ export default function SectionBodyElection({
       >
         {item.election?.name}
       </ElectionLink>
-      <PoliticButton href={`/politics/${personId}`}>
+      <PoliticButton
+        href={`/politics/${personId}#${item.election?.election_year_year}`}
+      >
         <span>政見</span>
         <ArrowTilt />
       </PoliticButton>

@@ -4,7 +4,11 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
-import type { PersonElection, Politic } from '~/types/politics'
+import type {
+  LegislatorAtLarge,
+  PersonElection,
+  Politic,
+} from '~/types/politics'
 
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
@@ -23,7 +27,12 @@ type SectionBodyProps = Pick<
   | 'hidePoliticDetail'
   | 'electionType'
   | 'shouldShowFeedbackForm'
-> & { show: boolean } & { isPartyPage?: boolean }
+  | 'isFinished'
+  | 'partyId'
+  | 'year'
+> & { show: boolean } & { isPartyPage?: boolean } & {
+  legisLatorAtLarge?: LegislatorAtLarge[]
+}
 
 const Button = styled.button`
   margin: auto;
@@ -85,8 +94,8 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
               <Link
                 href={
                   isLegislatorAtLarge
-                    ? `/politics/party/${props.organizationId?.id}`
-                    : `/politics/${props.mainCandidate?.person_id.id}`
+                    ? `/politics/party/${props.partyId}#${props.year}`
+                    : `/politics/${props.mainCandidate?.person_id.id}#${props.year}`
                 }
               >
                 <Button>
@@ -99,7 +108,12 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
             ) : (
               <>
                 {props.politics.length > 0 ? (
-                  <PoliticBlock {...props} isPartyPage={isPartyPage} />
+                  <PoliticBlock
+                    {...props}
+                    isPartyPage={isPartyPage}
+                    legisLatorAtLarge={props.legisLatorAtLarge}
+                    isFinished={props.isFinished}
+                  />
                 ) : (
                   <div className={s['default']}>這個人還沒有被新增政見...</div>
                 )}

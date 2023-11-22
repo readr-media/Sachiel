@@ -1,0 +1,11 @@
+query GetPoliticsRelatedToParty {
+  politics(where: {
+    status: { equals: "verified" },
+    reviewed: { equals: true }
+    organization: { id: { gt: 0 } }
+  }) {
+    id
+    createdAt
+    updatedAt
+  }
+}

@@ -1,8 +1,10 @@
+import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import type { LegislatorAtLarge } from '~/types/politics'
 import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
 
@@ -22,16 +24,15 @@ type SectionProps = {
   politic: PoliticDetail
   electionTerm: PersonElectionTerm
   shouldShowFeedbackForm: boolean
-  isPartyPage?: boolean
   legislators?: LegislatorAtLarge[]
 }
 export default function Section({
   politic,
   electionTerm,
   shouldShowFeedbackForm = false,
-  isPartyPage = false,
   legislators = [],
 }: SectionProps): JSX.Element {
+  const { isPartyPage } = useIsPartyPage()
   const { organization, person } = politic
 
   //get election Date (YYYY-MM-DD)
@@ -55,23 +56,26 @@ export default function Section({
 
   // get current Date (YYYY-MM-DD)
   let currentTime = new Date()
-  let day = currentTime.getDate()
-  let month = currentTime.getMonth() + 1
-  let year = currentTime.getFullYear()
-  let currentDate = `${year}-${month}-${day}`
+  let currentDate = `${currentTime.getFullYear()}-${
+    currentTime.getMonth() + 1
+  }-${currentTime.getDate()}`
+
+  function compareDates(dateStr1: string, dateStr2: string) {
+    const date1 = dayjs(dateStr1)
+    const date2 = dayjs(dateStr2)
+
+    return Boolean(date1.isBefore(date2))
+  }
 
   // compare "election Date" & "current Date"
-  const isElectionFinished = +new Date(electionDate) < +new Date(currentDate)
+  const isElectionFinished = compareDates(electionDate, currentDate)
 
   return (
     <SectionContainer>
       <div>
-        <SectionTitle
-          politic={politic}
-          electionTerm={electionTerm}
-          isPartyPage={isPartyPage}
-        />
+        <SectionTitle politic={politic} electionTerm={electionTerm} />
         {isElectionFinished && <ProgressBar politic={politic} />}
+
         <SectionContent
           politic={politic}
           legislators={legislators}

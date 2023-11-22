@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
+import styled from 'styled-components'
 import useFitText from 'use-fit-text'
 
 import Icon from '~/components/icon'
@@ -15,6 +16,18 @@ const fullConfig = getTailwindConfig()
 
 const mainTextClass = s['main-text']
 const subTextClass = s['sub-text']
+
+type StyledLinkProps = {
+  isPartyPage: boolean | undefined
+  href: string | LinkHref
+  legacyBehavior: boolean
+  onClick?: () => void
+}
+
+const StyledLink = styled(Link)<StyledLinkProps>`
+  /* Conditionally applying styles based on isPartyPage prop */
+  pointer-events: ${({ isPartyPage }) => (isPartyPage ? 'none' : 'auto')};
+`
 
 type BlockProps = {
   title: string
@@ -165,7 +178,7 @@ export default function Title(props: PersonOverview): JSX.Element {
           <Icon
             src={props.avatar}
             {...personLarge}
-            href={hrefObject}
+            href={props.isPartyPage ? '' : hrefObject}
             ariaLabel="image link to personal page"
           />
         </span>
@@ -173,12 +186,13 @@ export default function Title(props: PersonOverview): JSX.Element {
           <Icon
             src={props.avatar}
             {...personSmall}
-            href={hrefObject}
+            href={props.isPartyPage ? '' : hrefObject}
             ariaLabel="image link to personal page"
           />
         </span>
         <div className={s.name}>
-          <Link
+          <StyledLink
+            isPartyPage={props.isPartyPage}
             href={hrefObject}
             legacyBehavior={false}
             onClick={() => logGAEvent('click', '點擊人名')}
@@ -189,7 +203,7 @@ export default function Title(props: PersonOverview): JSX.Element {
                 customClass={mainTextClass}
               />
             </MultipleLineBlock>
-          </Link>
+          </StyledLink>
           {!props.isPartyPage && (
             <div className={s.party}>
               <Icon src={props.partyIcon} {...party} />

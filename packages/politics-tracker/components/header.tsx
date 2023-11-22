@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { MouseEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+// import SearchLightBox from '~/components/search-lightbox'
 import Facebook from '~/public/icons/facebook.svg'
 import Line from '~/public/icons/line.svg'
 import Logo from '~/public/icons/READr-logo.svg'
+// import Search from '~/public/icons/search.svg'
 import ShareButton from '~/public/icons/share-button.svg'
 import Home from '~/public/icons/white-house.svg'
 import { logGAEvent } from '~/utils/analytics'
@@ -16,6 +18,7 @@ const IconWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 32px;
+  /* justify-content: center; */
 `
 
 type ButtonConfig = {
@@ -29,6 +32,7 @@ type ButtonConfig = {
 export default function Header(): JSX.Element {
   const [show, setShow] = useState<boolean>(false)
   const [href, setHref] = useState<string>('')
+  // const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setHref(() => window.location.href)
@@ -85,6 +89,8 @@ export default function Header(): JSX.Element {
         <Logo aria-label="READr" />
       </a>
       <IconWrapper>
+        {/* <Search onClick={() => setIsSearchOpen(true)} className={s.button} /> */}
+        {/* {isSearchOpen && <SearchLightBox setIsSearchOpen={setIsSearchOpen} />} */}
         <div className={s.button} onClick={toggleShareIcons}>
           <ShareButton aria-label="分享" className="h-10 w-10" />
           {shareButtons}

@@ -3,6 +3,7 @@
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -14,12 +15,12 @@ import Title from '~/components/politics/title'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
+import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
-import GetPoliticDetail from '~/graphql/query/politics-detail/get-politic-detail.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import { GenericGQLData, RawPersonElection } from '~/types/common'
+import { GenericGQLData, RawPersonElection, RawPolitic } from '~/types/common'
 import type {
   PersonElectionTerm,
   PoliticAmount,
@@ -65,6 +66,7 @@ export default function PoliticsDetail({
 
   const navProps = {
     prev: {
+      electionYear: person?.election?.election_year_year || '',
       backgroundColor: 'bg-button',
       textColor: 'text-black',
       content: '回政見總覽',
@@ -81,33 +83,54 @@ export default function PoliticsDetail({
     person.party = { name: '無黨籍', image: '' }
   }
 
-  //next/head title & description
-  const headProps = { title: '', description: '' }
-  headProps.title = `${person?.person_id?.name} - ${politic.desc}｜READr 政商人物資料庫`
+  //OG title & desc
+  let headProps = { title: '', description: '' }
+
+  const candidateName = person?.person_id?.name || '' //候選人名稱
+  const electionYear = person?.election?.election_year_year || '' //選舉年份
+  const districtName = person?.electoral_district?.name || '' //選舉區名稱
+  const electionType = person?.election?.type || '' //選舉目的（種類）
 
   //get election name
   const rawElectionName = person?.election?.name
   const electionWithoutYear = rawElectionName?.slice(
     rawElectionName.indexOf('年') + 1
   )
-  const name = person?.person_id?.name || ''
-  const electionYear = person?.election?.election_year_year || ''
-  const districtName = person?.electoral_district?.name || ''
-  const electionType = person?.election?.type || ''
 
   // if election.level = "地方選舉" add "electoral_district.name"
   if (person?.election?.level === '地方選舉' || 'local') {
-    headProps.description = `${name}在${electionYear}${districtName.slice(
-      0,
-      3
-    )}${electionWithoutYear}提出的政見：${politic.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${districtName.slice(
+        0,
+        3
+      )}${electionWithoutYear}提出的政見：${politic.desc}`,
+    }
   } else {
-    headProps.description = `${name}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`
+    headProps = {
+      title: `${candidateName} - ${politic.desc}｜READr 政商人物資料庫`,
+      description: `${candidateName}在${electionYear}${electionType}選舉提出的政見：${politic.desc}`,
+    }
   }
 
   return (
     <DefaultLayout>
+      <Head>
+        <meta
+          name="election:year"
+          content={`${electionYear}`}
+          key="election:year"
+        />
+        <meta name="election:area" content={districtName} key="election:area" />
+        <meta
+          name="election:type"
+          content={`${electionType}選舉`}
+          key="election:type"
+        />
+      </Head>
+
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
+
       <Main>
         <Title
           campaign={latestPersonElection.election?.type ?? ''}
@@ -121,6 +144,7 @@ export default function PoliticsDetail({
           }
         />
       </Main>
+
       <Nav {...navProps} />
     </DefaultLayout>
   )
@@ -217,18 +241,15 @@ export const getServerSideProps: GetServerSideProps<
         cmsApiUrl
       )
 
-      // Combine 'politics' and 'editingPolitics' arrays
-      const combinedPolitics = politicList.concat(editingPoliticLists)
-
-      // FIXME: value types
-      const passedAmount = combinedPolitics.filter(
-        (value: any) =>
+      const passedAmount = politicList.filter(
+        (value: RawPolitic) =>
           value.status === 'verified' &&
           value.reviewed &&
           value.thread_parent === null
       ).length
-      const waitingAmount = combinedPolitics.filter(
-        (value: any) => !value.reviewed
+
+      const waitingAmount = editingPoliticLists.filter(
+        (value: RawPolitic) => value.status !== 'verified' && !value.reviewed
       ).length
 
       politicAmount = {

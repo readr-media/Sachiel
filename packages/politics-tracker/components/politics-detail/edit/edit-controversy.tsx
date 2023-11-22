@@ -164,7 +164,7 @@ export default function EditControversies({
     }
   }
 
-  //同時執行 addPoliticToThread & addControversies 流程
+  //同時執行 addEditingPoliticToThread & addControversies 流程
   async function submitControversy() {
     const cmsApiUrl = `${window.location.origin}/api/data`
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import ArrowDown from '~/public/icons/landing/arrow_down.svg'
+import ArrowDown from '~/public/icons/landing/arrow-down.svg'
 
 const Wrapper = styled.div`
   width: 100%;

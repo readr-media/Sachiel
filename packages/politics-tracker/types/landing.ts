@@ -70,7 +70,7 @@ export type PropsData = {
   postsWithPoliticsTrackerTag: allPostsWithPoliticsTrackerTag[]
 }
 
-// Readr內符合指定標籤(tag)的文章(post)資料
+// Landing 2022 - READr 內符合指定標籤(tag)的文章(post)資料
 export type allPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
@@ -85,7 +85,7 @@ export type ImageOfPost = {
   urlOriginal: string //文章視覺圖網址
 }
 
-//關係資料庫 Related Posts 相關文章
+// Landing 2024：CMS - Related Posts 的文章資料
 export type RelatedPost = {
   id: string
   name: string

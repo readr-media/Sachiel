@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import type { DownloadItem } from '~/constants/landing'
-import ArrowRight from '~/public/icons/landing/arrow_right_black.svg'
+import ArrowRight from '~/public/icons/landing/arrow-right-black.svg'
 
 const Wrapper = styled.div`
   width: 100%;

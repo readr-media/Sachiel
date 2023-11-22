@@ -46,10 +46,12 @@ const sitemapConfig = {
   exclude: ['/server-sitemaps/*'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${sitemapBaseUrl}/landing-and-elections.xml`, // landing page and election pages
+      `${sitemapBaseUrl}/landing-and-elections.xml`, // landing pages and election pages
       ...getSitemapGroup(sitemapBaseUrl, 'person'), // personal pages
-      ...getSitemapGroup(sitemapBaseUrl, 'politics-summary'), // politics summary pages
-      `${sitemapBaseUrl}/politics-detail.xml`, // politic detail pages
+      ...getSitemapGroup(sitemapBaseUrl, 'politics-summary-related-to-person'), // politics summary pages (person)
+      `${sitemapBaseUrl}/politics-summary-related-to-party.xml`, // politics summary pages (party)
+      `${sitemapBaseUrl}/politics-detail-related-to-person.xml`, // politic detail pages (person)
+      `${sitemapBaseUrl}/politics-detail-related-to-party.xml`, // politic detail pages (party)
     ],
   },
 }

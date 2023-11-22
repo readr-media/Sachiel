@@ -153,7 +153,7 @@ export default function Title() {
         <ArrowIcon>
           <Image
             alt="arrowDown"
-            src="/icons/landing/arrow_down.svg"
+            src="/icons/landing/arrow-down.svg"
             width="100"
             height="100"
           />
@@ -165,7 +165,7 @@ export default function Title() {
             <LogoIcon>
               <Image
                 alt="Logo"
-                src="/icons/landing/frontpagelogo_sm.svg"
+                src="/icons/landing/frontpagelogo-mobile.svg"
                 width="200"
                 height="200"
               />
