@@ -38,6 +38,8 @@ export type PoliticDetail = {
 
 export type OrganizationElection = {
   id: Pick<RawOrganizationElection, 'id'>
+  seats: Pick<RawOrganizationElection, 'seats'>
+  electoral_district: string
   organization_id: Pick<RawOrganization, 'id' | 'name' | 'image'>
   elections: Pick<
     RawElection,
@@ -50,7 +52,6 @@ export type OrganizationElection = {
     | 'election_year_month'
     | 'election_year_day'
   >
-  electoral_district: string
 }
 
 export type PoliticFactCheck = Pick<
@@ -120,16 +121,16 @@ export type PoliticTimeLine = Pick<
   'id' | 'link' | 'content' | 'eventDate'
 >
 
+export type FactCheckPartner = Pick<
+  GenericFactCheckPartner,
+  'id' | 'logo' | 'name' | 'type' | 'webUrl'
+>
+
 export type PoliticControversy = {
   id: string
   link: string
   content: string
 }
-
-export type FactCheckPartner = Pick<
-  GenericFactCheckPartner,
-  'id' | 'logo' | 'name' | 'type' | 'webUrl'
->
 
 export type PersonElectionTerm = {
   start_date_year: string | null

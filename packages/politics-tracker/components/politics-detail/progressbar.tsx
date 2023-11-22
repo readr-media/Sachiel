@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import type { PoliticDetail } from '~/types/politics-detail'
 
 const ProgressBar = styled.div`
   overflow: hidden;
   height: 44px;
   box-shadow: inset 0px -4px 0px #000000;
+
   .clearfix:after {
     content: '';
     display: block;
@@ -68,7 +70,7 @@ const ProgressBar = styled.div`
     display: inline-block;
   }
 
-  //progress-1
+  /* progress-1 */
   .step1 {
     color: ${({ theme }) => theme.textColor.white};
     background-color: #8379f8;
@@ -78,7 +80,7 @@ const ProgressBar = styled.div`
     border-left: 17px solid #8379f8;
   }
 
-  //progress-2
+  /* progress-2 */
   .step2 {
     color: ${({ theme }) => theme.textColor.white};
     background-color: #db4c65;
@@ -105,7 +107,7 @@ const ProgressBar = styled.div`
     border-left: 17px solid #db4c65;
   }
 
-  //progress-3
+  /* progress-3 */
   .step3 {
     color: rgba(15, 45, 53, 0.3);
     background-color: #c5cbcd;
@@ -119,24 +121,33 @@ const ProgressBar = styled.div`
     color: #ffffff;
   }
 
-  //progress: no election
+  /* progress: no election */
   .step4 {
     width: 50%;
   }
 `
 
-type ProgressBar = {
+type ProgressBarProps = {
   politic: PoliticDetail
 }
-export default function Progressbar({ politic }: ProgressBar): JSX.Element {
-  const electResult = politic?.person?.elected || false
-  //@ts-ignore
+export default function Progressbar({
+  politic,
+}: ProgressBarProps): JSX.Element {
+  const { isPartyPage } = useIsPartyPage()
   const progressType = politic.current_progress
+
+  let isElected: boolean = false
+
+  if (isPartyPage) {
+    isElected = Number(politic.organization?.seats) > 0
+  } else {
+    isElected = politic?.person?.elected || false
+  }
 
   return (
     <ProgressBar>
       <div className="arrow-steps clearfix">
-        {electResult ? (
+        {isElected ? (
           <>
             <div className="step step1">
               <span>提出政見</span>
@@ -173,7 +184,7 @@ export default function Progressbar({ politic }: ProgressBar): JSX.Element {
               <span>提出政見</span>
             </div>
             <div className="step step3">
-              <span>未當選</span>
+              <span>{isPartyPage ? '未取得席次' : '未當選'}</span>
             </div>
           </>
         )}

@@ -1,4 +1,4 @@
-// dynamic URLs for politic detail pages
+// dynamic URLs for politic detail pages (party)
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import { print } from 'graphql'
@@ -7,7 +7,7 @@ import { getServerSideSitemap } from 'next-sitemap'
 
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
-import GetPolitics from '~/graphql/query/sitemap/get-politics.graphql'
+import GetPoliticsRelatedToParty from '~/graphql/query/sitemap/get-politics-related-to-party.graphql'
 import { GenericGQLData, RawPolitic } from '~/types/common'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -16,10 +16,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   try {
     const tasks = []
-    tasks.push(fireGqlRequest(print(GetPolitics), undefined, cmsApiUrl))
+    tasks.push(
+      fireGqlRequest(print(GetPoliticsRelatedToParty), undefined, cmsApiUrl)
+    )
     const results = await Promise.allSettled(tasks)
 
-    // politic detail page
+    // politic detail page (party)
     const resultOfPolitics = results[0] as PromiseSettledResult<
       GenericGQLData<RawPolitic[], 'politics'>
     >
@@ -32,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
           politic.updatedAt ?? politic.createdAt ?? new Date().toISOString()
 
         fields.push({
-          loc: encodeURI(`${siteUrl}/politics/detail/${politicId}`),
+          loc: encodeURI(`${siteUrl}/politics/party/detail/${politicId}`),
           lastmod: lastModified,
         })
       }
@@ -60,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   console.log(
     JSON.stringify({
       severity: 'DEBUG',
-      message: `There are ${fields.length} URLs about politic detail pages.`,
+      message: `There are ${fields.length} URLs about politic detail pages (party).`,
     })
   )
 

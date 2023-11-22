@@ -1,7 +1,8 @@
-query GetPolitics {
+query GetPoliticsRelatedToPerson {
   politics(where: {
     status: { equals: "verified" },
     reviewed: { equals: true }
+    person: { id: { gt: 0 } }
   }) {
     id
     createdAt

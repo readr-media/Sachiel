@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import ComparisonItem from '~/components/landing/election-2024/fact-check-group/president-comparison/comparison-item'
+import type { PresidentComparisonJson } from '~/types/landing'
 
 const Container = styled.div`
   width: 100%;
@@ -79,7 +80,7 @@ const Content = styled.div`
 `
 
 type PresidentComparisonProps = {
-  comparisonJSON: any
+  comparisonJSON: PresidentComparisonJson[]
 }
 export default function PresidentComparison({
   comparisonJSON,
@@ -91,7 +92,7 @@ export default function PresidentComparison({
         <Title>總統政見：差異比較</Title>
       </TitleWrapper>
       <Content>
-        {comparisonJSON.map((item: any, index: number) => (
+        {comparisonJSON.map((item, index) => (
           <ComparisonItem key={index} candidate={item} />
         ))}
       </Content>

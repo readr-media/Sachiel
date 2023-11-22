@@ -31,7 +31,7 @@ const Title = styled.div`
 
   svg {
     margin-right: 9px;
-    color: ${({ theme }) => theme.textColor.brown};
+    color: ${({ theme }) => theme.textColor.yellow};
     border-radius: 50%;
   }
 `

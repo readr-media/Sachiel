@@ -41,7 +41,7 @@ const CouncilSideBar = styled.div`
 `
 const CouncilContentWrap = styled.div`
   width: 100%;
-  background: ${({ theme }) => theme.backgroundColor.lightPurple};
+  background: ${({ theme }) => theme.backgroundColor.purpleLight};
   box-shadow: inset 0px -4px 0px #000000;
 `
 const TitleWrap = styled.div`
@@ -98,7 +98,7 @@ const ButtonWrap = styled.div`
 `
 const ButtonGroup = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background: ${({ theme }) => theme.backgroundColor.landingPurple};
+  background: ${({ theme }) => theme.backgroundColor.purpleMedium};
   max-width: 1230px;
   margin: auto;
   padding: 20px 15px 0px 15px;
@@ -159,7 +159,7 @@ const ButtonGroup = styled.div`
 
   ul li div:not(.press):hover {
     cursor: pointer;
-    background: ${({ theme }) => theme.backgroundColor.lightPurple};
+    background: ${({ theme }) => theme.backgroundColor.purpleLight};
   }
 
   li {
@@ -369,7 +369,7 @@ export default function CouncilMain({ propsData }) {
                     {toggle ? (
                       <Image
                         alt="arrowPurple"
-                        src="/icons/landing/arrow_down_purple.svg"
+                        src="/icons/landing/arrow-down-purple.svg"
                         width="20"
                         height="20"
                         onClick={() => {}}
@@ -377,7 +377,7 @@ export default function CouncilMain({ propsData }) {
                     ) : (
                       <Image
                         alt="arrowPurple"
-                        src="/icons/landing/arrow_up_purple.svg"
+                        src="/icons/landing/arrow-up-purple.svg"
                         width="20"
                         height="20"
                         onClick={() => {}}
