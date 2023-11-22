@@ -78,7 +78,7 @@ export default function Landing2024({
           buttonHref="https://hackmd.io/@readr/r1jcxjema"
         />
 
-        <Legislators />
+        {/* <Legislators /> */}
 
         <RelatedPosts posts={posts} />
 
