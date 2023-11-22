@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { LegislatorAtLarge, PersonElection } from '~/types/politics'
@@ -30,6 +30,7 @@ const Anchor = styled.div`
 export default function SectionList(props: SectionListProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(props.order === 0)
   const router = useRouter()
+  const anchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const yearFromAnchor = router.asPath.split('#')[1] // Get the year value from the anchor in the URL
@@ -49,6 +50,15 @@ export default function SectionList(props: SectionListProps): JSX.Element {
     }
   }, [router.asPath, props.year, props.order])
 
+  useEffect(() => {
+    // Scroll to the anchor when isActive becomes true
+    setTimeout(() => {
+      if (isActive && anchorRef.current) {
+        anchorRef.current.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 300)
+  }, [isActive])
+
   return (
     <PersonElectionContext.Provider value={props}>
       <div className={`${s['section-list']} md: relative px-0 sm:px-8 lg:px-0`}>
@@ -58,7 +68,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           isActive={isActive}
           setActive={() => setIsActive(!isActive)}
         />
-        <Anchor id={String(props.year)} />
+        <Anchor ref={anchorRef} id={String(props.year)} />
         <SectionBody
           show={isActive}
           politics={props.politics}
