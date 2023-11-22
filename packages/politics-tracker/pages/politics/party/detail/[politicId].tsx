@@ -98,7 +98,11 @@ export default function PartyPoliticsDetail({
           content={`${electionYear}`}
           key="election:year"
         />
-        <meta name="election:type" content={electionType} key="election:type" />
+        <meta
+          name="election:type"
+          content={`${electionType}選舉`}
+          key="election:type"
+        />
       </Head>
 
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />

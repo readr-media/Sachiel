@@ -121,9 +121,15 @@ export default function PoliticsDetail({
           key="election:year"
         />
         <meta name="election:area" content={districtName} key="election:area" />
-        <meta name="election:type" content={electionType} key="election:type" />
+        <meta
+          name="election:type"
+          content={`${electionType}選舉`}
+          key="election:type"
+        />
       </Head>
+
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
+
       <Main>
         <Title
           campaign={latestPersonElection.election?.type ?? ''}
@@ -137,6 +143,7 @@ export default function PoliticsDetail({
           }
         />
       </Main>
+
       <Nav {...navProps} />
     </DefaultLayout>
   )
