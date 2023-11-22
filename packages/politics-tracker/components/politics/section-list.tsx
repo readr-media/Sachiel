@@ -51,13 +51,13 @@ export default function SectionList(props: SectionListProps): JSX.Element {
   }, [router.asPath, props.year, props.order])
 
   useEffect(() => {
-    // Scroll to the anchor when isActive becomes true
+    // Scroll to the anchor when isActive becomes true and isActive is not due to props.order === 0
     setTimeout(() => {
-      if (isActive && anchorRef.current) {
+      if (isActive && anchorRef.current && props.order !== 0) {
         anchorRef.current.scrollIntoView({ behavior: 'smooth' })
       }
     }, 300)
-  }, [isActive])
+  }, [isActive, props.order])
 
   return (
     <PersonElectionContext.Provider value={props}>
