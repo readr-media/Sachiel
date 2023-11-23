@@ -12,6 +12,11 @@ let feedbackFormApi: string =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_API ??
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 
+const ProgrammableSearchEngineID: string =
+  process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_ENGINE_ID ?? 'SEARCH_ENGINE_ID'
+const ProgrammableSearchAPIKey: string =
+  process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_API_KEY ?? 'SEARCH_API_KEY'
+
 switch (env) {
   case 'dev':
     gaTrackingId =
@@ -49,5 +54,7 @@ export {
   gaTrackingId,
   gtmId,
   prefixOfJSONForLanding2024,
+  ProgrammableSearchAPIKey,
+  ProgrammableSearchEngineID,
   siteUrl,
 }

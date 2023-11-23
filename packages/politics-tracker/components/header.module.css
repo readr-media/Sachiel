@@ -1,6 +1,6 @@
 .header {
-  @apply fixed top-0 left-0 z-[1000] flex h-header w-full flex-row justify-between bg-white px-4 shadow-bottom;
-  @apply md:h-header-md md:px-6;
+  @apply fixed top-0 left-0 z-[1000] flex h-header w-full flex-row items-center justify-between gap-6 bg-white px-4 py-2 shadow-bottom;
+  @apply md:h-header-md md:gap-12 md:px-6;
 }
 .logo {
   @apply inline-block self-center;
