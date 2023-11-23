@@ -4,11 +4,9 @@ import { URL_PROGRAMABLE_SEARCH } from '~/constants'
 import {
   ProgrammableSearchAPIKey,
   ProgrammableSearchEngineID,
-} from '~/constants/environment-variables'
+} from '~/constants/config'
 
 export async function searchAPI(query: string | string[], startIndex: number) {
-  console.log('startIndex', startIndex)
-
   const url = `${URL_PROGRAMABLE_SEARCH}`
   const params = {
     cx: `${ProgrammableSearchEngineID}`,
@@ -16,7 +14,8 @@ export async function searchAPI(query: string | string[], startIndex: number) {
     q: query,
     start: startIndex,
     num: 10,
-    // TODO: sort
+    safe: 'active',
+    // TODO: sort、site-search
   }
 
   try {
@@ -26,6 +25,8 @@ export async function searchAPI(query: string | string[], startIndex: number) {
     return data
   } catch (error) {
     console.error(error)
+    //@ts-ignore
+    // console.log(JSON.stringify({ severity: 'ERROR', message: error.stack }))
     return null
   }
 }
