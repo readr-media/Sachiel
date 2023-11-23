@@ -1,6 +1,6 @@
 export type ThemeType = typeof theme
 
-const mediaSize = {
+export const mediaSize = {
   xs: 0,
   sm: 576,
   md: 768,
