@@ -1,15 +1,17 @@
 // @ts-ignore: no definition
 import errors from '@twreporter/errors'
 import type { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { FormEvent } from 'react'
 import styled from 'styled-components'
 
 import DefaultLayout from '~/components/layout/default'
-import SearchInput from '~/components/search/search-input'
 import useWindowDimensions from '~/hooks/use-window-dimensions'
 import NextPageIcon from '~/public/icons/next-page-arrow.svg'
 import PrevPageIcon from '~/public/icons/prev-page-arrow.svg'
+import SearchIcon from '~/public/icons/search.svg'
 import SkipToFirstIcon from '~/public/icons/skip-to-first-page-arrow.svg'
 import SkipToLastIcon from '~/public/icons/skip-to-last-page-arrow.svg'
 import { mediaSize } from '~/styles/theme/index'
@@ -19,8 +21,6 @@ import type {
 } from '~/types/search'
 
 import { searchAPI } from './api/programmable-search'
-
-const defaultStartIndex = 1
 
 const Container = styled.div`
   min-height: 100dvh;
@@ -148,6 +148,50 @@ const Pagination = styled.div`
   }
 `
 
+const Wrapper = styled.form`
+  width: 100%;
+  position: relative;
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    width: 360px;
+    max-width: 360px;
+  }
+
+  input {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px 16px 8px 44px;
+    color: #0f2d35;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.8;
+
+    &::placeholder,
+    &::-ms-input-placeholder {
+      color: #afafaf;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 16px;
+    top: calc(52%);
+    cursor: pointer;
+    transform: translate(0, -50%);
+
+    path {
+      opacity: 0.3;
+    }
+  }
+`
+
 type SearchPageProps = {
   resultLists: ProgrammableSearchResultItem[]
   resultAmount: number
@@ -164,8 +208,6 @@ export default function Search({
   const searchTerm = (q && String(q)) || ''
 
   const [inputValue, setInputValue] = useState<string>(searchTerm) //搜尋關鍵字
-  const [lists, setLists] =
-    useState<ProgrammableSearchResultItem[]>(resultLists) //搜尋結果
   const [currentPage, setCurrentPage] = useState<number>(1) //目前頁籤數字
 
   //計算頁數
@@ -182,17 +224,31 @@ export default function Search({
 
   const shouldShowNotion = resultAmount === 0 && q !== ''
 
-  const handleSubmit = async (startIndex: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' }) //scroll-to-top
-
-    const response = await searchAPI(inputValue, startIndex)
-    setLists(response?.items || [])
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    window.location.replace(`/search?q=${inputValue}`)
   }
 
   return (
     <DefaultLayout>
       <Container>
-        {isDesktopWidth && <SearchInput />}
+        {isDesktopWidth && (
+          <Wrapper onSubmit={(e) => handleSubmit(e)} className="search-input">
+            <SearchIcon
+              onClick={(e: React.MouseEvent<SVGElement, MouseEvent>) =>
+                handleSubmit(e)
+              }
+            />
+            <input
+              placeholder="搜尋"
+              defaultValue={q}
+              onChange={(e) => {
+                const newInput = e.currentTarget.value
+                setInputValue(newInput)
+              }}
+            />
+          </Wrapper>
+        )}
 
         <SearchResult>
           <Notion>
@@ -204,7 +260,7 @@ export default function Search({
             )}
           </Notion>
 
-          {lists.map((item, index) => {
+          {resultLists.map((item, index) => {
             return (
               <a
                 key={index}
@@ -226,78 +282,97 @@ export default function Search({
 
           <Pagination>
             {currentPage !== 1 && (
-              <li
-                onClick={() => {
-                  setPageList(pagesData.slice(0, 5))
-                  setCurrentPage(1)
-                  handleSubmit(1)
-                }}
-              >
-                <SkipToFirstIcon />
-              </li>
+              <Link passHref={true} href={`/search?q=${inputValue}&start=1`}>
+                <li
+                  onClick={() => {
+                    setPageList(pagesData.slice(0, 5))
+                    setCurrentPage(1)
+                  }}
+                >
+                  <SkipToFirstIcon />
+                </li>
+              </Link>
             )}
 
             {currentPage !== 1 && (
-              <li
-                onClick={() => {
-                  if (currentPage < 4) {
-                    setPageList(pagesData.slice(0, 5))
-                  } else {
-                    setPageList(
-                      pagesData.slice(currentPage - 4, currentPage + 1)
-                    )
-                  }
-                  setCurrentPage(currentPage - 1)
-                  handleSubmit((currentPage - 2) * 10 + 1)
-                }}
+              <Link
+                passHref={true}
+                href={`/search?q=${inputValue}&start=${
+                  (currentPage - 2) * 10 + 1
+                }`}
               >
-                <PrevPageIcon />
-              </li>
+                <li
+                  onClick={() => {
+                    if (currentPage < 4) {
+                      setPageList(pagesData.slice(0, 5))
+                    } else {
+                      setPageList(
+                        pagesData.slice(currentPage - 4, currentPage + 1)
+                      )
+                    }
+                    setCurrentPage(currentPage - 1)
+                  }}
+                >
+                  <PrevPageIcon />
+                </li>
+              </Link>
             )}
 
             {pageList.map((page, index) => (
-              <li
+              <Link
                 key={index}
-                className={currentPage === page.pageIndex ? 'active' : ''}
-                onClick={(e) => {
-                  e.preventDefault()
-                  setCurrentPage(page.pageIndex)
-                  handleSubmit(page.startIndex)
-                }}
+                passHref={true}
+                href={`/search?q=${inputValue}&start=${page.startIndex}`}
               >
-                {page.pageIndex}
-              </li>
+                <li
+                  className={currentPage === page.pageIndex ? 'active' : ''}
+                  onClick={() => {
+                    setCurrentPage(page.pageIndex)
+                  }}
+                >
+                  {page.pageIndex}
+                </li>
+              </Link>
             ))}
 
             {pageSize > 1 && currentPage !== pageSize && (
-              <li
-                onClick={() => {
-                  if (currentPage < 2) {
-                    setPageList(pagesData.slice(0, 5))
-                  } else {
-                    setPageList(
-                      pagesData.slice(currentPage - 2, currentPage + 3)
-                    )
-                  }
-
-                  handleSubmit(currentPage * 10 + 1)
-                  setCurrentPage(currentPage + 1)
-                }}
+              <Link
+                passHref={true}
+                href={`/search?q=${inputValue}&start=${currentPage * 10 + 1}`}
               >
-                <NextPageIcon />
-              </li>
+                <li
+                  onClick={() => {
+                    if (currentPage < 2) {
+                      setPageList(pagesData.slice(0, 5))
+                    } else {
+                      setPageList(
+                        pagesData.slice(currentPage - 2, currentPage + 3)
+                      )
+                    }
+                    setCurrentPage(currentPage + 1)
+                  }}
+                >
+                  <NextPageIcon />
+                </li>
+              </Link>
             )}
 
             {pageSize > 2 && currentPage !== pageSize && (
-              <li>
-                <SkipToLastIcon
-                  onClick={() => {
-                    setPageList(pagesData.slice(pageSize - 5, pageSize))
-                    setCurrentPage(pageSize)
-                    handleSubmit((pageSize - 1) * 10 + 1)
-                  }}
-                />
-              </li>
+              <Link
+                passHref={true}
+                href={`/search?q=${inputValue}&start=${
+                  (pageSize - 1) * 10 + 1
+                }`}
+              >
+                <li>
+                  <SkipToLastIcon
+                    onClick={() => {
+                      setPageList(pagesData.slice(pageSize - 5, pageSize))
+                      setCurrentPage(pageSize)
+                    }}
+                  />
+                </li>
+              </Link>
             )}
           </Pagination>
         </SearchResult>
@@ -315,13 +390,15 @@ export const getServerSideProps: GetServerSideProps<SearchPageProps> = async ({
     'public, max-age=600, stale-while-revalidate=60'
   )
 
+  const startIndex = Number(query.start) || 1
+
   let resultLists: []
   let resultAmount: number
 
   try {
     {
       const inputValue = query.q || ''
-      const response = await searchAPI(inputValue, defaultStartIndex)
+      const response = await searchAPI(inputValue, startIndex)
 
       resultLists = response?.items || []
       resultAmount =

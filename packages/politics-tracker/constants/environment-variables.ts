@@ -12,9 +12,6 @@ let feedbackFormApi: string =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_API ??
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 
-let ProgrammableSearchEngineID: string
-let ProgrammableSearchAPIKey: string
-
 switch (env) {
   case 'dev':
     gaTrackingId =
@@ -25,10 +22,6 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
-    ProgrammableSearchEngineID =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_ENGINE_ID ?? 'SEARCH_ENGINE_ID'
-    ProgrammableSearchAPIKey =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_API_KEY ?? 'SEARCH_API_KEY'
     break
   case 'prod': {
     gaTrackingId =
@@ -38,10 +31,6 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs.readr.tw/json'
     gtmId = 'GTM-5PG5FN7J'
-    ProgrammableSearchEngineID =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_ENGINE_ID ?? 'SEARCH_ENGINE_ID'
-    ProgrammableSearchAPIKey =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_API_KEY ?? 'SEARCH_API_KEY'
     break
   }
   default:
@@ -51,10 +40,6 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
-    ProgrammableSearchEngineID =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_ENGINE_ID ?? 'SEARCH_ENGINE_ID'
-    ProgrammableSearchAPIKey =
-      process.env.NEXT_PUBLIC_PROGRAMABLE_SEARCH_API_KEY ?? 'SEARCH_API_KEY'
     break
 }
 
@@ -64,7 +49,5 @@ export {
   gaTrackingId,
   gtmId,
   prefixOfJSONForLanding2024,
-  ProgrammableSearchAPIKey,
-  ProgrammableSearchEngineID,
   siteUrl,
 }
