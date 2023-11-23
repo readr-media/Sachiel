@@ -15,7 +15,6 @@ export async function searchAPI(query: string | string[], startIndex: number) {
     start: startIndex,
     num: 10,
     safe: 'active',
-    // TODO: sort、site-search
   }
 
   try {
