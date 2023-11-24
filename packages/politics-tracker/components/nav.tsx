@@ -21,7 +21,6 @@ export type LinkMember = {
   href: LinkHref
   backgroundColor: string
   textColor?: string
-  electionYear?: string | number
 }
 
 export type NavProps = {
@@ -48,15 +47,7 @@ export default function Nav(props: NavProps): JSX.Element {
   return (
     <div className={s['container']}>
       {props.prev && (
-        <Link
-          href={{
-            pathname: (props.prev.href as any)?.pathname || '',
-            query: (props.prev.href as any)?.query || {},
-          }}
-          as={`${(props.prev.href as any)?.pathname || ''}#${
-            props.prev?.electionYear
-          }`}
-        >
+        <Link href={props.prev.href}>
           <a
             className={backStyle}
             onClick={() => {
