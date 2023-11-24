@@ -84,21 +84,21 @@ const Image = styled.div<{ alt: string }>`
   background: url('/images/president-candidate-mobile.svg') no-repeat
     center/contain;
   width: 100%;
-  max-width: 448px;
-  aspect-ratio: 3 / 2;
+  max-width: 408px;
+  aspect-ratio: 4 / 3;
   margin: auto;
 
   ${({ theme }) => theme.breakpoint.xl} {
     order: 3;
     margin: 20px auto 0px;
-    max-width: 1064px;
-    aspect-ratio: 7 / 2;
+    max-width: 960px;
+    aspect-ratio: 8 / 3;
     background: url('/images/president-candidate-desktop.svg') no-repeat
       center/contain;
+    transform: translateY(3px);
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {
-    max-width: 1254px;
     margin: 0px auto;
   }
 `
