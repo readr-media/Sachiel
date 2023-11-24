@@ -213,8 +213,10 @@ const CandidatesWrapper = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    max-width: 760px;
     margin: 0px auto;
+    width: 100%;
+
+    max-width: 688px;
   }
 
   ${({ theme }) => theme.breakpoint.xl} {
