@@ -61,17 +61,18 @@ const Content = styled.div`
   padding: 40px 16px;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 12px;
 
   ${({ theme }) => theme.breakpoint.md} {
     padding: 40px;
   }
 
   ${({ theme }) => theme.breakpoint.xl} {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px;
   }
 
   ${({ theme }) => theme.breakpoint.xxl} {

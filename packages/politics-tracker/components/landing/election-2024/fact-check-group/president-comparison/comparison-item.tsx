@@ -133,10 +133,6 @@ export default function ComparisonItem({
         imageUrl = '/images/lai-ching-te-colored.png'
         break
 
-      case '郭台銘':
-        imageUrl = '/images/guo-tai-ming-colored.png'
-        break
-
       case '侯友宜':
         imageUrl = '/images/hou-yu-ih-colored.png'
         break

@@ -56,7 +56,7 @@ const Content = styled.div`
     box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1) inset;
 
     &:hover {
-      box-shadow: 0px -1px 0px 0px #000 inset;
+      box-shadow: 0px -1px 0px 0px ${({ theme }) => theme.borderColor.black} inset;
     }
 
     &:focus {
