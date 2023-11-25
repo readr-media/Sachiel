@@ -4,6 +4,10 @@ import type { FeedbackFormConfig } from '~/types/common'
 const cmsApiUrl: string = process.env.CMS_API_URL ?? ''
 const readrCmsApiUrl: string = process.env.READR_CMS_API_URL ?? ''
 const urlOfJsonForlandingPage = process.env.URL_OF_JSON_FOR_LANDING_PAGE ?? ''
+const ProgrammableSearchEngineID =
+  process.env.PROGRAMABLE_SEARCH_ENGINE_ID ?? 'SEARCH_ENGINE_ID'
+const ProgrammableSearchAPIKey =
+  process.env.PROGRAMABLE_SEARCH_API_KEY ?? 'SEARCH_API_KEY'
 
 let feedbackFormConfig: FeedbackFormConfig
 
@@ -25,6 +29,8 @@ try {
 export {
   cmsApiUrl,
   feedbackFormConfig,
+  ProgrammableSearchAPIKey,
+  ProgrammableSearchEngineID,
   readrCmsApiUrl,
   urlOfJsonForlandingPage,
 }

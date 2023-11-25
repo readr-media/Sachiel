@@ -42,6 +42,8 @@
 | READR_CMS_API_URL                           | 字串      | ''                                    | 後端 Readr CMS GraphQL API 呼叫端點資訊(用於 landing 頁的"相關報導") |
 | URL_OF_JSON_FOR_LANDING_PAGE                | 字串      | ''                                    | landing(page/2022) 頁所需的資料來源                                  |
 | FEEDBACK_FORM_CONFIG                        | JSON 字串 | ''                                    | 使用者回饋表單的設定資訊                                             |
+| PROGRAMABLE_SEARCH_ENGINE_ID                | 字串      | ''                                    | Programmable Search 搜尋引擎 ID                                      |
+| PROGRAMABLE_SEARCH_API_KEY                  | 字串      | ''                                    | Programmable Search JSON API key                                     |
 
 ## Feature Toggle (功能開關，暫時性)
 

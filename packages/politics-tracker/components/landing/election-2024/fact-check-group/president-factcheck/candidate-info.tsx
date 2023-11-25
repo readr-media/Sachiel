@@ -77,10 +77,6 @@ export default function CandidateInfo({
       imageUrl = '/images/lai-ching-te.png'
       break
 
-    case '郭台銘':
-      imageUrl = '/images/guo-tai-ming.png'
-      break
-
     case '侯友宜':
       imageUrl = '/images/hou-yu-ih.png'
       break

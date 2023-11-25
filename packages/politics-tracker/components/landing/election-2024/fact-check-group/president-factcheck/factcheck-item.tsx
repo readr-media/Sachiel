@@ -20,8 +20,12 @@ const Wrapper = styled.div`
   margin: auto;
 
   ${({ theme }) => theme.breakpoint.md} {
-    max-width: 330px;
+    max-width: 338px;
     margin: 0;
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    max-width: none;
   }
 `
 
