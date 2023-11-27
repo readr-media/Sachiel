@@ -27,6 +27,10 @@ export type Source = {
   value: string
   error: string
 }
+
+/* eslint-disable-next-line no-unused-vars */
+export type OrderFunction<T> = (datas: T[]) => T[]
+
 // This utility is for overwriting type without extending it
 // prettier-ignore
 export type Override<T, U extends Partial<Record<keyof T, unknown>>> = Omit<T, keyof U> & U

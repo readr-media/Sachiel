@@ -24,11 +24,13 @@ import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
  * @typedef { import('~/types/landing').PersonData } PersonData
- * @typedef { import('~/types/landing').allPostsWithPoliticsTrackerTag } allPostsWithPoliticsTrackerTag
+ * @typedef { import('~/types/landing').allPostsWithPoliticsTrackerTag } AllPostsWithPoliticsTrackerTag
  * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
  * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
  * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
  * @typedef { import('~/types/landing').CityOfCouncilorElection } CityOfCouncilorElection
+ * @typedef { import('~/types/landing').PersonInElection} PersonInElection
+ * @typedef { import('~/types/landing').RelatedPolitic} RelatedPolitic
  */
 
 /** @type { import('next').GetServerSideProps } */
@@ -160,6 +162,7 @@ export const getServerSideProps = async ({ res }) => {
   //Get posts from Readr CMS with politics-tracker tags
   //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
   try {
+    /** @type {import('~/types/common').GenericGQLData<AllPostsWithPoliticsTrackerTag[], 'allPosts'>} */
     const readrPostsData = await fireGqlRequest(
       print(GetPostsWithPoliticsTracker),
       { tag: '選舉政見追蹤' },
@@ -186,7 +189,6 @@ export const getServerSideProps = async ({ res }) => {
     ) {
       // use moment() format 'publishTime' to 'YYYY/MM/DD'
       propsData.postsWithPoliticsTrackerTag =
-        // @ts-ignore
         readrPostsWithPoliticsTrackerTag.map((value) => {
           return {
             ...value,
@@ -234,11 +236,11 @@ export const getServerSideProps = async ({ res }) => {
       true
     )
 
+    if (!isValid) throw new Error('fail to retrieve json data')
+
     return {
       props: Object.assign(propsData, result),
     }
-
-    if (!isValid) throw new Error('fail to retrieve json data')
   } catch (err) {
     // All exceptions that include a stack trace will be
     // integrated with Error Reporting.
@@ -263,6 +265,7 @@ export const getServerSideProps = async ({ res }) => {
   try {
     /** @type {Record<string, PersonData>} */
     const peopleMap = {}
+    /** @type {string[]} */
     const personElecitonIds = []
 
     {
@@ -272,6 +275,8 @@ export const getServerSideProps = async ({ res }) => {
         year: 2022,
         type: [MAYOR, COUNCILOR],
       }
+
+      /** @type {import('~/types/common').GenericGQLData<PersonInElection[], 'personElections'>} */
       const rawData = await fireGqlRequest(
         print(GetPeopleInElection),
         variables,
@@ -309,6 +314,8 @@ export const getServerSideProps = async ({ res }) => {
         const election = pe.election
         const area = pe.electoral_district
 
+        if (!person) continue
+
         const id = person.id
 
         peopleMap[id] = {
@@ -316,10 +323,10 @@ export const getServerSideProps = async ({ res }) => {
           name: String(person.name),
           year: Number(person.birth_date_year),
           done: 0,
-          type: String(election.type),
-          areaId: String(area.id),
-          areaName: String(area.name),
-          areaCity: String(area.city),
+          type: String(election?.type),
+          areaId: String(area?.id),
+          areaName: String(area?.name),
+          areaCity: String(area?.city),
         }
       }
     }
@@ -327,6 +334,7 @@ export const getServerSideProps = async ({ res }) => {
     {
       // use politics with ids of personElection to get relations between politics and people,
       // then use it to figure out amount of each people
+      /** @type {import('~/types/common').GenericGQLData<RelatedPolitic[], 'politics'>} */
       const rawData = await fireGqlRequest(
         print(GetPoliticsRelatedToPersonElections),
         {
@@ -352,7 +360,7 @@ export const getServerSideProps = async ({ res }) => {
 
       const politicList = rawData.data?.politics || []
       for (const p of politicList) {
-        if (p.status === 'verified') {
+        if (p.status === 'verified' && p.person) {
           const pe = p.person
           const id = String(pe.person_id?.id)
           //
@@ -527,10 +535,7 @@ export default function Landing2022(props) {
   return (
     <Fragment>
       <CustomHead url={`${siteUrl}${asPath}`} />
-      <LandingPage
-        // @ts-ignore
-        propsData={props}
-      />
+      <LandingPage propsData={props} />
     </Fragment>
   )
 }

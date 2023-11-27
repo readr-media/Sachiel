@@ -237,17 +237,19 @@ const ToggleButton = styled.div`
     font-size: 16px;
   }
 `
+
 /**
+ * @typedef {import('~/types/landing').CityOfCouncilorElection} CityOfCouncilorElection
  *
+ * @param {Object} props
+ * @param {CityOfCouncilorElection[]} props.propsData
  * @returns {React.ReactElement}
  */
-
-// @ts-ignore
 export default function CouncilMain({ propsData }) {
-  const newPropsData = JSON.parse(JSON.stringify(propsData))
-  const rawDatas = newPropsData['councilorAndPolitics']
+  /** @type {CityOfCouncilorElection[]} */
+  const rawDatas = JSON.parse(JSON.stringify(propsData))
 
-  // @ts-ignore
+  /** @type {import('~/types/common').OrderFunction<CityOfCouncilorElection>} */
   const lowToHigh = (datas) => {
     return [...datas].sort((a, b) => {
       return a?.amount / a?.total - b?.amount / b?.total
@@ -257,8 +259,16 @@ export default function CouncilMain({ propsData }) {
   const dataOrderByCompletePercent = lowToHigh(rawDatas)
 
   /**
+   * @typedef {Object} MenuItem
+   * @property {number} id
+   * @property {CityOfCouncilorElection} infor
+   * @property {boolean} active
+   * @property {string} name
+   * @property {number} total
+   * @property {number} amount
    *
-   * @param {Object[]} cityItems
+   * @param {CityOfCouncilorElection[]} cityItems
+   * @returns {MenuItem[]}
    */
   const initState = (cityItems) => {
     const menuItems = []
@@ -267,11 +277,8 @@ export default function CouncilMain({ propsData }) {
         id: i + 1,
         infor: cityItems[i],
         active: false,
-        // @ts-ignore
         name: cityItems[i].name,
-        // @ts-ignore
         total: cityItems[i].total,
-        // @ts-ignore
         amount: cityItems[i].amount,
       })
     }
@@ -308,50 +315,42 @@ export default function CouncilMain({ propsData }) {
                 <ToggleGroup style={toggleStatus}>
                   <div className="listBox">
                     <ul>
-                      {menuItems.map(
-                        (
-                          // @ts-ignore
-                          v,
-                          // @ts-ignore
-                          i
-                        ) => {
-                          return (
-                            <li
-                              key={i}
-                              onClick={() => {
-                                firstRender[0].active = false
-                                const newMenuItems = firstRender.map(
-                                  (v, index) => {
-                                    if (i === index)
-                                      return { ...v, active: true }
+                      {menuItems.map((v, i) => {
+                        return (
+                          <li
+                            key={i}
+                            onClick={() => {
+                              firstRender[0].active = false
+                              const newMenuItems = firstRender.map(
+                                (v, index) => {
+                                  if (i === index) return { ...v, active: true }
 
-                                    return v
-                                  }
-                                )
+                                  return v
+                                }
+                              )
 
-                                setMenuItems(newMenuItems)
-                                setCouncilRegion(i)
-                              }}
-                            >
-                              {v.active ? (
-                                <div className="press">
-                                  {v.name}
-                                  <span>
-                                    ( {v.amount} / {v.total} )
-                                  </span>
-                                </div>
-                              ) : (
-                                <div className="nopress">
-                                  {v.name}
-                                  <span>
-                                    ( {v.amount} / {v.total})
-                                  </span>
-                                </div>
-                              )}
-                            </li>
-                          )
-                        }
-                      )}
+                              setMenuItems(newMenuItems)
+                              setCouncilRegion(i)
+                            }}
+                          >
+                            {v.active ? (
+                              <div className="press">
+                                {v.name}
+                                <span>
+                                  ( {v.amount} / {v.total} )
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="nopress">
+                                {v.name}
+                                <span>
+                                  ( {v.amount} / {v.total})
+                                </span>
+                              </div>
+                            )}
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 </ToggleGroup>
@@ -388,7 +387,6 @@ export default function CouncilMain({ propsData }) {
               </ButtonGroup>
             </ButtonWrap>
             <CouncilList
-              // @ts-ignore
               councilRegion={councilRegion}
               dataOrderByCompletePercent={dataOrderByCompletePercent}
             />
