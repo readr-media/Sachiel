@@ -1,6 +1,11 @@
-import type { RawPersonElection } from '~/types/common'
-
-import { PROGRESS } from './common'
+import { POLITIC_PROGRESS } from '~/constants/common'
+import type {
+  RawExpertPoint,
+  RawFactCheck,
+  RawPersonElection,
+  RawPoliticPositionChange,
+  RawPoliticRepeat,
+} from '~/types/common'
 
 export type PersonOverview = {
   id: string
@@ -22,7 +27,7 @@ export type Politic = {
   desc: string
   source: string
   content: string
-  progress?: `${PROGRESS}`
+  progress?: `${POLITIC_PROGRESS}`
   politicCategoryId: string | null
   politicCategoryName: string | null
   createdAt: string | null
@@ -35,39 +40,36 @@ export type Politic = {
 }
 
 //立場改變摘要
-export type PositionChange = {
-  id: string
-  positionChangeSummary: string
-  isChanged: string
-  factcheckPartner: FactCheckPartner | null
-}
+export type PositionChange = Pick<
+  RawPoliticPositionChange,
+  'id' | 'positionChangeSummary' | 'isChanged' | 'factcheckPartner'
+>
 
 export type FactCheckPartner = {
   name: string
 }
 
 //事實釐清摘要
-export type FactCheck = {
-  id: string
-  factCheckSummary: string
-  checkResultType: string
-  checkResultOther: string
-  factcheckPartner: FactCheckPartner | null
-}
+export type FactCheck = Pick<
+  RawFactCheck,
+  | 'id'
+  | 'factCheckSummary'
+  | 'checkResultType'
+  | 'checkResultOther'
+  | 'factcheckPartner'
+>
 
 //專家看點摘要
-export type ExpertPoint = {
-  id: string
-  expertPointSummary: string
-  expert: string
-}
+export type ExpertPoint = Pick<
+  RawExpertPoint,
+  'id' | 'expertPointSummary' | 'expert'
+>
 
 //相似政策摘要
-export type Repeat = {
-  id: string
-  repeatSummary: string
-  factcheckPartner: FactCheckPartner | null
-}
+export type Repeat = Pick<
+  RawPoliticRepeat,
+  'id' | 'repeatSummary' | 'factcheckPartner'
+>
 
 export type PersonElectionTerm = {
   start_date_day: string | null

@@ -1,18 +1,18 @@
+import { POLITIC_PROGRESS } from '~/constants/common'
 import type {
-  GenericExpert,
-  GenericFactCheck,
-  GenericFactCheckPartner,
-  GenericPoliticCategory,
-  GenericPositionChange,
-  GenericProgressType,
-  GenericRepeat,
-  GenericResponse,
-  GenericStatus,
-  GenericTimeline,
   RawElection,
+  RawExpertPoint,
+  RawFactCheck,
+  RawFactCheckPartner,
   RawOrganization,
   RawOrganizationElection,
   RawPersonElection,
+  RawPoliticCategory,
+  RawPoliticPositionChange,
+  RawPoliticRepeat,
+  RawPoliticResponse,
+  RawPoliticTimeline,
+  StatusOptionsB,
 } from '~/types/common'
 
 export type PoliticDetail = {
@@ -20,11 +20,11 @@ export type PoliticDetail = {
   desc: string //政見內容
   content: string //政策補充說明
   source: string //資料來源
-  status: GenericStatus //狀態
-  current_progress: GenericProgressType //政見進度
+  status: StatusOptionsB //狀態
+  current_progress: `${POLITIC_PROGRESS}` //政見進度
   updatedAt: string //更新時間
   contributer: string // 資料提供
-  politicCategory: Pick<GenericPoliticCategory, 'id'> | null //類別
+  politicCategory: Pick<RawPoliticCategory, 'id'> | null //類別
   expertPoint: PoliticExpert[] //專家看點
   positionChange: PoliticPositionChange[] //立場變化
   factCheck: PoliticFactCheck[] //事實查核
@@ -55,7 +55,7 @@ export type OrganizationElection = {
 }
 
 export type PoliticFactCheck = Pick<
-  GenericFactCheck,
+  RawFactCheck,
   | 'id'
   | 'factCheckSummary'
   | 'checkResultType'
@@ -66,7 +66,7 @@ export type PoliticFactCheck = Pick<
 >
 
 export type PoliticPositionChange = Pick<
-  GenericPositionChange,
+  RawPoliticPositionChange,
   | 'id'
   | 'positionChangeSummary'
   | 'isChanged'
@@ -77,7 +77,7 @@ export type PoliticPositionChange = Pick<
 >
 
 export type PoliticRepeat = Pick<
-  GenericRepeat,
+  RawPoliticRepeat,
   | 'id'
   | 'repeatSummary'
   | 'factcheckPartner'
@@ -87,7 +87,7 @@ export type PoliticRepeat = Pick<
 >
 
 export type PoliticExpert = Pick<
-  GenericExpert,
+  RawExpertPoint,
   | 'id'
   | 'expertPointSummary'
   | 'expert'
@@ -112,17 +112,17 @@ export type PersonElection = Pick<
 >
 
 export type PoliticResponse = Pick<
-  GenericResponse,
+  RawPoliticResponse,
   'id' | 'content' | 'responseName' | 'responsePic' | 'responseTitle' | 'link'
 >
 
 export type PoliticTimeLine = Pick<
-  GenericTimeline,
+  RawPoliticTimeline,
   'id' | 'link' | 'content' | 'eventDate'
 >
 
 export type FactCheckPartner = Pick<
-  GenericFactCheckPartner,
+  RawFactCheckPartner,
   'id' | 'logo' | 'name' | 'type' | 'webUrl'
 >
 

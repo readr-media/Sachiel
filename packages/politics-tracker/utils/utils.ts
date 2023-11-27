@@ -11,7 +11,7 @@ import {
   SOURCE_DELIMITER,
 } from '~/constants/politics'
 import tailwindConfig from '~/tailwind.config'
-import type { GenericFactCheck } from '~/types/common'
+import type { RawFactCheck } from '~/types/common'
 import { FactCheck } from '~/types/politics'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
@@ -207,8 +207,7 @@ function getFormattedDate(
   return formattedDate
 }
 
-type FactCheckType = FactCheck &
-  Partial<Pick<GenericFactCheck, 'content' | 'link'>>
+type FactCheckType = FactCheck & Partial<Pick<RawFactCheck, 'content' | 'link'>>
 function getCheckResultString(
   checkResultType: string,
   factCheck: FactCheckType

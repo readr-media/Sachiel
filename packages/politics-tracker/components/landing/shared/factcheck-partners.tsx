@@ -2,7 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import React from 'react'
 import styled from 'styled-components'
 
-import type { GenericPhoto } from '~/types/common'
+import type { RawPhoto } from '~/types/common'
 import type { FactCheckPartner } from '~/types/politics-detail'
 
 const Wrapper = styled.div`
@@ -71,7 +71,7 @@ type PartnerByType = {
     id: string
     name: string
     webUrl: string
-    logo: GenericPhoto
+    logo: RawPhoto
   }[]
 }
 type FactCheckPartnersProps = {

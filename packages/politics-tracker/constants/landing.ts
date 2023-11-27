@@ -1,9 +1,7 @@
+import type { DownloadItem } from '~/components/landing/shared/file-download'
+import type { IntroItem } from '~/components/landing/shared/team-intro'
 import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
 
-export type IntroItem = {
-  title: string
-  name: string
-}
 export const teamIntro2022: IntroItem[] = [
   {
     title: '監製',
@@ -49,10 +47,6 @@ export const teamIntro2024: IntroItem[] = [
   },
 ]
 
-export type DownloadItem = {
-  title: string
-  link: string
-}
 export const fileDownload2022: DownloadItem[] = [
   {
     title: '下載縣市長政見',

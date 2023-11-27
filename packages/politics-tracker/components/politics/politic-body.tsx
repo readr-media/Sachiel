@@ -5,8 +5,9 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import Edit from '~/components/icons/edit'
+import { POLITIC_PROGRESS } from '~/constants/common'
 import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
-import { PROGRESS, RawPolitic } from '~/types/common'
+import type { RawPolitic } from '~/types/common'
 import type { Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { fireGqlRequest } from '~/utils/utils'
@@ -139,12 +140,12 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
   const style = classNames(s['container'], { [s['editing']]: isEditing })
 
   const status = personElection.elected
-    ? props.progress ?? PROGRESS.NOT_START
+    ? props.progress ?? POLITIC_PROGRESS.NOT_START
     : 'failed'
   const statusStyle = classNames(s['status'], s[status])
 
-  function getStatusText(status: `${PROGRESS}` | 'failed') {
-    const map: Record<PROGRESS | 'failed', string> = {
+  function getStatusText(status: `${POLITIC_PROGRESS}` | 'failed') {
+    const map: Record<POLITIC_PROGRESS | 'failed', string> = {
       'no-progress': '未開始',
       'in-progress': '進行中',
       'in-trouble': '卡關中',

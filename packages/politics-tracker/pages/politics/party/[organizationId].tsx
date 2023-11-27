@@ -14,6 +14,7 @@ import Nav, { type NavProps } from '~/components/nav'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
 import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
+import { POLITIC_PROGRESS } from '~/constants/common'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/politics/get-editing-politics-related-to-organization-elections.graphql'
@@ -22,7 +23,6 @@ import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-perso
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
 import {
   GenericGQLData,
-  PROGRESS,
   RawElection,
   RawOrganization,
   RawOrganizationElection,
@@ -397,7 +397,7 @@ export const getServerSideProps: GetServerSideProps<
             desc: String(politic.desc),
             source: '',
             content: '',
-            progress: PROGRESS.NOT_START,
+            progress: POLITIC_PROGRESS.NOT_START,
             politicCategoryId: null,
             politicCategoryName: null,
             createdAt: String(politic.createdAt),
@@ -456,7 +456,7 @@ export const getServerSideProps: GetServerSideProps<
           desc: String(politic.desc),
           source: String(politic.source),
           content: String(politic.content),
-          progress: politic.current_progress ?? PROGRESS.NOT_START,
+          progress: politic.current_progress ?? POLITIC_PROGRESS.NOT_START,
           politicCategoryId: politic.politicCategory?.id ?? null,
           politicCategoryName: politic.politicCategory?.name ?? null,
           createdAt: String(politic.createdAt),
