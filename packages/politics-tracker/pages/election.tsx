@@ -17,7 +17,9 @@ import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import type {
   GenericGQLData,
+  Override,
   RawElection,
+  RawElectionArea,
   RawPersonElection,
 } from '~/types/common'
 import type { ElectionLink } from '~/types/election'
@@ -32,10 +34,36 @@ type ElectionPageProps = {
   name: string
   area: string
   scrollTo: string
-  data: any // TODO: no definition for external data, need to add it in the future
+  data: unknown // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
 }
+
+type Election = Pick<
+  RawElection,
+  | 'id'
+  | 'name'
+  | 'type'
+  | 'election_year_year'
+  | 'election_year_month'
+  | 'election_year_day'
+>
+type PEE = Pick<
+  RawElection,
+  | 'id'
+  | 'name'
+  | 'election_year_year'
+  | 'election_year_month'
+  | 'election_year_day'
+>
+type PEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
+type PersonElection = Override<
+  Pick<RawPersonElection, 'id' | 'election' | 'electoral_district'>,
+  {
+    election: PEE | null
+    electoral_district: PEA | null
+  }
+>
 
 export const getServerSideProps: GetServerSideProps<
   ElectionPageProps
@@ -78,12 +106,12 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const electionMap: Record<string, RawElection> = {}
+    const electionMap: Record<string, PEE> = {}
     const elections: ElectionLink[] = []
-    let election: undefined | RawElection
+    let election: undefined | Election
     {
       // get election data
-      const rawData: GenericGQLData<RawElection[], 'elections'> =
+      const rawData: GenericGQLData<Election[], 'elections'> =
         await fireGqlRequest(
           print(GetElection),
           {
@@ -117,7 +145,7 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       // use personElection to get election list
-      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
+      const rawData: GenericGQLData<PersonElection[], 'personElections'> =
         await fireGqlRequest(
           print(GetElectionHistoryOfArea),
           {
@@ -143,17 +171,20 @@ export const getServerSideProps: GetServerSideProps<
       // since virtual field (`city`) could not be used in where clause of query,
       // we need to filter data ourself.
       rawData.data?.personElections
-        .filter((pe: RawPersonElection) => {
+        .filter((pe: PersonElection) => {
           return pe.electoral_district?.city === areaStr
         })
-        .map((pe: RawPersonElection) => {
-          const e = pe.election as RawElection
-          const eId = e.id as string
-          electionMap[eId] = e
+        .map((pe: PersonElection) => {
+          const e = pe.election
+
+          if (e) {
+            const eId = e.id
+            electionMap[eId] = e
+          }
           return pe
         })
 
-      Object.values(electionMap).map((e: RawElection) => {
+      Object.values(electionMap).map((e: PEE) => {
         elections.push({
           electionType: String(type),
           electionArea: areaStr,
@@ -237,7 +268,6 @@ const Election = (props: ElectionPageProps) => {
     alwaysShowHome: true,
   }
 
-  const { year, title } = props || {}
   const election = props.data
 
   let headElectionName = ''
