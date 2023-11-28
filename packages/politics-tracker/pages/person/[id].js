@@ -27,12 +27,12 @@ const Main = styled.main`
 
 /**
  * @typedef {import('~/components/nav').NavProps } NavProps
- * @returns {React.ReactElement}
- */
-/**
- * @param {Object} props
- * @param {import('../../types/person').Person} props.personData
- * @param {import('../../types/common').RawPersonElection[]} props.personElectionsData
+ * @typedef {import('~/types/person').PageProps} PageProps
+ * @typedef {import('~/types/person').PersonData} PersonData
+ * @typedef {import('~/types/person').PersonElectionData} PersonElectionData
+ *
+ *
+ * @param {PageProps} props
  * @returns {React.ReactElement}
  */
 export default function People({ personData, personElectionsData }) {
@@ -73,7 +73,7 @@ export default function People({ personData, personElectionsData }) {
   )
 }
 
-/** @type { import('next').GetServerSideProps } */
+/** @type { import('next').GetServerSideProps<PageProps> } */
 export async function getServerSideProps({ query, res }) {
   // cache policy
   res.setHeader(
@@ -83,20 +83,44 @@ export async function getServerSideProps({ query, res }) {
 
   const id = query.id
   try {
-    const {
-      data: { people },
-    } = await fireGqlRequest(print(GetPersonBasicInfo), { Id: id }, cmsApiUrl)
-    if (people.length === 0) {
-      return {
-        notFound: true,
+    /** @type {PersonData[]} */
+    let people
+    /** @type {PersonElectionData[]} */
+    let personElections
+
+    {
+      /** @type {import('~/types/common').GenericGQLData<PersonData[], 'people'>} */
+      const { data } = await fireGqlRequest(
+        print(GetPersonBasicInfo),
+        { Id: id },
+        cmsApiUrl
+      )
+
+      if (!data?.people || data.people.length === 0) {
+        return {
+          notFound: true,
+        }
       }
+
+      people = data.people
     }
-    const {
-      data: { personElections },
-    } = await fireGqlRequest(print(GetPersonElections), { Id: id }, cmsApiUrl)
+
+    {
+      /** @type {import('~/types/common').GenericGQLData<PersonElectionData[], 'personElections'>} */
+      const { data } = await fireGqlRequest(
+        print(GetPersonElections),
+        { Id: id },
+        cmsApiUrl
+      )
+
+      personElections = data ? data.personElections : []
+    }
 
     return {
-      props: { personData: people[0], personElectionsData: personElections }, // will be passed to the page component as props
+      props: {
+        personData: people[0],
+        personElectionsData: personElections,
+      }, // will be passed to the page component as props
     }
   } catch (err) {
     console.error(err)

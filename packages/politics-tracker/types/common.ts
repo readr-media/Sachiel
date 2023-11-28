@@ -115,6 +115,7 @@ export type RawPerson = {
   source: string
   status: StatusOptionsB
   thread_parent: RawPerson | null // 補充資料
+  tags: RawTag[] // 標籤
   createdAt: string
   updatedAt: string
 }

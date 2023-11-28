@@ -39,7 +39,7 @@ const AddInputButtonWrapper = styled.button`
  *
  * @param {Object} props
  * @param {string} props.addTarget
- * @param {function} props.onClick
+ * @param {() => void} props.onClick
  * @returns {React.ReactElement}
  */
 

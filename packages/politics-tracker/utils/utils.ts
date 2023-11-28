@@ -134,10 +134,10 @@ function getNewSource(): Source {
 }
 
 function stringToSources(
-  str: string,
+  str: string = '',
   delimiter: string = SOURCE_DELIMITER
 ): Source[] {
-  return str?.split(delimiter).map((s) => ({
+  return str.split(delimiter).map((s) => ({
     id: uuidv4(),
     value: s,
     error: '',

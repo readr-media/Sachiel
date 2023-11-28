@@ -24,8 +24,8 @@ const SourcesButtonContainer = styled(EditButtonContainer)`
  *
  * @param {Object} props
  * @param {boolean} props.isOpen
- * @param {Function} props.GAClick
- * @param {React.Dispatch<React.SetStateAction<boolean>>} props.setIsOpen
+ * @param {() => void} props.GAClick
+ * @param {(value: boolean) => void} props.setIsOpen
  * @returns {React.ReactElement}
  */
 export default function SourcesButton({ isOpen, setIsOpen, GAClick }) {

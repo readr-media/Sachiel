@@ -2,10 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import EditSvg from '../icons/edit'
-/**
- * @param {Object} props
- * @param {function} props.onClick
- */
+
 const EditButtonContainer = styled.button`
   transition: all 300ms ease-in-out;
   display: flex;
@@ -38,7 +35,7 @@ export { EditButtonContainer, EditIcon }
 /**
  *
  * @param {Object} props
- * @param {function} props.onClick
+ * @param {() => void} props.onClick
  * @returns {React.ReactElement}
  */
 export default function EditButton({ onClick }) {

@@ -8,6 +8,7 @@ import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import CreateTags from '~/graphql/mutation/person/create-tags.graphql'
 import GetExistTags from '~/graphql/query/person/get-exist-tags.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import { takeArrayKeyName } from '~/utils/person'
 import { fireGqlRequest } from '~/utils/utils'
 
 import SourceInput from '../politics/source-input'
@@ -22,12 +23,14 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
 `
 
 /**
- *
+ * @typedef {import('~/types/person').PersonData['tags'][0]} Tag
+ * @typedef {Pick<Tag, 'name'>} TagWithNameOnly
+
  * @param {Object} props
- * @param {import("~/types/person").Person["tags"]} props.tags
- * @param {import("~/types/person").Person["id"]} props.personId
- * @param {import("~/types/person").Person["name"]} props.personName
- * @param {function} props.setShouldShowEditMode
+ * @param {Tag[]} props.tags
+ * @param {string} props.personId
+ * @param {string} props.personName
+ * @param {(value: boolean) => void} props.setShouldShowEditMode
  * @returns {React.ReactElement}
  */
 export default function EditTags(props) {
@@ -37,7 +40,6 @@ export default function EditTags(props) {
 
   // check whether tagList-list value has ('')
   // if have (''), return true
-  // @ts-ignore
   const tagsValueCheck = takeArrayKeyName(tagList, 'name')?.some(
     (x) => x === ''
   )
@@ -48,39 +50,27 @@ export default function EditTags(props) {
    */
   const shouldDisableSubmit = useMemo(
     () =>
-      tagList.filter((i) => i.name).length === 0 ||
-      // @ts-ignore
-      JSON.stringify(takeArrayKeyName(tagList, 'name')) ===
-        // @ts-ignore
-        JSON.stringify(takeArrayKeyName(props.tags, 'name')) ||
-      tagsValueCheck,
+      Boolean(
+        tagList.filter((i) => i.name).length === 0 ||
+          JSON.stringify(takeArrayKeyName(tagList, 'name')) ===
+            JSON.stringify(takeArrayKeyName(props.tags, 'name')) ||
+          tagsValueCheck
+      ),
     [tagList]
   )
-  //take tagList's name to compare with props.tags's name
-  //if the same then shouldDisableSubmit = true
+
   /**
-   * @param {Array<Object>} array
-   * @param {number} key
-   */
-  function takeArrayKeyName(array, key) {
-    return array.map(function (item) {
-      // @ts-ignore
-      return item[key]
-    })
-  }
-  /**
-   * @param {string} key
    * @param {string} value
-   * @returns {{[key: string]: string}}
+   * @returns {TagWithNameOnly}
    */
-  const stringToObject = (key, value) => {
+  const nameToTag = (value) => {
     return {
-      [key]: value,
+      name: value,
     }
   }
 
   /**
-   * @param {Object[]|[]} tagList
+   * @param {TagWithNameOnly[]} tagList
    * @param {string} cmsApiUrl
    */
   async function createPerson(tagList, cmsApiUrl) {
@@ -110,7 +100,7 @@ export default function EditTags(props) {
   }
 
   /**
-   * @param {Object[]|[]} tagList
+   * @param {TagWithNameOnly[]} tagList
    * @param {string} cmsApiUrl
    */
   async function createTags(tagList, cmsApiUrl) {
@@ -134,8 +124,9 @@ export default function EditTags(props) {
   }
 
   /**
-   * @param {string[]|[]} tagList
+   * @param {string[]} tagList
    * @param {string} cmsApiUrl
+   * @returns {Promise<import('~/types/common').GenericGQLData<Tag[], 'tags'> | undefined>}
    */
   async function getExistTags(tagList, cmsApiUrl) {
     try {
@@ -159,22 +150,23 @@ export default function EditTags(props) {
 
     try {
       //check the tags wanted to submit is existed or not
-      /**@type {string[]} */
       const allTagsName = tagList.map((tag) => {
         return tag.name.trim()
       })
       const existTagsData = await getExistTags(allTagsName, cmsApiUrl)
-      /** @type {{id:string,name:string}[]} */
-      const existTags = existTagsData.data.tags
+      const existTags = existTagsData?.data?.tags ?? []
 
       const existsTagsName = existTags.map((tag) => tag.name)
 
+      /** @type {TagWithNameOnly[]} */
       const unRegisteredTags = allTagsName
         .filter((tag) => existsTagsName.indexOf(tag) === -1)
         .map((tag) => {
-          return stringToObject('name', tag)
+          return nameToTag(tag)
         })
         .filter((tag) => tag.name)
+
+      /** @type {TagWithNameOnly[]} */
       let submitTagList
       if (unRegisteredTags.length !== 0) {
         //create new Tags at cms
@@ -183,7 +175,7 @@ export default function EditTags(props) {
         submitTagList = [
           ...existTags
             .map((tag) => {
-              return stringToObject('name', tag.name)
+              return nameToTag(tag.name)
             })
             .filter((tag) => tag.name),
           ...unRegisteredTags,
@@ -192,7 +184,7 @@ export default function EditTags(props) {
         submitTagList = [
           ...existTags
             .map((tag) => {
-              return stringToObject('name', tag.name)
+              return nameToTag(tag.name)
             })
             .filter((tag) => tag.name),
         ]

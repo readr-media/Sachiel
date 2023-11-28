@@ -49,11 +49,10 @@ const PoliticButton = styled.a`
   }
 `
 /**
- *
  * @param {Object} props
  * @param {boolean} [props.isActive]
- * @param {import('~/types/common').RawPersonElection[]} props.personElectionsData
- * @param {import('~/types/person').Person['id']} props.personId
+ * @param {import('~/types/person').PersonElectionData[]} props.personElectionsData
+ * @param {string} props.personId
  * @returns {React.ReactElement}
  */
 export default function SectionBodyElection({
@@ -62,11 +61,10 @@ export default function SectionBodyElection({
   personId,
 }) {
   /**
-   *
-   * @param {import('~/types/common').RawElection["election_year_year"]} year
+   * @param {import('~/types/common').RawElection["election_year_year"]} [year]
    * @param {import('~/types/common').RawElectionArea["city"]} [city]
-   * @param {import('~/types/common').RawElectionArea["type"]} type
-   * @returns
+   * @param {import('~/types/common').RawElection["type"]} [type]
+   * @returns {string | undefined}
    */
   const electionLink = (year, city, type = '') => {
     if (year && city !== undefined && type) {
