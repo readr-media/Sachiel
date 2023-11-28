@@ -96,23 +96,23 @@ export type RawElection = {
 export type RawPerson = {
   id: string
   name: string // 姓名
-  alternative: string // 別名
-  other_names: string // 舊名
-  email: string
+  alternative: string | null // 別名
+  other_names: string | null // 舊名
+  email: string | null
   gender: string
-  birth_date_year: number // 出生年
-  birth_date_month: number // 出生月
-  birth_date_day: number // 出生日
-  death_date_year: number // 死亡年
-  death_date_month: number // 死亡月
-  death_date_day: number // 死亡日
-  image: string // 大頭照
-  summary: string // 一句話描寫這個人
-  biography: string // 詳細生平
-  national_identity: string
-  contact_details: string
-  links: string
-  source: string
+  birth_date_year: number | null // 出生年
+  birth_date_month: number | null // 出生月
+  birth_date_day: number | null // 出生日
+  death_date_year: number | null // 死亡年
+  death_date_month: number | null // 死亡月
+  death_date_day: number | null // 死亡日
+  image: string | null // 大頭照
+  summary: string | null // 一句話描寫這個人
+  biography: string | null // 詳細生平
+  national_identity: string | null
+  contact_details: string | null
+  links: string | null
+  source: string | null
   status: StatusOptionsB
   thread_parent: RawPerson | null // 補充資料
   tags: RawTag[] // 標籤
@@ -124,23 +124,23 @@ export type RawPerson = {
 export type RawOrganization = {
   id: string
   name: string // 組織名稱
-  alternative: string // 組織別名
-  other_names: string // 組織舊名
-  identifiers: string // 統一編號
+  alternative: string | null // 組織別名
+  other_names: string | null // 組織舊名
+  identifiers: string | null // 統一編號
   classification: string // 組織類型
-  abstract: string // 一句話描述該組織
-  description: string // 組織詳細介紹
-  founding_date_year: number // 組織成立年
-  founding_date_month: number // 組織成立月
-  founding_date_day: number // 組織成立日
-  dissolution_date_year: number // 組織解散年
-  dissolution_date_month: number // 組織解散月
-  dissolution_date_day: number // 組織解散日
-  image: string // 圖像
-  contact_details: string
-  links: string
-  address: string // 組織稅籍登記地址
-  source: string
+  abstract: string | null // 一句話描述該組織
+  description: string | null // 組織詳細介紹
+  founding_date_year: number | null // 組織成立年
+  founding_date_month: number | null // 組織成立月
+  founding_date_day: number | null // 組織成立日
+  dissolution_date_year: number | null // 組織解散年
+  dissolution_date_month: number | null // 組織解散月
+  dissolution_date_day: number | null // 組織解散日
+  image: string | null // 圖像
+  contact_details: string | null
+  links: string | null
+  address: string | null // 組織稅籍登記地址
+  source: string | null
   status: StatusOptionsB
   tags: RawTag[] // 標籤
   reviewed: boolean

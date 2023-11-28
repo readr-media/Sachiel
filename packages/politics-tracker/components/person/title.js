@@ -88,7 +88,7 @@ const TitleDecorationDesktop = styled(TitleDecoration)`
 /**
  * @param {Object} props
  * @param {string} props.name
- * @param {string} props.image
+ * @param {string | null} props.image
  * @returns {React.ReactElement}
  */
 export default function Title({ name, image }) {

@@ -135,7 +135,7 @@ function dateCheck(dateValue) {
  * @property {string[]} [options] - radio options list, only exist if type is "radio"
  * @property {string} [placeholder] - input placeholder content, only exist if type is "type"
  * @property {boolean} isRequired - if field must write when editing
- * @property {string|(number | null)[]}  value - value of content
+ * @property {string|null|(number | null)[]}  value - value of content
  * @property {((value?: string) => void) | ((value: string) => void)}  onChange - value of content
  * @property {string} [errormessage]
  *

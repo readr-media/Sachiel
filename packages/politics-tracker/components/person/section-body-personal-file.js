@@ -53,8 +53,6 @@ export default function SectionBodyPersonalFile({
     id,
     name = '',
     image = '',
-    alternative = '',
-    other_names = '',
     birth_date_year,
     birth_date_month,
     birth_date_day,
@@ -62,14 +60,17 @@ export default function SectionBodyPersonalFile({
     death_date_month,
     death_date_day,
     gender = '',
-    national_identity = '',
-    biography = '',
-    email = '',
-    contact_details = '',
-    links = '',
-    source = '',
     tags = [],
   } = personData
+
+  const alternative = personData.alternative ?? ''
+  const other_names = personData.other_names ?? ''
+  const national_identity = personData.national_identity ?? ''
+  const biography = personData.biography ?? ''
+  const email = personData.email ?? ''
+  const contact_details = personData.contact_details ?? ''
+  const source = personData.source ?? ''
+  const links = personData.links ?? ''
 
   /**
    * check the date passed in, which will be checked with two rule:
