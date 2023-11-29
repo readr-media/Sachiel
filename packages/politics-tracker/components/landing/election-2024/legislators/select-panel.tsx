@@ -72,7 +72,7 @@ const ToggleButton = styled.button<{ isActive: boolean }>`
   gap: 4px;
 
   padding: 8px 12px;
-  outline: 1px solid ${({ theme }) => theme.textColor.blue};
+  border: 1px solid ${({ theme }) => theme.textColor.blue};
   background: ${({ theme, isActive }) =>
     isActive ? theme.backgroundColor.purpleDark : theme.backgroundColor.white};
   border-radius: 32px;
