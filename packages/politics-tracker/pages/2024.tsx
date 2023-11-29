@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import CustomHead from '~/components/custom-head'
 import FactCheck from '~/components/landing/election-2024/fact-check-group'
 import HeroImage from '~/components/landing/election-2024/hero-image'
-// import Legislators from '~/components/landing/election-2024/legislators/index'
+import Legislators from '~/components/landing/election-2024/legislators/index'
 import RelatedPosts from '~/components/landing/election-2024/related-posts'
 import ButtonToLanding from '~/components/landing/shared/button-to-landing'
 import CollaborateGuide from '~/components/landing/shared/collaborate-guide'
@@ -27,10 +27,15 @@ import type {
   CategoryOfJson,
   PresidentComparisonJson,
   PresidentFactCheckJson,
+  RegionLegislator,
   RelatedPost,
 } from '~/types/landing'
 import type { FactCheckPartner } from '~/types/politics-detail'
-import { getTopCategoryLists, sortCategoriesByCount } from '~/utils/landing'
+import {
+  getTopCategoryLists,
+  sortCategoriesByCount,
+  sortLegislatorsByAmountRatio,
+} from '~/utils/landing'
 import { fireGqlRequest } from '~/utils/utils'
 
 const Main = styled.main`
@@ -48,6 +53,7 @@ type Landing2024Props = {
   comparisonJSON: PresidentComparisonJson[]
   allCategories: CategoryOfJson[]
   posts: RelatedPost[]
+  regionalLegislator: RegionLegislator[]
 }
 export default function Landing2024({
   factCheckPartner = [],
@@ -55,6 +61,7 @@ export default function Landing2024({
   comparisonJSON = [],
   allCategories = [],
   posts = [],
+  regionalLegislator = [],
 }: Landing2024Props): JSX.Element {
   return (
     <DefaultLayout>
@@ -78,7 +85,7 @@ export default function Landing2024({
           buttonHref="https://hackmd.io/@readr/r1jcxjema"
         />
 
-        {/* <Legislators /> */}
+        <Legislators regional={regionalLegislator} party={[]} indigenous={[]} />
 
         <RelatedPosts posts={posts} />
 
@@ -105,11 +112,12 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
     'public, max-age=600, stale-while-revalidate=60'
   )
 
-  let factCheckPartner: FactCheckPartner[] = []
-  let factCheckJSON: PresidentFactCheckJson[] = []
-  let comparisonJSON: PresidentComparisonJson[] = []
-  let allCategories: CategoryOfJson[] = []
-  let posts: RelatedPost[] = []
+  let factCheckPartner: FactCheckPartner[] = [] // 合作媒體＋合作單位
+  let factCheckJSON: PresidentFactCheckJson[] = [] // 總統政見:背景事實查核 - JSON
+  let comparisonJSON: PresidentComparisonJson[] = [] // 總統政見:差異比較 - JSON
+  let allCategories: CategoryOfJson[] = [] // 總統政見:背景事實查核 - 分類
+  let posts: RelatedPost[] = [] // 相關報導
+  let regionalLegislator: RegionLegislator[] = [] // 區域立委
 
   try {
     {
@@ -203,6 +211,24 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
 
       posts = relatedPosts || []
     }
+
+    {
+      //get legislator JSON
+      const { data } = await axios.get(
+        'https://storage.googleapis.com/whoareyou-gcs.readr.tw/politics/landing.json'
+      )
+
+      if (data.errors) {
+        throw new Error(
+          'Server JSON errors: Landing2024 legislator JSON Error' +
+            JSON.stringify(data.errors)
+        )
+      }
+
+      //sort `regions` & `areas` by completed ratio (done/total)
+      regionalLegislator =
+        sortLegislatorsByAmountRatio(data.regionalLegislator) || []
+    }
   } catch (err) {
     console.error(err)
     return {
@@ -217,6 +243,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       comparisonJSON,
       allCategories,
       posts,
+      regionalLegislator,
     },
   }
 }
