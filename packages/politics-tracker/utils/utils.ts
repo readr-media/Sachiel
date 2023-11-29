@@ -232,7 +232,7 @@ function getCheckResultString(
 }
 
 function getPositionChangeString(isChanged: string) {
-  const positionChangeMappings: { [key: string]: string } = {
+  const positionChangeMappings: Record<string, string> = {
     same: '曾持相同意見',
     changed: '曾持不同意見',
     noComment: '當時未表態',

@@ -1,8 +1,18 @@
 import { POLITIC_PROGRESS } from '~/constants/common'
 import type {
+  Override,
+  RawElection,
+  RawElectionArea,
   RawExpertPoint,
   RawFactCheck,
+  RawFactCheckPartner,
+  RawOrganization,
+  RawOrganizationElection,
+  RawPerson,
   RawPersonElection,
+  RawPersonOrgnization,
+  RawPolitic,
+  RawPoliticCategory,
   RawPoliticPositionChange,
   RawPoliticRepeat,
 } from '~/types/common'
@@ -23,16 +33,15 @@ export type PersonOverview = {
 export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>
 
 export type Politic = {
-  id?: string
+  id: string
   desc: string
   source: string
   content: string
-  progress?: `${POLITIC_PROGRESS}`
+  progress: `${POLITIC_PROGRESS}`
   politicCategoryId: string | null
   politicCategoryName: string | null
-  createdAt: string | null
+  createdAt: string
   updatedAt: string | null
-  error?: string
   positionChange: PositionChange[]
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
@@ -40,23 +49,27 @@ export type Politic = {
 }
 
 //立場改變摘要
-export type PositionChange = Pick<
-  RawPoliticPositionChange,
-  'id' | 'positionChangeSummary' | 'isChanged' | 'factcheckPartner'
+export type PositionChange = Override<
+  Pick<
+    RawPoliticPositionChange,
+    'id' | 'positionChangeSummary' | 'isChanged' | 'factcheckPartner'
+  >,
+  { factcheckPartner: FactCheckPartner | null }
 >
 
-export type FactCheckPartner = {
-  name: string
-}
+export type FactCheckPartner = Pick<RawFactCheckPartner, 'name'>
 
 //事實釐清摘要
-export type FactCheck = Pick<
-  RawFactCheck,
-  | 'id'
-  | 'factCheckSummary'
-  | 'checkResultType'
-  | 'checkResultOther'
-  | 'factcheckPartner'
+export type FactCheck = Override<
+  Pick<
+    RawFactCheck,
+    | 'id'
+    | 'factCheckSummary'
+    | 'checkResultType'
+    | 'checkResultOther'
+    | 'factcheckPartner'
+  >,
+  { factcheckPartner: FactCheckPartner | null }
 >
 
 //專家看點摘要
@@ -66,9 +79,11 @@ export type ExpertPoint = Pick<
 >
 
 //相似政策摘要
-export type Repeat = Pick<
-  RawPoliticRepeat,
-  'id' | 'repeatSummary' | 'factcheckPartner'
+export type Repeat = Override<
+  Pick<RawPoliticRepeat, 'id' | 'repeatSummary' | 'factcheckPartner'>,
+  {
+    factcheckPartner: FactCheckPartner | null
+  }
 >
 
 export type PersonElectionTerm = {
@@ -123,6 +138,50 @@ export type LegislatorAtLarge = {
   id: string
   person_id: Pick<RawPersonElection, 'id' | 'name'>
 }
+
+type PEP = Pick<RawPerson, 'id' | 'name' | 'image'>
+type PEE = Pick<
+  RawElection,
+  | 'id'
+  | 'name'
+  | 'election_year_year'
+  | 'election_year_month'
+  | 'election_year_day'
+  | 'level'
+  | 'type'
+  | 'hidePoliticDetail'
+  | 'addComments'
+>
+type PEEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
+type PEO = Pick<RawOrganization, 'id' | 'name' | 'image'>
+type PEMC = Override<
+  Pick<RawPersonElection, 'id' | 'name' | 'person_id'>,
+  {
+    person_id: Pick<RawPerson, 'id'> | null
+  }
+>
+export type PersonElectionData = Override<
+  Pick<
+    RawPersonElection,
+    | 'id'
+    | 'politicSource'
+    | 'elected'
+    | 'incumbent'
+    | 'person_id'
+    | 'election'
+    | 'electoral_district'
+    | 'party'
+    | 'mainCandidate'
+  >,
+  {
+    person_id: PEP | null
+    election: PEE | null
+    electoral_district: PEEA | null
+    party: PEO | null
+    mainCandidate: PEMC | null
+  }
+>
+
 export type ElectionDataForPerson = {
   id: string
   name: string
@@ -154,3 +213,107 @@ export type ElectionDataForParty = ElectionDataForPerson & {
 }
 
 export type ElectionData = ElectionDataForPerson | ElectionDataForParty
+
+export type PoliticData = Override<
+  Pick<
+    RawPolitic,
+    | 'id'
+    | 'desc'
+    | 'content'
+    | 'source'
+    | 'status'
+    | 'reviewed'
+    | 'current_progress'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'thread_parent'
+    | 'person'
+    | 'politicCategory'
+    | 'positionChange'
+    | 'factCheck'
+    | 'expertPoint'
+    | 'repeat'
+  >,
+  {
+    thread_parent: Pick<RawPolitic, 'id' | 'desc' | 'source' | 'status'> | null
+    person: Override<
+      Pick<RawPersonElection, 'id' | 'election'>,
+      { election: Pick<RawElection, 'id'> | null }
+    > | null
+    politicCategory: Pick<RawPoliticCategory, 'id' | 'name'> | null
+    positionChange: PositionChange[]
+    factCheck: FactCheck[]
+    expertPoint: ExpertPoint[]
+    repeat: Repeat[]
+  }
+>
+
+export type PersonOrgnizationData = Override<
+  Pick<
+    RawPersonOrgnization,
+    | 'start_date_year'
+    | 'start_date_month'
+    | 'start_date_day'
+    | 'end_date_year'
+    | 'end_date_month'
+    | 'end_date_day'
+    | 'organization_id'
+  >,
+  {
+    organization_id: Pick<RawOrganization, 'id' | 'name'> | null
+  }
+>
+
+export type CreatedPolitic = Override<
+  Pick<RawPolitic, 'desc' | 'source' | 'content' | 'person' | 'organization'>,
+  {
+    person: Override<
+      Pick<RawPersonElection, 'id' | 'person_id' | 'election' | 'party'>,
+      {
+        person_id: Pick<RawPerson, 'name'> | null
+        election: Pick<RawElection, 'name'> | null
+        party: Pick<RawOrganization, 'name'> | null
+      }
+    > | null
+    organization: Override<
+      Pick<RawOrganizationElection, 'id' | 'organization_id'>,
+      {
+        organization_id: Pick<RawOrganization, 'name'> | null
+      }
+    > | null
+  }
+>
+
+export type CreatedEditingPolitic = Override<
+  Pick<
+    RawPolitic,
+    | 'id'
+    | 'desc'
+    | 'source'
+    | 'content'
+    | 'person'
+    | 'organization'
+    | 'thread_parent'
+    | 'changeLog'
+    | 'checked'
+    | 'reviewed'
+    | 'contributer'
+  >,
+  {
+    person: Override<
+      Pick<RawPersonElection, 'id' | 'person_id' | 'election' | 'party'>,
+      {
+        person_id: Pick<RawPerson, 'name'> | null
+        election: Pick<RawElection, 'name'> | null
+        party: Pick<RawOrganization, 'name'> | null
+      }
+    > | null
+    organization: Override<
+      Pick<RawOrganizationElection, 'id' | 'organization_id'>,
+      {
+        organization_id: Pick<RawOrganization, 'name'> | null
+      }
+    > | null
+    thread_parent: Pick<RawPolitic, 'id' | 'desc' | 'source'> | null
+  }
+>

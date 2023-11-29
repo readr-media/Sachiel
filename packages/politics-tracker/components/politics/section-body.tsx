@@ -1,37 +1,32 @@
 import classNames from 'classnames'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
-import type {
-  LegislatorAtLarge,
-  PersonElection,
-  Politic,
-} from '~/types/politics'
+import type { ElectionData, Politic } from '~/types/politics'
+import { checkIsPartyPage } from '~/utils/politic'
 
 import AddPoliticBlock from './add-politic-block'
 import PoliticBlock from './politic-block'
 import { PoliticListContext } from './react-context/politics-context'
+import { useElectionData } from './react-context/use-politics'
 import s from './section-body.module.css'
 import WaitingPoliticBlock from './waiting-politic-block'
 
 type SectionBodyProps = Pick<
-  PersonElection,
+  ElectionData,
   | 'source'
   | 'lastUpdate'
   | 'politics'
   | 'waitingPolitics'
   | 'organizationId'
   | 'mainCandidate'
-  | 'hidePoliticDetail'
   | 'electionType'
-  | 'shouldShowFeedbackForm'
-  | 'isFinished'
   | 'partyId'
   | 'year'
-> & { show: boolean } & { isPartyPage?: boolean } & {
-  legisLatorAtLarge?: LegislatorAtLarge[]
+> & {
+  show: boolean
 }
 
 const Button = styled.button`
@@ -78,54 +73,72 @@ export default function SectionBody(props: SectionBodyProps): JSX.Element {
     setWaitingPoliticList([...waitingPoliticList, politic])
   }
 
+  const electionData = useElectionData()
   const style = classNames(s['section-body'], { [s['show']]: props.show })
   const isLegislatorAtLarge = props.electionType === '不分區立委'
   const isVicePresident = !!props.mainCandidate
-  const isPartyPage = props.isPartyPage
+  const isPartyPage = checkIsPartyPage(electionData)
+
+  const BodyContent: JSX.Element = useMemo(() => {
+    switch (true) {
+      case !isPartyPage && isLegislatorAtLarge: {
+        // 不分區立委
+        return (
+          <>
+            <Link href={`/politics/party/${props.partyId}#${props.year}`}>
+              <Button>
+                查看政黨政見
+                <ArrowRight />
+              </Button>
+            </Link>
+          </>
+        )
+      }
+      case isVicePresident: {
+        // 副總統
+        return (
+          <>
+            <Link
+              href={`/politics/${props.mainCandidate?.person_id?.id}#${props.year}`}
+            >
+              <Button>
+                查看總統、副總統政見
+                <ArrowRight />
+              </Button>
+            </Link>
+          </>
+        )
+      }
+      default: {
+        // 候選人、總統、政黨
+        return (
+          <>
+            {props.politics.length > 0 ? (
+              <PoliticBlock {...props} />
+            ) : (
+              <div className={s['default']}>這個人還沒有被新增政見...</div>
+            )}
+            <AddPoliticBlock />
+            {waitingPoliticList.length > 0 && (
+              <WaitingPoliticBlock waitingPolitics={waitingPoliticList} />
+            )}
+          </>
+        )
+      }
+    }
+  }, [
+    props,
+    isPartyPage,
+    isLegislatorAtLarge,
+    isVicePresident,
+    waitingPoliticList,
+  ])
 
   return (
     <PoliticListContext.Provider
       value={{ politicList: waitingPoliticList, addToList: addToPoliticList }}
     >
-      <div className={style}>
-        {props.show && (
-          <>
-            {(!isPartyPage && isLegislatorAtLarge) || isVicePresident ? (
-              <Link
-                href={
-                  isLegislatorAtLarge
-                    ? `/politics/party/${props.partyId}#${props.year}`
-                    : `/politics/${props.mainCandidate?.person_id.id}#${props.year}`
-                }
-              >
-                <Button>
-                  {isLegislatorAtLarge
-                    ? '查看政黨政見'
-                    : '查看總統、副總統政見'}
-                  <ArrowRight />
-                </Button>
-              </Link>
-            ) : (
-              <>
-                {props.politics.length > 0 ? (
-                  <PoliticBlock
-                    {...props}
-                    isPartyPage={isPartyPage}
-                    legisLatorAtLarge={props.legisLatorAtLarge}
-                    isFinished={props.isFinished}
-                  />
-                ) : (
-                  <div className={s['default']}>這個人還沒有被新增政見...</div>
-                )}
-                <AddPoliticBlock />
-                {waitingPoliticList.length > 0 && (
-                  <WaitingPoliticBlock waitingPolitics={waitingPoliticList} />
-                )}
-              </>
-            )}
-          </>
-        )}
-      </div>
+      <div className={style}>{props.show && BodyContent}</div>
     </PoliticListContext.Provider>
   )
 }

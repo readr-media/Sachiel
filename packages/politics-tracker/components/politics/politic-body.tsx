@@ -7,8 +7,8 @@ import { useState } from 'react'
 import Edit from '~/components/icons/edit'
 import { POLITIC_PROGRESS } from '~/constants/common'
 import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
-import type { RawPolitic } from '~/types/common'
-import type { Politic } from '~/types/politics'
+import type { GenericGQLData } from '~/types/common'
+import type { CreatedEditingPolitic, Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -18,8 +18,9 @@ import UserFeedbackToolkit from '../shared/user-feedback-toolkit'
 import { useToast } from '../toast/use-toast'
 import s from './politic-body.module.css'
 import PoliticContent from './politic-content'
+import type { DraftPolitic } from './politic-form'
 import {
-  usePersonElection,
+  useElectionData,
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
@@ -41,10 +42,13 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
   const toast = useToast()
   const politicAmount = usePoliticAmount()
-  const personElection = usePersonElection()
+  const electionData = useElectionData()
   const waitingPoliticList = usePoliticList()
 
-  async function appendPoliticToThread(data: Politic): Promise<boolean> {
+  async function appendPoliticToThread(data: DraftPolitic): Promise<boolean> {
+    if (!electionData) throw new Error('electionData is null')
+    if (!('id' in data)) throw Error('`id` is not in data')
+
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
@@ -60,7 +64,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
             },
             organization: {
               connect: {
-                id: personElection.id,
+                id: electionData.id,
               },
             },
             desc: data.desc,
@@ -78,7 +82,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
             },
             person: {
               connect: {
-                id: personElection.id,
+                id: electionData.id,
               },
             },
             desc: data.desc,
@@ -90,7 +94,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
       // result is not used currently
       // eslint-disable-next-line
-      const result: RawPolitic = await fireGqlRequest(
+      const result: GenericGQLData<CreatedEditingPolitic, 'createEditingPolitic'> = await fireGqlRequest(
         print(AddEditingPoliticToThread),
         variables,
         cmsApiUrl
@@ -104,10 +108,13 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
       waitingPoliticList.addToList({
         id: String(new Date().valueOf()),
-        ...variables.data,
+        desc: data.desc,
+        content: data.content,
+        source: data.source,
+        progress: POLITIC_PROGRESS.NOT_START,
         politicCategoryId: null,
         politicCategoryName: null,
-        createdAt: null,
+        createdAt: '',
         updatedAt: null,
         positionChange: [],
         factCheck: [],
@@ -139,13 +146,15 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
   const style = classNames(s['container'], { [s['editing']]: isEditing })
 
-  const status = personElection.elected
+  const status = electionData?.elected
     ? props.progress ?? POLITIC_PROGRESS.NOT_START
     : 'failed'
   const statusStyle = classNames(s['status'], s[status])
 
-  function getStatusText(status: `${POLITIC_PROGRESS}` | 'failed') {
-    const map: Record<POLITIC_PROGRESS | 'failed', string> = {
+  type PROGRESS_WITH_FAIL = `${POLITIC_PROGRESS}` | 'failed'
+
+  function getStatusText(status: PROGRESS_WITH_FAIL) {
+    const map: Record<PROGRESS_WITH_FAIL, string> = {
       'no-progress': '未開始',
       'in-progress': '進行中',
       'in-trouble': '卡關中',
@@ -180,7 +189,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
       <div className={s['container']}>
         <div className={s['header']}>
           <span className={s['index']}>{index}</span>
-          {personElection.isFinished && (
+          {Boolean(electionData?.isFinished) && (
             <span className={s['politic-status']}>
               <span className={s['text']}>達成進度</span>
               <span className={statusStyle}>{getStatusText(status)}</span>

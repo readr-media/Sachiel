@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import { useState } from 'react'
 
-import type { PersonElection } from '~/types/politics'
+import type { ElectionData } from '~/types/politics'
 
 import SecondArrowDown from '../icons/second-arrow-down'
 import SecondArrowUp from '../icons/second-arrow-up'
 import s from './waiting-politic-block.module.css'
 
-type Props = Pick<PersonElection, 'waitingPolitics'>
+type Props = Pick<ElectionData, 'waitingPolitics'>
 
 export default function WaitingPoliticBlock(props: Props): JSX.Element {
   const [expanded, setExpanded] = useState<boolean>(true)

@@ -35,10 +35,10 @@ type BlockProps = {
   fontSize: number
   lineHeight: number
   customClass: string
-  children: React.ReactNode
+  children: React.ReactElement
 }
-type SingleLineBlock = Pick<BlockProps, 'content' | 'customClass'>
-type MultipleLineBlock = Pick<
+type SingleLineBlockProps = Pick<BlockProps, 'content' | 'customClass'>
+type MultipleLineBlockProps = Pick<
   BlockProps,
   'content' | 'fontSize' | 'lineHeight' | 'children' | 'customClass'
 >
@@ -47,13 +47,13 @@ type PoliticsBlockProps = Pick<
   'title' | 'customClass' | 'children'
 > & { subTitle?: string }
 
-const SingleLineBlock = (props: SingleLineBlock) => {
+const SingleLineBlock = (props: SingleLineBlockProps) => {
   const style = classNames(s['single-line-block'], props.customClass)
 
   return <div className={style}>{props.content}</div>
 }
 
-const MultipleLineBlock = (props: MultipleLineBlock) => {
+const MultipleLineBlock = (props: MultipleLineBlockProps) => {
   const baseFontSize = props.fontSize
   const lineHeight = props.lineHeight
   const lineHeightPadding = 0.2
@@ -151,9 +151,9 @@ export default function Title(props: PersonOverview): JSX.Element {
   }
 
   const fontSizeGroup = fullConfig?.theme?.fontSize
-  // @ts-ignore: next line
+  // @ts-ignore: should be [string, string]
   const [mainFS, mainLH] = fontSizeGroup['title-main-md']
-  // @ts-ignore: next line
+  // @ts-ignore: should be [string, string]
   const [subFS, subLH] = fontSizeGroup['title-sub-md']
 
   const mainText: TextConfig = {
