@@ -135,7 +135,7 @@ export type PoliticOfJson = Pick<PoliticDetail, 'id' | 'desc'> & {
 }
 
 //補坑進度：立委政見 - 區域立委
-export type RegionLegislator = {
+export type LegislatorOfJSON = {
   name: string
   amount: number
   total: number

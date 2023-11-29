@@ -115,10 +115,11 @@ export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
       <Content>
         {sortedAreas.map((area: LegislatorArea) => {
           const candidates = formattedCandidates(area.candidates)
+          const order = area.order === 0 ? '全國' : `第 0${area.order} 選舉區`
           return (
             <ListItemMobile
               order={0}
-              title={`第 0${area.order} 選舉區`}
+              title={order}
               count={area.done}
               totalAmount={area.total}
               key={area.id}
@@ -135,13 +136,14 @@ export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
 
         {sortedAreas.map((area: LegislatorArea) => {
           const candidates = formattedCandidates(area.candidates)
+          const order = area.order === 0 ? '全國' : `第 0${area.order} 選舉區`
           return (
             <ListItemDesktop
               count={area.done}
               totalAmount={area.total}
               key={area.id}
             >
-              <span> {`第 0${area.order} 選舉區`}</span>
+              <span> {order}</span>
 
               <span className="amount">
                 {area.done}/{area.total}

@@ -55,7 +55,7 @@ const ToggleGroup = styled.div<{ isOpen: boolean }>`
   align-items: flex-start;
   gap: 12px;
   flex-wrap: wrap;
-  max-height: ${({ isOpen }) => (isOpen ? 'none' : '97px')};
+  max-height: ${({ isOpen }) => (isOpen ? 'none' : '102px')};
   overflow: ${({ isOpen }) => (isOpen ? 'auto' : 'hidden')};
 
   ${({ theme }) => theme.breakpoint.md} {
