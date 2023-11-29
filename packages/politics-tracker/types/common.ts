@@ -320,3 +320,16 @@ export type RawPoliticTimeline = {
   link: string // 連結
   contributer: string // 資料提供
 }
+
+// 人物 - 組織關係
+export type RawPersonOrgnization = {
+  id: string
+  person_id: RawPerson | null // 姓名
+  start_date_day: number | null // 開始年
+  start_date_month: number | null // 開始月
+  start_date_year: number | null // 開始日
+  end_date_day: number | null // 結束年
+  end_date_month: number | null // 結束月
+  end_date_year: number | null // 結束日
+  organization_id: RawOrganization | null // 組織名稱
+}
