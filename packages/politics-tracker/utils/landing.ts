@@ -1,7 +1,7 @@
 import type {
   CategoryOfJson,
   LegislatorCandidate,
-  RegionLegislator,
+  LegislatorOfJSON,
 } from '~/types/landing'
 
 type RawCategories = {
@@ -59,7 +59,7 @@ function formattedCandidates(candidates: LegislatorCandidate[]) {
   return updatedCandidates
 }
 
-function sortLegislatorsByAmountRatio(array: RegionLegislator[]) {
+function sortLegislatorsByAmountRatio(array: LegislatorOfJSON[]) {
   return array
     .map((region) => ({
       ...region,
@@ -68,7 +68,7 @@ function sortLegislatorsByAmountRatio(array: RegionLegislator[]) {
     .sort((a, b) => a.amount / a.total - b.amount / b.total)
 }
 
-function formatButtonInfo(array: RegionLegislator[]) {
+function formatButtonInfo(array: LegislatorOfJSON[]) {
   return array.map((item) => ({
     name: item.name,
     ratio: `(${item.amount}/${item.total})`,
