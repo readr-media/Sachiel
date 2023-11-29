@@ -17,19 +17,31 @@ import type {
   RawPoliticRepeat,
 } from '~/types/common'
 
+/** 作為政見頁資訊面板資料使用 */
 export type OverviewInfo = {
+  /** 人物 ID */
   id: string
+  /** 人名 */
   name: string
+  /** 人物頭像 */
   avatar: string
+  /** 政黨 ID */
+  partyId: string
+  /** 政黨名稱 */
   party: string
+  /** 政黨黨徽 */
   partyIcon: string
-  partyId?: string
+  /** 競選目的 */
   campaign: string
+  /** 政見數統計 */
   completed: number
+  /** 待審核政見數統計 */
   waiting: number
+  /** 是否為政黨相關頁面 */
   isPartyPage: boolean
 }
 
+/** 政見數統計資訊 */
 export type PoliticAmount = Pick<OverviewInfo, 'waiting' | 'completed'>
 
 export type Politic = {

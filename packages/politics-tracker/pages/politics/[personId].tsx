@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps<
 
   try {
     const profile: OverviewInfo = {
-      id: '',
+      id: String(personId),
       name: '',
       avatar: '',
       party: '',
@@ -249,7 +249,7 @@ export const getServerSideProps: GetServerSideProps<
       const person = latestPersonElection.person_id
       const election = latestPersonElection.election
       const party = latestPersonElection.party
-      profile.id = person?.id ?? ''
+
       profile.name = person?.name ?? ''
       profile.avatar = person?.image ?? ''
       profile.party = partyName(party?.name)

@@ -123,6 +123,7 @@ export const getServerSideProps: GetServerSideProps<
       avatar: '',
       party: '',
       partyIcon: '',
+      partyId: String(organizationId),
       campaign: '',
       waiting: 0,
       completed: 0,
@@ -242,11 +243,8 @@ export const getServerSideProps: GetServerSideProps<
       const organization = latestOrganizationElection.organization_id
       const election = latestOrganizationElection.elections
 
-      profile.id = organization?.id ?? ''
-      profile.name = organization?.name ?? ''
-      profile.avatar = organization?.image ?? ''
-      profile.party = ''
-      profile.partyIcon = ''
+      profile.party = organization?.name ?? ''
+      profile.partyIcon = organization?.image ?? ''
       profile.campaign = election?.type ?? ''
       latestParty = organization
     }
