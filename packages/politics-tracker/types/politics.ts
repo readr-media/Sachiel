@@ -72,23 +72,21 @@ export type Repeat = Pick<
 >
 
 export type PersonElectionTerm = {
-  start_date_day: string | null
-  start_date_month: string | null
-  start_date_year: string | null
-  end_date_day: string | null
-  end_date_month: string | null
-  end_date_year: string | null
+  start_date_day: number | null
+  start_date_month: number | null
+  start_date_year: number | null
+  end_date_day: number | null
+  end_date_month: number | null
+  end_date_year: number | null
 }
 
 export type MainCandidate = {
   id: string | null
   name: string | null
-  person_id: Person
+  person_id: Person | null
 }
 
-export type Person = {
-  id: string | null
-}
+export type Person = Pick<RawPerson, 'id'>
 
 export type OrganizationId = {
   id: string | null
@@ -125,3 +123,34 @@ export type LegislatorAtLarge = {
   id: string
   person_id: Pick<RawPersonElection, 'id' | 'name'>
 }
+export type ElectionDataForPerson = {
+  id: string
+  name: string
+  electionType: string
+  electionArea: string
+  party: string
+  partyIcon: string
+  partyId: string
+  year: number
+  month: number
+  day: number
+  isFinished: boolean
+  elected: boolean
+  incumbent: boolean
+  source: string
+  mainCandidate: MainCandidate | null
+  lastUpdate: string | null
+  politics: Politic[]
+  waitingPolitics: Politic[]
+  hidePoliticDetail: string | null
+  electionTerm: PersonElectionTerm
+  organizationId: OrganizationId
+  shouldShowFeedbackForm: boolean
+}
+
+export type ElectionDataForParty = ElectionDataForPerson & {
+  isPartyPage: boolean
+  legisLatorAtLarge: LegislatorAtLarge[]
+}
+
+export type ElectionData = ElectionDataForPerson | ElectionDataForParty
