@@ -45,6 +45,7 @@ const Title = styled.div`
 
 const Aside = styled.div`
   width: 40px;
+  min-width: 40px;
   background: ${({ theme }) => theme.textColor.orange};
   padding: 0px;
   box-shadow: 0px -4px 0px 0px #000 inset, -4px 0px 0px 0px #000 inset;
