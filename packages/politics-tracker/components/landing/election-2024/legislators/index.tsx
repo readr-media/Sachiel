@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import InfoBoard from '~/components/landing/election-2024/legislators/info-board'
 import SelectPanel from '~/components/landing/election-2024/legislators/select-panel'
+import type { RegionLegislator } from '~/types/landing'
+import { formatButtonInfo } from '~/utils/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -100,7 +102,49 @@ const Sidebar = styled.div`
   }
 `
 
-export default function Legislators(): JSX.Element {
+type LegislatorsProps = {
+  regional: RegionLegislator[]
+  indigenous: any //FIXME
+  party: any //FIXME
+}
+export default function Legislators({
+  regional = [],
+  indigenous = [],
+  party = [],
+}: LegislatorsProps): JSX.Element {
+  const regionalButtons = formatButtonInfo(regional)
+  const indigenousButtons = [
+    { name: '平地原住民', ratio: '(0/0)' },
+    { name: '山地原住民', ratio: '(0/0)' },
+  ]
+
+  const [buttonLists, setButtonLists] = useState(regionalButtons)
+  const [activeType, setActiveType] = useState<string>('區域立委')
+  const [activeButtonIndex, setActiveButtonIndex] = useState<number>(0)
+
+  useEffect(() => {
+    setActiveButtonIndex(0)
+  }, [activeType])
+
+  const handleTypeClick = (type: string) => {
+    setActiveType(type)
+    switch (type) {
+      case '區域立委':
+        setButtonLists(regionalButtons)
+        break
+      case '原住民立委':
+        setButtonLists(indigenousButtons)
+        break
+      case '不分區立委':
+        setButtonLists([])
+        break
+      default:
+        setButtonLists([])
+    }
+  }
+
+  const activeAreas = regional[activeButtonIndex].areas || []
+
   return (
     <Wrapper>
       <Aside>
@@ -114,8 +158,14 @@ export default function Legislators(): JSX.Element {
         </TitleWrapper>
 
         <Content>
-          <SelectPanel />
-          <InfoBoard />
+          <SelectPanel
+            buttonLists={buttonLists}
+            setActiveButtonIndex={setActiveButtonIndex}
+            activeButtonIndex={activeButtonIndex}
+            activeType={activeType}
+            handleTypeClick={handleTypeClick}
+          />
+          <InfoBoard areas={activeAreas} />
         </Content>
       </Main>
     </Wrapper>

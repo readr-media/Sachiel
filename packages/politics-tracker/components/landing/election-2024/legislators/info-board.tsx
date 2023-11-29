@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import CandidateList from '~/components/landing/election-2024/legislators/candidate-list'
-import ToggleItem from '~/components/landing/election-2024/legislators/toggle-item/index'
+import ListItemMobile from '~/components/landing/election-2024/legislators/toggle-item/index'
 import ArrowDown from '~/public/icons/landing/arrow-purple-down.svg'
+import type { LegislatorArea } from '~/types/landing'
+import { formattedCandidates } from '~/utils/landing'
 
 const Wrapper = styled.div`
   transform: translateX(-12px);
@@ -68,7 +70,7 @@ const Progress = styled.span<{ sortAsc: boolean }>`
   }
 `
 
-const ListItemForDesktop = styled.div<{ count: number; totalAmount: number }>`
+const ListItemDesktop = styled.div<{ count: number; totalAmount: number }>`
   display: none;
 
   ${({ theme }) => theme.breakpoint.xl} {
@@ -86,10 +88,18 @@ const ListItemForDesktop = styled.div<{ count: number; totalAmount: number }>`
           : theme.textColor.black};
     }
   }
+
+  .list-group {
+    padding-top: 2px;
+  }
 `
 
-export default function InfoBoard(): JSX.Element {
+type InfoBoardProps = {
+  areas: LegislatorArea[]
+}
+export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
   const [sortAsc, setSortAsc] = useState(false)
+  const sortedAreas = sortAsc ? [...areas].reverse() : areas
 
   return (
     <Wrapper>
@@ -103,47 +113,58 @@ export default function InfoBoard(): JSX.Element {
       </Title>
 
       <Content>
-        <ToggleItem order={0} title="第 01 選舉區" count={0} totalAmount={4}>
-          <CandidateList title="還沒有政見" />
-          <CandidateList title="政見還很少" />
-          <CandidateList title="超過 20 條政見" />
-        </ToggleItem>
+        {sortedAreas.map((area: LegislatorArea) => {
+          const candidates = formattedCandidates(area.candidates)
+          return (
+            <ListItemMobile
+              order={0}
+              title={`第 0${area.order} 選舉區`}
+              count={area.done}
+              totalAmount={area.total}
+              key={area.id}
+            >
+              <CandidateList title="還沒有政見" candidates={candidates.empty} />
+              <CandidateList title="政見還很少" candidates={candidates.less} />
+              <CandidateList
+                title="超過 20 條政見"
+                candidates={candidates.numerous}
+              />
+            </ListItemMobile>
+          )
+        })}
 
-        <ToggleItem order={0} title="第 02 選舉區" count={2} totalAmount={10}>
-          <CandidateList title="還沒有政見" />
-          <CandidateList title="超過 20 條政見" />
-        </ToggleItem>
+        {sortedAreas.map((area: LegislatorArea) => {
+          const candidates = formattedCandidates(area.candidates)
+          return (
+            <ListItemDesktop
+              count={area.done}
+              totalAmount={area.total}
+              key={area.id}
+            >
+              <span> {`第 0${area.order} 選舉區`}</span>
 
-        <ToggleItem order={0} title="第 03 選舉區" count={23} totalAmount={23}>
-          <CandidateList title="超過 20 條政見" />
-        </ToggleItem>
+              <span className="amount">
+                {area.done}/{area.total}
+              </span>
 
-        <ListItemForDesktop count={0} totalAmount={23}>
-          <span>第 01 選舉區</span>
-          <span className="amount">0/23</span>
-          <div>
-            <CandidateList title="還沒有政見" />
-            <CandidateList title="政見還很少" />
-            <CandidateList title="超過 20 條政見" />
-          </div>
-        </ListItemForDesktop>
+              <div className="list-group">
+                <CandidateList
+                  title="還沒有政見"
+                  candidates={candidates.empty}
+                />
 
-        <ListItemForDesktop count={10} totalAmount={23}>
-          <span>第 02 選舉區</span>
-          <span className="amount">10/23</span>
-          <div>
-            <CandidateList title="還沒有政見" />
-            <CandidateList title="超過 20 條政見" />
-          </div>
-        </ListItemForDesktop>
-
-        <ListItemForDesktop count={23} totalAmount={23}>
-          <span>第 03 選舉區</span>
-          <span className="amount">23/23</span>
-          <div>
-            <CandidateList title="超過 20 條政見" />
-          </div>
-        </ListItemForDesktop>
+                <CandidateList
+                  title="政見還很少"
+                  candidates={candidates.less}
+                />
+                <CandidateList
+                  title="超過 20 條政見"
+                  candidates={candidates.numerous}
+                />
+              </div>
+            </ListItemDesktop>
+          )
+        })}
       </Content>
     </Wrapper>
   )
