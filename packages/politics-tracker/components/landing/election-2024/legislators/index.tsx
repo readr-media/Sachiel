@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import InfoBoard from '~/components/landing/election-2024/legislators/info-board'
 import SelectPanel from '~/components/landing/election-2024/legislators/select-panel'
-import type { RegionLegislator } from '~/types/landing'
+import type { LegislatorOfJSON } from '~/types/landing'
 import { formatButtonInfo } from '~/utils/landing'
 
 const Wrapper = styled.div`
@@ -103,23 +103,30 @@ const Sidebar = styled.div`
 `
 
 type LegislatorsProps = {
-  regional: RegionLegislator[]
-  indigenous: any //FIXME
-  party: any //FIXME
+  regional: LegislatorOfJSON[]
+  indigenous: { plain: LegislatorOfJSON[]; mountain: LegislatorOfJSON[] }
+  party: LegislatorOfJSON[]
 }
 export default function Legislators({
   regional = [],
-  indigenous = [],
   party = [],
+  indigenous,
 }: LegislatorsProps): JSX.Element {
+  const { plain, mountain } = indigenous //原住民立委
+
   const regionalButtons = formatButtonInfo(regional)
   const indigenousButtons = [
-    { name: '平地原住民', ratio: '(0/0)' },
-    { name: '山地原住民', ratio: '(0/0)' },
+    { name: '平地原住民', ratio: `(${plain[0].amount}/${plain[0].total})` },
+    {
+      name: '山地原住民',
+      ratio: `(${mountain[0].amount}/${mountain[0].total})`,
+    },
   ]
 
-  const [buttonLists, setButtonLists] = useState(regionalButtons)
+  const [buttonLists, setButtonLists] =
+    useState<{ name: string; ratio: string }[]>(regionalButtons)
   const [activeType, setActiveType] = useState<string>('區域立委')
+  const [activeLists, setActiveLists] = useState<LegislatorOfJSON[]>(regional)
   const [activeButtonIndex, setActiveButtonIndex] = useState<number>(0)
 
   useEffect(() => {
@@ -131,19 +138,24 @@ export default function Legislators({
     switch (type) {
       case '區域立委':
         setButtonLists(regionalButtons)
+        setActiveLists(regional)
         break
       case '原住民立委':
         setButtonLists(indigenousButtons)
+        setActiveLists([...plain, ...mountain])
         break
       case '不分區立委':
         setButtonLists([])
+        setActiveLists(party)
         break
       default:
         setButtonLists([])
+        setActiveLists([])
     }
   }
 
-  const activeAreas = regional[activeButtonIndex].areas || []
+  //選區資料
+  const activeAreas = activeLists[activeButtonIndex]?.areas || []
 
   return (
     <Wrapper>
