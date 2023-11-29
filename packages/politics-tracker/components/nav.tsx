@@ -30,52 +30,54 @@ export type NavProps = {
   alwaysShowHome?: boolean
 }
 
-export default function Nav(props: NavProps): JSX.Element {
+export default function Nav({
+  prev,
+  next,
+  alwaysShowHome,
+}: NavProps): JSX.Element {
   const backStyle = classNames(
     s['back'],
-    props.prev?.backgroundColor,
-    props.prev?.textColor ?? 'text-white'
+    prev?.backgroundColor,
+    prev?.textColor ?? 'text-white'
   )
   const nextStyle = classNames(
     s['next'],
-    props.next?.backgroundColor,
-    props.next?.textColor ?? 'text-white'
+    next?.backgroundColor,
+    next?.textColor ?? 'text-white'
   )
   const homeStyle = classNames(s['home'], {
-    [s['default-hidden']]: !props.alwaysShowHome,
+    [s['default-hidden']]: !alwaysShowHome,
   })
 
   return (
     <div className={s['container']}>
-      {props.prev && (
+      {prev && (
         <Link
           href={{
-            pathname: (props.prev.href as any)?.pathname || '',
-            query: (props.prev.href as any)?.query || {},
+            pathname:
+              (typeof prev.href === 'object' && prev.href.pathname) || '',
+            query: (typeof prev.href === 'object' && prev.href.query) || {},
           }}
-          as={`${(props.prev.href as any)?.pathname || ''}#${
-            props.prev?.electionYear
+          as={`${(typeof prev.href === 'object' && prev.href.pathname) || ''}#${
+            prev?.electionYear
           }`}
         >
           <a
             className={backStyle}
             onClick={() => {
               if (
-                props.prev === undefined ||
-                typeof props.prev !== 'object' ||
-                typeof props.prev?.href !== 'object' ||
-                !props.prev.href.pathname
+                typeof prev.href === 'object' &&
+                typeof prev.href.pathname === 'string' &&
+                prev.href.pathname in GALabelMap
               ) {
-                return
-              } else {
-                return logGAEvent('click', GALabelMap[props.prev.href.pathname])
+                return logGAEvent('click', GALabelMap[prev.href.pathname])
               }
             }}
           >
             <span className={s['icon']}>
               <ArrowLeft />
             </span>
-            <div className={s['text']}>{props.prev.content}</div>
+            <div className={s['text']}>{prev.content}</div>
           </a>
         </Link>
       )}
@@ -92,27 +94,25 @@ export default function Nav(props: NavProps): JSX.Element {
           <Home />
         </div>
       </Link>
-      {props.next && (
-        <Link href={props.next.href}>
+      {next && (
+        <Link href={next.href}>
           <a
             className={nextStyle}
             onClick={() => {
               if (
-                props.prev === undefined ||
-                typeof props.prev !== 'object' ||
-                typeof props.prev?.href !== 'object' ||
-                !props.prev.href.pathname
+                typeof next.href === 'object' &&
+                typeof next.href.pathname === 'object'
               ) {
-                return
-              } else if (props.prev.href.pathname === '/election') {
-                return logGAEvent('click', '點擊「往下一屆選舉」')
+                if (next.href.pathname === '/election') {
+                  return logGAEvent('click', '點擊「往下一屆選舉」')
+                }
               }
             }}
           >
             <span className={s['icon']}>
               <ArrowRight />
             </span>
-            <div className={s['text']}>{props.next.content}</div>
+            <div className={s['text']}>{next.content}</div>
           </a>
         </Link>
       )}
