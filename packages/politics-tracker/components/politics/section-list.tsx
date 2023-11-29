@@ -62,18 +62,29 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           setActive={() => setIsActive(!isActive)}
         />
         <Anchor ref={anchorRef} id={String(props.year)} />
-        <SectionBody
-          show={isActive}
-          politics={props.politics}
-          lastUpdate={props.lastUpdate}
-          waitingPolitics={props.waitingPolitics}
-          source={props.source}
-          mainCandidate={props.mainCandidate}
-          electionType={props.electionType}
-          organizationId={props.organizationId}
-          partyId={props.partyId}
-          year={props.year}
-        />
+        {'mainCandidate' in props ? (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            mainCandidate={props.mainCandidate}
+            electionType={props.electionType}
+            partyId={props.partyId}
+            year={props.year}
+          />
+        ) : (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            electionType={props.electionType}
+            year={props.year}
+          />
+        )}
       </div>
     </ElectionDataContext.Provider>
   )

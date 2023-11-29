@@ -6,7 +6,7 @@ import useFitText from 'use-fit-text'
 
 import Icon from '~/components/icon'
 import type { LinkHref } from '~/types/common'
-import type { PersonOverview } from '~/types/politics'
+import type { OverviewInfo } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
 
@@ -130,7 +130,7 @@ type TextConfig = {
   customClass: string
 }
 
-export default function Title(props: PersonOverview): JSX.Element {
+export default function Title(props: OverviewInfo): JSX.Element {
   const personLarge: IconConfig = {
     width: 60,
     height: 60,

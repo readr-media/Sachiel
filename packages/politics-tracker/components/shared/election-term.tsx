@@ -17,7 +17,7 @@ const Term = styled.div`
 `
 
 type ElectionTermProps = {
-  termDate: PersonElectionTerm
+  termDate?: PersonElectionTerm
   isElected?: boolean
   isIncumbent?: boolean
 }

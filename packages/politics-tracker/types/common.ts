@@ -39,6 +39,10 @@ export type ExtendedOption = Option & { sortOrder: number }
 export type FormConfig = Record<'formId' | 'fieldId', string>
 export type FeedbackFormConfig = Record<'emoji' | 'text', FormConfig>
 
+export type NotNullableAllMemberOfType<T> = {
+  [P in keyof T]: NonNullable<T[P]>
+}
+
 //--- Following types should be related to data sources ---//
 
 export type RawResizedImages = {

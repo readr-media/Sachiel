@@ -24,24 +24,22 @@ import type {
   ElectionDataForPerson,
   ExpertPoint,
   FactCheck,
-  OrganizationId,
-  PersonElection,
+  OverviewInfo,
   PersonElectionData,
   PersonElectionTerm,
   PersonOrgnizationData,
-  PersonOverview,
   Politic,
   PoliticAmount,
-  PoliticData,
+  PoliticDataForPerson,
   PositionChange,
   Repeat,
 } from '~/types/politics'
 import { electionName, fireGqlRequest, partyName } from '~/utils/utils'
 type PoliticsPageProps = {
-  titleProps: PersonOverview
+  titleProps: OverviewInfo
   elections: ElectionDataForPerson[]
   person: PersonElectionData['person_id']
-  latestElection: PersonElection
+  latestElection: ElectionDataForPerson
 }
 
 export default function Politics({
@@ -126,7 +124,7 @@ export const getServerSideProps: GetServerSideProps<
   const { personId } = query
 
   try {
-    const profile: PersonOverview = {
+    const profile: OverviewInfo = {
       id: '',
       name: '',
       avatar: '',
@@ -144,7 +142,6 @@ export const getServerSideProps: GetServerSideProps<
     let latestPersonElection: PersonElectionData
     let latestPerson: PersonElectionData['person_id'] = null
     let electionTerm: PersonElectionTerm
-    let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
@@ -223,7 +220,6 @@ export const getServerSideProps: GetServerSideProps<
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
               electionTerm: electionTerm,
-              organizationId: organizationId,
               shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
@@ -242,6 +238,8 @@ export const getServerSideProps: GetServerSideProps<
             if (currentTime > latestTime) {
               return current
             }
+          } else if (election) {
+            return current
           }
           return previous
         },
@@ -263,7 +261,7 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       // get related politics
-      const rawData: GenericGQLData<PoliticData[], 'politics'> =
+      const rawData: GenericGQLData<PoliticDataForPerson[], 'politics'> =
         await fireGqlRequest(
           print(GetPoliticsRelatedToPersonElections),
           {
@@ -290,14 +288,16 @@ export const getServerSideProps: GetServerSideProps<
       const politicList = rawData.data?.politics || []
 
       // Fetch 'editingPolitics' data
-      const editingRawData: GenericGQLData<PoliticData[], 'editingPolitics'> =
-        await fireGqlRequest(
-          print(GetEditingPoliticsRelatedToPersonElections),
-          {
-            ids: personElectionIds,
-          },
-          cmsApiUrl
-        )
+      const editingRawData: GenericGQLData<
+        PoliticDataForPerson[],
+        'editingPolitics'
+      > = await fireGqlRequest(
+        print(GetEditingPoliticsRelatedToPersonElections),
+        {
+          ids: personElectionIds,
+        },
+        cmsApiUrl
+      )
 
       const editingGqlErrors = editingRawData.errors
 
@@ -323,7 +323,7 @@ export const getServerSideProps: GetServerSideProps<
         string,
         {
           latestId: string
-          politic: PoliticData
+          politic: PoliticDataForPerson
         }
       > = {}
       // keep latest politic of each politic thread
@@ -353,16 +353,15 @@ export const getServerSideProps: GetServerSideProps<
 
           if (!eId) continue
 
-          let positionChangeData: PositionChange[] = politic.positionChange.map(
-            (change) => ({
+          const positionChangeData: PositionChange[] =
+            politic.positionChange.map((change) => ({
               id: change.id,
               isChanged: change.isChanged,
               positionChangeSummary: change.positionChangeSummary,
               factcheckPartner: change.factcheckPartner,
-            })
-          )
+            }))
 
-          let factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
+          const factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
             id: fact.id,
             factCheckSummary: fact.factCheckSummary,
             checkResultType: fact.checkResultType ?? null,
@@ -370,7 +369,7 @@ export const getServerSideProps: GetServerSideProps<
             factcheckPartner: fact.factcheckPartner ?? null,
           }))
 
-          let expertPointData: ExpertPoint[] = politic.expertPoint.map(
+          const expertPointData: ExpertPoint[] = politic.expertPoint.map(
             (point) => ({
               id: point.id,
               expertPointSummary: point.expertPointSummary,
@@ -378,7 +377,7 @@ export const getServerSideProps: GetServerSideProps<
             })
           )
 
-          let repeatData: Repeat[] = politic.repeat.map((re) => ({
+          const repeatData: Repeat[] = politic.repeat.map((re) => ({
             id: re.id,
             repeatSummary: re.repeatSummary,
             factcheckPartner: re.factcheckPartner,
@@ -402,7 +401,7 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
-      const verifiedLatestPoliticList: PoliticData[] = Object.keys(
+      const verifiedLatestPoliticList: PoliticDataForPerson[] = Object.keys(
         politicGroup
       ).map((key) => politicGroup[key].politic)
 
@@ -411,7 +410,7 @@ export const getServerSideProps: GetServerSideProps<
 
         if (!eId) continue
 
-        let positionChangeData: PositionChange[] = politic.positionChange.map(
+        const positionChangeData: PositionChange[] = politic.positionChange.map(
           (change) => ({
             id: change.id,
             isChanged: change.isChanged,
@@ -420,7 +419,7 @@ export const getServerSideProps: GetServerSideProps<
           })
         )
 
-        let factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
+        const factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
           id: fact.id,
           factCheckSummary: fact.factCheckSummary,
           checkResultType: fact.checkResultType,
@@ -428,7 +427,7 @@ export const getServerSideProps: GetServerSideProps<
           factcheckPartner: fact.factcheckPartner,
         }))
 
-        let expertPointData: ExpertPoint[] = politic.expertPoint.map(
+        const expertPointData: ExpertPoint[] = politic.expertPoint.map(
           (point) => ({
             id: point.id,
             expertPointSummary: point.expertPointSummary,
@@ -436,7 +435,7 @@ export const getServerSideProps: GetServerSideProps<
           })
         )
 
-        let repeatData: Repeat[] = politic.repeat.map((re) => ({
+        const repeatData: Repeat[] = politic.repeat.map((re) => ({
           id: re.id,
           repeatSummary: re.repeatSummary,
           factcheckPartner: re.factcheckPartner,
@@ -524,15 +523,8 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
-      organizationId = personOrganization[0]?.organization_id ?? {
-        id: null,
-        name: null,
-      }
-
       // Push the election term data to the current election object
       election.electionTerm = { ...electionTerm }
-      // Push the organizationId data to the current election object
-      election.organizationId = { ...organizationId }
     }
 
     return {

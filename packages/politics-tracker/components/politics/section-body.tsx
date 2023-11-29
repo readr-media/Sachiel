@@ -4,7 +4,11 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowRight from '~/public/icons/landing/arrow-right.svg'
-import type { ElectionData, Politic } from '~/types/politics'
+import type {
+  ElectionData,
+  ElectionDataForPerson,
+  Politic,
+} from '~/types/politics'
 import { checkIsPartyPage } from '~/utils/politic'
 
 import AddPoliticBlock from './add-politic-block'
@@ -20,14 +24,12 @@ type SectionBodyProps = Pick<
   | 'lastUpdate'
   | 'politics'
   | 'waitingPolitics'
-  | 'organizationId'
-  | 'mainCandidate'
   | 'electionType'
-  | 'partyId'
   | 'year'
-> & {
-  show: boolean
-}
+> &
+  Partial<Pick<ElectionDataForPerson, 'partyId' | 'mainCandidate'>> & {
+    show: boolean
+  }
 
 const Button = styled.button`
   margin: auto;

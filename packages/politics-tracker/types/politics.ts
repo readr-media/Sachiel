@@ -17,7 +17,7 @@ import type {
   RawPoliticRepeat,
 } from '~/types/common'
 
-export type PersonOverview = {
+export type OverviewInfo = {
   id: string
   name: string
   avatar: string
@@ -27,10 +27,10 @@ export type PersonOverview = {
   campaign: string
   completed: number
   waiting: number
-  isPartyPage?: boolean
+  isPartyPage: boolean
 }
 
-export type PoliticAmount = Pick<PersonOverview, 'waiting' | 'completed'>
+export type PoliticAmount = Pick<OverviewInfo, 'waiting' | 'completed'>
 
 export type Politic = {
   id: string
@@ -103,11 +103,6 @@ export type MainCandidate = {
 
 export type Person = Pick<RawPerson, 'id'>
 
-export type OrganizationId = {
-  id: string | null
-  name: string | null
-}
-
 export type PersonElection = {
   electionArea: string
   electionType: string
@@ -129,37 +124,14 @@ export type PersonElection = {
   hidePoliticDetail: string | null
   electionTerm: PersonElectionTerm
   mainCandidate: MainCandidate | null
-  organizationId: OrganizationId | null
   shouldShowFeedbackForm?: boolean
 }
 
-export type LegislatorAtLarge = {
-  elected: boolean
-  id: string
-  person_id: Pick<RawPersonElection, 'id' | 'name'>
-}
+export type LegislatorAtLarge = Override<
+  Pick<RawPersonElection, 'id' | 'elected' | 'person_id'>,
+  { person_id: Pick<RawPerson, 'id' | 'name'> | null }
+>
 
-type PEP = Pick<RawPerson, 'id' | 'name' | 'image'>
-type PEE = Pick<
-  RawElection,
-  | 'id'
-  | 'name'
-  | 'election_year_year'
-  | 'election_year_month'
-  | 'election_year_day'
-  | 'level'
-  | 'type'
-  | 'hidePoliticDetail'
-  | 'addComments'
->
-type PEEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
-type PEO = Pick<RawOrganization, 'id' | 'name' | 'image'>
-type PEMC = Override<
-  Pick<RawPersonElection, 'id' | 'name' | 'person_id'>,
-  {
-    person_id: Pick<RawPerson, 'id'> | null
-  }
->
 export type PersonElectionData = Override<
   Pick<
     RawPersonElection,
@@ -174,47 +146,65 @@ export type PersonElectionData = Override<
     | 'mainCandidate'
   >,
   {
-    person_id: PEP | null
-    election: PEE | null
-    electoral_district: PEEA | null
-    party: PEO | null
-    mainCandidate: PEMC | null
+    person_id: Pick<RawPerson, 'id' | 'name' | 'image'> | null
+    election: Pick<
+      RawElection,
+      | 'id'
+      | 'name'
+      | 'election_year_year'
+      | 'election_year_month'
+      | 'election_year_day'
+      | 'level'
+      | 'type'
+      | 'hidePoliticDetail'
+      | 'addComments'
+    > | null
+    electoral_district: Pick<RawElectionArea, 'id' | 'name' | 'city'> | null
+    party: Pick<RawOrganization, 'id' | 'name' | 'image'> | null
+    mainCandidate: Override<
+      Pick<RawPersonElection, 'id' | 'name' | 'person_id'>,
+      {
+        person_id: Pick<RawPerson, 'id'> | null
+      }
+    > | null
   }
 >
 
-export type ElectionDataForPerson = {
+export type ElecitonDataBase = {
   id: string
   name: string
   electionType: string
   electionArea: string
   party: string
   partyIcon: string
-  partyId: string
   year: number
   month: number
   day: number
   isFinished: boolean
   elected: boolean
-  incumbent: boolean
   source: string
-  mainCandidate: MainCandidate | null
   lastUpdate: string | null
   politics: Politic[]
   waitingPolitics: Politic[]
   hidePoliticDetail: string | null
-  electionTerm: PersonElectionTerm
-  organizationId: OrganizationId
   shouldShowFeedbackForm: boolean
 }
 
-export type ElectionDataForParty = ElectionDataForPerson & {
+export type ElectionDataForPerson = ElecitonDataBase & {
+  partyId: string
+  incumbent: boolean
+  mainCandidate: MainCandidate | null
+  electionTerm: PersonElectionTerm
+}
+
+export type ElectionDataForParty = ElecitonDataBase & {
   isPartyPage: boolean
   legisLatorAtLarge: LegislatorAtLarge[]
 }
 
 export type ElectionData = ElectionDataForPerson | ElectionDataForParty
 
-export type PoliticData = Override<
+export type PoliticDataForPerson = Override<
   Pick<
     RawPolitic,
     | 'id'
@@ -248,20 +238,51 @@ export type PoliticData = Override<
   }
 >
 
-export type PersonOrgnizationData = Override<
+export type PoliticDataForParty = Override<
   Pick<
-    RawPersonOrgnization,
-    | 'start_date_year'
-    | 'start_date_month'
-    | 'start_date_day'
-    | 'end_date_year'
-    | 'end_date_month'
-    | 'end_date_day'
-    | 'organization_id'
+    RawPolitic,
+    | 'id'
+    | 'desc'
+    | 'content'
+    | 'source'
+    | 'status'
+    | 'reviewed'
+    | 'current_progress'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'thread_parent'
+    | 'organization'
+    | 'politicCategory'
+    | 'positionChange'
+    | 'factCheck'
+    | 'expertPoint'
+    | 'repeat'
   >,
   {
-    organization_id: Pick<RawOrganization, 'id' | 'name'> | null
+    thread_parent: Pick<RawPolitic, 'id' | 'desc' | 'source' | 'status'> | null
+    organization: Override<
+      Pick<RawOrganizationElection, 'id' | 'elections'>,
+      { elections: Pick<RawElection, 'id'> | null }
+    > | null
+    politicCategory: Pick<RawPoliticCategory, 'id' | 'name'> | null
+    positionChange: PositionChange[]
+    factCheck: FactCheck[]
+    expertPoint: ExpertPoint[]
+    repeat: Repeat[]
   }
+>
+
+export type PoliticData = PoliticDataForPerson | PoliticDataForParty
+
+export type PersonOrgnizationData = Pick<
+  RawPersonOrgnization,
+  | 'start_date_year'
+  | 'start_date_month'
+  | 'start_date_day'
+  | 'end_date_year'
+  | 'end_date_month'
+  | 'end_date_day'
+  | 'organization_id'
 >
 
 export type CreatedPolitic = Override<
@@ -316,4 +337,37 @@ export type CreatedEditingPolitic = Override<
     > | null
     thread_parent: Pick<RawPolitic, 'id' | 'desc' | 'source'> | null
   }
+>
+
+export type PartyElectionData = Override<
+  Pick<
+    RawOrganizationElection,
+    'id' | 'source' | 'organization_id' | 'elections' | 'seats'
+  >,
+  {
+    organization_id: Pick<RawOrganization, 'id' | 'name' | 'image'> | null
+    elections: Override<
+      Pick<
+        RawElection,
+        | 'id'
+        | 'name'
+        | 'level'
+        | 'type'
+        | 'hidePoliticDetail'
+        | 'addComments'
+        | 'election_year_year'
+        | 'election_year_month'
+        | 'election_year_day'
+        | 'electionArea'
+      >,
+      {
+        electionArea: Pick<RawElectionArea, 'id' | 'name' | 'city'>
+      }
+    > | null
+  }
+>
+
+export type PersonElectionRelatedToParty = Override<
+  Pick<RawPersonElection, 'id' | 'elected' | 'person_id'>,
+  { person_id: Pick<RawPerson, 'id' | 'name'> | null }
 >
