@@ -160,44 +160,6 @@ export type LegislatorAtLarge = Override<
   { person_id: Pick<RawPerson, 'id' | 'name'> | null }
 >
 
-export type PersonElectionData = Override<
-  Pick<
-    RawPersonElection,
-    | 'id'
-    | 'politicSource'
-    | 'elected'
-    | 'incumbent'
-    | 'person_id'
-    | 'election'
-    | 'electoral_district'
-    | 'party'
-    | 'mainCandidate'
-  >,
-  {
-    person_id: Pick<RawPerson, 'id' | 'name' | 'image'> | null
-    election: Pick<
-      RawElection,
-      | 'id'
-      | 'name'
-      | 'election_year_year'
-      | 'election_year_month'
-      | 'election_year_day'
-      | 'level'
-      | 'type'
-      | 'hidePoliticDetail'
-      | 'addComments'
-    > | null
-    electoral_district: Pick<RawElectionArea, 'id' | 'name' | 'city'> | null
-    party: Pick<RawOrganization, 'id' | 'name' | 'image'> | null
-    mainCandidate: Override<
-      Pick<RawPersonElection, 'id' | 'name' | 'person_id'>,
-      {
-        person_id: Pick<RawPerson, 'id'> | null
-      }
-    > | null
-  }
->
-
 /** 選舉紀錄（共通） */
 export type ElecitonDataBase = {
   /** 在關聯到人物時，是 PE 的 id；在關聯到組織時，是 OE 的 id */
@@ -259,6 +221,46 @@ export type ElectionDataForParty = ElecitonDataBase & {
 /** 選舉紀錄 */
 export type ElectionData = ElectionDataForPerson | ElectionDataForParty
 
+/** type for GetPersonOverView query */
+export type PersonElectionData = Override<
+  Pick<
+    RawPersonElection,
+    | 'id'
+    | 'politicSource'
+    | 'elected'
+    | 'incumbent'
+    | 'person_id'
+    | 'election'
+    | 'electoral_district'
+    | 'party'
+    | 'mainCandidate'
+  >,
+  {
+    person_id: Pick<RawPerson, 'id' | 'name' | 'image'> | null
+    election: Pick<
+      RawElection,
+      | 'id'
+      | 'name'
+      | 'election_year_year'
+      | 'election_year_month'
+      | 'election_year_day'
+      | 'level'
+      | 'type'
+      | 'hidePoliticDetail'
+      | 'addComments'
+    > | null
+    electoral_district: Pick<RawElectionArea, 'id' | 'name' | 'city'> | null
+    party: Pick<RawOrganization, 'id' | 'name' | 'image'> | null
+    mainCandidate: Override<
+      Pick<RawPersonElection, 'id' | 'name' | 'person_id'>,
+      {
+        person_id: Pick<RawPerson, 'id'> | null
+      }
+    > | null
+  }
+>
+
+/** type for GetPoliticsRelatedToPersonElections and GetEditingPoliticsRelatedToPersonElections queries */
 export type PoliticDataForPerson = Override<
   Pick<
     RawPolitic,
@@ -293,6 +295,7 @@ export type PoliticDataForPerson = Override<
   }
 >
 
+/** type for GetPoliticsRelatedToOrganizationsElections and GetEditingPoliticsRelatedToOrganizationElections queries */
 export type PoliticDataForParty = Override<
   Pick<
     RawPolitic,
@@ -329,6 +332,7 @@ export type PoliticDataForParty = Override<
 
 export type PoliticData = PoliticDataForPerson | PoliticDataForParty
 
+/** type for GetPersonOrganization query */
 export type PersonOrgnizationData = Pick<
   RawPersonOrgnization,
   | 'start_date_year'
@@ -340,7 +344,8 @@ export type PersonOrgnizationData = Pick<
   | 'organization_id'
 >
 
-export type CreatedPolitic = Override<
+/** type for CreatePolitic mutation */
+export type CreatedPoliticData = Override<
   Pick<RawPolitic, 'desc' | 'source' | 'content' | 'person' | 'organization'>,
   {
     person: Override<
@@ -360,7 +365,8 @@ export type CreatedPolitic = Override<
   }
 >
 
-export type CreatedEditingPolitic = Override<
+/** type for AddEditingPoliticToThread mutation */
+export type CreatedEditingPoliticData = Override<
   Pick<
     RawPolitic,
     | 'id'
@@ -394,6 +400,7 @@ export type CreatedEditingPolitic = Override<
   }
 >
 
+/** type for GetOrganizationOverView query */
 export type PartyElectionData = Override<
   Pick<
     RawOrganizationElection,
@@ -422,6 +429,7 @@ export type PartyElectionData = Override<
   }
 >
 
+/** type for GetPersonElectionsRelatedToParty query */
 export type PersonElectionRelatedToParty = Override<
   Pick<RawPersonElection, 'id' | 'elected' | 'person_id'>,
   { person_id: Pick<RawPerson, 'id' | 'name'> | null }

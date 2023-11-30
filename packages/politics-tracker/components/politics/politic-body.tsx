@@ -8,7 +8,7 @@ import Edit from '~/components/icons/edit'
 import { POLITIC_PROGRESS } from '~/constants/common'
 import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
 import type { GenericGQLData } from '~/types/common'
-import type { CreatedEditingPolitic, Politic } from '~/types/politics'
+import type { CreatedEditingPoliticData, Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { isDraftPoliticForModification } from '~/utils/politic'
 import { fireGqlRequest } from '~/utils/utils'
@@ -95,7 +95,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
       // result is not used currently
       // eslint-disable-next-line
-      const result: GenericGQLData<CreatedEditingPolitic, 'createEditingPolitic'> = await fireGqlRequest(
+      const result: GenericGQLData<CreatedEditingPoliticData, 'createEditingPolitic'> = await fireGqlRequest(
         print(AddEditingPoliticToThread),
         variables,
         cmsApiUrl

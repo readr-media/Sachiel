@@ -3,7 +3,7 @@ import { print } from 'graphql'
 import { POLITIC_PROGRESS } from '~/constants/common'
 import CreatePolitic from '~/graphql/mutation/politics/create-politic.graphql'
 import type { GenericGQLData } from '~/types/common'
-import type { CreatedPolitic } from '~/types/politics'
+import type { CreatedPoliticData } from '~/types/politics'
 import { checkIsPartyPage } from '~/utils/politic'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -73,7 +73,7 @@ export default function AddPoliticForm(
 
       // result is not used currently
       // eslint-disable-next-line
-      const result: GenericGQLData<CreatedPolitic, 'createPolitic'> = await fireGqlRequest(
+      const result: GenericGQLData<CreatedPoliticData, 'createPolitic'> = await fireGqlRequest(
         print(CreatePolitic),
         variables,
         cmsApiUrl
