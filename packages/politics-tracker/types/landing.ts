@@ -11,7 +11,6 @@ import type {
 import type {
   ExpertPoint,
   FactCheck,
-  PersonElection,
   PositionChange,
   Repeat,
 } from '~/types/politics'
@@ -156,7 +155,7 @@ export type PresidentComparisonJson = {
 export type PresidentFactCheckJson = {
   id: string
   number: string
-  person_id: Pick<PersonElection, 'id' | 'name'>
+  person_id: Pick<RawPersonElection, 'id' | 'name'>
   politicsCount: number
   politics: PoliticOfJson[]
 }

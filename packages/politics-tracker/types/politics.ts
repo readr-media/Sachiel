@@ -130,30 +130,6 @@ export type MainCandidate = {
   person_id: Person | null
 }
 
-export type PersonElection = {
-  electionArea: string
-  electionType: string
-  id: string
-  party: string
-  partyIcon: string
-  partyId?: string
-  name: string
-  year: number
-  month: number
-  day: number
-  elected: boolean
-  incumbent: boolean
-  isFinished: boolean
-  source: string | null
-  lastUpdate: string | null
-  politics: Politic[]
-  waitingPolitics: Politic[]
-  hidePoliticDetail: string | null
-  electionTerm: PersonElectionTerm
-  mainCandidate: MainCandidate | null
-  shouldShowFeedbackForm?: boolean
-}
-
 /** 不分區立委資訊 */
 export type LegislatorAtLarge = Override<
   Pick<RawPersonElection, 'id' | 'elected' | 'person_id'>,
