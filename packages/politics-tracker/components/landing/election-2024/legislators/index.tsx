@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import InfoBoard from '~/components/landing/election-2024/legislators/info-board'
 import SelectPanel from '~/components/landing/election-2024/legislators/select-panel'
+import type { LegislatorOfJSON } from '~/types/landing'
+import { formatButtonInfo } from '~/utils/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -100,7 +102,61 @@ const Sidebar = styled.div`
   }
 `
 
-export default function Legislators(): JSX.Element {
+type LegislatorsProps = {
+  regional: LegislatorOfJSON[]
+  indigenous: { plain: LegislatorOfJSON[]; mountain: LegislatorOfJSON[] }
+  party: LegislatorOfJSON[]
+}
+export default function Legislators({
+  regional = [],
+  party = [],
+  indigenous,
+}: LegislatorsProps): JSX.Element {
+  const { plain, mountain } = indigenous //原住民立委
+
+  const regionalButtons = formatButtonInfo(regional)
+  const indigenousButtons = [
+    { name: '平地原住民', ratio: `(${plain[0].amount}/${plain[0].total})` },
+    {
+      name: '山地原住民',
+      ratio: `(${mountain[0].amount}/${mountain[0].total})`,
+    },
+  ]
+
+  const [buttonLists, setButtonLists] =
+    useState<{ name: string; ratio: string }[]>(regionalButtons)
+  const [activeType, setActiveType] = useState<string>('區域立委')
+  const [activeLists, setActiveLists] = useState<LegislatorOfJSON[]>(regional)
+  const [activeButtonIndex, setActiveButtonIndex] = useState<number>(0)
+
+  useEffect(() => {
+    setActiveButtonIndex(0)
+  }, [activeType])
+
+  const handleTypeClick = (type: string) => {
+    setActiveType(type)
+    switch (type) {
+      case '區域立委':
+        setButtonLists(regionalButtons)
+        setActiveLists(regional)
+        break
+      case '原住民立委':
+        setButtonLists(indigenousButtons)
+        setActiveLists([...plain, ...mountain])
+        break
+      case '不分區立委':
+        setButtonLists([])
+        setActiveLists(party)
+        break
+      default:
+        setButtonLists([])
+        setActiveLists([])
+    }
+  }
+
+  //選區資料
+  const activeAreas = activeLists[activeButtonIndex]?.areas || []
+
   return (
     <Wrapper>
       <Aside>
@@ -114,8 +170,17 @@ export default function Legislators(): JSX.Element {
         </TitleWrapper>
 
         <Content>
-          <SelectPanel />
-          <InfoBoard />
+          <SelectPanel
+            buttonLists={buttonLists}
+            setActiveButtonIndex={setActiveButtonIndex}
+            activeButtonIndex={activeButtonIndex}
+            activeType={activeType}
+            handleTypeClick={handleTypeClick}
+          />
+          <InfoBoard
+            areas={activeAreas}
+            isParty={activeType === '不分區立委'}
+          />
         </Content>
       </Main>
     </Wrapper>

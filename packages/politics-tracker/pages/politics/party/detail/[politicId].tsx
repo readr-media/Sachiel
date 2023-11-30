@@ -81,7 +81,6 @@ export default function PartyPoliticsDetail({
 
   const navProps = {
     prev: {
-      electionYear: organization?.elections?.election_year_year || '',
       backgroundColor: 'bg-button',
       textColor: 'text-black',
       content: '回政見總覽',

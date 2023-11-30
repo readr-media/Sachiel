@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowDown from '~/public/icons/landing/toggle-arrow-down.svg'
@@ -40,7 +40,6 @@ const ExpandButton = styled.div<{ isOpen: boolean }>`
   }
 
   &:hover button {
-    background: red;
     background: ${({ theme }) => theme.backgroundColor.black5};
   }
 
@@ -56,7 +55,7 @@ const ToggleGroup = styled.div<{ isOpen: boolean }>`
   align-items: flex-start;
   gap: 12px;
   flex-wrap: wrap;
-  max-height: ${({ isOpen }) => (isOpen ? 'none' : '97px')};
+  max-height: ${({ isOpen }) => (isOpen ? 'none' : '102px')};
   overflow: ${({ isOpen }) => (isOpen ? 'auto' : 'hidden')};
 
   ${({ theme }) => theme.breakpoint.md} {
@@ -67,8 +66,13 @@ const ToggleGroup = styled.div<{ isOpen: boolean }>`
 `
 
 const ToggleButton = styled.button<{ isActive: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
   padding: 8px 12px;
-  outline: 1px solid #544ac9;
+  border: 1px solid ${({ theme }) => theme.textColor.blue};
   background: ${({ theme, isActive }) =>
     isActive ? theme.backgroundColor.purpleDark : theme.backgroundColor.white};
   border-radius: 32px;
@@ -84,8 +88,19 @@ const ToggleButton = styled.button<{ isActive: boolean }>`
   font-weight: 500;
   line-height: 1.5;
 
+  min-width: 70px;
+
+  .ratio {
+    display: none;
+  }
+
   ${({ theme }) => theme.breakpoint.md} {
     line-height: 16px;
+    min-width: 120px;
+
+    .ratio {
+      display: inline;
+    }
   }
 `
 
@@ -93,7 +108,7 @@ const TypeLists = styled.ul`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(15, 45, 53, 0.3);
+  color: ${({ theme }) => theme.textColor.black30};
   gap: 32px;
   margin-bottom: 28px;
 
@@ -110,7 +125,7 @@ const Type = styled.li<{ isActive: boolean }>`
   font-weight: 700;
   line-height: 1.3;
   color: ${({ theme, isActive }) =>
-    isActive ? theme.textColor.purpleDark : 'rgba(15, 45, 53, 0.3)'};
+    isActive ? theme.textColor.purpleDark : theme.textColor.black30};
 
   &:hover {
     color: ${({ theme }) => theme.textColor.purpleDark};
@@ -137,49 +152,23 @@ const Type = styled.li<{ isActive: boolean }>`
   }
 `
 
-export default function TogglePanel(): JSX.Element {
-  const areaButtons = [
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-    '台北市 (999/999)',
-  ]
-
-  const aboriginalButtons = ['平地原住民 (0/0)', '山地原住民 (0/0)']
-
+type TogglePanelProps = {
+  buttonLists: { name: string; ratio: string }[]
+  activeButtonIndex: number
+  activeType: string
+  // eslint-disable-next-line no-unused-vars
+  setActiveButtonIndex: (index: number) => void
+  // eslint-disable-next-line no-unused-vars
+  handleTypeClick: (type: string) => void
+}
+export default function TogglePanel({
+  buttonLists = [],
+  setActiveButtonIndex,
+  activeButtonIndex = 0,
+  handleTypeClick,
+  activeType = '區域立委',
+}: TogglePanelProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
-  const [buttonLists, setButtonLists] = useState(areaButtons)
-  const [activeType, setActiveType] = useState('區域立委')
-  const [activeButton, setActiveButton] = useState(0)
-
-  useEffect(() => {
-    setActiveButton(0)
-  }, [activeType])
-
-  const handleTypeClick = (type: string) => {
-    setActiveType(type)
-    switch (type) {
-      case '區域立委':
-        setButtonLists(areaButtons)
-        break
-      case '原住民':
-        setButtonLists(aboriginalButtons)
-        break
-      case '不分區立委':
-        setButtonLists([])
-        break
-      default:
-        setButtonLists([])
-    }
-  }
 
   return (
     <Wrapper>
@@ -191,8 +180,8 @@ export default function TogglePanel(): JSX.Element {
           區域立委
         </Type>
         <Type
-          onClick={() => handleTypeClick('原住民')}
-          isActive={activeType === '原住民'}
+          onClick={() => handleTypeClick('原住民立委')}
+          isActive={activeType === '原住民立委'}
         >
           原住民
         </Type>
@@ -209,10 +198,11 @@ export default function TogglePanel(): JSX.Element {
           {buttonLists.map((button, index) => (
             <ToggleButton
               key={index}
-              isActive={activeButton === index}
-              onClick={() => setActiveButton(index)}
+              isActive={activeButtonIndex === index}
+              onClick={() => setActiveButtonIndex(index)}
             >
-              {button}
+              <span>{button.name}</span>
+              <span className="ratio">{button.ratio}</span>
             </ToggleButton>
           ))}
         </ToggleGroup>

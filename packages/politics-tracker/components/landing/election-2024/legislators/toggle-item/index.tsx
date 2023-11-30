@@ -20,7 +20,7 @@ type ToggleItemProps = {
   totalAmount: number
 }
 export default function ToggleItem(props: ToggleItemProps): JSX.Element {
-  const [isActive, setIsActive] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(true)
 
   return (
     <Wrapper className="toggle-item">

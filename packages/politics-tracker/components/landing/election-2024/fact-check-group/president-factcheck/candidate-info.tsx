@@ -70,15 +70,11 @@ export default function CandidateInfo({
   politicNumber,
   isLoading,
 }: CandidateInfoProps): JSX.Element {
-  let imageUrl: string = '/images/default-head-phot.png'
+  let imageUrl: string = '/images/default-head-photo.png'
 
   switch (name) {
     case '賴清德':
       imageUrl = '/images/lai-ching-te.png'
-      break
-
-    case '郭台銘':
-      imageUrl = '/images/guo-tai-ming.png'
       break
 
     case '侯友宜':

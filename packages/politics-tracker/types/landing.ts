@@ -173,3 +173,30 @@ export type PoliticOfJson = Pick<PoliticDetail, 'id' | 'desc'> & {
   repeat: Repeat[]
   politicCategory: PoliticCategory | null
 }
+
+//補坑進度：立委政見 - 區域立委
+export type LegislatorOfJSON = {
+  name: string
+  amount: number
+  total: number
+  areas: LegislatorArea[]
+}
+
+//補坑進度：立委政見 - 候選人
+export type LegislatorCandidate = {
+  id: number
+  name: string
+  year: number
+  done: number
+}
+
+//補坑進度：立委政見 - 區域
+export type LegislatorArea = {
+  id: number
+  order: number
+  name: string
+  city: string
+  candidates: LegislatorCandidate[]
+  total: number
+  done: number
+}
