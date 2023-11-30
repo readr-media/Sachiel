@@ -77,9 +77,11 @@ const Name = styled.a`
 type CandidateListProps = {
   title: '還沒有政見' | '政見還很少' | '超過 20 條政見'
   candidates: LegislatorCandidate[]
+  isParty: boolean
 }
 export default function CandidateList({
   title,
+  isParty = false,
   candidates = [],
 }: CandidateListProps): JSX.Element | null {
   if (!candidates.length) return null
@@ -107,11 +109,17 @@ export default function CandidateList({
     <Wrapper titleColor={titleColor}>
       <span className="subtitle">{title}</span>
       <Group>
-        {candidates.map((candidate) => (
-          <Name key={candidate.id} href={`/politics/${candidate.id}`}>
-            <li>{candidate.name}</li>
-          </Name>
-        ))}
+        {candidates.map((candidate) => {
+          const link = isParty
+            ? `/politics/party/${candidate.id}`
+            : `/politics/${candidate.id}`
+
+          return (
+            <Name key={candidate.id} href={link}>
+              <li>{candidate.name}</li>
+            </Name>
+          )
+        })}
       </Group>
     </Wrapper>
   )

@@ -177,7 +177,10 @@ export default function Legislators({
             activeType={activeType}
             handleTypeClick={handleTypeClick}
           />
-          <InfoBoard areas={activeAreas} />
+          <InfoBoard
+            areas={activeAreas}
+            isParty={activeType === '不分區立委'}
+          />
         </Content>
       </Main>
     </Wrapper>
