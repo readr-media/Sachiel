@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import type { DownloadItem } from '~/constants/landing'
 import ArrowRight from '~/public/icons/landing/arrow-right-black.svg'
 
 const Wrapper = styled.div`
@@ -103,6 +102,11 @@ const Button = styled.a<{ href: string }>`
     }
   }
 `
+
+export type DownloadItem = {
+  title: string
+  link: string
+}
 
 type FileDownloadProps = {
   links: DownloadItem[]

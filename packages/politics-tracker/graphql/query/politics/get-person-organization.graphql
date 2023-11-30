@@ -6,9 +6,5 @@ query GetPersonOrganization($electionId: ID!) {
     end_date_day
     end_date_month
     end_date_year
-    organization_id {
-      id
-      name
-    }
   }
 }

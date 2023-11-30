@@ -1,21 +1,17 @@
 import Legislators from '~/components/shared/legislator-at-large'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import type {
-  LegislatorAtLarge,
-  PersonElection,
-  Politic,
-} from '~/types/politics'
+import type { ElectionData, LegislatorAtLarge, Politic } from '~/types/politics'
+import { isElectionDataForPerson } from '~/utils/politic'
 import { generateSourceMeta } from '~/utils/utils'
 
 import s from './politic-block.module.css'
 import PoliticBody from './politic-body'
+import { useElectionData } from './react-context/use-politics'
 
 type PoliticBlockProps = Pick<
-  PersonElection,
-  'politics' | 'source' | 'lastUpdate' | 'shouldShowFeedbackForm' | 'isFinished'
-> & { hidePoliticDetail: string | null } & { isPartyPage?: boolean } & {
-  legisLatorAtLarge?: LegislatorAtLarge[]
-}
+  ElectionData,
+  'politics' | 'source' | 'lastUpdate'
+>
 
 type GroupData = {
   name: string
@@ -23,8 +19,22 @@ type GroupData = {
 }
 
 export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
-  const defaultGroupName = 'default'
+  const electionData = useElectionData()
 
+  let legislators: LegislatorAtLarge[] | undefined
+  let isPartyPage: boolean
+  if (isElectionDataForPerson(electionData)) {
+    isPartyPage = false
+  } else {
+    legislators = electionData?.legisLatorAtLarge
+    isPartyPage = true
+  }
+
+  const hidePoliticDetail = electionData?.hidePoliticDetail ?? null
+  const shouldShowFeedbackForm = Boolean(electionData?.shouldShowFeedbackForm)
+  const isFinished = Boolean(electionData?.isFinished)
+
+  const defaultGroupName = 'default'
   const groupMap: Record<string, GroupData> = {}
   props.politics.forEach((p) => {
     const politicCategoryName = p.politicCategoryName ?? defaultGroupName
@@ -61,9 +71,9 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
             key={p.id}
             no={i + 1}
             {...p}
-            hidePoliticDetail={props.hidePoliticDetail}
-            shouldShowFeedbackForm={props.shouldShowFeedbackForm ?? false}
-            isPartyPage={props.isPartyPage}
+            hidePoliticDetail={hidePoliticDetail}
+            shouldShowFeedbackForm={shouldShowFeedbackForm}
+            isPartyPage={isPartyPage}
           />
         ))}
       </div>
@@ -100,8 +110,8 @@ export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
       </div>
       <div className={s['group-container']}>
         <Legislators
-          isElectionFinished={props.isFinished}
-          legislators={props.legisLatorAtLarge}
+          isElectionFinished={isFinished}
+          legislators={legislators}
         />
       </div>
       <div className={s['group-container']}>{politcGroup}</div>

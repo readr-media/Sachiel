@@ -21,7 +21,6 @@ query GetPoliticDetail($politicId: ID!) {
       votes_obtained_percentage
       elected
       incumbent
-      id
       electoral_district {
         id
         name
@@ -38,6 +37,7 @@ query GetPoliticDetail($politicId: ID!) {
         election_year_year
         election_year_month
         election_year_day
+        addComments
       }
       person_id {
         id
@@ -63,6 +63,7 @@ query GetPoliticDetail($politicId: ID!) {
         election_year_year
         election_year_month
         election_year_day
+        addComments
       }
     }
 
@@ -143,9 +144,6 @@ query GetPoliticDetail($politicId: ID!) {
       content
     }
     politicCategory {
-      id
-    }
-    organization {
       id
     }
   }

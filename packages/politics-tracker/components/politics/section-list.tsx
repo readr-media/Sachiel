@@ -2,19 +2,16 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import type { LegislatorAtLarge, PersonElection } from '~/types/politics'
+import type { ElectionData } from '~/types/politics'
+import { isElectionDataForPerson } from '~/utils/politic'
 
-import { PersonElectionContext } from './react-context/politics-context'
+import { ElectionDataContext } from './react-context/politics-context'
 import SectionBody from './section-body'
 import s from './section-list.module.css'
 import SectionToggle from './section-toggle'
 
-type SectionListProps = PersonElection & {
+type SectionListProps = ElectionData & {
   order: number
-  isPartyPage?: boolean
-  isFinished: boolean
-} & {
-  legisLatorAtLarge?: LegislatorAtLarge[]
 }
 
 const Anchor = styled.div`
@@ -28,7 +25,7 @@ const Anchor = styled.div`
 `
 
 export default function SectionList(props: SectionListProps): JSX.Element {
-  const [isActive, setIsActive] = useState<boolean>(props.order === 0)
+  const [isActive, setIsActive] = useState<boolean>(false)
   const router = useRouter()
   const anchorRef = useRef<HTMLDivElement>(null)
 
@@ -39,11 +36,8 @@ export default function SectionList(props: SectionListProps): JSX.Element {
       setIsActive(props.order === 0)
     } else if (yearFromAnchor) {
       const extractedYear = parseInt(yearFromAnchor)
-      if (Array.isArray(props.year)) {
-        setIsActive(props.year.includes(extractedYear))
-      } else {
-        setIsActive(props.year === extractedYear)
-      }
+
+      setIsActive(props.year === extractedYear)
     } else {
       // If there's no year in the anchor or no anchor present, use default props.order === 0 to set isActive
       setIsActive(props.order === 0)
@@ -60,7 +54,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
   }, [isActive, props.order])
 
   return (
-    <PersonElectionContext.Provider value={props}>
+    <ElectionDataContext.Provider value={props}>
       <div className={`${s['section-list']} md: relative px-0 sm:px-8 lg:px-0`}>
         <SectionToggle
           {...props}
@@ -69,24 +63,30 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           setActive={() => setIsActive(!isActive)}
         />
         <Anchor ref={anchorRef} id={String(props.year)} />
-        <SectionBody
-          show={isActive}
-          politics={props.politics}
-          lastUpdate={props.lastUpdate}
-          waitingPolitics={props.waitingPolitics}
-          source={props.source}
-          hidePoliticDetail={props.hidePoliticDetail}
-          mainCandidate={props.mainCandidate}
-          electionType={props.electionType}
-          organizationId={props.organizationId}
-          shouldShowFeedbackForm={props.shouldShowFeedbackForm}
-          isPartyPage={props.isPartyPage}
-          legisLatorAtLarge={props.legisLatorAtLarge}
-          isFinished={props.isFinished}
-          partyId={props.partyId}
-          year={props.year}
-        />
+        {isElectionDataForPerson(props) ? (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            mainCandidate={props.mainCandidate}
+            electionType={props.electionType}
+            partyId={props.partyId}
+            year={props.year}
+          />
+        ) : (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            electionType={props.electionType}
+            year={props.year}
+          />
+        )}
       </div>
-    </PersonElectionContext.Provider>
+    </ElectionDataContext.Provider>
   )
 }

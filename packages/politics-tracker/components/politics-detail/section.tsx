@@ -5,8 +5,8 @@ import ProgressBar from '~/components/politics-detail/progressbar'
 import SectionContent from '~/components/politics-detail/section-content'
 import SectionTitle from '~/components/politics-detail/section-title'
 import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
-import type { LegislatorAtLarge } from '~/types/politics'
-import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
+import type { LegislatorAtLarge, PersonElectionTerm } from '~/types/politics'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 import SectionFeedbackForm from './section-feeedback-form'
 

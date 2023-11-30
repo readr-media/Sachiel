@@ -12,13 +12,17 @@ const SectionContainer = styled.div`
   padding: 0 26px 0 16px;
 `
 /**
+ * @typedef {import('~/types/person').PersonData} PersonData
+ * @typedef {import('~/types/person').PersonElectionData} PersonElectionData
+ *
  * @param {Object} props
- * @param {import('../../types/person').Person} props.personData
- * @param {import('~/types/common').RawPersonElection[]} props.personElectionsData
+ * @param {PersonData} props.personData
+ * @param {PersonElectionData[]} props.personElectionsData
  * @returns {React.ReactElement}
  */
 export default function Section({ personData, personElectionsData }) {
   const [activeId, setActiveId] = useState(['0'])
+
   return (
     <SectionContainer>
       <SectionList
@@ -59,8 +63,7 @@ export default function Section({ personData, personElectionsData }) {
         id={null}
         color="disable"
         isActive={false}
-        // @ts-ignore
-        setActive={setActiveId}
+        setActiveId={setActiveId}
         title="資產（即將開放）"
         activeId={activeId}
       ></SectionList>
@@ -68,18 +71,15 @@ export default function Section({ personData, personElectionsData }) {
         id={null}
         color="disable"
         isActive={false}
-        // @ts-ignore
-        setActive={setActiveId}
+        setActiveId={setActiveId}
         title="政治獻金（即將開放）"
         activeId={activeId}
       ></SectionList>
       <SectionList
         id={null}
         color="disable"
-        // @ts-ignore
         isActive={false}
-        // @ts-ignore
-        setActive={setActiveId}
+        setActiveId={setActiveId}
         title="犯罪記錄（即將開放）"
         activeId={activeId}
       ></SectionList>

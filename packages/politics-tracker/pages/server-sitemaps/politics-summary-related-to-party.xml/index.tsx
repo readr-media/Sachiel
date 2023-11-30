@@ -8,7 +8,8 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetParties from '~/graphql/query/sitemap/get-parties.graphql'
-import { GenericGQLData, RawOrganization } from '~/types/common'
+import { GenericGQLData } from '~/types/common'
+import type { Party } from '~/types/server-sitemaps'
 import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     // politic summary pages (party)
     const resultOfParties = results[0] as PromiseSettledResult<
-      GenericGQLData<RawOrganization[], 'parties'>
+      GenericGQLData<Party[], 'parties'>
     >
     if (resultOfParties.status === 'fulfilled') {
       const partyList = resultOfParties.value?.data?.parties ?? []

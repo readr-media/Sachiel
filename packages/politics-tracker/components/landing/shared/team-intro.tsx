@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import type { IntroItem } from '~/constants/landing'
-
 const Wrapper = styled.div`
   width: 100%;
   padding: 40px 12px;
@@ -55,6 +53,11 @@ const NameGroup = styled.div`
     }
   }
 `
+
+export type IntroItem = {
+  title: string
+  name: string
+}
 
 type TeamIntroProps = {
   intro: IntroItem[]

@@ -16,8 +16,8 @@ export default function Response({
   return (
     <Wrapper>
       <ul>
-        {responses.map((value: PoliticResponse, index: number) => (
-          <ResponseItem responseItem={value} key={index} />
+        {responses.map((value: PoliticResponse) => (
+          <ResponseItem responseItem={value} key={value.id} />
         ))}
       </ul>
     </Wrapper>

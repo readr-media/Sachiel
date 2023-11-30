@@ -14,10 +14,9 @@ const TagItem = styled.div`
 /**
  *
  * @param {Object} props
- * @param {string} props.id
  * @param {string} props.name
  * @returns
  */
-export default function Tag({ id, name }) {
+export default function Tag({ name }) {
   return <TagItem>#{name}</TagItem>
 }

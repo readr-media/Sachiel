@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { ContentItemContainer, ContentItemTitle } from './content-item'
@@ -112,7 +112,7 @@ const ErrorMessage = styled.div`
 export { EditContentItemTitle }
 
 /**
- * @param {object[]} dateValue
+ * @param {(number|null)[]} dateValue
  */
 //date-rule-regex-check
 // FIXME: date validation (ex: early than now)
@@ -127,20 +127,31 @@ function dateCheck(dateValue) {
 }
 
 /**
- * @param {import('./edit-content-basic').EditContentBasic} props
+ * @typedef {Object} Props - Basic information of edit field
+ * @property {string} name - name , must be unique
+ * @property {string} title - title of field
+ * @property {string} description -  description of field, tell user what to be noticed when editing
+ * @property {string} type - what kind of edit field, currently have two kind of type: input(enter text) and radio(choose 1 option)
+ * @property {string[]} [options] - radio options list, only exist if type is "radio"
+ * @property {string} [placeholder] - input placeholder content, only exist if type is "type"
+ * @property {boolean} isRequired - if field must write when editing
+ * @property {string|null|(number | null)[]}  value - value of content
+ * @property {((value?: string) => void) | ((value: string) => void)}  onChange - value of content
+ * @property {string} [errormessage]
+ *
+ * @param {Props} props
  * @returns {React.ReactElement}
  */
 export default function EditContentItem({
   name,
   title,
-  isRequired,
   description,
-  placeholder,
   type,
   options,
+  placeholder,
+  isRequired,
   value,
   onChange,
-  // @ts-ignore
   errormessage,
 }) {
   return (
@@ -183,11 +194,7 @@ export default function EditContentItem({
           }
         ></EditContentItemInput>
       )}
-      {type === 'input-date' &&
-      !dateCheck(
-        // @ts-ignore
-        value
-      ) ? (
+      {type === 'input-date' && Array.isArray(value) && !dateCheck(value) ? (
         <ErrorMessage>{errormessage}</ErrorMessage>
       ) : (
         <></>
@@ -201,7 +208,7 @@ export default function EditContentItem({
                 name="radio"
                 value={item}
                 defaultChecked={item === value}
-                // @ts-ignore
+                // @ts-ignore: no value attribute on e.target
                 onClick={(e) => onChange(e.target.value)}
               />
               <RadioButtonLabel />

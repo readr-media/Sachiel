@@ -13,8 +13,8 @@ const ContentContainer = styled.div`
  * @param {React.ReactElement[] | React.ReactElement} props.children
  * @param {React.ReactElement[] | React.ReactElement} [props.editContent]
  * @param {boolean} props.shouldShowEditMode
- * @param {function} props.setShouldShowEditMode
- * @param {function} props.GAClick
+ * @param {(value: boolean) => void} props.setShouldShowEditMode
+ * @param {() => void} props.GAClick
  * @returns {React.ReactElement}
  */
 export default function Content({
