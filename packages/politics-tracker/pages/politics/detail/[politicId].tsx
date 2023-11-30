@@ -36,6 +36,7 @@ import type {
   PoliticAmount,
 } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
+import { getLastestElectionData } from '~/utils/politic'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -306,7 +307,10 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
-      latestPersonElection = personAllElections[0]
+      latestPersonElection = personAllElections.reduce(
+        getLastestElectionData,
+        personAllElections[0]
+      )
     }
 
     {

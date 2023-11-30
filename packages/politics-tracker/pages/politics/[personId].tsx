@@ -34,6 +34,7 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
+import { getLastestElectionData } from '~/utils/politic'
 import { electionName, fireGqlRequest, partyName } from '~/utils/utils'
 type PoliticsPageProps = {
   titleProps: OverviewInfo
@@ -183,7 +184,6 @@ export const getServerSideProps: GetServerSideProps<
           const id = current.id
           personElectionIds.push(id)
 
-          const latest = previous.election
           const election = current.election
           const party = current.party
           const electionArea = current.electoral_district
@@ -224,24 +224,7 @@ export const getServerSideProps: GetServerSideProps<
             }
           }
 
-          if (election && latest) {
-            const latestTime = moment()
-              .year(latest.election_year_year)
-              .month(latest.election_year_month - 1)
-              .date(latest.election_year_day)
-              .unix()
-            const currentTime = moment()
-              .year(election.election_year_year)
-              .month(election.election_year_month - 1)
-              .date(election.election_year_day)
-              .unix()
-            if (currentTime > latestTime) {
-              return current
-            }
-          } else if (election) {
-            return current
-          }
-          return previous
+          return getLastestElectionData(previous, current)
         },
         personElections[0]
       )
