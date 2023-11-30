@@ -96,8 +96,12 @@ const ListItemDesktop = styled.div<{ count: number; totalAmount: number }>`
 
 type InfoBoardProps = {
   areas: LegislatorArea[]
+  isParty: boolean
 }
-export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
+export default function InfoBoard({
+  areas = [],
+  isParty = false,
+}: InfoBoardProps): JSX.Element {
   const [sortAsc, setSortAsc] = useState(false)
   const sortedAreas = sortAsc ? [...areas].reverse() : areas
 
@@ -124,11 +128,20 @@ export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
               totalAmount={area.total}
               key={area.id}
             >
-              <CandidateList title="還沒有政見" candidates={candidates.empty} />
-              <CandidateList title="政見還很少" candidates={candidates.less} />
+              <CandidateList
+                title="還沒有政見"
+                candidates={candidates.empty}
+                isParty={isParty}
+              />
+              <CandidateList
+                title="政見還很少"
+                candidates={candidates.less}
+                isParty={isParty}
+              />
               <CandidateList
                 title="超過 20 條政見"
                 candidates={candidates.numerous}
+                isParty={isParty}
               />
             </ListItemMobile>
           )
@@ -153,15 +166,18 @@ export default function InfoBoard({ areas }: InfoBoardProps): JSX.Element {
                 <CandidateList
                   title="還沒有政見"
                   candidates={candidates.empty}
+                  isParty={isParty}
                 />
 
                 <CandidateList
                   title="政見還很少"
                   candidates={candidates.less}
+                  isParty={isParty}
                 />
                 <CandidateList
                   title="超過 20 條政見"
                   candidates={candidates.numerous}
+                  isParty={isParty}
                 />
               </div>
             </ListItemDesktop>
