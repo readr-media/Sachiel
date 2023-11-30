@@ -81,7 +81,7 @@ const Title = styled.h1`
 
 const Image = styled.div<{ alt: string }>`
   order: 1;
-  background: url('/images/president-candidate-mobile.svg') no-repeat
+  background: url('/images/president-candidate-mobile.png') no-repeat
     center/contain;
   width: 100%;
   max-width: 408px;
@@ -93,7 +93,7 @@ const Image = styled.div<{ alt: string }>`
     margin: 20px auto 0px;
     max-width: 960px;
     aspect-ratio: 8 / 3;
-    background: url('/images/president-candidate-desktop.svg') no-repeat
+    background: url('/images/president-candidate-desktop.png') no-repeat
       center/contain;
     transform: translateY(3px);
   }
