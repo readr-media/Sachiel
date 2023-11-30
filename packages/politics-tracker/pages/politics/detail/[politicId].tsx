@@ -62,6 +62,9 @@ export default function PoliticsDetail({
   const { asPath } = useRouter()
   const { person } = politic
 
+  const shouldShowFeedbackForm: boolean =
+    politic.person?.election?.addComments ?? false
+
   const titleProps: OverviewInfo = {
     id: person?.person_id?.id || '',
     name: person?.person_id?.name || '',
@@ -147,9 +150,7 @@ export default function PoliticsDetail({
         <Section
           politic={politic}
           electionTerm={electionTerm}
-          shouldShowFeedbackForm={
-            latestPersonElection.election?.addComments === true
-          }
+          shouldShowFeedbackForm={shouldShowFeedbackForm}
         />
       </Main>
 
