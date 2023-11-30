@@ -38,6 +38,7 @@ export type PersonData = Override<
 type PEDP = Pick<RawPerson, 'id' | 'name'>
 type PEDE = Pick<RawElection, 'id' | 'name' | 'election_year_year' | 'type'>
 type PEDEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
+/** type for GetPersonElections query */
 export type PersonElectionData = Override<
   Pick<
     RawPersonElection,
