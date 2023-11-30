@@ -1,7 +1,7 @@
 import Legislators from '~/components/shared/legislator-at-large'
 import { SOURCE_DELIMITER } from '~/constants/politics'
-import type { ElectionData, Politic } from '~/types/politics'
-import { checkIsPartyPage } from '~/utils/politic'
+import type { ElectionData, LegislatorAtLarge, Politic } from '~/types/politics'
+import { isElectionDataForPerson } from '~/utils/politic'
 import { generateSourceMeta } from '~/utils/utils'
 
 import s from './politic-block.module.css'
@@ -20,14 +20,19 @@ type GroupData = {
 
 export default function PoliticBlock(props: PoliticBlockProps): JSX.Element {
   const electionData = useElectionData()
-  const legislators =
-    electionData && 'legisLatorAtLarge' in electionData
-      ? electionData.legisLatorAtLarge
-      : undefined
+
+  let legislators: LegislatorAtLarge[] | undefined
+  let isPartyPage: boolean
+  if (isElectionDataForPerson(electionData)) {
+    isPartyPage = false
+  } else {
+    legislators = electionData?.legisLatorAtLarge
+    isPartyPage = true
+  }
+
   const hidePoliticDetail = electionData?.hidePoliticDetail ?? null
   const shouldShowFeedbackForm = Boolean(electionData?.shouldShowFeedbackForm)
   const isFinished = Boolean(electionData?.isFinished)
-  const isPartyPage = checkIsPartyPage(electionData)
 
   const defaultGroupName = 'default'
   const groupMap: Record<string, GroupData> = {}

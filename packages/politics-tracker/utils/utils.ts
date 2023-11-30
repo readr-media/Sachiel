@@ -241,6 +241,19 @@ function getPositionChangeString(isChanged: string) {
   return positionChangeMappings[isChanged] || '曾持相同意見'
 }
 
+/** distinguish between U an V where T = U | V */
+function isTypeOfOneFromCouple<T extends Record<string, unknown>, U extends T>(
+  data: T | null,
+  keys: (keyof U)[]
+): data is U {
+  if (!data) return false
+
+  return keys.reduce(
+    (result: boolean, key: keyof U) => result || key in data,
+    false
+  )
+}
+
 export {
   electionName,
   fireGqlRequest,
@@ -252,6 +265,7 @@ export {
   getPositionChangeString,
   getTailwindConfig,
   hasOwnByArray,
+  isTypeOfOneFromCouple,
   isURL,
   partyName,
   sourcesToString,

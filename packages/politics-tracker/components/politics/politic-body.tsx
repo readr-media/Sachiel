@@ -10,6 +10,7 @@ import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-p
 import type { GenericGQLData } from '~/types/common'
 import type { CreatedEditingPolitic, Politic } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
+import { isDraftPoliticForModification } from '~/utils/politic'
 import { fireGqlRequest } from '~/utils/utils'
 
 import ArrowRight from '../icons/arrow-right'
@@ -47,7 +48,7 @@ export default function PoliticBody(props: PoliticBodyProps): JSX.Element {
 
   async function appendPoliticToThread(data: DraftPolitic): Promise<boolean> {
     if (!electionData) throw new Error('electionData is null')
-    if (!('id' in data)) throw Error('`id` is not in data')
+    if (!isDraftPoliticForModification(data)) throw Error('`id` is not in data')
 
     const cmsApiUrl = `${window.location.origin}/api/data`
 

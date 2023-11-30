@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import type { ElectionData } from '~/types/politics'
+import { isElectionDataForPerson } from '~/utils/politic'
 
 import { ElectionDataContext } from './react-context/politics-context'
 import SectionBody from './section-body'
@@ -62,7 +63,7 @@ export default function SectionList(props: SectionListProps): JSX.Element {
           setActive={() => setIsActive(!isActive)}
         />
         <Anchor ref={anchorRef} id={String(props.year)} />
-        {'mainCandidate' in props ? (
+        {isElectionDataForPerson(props) ? (
           <SectionBody
             show={isActive}
             politics={props.politics}
