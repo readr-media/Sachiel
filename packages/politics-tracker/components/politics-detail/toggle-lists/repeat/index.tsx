@@ -14,8 +14,8 @@ export default function Repeat({ repeats = [] }: RepeatProps): JSX.Element {
   return (
     <Wrapper>
       <ul>
-        {repeats.map((value: PoliticRepeat, index: number) => (
-          <RepeatItem repeatItem={value} key={index} />
+        {repeats.map((value: PoliticRepeat) => (
+          <RepeatItem repeatItem={value} key={value.id} />
         ))}
       </ul>
     </Wrapper>

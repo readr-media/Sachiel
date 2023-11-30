@@ -18,8 +18,8 @@ export default function ExpertPoint({
     <Wrapper>
       {experts.length > 0 ? (
         <ul>
-          {experts.map((value: PoliticExpert, index: number) => (
-            <ExpertItem expertItem={value} key={index} />
+          {experts.map((value: PoliticExpert) => (
+            <ExpertItem expertItem={value} key={value.id} />
           ))}
         </ul>
       ) : (

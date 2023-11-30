@@ -58,10 +58,10 @@ export default function Controversy({
   editMode = false,
   setEditMode,
 }: ControversyProps): JSX.Element {
-  const controversyList = controversies.map((item, index) => {
+  const controversyList = controversies.map((item) => {
     const { link, content } = item
     return (
-      <List key={index}>
+      <List key={item.id}>
         <a href={link} target="_blank" rel="noopener noreferrer">
           {content}
         </a>

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { MouseEventHandler, useEffect, useState } from 'react'
+import { type MouseEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SearchInput from '~/components/search/search-input'
