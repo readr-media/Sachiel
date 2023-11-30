@@ -75,3 +75,9 @@
 
 - [Cloud Build | sachiel-openrelationship-prod](https://console.cloud.google.com/cloud-build/triggers;region=global/edit/e25a7b3f-8fa5-48db-a21d-294b002c7044?project=mirrorlearning-161006)
 - [Cloud Run | openrelationship-prod](https://console.cloud.google.com/run/detail/asia-east1/openrelationship-prod/metrics?project=mirrorlearning-161006)
+
+## Todo List
+- [ ] 調整 type definitions 與 GraphQL query 存放位置，將與 query 與其輸出的 type 放在一起
+- [ ] 統一專案使用的 CSS styling solution
+- [ ] 專案啟用 `strictNullChecks`
+- [ ] 專案全面使用 TypeScript
