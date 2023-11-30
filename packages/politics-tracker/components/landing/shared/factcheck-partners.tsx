@@ -71,7 +71,7 @@ type PartnerByType = {
     id: string
     name: string
     webUrl: string
-    logo: RawPhoto
+    logo: Pick<RawPhoto, 'resized'> | null
   }[]
 }
 type FactCheckPartnersProps = {
@@ -90,7 +90,7 @@ export default function FactCheckPartners({
             id: item.id || '',
             name: item.name || '',
             webUrl: item.webUrl || '',
-            logo: item.logo || [],
+            logo: item.logo ?? null,
           })
         } else {
           result.push({
@@ -100,7 +100,7 @@ export default function FactCheckPartners({
                 id: item.id || '',
                 name: item.name || '',
                 webUrl: item.webUrl || '',
-                logo: item.logo || [],
+                logo: item.logo ?? null,
               },
             ],
           })
