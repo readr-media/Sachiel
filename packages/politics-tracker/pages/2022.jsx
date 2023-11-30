@@ -162,7 +162,7 @@ export const getServerSideProps = async ({ res }) => {
   //Get posts from Readr CMS with politics-tracker tags
   //if Readr api error, return propsData (propsData.postsWithPoliticsTrackerTag=[])
   try {
-    /** @type {import('~/types/common').GenericGQLData<AllPostsWithPoliticsTrackerTag[], 'allPosts'>} */
+    /** @type {import('~/types/common').GenericGQLData<AllPostsWithPoliticsTrackerTag[], 'posts'>} */
     const readrPostsData = await fireGqlRequest(
       print(GetPostsWithPoliticsTracker),
       { tag: '選舉政見追蹤' },
@@ -182,7 +182,7 @@ export const getServerSideProps = async ({ res }) => {
       throw annotatingError
     }
 
-    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.allPosts
+    const readrPostsWithPoliticsTrackerTag = readrPostsData.data?.posts
     if (
       readrPostsWithPoliticsTrackerTag &&
       readrPostsWithPoliticsTrackerTag.length !== 0
