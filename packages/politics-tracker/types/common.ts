@@ -1,4 +1,4 @@
-import { Option } from '@readr-media/react-feedback/dist/typedef'
+import type { Option } from '@readr-media/react-feedback/dist/typedef'
 import type { LinkProps } from 'next/link'
 
 import { POLITIC_PROGRESS } from '~/constants/common'

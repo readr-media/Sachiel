@@ -20,7 +20,7 @@ import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/po
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
-import { RawPolitic, GenericGQLData } from '~/types/common'
+import type { GenericGQLData } from '~/types/common'
 import type {
   LegislatorAtLarge,
   PersonElectionTerm,
