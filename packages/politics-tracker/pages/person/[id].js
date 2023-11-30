@@ -27,12 +27,14 @@ const Main = styled.main`
 
 /**
  * @typedef {import('~/components/nav').NavProps } NavProps
- * @typedef {import('~/types/person').PageProps} PageProps
  * @typedef {import('~/types/person').PersonData} PersonData
  * @typedef {import('~/types/person').PersonElectionData} PersonElectionData
  *
+ * @typedef {Object} PersonPageProps
+ * @property {PersonData} personData
+ * @property {PersonElectionData[]} personElectionsData
  *
- * @param {PageProps} props
+ * @param {PersonPageProps} props
  * @returns {React.ReactElement}
  */
 export default function People({ personData, personElectionsData }) {
@@ -73,7 +75,7 @@ export default function People({ personData, personElectionsData }) {
   )
 }
 
-/** @type { import('next').GetServerSideProps<PageProps> } */
+/** @type { import('next').GetServerSideProps<PersonPageProps> } */
 export async function getServerSideProps({ query, res }) {
   // cache policy
   res.setHeader(

@@ -7,7 +7,7 @@ import type {
   RawTag,
 } from './common'
 
-type PDT = Pick<RawTag, 'id' | 'name'>
+/** type for GetPersonBasicInfo query */
 export type PersonData = Override<
   Pick<
     RawPerson,
@@ -32,12 +32,9 @@ export type PersonData = Override<
     | 'status'
     | 'tags'
   >,
-  { tags: PDT[] }
+  { tags: Pick<RawTag, 'id' | 'name'>[] }
 >
 
-type PEDP = Pick<RawPerson, 'id' | 'name'>
-type PEDE = Pick<RawElection, 'id' | 'name' | 'election_year_year' | 'type'>
-type PEDEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
 /** type for GetPersonElections query */
 export type PersonElectionData = Override<
   Pick<
@@ -45,13 +42,11 @@ export type PersonElectionData = Override<
     'id' | 'person_id' | 'election' | 'electoral_district'
   >,
   {
-    person_id: PEDP | null
-    election: PEDE | null
-    electoral_district: PEDEA | null
+    person_id: Pick<RawPerson, 'id' | 'name'> | null
+    election: Pick<
+      RawElection,
+      'id' | 'name' | 'election_year_year' | 'type'
+    > | null
+    electoral_district: Pick<RawElectionArea, 'id' | 'name' | 'city'> | null
   }
 >
-
-export type PageProps = {
-  personData: PersonData
-  personElectionsData: PersonElectionData[]
-}
