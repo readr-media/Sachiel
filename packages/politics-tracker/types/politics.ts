@@ -44,23 +44,34 @@ export type OverviewInfo = {
 /** 政見數統計資訊 */
 export type PoliticAmount = Pick<OverviewInfo, 'waiting' | 'completed'>
 
+/** 政見資訊 */
 export type Politic = {
   id: string
+  /** 政見內容 */
   desc: string
+  /** 政見資料來源 */
   source: string
+  /** 政見補充內容 */
   content: string
+  /** 政見進度 */
   progress: `${POLITIC_PROGRESS}`
+  /** 政見所屬類別 ID */
   politicCategoryId: string | null
+  /** 政見所屬類別名稱 */
   politicCategoryName: string | null
+  /** 立場變化 */
+  positionChange: PositionChange[]
+  /** 事實查核 */
+  factCheck: FactCheck[]
+  /** 專家看點 */
+  expertPoint: ExpertPoint[]
+  /** 重複政見 */
+  repeat: Repeat[]
   createdAt: string
   updatedAt: string | null
-  positionChange: PositionChange[]
-  factCheck: FactCheck[]
-  expertPoint: ExpertPoint[]
-  repeat: Repeat[]
 }
 
-//立場改變摘要
+/** 立場改變摘要 */
 export type PositionChange = Override<
   Pick<
     RawPoliticPositionChange,
@@ -69,9 +80,10 @@ export type PositionChange = Override<
   { factcheckPartner: FactCheckPartner | null }
 >
 
+/** 查核單位資訊 */
 export type FactCheckPartner = Pick<RawFactCheckPartner, 'name'>
 
-//事實釐清摘要
+/** 事實釐清摘要 */
 export type FactCheck = Override<
   Pick<
     RawFactCheck,
@@ -84,13 +96,13 @@ export type FactCheck = Override<
   { factcheckPartner: FactCheckPartner | null }
 >
 
-//專家看點摘要
+/** 專家看點摘要 */
 export type ExpertPoint = Pick<
   RawExpertPoint,
   'id' | 'expertPointSummary' | 'expert'
 >
 
-//相似政策摘要
+/** 相似政策摘要 */
 export type Repeat = Override<
   Pick<RawPoliticRepeat, 'id' | 'repeatSummary' | 'factcheckPartner'>,
   {
@@ -98,6 +110,7 @@ export type Repeat = Override<
   }
 >
 
+/** 人物在組織的任期資訊 */
 export type PersonElectionTerm = {
   start_date_day: number | null
   start_date_month: number | null
@@ -107,13 +120,15 @@ export type PersonElectionTerm = {
   end_date_year: number | null
 }
 
+export type Person = Pick<RawPerson, 'id'>
+
+/** 搭檔主手的參選紀錄 */
 export type MainCandidate = {
   id: string | null
   name: string | null
+  /** 人物資訊 */
   person_id: Person | null
 }
-
-export type Person = Pick<RawPerson, 'id'>
 
 export type PersonElection = {
   electionArea: string
@@ -139,6 +154,7 @@ export type PersonElection = {
   shouldShowFeedbackForm?: boolean
 }
 
+/** 不分區立委資訊 */
 export type LegislatorAtLarge = Override<
   Pick<RawPersonElection, 'id' | 'elected' | 'person_id'>,
   { person_id: Pick<RawPerson, 'id' | 'name'> | null }
@@ -182,38 +198,65 @@ export type PersonElectionData = Override<
   }
 >
 
+/** 選舉紀錄（共通） */
 export type ElecitonDataBase = {
-  id: string
+  /** 在關聯到人物時，是 PE 的 id；在關聯到組織時，是 OE 的 id */
+  id: RawPersonElection['id'] | RawOrganizationElection['id']
+  /** 選舉名稱 */
   name: string
+  /** 選舉目的 */
   electionType: string
+  /** 選舉區域 */
   electionArea: string
+  /** 政黨 */
   party: string
+  /** 政黨黨徽 */
   partyIcon: string
+  /** 選舉年 */
   year: number
+  /** 選舉月 */
   month: number
+  /** 選舉日 */
   day: number
+  /** 是否結束 */
   isFinished: boolean
+  /** 人物：是否當選；組織：或有所屬候選人當選 */
   elected: boolean
+  /** 政見資料來源 */
   source: string
+  /** 最後更新時間 */
   lastUpdate: string | null
+  /** 政見清單 */
   politics: Politic[]
+  /** 待確認政見清單 */
   waitingPolitics: Politic[]
+  /** 隱藏政見細節 */
   hidePoliticDetail: string | null
+  /** 開放留言（心情） */
   shouldShowFeedbackForm: boolean
 }
 
+/** 人物的選舉紀錄 */
 export type ElectionDataForPerson = ElecitonDataBase & {
+  /** 推派的政黨 ID */
   partyId: string
+  /** 是否連任 */
   incumbent: boolean
+  /** 搭檔主手資訊 */
   mainCandidate: MainCandidate | null
+  /** 當選後的任期資訊 */
   electionTerm: PersonElectionTerm
 }
 
+/** 組織的選舉紀錄 */
 export type ElectionDataForParty = ElecitonDataBase & {
+  /** 是否為政黨關聯頁面 */
   isPartyPage: boolean
+  /** 不分區立委名單 */
   legisLatorAtLarge: LegislatorAtLarge[]
 }
 
+/** 選舉紀錄 */
 export type ElectionData = ElectionDataForPerson | ElectionDataForParty
 
 export type PoliticDataForPerson = Override<
