@@ -63,6 +63,9 @@ export default function PartyPoliticsDetail({
   const { asPath } = useRouter()
   const { organization } = politic
 
+  const shouldShowFeedbackForm: boolean =
+    organization?.elections?.addComments ?? false
+
   const titleProps: OverviewInfo = {
     id: organization?.organization_id?.id || '',
     name: organization?.organization_id?.name || '',
@@ -129,7 +132,7 @@ export default function PartyPoliticsDetail({
           <Section
             politic={politic}
             electionTerm={electionTerm}
-            shouldShowFeedbackForm={true}
+            shouldShowFeedbackForm={shouldShowFeedbackForm}
             legislators={legisLatorAtLarge}
           />
         </Main>

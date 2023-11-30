@@ -75,6 +75,7 @@ export type OrganizationElection = Override<
       | 'election_year_year'
       | 'election_year_month'
       | 'election_year_day'
+      | 'addComments'
     > | null
   }
 >
