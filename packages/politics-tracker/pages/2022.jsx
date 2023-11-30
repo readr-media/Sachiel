@@ -108,6 +108,13 @@ export const getServerSideProps = async ({ res }) => {
   }
 
   /**
+   * @type {string[]}
+   */
+  const requiredPropsForJson = Object.keys(propsData).filter(
+    (key) => key !== 'postsWithPoliticsTrackerTag'
+  )
+
+  /**
    * @param   {string} text
    * @returns {number}
    */
@@ -223,7 +230,7 @@ export const getServerSideProps = async ({ res }) => {
     /** @type {import('axios').AxiosResponse<PropsData>} */
     const { data: result } = await axios.get(urlOfJsonForlandingPage)
     /** @type {boolean} */
-    let isValid = Object.keys(propsData).reduce(
+    let isValid = requiredPropsForJson.reduce(
       /**
        * @param {boolean} valid
        * @param {string} key
