@@ -12,6 +12,7 @@ import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import Section from '~/components/politics-detail/section'
 import Title from '~/components/politics/title'
+import { POLITIC_PROGRESS } from '~/constants/common'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
@@ -175,7 +176,7 @@ export const getServerSideProps: GetServerSideProps<
     content: '',
     source: '',
     status: 'notverified',
-    current_progress: 'no-progress',
+    current_progress: POLITIC_PROGRESS.NOT_START,
     updatedAt: '',
     contributer: '',
     person: null,
