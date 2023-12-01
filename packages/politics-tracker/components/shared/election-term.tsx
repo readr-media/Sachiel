@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { PersonElectionTerm } from '~/types/politics-detail'
+import type { PersonElectionTerm } from '~/types/politics'
 
 const Term = styled.div`
   padding: 4px;
@@ -17,7 +17,7 @@ const Term = styled.div`
 `
 
 type ElectionTermProps = {
-  termDate: PersonElectionTerm
+  termDate?: PersonElectionTerm
   isElected?: boolean
   isIncumbent?: boolean
 }
@@ -45,24 +45,28 @@ export default function ElectionTerm({
     end_date_year,
   } = termDate
 
-  type Props = {
-    year: string | null
-    month: string | null
-    day: string | null
+  type Props<T> = {
+    year: T
+    month: T
+    day: T
   }
-  const formatDateString = ({ year, month, day }: Props): string => {
+  const formatDateString = <T extends unknown>({
+    year,
+    month,
+    day,
+  }: Props<T>): string => {
     if (year && month && day) {
       return `${year}-${month}-${day}`
     } else if (year && month) {
       return `${year}-${month}`
     } else if (year) {
-      return year
+      return `${year}`
     } else {
       return ''
     }
   }
 
-  const startTime = formatDateString({
+  const startTime = formatDateString<typeof start_date_year>({
     year: start_date_year,
     month: start_date_month,
     day: start_date_day,
@@ -70,7 +74,7 @@ export default function ElectionTerm({
 
   const endTime = isIncumbent
     ? ''
-    : formatDateString({
+    : formatDateString<typeof end_date_year>({
         year: end_date_year,
         month: end_date_month,
         day: end_date_day,

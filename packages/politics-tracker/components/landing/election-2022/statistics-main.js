@@ -147,12 +147,14 @@ const BoardButton = styled.div`
   }
 `
 const ArrowIcon = styled.div``
+
 /**
+ * @typedef {import('~/types/landing').PropsData} PropsData
  *
+ * @param {Object} props
+ * @param {Pick<PropsData, 'totalCompletionOfMayor' | 'totalCompletionOfCouncilor'>} props.propsData
  * @returns {React.ReactElement}
  */
-
-// @ts-ignore
 export default function StatisticsBoard({ propsData }) {
   return (
     <BoardContainer>

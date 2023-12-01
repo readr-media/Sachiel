@@ -1,4 +1,8 @@
-import type { CategoryOfJson } from '~/types/landing'
+import type {
+  CategoryOfJson,
+  LegislatorCandidate,
+  LegislatorOfJSON,
+} from '~/types/landing'
 
 type RawCategories = {
   [key: string]: {
@@ -32,4 +36,49 @@ function getTopCategoryLists(categories: CategoryOfJson[]) {
   ]
 }
 
-export { getTopCategoryLists, sortCategoriesByCount }
+function formattedCandidates(candidates: LegislatorCandidate[]) {
+  const updatedCandidates: Record<
+    'empty' | 'less' | 'numerous',
+    LegislatorCandidate[]
+  > = {
+    empty: [],
+    less: [],
+    numerous: [],
+  }
+
+  candidates.forEach((candidate) => {
+    if (candidate.done === 0) {
+      updatedCandidates.empty.push(candidate)
+    } else if (candidate.done > 0 && candidate.done < 20) {
+      updatedCandidates.less.push(candidate)
+    } else {
+      updatedCandidates.numerous.push(candidate)
+    }
+  })
+
+  return updatedCandidates
+}
+
+function sortLegislatorsByAmountRatio(array: LegislatorOfJSON[]) {
+  return array
+    .map((region) => ({
+      ...region,
+      areas: region.areas.sort((a, b) => a.done / a.total - b.done / b.total),
+    }))
+    .sort((a, b) => a.amount / a.total - b.amount / b.total)
+}
+
+function formatButtonInfo(array: LegislatorOfJSON[]) {
+  return array.map((item) => ({
+    name: item.name,
+    ratio: `(${item.amount}/${item.total})`,
+  }))
+}
+
+export {
+  formatButtonInfo,
+  formattedCandidates,
+  getTopCategoryLists,
+  sortCategoriesByCount,
+  sortLegislatorsByAmountRatio,
+}

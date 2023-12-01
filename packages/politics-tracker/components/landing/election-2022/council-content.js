@@ -160,7 +160,6 @@ const SubtitleButtonDesk = styled.div`
   }
 `
 
-// @ts-ignore
 const DistrictContentDesk = styled.div`
   width: 100%;
   ${({ theme }) => theme.breakpoint.xl} {
@@ -215,14 +214,18 @@ const HoverWrap = styled.div`
     background-color: rgba(15, 45, 53, 0.05);
   }
 `
+
 /**
+ * @typedef {import('~/types/landing').CityOfCouncilorElection} CityOfCouncilorElection
+ * @typedef {import('~/types/landing').AreaOfCouncilorElection} AreaOfCouncilorElection
+ *
+ * @param {Object} props
+ * @param {CityOfCouncilorElection[]} props.dataOrderByCompletePercent
+ * @param {number} props.councilRegion
  * @returns {React.ReactElement}
  */
-// @ts-ignore
 export default function CouncilContent({
-  // @ts-ignore
   dataOrderByCompletePercent,
-  // @ts-ignore
   councilRegion,
 }) {
   const rawDatas = dataOrderByCompletePercent[councilRegion].areas
@@ -230,13 +233,14 @@ export default function CouncilContent({
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
 
-  // @ts-ignore
+  /** @type {import('~/types/common').OrderFunction<AreaOfCouncilorElection>} */
   const HighToLow = (datas) => {
     return [...datas].sort((a, b) => {
       return b?.done / b?.total - a?.done / a?.total
     })
   }
-  // @ts-ignore
+
+  /** @type {import('~/types/common').OrderFunction<AreaOfCouncilorElection>} */
   const lowToHigh = (datas) => {
     return [...datas].sort((a, b) => {
       return a?.done / a?.total - b?.done / b?.total
@@ -260,7 +264,9 @@ export default function CouncilContent({
     setActiveData(sortDataWithActive)
   }, [councilRegion, sortWay])
 
-  // @ts-ignore
+  /**
+   * @param {string} [id]
+   */
   function clickChangeIcon(id) {
     setActiveData((pre) => {
       return pre.map((data) => {
@@ -278,10 +284,8 @@ export default function CouncilContent({
   const [isDesktop, setIsDesktop] = useState(true)
 
   useEffect(() => {
-    // @ts-ignore
     setIsDesktop(window.innerWidth >= 1200)
     function resizeChangeIcon() {
-      // @ts-ignore
       setIsDesktop(() => {
         if (window.innerWidth >= 1200) {
           return true
@@ -386,12 +390,8 @@ export default function CouncilContent({
 
                   {isDesktop ? (
                     <DistrictContentDesk style={{ display: 'block' }}>
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done === 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done === 0)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#DB4C65' }}>
@@ -400,11 +400,7 @@ export default function CouncilContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done === 0
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done === 0)
                               .map((value) => {
                                 return (
                                   <Link
@@ -425,13 +421,9 @@ export default function CouncilContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) =>
-                            candidate.done < 21 && candidate.done > 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter(
+                        (candidate) => candidate.done < 21 && candidate.done > 0
+                      ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#F58439' }}>
@@ -441,11 +433,9 @@ export default function CouncilContent({
                           <ListWrapDesk>
                             {v.candidates
                               .filter(
-                                // @ts-ignore
                                 (candidate) =>
                                   candidate.done < 21 && candidate.done > 0
                               )
-                              // @ts-ignore
                               .map((value) => {
                                 return (
                                   <Link
@@ -466,12 +456,8 @@ export default function CouncilContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done > 20
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done > 20)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#2FB7BF' }}>
@@ -480,11 +466,7 @@ export default function CouncilContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done > 20
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done > 20)
                               .map((value) => {
                                 return (
                                   <Link
@@ -507,12 +489,8 @@ export default function CouncilContent({
                     </DistrictContentDesk>
                   ) : v.active ? (
                     <DistrictContentDesk style={{ display: 'block' }}>
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done === 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done === 0)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#DB4C65' }}>
@@ -521,11 +499,7 @@ export default function CouncilContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done === 0
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done === 0)
                               .map((value) => {
                                 return (
                                   <Link
@@ -547,13 +521,9 @@ export default function CouncilContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) =>
-                            candidate.done < 21 && candidate.done > 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter(
+                        (candidate) => candidate.done < 21 && candidate.done > 0
+                      ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#F58439' }}>
@@ -563,11 +533,9 @@ export default function CouncilContent({
                           <ListWrapDesk>
                             {v.candidates
                               .filter(
-                                // @ts-ignore
                                 (candidate) =>
                                   candidate.done < 21 && candidate.done > 0
                               )
-                              // @ts-ignore
                               .map((value) => {
                                 return (
                                   <Link
@@ -589,12 +557,8 @@ export default function CouncilContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done > 20
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done > 20)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#2FB7BF' }}>
@@ -603,11 +567,7 @@ export default function CouncilContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done > 20
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done > 20)
                               .map((value) => {
                                 return (
                                   <Link

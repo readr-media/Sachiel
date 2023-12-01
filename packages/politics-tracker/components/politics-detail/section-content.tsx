@@ -144,7 +144,7 @@ export default function SectionContent({
       {toggleItems.map((item, index) =>
         item.showToggle ? (
           <ToggleItem
-            key={index}
+            key={item.title}
             order={index}
             title={item.title}
             titleChildren={item.titleChildren}

@@ -31,11 +31,12 @@ const Introduce = styled.div`
   }
 `
 /**
+ * @typedef {import('~/types/landing').PropsData} PropsData
  *
+ * @param {Object} props
+ * @param {Pick<PropsData, 'totalCompletionOfMayor' | 'totalCompletionOfCouncilor'>} props.propsData
  * @returns {React.ReactElement}
  */
-
-// @ts-ignore
 export default function FrontPage({ propsData }) {
   return (
     <FrontPageContainer>

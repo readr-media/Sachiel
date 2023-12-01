@@ -12,7 +12,8 @@ import {
   siteUrl,
 } from '~/constants/environment-variables'
 import GetElections from '~/graphql/query/sitemap/get-elections.graphql'
-import { GenericGQLData, RawElection } from '~/types/common'
+import { GenericGQLData } from '~/types/common'
+import { Election } from '~/types/server-sitemaps'
 import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // election page
     {
       const resultOfElections = results[0] as PromiseSettledResult<
-        GenericGQLData<RawElection[], 'elections'>
+        GenericGQLData<Election[], 'elections'>
       >
       if (resultOfElections.status === 'fulfilled') {
         const electionList = resultOfElections.value?.data?.elections ?? []

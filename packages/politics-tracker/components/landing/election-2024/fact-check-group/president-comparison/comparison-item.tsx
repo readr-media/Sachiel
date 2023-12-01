@@ -124,7 +124,7 @@ export default function ComparisonItem({
     categories_count = [],
   } = candidate
 
-  let imageUrl: string = '/images/default-head-phot.png'
+  let imageUrl: string = '/images/default-head-photo.png'
 
   {
     // get president candidate image

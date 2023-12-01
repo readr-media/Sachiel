@@ -66,7 +66,8 @@ export default function FactCheckAbstract({
   }
 
   // Create an object to group partners by isChanged
-  const groupedPartners: { [key: string]: FactCheckPartner[] } = {}
+  type FactCheckPartnerGroup = Record<string, FactCheckPartner[]>
+  const groupedPartners: FactCheckPartnerGroup = {}
 
   positionChange.forEach((change) => {
     if (!groupedPartners[change.isChanged]) {
@@ -77,9 +78,7 @@ export default function FactCheckAbstract({
     }
   })
 
-  function renderPositionChanges(groupedPartners: {
-    [key: string]: FactCheckPartner[]
-  }) {
+  function renderPositionChanges(groupedPartners: FactCheckPartnerGroup) {
     const renderedPositionChanges = Object.keys(groupedPartners).map(
       (key, index) => {
         const partners = groupedPartners[key]
@@ -111,7 +110,7 @@ export default function FactCheckAbstract({
             <span className="title">政見提出背景：</span>
             <span className="text">
               {factCheck.map((fact, index) => (
-                <span key={index}>
+                <span key={fact.id}>
                   {fact.factCheckSummary && (
                     <>
                       {`【${getCheckResultString(
@@ -156,7 +155,7 @@ export default function FactCheckAbstract({
             <span className="text">
               {expertPoint.length > 1
                 ? expertPoint.map((expert, index) => (
-                    <span key={index}>
+                    <span key={expert.id}>
                       {expert.expertPointSummary}
                       {expert.expert && ` (${expert.expert})`}
                       {index < expertPoint.length - 1 ? '、' : ''}
@@ -181,7 +180,7 @@ export default function FactCheckAbstract({
             <span className="text">
               {repeat.length > 1
                 ? repeat.map((re, index) => (
-                    <span key={index}>
+                    <span key={re.id}>
                       {re.repeatSummary && (
                         <>
                           {re.repeatSummary}

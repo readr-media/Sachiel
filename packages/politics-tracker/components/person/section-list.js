@@ -3,16 +3,11 @@ import React, { Fragment } from 'react'
 import SectionToggle from './section-toggle'
 
 /**
+ * @typedef {Parameters<SectionToggle>[0]} SectionToggleProps
+ * @typedef {Object} Props
+ * @property {React.ReactElement} [children]
  *
- * @param {Object} props
- * @param {null|string} props.id
- * @param {boolean} props.isActive
- * @param {Array<Object>} props.activeId
- * @param {Function} props.setActiveId
- * @param {Function} props.GAClick
- * @param {string} props.color
- * @param {string} props.title
- * @param {React.ReactElement} [props.children]
+ * @param {Props & SectionToggleProps} props
  * @returns {React.ReactElement}
  */
 export default function SectionList2({

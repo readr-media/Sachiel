@@ -20,14 +20,23 @@ import GetEditingPoliticsRelatedToOrganizationElections from '~/graphql/query/po
 import GetOrganizationOverView from '~/graphql/query/politics/get-organization-overview.graphql'
 import GetPersonElectionsRelatedToParty from '~/graphql/query/politics/get-person-elections-related-to-party.graphql'
 import GetPoliticsRelatedToOrganizationsElections from '~/graphql/query/politics/get-politics-related-to-organization-elections.graphql'
-import { RawPolitic } from '~/types/common'
-import type { LegislatorAtLarge } from '~/types/politics'
+import type { GenericGQLData } from '~/types/common'
 import type {
+  LegislatorAtLarge,
   PersonElectionTerm,
+  PersonElectionRelatedToParty,
+  PartyElectionData,
+  PoliticDataForParty,
+  OverviewInfo,
+} from '~/types/politics'
+import type {
   PoliticAmount,
   PoliticDetail,
+  PoliticDetailData,
 } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
+import { POLITIC_PROGRESS } from '~/constants/common'
+import { getPoliticAmount, notEmptyPoliticFunc } from '~/utils/politic'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -55,14 +64,20 @@ export default function PartyPoliticsDetail({
   const { asPath } = useRouter()
   const { organization } = politic
 
-  const titleProps = {
-    id: organization?.organization_id.id || '',
-    name: organization?.organization_id.name || '',
-    avatar: organization?.organization_id.image || '',
-    party: '',
-    partyIcon: '',
+  const shouldShowFeedbackForm: boolean =
+    organization?.elections?.addComments ?? false
+
+  const titleProps: OverviewInfo = {
+    id: '',
+    name: '',
+    avatar: '',
+    partyId: organization?.organization_id?.id || '',
+    party: organization?.organization_id?.name || '',
+    partyIcon: organization?.organization_id?.image || '',
     completed: politicAmount.passed,
     waiting: politicAmount.waiting,
+    campaign: organization?.elections?.type || '',
+    isPartyPage: true,
   }
 
   const navProps = {
@@ -73,7 +88,7 @@ export default function PartyPoliticsDetail({
       href: {
         pathname: '/politics/party/[organizationId]',
         query: {
-          organizationId: organization?.organization_id.id,
+          organizationId: organization?.organization_id?.id,
         },
       },
     },
@@ -113,15 +128,11 @@ export default function PartyPoliticsDetail({
         }}
       >
         <Main>
-          <Title
-            campaign={organization?.elections?.type || ''}
-            isPartyPage={true}
-            {...titleProps}
-          />
+          <Title {...titleProps} />
           <Section
             politic={politic}
             electionTerm={electionTerm}
-            shouldShowFeedbackForm={true}
+            shouldShowFeedbackForm={shouldShowFeedbackForm}
             legislators={legisLatorAtLarge}
           />
         </Main>
@@ -143,12 +154,12 @@ export const getServerSideProps: GetServerSideProps<
   const id = query.politicId
 
   let politic: PoliticDetail = {
-    id: '',
+    id: String(id),
     desc: '',
     content: '',
     source: '',
     status: 'notverified',
-    current_progress: 'no-progress',
+    current_progress: POLITIC_PROGRESS.NOT_START,
     updatedAt: '',
     contributer: '',
     person: null,
@@ -180,20 +191,21 @@ export const getServerSideProps: GetServerSideProps<
   try {
     {
       //get politics by politicId
-      const {
-        data: { politics },
-      } = await fireGqlRequest(
-        print(GetPoliticDetail),
-        { politicId: id },
-        cmsApiUrl
-      )
+      const result: GenericGQLData<PoliticDetailData[], 'politics'> =
+        await fireGqlRequest(
+          print(GetPoliticDetail),
+          { politicId: id },
+          cmsApiUrl
+        )
 
-      if (politics.errors) {
+      if (result.errors) {
         throw new Error(
           'GraphQLerrors: Party Detail politics Error' +
-            JSON.stringify(politics.errors)
+            JSON.stringify(result.errors)
         )
       }
+
+      const politics = result.data?.politics ?? []
 
       if (!politics.length) {
         return {
@@ -202,90 +214,86 @@ export const getServerSideProps: GetServerSideProps<
       }
 
       politic = politics[0] || []
-      partyId = politic.organization?.organization_id.id || ''
+      partyId = politic.organization?.organization_id?.id || ''
     }
 
     {
       //get person elections by electionId & partyId
       const { organization } = politic
 
-      const {
-        data: { personElections },
-      } = await fireGqlRequest(
+      const result: GenericGQLData<
+        PersonElectionRelatedToParty[],
+        'personElections'
+      > = await fireGqlRequest(
         print(GetPersonElectionsRelatedToParty),
-        {
-          electionId: organization?.elections?.id,
-          partyId: partyId,
-        },
+        { electionId: organization?.elections?.id, partyId: partyId },
         cmsApiUrl
       )
 
-      if (personElections.errors) {
+      if (result.errors) {
         throw new Error(
           'GraphQLerrors: Party Detail personElections Error' +
-            JSON.stringify(personElections.errors)
+            JSON.stringify(result.errors)
         )
       }
 
-      if (!personElections.length) {
-        return {
-          notFound: true,
-        }
-      }
+      const personElections = result.data?.personElections ?? []
 
-      legisLatorAtLarge = personElections || []
+      legisLatorAtLarge = personElections
     }
 
     {
       //get all organizationElections ID this organization join
-      const {
-        data: { organizationsElections },
-      } = await fireGqlRequest(
+      const rawData: GenericGQLData<
+        PartyElectionData[],
+        'organizationsElections'
+      > = await fireGqlRequest(
         print(GetOrganizationOverView),
-        { organizationId: partyId },
+        {
+          organizationId: partyId,
+        },
         cmsApiUrl
       )
 
-      const rawOrganizationElection = [...organizationsElections]
-
-      rawOrganizationElection.map((item) => {
+      rawData.data?.organizationsElections?.map((item) => {
         partyElectionIds.push(item.id)
       })
     }
 
     {
       //get `politics` amount (passed/waiting)
-      const {
-        data: { politics: politicList },
-      } = await fireGqlRequest(
-        print(GetPoliticsRelatedToOrganizationsElections),
-        { ids: partyElectionIds },
-        cmsApiUrl
-      )
+      const rawData: GenericGQLData<PoliticDataForParty[], 'politics'> =
+        await fireGqlRequest(
+          print(GetPoliticsRelatedToOrganizationsElections),
+          {
+            ids: partyElectionIds,
+          },
+          cmsApiUrl
+        )
+
+      let politicList = rawData.data?.politics || []
+      politicList.filter(notEmptyPoliticFunc)
 
       // get `editing politics` amount (passed/waiting)
-      const {
-        data: { editingPolitics: editingPoliticLists },
-      } = await fireGqlRequest(
+      const editingRawData: GenericGQLData<
+        PoliticDataForParty[],
+        'editingPolitics'
+      > = await fireGqlRequest(
         print(GetEditingPoliticsRelatedToOrganizationElections),
-        { ids: partyElectionIds },
+        {
+          ids: partyElectionIds,
+        },
         cmsApiUrl
       )
 
-      const passedAmount = politicList.filter(
-        (value: RawPolitic) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
-      ).length
+      let editingPoliticList = editingRawData.data?.editingPolitics || []
+      editingPoliticList.filter(notEmptyPoliticFunc)
 
-      const waitingAmount = editingPoliticLists.filter(
-        (value: RawPolitic) => value.status !== 'verified' && !value.reviewed
-      ).length
+      const amountData = getPoliticAmount(politicList, editingPoliticList)
 
       politicAmount = {
-        passed: passedAmount || 0,
-        waiting: waitingAmount || 0,
+        waiting: amountData.waiting,
+        passed: amountData.completed,
       }
     }
 

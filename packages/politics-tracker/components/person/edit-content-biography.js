@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import { takeArrayKeyName } from '~/utils/person'
 import { getNewSource, sourcesToString, stringToSources } from '~/utils/utils'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -13,6 +14,7 @@ import AddInputButton from './add-input-button'
 import EditSendOrCancel from './edit-send-or-cancel'
 import { SourceInputWrapper } from './edit-source'
 import EditSource from './edit-source'
+
 export const InputWrapperNoLabel = styled(SourceInputWrapper)`
   label {
     display: none;
@@ -23,10 +25,9 @@ export const InputWrapperNoLabel = styled(SourceInputWrapper)`
  * @param {Object} props
  * @param {string} [props.listData]
  * @param {string} [props.sources]
- * @param {function} props.setShouldShowEditMode
- * @param {import('~/types/person').Person["id"]} props.personId
- * @param {import('~/types/person').Person["name"]} props.personName
- * @param {function} props.personName
+ * @param {(value: boolean) => void} props.setShouldShowEditMode
+ * @param {string} props.personId
+ * @param {string} props.personName
  * @returns {React.ReactElement}
  */
 export default function EditContentBiography({
@@ -48,14 +49,12 @@ export default function EditContentBiography({
   // check whether source-list value has ('')
   // if have (''), return true
   const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
-    // @ts-ignore
     (x) => x === ''
   )
 
   // check whether list value has ('')
   // if have (''), return true
   const biographyValueCheck = takeArrayKeyName(list, 'value')?.some(
-    // @ts-ignore
     (x) => x === ''
   )
 
@@ -66,33 +65,29 @@ export default function EditContentBiography({
    */
   const shouldDisableSubmit = useMemo(
     () =>
-      list.filter((i) => i.value).length === 0 ||
-      sourceList.filter((i) => i.value).length === 0 ||
-      (JSON.stringify(takeArrayKeyName(list, 'value')) ===
-        JSON.stringify(
-          // @ts-ignore
-          takeArrayKeyName(stringToSources(listData, '\n'), 'value')
-        ) &&
-        JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
-          JSON.stringify(
-            // @ts-ignore
-            takeArrayKeyName(stringToSources(sources, '\n'), 'value')
-          )) ||
-      SourceValueCheck ||
-      biographyValueCheck,
+      Boolean(
+        list.filter((i) => i.value).length === 0 ||
+          sourceList.filter((i) => i.value).length === 0 ||
+          (JSON.stringify(takeArrayKeyName(list, 'value')) ===
+            JSON.stringify(
+              takeArrayKeyName(stringToSources(listData, '\n'), 'value')
+            ) &&
+            JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
+              JSON.stringify(
+                takeArrayKeyName(stringToSources(sources, '\n'), 'value')
+              )) ||
+          SourceValueCheck ||
+          biographyValueCheck
+      ),
     [list, sourceList]
   )
 
-  // @ts-ignore
-  function takeArrayKeyName(array, key) {
-    // @ts-ignore
-    return array?.map(function (item) {
-      return item[key]
-    })
-  }
   //client side only
-  //TODO: use type Person in person.ts rather than {Object}
-  /** @param {Object} data */
+  /**
+   * @typedef {import('~/types/person').PersonData} PersonData
+   * @typedef {Pick<PersonData, 'name' | 'biography' | 'source'>} PersonDataForCreation
+   *
+   * @param {PersonDataForCreation} data */
   async function createPerson(data) {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
@@ -138,6 +133,7 @@ export default function EditContentBiography({
       })
     }
   }
+
   function addSource() {
     const extended = [...list, getNewSource()]
     setList(extended)
@@ -157,6 +153,7 @@ export default function EditContentBiography({
     })
     setList(updated)
   }
+
   /**
    * @param {string} id
    */
@@ -187,7 +184,6 @@ export default function EditContentBiography({
       <EditSource
         sourceList={sourceList}
         setSourceList={setSourceList}
-        // @ts-ignore
         inputStatusCheck={list}
       />
       <EditSendOrCancel

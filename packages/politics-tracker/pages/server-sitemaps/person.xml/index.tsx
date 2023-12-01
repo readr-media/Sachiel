@@ -8,7 +8,8 @@ import { getServerSideSitemap, ISitemapField } from 'next-sitemap'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPeople from '~/graphql/query/sitemap/get-people.graphql'
-import { GenericGQLData, RawPerson } from '~/types/common'
+import { GenericGQLData } from '~/types/common'
+import { Person } from '~/types/server-sitemaps'
 import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -71,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     // personal page
     const resultOfPeople = results[0] as PromiseSettledResult<
-      GenericGQLData<RawPerson[], 'people'>
+      GenericGQLData<Person[], 'people'>
     >
     if (resultOfPeople.status === 'fulfilled') {
       const people = resultOfPeople.value?.data?.people ?? []

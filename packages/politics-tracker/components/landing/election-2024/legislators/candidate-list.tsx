@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import type { LegislatorCandidate } from '~/types/landing'
+
 const Wrapper = styled.div<{ titleColor: string }>`
   .subtitle {
     padding: 4px 8px;
@@ -17,7 +19,7 @@ const Wrapper = styled.div<{ titleColor: string }>`
   ${({ theme }) => theme.breakpoint.xl} {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
 
     & + * {
       margin-top: 12px;
@@ -74,11 +76,16 @@ const Name = styled.a`
 
 type CandidateListProps = {
   title: '還沒有政見' | '政見還很少' | '超過 20 條政見'
+  candidates: LegislatorCandidate[]
+  isParty: boolean
 }
-
 export default function CandidateList({
   title,
-}: CandidateListProps): JSX.Element {
+  isParty = false,
+  candidates = [],
+}: CandidateListProps): JSX.Element | null {
+  if (!candidates.length) return null
+
   let titleColor = ''
 
   switch (title) {
@@ -102,69 +109,17 @@ export default function CandidateList({
     <Wrapper titleColor={titleColor}>
       <span className="subtitle">{title}</span>
       <Group>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>施奉先</li>
-        </Name>
-        <Name>
-          <li>海綿寶寶</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>施奉先</li>
-        </Name>
-        <Name>
-          <li>海綿寶寶</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>施奉先</li>
-        </Name>
-        <Name>
-          <li>海綿寶寶</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>施奉先</li>
-        </Name>
-        <Name>
-          <li>海綿寶寶</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>施奉先</li>
-        </Name>
-        <Name>
-          <li>海綿寶寶</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
-        <Name>
-          <li>蔣萬安</li>
-        </Name>
+        {candidates.map((candidate) => {
+          const link = isParty
+            ? `/politics/party/${candidate.id}`
+            : `/politics/${candidate.id}`
+
+          return (
+            <Name key={candidate.id} href={link}>
+              <li>{candidate.name}</li>
+            </Name>
+          )
+        })}
       </Group>
     </Wrapper>
   )

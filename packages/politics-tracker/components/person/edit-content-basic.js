@@ -3,6 +3,7 @@ import { Fragment, useMemo, useState } from 'react'
 
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import { takeArrayKeyName } from '~/utils/person'
 import {
   getNewSource,
   stringToSources,
@@ -14,26 +15,17 @@ import { useToast } from '../toast/use-toast'
 import EditContentItem from './edit-content-item'
 import EditSendOrCancel from './edit-send-or-cancel'
 import EditSource from './edit-source'
-/** TODO: refactor jsDoc, make it more clear
- * @typedef {Object} EditContentBasic - Basic information of edit field
- * @property {string} name - name , must be unique
- * @property {string} title - title of field
- * @property {string} description -  description of field, tell user what to be noticed when editing
- * @property {string} type - what kind of edit field, currently have two kind of type: input(enter text) and radio(choose 1 option)
- * @property {string[]} [options] - radio options list, only exist if type is "radio"
- * @property {string} [placeholder] - input placeholder content, only exist if type is "type"
- * @property {boolean} isRequired - if field must write when editing
- * @property {string|(number | null)[]}  value - value of content
- * @property {function}  onChange - value of content
- * @property {import('~/types/person').Person}  personInfo - value of content
+
+/**
+ * @typedef {import('~/types/person').PersonData} PersonData
  */
 
 /**
  * @param {Object} props
  * @param {string} [props.sources]
- * @param {import('~/types/person').Person} props.personData
- * @param {function} props.setShouldShowEditMode
- * @returns
+ * @param {PersonData} props.personData
+ * @param {(value: boolean) => void} props.setShouldShowEditMode
+ * @returns {React.ReactElement}
  */
 export default function EditContentBasic({
   sources,
@@ -45,49 +37,50 @@ export default function EditContentBasic({
     sources ? stringToSources(sources, '\n') : [getNewSource()]
   )
   const [personInfo, setPersonInfo] = useState(Object.assign({}, personData))
+
   /**
    * If  property `value` of element in `sourceList` are all empty strings,
    * or personInfo.name is empty string, then should disable submit button.
    */
 
+  /** @type {PersonData} */
   const cloneObj = { ...personInfo }
+  /** @type {PersonData} */
   const personInfoValueCheck = { ...personInfo }
 
   // check whether source-list value has ('')
   // if have (''), return true
+  /** @template {import('~/types/common').Source} T */
   const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
-    /**
-     * @param {String} source
-     */
     (source) => source === ''
   )
 
   // if user edit basic-form, return false, then source-error-message hidden
   // send BasicFormEditCheck as a prop to edit-source.js
   const BasicFormEditCheck =
-    // @ts-ignore
     JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
-    // @ts-ignore
     JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData)))
 
   const shouldDisableSubmit = useMemo(
     () =>
-      // @ts-ignore
-      (JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
-        // @ts-ignore
-        JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData))) &&
-        JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
-          JSON.stringify(
-            // @ts-ignore
-            takeArrayKeyName(stringToSources(sources, '\n'), 'value')
-          )) ||
-      !personInfo.name ||
-      sourceList.filter((i) => i.value).length === 0 ||
-      SourceValueCheck,
+      Boolean(
+        (JSON.stringify(mapEmptyValueToNull(cloneObj)) ===
+          JSON.stringify(mapEmptyValueToNull(Object.assign({}, personData))) &&
+          JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
+            JSON.stringify(
+              takeArrayKeyName(stringToSources(sources, '\n'), 'value')
+            )) ||
+          !personInfo.name ||
+          sourceList.filter((i) => i.value).length === 0 ||
+          SourceValueCheck
+      ),
     [personInfo.name, sourceList, personInfo]
   )
 
-  // @ts-ignore
+  /**
+   * @param {Record<string, unknown>} object
+   * @returns {Record<string, unknown>} object
+   */
   function mapEmptyValueToNull(object) {
     Object.keys(object).forEach((key) => {
       /**
@@ -101,13 +94,6 @@ export default function EditContentBasic({
       }
     })
     return object
-  }
-  // @ts-ignore
-  function takeArrayKeyName(array, key) {
-    // @ts-ignore
-    return array?.map(function (item) {
-      return item[key]
-    })
   }
 
   /**
@@ -144,12 +130,13 @@ export default function EditContentBasic({
     const numberDate = separateDate
       .filter((i) => i && Number(i))
       .map((i) => Number(i))
+    // TODO: check dateArray=[undefined,undefined,undefined] to CMS
     return numberDate
   }
+
   /**
    * @param {string} value
    */
-  // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateBirthDate(value) {
     const dateArray = stringToDate(value)
     setPersonInfo({
@@ -159,10 +146,10 @@ export default function EditContentBasic({
       birth_date_day: dateArray[2],
     })
   }
+
   /**
    * @param {string} value
    */
-  // TODO: check dateArray=[undefined,undefined,undefined] to CMS
   function updateDeadDate(value) {
     const dateArray = stringToDate(value)
     setPersonInfo({
@@ -174,8 +161,17 @@ export default function EditContentBasic({
   }
 
   //client side only
-  //TODO: use type Person in person.ts rather than {Object}
-  /** @param {Object} data */
+  /**
+   * @typedef {Pick<
+   *    PersonData,
+   *    'name'| 'image'| 'alternative'| 'other_names'|
+   *    'birth_date_year'| 'birth_date_month'| 'birth_date_day'|
+   *    'death_date_year'| 'death_date_month'| 'death_date_day'|
+   *    'gender'| 'national_identity'
+   * >} PersonDataForCreation
+   *
+   * @param {PersonDataForCreation} data
+   */
   async function createPerson(data) {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
@@ -232,6 +228,8 @@ export default function EditContentBasic({
     }
   }
 
+  /** @typedef {Omit<import('./edit-content-item').Props, 'personInfo'>} EditContentBlockConfig */
+  /** @type {EditContentBlockConfig[]} */
   const editBasicInfo = [
     {
       name: 'name',
@@ -242,7 +240,7 @@ export default function EditContentBasic({
       placeholder: '請輸入姓名',
       isRequired: true,
       value: personInfo.name,
-      update: updateList('name'),
+      onChange: updateList('name'),
       errormessage: '姓名為必填',
     },
     {
@@ -253,7 +251,7 @@ export default function EditContentBasic({
       placeholder: '請輸入照片網址',
       isRequired: false,
       value: personInfo.image,
-      update: updateList('image'),
+      onChange: updateList('image'),
     },
     {
       name: 'alternative',
@@ -263,7 +261,7 @@ export default function EditContentBasic({
       placeholder: '請輸入別名',
       isRequired: false,
       value: personInfo.alternative,
-      update: updateList('alternative'),
+      onChange: updateList('alternative'),
     },
     {
       name: 'other_names',
@@ -273,7 +271,7 @@ export default function EditContentBasic({
       placeholder: '請輸入舊名',
       isRequired: false,
       value: personInfo.other_names,
-      update: updateList('other_names'),
+      onChange: updateList('other_names'),
     },
     {
       name: 'bath-date',
@@ -287,7 +285,7 @@ export default function EditContentBasic({
         personInfo.birth_date_month,
         personInfo.birth_date_day,
       ],
-      update: updateBirthDate,
+      onChange: updateBirthDate,
       errormessage: '請輸入正確的時間格式',
     },
     {
@@ -302,7 +300,7 @@ export default function EditContentBasic({
         personInfo.death_date_month,
         personInfo.death_date_day,
       ],
-      update: updateDeadDate,
+      onChange: updateDeadDate,
       errormessage: '請輸入正確的時間格式',
     },
     {
@@ -313,7 +311,7 @@ export default function EditContentBasic({
       options: ['F', 'M'],
       isRequired: false,
       value: personInfo.gender,
-      update: updateGender,
+      onChange: updateGender,
     },
     {
       name: 'national_identity',
@@ -323,7 +321,7 @@ export default function EditContentBasic({
       placeholder: '請輸入國籍',
       isRequired: false,
       value: personInfo.national_identity,
-      update: updateList('national_identity'),
+      onChange: updateList('national_identity'),
     },
   ]
 
@@ -339,7 +337,7 @@ export default function EditContentBasic({
           type,
           options,
           value,
-          update,
+          onChange,
           errormessage,
         }) => (
           <EditContentItem
@@ -352,9 +350,7 @@ export default function EditContentBasic({
             type={type}
             options={options}
             value={value}
-            onChange={update}
-            personInfo={personInfo}
-            // @ts-ignore
+            onChange={onChange}
             errormessage={errormessage}
           ></EditContentItem>
         )
@@ -362,9 +358,7 @@ export default function EditContentBasic({
       <EditSource
         sourceList={sourceList}
         setSourceList={setSourceList}
-        // @ts-ignore
         inputStatusCheck={[personInfoValueCheck]}
-        // @ts-ignore
         BasicFormEditCheck={BasicFormEditCheck}
       />
       <EditSendOrCancel
