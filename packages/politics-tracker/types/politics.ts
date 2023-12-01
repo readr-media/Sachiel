@@ -10,7 +10,7 @@ import type {
   RawOrganizationElection,
   RawPerson,
   RawPersonElection,
-  RawPersonOrgnization,
+  RawPersonOrganization,
   RawPolitic,
   RawPoliticCategory,
   RawPoliticPositionChange,
@@ -309,8 +309,8 @@ export type PoliticDataForParty = Override<
 export type PoliticData = PoliticDataForPerson | PoliticDataForParty
 
 /** type for GetPersonOrganization query */
-export type PersonOrgnizationData = Pick<
-  RawPersonOrgnization,
+export type PersonOrganizationData = Pick<
+  RawPersonOrganization,
   | 'start_date_year'
   | 'start_date_month'
   | 'start_date_day'

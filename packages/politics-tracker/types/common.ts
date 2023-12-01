@@ -470,7 +470,7 @@ export type RawPoliticTimeline = {
 }
 
 /** 人物 - 組織關係 */
-export type RawPersonOrgnization = {
+export type RawPersonOrganization = {
   id: string
   /** 姓名 */
   person_id: RawPerson | null

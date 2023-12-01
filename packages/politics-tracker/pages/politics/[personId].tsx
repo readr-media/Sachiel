@@ -27,7 +27,7 @@ import type {
   OverviewInfo,
   PersonElectionData,
   PersonElectionTerm,
-  PersonOrgnizationData,
+  PersonOrganizationData,
   Politic,
   PoliticAmount,
   PoliticDataForPerson,
@@ -487,7 +487,7 @@ export const getServerSideProps: GetServerSideProps<
     // Iterate through each election and query its election term
     for (const election of elections) {
       const result: GenericGQLData<
-        PersonOrgnizationData[],
+        PersonOrganizationData[],
         'personOrganizations'
       > = await fireGqlRequest(
         print(GetPersonOrganization),

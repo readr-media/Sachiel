@@ -26,7 +26,7 @@ import type { PersonElectionData as PersonElectionDataFromPerson } from '~/types
 import type {
   PoliticDataForPerson,
   PersonElectionData as PersonElectionDataFromPolitic,
-  PersonOrgnizationData,
+  PersonOrganizationData,
   PersonElectionTerm,
   OverviewInfo,
 } from '~/types/politics'
@@ -316,7 +316,7 @@ export const getServerSideProps: GetServerSideProps<
     {
       //get election term by person id
       const result: GenericGQLData<
-        PersonOrgnizationData[],
+        PersonOrganizationData[],
         'personOrganizations'
       > = await fireGqlRequest(
         print(GetPersonOrganization),

@@ -130,7 +130,7 @@ export const getServerSideProps: GetServerSideProps<
       isPartyPage: isPartyPage,
     }
     const elections: ElectionDataForParty[] = []
-    // orgnizationElection id to election id
+    // organizationElection id to election id
     const electionIdMap: Record<string, string> = {}
     const electionMap: Record<string, ElectionDataForParty> = {}
     const organizationElectionIds: string[] = []
