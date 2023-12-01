@@ -2,7 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import styled from 'styled-components'
 
 import ArrowTilt from '~/components/icons/arrow-tilt'
-import type { allPostsWithPoliticsTrackerTag } from '~/types/landing'
+import type { AllPostsWithPoliticsTrackerTagAndUrl } from '~/types/landing'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -182,7 +182,7 @@ const Button = styled.button`
 `
 
 type RelatedPostsProps = {
-  posts: allPostsWithPoliticsTrackerTag[]
+  posts: AllPostsWithPoliticsTrackerTagAndUrl[]
 }
 
 export default function RelatedPosts({
@@ -196,11 +196,7 @@ export default function RelatedPosts({
         {posts?.map((item) => {
           return (
             <PostList key={item.id}>
-              <a
-                href={`https://www.readr.tw/post/${item.id}`}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href={item.url} target="_blank" rel="noreferrer">
                 <PostImage>
                   <CustomImage
                     images={{ original: item?.heroImage?.resized?.w800 }}

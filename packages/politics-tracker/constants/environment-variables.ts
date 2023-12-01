@@ -12,6 +12,7 @@ let gtmId: string
 let feedbackFormApi: string =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_API ??
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
+let postPathOfREADr: string
 
 switch (env) {
   case SYSTEM_ENV.DEVELOPMENT:
@@ -23,6 +24,7 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
+    postPathOfREADr = 'https://dev.readr.tw/post'
     break
   case SYSTEM_ENV.PRODUCTION: {
     gaTrackingId =
@@ -32,6 +34,7 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs.readr.tw/json'
     gtmId = 'GTM-5PG5FN7J'
+    postPathOfREADr = 'https://www.readr.tw/post'
     break
   }
   default:
@@ -41,6 +44,7 @@ switch (env) {
       process.env.NEXT_PUBLIC_PREFIX_OF_JSON_FOR_LANDING_2024 ??
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
+    postPathOfREADr = 'https://dev.readr.tw/post'
     break
 }
 
@@ -49,6 +53,7 @@ export {
   feedbackFormApi,
   gaTrackingId,
   gtmId,
+  postPathOfREADr,
   prefixOfJSONForLanding2024,
   siteUrl,
 }
