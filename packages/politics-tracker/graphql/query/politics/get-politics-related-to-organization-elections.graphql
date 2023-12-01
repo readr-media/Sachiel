@@ -1,5 +1,5 @@
 query GetPoliticsRelatedToOrganizationsElections($ids: [ID!]) {
-  politics(where: { organization: { id: { in: $ids } } }) {
+  politics(where: { organization: { id: { in: $ids } }, thread_parent: null }) {
     id
     desc
     content
