@@ -13,6 +13,7 @@ let feedbackFormApi: string =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_API ??
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 let postPathOfREADr: string
+let gcsBucketForElectionDataLoader: string
 
 switch (env) {
   case SYSTEM_ENV.DEVELOPMENT:
@@ -25,6 +26,7 @@ switch (env) {
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
     postPathOfREADr = 'https://dev.readr.tw/post'
+    gcsBucketForElectionDataLoader = 'elections-dev'
     break
   case SYSTEM_ENV.PRODUCTION: {
     gaTrackingId =
@@ -35,6 +37,7 @@ switch (env) {
       'https://whoru-gcs.readr.tw/json'
     gtmId = 'GTM-5PG5FN7J'
     postPathOfREADr = 'https://www.readr.tw/post'
+    gcsBucketForElectionDataLoader = 'elections'
     break
   }
   default:
@@ -45,6 +48,7 @@ switch (env) {
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
     postPathOfREADr = 'https://dev.readr.tw/post'
+    gcsBucketForElectionDataLoader = 'elections-dev'
     break
 }
 
@@ -52,6 +56,7 @@ export {
   env,
   feedbackFormApi,
   gaTrackingId,
+  gcsBucketForElectionDataLoader,
   gtmId,
   postPathOfREADr,
   prefixOfJSONForLanding2024,
