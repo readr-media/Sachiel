@@ -95,8 +95,8 @@ export default function OrganizationPolitics({
   return (
     <DefaultLayout>
       <CustomHead
-        title={`${titleProps.name} - 政見總覽｜READr 政商人物資料庫`}
-        description={`${titleProps.name}參選紀錄及相關政見`}
+        title={`${titleProps.party} - 政見總覽｜READr 政商人物資料庫`}
+        description={`${titleProps.party}參選紀錄及相關政見`}
         url={`${siteUrl}${asPath}`}
       />
       <main className="flex w-screen flex-col items-center bg-politics">
