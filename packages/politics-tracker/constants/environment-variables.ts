@@ -1,5 +1,11 @@
 // 這裡管理的是在 Build 階段就會寫死數值的環境變數 (通常為 `NEXT_PUBLIC_` 開頭)
-import { SYSTEM_ENV } from './common'
+/** 系統環境 */
+enum SYSTEM_ENV {
+  LOCALHOST = 'localhost',
+  DEVELOPMENT = 'dev',
+  PRODUCTION = 'prod',
+}
+
 const env: string =
   String(process.env.NEXT_PUBLIC_ENV) in SYSTEM_ENV
     ? String(process.env.NEXT_PUBLIC_ENV)
@@ -61,4 +67,5 @@ export {
   postPathOfREADr,
   prefixOfJSONForLanding2024,
   siteUrl,
+  SYSTEM_ENV,
 }
