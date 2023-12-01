@@ -11,7 +11,7 @@ import {
   SOURCE_DELIMITER,
 } from '~/constants/politics'
 import tailwindConfig from '~/tailwind.config'
-import type { GenericFactCheck } from '~/types/common'
+import type { RawFactCheck } from '~/types/common'
 import { FactCheck } from '~/types/politics'
 
 // ref: https://stackoverflow.com/questions/55604798/find-rendered-line-breaks-with-javascript
@@ -134,10 +134,10 @@ function getNewSource(): Source {
 }
 
 function stringToSources(
-  str: string,
+  str: string = '',
   delimiter: string = SOURCE_DELIMITER
 ): Source[] {
-  return str?.split(delimiter).map((s) => ({
+  return str.split(delimiter).map((s) => ({
     id: uuidv4(),
     value: s,
     error: '',
@@ -207,8 +207,7 @@ function getFormattedDate(
   return formattedDate
 }
 
-type FactCheckType = FactCheck &
-  Partial<Pick<GenericFactCheck, 'content' | 'link'>>
+type FactCheckType = FactCheck & Partial<Pick<RawFactCheck, 'content' | 'link'>>
 function getCheckResultString(
   checkResultType: string,
   factCheck: FactCheckType
@@ -233,13 +232,26 @@ function getCheckResultString(
 }
 
 function getPositionChangeString(isChanged: string) {
-  const positionChangeMappings: { [key: string]: string } = {
+  const positionChangeMappings: Record<string, string> = {
     same: '曾持相同意見',
     changed: '曾持不同意見',
     noComment: '當時未表態',
   }
 
   return positionChangeMappings[isChanged] || '曾持相同意見'
+}
+
+/** distinguish between U an V where T = U | V */
+function isTypeOfOneFromCouple<T extends Record<string, unknown>, U extends T>(
+  data: T | null,
+  keys: (keyof U)[]
+): data is U {
+  if (!data) return false
+
+  return keys.reduce(
+    (result: boolean, key: keyof U) => result || key in data,
+    false
+  )
 }
 
 export {
@@ -253,6 +265,7 @@ export {
   getPositionChangeString,
   getTailwindConfig,
   hasOwnByArray,
+  isTypeOfOneFromCouple,
   isURL,
   partyName,
   sourcesToString,

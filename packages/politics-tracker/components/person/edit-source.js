@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
-import { getNewSource } from '~/utils/utils'
+import { getNewSource, typedHasOwnProperty } from '~/utils/utils'
 
 import SourceInput from '../politics/source-input'
 import AddInputButton from './add-input-button'
@@ -22,18 +22,19 @@ const ErrorMessage = styled.div`
 `
 
 /**
+ * @typedef {import('~/types/common').Source} Source
  *
  * @param {Object} props
  * @param {import('~/types/common').Source[]} props.sourceList
- * @param {function} props.setSourceList
- * @param {Array<Object>} props.inputStatusCheck
+ * @param {(value: Source[]) => void} props.setSourceList
+ * @param {Record<string, unknown>[]} props.inputStatusCheck
+ * @param {boolean} [props.BasicFormEditCheck]
  * @returns {React.ReactElement}
  */
 export default function EditSource({
   sourceList,
   setSourceList,
   inputStatusCheck,
-  // @ts-ignore
   BasicFormEditCheck,
 }) {
   function addSource() {
@@ -56,8 +57,9 @@ export default function EditSource({
   }
 
   // check whether content-input has value(if have value, return true)
-  // @ts-ignore
-  const ContentValueCheck = inputStatusCheck?.some((x) => x.value !== '')
+  const ContentValueCheck = inputStatusCheck?.some(
+    (x) => typedHasOwnProperty(x, 'value') && x.value !== ''
+  )
 
   // check whether source-input has value(if have value, return true)
   const SourceValueCheck = sourceList?.some((x) => x.value !== '')

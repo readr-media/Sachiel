@@ -1,11 +1,16 @@
 import type {
-  GenericFactCheckPartner,
-  GenericPoliticCategory,
+  Override,
+  RawElection,
+  RawElectionArea,
+  RawFactCheckPartner,
+  RawPerson,
+  RawPersonElection,
+  RawPolitic,
+  RawPoliticCategory,
 } from '~/types/common'
 import type {
   ExpertPoint,
   FactCheck,
-  PersonElection,
   PositionChange,
   Repeat,
 } from '~/types/politics'
@@ -67,32 +72,71 @@ export type PropsData = {
   totalCompletionOfCouncilor: number // 已有通過審核政見的議員候選人數
   mayorAndPolitics: DistrinctOfMayorElection[]
   councilorAndPolitics: CityOfCouncilorElection[]
-  postsWithPoliticsTrackerTag: allPostsWithPoliticsTrackerTag[]
+  postsWithPoliticsTrackerTag: AllPostsWithPoliticsTrackerTagAndUrl[]
 }
 
 // Landing 2022 - READr 內符合指定標籤(tag)的文章(post)資料
-export type allPostsWithPoliticsTrackerTag = {
+export type AllPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
   state: string // 文章發佈狀態(Draft/Published/Scheduled/Archived)
   publishTime: string // 文章發佈時間
-  heroImage: null | ImageOfPost
+  heroImage: ImageOfPost | null
 }
+
+export type AllPostsWithPoliticsTrackerTagAndUrl =
+  AllPostsWithPoliticsTrackerTag & {
+    /** 文章網址 */
+    url: string
+  }
 
 export type ImageOfPost = {
   id: string
   name: string //文章視覺圖名稱
-  urlOriginal: string //文章視覺圖網址
+  resized: { w800: string } | null // 文章視覺圖
 }
 
+type PP = Pick<RawPerson, 'id' | 'name' | 'birth_date_year'>
+type PE = Pick<RawElection, 'id' | 'name' | 'election_year_year' | 'type'>
+type PEA = Pick<RawElectionArea, 'id' | 'name' | 'city'>
+export type PersonInElection = Override<
+  Pick<
+    RawPersonElection,
+    'id' | 'person_id' | 'election' | 'electoral_district'
+  >,
+  {
+    person_id: PP | null
+    election: PE | null
+    electoral_district: PEA | null
+  }
+>
+
+type RPE = Pick<RawElection, 'type'>
+type RPP = Pick<RawPerson, 'id'>
+type RP = Override<
+  Pick<RawPersonElection, 'id' | 'election' | 'person_id'>,
+  {
+    election: RPE | null
+    person_id: RPP | null
+  }
+>
+export type RelatedPolitic = Override<
+  Pick<RawPolitic, 'id' | 'status' | 'person'>,
+  {
+    person: RP | null
+  }
+>
+
 // Landing 2024：CMS - Related Posts 的文章資料
+type FactCheckPartner = Pick<RawFactCheckPartner, 'id' | 'name'>
+
 export type RelatedPost = {
   id: string
   name: string
   url: string
   ogIMage: string
   createdAt: string
-  partner: Pick<GenericFactCheckPartner, 'id' | 'name'>[]
+  partner: FactCheckPartner[]
 }
 
 export type CategoryOfJson = {
@@ -117,10 +161,12 @@ export type PresidentComparisonJson = {
 export type PresidentFactCheckJson = {
   id: string
   number: string
-  person_id: Pick<PersonElection, 'id' | 'name'>
+  person_id: Pick<RawPersonElection, 'id' | 'name'>
   politicsCount: number
   politics: PoliticOfJson[]
 }
+
+type PoliticCategory = Pick<RawPoliticCategory, 'id' | 'name'>
 
 export type PoliticOfJson = Pick<PoliticDetail, 'id' | 'desc'> & {
   positionChangeCount: number
@@ -131,7 +177,7 @@ export type PoliticOfJson = Pick<PoliticDetail, 'id' | 'desc'> & {
   factCheck: FactCheck[]
   expertPoint: ExpertPoint[]
   repeat: Repeat[]
-  politicCategory: Pick<GenericPoliticCategory, 'id' | 'name'> | null
+  politicCategory: PoliticCategory | null
 }
 
 //補坑進度：立委政見 - 區域立委

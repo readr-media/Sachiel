@@ -8,7 +8,8 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPoliticsRelatedToPerson from '~/graphql/query/sitemap/get-politics-related-to-person.graphql'
-import { GenericGQLData, RawPolitic } from '~/types/common'
+import { GenericGQLData } from '~/types/common'
+import { Politic } from '~/types/server-sitemaps'
 import { fireGqlRequest } from '~/utils/utils'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -23,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     // politic detail page (person)
     const resultOfPolitics = results[0] as PromiseSettledResult<
-      GenericGQLData<RawPolitic[], 'politics'>
+      GenericGQLData<Politic[], 'politics'>
     >
     if (resultOfPolitics.status === 'fulfilled') {
       const politicList = resultOfPolitics.value?.data?.politics ?? []

@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
+import styled from 'styled-components'
 import useFitText from 'use-fit-text'
 
 import Icon from '~/components/icon'
 import type { LinkHref } from '~/types/common'
-import type { PersonOverview } from '~/types/politics'
+import type { OverviewInfo } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { getLineBreaks, getTailwindConfig } from '~/utils/utils'
 
@@ -16,16 +17,28 @@ const fullConfig = getTailwindConfig()
 const mainTextClass = s['main-text']
 const subTextClass = s['sub-text']
 
+type StyledLinkProps = {
+  $isPartyPage: boolean | undefined
+  href: string | LinkHref
+  legacyBehavior: boolean
+  onClick?: () => void
+}
+
+const StyledLink = styled(Link)<StyledLinkProps>`
+  /* Conditionally applying styles based on isPartyPage prop */
+  pointer-events: ${({ $isPartyPage }) => ($isPartyPage ? 'none' : 'auto')};
+`
+
 type BlockProps = {
   title: string
   content: string | number
   fontSize: number
   lineHeight: number
   customClass: string
-  children: React.ReactNode
+  children: React.ReactElement
 }
-type SingleLineBlock = Pick<BlockProps, 'content' | 'customClass'>
-type MultipleLineBlock = Pick<
+type SingleLineBlockProps = Pick<BlockProps, 'content' | 'customClass'>
+type MultipleLineBlockProps = Pick<
   BlockProps,
   'content' | 'fontSize' | 'lineHeight' | 'children' | 'customClass'
 >
@@ -34,13 +47,13 @@ type PoliticsBlockProps = Pick<
   'title' | 'customClass' | 'children'
 > & { subTitle?: string }
 
-const SingleLineBlock = (props: SingleLineBlock) => {
+const SingleLineBlock = (props: SingleLineBlockProps) => {
   const style = classNames(s['single-line-block'], props.customClass)
 
   return <div className={style}>{props.content}</div>
 }
 
-const MultipleLineBlock = (props: MultipleLineBlock) => {
+const MultipleLineBlock = (props: MultipleLineBlockProps) => {
   const baseFontSize = props.fontSize
   const lineHeight = props.lineHeight
   const lineHeightPadding = 0.2
@@ -117,14 +130,14 @@ type TextConfig = {
   customClass: string
 }
 
-export default function Title(props: PersonOverview): JSX.Element {
-  const personLarge: IconConfig = {
+export default function Title(props: OverviewInfo): JSX.Element {
+  const iconLarge: IconConfig = {
     width: 60,
     height: 60,
     borderWidth: 2,
     unoptimized: true,
   }
-  const personSmall: IconConfig = {
+  const iconSmall: IconConfig = {
     width: 60,
     height: 60,
     borderWidth: 2,
@@ -138,9 +151,9 @@ export default function Title(props: PersonOverview): JSX.Element {
   }
 
   const fontSizeGroup = fullConfig?.theme?.fontSize
-  // @ts-ignore: next line
+  // @ts-ignore: should be [string, string]
   const [mainFS, mainLH] = fontSizeGroup['title-main-md']
-  // @ts-ignore: next line
+  // @ts-ignore: should be [string, string]
   const [subFS, subLH] = fontSizeGroup['title-sub-md']
 
   const mainText: TextConfig = {
@@ -158,53 +171,91 @@ export default function Title(props: PersonOverview): JSX.Element {
     ? { pathname: '/' } // Link to '/' when isPartyPage is true
     : { pathname: '/person/[id]', query: { id: props.id } } // Link to '/person/[id]' otherwise
 
+  const PersonProfileBlock = (
+    <>
+      <span className={s['avatar-large']}>
+        <Icon
+          src={props.avatar}
+          {...iconLarge}
+          href={hrefObject}
+          ariaLabel="image link to personal page"
+        />
+      </span>
+      <span className={s['avatar-small']}>
+        <Icon
+          src={props.avatar}
+          {...iconSmall}
+          href={hrefObject}
+          ariaLabel="image link to personal page"
+        />
+      </span>
+      <div className={s.name}>
+        <StyledLink
+          $isPartyPage={false}
+          href={hrefObject}
+          legacyBehavior={false}
+          onClick={() => logGAEvent('click', '點擊人名')}
+        >
+          <MultipleLineBlock content={props.name} {...mainText}>
+            <SingleLineBlock content={props.name} customClass={mainTextClass} />
+          </MultipleLineBlock>
+        </StyledLink>
+
+        <div className={s.party}>
+          <Icon src={props.partyIcon} {...party} />
+          <div className={s['party-name']}>
+            <MultipleLineBlock content={props.party} {...subText}>
+              <SingleLineBlock
+                content={props.party}
+                customClass={subTextClass}
+              />
+            </MultipleLineBlock>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+
+  const PartyProfileBlock = (
+    <>
+      <span className={s['avatar-large']}>
+        <Icon
+          src={props.partyIcon}
+          {...iconLarge}
+          href={hrefObject}
+          ariaLabel="image link to party page"
+        />
+      </span>
+      <span className={s['avatar-small']}>
+        <Icon
+          src={props.partyIcon}
+          {...iconSmall}
+          href={hrefObject}
+          ariaLabel="image link to party page"
+        />
+      </span>
+      <div className={s.name}>
+        <StyledLink
+          $isPartyPage={true}
+          href={hrefObject}
+          legacyBehavior={false}
+          onClick={() => {}}
+        >
+          <MultipleLineBlock content={props.party} {...mainText}>
+            <SingleLineBlock
+              content={props.party}
+              customClass={mainTextClass}
+            />
+          </MultipleLineBlock>
+        </StyledLink>
+      </div>
+    </>
+  )
+
   return (
     <div className={s['main-container']}>
       <div className={s['profile-block']}>
-        <span className={s['avatar-large']}>
-          <Icon
-            src={props.avatar}
-            {...personLarge}
-            href={hrefObject}
-            ariaLabel="image link to personal page"
-          />
-        </span>
-        <span className={s['avatar-small']}>
-          <Icon
-            src={props.avatar}
-            {...personSmall}
-            href={hrefObject}
-            ariaLabel="image link to personal page"
-          />
-        </span>
-        <div className={s.name}>
-          <Link
-            href={hrefObject}
-            legacyBehavior={false}
-            onClick={() => logGAEvent('click', '點擊人名')}
-          >
-            <MultipleLineBlock content={props.name} {...mainText}>
-              <SingleLineBlock
-                content={props.name}
-                customClass={mainTextClass}
-              />
-            </MultipleLineBlock>
-          </Link>
-          {!props.isPartyPage && (
-            <div className={s.party}>
-              <Icon src={props.partyIcon} {...party} />
-              <div className={s['party-name']}>
-                <MultipleLineBlock content={props.party} {...subText}>
-                  <SingleLineBlock
-                    content={props.party}
-                    customClass={subTextClass}
-                  />
-                </MultipleLineBlock>
-              </div>
-            </div>
-          )}
-        </div>
-
+        {props.isPartyPage ? PartyProfileBlock : PersonProfileBlock}
         <span className={s.tab}>政見</span>
       </div>
       <div className={s['data-block']}>

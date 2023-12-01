@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled, { css } from 'styled-components'
 
 import ArrowDown from '~/public/icons/arrow-down-yellow.svg'
+import type { NotNullableAllMemberOfType } from '~/types/common'
 import type { LegislatorAtLarge } from '~/types/politics'
 
 const dotStyle = css`
@@ -82,6 +83,9 @@ const List = styled.a`
   }
 `
 
+type NonNullableLegislatorAtLarge =
+  NotNullableAllMemberOfType<LegislatorAtLarge>
+
 type LegislatorAtLargeProps = {
   legislators?: LegislatorAtLarge[]
   isElectionFinished: boolean
@@ -92,10 +96,17 @@ export default function LegislatorAtLarge({
 }: LegislatorAtLargeProps): JSX.Element | null {
   const [isOpen, setIsOpen] = useState(false)
 
+  const filterOutNullPerson = (
+    legislator: LegislatorAtLarge
+  ): legislator is NonNullableLegislatorAtLarge => legislator.person_id !== null
+
+  const legislatorsInfo: NonNullableLegislatorAtLarge[] =
+    legislators.filter(filterOutNullPerson)
+
   if (!legislators.length) return null
 
   const filterLegislators = (isElected: boolean) =>
-    legislators.filter((legislator) => legislator.elected === isElected)
+    legislatorsInfo.filter((legislator) => legislator.elected === isElected)
 
   const electedList = filterLegislators(true) || [] //當選名單
   const notElectedList = filterLegislators(false) || [] //未當選名單
@@ -106,7 +117,7 @@ export default function LegislatorAtLarge({
         <Group>
           <span className="subtitle">當選</span>
           {electedList.map((legislator, index) => (
-            <React.Fragment key={index}>
+            <React.Fragment key={legislator.id}>
               <List
                 href={`/person/${legislator.person_id.id}`}
                 target="_blank"
@@ -141,11 +152,11 @@ export default function LegislatorAtLarge({
   ) : (
     <Group>
       <span className="subtitle">提名</span>
-      {legislators.map((legislator, index) => (
-        <React.Fragment key={index}>
+      {legislatorsInfo.map((legislator, index) => (
+        <React.Fragment key={legislator.id}>
           <List
             href={`/person/${legislator.person_id.id}`}
-            key={index}
+            key={legislator.id}
             target="_blank"
             rel="noreferrer nooppener"
           >

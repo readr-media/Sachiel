@@ -1,24 +1,33 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
-import type { LegislatorAtLarge, PersonElection } from '~/types/politics'
+import type { ElectionData } from '~/types/politics'
+import { isElectionDataForPerson } from '~/utils/politic'
 
-import { PersonElectionContext } from './react-context/politics-context'
+import { ElectionDataContext } from './react-context/politics-context'
 import SectionBody from './section-body'
 import s from './section-list.module.css'
 import SectionToggle from './section-toggle'
 
-type SectionListProps = PersonElection & {
+type SectionListProps = ElectionData & {
   order: number
-  isPartyPage?: boolean
-  isFinished: boolean
-} & {
-  legisLatorAtLarge?: LegislatorAtLarge[]
 }
+
+const Anchor = styled.div`
+  height: 50px;
+  margin-top: -50px;
+  position: absolute;
+  ${({ theme }) => theme.breakpoint.md} {
+    height: 80px;
+    margin-top: -80px;
+  }
+`
 
 export default function SectionList(props: SectionListProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(false)
   const router = useRouter()
+  const anchorRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const yearFromAnchor = router.asPath.split('#')[1] // Get the year value from the anchor in the URL
@@ -27,46 +36,57 @@ export default function SectionList(props: SectionListProps): JSX.Element {
       setIsActive(props.order === 0)
     } else if (yearFromAnchor) {
       const extractedYear = parseInt(yearFromAnchor)
-      if (Array.isArray(props.year)) {
-        setIsActive(props.year.includes(extractedYear))
-      } else {
-        setIsActive(props.year === extractedYear)
-      }
+
+      setIsActive(props.year === extractedYear)
     } else {
       // If there's no year in the anchor or no anchor present, use default props.order === 0 to set isActive
       setIsActive(props.order === 0)
     }
   }, [router.asPath, props.year, props.order])
 
+  useEffect(() => {
+    // Scroll to the anchor when isActive becomes true and isActive is not due to props.order === 0
+    setTimeout(() => {
+      if (isActive && anchorRef.current && props.order !== 0) {
+        anchorRef.current.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 300)
+  }, [isActive, props.order])
+
   return (
-    <PersonElectionContext.Provider value={props}>
-      <div
-        id={String(props.year)}
-        className={`${s['section-list']} md: px-0 sm:px-8 lg:px-0`}
-      >
+    <ElectionDataContext.Provider value={props}>
+      <div className={`${s['section-list']} md: relative px-0 sm:px-8 lg:px-0`}>
         <SectionToggle
           {...props}
           content={props.name}
           isActive={isActive}
           setActive={() => setIsActive(!isActive)}
         />
-        <SectionBody
-          show={isActive}
-          politics={props.politics}
-          lastUpdate={props.lastUpdate}
-          waitingPolitics={props.waitingPolitics}
-          source={props.source}
-          hidePoliticDetail={props.hidePoliticDetail}
-          mainCandidate={props.mainCandidate}
-          electionType={props.electionType}
-          organizationId={props.organizationId}
-          shouldShowFeedbackForm={props.shouldShowFeedbackForm}
-          isPartyPage={props.isPartyPage}
-          legisLatorAtLarge={props.legisLatorAtLarge}
-          isFinished={props.isFinished}
-          partyId={props.partyId}
-        />
+        <Anchor ref={anchorRef} id={String(props.year)} />
+        {isElectionDataForPerson(props) ? (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            mainCandidate={props.mainCandidate}
+            electionType={props.electionType}
+            partyId={props.partyId}
+            year={props.year}
+          />
+        ) : (
+          <SectionBody
+            show={isActive}
+            politics={props.politics}
+            lastUpdate={props.lastUpdate}
+            waitingPolitics={props.waitingPolitics}
+            source={props.source}
+            electionType={props.electionType}
+            year={props.year}
+          />
+        )}
       </div>
-    </PersonElectionContext.Provider>
+    </ElectionDataContext.Provider>
   )
 }

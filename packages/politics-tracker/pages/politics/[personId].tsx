@@ -12,52 +12,57 @@ import Nav, { type NavProps } from '~/components/nav'
 import { PoliticAmountContext } from '~/components/politics/react-context/politics-context'
 import SectionList from '~/components/politics/section-list'
 import Title from '~/components/politics/title'
+import { POLITIC_PROGRESS } from '~/constants/common'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-editing-politics-related-to-person-elections.graphql'
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import {
-  GenericGQLData,
-  PROGRESS,
-  RawElection,
-  RawPerson,
-  RawPersonElection,
-  RawPolitic,
-  StatusOptionsB,
-} from '~/types/common'
+import type { GenericGQLData } from '~/types/common'
 import type {
+  ElectionDataForPerson,
   ExpertPoint,
   FactCheck,
-  OrganizationId,
-  PersonElection,
+  OverviewInfo,
+  PersonElectionData,
   PersonElectionTerm,
-  PersonOverview,
+  PersonOrganizationData,
   Politic,
   PoliticAmount,
+  PoliticDataForPerson,
   PositionChange,
   Repeat,
 } from '~/types/politics'
 import {
-  electionName,
-  fireGqlRequest,
-  hasOwnByArray,
-  partyName,
-} from '~/utils/utils'
+  expertPointMapFunc,
+  getLastestElectionData,
+  isCompletedPolitic,
+  isWaitingPolitic,
+  notEmptyPoliticFunc,
+  politicChangeMapFunc,
+  politicFactCheckMapFunc,
+  politicRepeatMapFunc,
+} from '~/utils/politic'
+import { electionName, fireGqlRequest, partyName } from '~/utils/utils'
 type PoliticsPageProps = {
-  titleProps: PersonOverview
-  elections: PersonElection[]
-  person: RawPerson
-  latestElection: PersonElection
+  titleProps: OverviewInfo
+  elections: ElectionDataForPerson[]
+  person: PersonElectionData['person_id']
+  latestElection: ElectionDataForPerson
 }
 
-export default function Politics(props: PoliticsPageProps) {
+export default function Politics({
+  titleProps,
+  elections,
+  person,
+  latestElection,
+}: PoliticsPageProps) {
   const { asPath } = useRouter()
 
   const [politicAmounts, setPoliticAmounts] = useState<PoliticAmount>({
-    waiting: props.titleProps.waiting,
-    completed: props.titleProps.completed,
+    waiting: titleProps.waiting,
+    completed: titleProps.completed,
   })
 
   function setAmount(amount: PoliticAmount) {
@@ -71,38 +76,38 @@ export default function Politics(props: PoliticsPageProps) {
       href: {
         pathname: '/person/[id]',
         query: {
-          id: props.person.id,
+          id: person?.id,
         },
       },
     },
     next: {
       backgroundColor: 'bg-campaign',
-      content: props.latestElection.name,
+      content: latestElection.name,
       href: {
         pathname: '/election',
         query: {
-          year: props.latestElection.year,
-          area: props.latestElection.electionArea,
-          type: props.latestElection.electionType,
+          year: latestElection.year,
+          area: latestElection.electionArea,
+          type: latestElection.electionType,
         },
       },
     },
     alwaysShowHome: true,
   }
 
-  const sections = props.elections.map((e, index) => (
+  const sections = elections.map((e, index) => (
     <SectionList key={e.id} order={index} {...e} />
   ))
 
   return (
     <DefaultLayout>
       <CustomHead
-        title={`${props.titleProps.name} - 政見總覽｜READr 政商人物資料庫`}
-        description={`${props.titleProps.name}參選紀錄及相關政見`}
+        title={`${titleProps.name} - 政見總覽｜READr 政商人物資料庫`}
+        description={`${titleProps.name}參選紀錄及相關政見`}
         url={`${siteUrl}${asPath}`}
       />
       <main className="flex w-screen flex-col items-center bg-politics">
-        <Title {...props.titleProps} {...politicAmounts} />
+        <Title {...titleProps} {...politicAmounts} />
         <div className="my-10 lg:my-[40px]">
           <PoliticAmountContext.Provider
             value={{ amount: politicAmounts, setAmount: setAmount }}
@@ -129,8 +134,8 @@ export const getServerSideProps: GetServerSideProps<
   const { personId } = query
 
   try {
-    const profile: PersonOverview = {
-      id: '',
+    const profile: OverviewInfo = {
+      id: String(personId),
       name: '',
       avatar: '',
       party: '',
@@ -141,18 +146,17 @@ export const getServerSideProps: GetServerSideProps<
       completed: 0,
       isPartyPage: false,
     }
-    const elections: PersonElection[] = []
-    const electionMap: Record<string, PersonElection> = {}
-    const personElectionIds: number[] = []
-    let latestPersonElection: RawPersonElection
-    let latestPerson: RawPerson
+    const elections: ElectionDataForPerson[] = []
+    const electionMap: Record<string, ElectionDataForPerson> = {}
+    const personElectionIds: string[] = []
+    let latestPersonElection: PersonElectionData
+    let latestPerson: PersonElectionData['person_id'] = null
     let electionTerm: PersonElectionTerm
-    let organizationId: OrganizationId
 
     {
       // get latest election, person and party,
       // also generate personElectionIds for query politics
-      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
+      const rawData: GenericGQLData<PersonElectionData[], 'personElections'> =
         await fireGqlRequest(
           print(GetPersonOverView),
           {
@@ -185,21 +189,20 @@ export const getServerSideProps: GetServerSideProps<
 
       // sorted by election date
       latestPersonElection = personElections.reduce(
-        (previous: RawPersonElection, current: RawPersonElection) => {
-          const id = Number(current.id)
+        (previous: PersonElectionData, current: PersonElectionData) => {
+          const id = current.id
           personElectionIds.push(id)
 
-          const latest = previous.election
           const election = current.election
           const party = current.party
           const electionArea = current.electoral_district
 
           if (election) {
-            const eId = election.id as string
+            const eId = election.id
             electionMap[eId] = {
-              electionType: String(election.type),
+              electionType: election.type,
               electionArea: String(electionArea?.city),
-              id: String(current.id),
+              id: current.id,
               name: electionName<string | number | undefined>(
                 election.election_year_year,
                 election.name,
@@ -208,9 +211,9 @@ export const getServerSideProps: GetServerSideProps<
               party: partyName(party?.name),
               partyIcon: party?.image ?? '',
               partyId: party?.id ?? '',
-              year: Number(election.election_year_year),
-              month: Number(election.election_year_month),
-              day: Number(election.election_year_day),
+              year: election.election_year_year,
+              month: election.election_year_month,
+              day: election.election_year_day,
               isFinished: now.isAfter(
                 moment(
                   `${election.election_year_year}-${election.election_year_month}-${election.election_year_day}`,
@@ -226,56 +229,31 @@ export const getServerSideProps: GetServerSideProps<
               waitingPolitics: [],
               hidePoliticDetail: election.hidePoliticDetail ?? null,
               electionTerm: electionTerm,
-              organizationId: organizationId,
               shouldShowFeedbackForm: election.addComments ?? false,
             }
           }
 
-          if (election && latest) {
-            if (
-              hasOwnByArray(latest, [
-                'election_year_year',
-                'election_year_month',
-                'election_year_day',
-              ])
-            ) {
-              const latestTime = moment()
-                .year(Number(latest.election_year_year))
-                .month(Number(latest.election_year_month) - 1)
-                .date(Number(latest.election_year_day))
-                .unix()
-              const currentTime = moment()
-                .year(Number(election.election_year_year))
-                .month(Number(election.election_year_month) - 1)
-                .date(Number(election.election_year_day))
-                .unix()
-              if (currentTime > latestTime) {
-                return current
-              }
-            } else {
-              return current
-            }
-          }
-          return previous
+          return getLastestElectionData(previous, current)
         },
-        { election: {} }
+        personElections[0]
       )
 
-      const person = latestPersonElection.person_id as RawPerson
-      const election = latestPersonElection.election as RawElection
+      const person = latestPersonElection.person_id
+      const election = latestPersonElection.election
       const party = latestPersonElection.party
-      profile.id = person?.id ?? ''
+
       profile.name = person?.name ?? ''
       profile.avatar = person?.image ?? ''
       profile.party = partyName(party?.name)
       profile.partyIcon = party?.image ?? ''
+      profile.partyId = party?.id ?? ''
       profile.campaign = election?.type ?? ''
       latestPerson = person
     }
 
     {
       // get related politics
-      const rawData: GenericGQLData<RawPolitic[], 'politics'> =
+      const rawData: GenericGQLData<PoliticDataForPerson[], 'politics'> =
         await fireGqlRequest(
           print(GetPoliticsRelatedToPersonElections),
           {
@@ -299,17 +277,20 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      const politicList = rawData.data?.politics || []
+      let politicList = rawData.data?.politics || []
+      politicList = politicList.filter(notEmptyPoliticFunc)
 
       // Fetch 'editingPolitics' data
-      const editingRawData: GenericGQLData<RawPolitic[], 'editingPolitics'> =
-        await fireGqlRequest(
-          print(GetEditingPoliticsRelatedToPersonElections),
-          {
-            ids: personElectionIds,
-          },
-          cmsApiUrl
-        )
+      const editingRawData: GenericGQLData<
+        PoliticDataForPerson[],
+        'editingPolitics'
+      > = await fireGqlRequest(
+        print(GetEditingPoliticsRelatedToPersonElections),
+        {
+          ids: personElectionIds,
+        },
+        cmsApiUrl
+      )
 
       const editingGqlErrors = editingRawData.errors
 
@@ -326,152 +307,80 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingEditingError
       }
 
-      const editingPoliticList = editingRawData.data?.editingPolitics || []
+      let editingPoliticList = editingRawData.data?.editingPolitics || []
+      editingPoliticList = editingPoliticList.filter(notEmptyPoliticFunc)
 
-      // Combine 'politics' and 'editingPolitics' arrays
-      const combinedPolitics = politicList.concat(editingPoliticList)
+      for (const politic of politicList) {
+        const eId = politic.person?.election?.id
 
-      const politicGroup: Record<
-        string,
-        {
-          latestId: string
-          politic: RawPolitic
-        }
-      > = {}
-      // keep latest politic of each politic thread
-      for (const politic of combinedPolitics) {
-        const status = politic.status as StatusOptionsB
-        const reviewed = politic.reviewed
+        if (!eId) continue
 
-        if (status === 'verified' && reviewed) {
-          const selfId = politic.id as string
-          const commonId = politic.thread_parent?.id ?? selfId
-          if (politicGroup.hasOwnProperty(commonId)) {
-            const latestId = politicGroup[commonId].latestId
-            if (Number(selfId) - Number(latestId) > 0) {
-              politicGroup[commonId] = {
-                latestId: selfId,
-                politic,
-              }
-            }
-          } else {
-            politicGroup[commonId] = {
-              latestId: selfId,
-              politic,
-            }
-          }
-        } else if (!reviewed) {
-          const eId = politic.person?.election?.id as string
+        if (isCompletedPolitic(politic)) {
+          const positionChangeData: PositionChange[] =
+            politic.positionChange.map(politicChangeMapFunc)
+          const factCheckData: FactCheck[] = politic.factCheck.map(
+            politicFactCheckMapFunc
+          )
+          const expertPointData: ExpertPoint[] =
+            politic.expertPoint.map(expertPointMapFunc)
+          const repeatData: Repeat[] = politic.repeat.map(politicRepeatMapFunc)
 
-          let positionChangeData: PositionChange[] = []
-          // @ts-ignore
-          positionChangeData = politic?.positionChange?.map((change) => ({
-            id: change.id,
-            isChanged: change.isChanged,
-            positionChangeSummary: change.positionChangeSummary,
-            factcheckPartner: change.factcheckPartner ?? null,
-          }))
-
-          let factCheckData: FactCheck[] = []
-          // @ts-ignore
-          factCheckData = politic?.factCheck?.map((fact) => ({
-            id: fact.id,
-            factCheckSummary: fact.factCheckSummary,
-            checkResultType: fact.checkResultType ?? null,
-            checkResultOther: fact.checkResultOther,
-            factcheckPartner: fact.factcheckPartner ?? null,
-          }))
-
-          let expertPointData: ExpertPoint[] = []
-          // @ts-ignore
-          expertPointData = politic?.expertPoint?.map((point) => ({
-            id: point.id,
-            expertPointSummary: point.expertPointSummary,
-            expert: point.expert ?? null,
-          }))
-
-          let repeatData: Repeat[] = []
-          // @ts-ignore
-          repeatData = politic?.repeat?.map((re) => ({
-            id: re.id,
-            repeatSummary: re.repeatSummary,
-            factcheckPartner: re.factcheckPartner ?? null,
-          }))
-
-          electionMap[eId].waitingPolitics.push({
-            id: String(politic.id),
-            desc: String(politic.desc),
-            source: '',
-            content: '',
-            progress: PROGRESS.NOT_START,
-            politicCategoryId: null,
-            politicCategoryName: null,
-            createdAt: String(politic.createdAt),
+          electionMap[eId].politics.push({
+            id: politic.id,
+            desc: politic.desc,
+            source: politic.source,
+            content: politic.content,
+            progress: politic.current_progress ?? POLITIC_PROGRESS.NOT_START,
+            politicCategoryId: politic.politicCategory?.id ?? null,
+            politicCategoryName: politic.politicCategory?.name ?? null,
+            createdAt: politic.createdAt,
             updatedAt: politic.updatedAt ?? null,
             positionChange: positionChangeData,
             factCheck: factCheckData,
             expertPoint: expertPointData,
             repeat: repeatData,
           })
+        } else if (isWaitingPolitic(politic)) {
+          electionMap[eId].waitingPolitics.push({
+            id: politic.id,
+            desc: politic.desc,
+            source: '',
+            content: '',
+            progress: POLITIC_PROGRESS.NOT_START,
+            politicCategoryId: null,
+            politicCategoryName: null,
+            createdAt: politic.createdAt,
+            updatedAt: politic.updatedAt ?? null,
+            positionChange: [],
+            factCheck: [],
+            expertPoint: [],
+            repeat: [],
+          })
         }
       }
 
-      const verifiedLatestPoliticList: RawPolitic[] = Object.keys(
-        politicGroup
-      ).map((key) => politicGroup[key].politic)
-      for (const politic of verifiedLatestPoliticList) {
-        const eId = politic.person?.election?.id as string
+      for (const politic of editingPoliticList) {
+        const eId = politic.person?.election?.id
 
-        let positionChangeData: PositionChange[] = []
-        // @ts-ignore
-        positionChangeData = politic?.positionChange?.map((change) => ({
-          id: change.id,
-          isChanged: change.isChanged,
-          positionChangeSummary: change.positionChangeSummary,
-          factcheckPartner: change.factcheckPartner ?? null,
-        }))
+        if (!eId) continue
 
-        let factCheckData: FactCheck[] = []
-        // @ts-ignore
-        factCheckData = politic?.factCheck?.map((fact) => ({
-          id: fact.id,
-          factCheckSummary: fact.factCheckSummary,
-          checkResultType: fact.checkResultType ?? null,
-          checkResultOther: fact.checkResultOther,
-          factcheckPartner: fact.factcheckPartner ?? null,
-        }))
-
-        let expertPointData: ExpertPoint[] = []
-        // @ts-ignore
-        expertPointData = politic?.expertPoint?.map((point) => ({
-          id: point.id,
-          expertPointSummary: point.expertPointSummary,
-          expert: point.expert ?? null,
-        }))
-
-        let repeatData: Repeat[] = []
-        // @ts-ignore
-        repeatData = politic?.repeat?.map((re) => ({
-          id: re.id,
-          repeatSummary: re.repeatSummary,
-          factcheckPartner: re.factcheckPartner ?? null,
-        }))
-
-        electionMap[eId].politics.push({
-          id: String(politic.thread_parent?.id ?? politic.id),
-          desc: String(politic.desc),
-          source: String(politic.source),
-          content: String(politic.content),
-          progress: politic.current_progress ?? PROGRESS.NOT_START,
-          politicCategoryId: politic.politicCategory?.id ?? null,
-          politicCategoryName: politic.politicCategory?.name ?? null,
-          createdAt: String(politic.createdAt),
-          updatedAt: politic.updatedAt ?? null,
-          positionChange: positionChangeData,
-          factCheck: factCheckData,
-          expertPoint: expertPointData,
-          repeat: repeatData,
-        })
+        if (isWaitingPolitic(politic)) {
+          electionMap[eId].waitingPolitics.push({
+            id: politic.id,
+            desc: politic.desc,
+            source: '',
+            content: '',
+            progress: POLITIC_PROGRESS.NOT_START,
+            politicCategoryId: null,
+            politicCategoryName: null,
+            createdAt: politic.createdAt,
+            updatedAt: politic.updatedAt ?? null,
+            positionChange: [],
+            factCheck: [],
+            expertPoint: [],
+            repeat: [],
+          })
+        }
       }
 
       // get latestUpdate info of each election
@@ -516,15 +425,19 @@ export const getServerSideProps: GetServerSideProps<
       })
     }
 
+    // TODO: optimize request counts
     // Iterate through each election and query its election term
     for (const election of elections) {
-      const {
-        data: { personOrganizations: personOrganization },
-      } = await fireGqlRequest(
+      const result: GenericGQLData<
+        PersonOrganizationData[],
+        'personOrganizations'
+      > = await fireGqlRequest(
         print(GetPersonOrganization),
         { electionId: election.id },
         cmsApiUrl
       )
+
+      const personOrganization = result.data?.personOrganizations ?? []
 
       electionTerm = personOrganization[0] || {
         start_date_day: null,
@@ -535,26 +448,15 @@ export const getServerSideProps: GetServerSideProps<
         end_date_year: null,
       }
 
-      organizationId = personOrganization[0]?.organization_id ?? {}
-
       // Push the election term data to the current election object
-      election.electionTerm = {
-        start_date_day: electionTerm.start_date_day,
-        start_date_month: electionTerm.start_date_month,
-        start_date_year: electionTerm.start_date_year,
-        end_date_day: electionTerm.end_date_day,
-        end_date_month: electionTerm.end_date_month,
-        end_date_year: electionTerm.end_date_year,
-      }
-      // Push the organizationId data to the current election object
-      election.organizationId = organizationId
+      election.electionTerm = { ...electionTerm }
     }
 
     return {
       props: {
         titleProps: profile,
         elections,
-        person: latestPerson ?? null,
+        person: latestPerson,
         latestElection: elections[0],
       },
     }

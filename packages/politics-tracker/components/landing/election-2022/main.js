@@ -24,10 +24,10 @@ const HeaderWrap = styled.div`
 `
 
 /**
- * @property {Object} titleData
+ * @param {Object} props
+ * @param {import('~/types/landing').PropsData} props.propsData
  * @returns {React.ReactElement}
  */
-// @ts-ignore : fix in the future
 export default function LandingMain({ propsData }) {
   return (
     <>
@@ -35,23 +35,14 @@ export default function LandingMain({ propsData }) {
         <Header />
       </HeaderWrap>
       <Main>
-        <FrontPage
-          // @ts-ignore : fix in the future
-          propsData={propsData}
-        />
+        <FrontPage propsData={propsData} />
         <CollaborateGuide
           linkTitle="需要大量新增政見嗎？請參考"
           buttonText="協作指南"
           buttonHref="https://hackmd.io/@readr/H1WmP88Eo"
         />
-        <Mayor
-          // @ts-ignore
-          propsData={propsData}
-        />
-        <Councilor
-          // @ts-ignore
-          propsData={propsData}
-        />
+        <Mayor propsData={propsData.mayorAndPolitics} />
+        <Councilor propsData={propsData.councilorAndPolitics} />
         <FileDownload links={fileDownload2022} />
 
         {propsData.postsWithPoliticsTrackerTag?.length !== 0 && (

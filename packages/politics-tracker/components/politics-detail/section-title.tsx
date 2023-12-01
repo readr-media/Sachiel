@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import ElectionTerm from '~/components/shared/election-term'
 import ArrowLeft from '~/public/icons/arrow-left.svg'
-import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
+import type { PersonElectionTerm } from '~/types/politics'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 const Header = styled.div`
   box-shadow: inset 0px -4px 0px rgba(0, 0, 0, 1);
@@ -132,21 +133,23 @@ export default function SectionTitle({
 
   if (isPartyPage) {
     electionArea = ''
-    linkHref = `/politics/party/${organization?.organization_id?.id}` || '/'
-
     rawElectionName = organization?.elections?.name || ''
     electionCenturyYear =
       organization?.elections?.election_year_year?.toString() || ''
     electionWithoutYear =
       rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+    linkHref =
+      `/politics/party/${organization?.organization_id?.id}#${electionCenturyYear}` ||
+      '/'
   } else {
     const districtName = person?.electoral_district?.name || ''
     electionArea = districtName.slice(0, 3) || ''
-    linkHref = `/politics/${person?.person_id?.id}` || '/'
     rawElectionName = person?.election?.name || ''
     electionCenturyYear = person?.election?.election_year_year?.toString() || ''
     electionWithoutYear =
       rawElectionName.slice(rawElectionName.indexOf('年') + 1) || ''
+    linkHref =
+      `/politics/${person?.person_id?.id}#${electionCenturyYear}` || '/'
   }
 
   return (

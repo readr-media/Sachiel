@@ -52,8 +52,8 @@ export {
 }
 /**
  * @param {Object} props
- * @param {String} [props.title]
- * @param {String} props.content
+ * @param {string} [props.title]
+ * @param {string} props.content
  * @param {React.ReactElement} [props.children]
  * @returns  {React.ReactElement}
  */

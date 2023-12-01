@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import ArrowRight from '~/components/icons/arrow-right'
 import Plus from '~/components/icons/plus'
 import type { Source } from '~/types/common'
-import type { Politic } from '~/types/politics'
+import type { PoliticData } from '~/types/politics'
 import { logGAEvent } from '~/utils/analytics'
 import { useWindowSize } from '~/utils/hooks'
 import {
@@ -20,12 +20,27 @@ import SourceInput from './source-input'
 
 const fullConfig = getTailwindConfig()
 
+export type DraftPoliticForCreation = Pick<
+  PoliticData,
+  'desc' | 'source' | 'content'
+>
+export type DraftPoliticForModification = Pick<
+  PoliticData,
+  'id' | 'desc' | 'source' | 'content'
+>
+
+export type DraftPolitic = DraftPoliticForCreation | DraftPoliticForModification
+
+type DraftPoliticWithError = DraftPolitic & {
+  error: string
+}
+
 type PoliticFormProps = {
-  politic: Politic
+  politic: DraftPolitic
   closeForm: () => void
   // this is type definition
   // eslint-disable-next-line
-  submitForm: (politic: Politic) => Promise<boolean>
+  submitForm: (politic: DraftPolitic) => Promise<boolean>
 }
 
 export default function PoliticForm(props: PoliticFormProps): JSX.Element {
@@ -39,7 +54,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     return windowSize.width <= boundary
   }
 
-  const [politic, setPolitic] = useState<Politic>({
+  const [politic, setPolitic] = useState<DraftPoliticWithError>({
     ...props.politic,
     error: '',
   })
@@ -82,7 +97,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     />
   ))
 
-  function checkPolitic(politic: Politic) {
+  function checkPolitic(politic: DraftPoliticWithError) {
     if (!politic.desc || !politic.desc.trim()) {
       if (!politic.error) {
         setPolitic({
@@ -139,7 +154,7 @@ export default function PoliticForm(props: PoliticFormProps): JSX.Element {
     return isValid
   }
 
-  function checkModified(politic: Politic, sources: Source[]) {
+  function checkModified(politic: DraftPoliticWithError, sources: Source[]) {
     return !(
       politic.desc === props.politic.desc &&
       sourcesToString(sources) === props.politic.source

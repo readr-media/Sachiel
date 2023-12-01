@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import ArrowDown from '~/public/icons/arrow-down-yellow.svg'
-import type { GenericFactCheckPartner } from '~/types/common'
+import type { RawFactCheckPartner } from '~/types/common'
 import type { RelatedPost } from '~/types/landing'
 import { getFormattedDate } from '~/utils/utils'
 
@@ -185,7 +185,7 @@ export default function RelatedPosts({
   }
 
   function jointPartnerName(
-    partners: Pick<GenericFactCheckPartner, 'id' | 'name'>[]
+    partners: Pick<RawFactCheckPartner, 'id' | 'name'>[]
   ) {
     const names = partners.map((partner) => partner.name)
     return names.join('、')
