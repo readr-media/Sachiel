@@ -7,7 +7,13 @@ import type {
 import type {
   ElectionData,
   ElectionDataForPerson,
+  ExpertPoint,
+  FactCheck,
   PersonElectionData,
+  PoliticAmount,
+  PoliticData,
+  PositionChange,
+  Repeat,
 } from '~/types/politics'
 
 import { isTypeOfOneFromCouple } from './utils'
@@ -74,9 +80,108 @@ function getLastestElectionData<T extends PersonElectionData>(
   return previous
 }
 
+function isWaitingPolitic(politic: PoliticData): boolean {
+  return !politic.reviewed
+}
+
+function isCompletedPolitic(politic: PoliticData): boolean {
+  return politic.reviewed && politic.status === 'verified'
+}
+
+function getPoliticAmount(
+  politics: PoliticData[],
+  editingPolitics: PoliticData[]
+): PoliticAmount {
+  const amount: PoliticAmount = {
+    waiting: 0,
+    completed: 0,
+  }
+
+  for (let politic of politics) {
+    if (isCompletedPolitic(politic)) {
+      amount.completed += 1
+    } else if (isWaitingPolitic(politic)) {
+      amount.waiting += 1
+    }
+  }
+
+  for (let politic of editingPolitics) {
+    if (isWaitingPolitic(politic)) {
+      amount.waiting += 1
+    }
+  }
+
+  return amount
+}
+function politicChangeMapFunc({
+  id,
+  isChanged,
+  positionChangeSummary,
+  factcheckPartner,
+}: PositionChange): PositionChange {
+  return {
+    id,
+    isChanged,
+    positionChangeSummary,
+    factcheckPartner,
+  }
+}
+
+function politicFactCheckMapFunc({
+  id,
+  factCheckSummary,
+  factcheckPartner,
+  checkResultType,
+  checkResultOther,
+}: FactCheck): FactCheck {
+  return {
+    id,
+    factCheckSummary,
+    factcheckPartner: factcheckPartner ?? null,
+    checkResultType: checkResultType ?? null,
+    checkResultOther,
+  }
+}
+
+function expertPointMapFunc({
+  id,
+  expertPointSummary,
+  expert,
+}: ExpertPoint): ExpertPoint {
+  return {
+    id,
+    expertPointSummary,
+    expert,
+  }
+}
+
+function politicRepeatMapFunc({
+  id,
+  repeatSummary,
+  factcheckPartner,
+}: Repeat): Repeat {
+  return {
+    id,
+    repeatSummary,
+    factcheckPartner,
+  }
+}
+
+function notEmptyPoliticFunc(politic: PoliticData): boolean {
+  return Boolean(politic.desc)
+}
+
 export {
   checkIsPartyPage,
+  expertPointMapFunc,
   getLastestElectionData,
+  getPoliticAmount,
+  isCompletedPolitic,
   isDraftPoliticForModification,
   isElectionDataForPerson,
+  isWaitingPolitic,
+  notEmptyPoliticFunc,
+  politicChangeMapFunc,
+  politicFactCheckMapFunc,
+  politicRepeatMapFunc,
 }

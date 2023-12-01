@@ -15,7 +15,7 @@ import {
   readrCmsApiUrl,
   urlOfJsonForlandingPage,
 } from '~/constants/config'
-import { siteUrl } from '~/constants/environment-variables'
+import { postPathOfREADr, siteUrl } from '~/constants/environment-variables'
 import GetPeopleInElection from '~/graphql/query/landing/get-people-in-election.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/landing/get-politics-related-to-person-elections.graphql'
 import GetPostsWithPoliticsTracker from '~/graphql/query/landing/get-posts-related-to-politics-tracker-tag.graphql'
@@ -24,7 +24,8 @@ import { fireGqlRequest, typedHasOwnProperty } from '~/utils/utils'
 /**
  * @typedef { import('~/types/landing').PropsData } PropsData
  * @typedef { import('~/types/landing').PersonData } PersonData
- * @typedef { import('~/types/landing').allPostsWithPoliticsTrackerTag } AllPostsWithPoliticsTrackerTag
+ * @typedef { import('~/types/landing').AllPostsWithPoliticsTrackerTag } AllPostsWithPoliticsTrackerTag
+ * @typedef { import('~/types/landing').AllPostsWithPoliticsTrackerTagAndUrl } AllPostsWithPoliticsTrackerTagAndUrl
  * @typedef { import('~/types/landing').CityOfMayorElection } CityOfMayorElection
  * @typedef { import('~/types/landing').DistrinctOfMayorElection } DistrinctOfMayorElection
  * @typedef { import('~/types/landing').AreaOfCouncilorElection } AreaOfCouncilorElection
@@ -202,6 +203,7 @@ export const getServerSideProps = async ({ res }) => {
             publishTime: moment(value.publishTime)
               .tz('Asia/Taipei')
               .format('YYYY/MM/DD'),
+            url: `${postPathOfREADr}/${value.id}`,
           }
         })
     }

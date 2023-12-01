@@ -18,7 +18,9 @@ query GetPostsOfPoliticsTrackerTag($tag: String!) {
     heroImage {
       id
       name
-      urlOriginal
+      resized {
+        w800
+      }
     }
   }
 }

@@ -72,11 +72,11 @@ export type PropsData = {
   totalCompletionOfCouncilor: number // 已有通過審核政見的議員候選人數
   mayorAndPolitics: DistrinctOfMayorElection[]
   councilorAndPolitics: CityOfCouncilorElection[]
-  postsWithPoliticsTrackerTag: allPostsWithPoliticsTrackerTag[]
+  postsWithPoliticsTrackerTag: AllPostsWithPoliticsTrackerTagAndUrl[]
 }
 
 // Landing 2022 - READr 內符合指定標籤(tag)的文章(post)資料
-export type allPostsWithPoliticsTrackerTag = {
+export type AllPostsWithPoliticsTrackerTag = {
   id: string
   name: string // 文章標題
   state: string // 文章發佈狀態(Draft/Published/Scheduled/Archived)
@@ -84,10 +84,16 @@ export type allPostsWithPoliticsTrackerTag = {
   heroImage: ImageOfPost | null
 }
 
+export type AllPostsWithPoliticsTrackerTagAndUrl =
+  AllPostsWithPoliticsTrackerTag & {
+    /** 文章網址 */
+    url: string
+  }
+
 export type ImageOfPost = {
   id: string
   name: string //文章視覺圖名稱
-  urlOriginal: string //文章視覺圖網址
+  resized: { w800: string } | null // 文章視覺圖
 }
 
 type PP = Pick<RawPerson, 'id' | 'name' | 'birth_date_year'>

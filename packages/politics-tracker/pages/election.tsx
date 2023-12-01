@@ -11,8 +11,10 @@ import DefaultLayout from '~/components/layout/default'
 import Nav, { type LinkMember, NavProps } from '~/components/nav'
 import { cmsApiUrl } from '~/constants/config'
 import { districtsMapping, electionTypesMapping } from '~/constants/election'
-import { env } from '~/constants/environment-variables'
-import { siteUrl } from '~/constants/environment-variables'
+import {
+  gcsBucketForElectionDataLoader,
+  siteUrl,
+} from '~/constants/environment-variables'
 import GetElection from '~/graphql/query/election/get-election.graphql'
 import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import type { GenericGQLData } from '~/types/common'
@@ -50,9 +52,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const electionType = electionTypesMapping[String(type)]
   let ldr = new DataLoader({
-    apiUrl: `https://whoareyou-gcs.readr.tw/${
-      env === 'dev' ? 'elections-dev' : 'elections'
-    }`,
+    apiUrl: `https://whoareyou-gcs.readr.tw/${gcsBucketForElectionDataLoader}`,
     version: 'v2',
   })
   let scrollTo = ''

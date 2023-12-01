@@ -36,6 +36,7 @@ import type {
 } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 import { POLITIC_PROGRESS } from '~/constants/common'
+import { getPoliticAmount, notEmptyPoliticFunc } from '~/utils/politic'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -67,12 +68,12 @@ export default function PartyPoliticsDetail({
     organization?.elections?.addComments ?? false
 
   const titleProps: OverviewInfo = {
-    id: organization?.organization_id?.id || '',
-    name: organization?.organization_id?.name || '',
-    avatar: organization?.organization_id?.image || '',
-    partyId: '',
-    party: '',
-    partyIcon: '',
+    id: '',
+    name: '',
+    avatar: '',
+    partyId: organization?.organization_id?.id || '',
+    party: organization?.organization_id?.name || '',
+    partyIcon: organization?.organization_id?.image || '',
     completed: politicAmount.passed,
     waiting: politicAmount.waiting,
     campaign: organization?.elections?.type || '',
@@ -270,7 +271,8 @@ export const getServerSideProps: GetServerSideProps<
           cmsApiUrl
         )
 
-      const politicList = rawData.data?.politics || []
+      let politicList = rawData.data?.politics || []
+      politicList.filter(notEmptyPoliticFunc)
 
       // get `editing politics` amount (passed/waiting)
       const editingRawData: GenericGQLData<
@@ -284,23 +286,14 @@ export const getServerSideProps: GetServerSideProps<
         cmsApiUrl
       )
 
-      const editingPoliticList = editingRawData.data?.editingPolitics || []
+      let editingPoliticList = editingRawData.data?.editingPolitics || []
+      editingPoliticList.filter(notEmptyPoliticFunc)
 
-      const passedAmount = politicList.filter(
-        (value: PoliticDataForParty) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
-      ).length
-
-      const waitingAmount = editingPoliticList.filter(
-        (value: PoliticDataForParty) =>
-          value.status !== 'verified' && !value.reviewed
-      ).length
+      const amountData = getPoliticAmount(politicList, editingPoliticList)
 
       politicAmount = {
-        passed: passedAmount || 0,
-        waiting: waitingAmount || 0,
+        waiting: amountData.waiting,
+        passed: amountData.completed,
       }
     }
 
