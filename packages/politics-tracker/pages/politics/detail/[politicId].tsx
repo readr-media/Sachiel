@@ -12,6 +12,7 @@ import DefaultLayout from '~/components/layout/default'
 import Nav from '~/components/nav'
 import Section from '~/components/politics-detail/section'
 import Title from '~/components/politics/title'
+import { POLITIC_PROGRESS } from '~/constants/common'
 import { cmsApiUrl } from '~/constants/config'
 import { siteUrl } from '~/constants/environment-variables'
 import GetPersonElections from '~/graphql/query/person/get-person-elections.graphql'
@@ -20,13 +21,26 @@ import GetEditingPoliticsRelatedToPersonElections from '~/graphql/query/politics
 import GetPersonOrganization from '~/graphql/query/politics/get-person-organization.graphql'
 import GetPersonOverView from '~/graphql/query/politics/get-person-overview.graphql'
 import GetPoliticsRelatedToPersonElections from '~/graphql/query/politics/get-politics-related-to-person-elections.graphql'
-import { GenericGQLData, RawPersonElection, RawPolitic } from '~/types/common'
+import type { GenericGQLData } from '~/types/common'
+import type { PersonElectionData as PersonElectionDataFromPerson } from '~/types/person'
 import type {
+  PoliticDataForPerson,
+  PersonElectionData as PersonElectionDataFromPolitic,
+  PersonOrganizationData,
   PersonElectionTerm,
-  PoliticAmount,
+  OverviewInfo,
+} from '~/types/politics'
+import type {
   PoliticDetail,
+  PoliticDetailData,
+  PoliticAmount,
 } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
+import {
+  getLastestElectionData,
+  getPoliticAmount,
+  notEmptyPoliticFunc,
+} from '~/utils/politic'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -42,7 +56,7 @@ const Main = styled.main`
 type PoliticDetailPageProps = {
   politic: PoliticDetail
   politicAmount: PoliticAmount
-  latestPersonElection: RawPersonElection
+  latestPersonElection: PersonElectionDataFromPolitic
   electionTerm: PersonElectionTerm
 }
 export default function PoliticsDetail({
@@ -54,14 +68,20 @@ export default function PoliticsDetail({
   const { asPath } = useRouter()
   const { person } = politic
 
-  const titleProps = {
+  const shouldShowFeedbackForm: boolean =
+    politic.person?.election?.addComments ?? false
+
+  const titleProps: OverviewInfo = {
     id: person?.person_id?.id || '',
     name: person?.person_id?.name || '',
     avatar: person?.person_id?.image || '',
+    partyId: person?.person_id?.id || '',
     party: person?.party?.name || '',
     partyIcon: person?.party?.image || '',
     completed: politicAmount.passed,
     waiting: politicAmount.waiting,
+    campaign: latestPersonElection.election?.type ?? '',
+    isPartyPage: false,
   }
 
   const navProps = {
@@ -131,16 +151,11 @@ export default function PoliticsDetail({
       <CustomHead {...headProps} url={`${siteUrl}${asPath}`} />
 
       <Main>
-        <Title
-          campaign={latestPersonElection.election?.type ?? ''}
-          {...titleProps}
-        />
+        <Title {...titleProps} />
         <Section
           politic={politic}
           electionTerm={electionTerm}
-          shouldShowFeedbackForm={
-            latestPersonElection.election?.addComments === true
-          }
+          shouldShowFeedbackForm={shouldShowFeedbackForm}
         />
       </Main>
 
@@ -160,12 +175,12 @@ export const getServerSideProps: GetServerSideProps<
   const id = query.politicId
 
   let politic: PoliticDetail = {
-    id: '',
+    id: String(id),
     desc: '',
     content: '',
     source: '',
     status: 'notverified',
-    current_progress: 'no-progress',
+    current_progress: POLITIC_PROGRESS.NOT_START,
     updatedAt: '',
     contributer: '',
     person: null,
@@ -180,20 +195,21 @@ export const getServerSideProps: GetServerSideProps<
     organization: null,
   }
   let politicAmount: PoliticAmount
-  let latestPersonElection: RawPersonElection
+  let latestPersonElection: PersonElectionDataFromPolitic
   let electionTerm: PersonElectionTerm
   let personElectionIds: string[] = []
 
   try {
     {
       //get politics by politicId
-      const {
-        data: { politics },
-      } = await fireGqlRequest(
-        print(GetPoliticDetail),
-        { politicId: id },
-        cmsApiUrl
-      )
+      const result: GenericGQLData<PoliticDetailData[], 'politics'> =
+        await fireGqlRequest(
+          print(GetPoliticDetail),
+          { politicId: id },
+          cmsApiUrl
+        )
+
+      const politics = result.data?.politics ?? []
 
       if (!politics.length) {
         return {
@@ -206,15 +222,16 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       //get all personElections ID this person join
-      const {
-        data: { personElections },
-      } = await fireGqlRequest(
+      const result: GenericGQLData<
+        PersonElectionDataFromPerson[],
+        'personElections'
+      > = await fireGqlRequest(
         print(GetPersonElections),
         { Id: politic?.person?.person_id?.id },
         cmsApiUrl
       )
 
-      const rawPersonElection = [...personElections]
+      const rawPersonElection = result.data?.personElections ?? []
 
       rawPersonElection.map((item) => {
         personElectionIds.push(item.id)
@@ -223,48 +240,47 @@ export const getServerSideProps: GetServerSideProps<
 
     {
       //get passed/waiting politics amount
-      const {
-        data: { politics: politicList },
-      } = await fireGqlRequest(
-        print(GetPoliticsRelatedToPersonElections),
-        { ids: personElectionIds },
-        cmsApiUrl
-      )
+      const result: GenericGQLData<PoliticDataForPerson[], 'politics'> =
+        await fireGqlRequest(
+          print(GetPoliticsRelatedToPersonElections),
+          { ids: personElectionIds },
+          cmsApiUrl
+        )
+
+      let politicList = result.data?.politics ?? []
+      politicList = politicList.filter(notEmptyPoliticFunc)
 
       // get passed/waiting editing politics amount
-      const {
-        data: { editingPolitics: editingPoliticLists },
-      } = await fireGqlRequest(
+      const resultForEditing: GenericGQLData<
+        PoliticDataForPerson[],
+        'editingPolitics'
+      > = await fireGqlRequest(
         print(GetEditingPoliticsRelatedToPersonElections),
         { ids: personElectionIds },
         cmsApiUrl
       )
 
-      const passedAmount = politicList.filter(
-        (value: RawPolitic) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
-      ).length
+      let editingPoliticLists = resultForEditing.data?.editingPolitics ?? []
+      editingPoliticLists = editingPoliticLists.filter(notEmptyPoliticFunc)
 
-      const waitingAmount = editingPoliticLists.filter(
-        (value: RawPolitic) => value.status !== 'verified' && !value.reviewed
-      ).length
+      const amountData = getPoliticAmount(politicList, editingPoliticLists)
 
       politicAmount = {
-        passed: passedAmount || 0,
-        waiting: waitingAmount || 0,
+        waiting: amountData.waiting,
+        passed: amountData.completed,
       }
     }
 
     {
       //get latest election type this person join (header data)
-      const rawData: GenericGQLData<RawPersonElection[], 'personElections'> =
-        await fireGqlRequest(
-          print(GetPersonOverView),
-          { personId: politic?.person?.person_id?.id },
-          cmsApiUrl
-        )
+      const rawData: GenericGQLData<
+        PersonElectionDataFromPolitic[],
+        'personElections'
+      > = await fireGqlRequest(
+        print(GetPersonOverView),
+        { personId: politic?.person?.person_id?.id },
+        cmsApiUrl
+      )
 
       const gqlErrors = rawData.errors
 
@@ -287,18 +303,24 @@ export const getServerSideProps: GetServerSideProps<
         }
       }
 
-      latestPersonElection = personAllElections[personAllElections.length - 1]
+      latestPersonElection = personAllElections.reduce(
+        getLastestElectionData,
+        personAllElections[0]
+      )
     }
 
     {
       //get election term by person id
-      const {
-        data: { personOrganizations: personOrganization },
-      } = await fireGqlRequest(
+      const result: GenericGQLData<
+        PersonOrganizationData[],
+        'personOrganizations'
+      > = await fireGqlRequest(
         print(GetPersonOrganization),
         { electionId: politic.person?.id },
         cmsApiUrl
       )
+
+      const personOrganization = result.data?.personOrganizations ?? []
 
       electionTerm = personOrganization[0] || {
         start_date_day: null,

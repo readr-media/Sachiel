@@ -1,16 +1,18 @@
 import { print } from 'graphql'
-import { useEffect, useState } from 'react'
 
+import { POLITIC_PROGRESS } from '~/constants/common'
 import CreatePolitic from '~/graphql/mutation/politics/create-politic.graphql'
-import type { RawPolitic } from '~/types/common'
-import type { Politic } from '~/types/politics'
+import type { GenericGQLData } from '~/types/common'
+import type { CreatedPoliticData } from '~/types/politics'
+import { checkIsPartyPage } from '~/utils/politic'
 import { fireGqlRequest } from '~/utils/utils'
 
 import { useToast } from '../toast/use-toast'
 import s from './add-politic-form.module.css'
+import type { DraftPolitic, DraftPoliticForCreation } from './politic-form'
 import PoliticForm from './politic-form'
 import {
-  usePersonElection,
+  useElectionData,
   usePoliticAmount,
   usePoliticList,
 } from './react-context/use-politics'
@@ -22,34 +24,20 @@ type AddPoliticFormProps = {
 export default function AddPoliticForm(
   props: AddPoliticFormProps
 ): JSX.Element {
-  const defaultPolitic: Politic = {
+  const defaultPolitic: DraftPoliticForCreation = {
     desc: '',
     source: '',
     content: '',
-    politicCategoryId: null,
-    politicCategoryName: null,
-    createdAt: null,
-    updatedAt: null,
-    positionChange: [],
-    factCheck: [],
-    expertPoint: [],
-    repeat: [],
   }
-
-  const [isPartyPage, setIsPartyPage] = useState(false)
-  useEffect(() => {
-    const currentURL = window?.location.href
-    const isOrgPolitics = currentURL.includes('party')
-    setIsPartyPage(isOrgPolitics)
-  }, [])
 
   const toast = useToast()
   const politicAmount = usePoliticAmount()
-  const personElection = usePersonElection()
+  const electionData = useElectionData()
   const waitingPoliticList = usePoliticList()
+  const isPartyPage = checkIsPartyPage(electionData)
 
   // client side only
-  async function createPolitic(data: Politic): Promise<boolean> {
+  async function createPolitic(data: DraftPolitic): Promise<boolean> {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
@@ -60,7 +48,7 @@ export default function AddPoliticForm(
           data: {
             organization: {
               connect: {
-                id: personElection.id,
+                id: electionData?.id,
               },
             },
             desc: data.desc,
@@ -73,7 +61,7 @@ export default function AddPoliticForm(
           data: {
             person: {
               connect: {
-                id: personElection.id,
+                id: electionData?.id,
               },
             },
             desc: data.desc,
@@ -85,7 +73,7 @@ export default function AddPoliticForm(
 
       // result is not used currently
       // eslint-disable-next-line
-      const result: RawPolitic = await fireGqlRequest(
+      const result: GenericGQLData<CreatedPoliticData, 'createPolitic'> = await fireGqlRequest(
         print(CreatePolitic),
         variables,
         cmsApiUrl
@@ -98,11 +86,14 @@ export default function AddPoliticForm(
       })
 
       waitingPoliticList.addToList({
-        id: String(new Date().valueOf()),
-        ...variables.data,
+        id: String(Date.now()),
+        desc: data.desc,
+        content: data.content,
+        source: data.source,
+        progress: POLITIC_PROGRESS.NOT_START,
         politicCategoryId: null,
         politicCategoryName: null,
-        createdAt: null,
+        createdAt: '',
         updatedAt: null,
         positionChange: [],
         factCheck: [],

@@ -14,8 +14,8 @@ export default function FactCheck({ facts = [] }: FactCheckProps): JSX.Element {
   return (
     <Wrapper>
       <ul>
-        {facts.map((value: PoliticFactCheck, index: number) => (
-          <FactItem factItem={value} key={index} />
+        {facts.map((value: PoliticFactCheck) => (
+          <FactItem factItem={value} key={value.id} />
         ))}
       </ul>
     </Wrapper>

@@ -46,12 +46,11 @@ const EditSend = styled.button`
   }
 `
 /**
- *
  * @param {Object} props
  * @param {boolean} props.isDisable
- * @param {function} props.onClick
- * @param {function} props.submitHandler
- * @param {function} props.GAClick
+ * @param {() => void} props.onClick
+ * @param {() => void} props.submitHandler
+ * @param {() => void} props.GAClick
  * @returns {React.ReactElement}
  */
 export default function EditSendOrCancel({

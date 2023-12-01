@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import ElectionTerm from '~/components/shared/election-term'
 import ArrowLeft from '~/public/icons/arrow-left.svg'
-import type { PersonElectionTerm, PoliticDetail } from '~/types/politics-detail'
+import type { PersonElectionTerm } from '~/types/politics'
+import type { PoliticDetail } from '~/types/politics-detail'
 
 const Header = styled.div`
   box-shadow: inset 0px -4px 0px rgba(0, 0, 0, 1);

@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useToast } from '~/components/toast/use-toast'
 import CreatePerson from '~/graphql/mutation/person/create-person.graphql'
 import { logGAEvent } from '~/utils/analytics'
+import { takeArrayKeyName } from '~/utils/person'
 import { getNewSource, sourcesToString, stringToSources } from '~/utils/utils'
 import { fireGqlRequest } from '~/utils/utils'
 
@@ -22,15 +23,16 @@ const ErrorMessage = styled.div`
   margin: 5px 0px;
 `
 /**
+ * @typedef {import('~/types/common').Source} Source
  *
  * @param {Object} props
  * @param {string} [props.emails]
  * @param {string} [props.links]
  * @param {string} [props.contactDetails]
  * @param {string} [props.sources]
- * @param {function} props.setShouldShowEditMode
- * @param {import('~/types/person').Person["id"]} props.personId
- * @param {import('~/types/person').Person["name"]} props.personName
+ * @param {(value: boolean) => void} props.setShouldShowEditMode
+ * @param {string} props.personId
+ * @param {string} props.personName
  * @returns {React.ReactElement}
  */
 export default function EditContentContact({
@@ -64,22 +66,23 @@ export default function EditContentContact({
   // check whether source-list value has ('')
   // if have (''), return true
   const SourceValueCheck = takeArrayKeyName(sourceList, 'value')?.some(
-    // @ts-ignore
     (x) => x === ''
   )
 
   //if input's sum = 1 and value is empty, return false (button=able)
   //if input's sum > 1, true/false is decided by whether inputs have ('')
-  // @ts-ignore
+  /**
+   * @param {Source[]} infoLinksArray
+   * @returns {boolean}
+   */
   const infoLinksCheckEmptyValue = (infoLinksArray) => {
     if (infoLinksArray.length === 1 && infoLinksArray[0].value === '') {
       return false
     } else {
       const result = takeArrayKeyName(infoLinksArray, 'value')?.some(
-        // @ts-ignore
         (x) => x === ''
       )
-      return result
+      return Boolean(result)
     }
   }
   /**
@@ -95,22 +98,18 @@ export default function EditContentContact({
         contactList.filter((i) => i.value).length === 0) ||
       (JSON.stringify(takeArrayKeyName(emailList, 'value')) ===
         JSON.stringify(
-          // @ts-ignore
           takeArrayKeyName(stringToSources(emails, '\n'), 'value')
         ) &&
         JSON.stringify(takeArrayKeyName(contactList, 'value')) ===
           JSON.stringify(
-            // @ts-ignore
             takeArrayKeyName(stringToSources(contactDetails, '\n'), 'value')
           ) &&
         JSON.stringify(takeArrayKeyName(linkList, 'value')) ===
           JSON.stringify(
-            // @ts-ignore
             takeArrayKeyName(stringToSources(links, '\n'), 'value')
           ) &&
         JSON.stringify(takeArrayKeyName(sourceList, 'value')) ===
           JSON.stringify(
-            // @ts-ignore
             takeArrayKeyName(stringToSources(sources, '\n'), 'value')
           )) ||
       sourceList.filter((i) => i.value).length === 0 ||
@@ -123,16 +122,18 @@ export default function EditContentContact({
     [emailList, linkList, contactList, sourceList]
   )
 
-  // @ts-ignore
-  function takeArrayKeyName(array, key) {
-    // @ts-ignore
-    return array?.map(function (item) {
-      return item[key]
-    })
-  }
   //client side only
-  //TODO: use type Person in person.ts rather than {Object}
-  /** @param {Object} data */
+  /**
+   * @typedef {import('~/types/person').PersonData} PersonData
+   * @typedef {Pick<
+   *    PersonData,
+   *    'name' |
+   *    'email' |
+   *    'links' |
+   *    'contact_details'
+   * >} PersonDataForCreation
+   *
+   * @param {PersonDataForCreation} data */
   async function createPerson(data) {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
@@ -182,10 +183,9 @@ export default function EditContentContact({
   }
 
   /**
-   *
-   * @param  {import('~/types/common').Source[]} list
+   * @param  {Source[]} list
    * @param {function} setList
-   * @returns {()=>void}
+   * @returns {() => void}
    */
   function addList(list, setList) {
     return () => {
@@ -194,7 +194,7 @@ export default function EditContentContact({
     }
   }
   /**
-   * @param  {import('~/types/common').Source[]} list
+   * @param  {Source[]} list
    * @param {Function} setList
    * @returns {() => void}
    */
@@ -211,8 +211,8 @@ export default function EditContentContact({
   }
 
   /**
-   * @param  {import('~/types/common').Source[]} list
-   * @param {Function} setList
+   * @param  {Source[]} list
+   * @param {(value: Source[]) => void} setList
    * @returns {() => void}
    */
   function deleteList(list, setList) {
@@ -223,10 +223,10 @@ export default function EditContentContact({
   }
 
   /**
+   * email-validation-check
+   *
    * @param {string} email
    */
-
-  // email-validation-check
   function emailValidationCheck(email) {
     const emailRules =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -238,9 +238,10 @@ export default function EditContentContact({
   }
 
   /**
+   * URL-validation-check
+   *
    * @param {string} url
    */
-  // URL-validation-check
   function URLValidationCheck(url) {
     const pattern = new RegExp(
       '^(https?:\\/\\/)?' + // protocol

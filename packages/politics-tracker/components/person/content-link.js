@@ -21,7 +21,7 @@ const ContentItemLink = styled(ContentItemContent)`
  *
  * @param {Object} props
  * @param {string} props.title
- * @param {import('~/types/person').Person["links"]} props.links
+ * @param {string} props.links
  * @returns {React.ReactElement}
  */
 export default function ContentLink({ title, links }) {

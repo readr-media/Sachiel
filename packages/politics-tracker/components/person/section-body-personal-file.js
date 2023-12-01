@@ -38,7 +38,7 @@ const TagContainer = styled.div`
 /**
  * @param {Object} props
  * @param {boolean} [props.isActive]
- * @param {import('../../types/person').Person} props.personData
+ * @param {import('~/types/person').PersonData} props.personData
  * @returns {React.ReactElement}
  */
 export default function SectionBodyPersonalFile({
@@ -53,8 +53,6 @@ export default function SectionBodyPersonalFile({
     id,
     name = '',
     image = '',
-    alternative = '',
-    other_names = '',
     birth_date_year,
     birth_date_month,
     birth_date_day,
@@ -62,23 +60,27 @@ export default function SectionBodyPersonalFile({
     death_date_month,
     death_date_day,
     gender = '',
-    national_identity = '',
-    biography = '',
-    email = '',
-    contact_details = '',
-    links = '',
-    source = '',
     tags = [],
   } = personData
+
+  const alternative = personData.alternative ?? ''
+  const other_names = personData.other_names ?? ''
+  const national_identity = personData.national_identity ?? ''
+  const biography = personData.biography ?? ''
+  const email = personData.email ?? ''
+  const contact_details = personData.contact_details ?? ''
+  const source = personData.source ?? ''
+  const links = personData.links ?? ''
+
   /**
    * check the date passed in, which will be checked with two rule:
    * 1. If the date is valid. For Instances, if date passed in is "2022-25-35" or "2022-25" or "25-35", which is not valid.
    * 2. If the date is in the past. For Instances, if current date is "2022-10-16" , the date passed in is "2023-1-1", even the date is valid, is not in the past.
    * If both passed, then return `true`, otherwise return `false`
-   * @param {import('~/types/person').Person["birth_date_year"]} year
-   * @param {import('~/types/person').Person["birth_date_month"]} month
-   * @param {import('~/types/person').Person["birth_date_day"]} day
-   * @returns {Boolean}
+   * @param {number | null | undefined} year
+   * @param {number | null | undefined} month
+   * @param {number | null | undefined} day
+   * @returns {boolean}
    */
   const validateDate = (year = null, month = null, day = null) => {
     if (year && month && day) {
@@ -111,10 +113,10 @@ export default function SectionBodyPersonalFile({
   /**
    * combine year, month and day to certain date format
    * only accept four format: year/month/day, year/month, year, month/day
-   * @param {import('~/types/person').Person["birth_date_year"]} year
-   * @param {import('~/types/person').Person["birth_date_month"]} month
-   * @param {import('~/types/person').Person["birth_date_day"]}  day
-   * @returns {String}
+   * @param {number | null | undefined} year
+   * @param {number | null | undefined} month
+   * @param {number | null | undefined}  day
+   * @returns {string}
    */
   const formatDate = (year = null, month = null, day = null) => {
     if (!validateDate(year, month, day)) {
@@ -152,9 +154,10 @@ export default function SectionBodyPersonalFile({
       return `（${moment().year() - birth_date_year}歲）`
     } else return ''
   }, [birth_date_year, dateOfDeath])
+
   /**
-   * @param {import('~/types/person').Person["gender"]} gender
-   * @returns {import('~/types/person').Person["gender"]}
+   * @param {string} gender
+   * @returns {string}
    */
   const getDisplayedGender = (gender) => {
     if (gender === 'M' || gender === '男') {
@@ -165,6 +168,7 @@ export default function SectionBodyPersonalFile({
   }
   const displayedGender = useMemo(() => getDisplayedGender(gender), [gender])
   const [showImage, setShowImage] = useState(true)
+
   return (
     <SectionBody shouldShowSectionBody={isActive}>
       <Content
@@ -293,9 +297,7 @@ export default function SectionBodyPersonalFile({
       >
         <TagContainer>
           {tags.length !== 0 ? (
-            tags.map((item) => (
-              <Tag key={item.id} id={item.id} name={item.name}></Tag>
-            ))
+            tags.map((item) => <Tag key={item.id} name={item.name}></Tag>)
           ) : (
             <ContentItemEmpty>這個人還沒被新增標籤⋯</ContentItemEmpty>
           )}

@@ -1,5 +1,5 @@
 query GetEditingPoliticsRelatedToOrganizationElections($ids: [ID!]) {
-  editingPolitics(where: { organization: { id: { in: $ids } } }) {
+  editingPolitics(where: { organization: { id: { in: $ids } }, thread_parent: { id: { gt: 0 } } }) {
     id
     desc
     content

@@ -181,16 +181,17 @@ const Content = styled.div`
   }
 `
 /**
+ * @typedef {import('~/types/landing').DistrinctOfMayorElection} DistrinctOfMayorElection
  *
+ * @param {Object} props
+ * @param {DistrinctOfMayorElection[]} props.propsData
  * @returns {React.ReactElement}
  */
-
-// @ts-ignore
 export default function MayorMain({ propsData }) {
-  const newPropsData = JSON.parse(JSON.stringify(propsData))
-  const rawDatas = newPropsData['mayorAndPolitics']
+  /** @type {DistrinctOfMayorElection[]} */
+  const rawDatas = JSON.parse(JSON.stringify(propsData))
 
-  // @ts-ignore
+  /** @type {import('~/types/common').OrderFunction<DistrinctOfMayorElection>} */
   const lowToHigh = (datas) => {
     return [...datas].sort((a, b) => {
       return a?.amount / a?.total - b?.amount / b?.total
@@ -200,21 +201,28 @@ export default function MayorMain({ propsData }) {
   const dataOrderByCompletePercent = lowToHigh(rawDatas)
 
   /**
+   * @typedef {Object} MenuItem
+   * @property {number} id
+   * @property {DistrinctOfMayorElection} infor
+   * @property {boolean} active
+   * @property {string} name
+   * @property {number} total
+   * @property {number} amount
    *
-   * @param {Object[]} cityItems
+   * @param {DistrinctOfMayorElection[]} cityItems
+   * @returns {MenuItem[]}
    */
   const initState = (cityItems) => {
+    /** @type {MenuItem[]} */
     const menuItems = []
+
     for (let i = 0; i < cityItems.length; i++) {
       menuItems.push({
         id: i + 1,
         infor: cityItems[i],
         active: false,
-        // @ts-ignore
         name: cityItems[i].name,
-        // @ts-ignore
         total: cityItems[i].total,
-        // @ts-ignore
         amount: cityItems[i].amount,
       })
     }
@@ -243,49 +251,42 @@ export default function MayorMain({ propsData }) {
             <ButtonWrap>
               <ButtonGroup>
                 <ul>
-                  {menuItems.map(
-                    (
-                      // @ts-ignore
-                      v,
-                      // @ts-ignore
-                      i
-                    ) => {
-                      return (
-                        <li
-                          key={i}
-                          onClick={() => {
-                            firstRender[0].active = false
-                            const newMenuItems = firstRender.map((v, index) => {
-                              if (i === 0) {
-                                v = { ...v, active: false }
-                              }
-                              if (i === index) return { ...v, active: true }
-                              return v
-                            })
+                  {menuItems.map((v, i) => {
+                    return (
+                      <li
+                        key={i}
+                        onClick={() => {
+                          firstRender[0].active = false
+                          const newMenuItems = firstRender.map((v, index) => {
+                            if (i === 0) {
+                              v = { ...v, active: false }
+                            }
+                            if (i === index) return { ...v, active: true }
+                            return v
+                          })
 
-                            setMenuItems(newMenuItems)
-                            setMayorRegion(i)
-                          }}
-                        >
-                          {v.active ? (
-                            <button className="press">
-                              {v.name}
-                              <span>
-                                ( {v.amount} / {v.total} )
-                              </span>
-                            </button>
-                          ) : (
-                            <button className="nopress">
-                              {v.name}
-                              <span>
-                                ( {v.amount} / {v.total} )
-                              </span>
-                            </button>
-                          )}
-                        </li>
-                      )
-                    }
-                  )}
+                          setMenuItems(newMenuItems)
+                          setMayorRegion(i)
+                        }}
+                      >
+                        {v.active ? (
+                          <button className="press">
+                            {v.name}
+                            <span>
+                              ( {v.amount} / {v.total} )
+                            </span>
+                          </button>
+                        ) : (
+                          <button className="nopress">
+                            {v.name}
+                            <span>
+                              ( {v.amount} / {v.total} )
+                            </span>
+                          </button>
+                        )}
+                      </li>
+                    )
+                  })}
                 </ul>
               </ButtonGroup>
             </ButtonWrap>

@@ -59,7 +59,7 @@ const SourceItemWrap = styled.div`
 /**
  *
  * @param {Object} props
- * @param {Function} props.GAClick
+ * @param {() => void} props.GAClick
  * @param {string} [props.sources]
  * @returns
  */

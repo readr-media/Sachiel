@@ -113,15 +113,14 @@ const ToggleIcon = styled.span`
 `
 
 /**
- *
  * @param {Object} props
  * @param {string} props.color
  * @param {string} props.title
- * @param {Function} props.GAClick
+ * @param {() => void} [props.GAClick]
  * @param {boolean} props.isActive
- * @param {null|string} props.id
- * @param {Object[]} props.activeId
- * @param {Function} props.setActiveId
+ * @param {string|null} props.id
+ * @param {string[]} props.activeId
+ * @param {(value: string[]) => void} props.setActiveId
  * @returns {React.ReactElement}
  */
 export default function SectionToggle({
@@ -131,25 +130,26 @@ export default function SectionToggle({
   setActiveId,
   id,
   title,
-  GAClick,
+  GAClick = () => {},
 }) {
   // FIXME: jsDocs
   /**
-   * @param {any} id
+   * @param {string | null} id
    */
   function toggleActiveID(id) {
-    if (activeId?.includes(id)) {
-      const newActiveId = activeId?.filter(function (value) {
+    if (id === null) {
+      return
+    } else if (activeId.includes(id)) {
+      const newActiveId = activeId.filter(function (value) {
         return value !== id
       })
       setActiveId(newActiveId)
-    } else if (id === null) {
-      return
     } else {
       const newActiveId = [...activeId, id]
       setActiveId(newActiveId)
     }
   }
+
   return (
     <ToggleWrapper>
       <ToggleButton

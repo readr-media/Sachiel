@@ -215,11 +215,18 @@ const TitleImg = styled.div`
     display: none;
   }
 `
-// @ts-ignore
+
+/**
+ * @typedef {import('~/types/landing').DistrinctOfMayorElection} DistrinctOfMayorElection
+ * @typedef {import('~/types/landing').CityOfMayorElection} CityOfMayorElection
+ *
+ * @param {Object} props
+ * @param {DistrinctOfMayorElection[]} props.dataOrderByCompletePercent
+ * @param {number} props.mayorRegion
+ * @returns {React.ReactElement}
+ */
 export default function MayorContent({
-  // @ts-ignore
   dataOrderByCompletePercent,
-  // @ts-ignore
   mayorRegion,
 }) {
   const rawDatas = dataOrderByCompletePercent[mayorRegion].areas
@@ -227,13 +234,14 @@ export default function MayorContent({
   const [sortWay, setSortWay] = useState(true)
   const [arrowToggle, setArrowToggle] = useState(true)
 
-  // @ts-ignore
+  /**  @type {import('~/types/common').OrderFunction<CityOfMayorElection>} */
   const HighToLow = (datas) => {
     return [...datas].sort((a, b) => {
       return b?.done / b?.total - a?.done / a?.total
     })
   }
-  // @ts-ignore
+
+  /**  @type {import('~/types/common').OrderFunction<CityOfMayorElection>} */
   const lowToHigh = (datas) => {
     return [...datas].sort((a, b) => {
       return a?.done / a?.total - b?.done / b?.total
@@ -257,7 +265,9 @@ export default function MayorContent({
     setActiveData(sortDataWithActive)
   }, [mayorRegion, sortWay])
 
-  // @ts-ignore
+  /**
+   * @param {string} [id]
+   */
   function clickChangeIcon(id) {
     setActiveData((pre) => {
       return pre.map((data) => {
@@ -275,10 +285,8 @@ export default function MayorContent({
   const [isDesktop, setIsDesktop] = useState(true)
 
   useEffect(() => {
-    // @ts-ignore
     setIsDesktop(window.innerWidth >= 1200)
     function resizeChangeIcon() {
-      // @ts-ignore
       setIsDesktop((pre) => {
         if (window.innerWidth >= 1200) {
           return true
@@ -383,12 +391,8 @@ export default function MayorContent({
 
                   {isDesktop ? (
                     <DistrictContentDesk style={{ display: 'block' }}>
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done === 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done === 0)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#DB4C65' }}>
@@ -397,11 +401,7 @@ export default function MayorContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done === 0
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done === 0)
                               .map((value) => {
                                 return (
                                   <Link
@@ -422,13 +422,9 @@ export default function MayorContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) =>
-                            candidate.done < 21 && candidate.done > 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter(
+                        (candidate) => candidate.done < 21 && candidate.done > 0
+                      ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#F58439' }}>
@@ -438,11 +434,9 @@ export default function MayorContent({
                           <ListWrapDesk>
                             {v.candidates
                               .filter(
-                                // @ts-ignore
                                 (candidate) =>
                                   candidate.done < 21 && candidate.done > 0
                               )
-                              // @ts-ignore
                               .map((value) => {
                                 return (
                                   <Link
@@ -463,12 +457,8 @@ export default function MayorContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done > 20
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done > 20)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#2FB7BF' }}>
@@ -477,11 +467,7 @@ export default function MayorContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done > 20
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done > 20)
                               .map((value) => {
                                 return (
                                   <Link
@@ -504,12 +490,8 @@ export default function MayorContent({
                     </DistrictContentDesk>
                   ) : v.active ? (
                     <DistrictContentDesk style={{ display: 'block' }}>
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done === 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done === 0)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#DB4C65' }}>
@@ -518,11 +500,7 @@ export default function MayorContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done === 0
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done === 0)
                               .map((value) => {
                                 return (
                                   <Link
@@ -544,13 +522,9 @@ export default function MayorContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) =>
-                            candidate.done < 21 && candidate.done > 0
-                        ).length !== 0 ? (
+                      {v.candidates.filter(
+                        (candidate) => candidate.done < 21 && candidate.done > 0
+                      ).length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#F58439' }}>
@@ -560,11 +534,9 @@ export default function MayorContent({
                           <ListWrapDesk>
                             {v.candidates
                               .filter(
-                                // @ts-ignore
                                 (candidate) =>
                                   candidate.done < 21 && candidate.done > 0
                               )
-                              // @ts-ignore
                               .map((value) => {
                                 return (
                                   <Link
@@ -586,12 +558,8 @@ export default function MayorContent({
                         <Fragment></Fragment>
                       )}
 
-                      {v.candidates
-                        // @ts-ignore
-                        .filter(
-                          // @ts-ignore
-                          (candidate) => candidate.done > 20
-                        ).length !== 0 ? (
+                      {v.candidates.filter((candidate) => candidate.done > 20)
+                        .length !== 0 ? (
                         <DeskList>
                           <SubtitleButtonDesk>
                             <p style={{ backgroundColor: '#2FB7BF' }}>
@@ -600,11 +568,7 @@ export default function MayorContent({
                           </SubtitleButtonDesk>
                           <ListWrapDesk>
                             {v.candidates
-                              .filter(
-                                // @ts-ignore
-                                (candidate) => candidate.done > 20
-                              )
-                              // @ts-ignore
+                              .filter((candidate) => candidate.done > 20)
                               .map((value) => {
                                 return (
                                   <Link
