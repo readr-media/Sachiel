@@ -87,7 +87,7 @@ export type allPostsWithPoliticsTrackerTag = {
 export type ImageOfPost = {
   id: string
   name: string //文章視覺圖名稱
-  urlOriginal: string //文章視覺圖網址
+  resized: { w800: string } | null // 文章視覺圖
 }
 
 type PP = Pick<RawPerson, 'id' | 'name' | 'birth_date_year'>

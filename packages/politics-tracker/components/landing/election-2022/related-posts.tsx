@@ -203,7 +203,7 @@ export default function RelatedPosts({
               >
                 <PostImage>
                   <CustomImage
-                    images={{ original: item?.heroImage?.urlOriginal }}
+                    images={{ original: item?.heroImage?.resized?.w800 }}
                     alt={item?.name}
                     defaultImage="/images/default-post-photo.svg"
                   />
