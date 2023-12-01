@@ -67,12 +67,12 @@ export default function PartyPoliticsDetail({
     organization?.elections?.addComments ?? false
 
   const titleProps: OverviewInfo = {
-    id: organization?.organization_id?.id || '',
-    name: organization?.organization_id?.name || '',
-    avatar: organization?.organization_id?.image || '',
-    partyId: '',
-    party: '',
-    partyIcon: '',
+    id: '',
+    name: '',
+    avatar: '',
+    partyId: organization?.organization_id?.id || '',
+    party: organization?.organization_id?.name || '',
+    partyIcon: organization?.organization_id?.image || '',
     completed: politicAmount.passed,
     waiting: politicAmount.waiting,
     campaign: organization?.elections?.type || '',
