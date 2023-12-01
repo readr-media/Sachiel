@@ -245,8 +245,8 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       // 原住民立委 - sort `regions` & `areas` by completed ratio (done/total)
       const indigenousLegislator =
         {
-          plain: sortLegislatorsByAmountRatio(data.aboriginalLegislator), //平地原住民
-          mountain: sortLegislatorsByAmountRatio(data.flatAboriginalLegislator), // 山地原住民
+          plain: sortLegislatorsByAmountRatio(data.flatAboriginalLegislator), //平地原住民
+          mountain: sortLegislatorsByAmountRatio(data.aboriginalLegislator), // 山地原住民
         } || null
 
       legislators = {
