@@ -10,6 +10,7 @@ import type {
   ExpertPoint,
   FactCheck,
   PersonElectionData,
+  PoliticAmount,
   PoliticData,
   PositionChange,
   Repeat,
@@ -87,6 +88,31 @@ function isCompletedPolitic(politic: PoliticData): boolean {
   return politic.reviewed && politic.status === 'verified'
 }
 
+function getPoliticAmount(
+  politics: PoliticData[],
+  editingPolitics: PoliticData[]
+): PoliticAmount {
+  const amount: PoliticAmount = {
+    waiting: 0,
+    completed: 0,
+  }
+
+  for (let politic of politics) {
+    if (isCompletedPolitic(politic)) {
+      amount.completed += 1
+    } else if (isWaitingPolitic(politic)) {
+      amount.waiting += 1
+    }
+  }
+
+  for (let politic of editingPolitics) {
+    if (isWaitingPolitic(politic)) {
+      amount.waiting += 1
+    }
+  }
+
+  return amount
+}
 function politicChangeMapFunc({
   id,
   isChanged,
@@ -149,6 +175,7 @@ export {
   checkIsPartyPage,
   expertPointMapFunc,
   getLastestElectionData,
+  getPoliticAmount,
   isCompletedPolitic,
   isDraftPoliticForModification,
   isElectionDataForPerson,
