@@ -1,8 +1,9 @@
 // 這裡管理的是在 Build 階段就會寫死數值的環境變數 (通常為 `NEXT_PUBLIC_` 開頭)
-const envList: string[] = ['dev', 'prod']
-const env: string = envList.includes(String(process.env.NEXT_PUBLIC_ENV))
-  ? String(process.env.NEXT_PUBLIC_ENV)
-  : 'localhost'
+import { SYSTEM_ENV } from './common'
+const env: string =
+  String(process.env.NEXT_PUBLIC_ENV) in SYSTEM_ENV
+    ? String(process.env.NEXT_PUBLIC_ENV)
+    : SYSTEM_ENV.LOCALHOST
 
 let siteUrl: string
 let gaTrackingId: string
@@ -13,7 +14,7 @@ let feedbackFormApi: string =
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 
 switch (env) {
-  case 'dev':
+  case SYSTEM_ENV.DEVELOPMENT:
     gaTrackingId =
       process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
     siteUrl =
@@ -23,7 +24,7 @@ switch (env) {
       'https://whoru-gcs-dev.readr.tw/json'
     gtmId = 'GTM-NRMC5WWL'
     break
-  case 'prod': {
+  case SYSTEM_ENV.PRODUCTION: {
     gaTrackingId =
       process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID ?? 'UA-83609754-1'
     siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://whoareyou.readr.tw'
