@@ -34,7 +34,16 @@ import type {
   PositionChange,
   Repeat,
 } from '~/types/politics'
-import { getLastestElectionData } from '~/utils/politic'
+import {
+  expertPointMapFunc,
+  getLastestElectionData,
+  isCompletedPolitic,
+  isWaitingPolitic,
+  notEmptyPoliticFunc,
+  politicChangeMapFunc,
+  politicFactCheckMapFunc,
+  politicRepeatMapFunc,
+} from '~/utils/politic'
 import { electionName, fireGqlRequest, partyName } from '~/utils/utils'
 type PoliticsPageProps = {
   titleProps: OverviewInfo
@@ -268,7 +277,8 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      const politicList = rawData.data?.politics || []
+      let politicList = rawData.data?.politics || []
+      politicList = politicList.filter(notEmptyPoliticFunc)
 
       // Fetch 'editingPolitics' data
       const editingRawData: GenericGQLData<
@@ -297,75 +307,40 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingEditingError
       }
 
-      const editingPoliticList = editingRawData.data?.editingPolitics || []
+      let editingPoliticList = editingRawData.data?.editingPolitics || []
+      editingPoliticList = editingPoliticList.filter(notEmptyPoliticFunc)
 
-      // Combine 'politics' and 'editingPolitics' arrays
-      const combinedPolitics = politicList.concat(editingPoliticList)
+      for (const politic of politicList) {
+        const eId = politic.person?.election?.id
 
-      const politicGroup: Record<
-        string,
-        {
-          latestId: string
-          politic: PoliticDataForPerson
-        }
-      > = {}
-      // keep latest politic of each politic thread
-      for (const politic of combinedPolitics) {
-        const status = politic.status
-        const reviewed = politic.reviewed
+        if (!eId) continue
 
-        if (status === 'verified' && reviewed) {
-          const selfId = politic.id
-          const commonId = politic.thread_parent?.id ?? selfId
-          if (politicGroup.hasOwnProperty(commonId)) {
-            const latestId = politicGroup[commonId].latestId
-            if (Number(selfId) - Number(latestId) > 0) {
-              politicGroup[commonId] = {
-                latestId: selfId,
-                politic,
-              }
-            }
-          } else {
-            politicGroup[commonId] = {
-              latestId: selfId,
-              politic,
-            }
-          }
-        } else if (!reviewed) {
-          const eId = politic.person?.election?.id
-
-          if (!eId) continue
-
+        if (isCompletedPolitic(politic)) {
           const positionChangeData: PositionChange[] =
-            politic.positionChange.map((change) => ({
-              id: change.id,
-              isChanged: change.isChanged,
-              positionChangeSummary: change.positionChangeSummary,
-              factcheckPartner: change.factcheckPartner,
-            }))
-
-          const factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
-            id: fact.id,
-            factCheckSummary: fact.factCheckSummary,
-            checkResultType: fact.checkResultType ?? null,
-            checkResultOther: fact.checkResultOther,
-            factcheckPartner: fact.factcheckPartner ?? null,
-          }))
-
-          const expertPointData: ExpertPoint[] = politic.expertPoint.map(
-            (point) => ({
-              id: point.id,
-              expertPointSummary: point.expertPointSummary,
-              expert: point.expert,
-            })
+            politic.positionChange.map(politicChangeMapFunc)
+          const factCheckData: FactCheck[] = politic.factCheck.map(
+            politicFactCheckMapFunc
           )
+          const expertPointData: ExpertPoint[] =
+            politic.expertPoint.map(expertPointMapFunc)
+          const repeatData: Repeat[] = politic.repeat.map(politicRepeatMapFunc)
 
-          const repeatData: Repeat[] = politic.repeat.map((re) => ({
-            id: re.id,
-            repeatSummary: re.repeatSummary,
-            factcheckPartner: re.factcheckPartner,
-          }))
-
+          electionMap[eId].politics.push({
+            id: politic.id,
+            desc: politic.desc,
+            source: politic.source,
+            content: politic.content,
+            progress: politic.current_progress ?? POLITIC_PROGRESS.NOT_START,
+            politicCategoryId: politic.politicCategory?.id ?? null,
+            politicCategoryName: politic.politicCategory?.name ?? null,
+            createdAt: politic.createdAt,
+            updatedAt: politic.updatedAt ?? null,
+            positionChange: positionChangeData,
+            factCheck: factCheckData,
+            expertPoint: expertPointData,
+            repeat: repeatData,
+          })
+        } else if (isWaitingPolitic(politic)) {
           electionMap[eId].waitingPolitics.push({
             id: politic.id,
             desc: politic.desc,
@@ -376,69 +351,36 @@ export const getServerSideProps: GetServerSideProps<
             politicCategoryName: null,
             createdAt: politic.createdAt,
             updatedAt: politic.updatedAt ?? null,
-            positionChange: positionChangeData,
-            factCheck: factCheckData,
-            expertPoint: expertPointData,
-            repeat: repeatData,
+            positionChange: [],
+            factCheck: [],
+            expertPoint: [],
+            repeat: [],
           })
         }
       }
 
-      const verifiedLatestPoliticList: PoliticDataForPerson[] = Object.keys(
-        politicGroup
-      ).map((key) => politicGroup[key].politic)
-
-      for (const politic of verifiedLatestPoliticList) {
+      for (const politic of editingPoliticList) {
         const eId = politic.person?.election?.id
 
         if (!eId) continue
 
-        const positionChangeData: PositionChange[] = politic.positionChange.map(
-          (change) => ({
-            id: change.id,
-            isChanged: change.isChanged,
-            positionChangeSummary: change.positionChangeSummary,
-            factcheckPartner: change.factcheckPartner,
+        if (isWaitingPolitic(politic)) {
+          electionMap[eId].waitingPolitics.push({
+            id: politic.id,
+            desc: politic.desc,
+            source: '',
+            content: '',
+            progress: POLITIC_PROGRESS.NOT_START,
+            politicCategoryId: null,
+            politicCategoryName: null,
+            createdAt: politic.createdAt,
+            updatedAt: politic.updatedAt ?? null,
+            positionChange: [],
+            factCheck: [],
+            expertPoint: [],
+            repeat: [],
           })
-        )
-
-        const factCheckData: FactCheck[] = politic.factCheck.map((fact) => ({
-          id: fact.id,
-          factCheckSummary: fact.factCheckSummary,
-          checkResultType: fact.checkResultType,
-          checkResultOther: fact.checkResultOther,
-          factcheckPartner: fact.factcheckPartner,
-        }))
-
-        const expertPointData: ExpertPoint[] = politic.expertPoint.map(
-          (point) => ({
-            id: point.id,
-            expertPointSummary: point.expertPointSummary,
-            expert: point.expert,
-          })
-        )
-
-        const repeatData: Repeat[] = politic.repeat.map((re) => ({
-          id: re.id,
-          repeatSummary: re.repeatSummary,
-          factcheckPartner: re.factcheckPartner,
-        }))
-
-        electionMap[eId].politics.push({
-          id: politic.thread_parent?.id ?? politic.id,
-          desc: politic.desc,
-          source: politic.source,
-          content: politic.content,
-          progress: politic.current_progress ?? POLITIC_PROGRESS.NOT_START,
-          politicCategoryId: politic.politicCategory?.id ?? null,
-          politicCategoryName: politic.politicCategory?.name ?? null,
-          createdAt: politic.createdAt,
-          updatedAt: politic.updatedAt ?? null,
-          positionChange: positionChangeData,
-          factCheck: factCheckData,
-          expertPoint: expertPointData,
-          repeat: repeatData,
-        })
+        }
       }
 
       // get latestUpdate info of each election

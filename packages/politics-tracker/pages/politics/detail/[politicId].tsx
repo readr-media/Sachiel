@@ -36,7 +36,11 @@ import type {
   PoliticAmount,
 } from '~/types/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
-import { getLastestElectionData } from '~/utils/politic'
+import {
+  getLastestElectionData,
+  getPoliticAmount,
+  notEmptyPoliticFunc,
+} from '~/utils/politic'
 
 const Main = styled.main`
   background-color: #fffcf3;
@@ -243,7 +247,8 @@ export const getServerSideProps: GetServerSideProps<
           cmsApiUrl
         )
 
-      const politicList = result.data?.politics ?? []
+      let politicList = result.data?.politics ?? []
+      politicList = politicList.filter(notEmptyPoliticFunc)
 
       // get passed/waiting editing politics amount
       const resultForEditing: GenericGQLData<
@@ -255,23 +260,14 @@ export const getServerSideProps: GetServerSideProps<
         cmsApiUrl
       )
 
-      const editingPoliticLists = resultForEditing.data?.editingPolitics ?? []
+      let editingPoliticLists = resultForEditing.data?.editingPolitics ?? []
+      editingPoliticLists = editingPoliticLists.filter(notEmptyPoliticFunc)
 
-      const passedAmount = politicList.filter(
-        (value: PoliticDataForPerson) =>
-          value.status === 'verified' &&
-          value.reviewed &&
-          value.thread_parent === null
-      ).length
-
-      const waitingAmount = editingPoliticLists.filter(
-        (value: PoliticDataForPerson) =>
-          value.status !== 'verified' && !value.reviewed
-      ).length
+      const amountData = getPoliticAmount(politicList, editingPoliticLists)
 
       politicAmount = {
-        passed: passedAmount || 0,
-        waiting: waitingAmount || 0,
+        waiting: amountData.waiting,
+        passed: amountData.completed,
       }
     }
 

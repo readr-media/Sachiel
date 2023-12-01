@@ -7,7 +7,12 @@ import type {
 import type {
   ElectionData,
   ElectionDataForPerson,
+  ExpertPoint,
+  FactCheck,
   PersonElectionData,
+  PoliticData,
+  PositionChange,
+  Repeat,
 } from '~/types/politics'
 
 import { isTypeOfOneFromCouple } from './utils'
@@ -74,9 +79,82 @@ function getLastestElectionData<T extends PersonElectionData>(
   return previous
 }
 
+function isWaitingPolitic(politic: PoliticData): boolean {
+  return !politic.reviewed
+}
+
+function isCompletedPolitic(politic: PoliticData): boolean {
+  return politic.reviewed && politic.status === 'verified'
+}
+
+function politicChangeMapFunc({
+  id,
+  isChanged,
+  positionChangeSummary,
+  factcheckPartner,
+}: PositionChange): PositionChange {
+  return {
+    id,
+    isChanged,
+    positionChangeSummary,
+    factcheckPartner,
+  }
+}
+
+function politicFactCheckMapFunc({
+  id,
+  factCheckSummary,
+  factcheckPartner,
+  checkResultType,
+  checkResultOther,
+}: FactCheck): FactCheck {
+  return {
+    id,
+    factCheckSummary,
+    factcheckPartner: factcheckPartner ?? null,
+    checkResultType: checkResultType ?? null,
+    checkResultOther,
+  }
+}
+
+function expertPointMapFunc({
+  id,
+  expertPointSummary,
+  expert,
+}: ExpertPoint): ExpertPoint {
+  return {
+    id,
+    expertPointSummary,
+    expert,
+  }
+}
+
+function politicRepeatMapFunc({
+  id,
+  repeatSummary,
+  factcheckPartner,
+}: Repeat): Repeat {
+  return {
+    id,
+    repeatSummary,
+    factcheckPartner,
+  }
+}
+
+function notEmptyPoliticFunc(politic: PoliticData): boolean {
+  return Boolean(politic.desc)
+}
+
 export {
   checkIsPartyPage,
+  expertPointMapFunc,
   getLastestElectionData,
+  isCompletedPolitic,
   isDraftPoliticForModification,
   isElectionDataForPerson,
+  isWaitingPolitic,
+  notEmptyPoliticFunc,
+  politicChangeMapFunc,
+  politicFactCheckMapFunc,
+  politicRepeatMapFunc,
 }
