@@ -1,15 +1,28 @@
 // 這裡管理的是在 Build 階段就會寫死數值的環境變數 (通常為 `NEXT_PUBLIC_` 開頭)
-/** 系統環境 */
+// 該檔案目前無法使用 import 語法來引入任何依賴，因為在 build 階段時，ts-import (next-sitemap) 會出問題
+
+/** 系統環境 (因該檔案目前無法使用 import，故先放置於此處) */
 enum SYSTEM_ENV {
   LOCALHOST = 'localhost',
   DEVELOPMENT = 'dev',
   PRODUCTION = 'prod',
 }
 
-const env: string =
-  String(process.env.NEXT_PUBLIC_ENV) in SYSTEM_ENV
-    ? String(process.env.NEXT_PUBLIC_ENV)
-    : SYSTEM_ENV.LOCALHOST
+/** 因該檔案目前無法使用 import，故先放置於此處 */
+const isInEnvVars = (vars: SYSTEM_ENV[], str: string): str is SYSTEM_ENV => {
+  return vars.reduce(
+    (isValid: boolean, envVar: SYSTEM_ENV) =>
+      isValid || Boolean(envVar === str),
+    false
+  )
+}
+
+const envVars = Object.values(SYSTEM_ENV)
+const envStr = String(process.env.NEXT_PUBLIC_ENV)
+
+const env: SYSTEM_ENV = isInEnvVars(envVars, envStr)
+  ? envStr
+  : SYSTEM_ENV.LOCALHOST
 
 let siteUrl: string
 let gaTrackingId: string
