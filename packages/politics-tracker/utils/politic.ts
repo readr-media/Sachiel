@@ -4,6 +4,7 @@ import type {
   DraftPolitic,
   DraftPoliticForModification,
 } from '~/components/politics/politic-form'
+import type { RawPolitic } from '~/types/common'
 import type {
   ElectionData,
   ElectionDataForPerson,
@@ -11,7 +12,6 @@ import type {
   FactCheck,
   PersonElectionData,
   PoliticAmount,
-  PoliticData,
   PositionChange,
   Repeat,
 } from '~/types/politics'
@@ -80,17 +80,19 @@ function getLastestElectionData<T extends PersonElectionData>(
   return previous
 }
 
-function isWaitingPolitic(politic: PoliticData): boolean {
+type Politic = Pick<RawPolitic, 'reviewed' | 'status'>
+
+function isWaitingPolitic(politic: Politic): boolean {
   return !politic.reviewed
 }
 
-function isCompletedPolitic(politic: PoliticData): boolean {
+function isCompletedPolitic(politic: Politic): boolean {
   return politic.reviewed && politic.status === 'verified'
 }
 
 function getPoliticAmount(
-  politics: PoliticData[],
-  editingPolitics: PoliticData[]
+  politics: Politic[],
+  editingPolitics: Politic[]
 ): PoliticAmount {
   const amount: PoliticAmount = {
     waiting: 0,
@@ -167,7 +169,7 @@ function politicRepeatMapFunc({
   }
 }
 
-function notEmptyPoliticFunc(politic: PoliticData): boolean {
+function notEmptyPoliticFunc(politic: Pick<RawPolitic, 'desc'>): boolean {
   return Boolean(politic.desc)
 }
 

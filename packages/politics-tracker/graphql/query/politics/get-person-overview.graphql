@@ -1,6 +1,7 @@
 query GetPersonOverView($personId: ID!) {
   personElections(
     where: {
+      status: { notIn: ["archive"] }
       person_id: { id: { equals: $personId }, status: { equals: "verified" } }
     }
   ) {

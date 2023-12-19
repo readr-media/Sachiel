@@ -223,7 +223,7 @@ export type RawPersonElection = {
   /** 推薦政黨 */
   party: RawOrganization | null
   /** 不分區立委排序 */
-  legislatoratlarge_number: string
+  legislatoratlarge_number: number | null
   /** 號次 */
   number: string
   /** 選區 */
