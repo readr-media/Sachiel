@@ -1,16 +1,19 @@
 query GetElectionHistoryOfArea($type: String!, $area: String!) {
-  personElections(where: {
-    election: {type: { equals: $type}},
-    electoral_district: { name: { contains: $area }}
-  }) {
+  personElections(
+    where: {
+      election: { type: { equals: $type } }
+      electoral_district: { name: { contains: $area } }
+      status: { notIn: ["archive"] }
+    }
+  ) {
     id
     election {
-    	id
+      id
       name
       election_year_year
-    	election_year_month
-    	election_year_day
-  	},
+      election_year_month
+      election_year_day
+    }
     electoral_district {
       id
       name

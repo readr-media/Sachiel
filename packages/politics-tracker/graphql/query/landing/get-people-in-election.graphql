@@ -1,10 +1,10 @@
 query GetPeopleInElection($year: Int!, $type: [String!]) {
-  personElections(where: {
-    election: {
-      election_year_year:{ equals: $year },
-      type: { in: $type }
+  personElections(
+    where: {
+      election: { election_year_year: { equals: $year }, type: { in: $type } }
+      status: { notIn: ["archive"] }
     }
-  }) {
+  ) {
     id
     person_id {
       id

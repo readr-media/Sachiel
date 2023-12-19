@@ -3,6 +3,7 @@ query GetPersonElectionsRelatedToParty($electionId: ID!, $partyId: ID!) {
     where: {
       election: { id: { equals: $electionId } }
       party: { id: { equals: $partyId } }
+      status: { notIn: ["archive"] }
     }
     orderBy: { legislatoratlarge_number: asc }
   ) {
