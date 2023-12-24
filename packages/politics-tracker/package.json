@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@readr-media/react-election-widgets": "1.0.2",
+    "@readr-media/react-election-widgets": "^1.1.1-alpha.9",
     "@readr-media/react-feedback": "^4.0.0",
     "@readr-media/react-image": "^2.2.1",
     "@svgr/webpack": "^8.1.0",
