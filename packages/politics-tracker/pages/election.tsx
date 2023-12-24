@@ -16,25 +16,15 @@ import {
   siteUrl,
 } from '~/constants/environment-variables'
 import GetElection from '~/graphql/query/election/get-election.graphql'
-import GetElectionHistoryOfArea from '~/graphql/query/election/get-election-history-of-area.graphql'
 import type { GenericGQLData } from '~/types/common'
-import {
-  ElectionData,
-  ElectionLink,
-  PersonElectionData,
-} from '~/types/election'
+import { ElectionData, ElectionLink } from '~/types/election'
 import { logGAEvent } from '~/utils/analytics'
 import { electionName, fireGqlRequest } from '~/utils/utils'
 
 const DataLoader = ew.VotesComparison.DataLoader
 
-type ElectionInPersonElection = NonNullable<PersonElectionData['election']>
-
 type ElectionPageProps = {
   year: number
-  title: string
-  name: string
-  area: string
   scrollTo: string
   data: unknown // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
@@ -45,7 +35,6 @@ export const getServerSideProps: GetServerSideProps<
   ElectionPageProps
 > = async ({ query = {} }) => {
   const { year, area, type } = query
-  let electName: string
   const yearNumber = Number(year)
   const areaStr = String(area)
   const mappedAreaStr = districtsMapping[areaStr] ?? 'all'
@@ -55,8 +44,9 @@ export const getServerSideProps: GetServerSideProps<
     apiUrl: `https://whoareyou-gcs.readr.tw/${gcsBucketForElectionDataLoader}`,
     version: 'v2',
   })
-  let scrollTo = ''
+  let scrollTo: string = ''
   let data
+
   switch (electionType) {
     case 'mayor': {
       data = await ldr.loadMayorData({
@@ -72,6 +62,41 @@ export const getServerSideProps: GetServerSideProps<
       })
       break
     }
+    case 'president': {
+      data = await ldr.loadPresidentData({
+        year,
+      })
+      break
+    }
+    case 'legislator-district': {
+      data = await ldr.loadLegislatorData({
+        year,
+        district: mappedAreaStr,
+        subtype: 'district',
+      })
+      break
+    }
+    case 'legislator-party': {
+      data = await ldr.loadLegislatorData({
+        year,
+        subtype: 'party',
+      })
+      break
+    }
+    case 'legislator-mountainIndigenous': {
+      data = await ldr.loadLegislatorData({
+        year,
+        subtype: 'mountainIndigenous',
+      })
+      break
+    }
+    case 'legislator-plainIndigenous': {
+      data = await ldr.loadLegislatorData({
+        year,
+        subtype: 'plainIndigenous',
+      })
+      break
+    }
     default: {
       return {
         notFound: true,
@@ -80,17 +105,16 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   try {
-    const electionMap: Record<string, ElectionInPersonElection> = {}
-    const elections: ElectionLink[] = []
-    let election: undefined | ElectionData
+    let elections: ElectionLink[] = []
+
     {
       // get election data
       const rawData: GenericGQLData<ElectionData[], 'elections'> =
         await fireGqlRequest(
           print(GetElection),
           {
-            year: yearNumber,
-            type,
+            type: type,
+            area: areaStr,
           },
           cmsApiUrl
         )
@@ -108,83 +132,45 @@ export const getServerSideProps: GetServerSideProps<
         throw annotatingError
       }
 
-      election = rawData.data?.elections?.[0]
-      electName = election?.name ?? ''
-      if (!election) {
+      const formatElectionData = (data: ElectionData[]) => {
+        return data.map((election) => {
+          const {
+            type,
+            name,
+            election_year_year,
+            election_year_month,
+            election_year_day,
+          } = election
+          return {
+            electionArea: areaStr,
+            electionType: String(type),
+            name: electionName<string | number | undefined>(
+              election_year_year,
+              name,
+              areaStr
+            ),
+            year: Number(election_year_year),
+            month: Number(election_year_month),
+            day: Number(election_year_day),
+          }
+        })
+      }
+
+      let data = rawData.data?.elections ?? []
+      elections = formatElectionData(data)
+
+      if (!elections) {
         return {
           notFound: true,
         }
       }
     }
 
-    {
-      // use personElection to get election list
-      const rawData: GenericGQLData<PersonElectionData[], 'personElections'> =
-        await fireGqlRequest(
-          print(GetElectionHistoryOfArea),
-          {
-            type,
-            area: areaStr,
-          },
-          cmsApiUrl
-        )
-
-      const gqlErrors = rawData.errors
-
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `GetElectionHistoryOfArea` query'),
-          'GraphQLError',
-          'failed to complete `GetElectionHistoryOfArea`',
-          { errors: gqlErrors }
-        )
-
-        throw annotatingError
-      }
-
-      // since virtual field (`city`) could not be used in where clause of query,
-      // we need to filter data ourself.
-      rawData.data?.personElections
-        .filter((pe: PersonElectionData) => {
-          return pe.electoral_district?.city === areaStr
-        })
-        .map((pe: PersonElectionData) => {
-          const e = pe.election
-
-          if (e) {
-            const eId = e.id
-            electionMap[eId] = e
-          }
-          return pe
-        })
-
-      Object.values(electionMap).map((e: ElectionInPersonElection) => {
-        elections.push({
-          electionType: String(type),
-          electionArea: areaStr,
-          name: electionName<string | number | undefined>(
-            e.election_year_year,
-            e.name,
-            areaStr
-          ),
-          year: Number(e.election_year_year),
-          month: Number(e.election_year_month),
-          day: Number(e.election_year_day),
-        })
-      })
-
-      elections.sort((prev, current) => {
-        return prev.year - current.year
-      })
-    }
     const index = elections.findIndex((e) => e.year === yearNumber)
 
     return {
       props: {
         year: yearNumber,
-        title: areaStr + (electionType === 'councilMember' ? '議員選舉' : ''),
-        name: electionName(undefined, electName, areaStr),
-        area: mappedAreaStr,
         scrollTo,
         data,
         prev: elections[index - 1] ?? null,
@@ -217,7 +203,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 }
 
-function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
+function getConfigItem(item: ElectionLink | null): LinkMember | undefined {
   return item
     ? {
         backgroundColor: 'bg-campaign',
@@ -237,8 +223,8 @@ function getConfigItme(item: ElectionLink | null): LinkMember | undefined {
 const Election = (props: ElectionPageProps) => {
   const { asPath } = useRouter()
   const navProps: NavProps = {
-    prev: getConfigItme(props.prev),
-    next: getConfigItme(props.next),
+    prev: getConfigItem(props.prev),
+    next: getConfigItem(props.next),
     alwaysShowHome: true,
   }
 
@@ -264,7 +250,7 @@ const Election = (props: ElectionPageProps) => {
           <ew.VotesComparison.ReactComponent
             election={election}
             scrollTo={props.scrollTo}
-            stickyTopOffset="80px"
+            stickyTopOffset="77px"
             onChange={(_type: string, _value: string) => {
               if (_type === 'tab') {
                 let tabName = ''
