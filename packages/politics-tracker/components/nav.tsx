@@ -58,9 +58,13 @@ export default function Nav({
               (typeof prev.href === 'object' && prev.href.pathname) || '',
             query: (typeof prev.href === 'object' && prev.href.query) || {},
           }}
-          as={`${(typeof prev.href === 'object' && prev.href.pathname) || ''}#${
+          as={
             prev?.electionYear
-          }`}
+              ? `${
+                  (typeof prev.href === 'object' && prev.href.pathname) || ''
+                }#${prev?.electionYear}`
+              : ''
+          }
         >
           <a
             className={backStyle}
