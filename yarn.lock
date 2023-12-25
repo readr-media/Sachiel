@@ -3680,10 +3680,10 @@
     "@readr-media/react-image" "^1.5.1"
     dayjs "^1.11.7"
 
-"@readr-media/react-election-widgets@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-election-widgets/-/react-election-widgets-1.0.2.tgz#47683c89b32f1f03cc52b4a0bb38ca99ca513bcb"
-  integrity sha512-ZbGi8VqXTGQC+eS+2VCdIU4r9hoAo510ikc5bsZw4l6iC0LEPdGQ5K8gGgP/wqKPAJk9tiXsHj/oc+W5TNiy8Q==
+"@readr-media/react-election-widgets@^1.1.1-alpha.9":
+  version "1.1.1-alpha.9"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-election-widgets/-/react-election-widgets-1.1.1-alpha.9.tgz#8a3debc89f3c2ee3dfc0a707317759e7617b0a74"
+  integrity sha512-AULyD4TBq3UtkV0kH2/ZEr7xXlrC089M27M+F2NhDYm8wQGSVci2ick6TnBUki02dBRCvW87VngbvG+U3914mw==
   dependencies:
     "@twreporter/errors" "^1.1.1"
     axios "^0.27.2"

@@ -31,19 +31,3 @@ export type ElectionData = Pick<
   | 'election_year_month'
   | 'election_year_day'
 >
-
-/** type for GetElectionHistoryOfArea query */
-export type PersonElectionData = Override<
-  Pick<RawPersonElection, 'id' | 'election' | 'electoral_district'>,
-  {
-    election: Pick<
-      RawElection,
-      | 'id'
-      | 'name'
-      | 'election_year_year'
-      | 'election_year_month'
-      | 'election_year_day'
-    > | null
-    electoral_district: Pick<RawElectionArea, 'id' | 'name' | 'city'> | null
-  }
->
