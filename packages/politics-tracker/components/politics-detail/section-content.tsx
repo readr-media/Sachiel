@@ -53,7 +53,8 @@ export default function SectionContent({
   legislators = [],
   isElectionFinished = false,
 }: SectionContentProps): JSX.Element {
-  const [isControEdit, setIsControEdit] = useState(false)
+  const [isControEdit, setIsControEdit] = useState<boolean>(false)
+  const [isTimelineEdit, setIsTimelineEdit] = useState<boolean>(false)
 
   const {
     desc = '',
@@ -108,9 +109,23 @@ export default function SectionContent({
     },
     {
       title: '相關進度',
-      children: <TimeLine timelines={timeline} />,
+      titleChildren: (
+        <EditButton
+          onClick={() => setIsTimelineEdit(true)}
+          colorType="yellow"
+          editMode={isTimelineEdit}
+        />
+      ),
+      children: (
+        <TimeLine
+          politic={politic}
+          timelines={timeline}
+          editMode={isTimelineEdit}
+          setEditMode={setIsTimelineEdit}
+        />
+      ),
       showToggle: true,
-      isActive: Boolean(timeline.length),
+      isActive: Boolean(isTimelineEdit || timeline.length > 0),
     },
     {
       title: '相關爭議',

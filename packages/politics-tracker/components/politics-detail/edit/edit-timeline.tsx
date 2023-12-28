@@ -9,15 +9,25 @@ import AddInputButton from '~/components/shared/add-input-button'
 import EditSendOrCancel from '~/components/shared/edit-send-or-cancel'
 import { useToast } from '~/components/toast/use-toast'
 import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
-import CreateControversies from '~/graphql/mutation/politics-detail/create-controversies.graphql'
+import CreateTimelines from '~/graphql/mutation/politics-detail/create-timelines.graphql'
+import EditCalender from '~/public/icons/edit-calender.svg'
 import EditLink from '~/public/icons/edit-link.svg'
 import EditText from '~/public/icons/edit-text.svg'
-import { PoliticControversy, PoliticDetail } from '~/types/politics-detail'
-import { getItemsToAdd, getItemsToConnect } from '~/utils/politics-detail'
+import { PoliticDetail, PoliticTimeLine } from '~/types/politics-detail'
+import {
+  covertTimeToISOS,
+  getItemsToAdd,
+  getItemsToConnect,
+} from '~/utils/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
+const Notion = styled.p`
+  color: ${({ theme }) => theme.textColor.black50};
+  margin-bottom: 20px;
+`
+
 const InputGroup = styled.div`
-  border-left: 4px solid #f6ba31;
+  border-left: 4px solid ${({ theme }) => theme.backgroundColor.yellow};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,29 +46,28 @@ const InputGroup = styled.div`
       height: 32px;
       margin-left: 4px;
       cursor: pointer;
-      color: #b2800d;
+      color: ${({ theme }) => theme.textColor.yellow};
     }
   }
 `
 
-type EditControversiesProps = {
+type EditTimelineProps = {
   politic: PoliticDetail
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function EditControversies({
+export default function EditTimeline({
   politic,
   setEditMode,
-}: EditControversiesProps): JSX.Element {
-  const { id = '', controversies = [] } = politic
-
+}: EditTimelineProps): JSX.Element {
+  const { id = '', timeline = [] } = politic
   const toast = useToast()
-  const [list, setList] = useState(controversies)
+  const [list, setList] = useState(timeline)
 
   //「新增」填寫欄位
   function addList() {
-    const extended: PoliticControversy[] = [
+    const extended: PoliticTimeLine[] = [
       ...list,
-      { id: `add-${uuidv4()}`, content: '', link: '' },
+      { id: `add-${uuidv4()}`, eventDate: '', content: '', link: '' },
     ]
     setList(extended)
   }
@@ -91,23 +100,34 @@ export default function EditControversies({
     setList(updated)
   }
 
+  //「修改」eventDate 欄位內容
+  function updateEventDate(id: string, eventDate: string) {
+    const updated = list.map((item) => {
+      if (id === item.id) {
+        return { ...item, eventDate }
+      }
+      return item
+    })
+    setList(updated)
+  }
+
   // 「送出審核」條件判定：有更改內容 or 有新增內容 ＆ 沒有任何欄位空白才可送出
   const shouldDisableSubmit = useMemo(() => {
     const hasEmptyValue = list.some(
-      (obj) => obj.content === '' || obj.link === ''
+      (obj) => obj.content === '' || obj.link === '' || obj.eventDate === ''
     )
-    const isListEqualToControversies =
-      JSON.stringify(list) === JSON.stringify(controversies)
-    return hasEmptyValue || isListEqualToControversies
-  }, [list, controversies])
+    const isListEqualToTimeline =
+      JSON.stringify(list) === JSON.stringify(timeline)
+    return hasEmptyValue || isListEqualToTimeline
+  }, [list, timeline])
 
   // -------------------------------------------------------
 
-  //要在 CMS 新增一筆的 controversies（新增、修改）
-  const controversyToAdd = getItemsToAdd(list, controversies)
+  //要在 CMS 新增一筆的 timeline（新增、修改）
+  const timelineToAdd = getItemsToAdd(list, timeline)
 
-  //CMS 現有的 controversy 需要新增 connect 到新建立的 edit politic id
-  const connectControversy = getItemsToConnect(list, controversyToAdd)
+  //CMS 現有的 timeline 需要新增 connect 到新建立的 edit politic id
+  const connectTimeline = getItemsToConnect(list, timelineToAdd)
 
   //新建一筆帶有既有欄位資料的 Politic
   async function addEditingPolitic(cmsApiUrl: string, variables: any) {
@@ -128,16 +148,17 @@ export default function EditControversies({
     }
   }
 
-  async function addControversies(
-    controversyList: PoliticControversy[] | [],
+  async function addTimelines(
+    timelineList: PoliticTimeLine[] | [],
     cmsApiUrl: string,
     politicId: number
   ) {
     try {
       const variables = {
-        data: controversyList.map((item: PoliticControversy) => ({
+        data: timelineList.map((item) => ({
           link: item.link,
           content: item.content,
+          eventDate: covertTimeToISOS(item.eventDate),
           editingPolitic: {
             connect: { id: politicId },
           },
@@ -145,7 +166,7 @@ export default function EditControversies({
       }
 
       const result = await fireGqlRequest(
-        print(CreateControversies),
+        print(CreateTimelines),
         variables,
         cmsApiUrl
       )
@@ -160,20 +181,20 @@ export default function EditControversies({
     }
   }
 
-  //同時執行 addEditingPoliticToThread & addControversies 流程
-  async function submitControversy() {
+  //同時執行 addEditingPoliticToThread & addTimelines 流程
+  async function submitTimeline() {
     const cmsApiUrl = `${window.location.origin}/api/data`
 
     try {
-      const editControversyVariables = {
+      const editTimelineVariables = {
         data: {
           thread_parent: {
             connect: {
               id: id,
             },
           },
-          controversies: {
-            connect: connectControversy.map((item) => ({
+          timeline: {
+            connect: connectTimeline.map((item) => ({
               id: item.id,
             })),
           },
@@ -182,11 +203,12 @@ export default function EditControversies({
 
       const {
         data: { createEditingPolitic },
-      } = await addEditingPolitic(cmsApiUrl, editControversyVariables)
+      } = await addEditingPolitic(cmsApiUrl, editTimelineVariables)
 
-      //create new controversies at CMS
-      return await addControversies(
-        controversyToAdd,
+      //create new timelines at CMS
+      return await addTimelines(
+        //@ts-ignore
+        timelineToAdd,
         cmsApiUrl,
         createEditingPolitic.id
       )
@@ -196,7 +218,7 @@ export default function EditControversies({
     }
   }
   async function submitHandler() {
-    const isSuccess = await submitControversy()
+    const isSuccess = await submitTimeline()
     if (isSuccess) {
       toast.open({
         status: 'success',
@@ -215,9 +237,17 @@ export default function EditControversies({
 
   return (
     <>
+      <Notion>日期格式為 yyyy-mm-dd，若不確定請寫目前日期。</Notion>
       {list?.map((item) => (
         <InputGroup key={item.id}>
           <div>
+            <InputItem
+              id={item.id}
+              icon={<EditCalender />}
+              placeholder="2022-01-01"
+              value={item.eventDate.slice(0, 10)}
+              onChange={updateEventDate}
+            />
             <InputItem
               id={item.id}
               icon={<EditText />}
@@ -240,11 +270,7 @@ export default function EditControversies({
         </InputGroup>
       ))}
 
-      <AddInputButton
-        addTarget="相關爭議"
-        onClick={addList}
-        colorType="yellow"
-      />
+      <AddInputButton addTarget="進度" onClick={addList} colorType="yellow" />
 
       <EditSendOrCancel
         colorType="yellow"

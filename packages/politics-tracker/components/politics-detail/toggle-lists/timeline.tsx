@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
 import DefaultText from '~/components/politics-detail/default-text'
-import type { PoliticTimeLine } from '~/types/politics-detail'
+import EditTimeline from '~/components/politics-detail/edit/edit-timeline'
+import type { PoliticDetail, PoliticTimeLine } from '~/types/politics-detail'
 import { getFormattedDate } from '~/utils/utils'
 
 const Wrapper = styled.div`
@@ -58,10 +59,16 @@ const ContentBlock = styled.div`
 `
 
 type TimelineProps = {
+  politic: PoliticDetail
   timelines: PoliticTimeLine[]
+  editMode: boolean
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function Timeline({
+  politic,
   timelines = [],
+  editMode = false,
+  setEditMode,
 }: TimelineProps): JSX.Element {
   const timeLists = timelines.map((item: PoliticTimeLine) => {
     const { id, eventDate, link, content } = item
@@ -85,13 +92,15 @@ export default function Timeline({
     )
   })
 
-  return (
-    <Wrapper>
-      {timelines.length > 0 ? (
-        <ul>{timeLists}</ul>
-      ) : (
-        <DefaultText title="相關進度" />
-      )}
-    </Wrapper>
-  )
+  let jsx
+
+  if (timeLists.length > 0 && !editMode) {
+    jsx = <ul>{timeLists}</ul>
+  } else if (!editMode) {
+    jsx = <DefaultText title="相關進度" />
+  } else {
+    jsx = <EditTimeline politic={politic} setEditMode={setEditMode} />
+  }
+
+  return <Wrapper>{jsx}</Wrapper>
 }
