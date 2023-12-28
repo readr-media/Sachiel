@@ -1,4 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
 import { print } from 'graphql'
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -9,15 +8,12 @@ import InputItem from '~/components/politics-detail/edit/input-item'
 import AddInputButton from '~/components/shared/add-input-button'
 import EditSendOrCancel from '~/components/shared/edit-send-or-cancel'
 import { useToast } from '~/components/toast/use-toast'
-import CreateControversies from '~/graphql/mutation/politics-detail/create-controversies.graphql'
 import AddEditingPolitic from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
+import CreateControversies from '~/graphql/mutation/politics-detail/create-controversies.graphql'
 import EditLink from '~/public/icons/edit-link.svg'
 import EditText from '~/public/icons/edit-text.svg'
 import { PoliticControversy, PoliticDetail } from '~/types/politics-detail'
-import {
-  getControversyToAdd,
-  getControversyToConnect,
-} from '~/utils/politics-detail'
+import { getItemsToAdd, getItemsToConnect } from '~/utils/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
 const InputGroup = styled.div`
@@ -108,10 +104,10 @@ export default function EditControversies({
   // -------------------------------------------------------
 
   //要在 CMS 新增一筆的 controversies（新增、修改）
-  const controversyToAdd = getControversyToAdd(list, controversies)
+  const controversyToAdd = getItemsToAdd(list, controversies)
 
   //CMS 現有的 controversy 需要新增 connect 到新建立的 edit politic id
-  const connectControversy = getControversyToConnect(list, controversyToAdd)
+  const connectControversy = getItemsToConnect(list, controversyToAdd)
 
   //新建一筆帶有既有欄位資料的 Politic
   async function addEditingPolitic(cmsApiUrl: string, variables: any) {
