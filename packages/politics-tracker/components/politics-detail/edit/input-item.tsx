@@ -37,13 +37,15 @@ type InputItemProps = {
   id: string
   value: string
   placeholder: string
+  label: string
   icon: React.ReactNode
   // eslint-disable-next-line
-  onChange: (id: string, value: string) => void // this is type definition
+  onChange: (id: string, label: string, value: string) => void // this is type definition
 }
 
 export default function InputItem({
   id = '',
+  label = '',
   value = '',
   placeholder = '',
   icon,
@@ -55,7 +57,7 @@ export default function InputItem({
       <Input
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange(id, e.target.value)}
+        onChange={(e) => onChange(id, label, e.target.value)}
       />
     </Wrapper>
   )

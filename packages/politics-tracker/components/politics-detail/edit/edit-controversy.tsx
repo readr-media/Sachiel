@@ -17,7 +17,7 @@ import { getItemsToAdd, getItemsToConnect } from '~/utils/politics-detail'
 import { fireGqlRequest } from '~/utils/utils'
 
 const InputGroup = styled.div`
-  border-left: 4px solid #f6ba31;
+  border-left: 4px solid ${({ theme }) => theme.backgroundColor.yellow};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,7 +36,7 @@ const InputGroup = styled.div`
       height: 32px;
       margin-left: 4px;
       cursor: pointer;
-      color: #b2800d;
+      color: ${({ theme }) => theme.textColor.yellow};
     }
   }
 `
@@ -69,22 +69,11 @@ export default function EditControversies({
     setList(remain)
   }
 
-  //「修改」link 欄位內容
-  function updateLink(id: string, link: string) {
+  //「修改」欄位內容
+  function updateInputValue(id: string, labelName: string, value: string) {
     const updated = list.map((item) => {
       if (id === item.id) {
-        return { ...item, link }
-      }
-      return item
-    })
-    setList(updated)
-  }
-
-  //「修改」content 欄位內容
-  function updateContent(id: string, content: string) {
-    const updated = list.map((item) => {
-      if (id === item.id) {
-        return { ...item, content }
+        return { ...item, [labelName]: value }
       }
       return item
     })
@@ -223,14 +212,16 @@ export default function EditControversies({
               icon={<EditText />}
               placeholder="請輸入標題"
               value={item.content}
-              onChange={updateContent}
+              label="content"
+              onChange={updateInputValue}
             />
             <InputItem
               id={item.id}
               icon={<EditLink />}
               placeholder="https://www.readr.tw"
               value={item.link}
-              onChange={updateLink}
+              label="link"
+              onChange={updateInputValue}
             />
           </div>
 
