@@ -78,33 +78,11 @@ export default function EditTimeline({
     setList(remain)
   }
 
-  //「修改」link 欄位內容
-  function updateLink(id: string, link: string) {
+  //「修改」欄位內容
+  function updateInputValue(id: string, labelName: string, value: string) {
     const updated = list.map((item) => {
       if (id === item.id) {
-        return { ...item, link }
-      }
-      return item
-    })
-    setList(updated)
-  }
-
-  //「修改」content 欄位內容
-  function updateContent(id: string, content: string) {
-    const updated = list.map((item) => {
-      if (id === item.id) {
-        return { ...item, content }
-      }
-      return item
-    })
-    setList(updated)
-  }
-
-  //「修改」eventDate 欄位內容
-  function updateEventDate(id: string, eventDate: string) {
-    const updated = list.map((item) => {
-      if (id === item.id) {
-        return { ...item, eventDate }
+        return { ...item, [labelName]: value }
       }
       return item
     })
@@ -129,7 +107,7 @@ export default function EditTimeline({
   //CMS 現有的 timeline 需要新增 connect 到新建立的 edit politic id
   const connectTimeline = getItemsToConnect(list, timelineToAdd)
 
-  //新建一筆帶有既有欄位資料的 Politic
+  //新建一筆帶有既有欄位資料的 editing Politic
   async function addEditingPolitic(cmsApiUrl: string, variables: any) {
     try {
       const result = await fireGqlRequest(
@@ -235,9 +213,14 @@ export default function EditTimeline({
     }
   }
 
+  const shouldShowNotion = Boolean(list?.length)
+
   return (
     <>
-      <Notion>日期格式為 yyyy-mm-dd，若不確定請寫目前日期。</Notion>
+      {shouldShowNotion && (
+        <Notion>日期格式為 yyyy-mm-dd，若不確定請寫目前日期。</Notion>
+      )}
+
       {list?.map((item) => (
         <InputGroup key={item.id}>
           <div>
@@ -246,21 +229,24 @@ export default function EditTimeline({
               icon={<EditCalender />}
               placeholder="2022-01-01"
               value={item.eventDate.slice(0, 10)}
-              onChange={updateEventDate}
+              label="eventDate"
+              onChange={updateInputValue}
             />
             <InputItem
               id={item.id}
               icon={<EditText />}
               placeholder="請輸入標題"
               value={item.content}
-              onChange={updateContent}
+              label="content"
+              onChange={updateInputValue}
             />
             <InputItem
               id={item.id}
               icon={<EditLink />}
               placeholder="https://www.readr.tw"
               value={item.link}
-              onChange={updateLink}
+              label="link"
+              onChange={updateInputValue}
             />
           </div>
 
