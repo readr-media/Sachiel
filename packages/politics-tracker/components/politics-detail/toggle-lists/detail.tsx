@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import type { DraftPolitic } from '~/components/politics/politic-form'
 import PoliticForm from '~/components/politics/politic-form'
 import Sources from '~/components/politics-detail/sources'
+import { useIsPartyPage } from '~/components/react-context/use-check-party-page'
 import { useToast } from '~/components/toast/use-toast'
 import { SOURCE_DELIMITER } from '~/constants/politics'
 import AddEditingPoliticToThread from '~/graphql/mutation/politics/add-editing-politic-to-thread.graphql'
@@ -80,13 +81,13 @@ export default function Details({
   const { desc, content, source, person, organization } = politic
 
   const toast = useToast()
+  const { isPartyPage } = useIsPartyPage()
 
   async function appendPoliticToThread(data: DraftPolitic): Promise<boolean> {
-    if (!person || !organization) throw new Error('electionData is null')
+    if (!person && !organization) throw new Error('electionData is null')
     if (!isDraftPoliticForModification(data)) throw Error('`id` is not in data')
 
     const cmsApiUrl = `${window.location.origin}/api/data`
-    const isPartyPage = false
 
     try {
       let variables: any
