@@ -53,13 +53,11 @@ export default function SectionContent({
   legislators = [],
   isElectionFinished = false,
 }: SectionContentProps): JSX.Element {
-  const [isControEdit, setIsControEdit] = useState<boolean>(false)
+  const [isControversyEdit, setIsControversyEdit] = useState<boolean>(false)
   const [isTimelineEdit, setIsTimelineEdit] = useState<boolean>(false)
+  const [isDetailEdit, setIsDetailEdit] = useState<boolean>(false)
 
   const {
-    desc = '',
-    content = '',
-    source = '',
     positionChange = [],
     timeline = [],
     controversies = [],
@@ -73,7 +71,20 @@ export default function SectionContent({
   const toggleItems: ToggleItems[] = [
     {
       title: '政見細節',
-      children: <Detail desc={desc} additional={content} source={source} />,
+      titleChildren: (
+        <EditButton
+          onClick={() => setIsDetailEdit(true)}
+          colorType="yellow"
+          editMode={isDetailEdit}
+        />
+      ),
+      children: (
+        <Detail
+          politic={politic}
+          setEditMode={setIsDetailEdit}
+          editMode={isDetailEdit}
+        />
+      ),
       showToggle: true,
       isActive: true, //政見細節預設展開
     },
@@ -131,21 +142,21 @@ export default function SectionContent({
       title: '相關爭議',
       titleChildren: (
         <EditButton
-          onClick={() => setIsControEdit(true)}
+          onClick={() => setIsControversyEdit(true)}
           colorType="yellow"
-          editMode={isControEdit}
+          editMode={isControversyEdit}
         />
       ),
       children: (
         <Controversy
           politic={politic}
           controversies={controversies}
-          editMode={isControEdit}
-          setEditMode={setIsControEdit}
+          editMode={isControversyEdit}
+          setEditMode={setIsControversyEdit}
         />
       ),
       showToggle: true,
-      isActive: Boolean(isControEdit || controversies.length > 0),
+      isActive: Boolean(isControversyEdit || controversies.length > 0),
     },
   ]
 
