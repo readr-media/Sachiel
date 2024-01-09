@@ -50,8 +50,12 @@ const Content = styled.div`
   max-width: 1230px;
   margin: auto;
 
+  ${({ theme }) => theme.breakpoint.md} {
+    padding: 20px 40px 40px;
+  }
+
   ${({ theme }) => theme.breakpoint.xl} {
-    padding: 20px 40px 60px;
+    padding: 20px 0px 60px;
   }
 `
 
