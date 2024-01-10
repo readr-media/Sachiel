@@ -5,6 +5,7 @@ import errors from '@twreporter/errors'
 import { print } from 'graphql'
 import type { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
+import styled from 'styled-components'
 
 import CustomHead, { type HeadProps } from '~/components/custom-head'
 import DefaultLayout from '~/components/layout/default'
@@ -21,12 +22,30 @@ import { ElectionData, ElectionLink } from '~/types/election'
 import { logGAEvent } from '~/utils/analytics'
 import { electionName, fireGqlRequest } from '~/utils/utils'
 
+const UpdatedAtNotion = styled.p`
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  color: rgba(15, 45, 53, 0.3);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+
+  @media screen and (min-width: 1220px) {
+    text-align: left;
+    left: calc((100% - 1200px) / 2);
+    bottom: 25px;
+  }
+`
+
 const DataLoader = ew.VotesComparison.DataLoader
 
 type ElectionPageProps = {
   year: number
   scrollTo: string
-  data: unknown // TODO: no definition for external data, need to add it in the future
+  data: any // TODO: no definition for external data, need to add it in the future
   prev: null | ElectionLink
   next: null | ElectionLink
 }
@@ -242,11 +261,15 @@ const Election = (props: ElectionPageProps) => {
     url: `${siteUrl}${asPath}`,
   }
 
+  const updatedTime = election?.updatedAt
+    ? election?.updatedAt.replace(/-/g, '/').slice(0, 16)
+    : ''
+
   return (
     <DefaultLayout>
       <CustomHead {...headProps} />
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
-        <div className="w-full">
+        <div className="relative w-full">
           <ew.VotesComparison.ReactComponent
             election={election}
             scrollTo={props.scrollTo}
@@ -274,8 +297,10 @@ const Election = (props: ElectionPageProps) => {
               }
             }}
           />
-          <Nav {...navProps} />
+          <UpdatedAtNotion> 最後更新於 {updatedTime}</UpdatedAtNotion>
         </div>
+
+        <Nav {...navProps} />
       </main>
     </DefaultLayout>
   )
