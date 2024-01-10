@@ -269,40 +269,38 @@ const Election = (props: ElectionPageProps) => {
     <DefaultLayout>
       <CustomHead {...headProps} />
       <main className="mt-header flex w-screen flex-col items-center md:mt-header-md">
-        <div className="w-full">
-          <div className="relative">
-            <ew.VotesComparison.ReactComponent
-              election={election}
-              scrollTo={props.scrollTo}
-              stickyTopOffset="77px"
-              onChange={(_type: string, _value: string) => {
-                if (_type === 'tab') {
-                  let tabName = ''
-                  switch (_value) {
-                    case 'normal':
-                      tabName = '區域'
-                      break
-                    case 'plainIndigenous':
-                      tabName = '平地原住民'
-                      break
-                    case 'mountainIndigenous':
-                      tabName = '山地原住民'
-                      break
-                    default:
-                      tabName = _value
-                      break
-                  }
-                  logGAEvent('click', `點擊身份別的tab(${tabName})`)
-                } else if (_type === 'selector') {
-                  logGAEvent('click', `點擊選區的selector(${_value})`)
+        <div className="relative w-full">
+          <ew.VotesComparison.ReactComponent
+            election={election}
+            scrollTo={props.scrollTo}
+            stickyTopOffset="77px"
+            onChange={(_type: string, _value: string) => {
+              if (_type === 'tab') {
+                let tabName = ''
+                switch (_value) {
+                  case 'normal':
+                    tabName = '區域'
+                    break
+                  case 'plainIndigenous':
+                    tabName = '平地原住民'
+                    break
+                  case 'mountainIndigenous':
+                    tabName = '山地原住民'
+                    break
+                  default:
+                    tabName = _value
+                    break
                 }
-              }}
-            />
-            <UpdatedAtNotion> 最後更新於 {updatedTime}</UpdatedAtNotion>
-          </div>
-
-          <Nav {...navProps} />
+                logGAEvent('click', `點擊身份別的tab(${tabName})`)
+              } else if (_type === 'selector') {
+                logGAEvent('click', `點擊選區的selector(${_value})`)
+              }
+            }}
+          />
+          <UpdatedAtNotion> 最後更新於 {updatedTime}</UpdatedAtNotion>
         </div>
+
+        <Nav {...navProps} />
       </main>
     </DefaultLayout>
   )
