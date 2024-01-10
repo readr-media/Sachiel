@@ -11,7 +11,10 @@ let HEADER_JSON_URL: string
 let LATEST_POSTS_URL: string
 let LATEST_POSTS_IN_CATEGORIES_URL: string
 let LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL: string
-
+let ELECTION_2024 = {
+  url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
+  shouldShowToggleButton: false,
+}
 switch (ENV) {
   case 'prod':
     SITE_URL = 'www.readr.tw'
@@ -29,7 +32,10 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-prod/json/sections-posts-listing.json'
-
+    ELECTION_2024 = {
+      url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
+      shouldShowToggleButton: false,
+    }
     break
 
   case 'staging':
@@ -48,7 +54,10 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/sections-posts-listing.json'
-
+    ELECTION_2024 = {
+      url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
+      shouldShowToggleButton: false,
+    }
     break
 
   case 'dev':
@@ -67,7 +76,10 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
-
+    ELECTION_2024 = {
+      url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
+      shouldShowToggleButton: true,
+    }
     break
 
   default:
@@ -86,12 +98,16 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
-
+    ELECTION_2024 = {
+      url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
+      shouldShowToggleButton: false,
+    }
     break
 }
 
 export {
   DONATION_PAGE_URL,
+  ELECTION_2024,
   ENV,
   GA_TRACKING_ID,
   GLOBAL_CACHE_SETTING,
