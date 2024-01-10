@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+
+import { ELECTION_2024 } from '~/constants/environment-variables'
 const Wrapper = styled.div`
   position: relative;
   padding: 32px 0;
@@ -25,9 +27,8 @@ export default function Election2024Homepage() {
   return (
     <>
       <Wrapper>
-        {/* <iframe src="http://localhost:3001"></iframe> */}
         {shouldShowIframe ? (
-          <iframe src="https://www.readr.tw/project/3/dev-election2024-homepage-0110-9/index.html"></iframe>
+          <iframe src={ELECTION_2024.url}></iframe>
         ) : (
           <Image
             style={{ margin: '0 auto' }}
@@ -39,13 +40,15 @@ export default function Election2024Homepage() {
           ></Image>
         )}
       </Wrapper>
-      <button
-        onClick={() => {
-          setShouldShowIframe((pre) => !pre)
-        }}
-      >
-        測試切換
-      </button>
+      {ELECTION_2024.shouldShowToggleButton && (
+        <button
+          onClick={() => {
+            setShouldShowIframe((pre) => !pre)
+          }}
+        >
+          測試切換
+        </button>
+      )}
     </>
   )
 }
