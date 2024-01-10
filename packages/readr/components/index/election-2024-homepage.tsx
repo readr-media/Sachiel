@@ -2,7 +2,7 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   position: relative;
   padding: 32px 0;
-  background-color: #ebf02c;
+  background-color: #fff;
   iframe {
     margin: 0 auto;
     max-width: 1200px;
