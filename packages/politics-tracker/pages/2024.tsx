@@ -15,7 +15,6 @@ import FactCheckPartners from '~/components/landing/shared/factcheck-partners'
 import FileDownload from '~/components/landing/shared/file-download'
 import TeamIntro from '~/components/landing/shared/team-intro'
 import DefaultLayout from '~/components/layout/default'
-import VoteCounting2024 from '~/components/vote-counting-2024'
 import { cmsApiUrl } from '~/constants/config'
 import { prefixOfJSONForLanding2024 } from '~/constants/environment-variables'
 import { fileDownload2024, teamIntro2024 } from '~/constants/landing'
@@ -78,8 +77,6 @@ export default function Landing2024({
       />
 
       <Main>
-        {/* should remove after 2024 taiwan election is finished */}
-        <VoteCounting2024 />
         <HeroImage />
         <FactCheck
           categories={allCategories}
