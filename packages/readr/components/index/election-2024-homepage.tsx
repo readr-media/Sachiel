@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 export default function Election2024Homepage() {
   return (
     <Wrapper>
-      <iframe src="https://www.readr.tw/project/3/dev-election2024-homepage-0110-6/index.html"></iframe>
+      <iframe src="https://www.readr.tw/project/3/dev-election2024-homepage-0110-7/index.html"></iframe>
     </Wrapper>
   )
 }
