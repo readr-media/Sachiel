@@ -58,12 +58,21 @@ const ResultList = styled.li`
   }
 `
 
+const SubTitle = styled.p`
+  margin-bottom: 8px;
+  color: ${({ theme }) => theme.textColor.black50};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+`
+
 const Title = styled.h2`
   color: ${({ theme }) => theme.textColor.yellow};
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
-  line-height: 130%;
+  line-height: 1.3;
   margin-bottom: 8px;
 
   &:hover {
@@ -261,6 +270,12 @@ export default function Search({
           </Notion>
 
           {resultLists.map((item, index) => {
+            const area = item?.pagemap?.metatags[0]['election:area'] || ''
+            const year = item?.pagemap?.metatags[0]['election:year'] || ''
+            const type = item?.pagemap?.metatags[0]['election:type'] || ''
+
+            const subtitleInfo = `${year}\u0020${type}\u0020${area}`
+
             return (
               <a
                 key={index}
@@ -269,6 +284,7 @@ export default function Search({
                 rel="noreferrer noopener"
               >
                 <ResultList>
+                  <SubTitle>{subtitleInfo}</SubTitle>
                   <Title> {item.title}</Title>
                   <Snippet>
                     <div

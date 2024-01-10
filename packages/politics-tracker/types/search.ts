@@ -10,7 +10,7 @@ export type ProgrammableSearchResultItem = {
   link: string
   snippet: string
   title: string
-  metatags: PageMap
+  pagemap: PageMap
 }
 
 export type PageMap = {

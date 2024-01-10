@@ -14,7 +14,6 @@ query GetPoliticDetail($politicId: ID!) {
     current_progress
     updatedAt
     contributer
-
     person {
       id
       votes_obtained_number
@@ -45,7 +44,6 @@ query GetPoliticDetail($politicId: ID!) {
         image
       }
     }
-
     organization {
       id
       seats
@@ -66,8 +64,10 @@ query GetPoliticDetail($politicId: ID!) {
         addComments
       }
     }
-
-    timeline(orderBy: { eventDate: asc }) {
+    timeline(
+      orderBy: { eventDate: asc }
+      where: { status: { equals: "verified" }, reviewed: { equals: true } }
+    ) {
       id
       eventDate
       content
