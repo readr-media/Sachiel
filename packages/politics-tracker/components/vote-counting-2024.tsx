@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 export default function VoteCounting2024() {
   return (
     <Wrapper>
-      <iframe src="https://dev.mirrormedia.mg/projects/dev-election2024-homepage-0110-3/index.html"></iframe>
+      <iframe src="https://dev.mirrormedia.mg/projects/dev-election2024-homepage-0110-6/index.html"></iframe>
     </Wrapper>
   )
 }
