@@ -57,74 +57,76 @@ export const getServerSideProps: GetServerSideProps<
   const yearNumber = Number(year)
   const areaStr = String(area)
   const mappedAreaStr = districtsMapping[areaStr] ?? 'all'
-
   const electionType = electionTypesMapping[String(type)]
-  let ldr = new DataLoader({
-    apiUrl: `https://whoareyou-gcs.readr.tw/${gcsBucketForElectionDataLoader}`,
-    version: 'v2',
-  })
-  let scrollTo: string = ''
-  let data
-
-  switch (electionType) {
-    case 'mayor': {
-      data = await ldr.loadMayorData({
-        year,
-      })
-      scrollTo = areaStr
-      break
-    }
-    case 'councilMember': {
-      data = await ldr.loadCouncilMemberData({
-        year,
-        district: mappedAreaStr,
-      })
-      break
-    }
-    case 'president': {
-      data = await ldr.loadPresidentData({
-        year,
-      })
-      break
-    }
-    case 'legislator-district': {
-      data = await ldr.loadLegislatorData({
-        year,
-        district: mappedAreaStr,
-        subtype: 'district',
-      })
-      break
-    }
-    case 'legislator-party': {
-      data = await ldr.loadLegislatorData({
-        year,
-        subtype: 'party',
-      })
-      break
-    }
-    case 'legislator-mountainIndigenous': {
-      data = await ldr.loadLegislatorData({
-        year,
-        subtype: 'mountainIndigenous',
-      })
-      break
-    }
-    case 'legislator-plainIndigenous': {
-      data = await ldr.loadLegislatorData({
-        year,
-        subtype: 'plainIndigenous',
-      })
-      break
-    }
-    default: {
-      return {
-        notFound: true,
-      }
-    }
-  }
 
   try {
     let elections: ElectionLink[] = []
+    let scrollTo: string = ''
+    let data // election json data
+
+    {
+      let ldr = new DataLoader({
+        apiUrl: `https://whoareyou-gcs.readr.tw/${gcsBucketForElectionDataLoader}`,
+        version: 'v2',
+      })
+
+      switch (electionType) {
+        case 'mayor': {
+          data = await ldr.loadMayorData({
+            year,
+          })
+          scrollTo = areaStr
+          break
+        }
+        case 'councilMember': {
+          data = await ldr.loadCouncilMemberData({
+            year,
+            district: mappedAreaStr,
+          })
+          break
+        }
+        case 'president': {
+          data = await ldr.loadPresidentData({
+            year,
+          })
+          break
+        }
+        case 'legislator-district': {
+          data = await ldr.loadLegislatorData({
+            year,
+            district: mappedAreaStr,
+            subtype: 'district',
+          })
+          break
+        }
+        case 'legislator-party': {
+          data = await ldr.loadLegislatorData({
+            year,
+            subtype: 'party',
+          })
+          break
+        }
+        case 'legislator-mountainIndigenous': {
+          data = await ldr.loadLegislatorData({
+            year,
+            subtype: 'mountainIndigenous',
+          })
+          break
+        }
+        case 'legislator-plainIndigenous': {
+          data = await ldr.loadLegislatorData({
+            year,
+            subtype: 'plainIndigenous',
+          })
+          break
+        }
+        default: {
+          return {
+            notFound: true,
+          }
+        }
+      }
+    }
 
     {
       // get election data
@@ -299,7 +301,6 @@ const Election = (props: ElectionPageProps) => {
           />
           <UpdatedAtNotion> 最後更新於 {updatedTime}</UpdatedAtNotion>
         </div>
-
         <Nav {...navProps} />
       </main>
     </DefaultLayout>
