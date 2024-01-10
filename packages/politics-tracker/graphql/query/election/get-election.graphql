@@ -1,10 +1,20 @@
-query GetElection($type: String!, $year: Int!) {
-  elections (where: {type: { equals: $type }, election_year_year: { equals: $year }}) {
+query GetElection($type: String!, $area: String!) {
+  elections(
+    where: {
+      type: { equals: $type }
+      electionArea: { some: { name: { contains: $area } } }
+    }
+    orderBy: { election_year_year: asc }
+  ) {
     id
     name
     type
     election_year_year
     election_year_month
     election_year_day
+    electionArea {
+      id
+      name
+    }
   }
 }

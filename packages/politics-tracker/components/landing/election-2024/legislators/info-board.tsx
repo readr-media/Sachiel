@@ -10,6 +10,11 @@ import { formattedCandidates } from '~/utils/landing'
 const Wrapper = styled.div`
   transform: translateX(-12px);
   width: calc(100% + 24px);
+
+  ${({ theme }) => theme.breakpoint.md} {
+    transform: none;
+    width: 100%;
+  }
 `
 
 const Title = styled.div`
@@ -119,7 +124,8 @@ export default function InfoBoard({
       <Content>
         {sortedAreas.map((area: LegislatorArea) => {
           const candidates = formattedCandidates(area.candidates)
-          const order = area.order === 0 ? '全國' : `第 0${area.order} 選舉區`
+          const order = `第 ${area.order.toString().padStart(2, '0')} 選舉區`
+
           return (
             <ListItemMobile
               order={0}
@@ -149,7 +155,7 @@ export default function InfoBoard({
 
         {sortedAreas.map((area: LegislatorArea) => {
           const candidates = formattedCandidates(area.candidates)
-          const order = area.order === 0 ? '全國' : `第 0${area.order} 選舉區`
+          const order = `第 ${area.order.toString().padStart(2, '0')} 選舉區`
           return (
             <ListItemDesktop
               count={area.done}

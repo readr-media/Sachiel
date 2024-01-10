@@ -1,0 +1,11 @@
+mutation AddTimelines($data: [PoliticTimelineCreateInput!]!) {
+  createPoliticTimelines(data: $data) {
+    id
+    link
+    eventDate
+    content
+    politic {
+      id
+    }
+  }
+}
