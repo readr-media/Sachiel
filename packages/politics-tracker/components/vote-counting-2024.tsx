@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { ELECTION_2024 } from '~/constants/environment-variables'
+import { election2024 } from '~/constants/environment-variables'
 
 const Wrapper = styled.div`
   position: relative;
@@ -31,10 +31,10 @@ export default function Election2024Homepage() {
     <>
       {shouldShowIframe && (
         <Wrapper>
-          <iframe src={ELECTION_2024.url}></iframe>
+          <iframe src={election2024.url}></iframe>
         </Wrapper>
       )}
-      {ELECTION_2024.shouldShowToggleButton && (
+      {election2024.shouldShowToggleButton && (
         <button
           onClick={() => {
             setShouldShowIframe((pre) => !pre)

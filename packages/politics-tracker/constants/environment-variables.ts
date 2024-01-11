@@ -33,7 +33,7 @@ let feedbackFormApi: string =
   'https://storytelling-prod-4g6paft7cq-de.a.run.app'
 let postPathOfREADr: string
 let gcsBucketForElectionDataLoader: string
-let ELECTION_2024 = {
+let election2024 = {
   url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
   shouldShowToggleButton: false,
 }
@@ -50,7 +50,7 @@ switch (env) {
     gtmId = 'GTM-NRMC5WWL'
     postPathOfREADr = 'https://dev.readr.tw/post'
     gcsBucketForElectionDataLoader = 'elections-dev'
-    ELECTION_2024 = {
+    election2024 = {
       url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
       shouldShowToggleButton: true,
     }
@@ -65,7 +65,7 @@ switch (env) {
     gtmId = 'GTM-5PG5FN7J'
     postPathOfREADr = 'https://www.readr.tw/post'
     gcsBucketForElectionDataLoader = 'elections'
-    ELECTION_2024 = {
+    election2024 = {
       url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
       shouldShowToggleButton: false,
     }
@@ -80,7 +80,7 @@ switch (env) {
     gtmId = 'GTM-NRMC5WWL'
     postPathOfREADr = 'https://dev.readr.tw/post'
     gcsBucketForElectionDataLoader = 'elections-dev'
-    ELECTION_2024 = {
+    election2024 = {
       url: 'https://www.readr.tw/project/3/election2024-homepage/index.html',
       shouldShowToggleButton: false,
     }
@@ -88,7 +88,7 @@ switch (env) {
 }
 
 export {
-  ELECTION_2024,
+  election2024,
   env,
   feedbackFormApi,
   gaTrackingId,
