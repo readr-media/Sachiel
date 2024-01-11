@@ -1,0 +1,48 @@
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+
+import { ELECTION_2024 } from '~/constants/environment-variables'
+
+const Wrapper = styled.div`
+  position: relative;
+  padding: 32px 0;
+  background-color: #fff;
+
+  iframe {
+    background-color: #ebf02c;
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 100%;
+    min-height: 600px;
+  }
+`
+export default function Election2024Homepage() {
+  const [shouldShowIframe, setShouldShowIframe] = useState(false)
+
+  useEffect(() => {
+    const currentTimeStamp = new Date().getTime()
+    const targetTimestamp = new Date('2024-01-13T08:00:00Z').getTime()
+    if (currentTimeStamp >= targetTimestamp) {
+      setShouldShowIframe(true)
+    }
+  }, [])
+
+  return (
+    <>
+      {shouldShowIframe && (
+        <Wrapper>
+          <iframe src={ELECTION_2024.url}></iframe>
+        </Wrapper>
+      )}
+      {ELECTION_2024.shouldShowToggleButton && (
+        <button
+          onClick={() => {
+            setShouldShowIframe((pre) => !pre)
+          }}
+        >
+          測試切換
+        </button>
+      )}
+    </>
+  )
+}
