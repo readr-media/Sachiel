@@ -12,7 +12,10 @@ const Wrapper = styled.div`
     margin: 0 auto;
     max-width: 1200px;
     width: 100%;
-    min-height: 600px;
+    min-height: 420px;
+    ${({ theme }) => theme.breakpoint.xl} {
+      min-height: 500px;
+    }
   }
 `
 export default function Election2024Homepage() {
