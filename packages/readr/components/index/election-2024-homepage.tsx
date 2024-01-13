@@ -12,9 +12,9 @@ const Wrapper = styled.div`
     margin: 0 auto;
     max-width: 1200px;
     width: 100%;
-    min-height: 420px;
+    min-height: 480px;
     ${({ theme }) => theme.breakpoint.xl} {
-      min-height: 500px;
+      min-height: 520px;
     }
   }
 `
