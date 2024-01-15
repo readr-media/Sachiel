@@ -11,7 +11,6 @@ import { getGqlClient } from '~/apollo-client'
 import Adsense from '~/components/ad/google-adsense/adsense-ad'
 import CollaborationSection from '~/components/index/collaboration-section'
 import EditorChoiceSection from '~/components/index/editor-choice-section'
-import Election2024Homepage from '~/components/index/election-2024-homepage'
 import FeatureSection from '~/components/index/feature-section'
 import type { NavigationCategoryWithArticleCards } from '~/components/index/latest-report-section'
 import LatestReportSection from '~/components/index/latest-report-section'
@@ -100,7 +99,6 @@ const Index: NextPageWithLayout<PageProps> = ({
 
   return (
     <>
-      <Election2024Homepage></Election2024Homepage>
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
