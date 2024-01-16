@@ -21,6 +21,24 @@ type StyleProps = {
   shouldPaddingTop: boolean
 }
 
+const MobileMediaLink = styled(MediaLinkList)`
+  margin: 0 auto 48px;
+  justify-content: center;
+
+  ${({ theme }) => theme.breakpoint.md} {
+    display: none;
+  }
+`
+
+const DesktopMediaLink = styled(MediaLinkList)`
+  display: none;
+
+  ${({ theme }) => theme.breakpoint.md} {
+    display: flex;
+    margin: 0;
+  }
+`
+
 const Container = styled.article<StyleProps>`
   width: 100%;
   max-width: 568px;
@@ -28,24 +46,10 @@ const Container = styled.article<StyleProps>`
   padding: ${(props) =>
     props.shouldPaddingTop ? '32px 20px 0px' : '0px 20px'};
 
-  .mobile-media-link {
-    display: flex;
-  }
-  .desktop-media-link {
-    display: none;
-  }
-
   ${({ theme }) => theme.breakpoint.md} {
     padding: ${(props) => (props.shouldPaddingTop ? '32px 0px 0px' : '0px')};
-
-    .mobile-media-link {
-      display: none;
-    }
-    .desktop-media-link {
-      display: flex;
-      margin: 0;
-    }
   }
+
   ${({ theme }) => theme.breakpoint.xl} {
     width: 600px;
     max-width: none;
@@ -317,7 +321,8 @@ export default function PostContent({
         onClick={() => gtag.sendEvent('post', 'click', 'post-donate')}
       />
       <StyledAdsense_E1 pageKey={categorySlug} adKey="E1" />
-      <MediaLinkList className={'mobile-media-link'} />
+
+      <MobileMediaLink />
 
       {shouldShowCitation && (
         <Citation>
@@ -333,7 +338,7 @@ export default function PostContent({
 
       <TagGroup>
         <PostTag tags={postData?.tags} />
-        <MediaLinkList className={'desktop-media-link'} />
+        <DesktopMediaLink />
       </TagGroup>
     </Container>
   )
