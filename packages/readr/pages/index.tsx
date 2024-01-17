@@ -379,7 +379,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     }
 
     {
-      // fetch featured collaboration items (collaboration banner)
+      // fetch featured collaboration (collaboration banner)
       const { data, errors: gqlErrors } = await client.query<{
         collaborations: FeaturedCollaboration[]
       }>({
