@@ -24,8 +24,12 @@ import {
 } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category } from '~/graphql/query/category'
-import type { Collaboration } from '~/graphql/query/collaboration'
+import type {
+  Collaboration,
+  FeaturedCollaboration,
+} from '~/graphql/query/collaboration'
 import { collaborations as collaborationsQuery } from '~/graphql/query/collaboration'
+import { featuredCollaborations as featuredCollaborationsQuery } from '~/graphql/query/collaboration'
 import type { DataSetWithCount } from '~/graphql/query/dataset'
 import { dataSets as dataSetsQuery } from '~/graphql/query/dataset'
 import type { EditorChoice } from '~/graphql/query/editor-choice'
@@ -54,6 +58,7 @@ type PageProps = {
   features: FeaturedArticle[]
   quotes?: Quote[]
   collaborations: CollaborationItem[]
+  featuredCollaboration: FeaturedCollaboration
   dataSetItems: DataSetItem[]
   dataSetCount: number
 }
@@ -85,6 +90,7 @@ const Index: NextPageWithLayout<PageProps> = ({
   features,
   quotes,
   collaborations,
+  featuredCollaboration,
   dataSetItems,
   dataSetCount,
 }) => {
@@ -110,7 +116,11 @@ const Index: NextPageWithLayout<PageProps> = ({
       )}
       {shouldShowFeatureSection && <FeatureSection posts={features} />}
       {shouldShowCollaborationSection && (
-        <CollaborationSection quotes={quotes} items={collaborations} />
+        <CollaborationSection
+          quotes={quotes}
+          items={collaborations}
+          featured={featuredCollaboration}
+        />
       )}
       <StyledAdsense_FT pageKey="home" adKey="FT" />
       <OpenDataSection items={dataSetItems} totalCount={dataSetCount} />
@@ -143,6 +153,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   let features: FeaturedArticle[] = []
   let quotes: Quote[] = []
   let collaborations: CollaborationItem[] = []
+  let featuredCollaboration: FeaturedCollaboration = {
+    id: '',
+    name: '',
+    collabLink: '',
+    ImageDesktop: null,
+    ImageTablet: null,
+    ImageMobile: null,
+  }
   let dataSetItems: DataSetItem[] = []
   let dataSetCount: number = 0
 
@@ -361,6 +379,28 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     }
 
     {
+      // fetch featured collaboration items (collaboration banner)
+      const { data, errors: gqlErrors } = await client.query<{
+        collaborations: FeaturedCollaboration[]
+      }>({
+        query: featuredCollaborationsQuery,
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `collaborations` query'),
+          'GraphQLError',
+          'failed to complete `collaborations`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      featuredCollaboration = data.collaborations[0]
+    }
+
+    {
       // fetch open data items
       const { data, error: gqlErrors } = await client.query<DataSetWithCount>({
         query: dataSetsQuery,
@@ -416,6 +456,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       features,
       quotes,
       collaborations,
+      featuredCollaboration,
       dataSetItems,
       dataSetCount,
     },
