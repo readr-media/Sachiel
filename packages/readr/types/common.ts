@@ -20,10 +20,11 @@ export type GenericPhoto = {
   name: string
   urlOriginal: string
   resized: ResizedImages | null
+  resizedWebp: ResizedImages | null
   imageFile: GenericImageFile | null
 }
 
-export type PhotoWithResizedOnly = Pick<GenericPhoto, 'resized'>
+export type PhotoWithResizedOnly = Pick<GenericPhoto, 'resized' | 'resizedWebp'>
 
 // ref: https://github.com/mirror-media/Lilith/blob/95bb4f8e9b43bd60515e1ba5b9b77d512f880bca/packages/readr/lists/Post.ts#L139
 /* eslint-disable no-unused-vars */
