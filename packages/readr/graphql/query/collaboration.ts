@@ -79,14 +79,23 @@ const featuredCollaborations = gql`
         resized {
           ...ResizedImagesField
         }
+        resizedWebp {
+          ...ResizedImagesField
+        }
       }
       ImageTablet {
         resized {
           ...ResizedImagesField
         }
+        resizedWebp {
+          ...ResizedImagesField
+        }
       }
       ImageMobile {
         resized {
+          ...ResizedImagesField
+        }
+        resizedWebp {
           ...ResizedImagesField
         }
       }
