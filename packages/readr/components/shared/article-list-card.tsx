@@ -1,10 +1,7 @@
 // 該元件作為文章資訊卡片使用
 
+import type { Breakpoint, Rwd } from '@readr-media/react-image'
 import SharedImage from '@readr-media/react-image'
-import type {
-  Breakpoint,
-  Rwd,
-} from '@readr-media/react-image/dist/react-components'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
