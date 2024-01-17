@@ -10,3 +10,14 @@ export const resizeImagesFragment = gql`
     w2400
   }
 `
+
+export const resizeWebpImagesFragment = gql`
+  fragment ResizedWebPImagesField on ResizedWebPImages {
+    original
+    w480
+    w800
+    w1200
+    w1600
+    w2400
+  }
+`

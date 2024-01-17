@@ -6,7 +6,10 @@ import type {
   PhotoWithResizedOnly,
 } from '~/types/common'
 
-import { resizeImagesFragment } from '../fragments/resized-images'
+import {
+  resizeImagesFragment,
+  resizeWebpImagesFragment,
+} from '../fragments/resized-images'
 
 export type Collaboration = Override<
   Pick<
@@ -80,7 +83,7 @@ const featuredCollaborations = gql`
           ...ResizedImagesField
         }
         resizedWebp {
-          ...ResizedImagesField
+          ...ResizedWebPImagesField
         }
       }
       ImageTablet {
@@ -88,7 +91,7 @@ const featuredCollaborations = gql`
           ...ResizedImagesField
         }
         resizedWebp {
-          ...ResizedImagesField
+          ...ResizedWebPImagesField
         }
       }
       ImageMobile {
@@ -96,12 +99,13 @@ const featuredCollaborations = gql`
           ...ResizedImagesField
         }
         resizedWebp {
-          ...ResizedImagesField
+          ...ResizedWebPImagesField
         }
       }
     }
   }
   ${resizeImagesFragment}
+  ${resizeWebpImagesFragment}
 `
 
 export { collaborations, featuredCollaborations }
