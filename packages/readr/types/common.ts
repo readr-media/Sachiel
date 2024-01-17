@@ -168,6 +168,9 @@ export type GenericCollaboration = {
   requireTime: number
   endTime: string
   heroImage: GenericPhoto | null
+  ImageDesktop: GenericPhoto | null
+  ImageTablet: GenericPhoto | null
+  ImageMobile: GenericPhoto | null
 }
 
 export type GenericGallery = {

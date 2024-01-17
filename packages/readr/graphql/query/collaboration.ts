@@ -24,6 +24,23 @@ export type Collaboration = Override<
   { heroImage: PhotoWithResizedOnly | null }
 >
 
+export type FeaturedCollaboration = Override<
+  Pick<
+    GenericCollaboration,
+    | 'id'
+    | 'name'
+    | 'collabLink'
+    | 'ImageDesktop'
+    | 'ImageTablet'
+    | 'ImageMobile'
+  >,
+  {
+    ImageDesktop: PhotoWithResizedOnly | null
+    ImageTablet: PhotoWithResizedOnly | null
+    ImageMobile: PhotoWithResizedOnly | null
+  }
+>
+
 const collaborations = gql`
   query {
     collaborations(
@@ -49,4 +66,33 @@ const collaborations = gql`
   ${resizeImagesFragment}
 `
 
-export { collaborations }
+const featuredCollaborations = gql`
+  query {
+    collaborations(
+      orderBy: [{ sortOrder: asc }, { publishTime: desc }]
+      where: { state: { equals: "published" }, isFeatured: { equals: true } }
+    ) {
+      id
+      name
+      collabLink
+      ImageDesktop {
+        resized {
+          ...ResizedImagesField
+        }
+      }
+      ImageTablet {
+        resized {
+          ...ResizedImagesField
+        }
+      }
+      ImageMobile {
+        resized {
+          ...ResizedImagesField
+        }
+      }
+    }
+  }
+  ${resizeImagesFragment}
+`
+
+export { collaborations, featuredCollaborations }
