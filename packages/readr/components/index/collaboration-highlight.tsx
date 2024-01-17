@@ -3,6 +3,7 @@
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 
+import type { FeaturedCollaboration } from '~/graphql/query/collaboration'
 import * as gtag from '~/utils/gtag'
 
 const Container = styled(NextLink)``
@@ -15,21 +16,20 @@ type Item = {
   defaultImageSrc: string
 }
 
-export default function CollaborationHighlight(): JSX.Element {
+type CollaborationHighlightProps = {
+  featured: FeaturedCollaboration
+}
+export default function CollaborationHighlight({
+  featured,
+}: CollaborationHighlightProps): JSX.Element {
   const theme = useTheme()
-  const path = '/images/collaboration'
-  const directory = '/open-relation'
-
-  function createUrlPath(file: string) {
-    return [path, directory, file].join('/')
-  }
 
   const item: Item = {
-    altText: 'open-relation-banner',
-    href: 'https://whoareyou.readr.tw/',
-    desktopImageSrc: createUrlPath('desktop_1096x241.png'),
-    tabletImageSrc: createUrlPath('tablet_710x215.png'),
-    defaultImageSrc: createUrlPath('mobile_280x172.png'),
+    altText: featured.name || '',
+    href: featured.collabLink || '',
+    desktopImageSrc: featured.ImageDesktop?.resized?.original || '',
+    tabletImageSrc: featured.ImageTablet?.resized?.original || '',
+    defaultImageSrc: featured.ImageMobile?.resized?.original || '',
   }
 
   return (

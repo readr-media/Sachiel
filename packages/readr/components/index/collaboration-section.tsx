@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SectionHeading from '~/components/shared/section-heading'
+import { FeaturedCollaboration } from '~/graphql/query/collaboration'
 import type { Quote } from '~/graphql/query/quote'
 import type { CollaborationItem } from '~/types/component'
 
@@ -47,11 +48,12 @@ const HighlightPart = styled.div`
 type CollaborationSectionProps = {
   quotes?: Quote[]
   items: CollaborationItem[]
+  featured: FeaturedCollaboration
 }
 
 export default function CollaborationSection(
   // eslint-disable-next-line no-unused-vars
-  { quotes, items }: CollaborationSectionProps
+  { quotes, items, featured }: CollaborationSectionProps
 ): JSX.Element {
   const sectionTitle = '協作專區'
   const spreadsheetId = '1vEuoCAAXR8NMoh6qiOnj6kNdLv0lc-CaInLnWUuvySo'
@@ -110,7 +112,7 @@ export default function CollaborationSection(
         headingLevel={2}
       />
       <HighlightPart>
-        <CollaborationHighlight />
+        <CollaborationHighlight featured={featured} />
         {/* <CollaborationQuoteSlider /> is replaced by <CollaborationHighlight />, but we still keep it for further usage. */}
         {/* <CollaborationQuoteSlider quotes={quotes} /> */}
       </HighlightPart>
