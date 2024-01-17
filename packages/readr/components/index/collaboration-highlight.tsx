@@ -1,19 +1,55 @@
 // 協作專區的置頂項目
 
+import Image from '@readr-media/react-image'
 import NextLink from 'next/link'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 import type { FeaturedCollaboration } from '~/graphql/query/collaboration'
+import type { ResizedImages } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
-const Container = styled(NextLink)``
+const Container = styled(NextLink)`
+  .desktop-banner,
+  .tablet-banner {
+    display: none;
+  }
+
+  ${({ theme }) => theme.breakpoint.md} {
+    .tablet-banner {
+      display: block;
+    }
+
+    .desktop-banner,
+    .mobile-banner {
+      display: none;
+    }
+  }
+
+  ${({ theme }) => theme.breakpoint.xl} {
+    .desktop-banner {
+      display: block;
+    }
+
+    .tablet-banner,
+    .mobile-banner {
+      display: none;
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+`
 
 type Item = {
   altText: string
   href: string
-  desktopImageSrc: string
-  tabletImageSrc: string
-  defaultImageSrc: string
+  desktopImageSrc: ResizedImages
+  desktopWebpSrc: ResizedImages
+  tabletImageSrc: ResizedImages
+  tabletWebpSrc: ResizedImages
+  mobileImageSrc: ResizedImages
+  mobileWebpSrc: ResizedImages
 }
 
 type CollaborationHighlightProps = {
@@ -22,14 +58,24 @@ type CollaborationHighlightProps = {
 export default function CollaborationHighlight({
   featured,
 }: CollaborationHighlightProps): JSX.Element {
-  const theme = useTheme()
+  const defaultImageSrc = {
+    original: '',
+    w480: '',
+    w800: '',
+    w1200: '',
+    w1600: '',
+    w2400: '',
+  }
 
   const item: Item = {
     altText: featured.name || '',
-    href: featured.collabLink || '',
-    desktopImageSrc: featured.ImageDesktop?.resized?.original || '',
-    tabletImageSrc: featured.ImageTablet?.resized?.original || '',
-    defaultImageSrc: featured.ImageMobile?.resized?.original || '',
+    href: featured.collabLink || '/',
+    desktopImageSrc: featured.ImageDesktop?.resized || defaultImageSrc,
+    desktopWebpSrc: featured.ImageDesktop?.resizedWebp || defaultImageSrc,
+    tabletImageSrc: featured.ImageTablet?.resized || defaultImageSrc,
+    tabletWebpSrc: featured.ImageTablet?.resizedWebp || defaultImageSrc,
+    mobileImageSrc: featured.ImageMobile?.resized || defaultImageSrc,
+    mobileWebpSrc: featured.ImageMobile?.resizedWebp || defaultImageSrc,
   }
 
   return (
@@ -41,16 +87,28 @@ export default function CollaborationHighlight({
         gtag.sendEvent('homepage', 'click', 'collaboration-banner')
       }
     >
-      <picture>
-        <source
-          srcSet={item.desktopImageSrc}
-          media={`(min-width: ${theme.mediaSize.xl}px)`}
+      <picture className="desktop-banner">
+        <Image
+          images={item.desktopImageSrc}
+          imagesWebP={item.desktopWebpSrc}
+          alt={item.altText}
         />
-        <source
-          srcSet={item.tabletImageSrc}
-          media={`(min-width: ${theme.mediaSize.md}px)`}
+      </picture>
+
+      <picture className="tablet-banner">
+        <Image
+          images={item.tabletImageSrc}
+          imagesWebP={item.tabletWebpSrc}
+          alt={item.altText}
         />
-        <img src={item.defaultImageSrc} alt={item.altText} />
+      </picture>
+
+      <picture className="mobile-banner">
+        <Image
+          images={item.mobileImageSrc}
+          imagesWebP={item.mobileWebpSrc}
+          alt={item.altText}
+        />
       </picture>
     </Container>
   )
