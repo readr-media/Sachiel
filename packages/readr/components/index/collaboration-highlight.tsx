@@ -57,7 +57,9 @@ type CollaborationHighlightProps = {
 }
 export default function CollaborationHighlight({
   featured,
-}: CollaborationHighlightProps): JSX.Element {
+}: CollaborationHighlightProps): JSX.Element | null {
+  if (Object.keys(featured).length === 0) return null
+
   const defaultImageSrc = {
     original: '',
     w480: '',
@@ -92,6 +94,7 @@ export default function CollaborationHighlight({
           images={item.desktopImageSrc}
           imagesWebP={item.desktopWebpSrc}
           alt={item.altText}
+          defaultImage={'/icons/default/post.svg'}
         />
       </picture>
 
@@ -100,6 +103,7 @@ export default function CollaborationHighlight({
           images={item.tabletImageSrc}
           imagesWebP={item.tabletWebpSrc}
           alt={item.altText}
+          defaultImage={'/icons/default/post.svg'}
         />
       </picture>
 
@@ -108,6 +112,7 @@ export default function CollaborationHighlight({
           images={item.mobileImageSrc}
           imagesWebP={item.mobileWebpSrc}
           alt={item.altText}
+          defaultImage={'/icons/default/post.svg'}
         />
       </picture>
     </Container>

@@ -17,7 +17,6 @@ import LatestReportSection from '~/components/index/latest-report-section'
 import OpenDataSection from '~/components/index/open-data-section'
 import LayoutGeneral from '~/components/layout/layout-general'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
-import { REPORT_STYLES } from '~/constants/constant'
 import {
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
@@ -397,7 +396,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         throw annotatingError
       }
 
-      featuredCollaboration = data.collaborations[0]
+      featuredCollaboration = data.collaborations[0] ?? {}
     }
 
     {
