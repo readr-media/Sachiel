@@ -64,7 +64,7 @@ export const fileDownload2024: DownloadItem[] = [
   },
   {
     title: '下載立委政見',
-    link: `${prefixOfJSONForLanding2024}/landing_legislators.json`,
+    link: `${prefixOfJSONForLanding2024}/2024legislator.json`,
   },
 ]
 
