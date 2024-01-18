@@ -12,7 +12,7 @@ const DotStyle = css`
   content: '';
   position: absolute;
   top: 9px;
-  left: 7px;
+  left: 8px;
   width: 4px;
   height: 4px;
   border-radius: 50%;
@@ -22,11 +22,15 @@ const DotStyle = css`
 const LineStyle = css`
   content: '';
   position: absolute;
-  top: 10px;
-  left: 3px;
+  top: 11px;
+  left: 4px;
   width: 20px;
   height: 1px;
   background-color: rgba(0, 9, 40, 0.66);
+
+  ${({ theme }) => theme.breakpoint.md} {
+    left: 5px;
+  }
 `
 
 const PostCreditWrapper = styled.div`
@@ -58,30 +62,44 @@ const CreditList = styled.ul`
     line-height: 1.5;
     display: flex;
     align-items: flex-start;
+
+    .dataAnalysts,
+    .otherWriters {
+      min-width: 56px;
+
+      ${({ theme }) => theme.breakpoint.md} {
+        min-width: 64px;
+      }
+    }
   }
+
   > li + li {
     margin: 4px 0 0;
   }
+
   ${({ theme }) => theme.breakpoint.md} {
     margin: 0;
+
     > li {
       font-size: 16px;
     }
   }
 `
 
-const CreditTitle = styled.div`
+const CreditTitle = styled.span`
   display: block;
   color: rgba(0, 9, 40, 0.66);
-  margin-right: 3px;
-  min-width: 32px;
+  display: inline;
+  width: fit-content;
+  min-width: 28px;
 `
 
 const CreditName = styled.div`
   position: relative;
-  display: block;
+  display: inline-block;
   color: #000928;
   padding: 0 0 0 28px;
+
   &:before {
     ${LineStyle}
     ${({ theme }) => theme.breakpoint.md} {
@@ -179,14 +197,14 @@ export default function PostCredit({ postData }: PostProps): JSX.Element {
         )}
         {dataAnalysts?.length > 0 && (
           <li>
-            <CreditTitle>資料分析</CreditTitle>
+            <CreditTitle className="dataAnalysts">資料分析</CreditTitle>
             <CreditName>{dataAnalysts}</CreditName>
           </li>
         )}
 
         {otherWriters && (
           <li>
-            <CreditTitle>其他作者</CreditTitle>
+            <CreditTitle className="otherWriters">其他作者</CreditTitle>
             <CreditName>{otherWriters}</CreditName>
           </li>
         )}

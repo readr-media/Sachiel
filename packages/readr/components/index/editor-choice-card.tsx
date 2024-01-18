@@ -1,10 +1,7 @@
 // 編輯精選文章卡片
 
+import type { Breakpoint, Rwd } from '@readr-media/react-image'
 import SharedImage from '@readr-media/react-image'
-import type {
-  Breakpoint,
-  Rwd,
-} from '@readr-media/react-image/dist/react-components'
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 

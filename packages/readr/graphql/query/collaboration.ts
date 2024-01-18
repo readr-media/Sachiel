@@ -6,7 +6,10 @@ import type {
   PhotoWithResizedOnly,
 } from '~/types/common'
 
-import { resizeImagesFragment } from '../fragments/resized-images'
+import {
+  resizeImagesFragment,
+  resizeWebpImagesFragment,
+} from '../fragments/resized-images'
 
 export type Collaboration = Override<
   Pick<
@@ -22,6 +25,23 @@ export type Collaboration = Override<
     | 'endTime'
   >,
   { heroImage: PhotoWithResizedOnly | null }
+>
+
+export type FeaturedCollaboration = Override<
+  Pick<
+    GenericCollaboration,
+    | 'id'
+    | 'name'
+    | 'collabLink'
+    | 'ImageDesktop'
+    | 'ImageTablet'
+    | 'ImageMobile'
+  >,
+  {
+    ImageDesktop: PhotoWithResizedOnly | null
+    ImageTablet: PhotoWithResizedOnly | null
+    ImageMobile: PhotoWithResizedOnly | null
+  }
 >
 
 const collaborations = gql`
@@ -49,4 +69,43 @@ const collaborations = gql`
   ${resizeImagesFragment}
 `
 
-export { collaborations }
+const featuredCollaborations = gql`
+  query {
+    collaborations(
+      orderBy: [{ sortOrder: asc }, { publishTime: desc }]
+      where: { state: { equals: "published" }, isFeatured: { equals: true } }
+    ) {
+      id
+      name
+      collabLink
+      ImageDesktop {
+        resized {
+          ...ResizedImagesField
+        }
+        resizedWebp {
+          ...ResizedWebPImagesField
+        }
+      }
+      ImageTablet {
+        resized {
+          ...ResizedImagesField
+        }
+        resizedWebp {
+          ...ResizedWebPImagesField
+        }
+      }
+      ImageMobile {
+        resized {
+          ...ResizedImagesField
+        }
+        resizedWebp {
+          ...ResizedWebPImagesField
+        }
+      }
+    }
+  }
+  ${resizeImagesFragment}
+  ${resizeWebpImagesFragment}
+`
+
+export { collaborations, featuredCollaborations }
