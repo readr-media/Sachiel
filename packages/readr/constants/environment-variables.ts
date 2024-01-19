@@ -20,14 +20,12 @@ switch (ENV) {
     QA_RECORD_CONFIG = { variables: { id1: '6', id2: '7' } }
     GLOBAL_CACHE_SETTING = 'public, max-age=300'
     GOOGLE_ADSENSE_AD_CLIENT = 'ca-pub-9990785780499264'
-    HEADER_JSON_URL =
-      'https://storage.googleapis.com/statics-readr-tw-prod/json/header.json'
-    LATEST_POSTS_URL =
-      'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts.json'
+    HEADER_JSON_URL = 'https://statics.readr.tw/json/header.json'
+    LATEST_POSTS_URL = 'https://statics.readr.tw/json/latest-posts.json'
     LATEST_POSTS_IN_CATEGORIES_URL =
-      'https://storage.googleapis.com/statics-readr-tw-prod/json/latest-posts-in-categories.json'
+      'https://statics.readr.tw/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
-      'https://storage.googleapis.com/statics-readr-tw-prod/json/sections-posts-listing.json'
+      'https://statics.readr.tw/json/sections-posts-listing.json'
     break
 
   case 'staging':
