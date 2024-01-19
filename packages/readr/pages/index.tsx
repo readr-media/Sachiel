@@ -378,28 +378,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     }
 
     {
-      // fetch featured collaboration (collaboration banner)
-      const { data, errors: gqlErrors } = await client.query<{
-        collaborations: FeaturedCollaboration[]
-      }>({
-        query: featuredCollaborationsQuery,
-      })
-
-      if (gqlErrors) {
-        const annotatingError = errors.helpers.wrap(
-          new Error('Errors returned in `collaborations` query'),
-          'GraphQLError',
-          'failed to complete `collaborations`',
-          { errors: gqlErrors }
-        )
-
-        throw annotatingError
-      }
-
-      featuredCollaboration = data.collaborations[0] ?? {}
-    }
-
-    {
       // fetch open data items
       const { data, error: gqlErrors } = await client.query<DataSetWithCount>({
         query: dataSetsQuery,

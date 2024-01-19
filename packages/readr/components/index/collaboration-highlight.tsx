@@ -1,83 +1,35 @@
 // 協作專區的置頂項目
 
-import Image from '@readr-media/react-image'
 import NextLink from 'next/link'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
-import type { FeaturedCollaboration } from '~/graphql/query/collaboration'
-import type { ResizedImages } from '~/types/common'
 import * as gtag from '~/utils/gtag'
 
-const Container = styled(NextLink)`
-  .desktop-banner,
-  .tablet-banner {
-    display: none;
-  }
-
-  ${({ theme }) => theme.breakpoint.md} {
-    .tablet-banner {
-      display: block;
-    }
-
-    .desktop-banner,
-    .mobile-banner {
-      display: none;
-    }
-  }
-
-  ${({ theme }) => theme.breakpoint.xl} {
-    .desktop-banner {
-      display: block;
-    }
-
-    .tablet-banner,
-    .mobile-banner {
-      display: none;
-    }
-  }
-
-  img {
-    width: 100%;
-  }
-`
+const Container = styled(NextLink)``
 
 type Item = {
   altText: string
   href: string
-  desktopImageSrc: ResizedImages
-  desktopWebpSrc: ResizedImages
-  tabletImageSrc: ResizedImages
-  tabletWebpSrc: ResizedImages
-  mobileImageSrc: ResizedImages
-  mobileWebpSrc: ResizedImages
+  desktopImageSrc: string
+  tabletImageSrc: string
+  defaultImageSrc: string
 }
 
-type CollaborationHighlightProps = {
-  featured: FeaturedCollaboration
-}
-export default function CollaborationHighlight({
-  featured,
-}: CollaborationHighlightProps): JSX.Element | null {
-  if (Object.keys(featured).length === 0) return null
+export default function CollaborationHighlight(): JSX.Element {
+  const theme = useTheme()
+  const path = '/images/collaboration'
+  const directory = '/open-relation'
 
-  const defaultImageSrc = {
-    original: '',
-    w480: '',
-    w800: '',
-    w1200: '',
-    w1600: '',
-    w2400: '',
+  function createUrlPath(file: string) {
+    return [path, directory, file].join('/')
   }
 
   const item: Item = {
-    altText: featured.name || '',
-    href: featured.collabLink || '/',
-    desktopImageSrc: featured.ImageDesktop?.resized || defaultImageSrc,
-    desktopWebpSrc: featured.ImageDesktop?.resizedWebp || defaultImageSrc,
-    tabletImageSrc: featured.ImageTablet?.resized || defaultImageSrc,
-    tabletWebpSrc: featured.ImageTablet?.resizedWebp || defaultImageSrc,
-    mobileImageSrc: featured.ImageMobile?.resized || defaultImageSrc,
-    mobileWebpSrc: featured.ImageMobile?.resizedWebp || defaultImageSrc,
+    altText: 'open-relation-banner',
+    href: 'https://whoareyou.readr.tw/',
+    desktopImageSrc: createUrlPath('desktop_1096x241.png'),
+    tabletImageSrc: createUrlPath('tablet_710x215.png'),
+    defaultImageSrc: createUrlPath('mobile_280x172.png'),
   }
 
   return (
@@ -89,31 +41,16 @@ export default function CollaborationHighlight({
         gtag.sendEvent('homepage', 'click', 'collaboration-banner')
       }
     >
-      <picture className="desktop-banner">
-        <Image
-          images={item.desktopImageSrc}
-          imagesWebP={item.desktopWebpSrc}
-          alt={item.altText}
-          defaultImage={'/icons/default/post.svg'}
+      <picture>
+        <source
+          srcSet={item.desktopImageSrc}
+          media={`(min-width: ${theme.mediaSize.xl}px)`}
         />
-      </picture>
-
-      <picture className="tablet-banner">
-        <Image
-          images={item.tabletImageSrc}
-          imagesWebP={item.tabletWebpSrc}
-          alt={item.altText}
-          defaultImage={'/icons/default/post.svg'}
+        <source
+          srcSet={item.tabletImageSrc}
+          media={`(min-width: ${theme.mediaSize.md}px)`}
         />
-      </picture>
-
-      <picture className="mobile-banner">
-        <Image
-          images={item.mobileImageSrc}
-          imagesWebP={item.mobileWebpSrc}
-          alt={item.altText}
-          defaultImage={'/icons/default/post.svg'}
-        />
+        <img src={item.defaultImageSrc} alt={item.altText} />
       </picture>
     </Container>
   )
