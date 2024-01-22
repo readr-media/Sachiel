@@ -112,7 +112,7 @@ export default function CollaborationSection(
         headingLevel={2}
       />
       <HighlightPart>
-        <CollaborationHighlight />
+        <CollaborationHighlight featured={featured} />
         {/* <CollaborationQuoteSlider /> is replaced by <CollaborationHighlight />, but we still keep it for further usage. */}
         {/* <CollaborationQuoteSlider quotes={quotes} /> */}
       </HighlightPart>
