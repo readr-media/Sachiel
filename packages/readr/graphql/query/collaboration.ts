@@ -33,14 +33,14 @@ export type FeaturedCollaboration = Override<
     | 'id'
     | 'name'
     | 'collabLink'
-    | 'ImageDesktop'
-    | 'ImageTablet'
-    | 'ImageMobile'
+    | 'bannerDesktop'
+    | 'bannerTablet'
+    | 'bannerMobile'
   >,
   {
-    ImageDesktop: PhotoWithResizedOnly | null
-    ImageTablet: PhotoWithResizedOnly | null
-    ImageMobile: PhotoWithResizedOnly | null
+    bannerDesktop: PhotoWithResizedOnly | null
+    bannerTablet: PhotoWithResizedOnly | null
+    bannerMobile: PhotoWithResizedOnly | null
   }
 >
 
@@ -73,12 +73,12 @@ const featuredCollaborations = gql`
   query {
     collaborations(
       orderBy: [{ sortOrder: asc }, { publishTime: desc }]
-      where: { state: { equals: "published" }, isFeatured: { equals: true } }
+      where: { state: { equals: "published" }, isBanner: { equals: true } }
     ) {
       id
       name
       collabLink
-      ImageDesktop {
+      bannerDesktop {
         resized {
           ...ResizedImagesField
         }
@@ -86,7 +86,7 @@ const featuredCollaborations = gql`
           ...ResizedWebPImagesField
         }
       }
-      ImageTablet {
+      bannerTablet {
         resized {
           ...ResizedImagesField
         }
@@ -94,7 +94,7 @@ const featuredCollaborations = gql`
           ...ResizedWebPImagesField
         }
       }
-      ImageMobile {
+      bannerMobile {
         resized {
           ...ResizedImagesField
         }
