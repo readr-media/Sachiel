@@ -156,9 +156,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     id: '',
     name: '',
     collabLink: '',
-    ImageDesktop: null,
-    ImageTablet: null,
-    ImageMobile: null,
+    bannerDesktop: null,
+    bannerTablet: null,
+    bannerMobile: null,
   }
   let dataSetItems: DataSetItem[] = []
   let dataSetCount: number = 0
@@ -375,6 +375,28 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           images: heroImage?.resized ?? {},
         }
       })
+    }
+
+    {
+      // fetch featured collaboration (collaboration banner)
+      const { data, errors: gqlErrors } = await client.query<{
+        collaborations: FeaturedCollaboration[]
+      }>({
+        query: featuredCollaborationsQuery,
+      })
+
+      if (gqlErrors) {
+        const annotatingError = errors.helpers.wrap(
+          new Error('Errors returned in `collaborations` query'),
+          'GraphQLError',
+          'failed to complete `collaborations`',
+          { errors: gqlErrors }
+        )
+
+        throw annotatingError
+      }
+
+      featuredCollaboration = data.collaborations[0] ?? {}
     }
 
     {
