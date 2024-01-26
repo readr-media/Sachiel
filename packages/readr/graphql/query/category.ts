@@ -62,7 +62,10 @@ const categories = gql`
     ) {
       id
       slug
-      title
+      title    
+      updatedAt
+      createdAt
+      sortOrder
       posts: relatedPost(
         take: $relatedPostFirst
         skip: $postSkip
