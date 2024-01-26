@@ -14,16 +14,16 @@ import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
-import { POST_STYLES, REPORT_STYLES } from '~/constants/constant'
 import { DEFAULT_HEADER_CATEGORY_LIST } from '~/constants/constant'
 import { HEADER_JSON_URL } from '~/constants/environment-variables'
+import { LATEST_POSTS_IN_CATEGORIES_URL } from '~/constants/environment-variables'
 import CategoryListContext from '~/contexts/category-list'
 import HeaderCategoriesAndRelatePostsContext from '~/contexts/header-categories-and-related-posts'
 import type { Category } from '~/graphql/query/category'
-import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
 import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
+import { sortByTimeStamp } from '~/utils/index'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (
@@ -92,10 +92,7 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
 
 // getInitialProps runs on both server-side and client-side
 MyApp.getInitialProps = async (context: AppContext) => {
-  const client = getGqlClient()
   const ctx = await App.getInitialProps(context)
-
-  const relatedPostTypes: string[] = [...POST_STYLES, ...REPORT_STYLES]
   const categoriesAndRelatedPosts: Category[] = []
   const categoryList: NavigationCategory[] = []
 
@@ -121,16 +118,16 @@ MyApp.getInitialProps = async (context: AppContext) => {
 
     {
       // Fetch all categories
-      const { data } = await client.query<{ categories: Category[] }>({
-        query: categories,
-        variables: {
-          shouldQueryRelatedPost: true,
-          relatedPostFirst: 1,
-          relatedPostTypes,
-        },
-      })
+      let data: { categories: Category[] }
+      const response = await axios.get<{ categories: Category[] }>(
+        LATEST_POSTS_IN_CATEGORIES_URL
+      )
+      data = response.data
 
-      categoryList.push(...data.categories)
+      const sortCategories =
+        sortByTimeStamp(data.categories) || data.categories || []
+
+      categoryList.push(...sortCategories)
     }
   } catch (error) {
     const err = error as Error

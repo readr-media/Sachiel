@@ -14,7 +14,16 @@ import { convertToStringList } from '~/utils/common'
 export type Category = Override<
   Pick<
     GenericCategory,
-    'id' | 'slug' | 'title' | 'posts' | 'reports' | 'ogImage' | 'ogDescription'
+    | 'id'
+    | 'slug'
+    | 'title'
+    | 'posts'
+    | 'reports'
+    | 'ogImage'
+    | 'ogDescription'
+    | 'updatedAt'
+    | 'createdAt'
+    | 'sortOrder'
   >,
   {
     posts?: Post[]
@@ -49,11 +58,14 @@ const categories = gql`
         state: { equals: "true" } 
         slug: { equals: $slug }
       }
-      orderBy: { createdAt: asc }
+      orderBy: { sortOrder: asc }
     ) {
       id
       slug
-      title
+      title    
+      updatedAt
+      createdAt
+      sortOrder
       posts: relatedPost(
         take: $relatedPostFirst
         skip: $postSkip
