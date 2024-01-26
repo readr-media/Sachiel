@@ -24,6 +24,7 @@ import { categories } from '~/graphql/query/category'
 import theme from '~/styles/theme'
 import type { NavigationCategory } from '~/types/component'
 import * as gtag from '~/utils/gtag'
+import { sortByTimeStamp } from '~/utils/index'
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (
@@ -130,7 +131,10 @@ MyApp.getInitialProps = async (context: AppContext) => {
         },
       })
 
-      categoryList.push(...data.categories)
+      const sortCategories =
+        sortByTimeStamp(data.categories) || data.categories || []
+
+      categoryList.push(...sortCategories)
     }
   } catch (error) {
     const err = error as Error
