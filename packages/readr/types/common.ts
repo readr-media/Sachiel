@@ -129,6 +129,9 @@ export type GenericCategory = {
   reports: GenericPost[]
   ogImage: GenericPhoto | null
   ogDescription: string | null
+  updatedAt: string | null
+  createdAt: string | null
+  sortOrder: number | null
 }
 
 export type GenericTag = {

@@ -136,7 +136,7 @@ export default function Footer(): JSX.Element {
     },
     {
       name: 'Instagram',
-      href: 'https://www.instagram.com/readrteam_daily/',
+      href: 'https://www.instagram.com/readr.tw/',
       svgIcon: iconInstagram,
       clickHandle: () => sendGAEvent('instagram'),
     },

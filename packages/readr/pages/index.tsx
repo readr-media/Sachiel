@@ -45,6 +45,7 @@ import type { CollaborationItem } from '~/types/component'
 import { setCacheControl } from '~/utils/common'
 import { convertDataSet } from '~/utils/data-set'
 import * as gtag from '~/utils/gtag'
+import { sortByTimeStamp } from '~/utils/index'
 import { convertPostToArticleCard } from '~/utils/post'
 import { postConvertFunc } from '~/utils/post'
 
@@ -219,14 +220,16 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     {
       {
         // fetch categories and related latest reports
-
         let data: { categories: Category[] }
         const response = await axios.get<{ categories: Category[] }>(
           LATEST_POSTS_IN_CATEGORIES_URL
         )
         data = response.data
 
-        categories = data.categories.map((category) => {
+        const sortedCategories =
+          sortByTimeStamp(data.categories) || data.categories || []
+
+        categories = sortedCategories.map((category) => {
           const reports = category.reports?.map(postConvertFunc)
 
           const posts =

@@ -46,6 +46,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
   {
     id: '2',
@@ -54,6 +57,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
   {
     id: '3',
@@ -62,6 +68,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
   {
     id: '4',
@@ -70,6 +79,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
   {
     id: '5',
@@ -78,6 +90,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
   {
     id: '6',
@@ -86,6 +101,9 @@ const DEFAULT_HEADER_CATEGORY_LIST = [
     posts: [],
     ogDescription: '',
     ogImage: null,
+    sortOrder: null,
+    updatedAt: null,
+    createdAt: null,
   },
 ]
 
