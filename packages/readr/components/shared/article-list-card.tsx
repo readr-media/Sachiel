@@ -197,6 +197,7 @@ export default function ArticleListCard({
   href = '/',
   title = '',
   images = {},
+  imagesWebP = {},
   date = '',
   readTimeText = '',
   isReport = false,
@@ -232,6 +233,7 @@ export default function ArticleListCard({
         <picture>
           <SharedImage
             images={images}
+            imagesWebP={imagesWebP}
             defaultImage={DEFAULT_POST_IMAGE_PATH}
             alt={title}
             priority={shouldNotLazyload}
