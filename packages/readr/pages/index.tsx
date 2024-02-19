@@ -194,8 +194,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
             heroImage?.resized ??
             {}
 
+          const imagesWebP =
+            editorChoice.heroImage?.resizedWebp ??
+            ogImage?.resizedWebp ??
+            heroImage?.resizedWebp ??
+            {}
+
           const choices = {
-            ...convertPostToArticleCard(editorChoice?.choices, images),
+            ...convertPostToArticleCard(
+              editorChoice?.choices,
+              images,
+              imagesWebP
+            ),
             shouldHideBottomInfos: false,
           }
 
@@ -297,8 +307,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         const { subtitle = '', heroImage, ogImage } = feature.featurePost ?? {}
 
         const images = ogImage?.resized ?? heroImage?.resized ?? {}
+        const imagesWebP = ogImage?.resized ?? heroImage?.resized ?? {}
 
-        const article = convertPostToArticleCard(feature?.featurePost, images)
+        const article = convertPostToArticleCard(
+          feature?.featurePost,
+          images,
+          imagesWebP
+        )
 
         return {
           ...article,
@@ -376,6 +391,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           requireTime,
           endTime,
           images: heroImage?.resized ?? {},
+          imagesWebP: heroImage?.resizedWebp ?? {},
         }
       })
     }

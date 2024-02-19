@@ -5,6 +5,7 @@ export type ArticleCard = {
   href: string
   title: string
   images: ResizedImages
+  imagesWebP: ResizedImages
   date: string
   readTimeText: string
   isReport: boolean
@@ -15,6 +16,7 @@ export type FeaturedArticle = {
   href: string
   title: string
   images: ResizedImages
+  imagesWebP: ResizedImages
   subtitle: string
   description: string
 }
@@ -26,6 +28,7 @@ export type CollaborationItem = {
   achvLink: string
   collabLink: string
   images: ResizedImages
+  imagesWebP: ResizedImages
   progress: number
   requireTime: number
   endTime: string
