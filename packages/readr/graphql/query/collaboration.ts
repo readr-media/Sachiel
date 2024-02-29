@@ -63,10 +63,14 @@ const collaborations = gql`
         resized {
           ...ResizedImagesField
         }
+        resizedWebp {
+          ...ResizedWebPImagesField
+        }
       }
     }
   }
   ${resizeImagesFragment}
+  ${resizeWebpImagesFragment}
 `
 
 const featuredCollaborations = gql`

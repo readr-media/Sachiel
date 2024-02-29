@@ -185,6 +185,7 @@ export default function EditorChoiceCard({
   href = '/',
   title = '',
   images = {},
+  imagesWebP = {},
   date = '',
   readTimeText = '',
   isFeatured = false,
@@ -217,6 +218,7 @@ export default function EditorChoiceCard({
       <picture>
         <SharedImage
           images={images}
+          imagesWebP={imagesWebP}
           defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
           priority={true}
