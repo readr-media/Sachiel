@@ -218,6 +218,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
             date: 'Invalid Date',
             isReport: false,
             images: editorChoice.heroImage?.resized ?? {},
+            imagesWebP: editorChoice.heroImage?.resizedWebp ?? {},
             readTimeText: '閱讀時間 10 分鐘',
             shouldHideBottomInfos: true,
           }
