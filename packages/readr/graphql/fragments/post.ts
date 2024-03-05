@@ -6,7 +6,10 @@ import type {
   PhotoWithResizedOnly,
 } from '~/types/common'
 
-import { resizeImagesFragment } from './resized-images'
+import {
+  resizeImagesFragment,
+  resizeWebpImagesFragment,
+} from './resized-images'
 
 export type Post = Override<
   Pick<
@@ -36,14 +39,21 @@ export const postFragment = gql`
       resized {
         ...ResizedImagesField
       }
+      resizedWebp {
+        ...ResizedWebPImagesField
+      }
     }
     ogImage {
       resized {
         ...ResizedImagesField
+      }
+      resizedWebp {
+        ...ResizedWebPImagesField
       }
     }
     publishTime
     readingTime
   }
   ${resizeImagesFragment}
+  ${resizeWebpImagesFragment}
 `

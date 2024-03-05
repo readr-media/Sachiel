@@ -185,6 +185,7 @@ export default function CollaborationCard({
   achvLink,
   collabLink,
   images,
+  imagesWebP,
   title,
   description,
   progress,
@@ -216,6 +217,7 @@ export default function CollaborationCard({
       <ImageBlock>
         <SharedImage
           images={images}
+          imagesWebP={imagesWebP}
           defaultImage={'/icons/default/collaboration.svg'}
           alt={title}
           breakpoint={{

@@ -9,7 +9,10 @@ import type {
 } from '~/types/common'
 import type { ArticleCard } from '~/types/component'
 
-import { resizeImagesFragment } from '../fragments/resized-images'
+import {
+  resizeImagesFragment,
+  resizeWebpImagesFragment,
+} from '../fragments/resized-images'
 
 export type EditorChoice = Override<
   Pick<GenericEditorChoice, 'choices' | 'heroImage' | 'link' | 'name' | 'id'>,
@@ -37,6 +40,9 @@ const editorChoices = gql`
         resized {
           ...ResizedImagesField
         }
+        resizedWebp {
+          ...ResizedWebPImagesField
+        }
       }
       choices {
         ...PostFields
@@ -45,6 +51,7 @@ const editorChoices = gql`
   }
   ${postFragment}
   ${resizeImagesFragment}
+  ${resizeWebpImagesFragment}
 `
 
 export { editorChoices }

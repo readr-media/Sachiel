@@ -218,6 +218,7 @@ export default function FeatureCard({
   title = '',
   subtitle = '',
   images = {},
+  imagesWebP = {},
   description = '',
   isFirst = false,
 }: FeaturedArticleWithIsFirst): JSX.Element {
@@ -243,6 +244,7 @@ export default function FeatureCard({
       <picture>
         <SharedImage
           images={images}
+          imagesWebP={imagesWebP}
           defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
           priority={true}

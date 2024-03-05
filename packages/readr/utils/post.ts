@@ -119,7 +119,8 @@ export function getImageOfArticle({
 
 export function convertPostToArticleCard(
   post: Post | null,
-  images?: ResizedImages
+  images?: ResizedImages,
+  imagesWebP?: ResizedImages
 ): ArticleCard {
   const {
     id = 'no-id',
@@ -138,13 +139,15 @@ export function convertPostToArticleCard(
     readTimeText: formatReadTime(readingTime),
     isReport: isReport(style),
     images: images ?? {},
+    imagesWebP: imagesWebP ?? {},
   }
 }
 
 export const postConvertFunc = (post: Post): ArticleCard => {
   const { heroImage, ogImage } = post
   const images = ogImage?.resized ?? heroImage?.resized ?? {}
-  return convertPostToArticleCard(post, images)
+  const imagesWebP = ogImage?.resizedWebp ?? heroImage?.resizedWebp ?? {}
+  return convertPostToArticleCard(post, images, imagesWebP)
 }
 
 export const getResizedUrl = (
