@@ -109,6 +109,7 @@ export default function News({
             <HeroImage>
               <SharedImage
                 images={postData?.heroImage?.resized}
+                imagesWebP={postData?.heroImage?.resizedWebp}
                 defaultImage={DEFAULT_POST_IMAGE_PATH}
                 alt={postData?.title}
                 priority={false}
