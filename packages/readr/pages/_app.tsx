@@ -74,16 +74,17 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
           </HeaderCategoriesAndRelatePostsContext.Provider>
         </ThemeProvider>
       </ApolloProvider>
-      <Script
+      {/* use react script rather than next/Script to let the script show on the source of the html (view-source:) */}
+      <script
         id="comScore"
         dangerouslySetInnerHTML={{
           __html: `var _comscore = _comscore || [];
-        _comscore.push({ c1: "2", c2: "24318560" });
-        (function() {
-        var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
-        s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
-        el.parentNode.insertBefore(s, el);
-        })();`,
+          _comscore.push({ c1: "2", c2: "24318560" });
+          (function() {
+           var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+           s.src = "https://sb.scorecardresearch.com/cs/24318560/beacon.js";
+           el.parentNode.insertBefore(s, el);
+          })();`,
         }}
       />
     </>
