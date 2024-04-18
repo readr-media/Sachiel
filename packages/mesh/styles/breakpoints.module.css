@@ -1,0 +1,20 @@
+/*
+    Breakpoint usage:
+    1. import the @value from this file
+      @value md, xl from '@/styles/breakpoints.module.css';
+    2. put value directly inside the @media
+        @media md {
+          width: 500px;
+          ...
+        }
+        @media xl {
+          width: 1000px;
+          ...
+        }
+    reference: [CSS Modules: Values](https://github.com/css-modules/postcss-modules-values)
+ */
+@value sm: (min-width: 576px);
+@value md: (min-width: 768px);
+@value lg: (min-width: 960px);
+@value xl: (min-width: 1200px);
+@value xxl: (min-width: 1400px);
