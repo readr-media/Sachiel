@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /**
  * Copy from https://unpkg.com/browse/tailwindcss@1.4.6/dist/base.css
  */

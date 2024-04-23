@@ -26,5 +26,9 @@ export default async function Home() {
   })
 
   const title = data.data.allCategories[0].ogDescription
-  return <main>Hello Mesh Title: {title}</main>
+  return (
+    <main className="text-wrap mt-4 text-3xl font-bold">
+      Hello Mesh Title: {title}
+    </main>
+  )
 }
