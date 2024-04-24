@@ -2,7 +2,7 @@ import 'server-only'
 
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
-import { API_ENDPOINT } from '@/constants/environment-variables'
+import { API_ENDPOINT } from '@/constants/config'
 
 // reference: https://www.apollographql.com/blog/how-to-use-apollo-client-with-next-js-13
 // makes sure that we only instance the Apollo Client once per request,

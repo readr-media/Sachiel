@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { ENV } from '@/constants/environment-variables'
+import { ENV } from '@/constants/config'
 
 export async function GET() {
   let body
