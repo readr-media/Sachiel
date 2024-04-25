@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import Image from 'next/image'
 
 import { getClient } from '@/apollo'
 
@@ -26,9 +27,5 @@ export default async function Home() {
   })
 
   const title = data.data.allCategories[0].name
-  return (
-    <main className="text-wrap mt-4 text-3xl font-bold">
-      Hello Mesh Title: {title}
-    </main>
-  )
+  return <div>Main content: {title}</div>
 }
