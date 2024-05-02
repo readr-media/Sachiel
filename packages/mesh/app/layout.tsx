@@ -2,7 +2,6 @@ import '@/styles/global.css'
 
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
-import { twMerge } from 'tailwind-merge'
 
 export const metadata: Metadata = {
   title: 'Mesh',
@@ -19,13 +18,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-Hant" className={twMerge('h-full', notoSans.className)}>
-      <body className="h-full pt-15 pb-16 sm:pl-32 sm:pt-16 sm:pb-0 md:pl-[220px] xl:pl-[calc((100vw-1440px)/2+320px)]">
+    <html lang="zh-Hant" className={notoSans.className}>
+      <body className="min-h-screen pt-15 pb-16 sm:pl-32 sm:pt-16 sm:pb-0 md:pl-[220px] xl:pl-[calc((100vw-1440px)/2+320px)]">
         <header className="fixed top-0 left-0 h-15 w-full border sm:h-16">
           {/* nested header to maintain the max width for screen width larger than 1440 */}
           <div className="mx-auto h-full max-w-[1440px]">這是 header</div>
         </header>
-        <main className="min-h-[calc(100%-641px)] w-full border sm:min-h-[calc(100%-317px)]">
+        <main className="min-h-[calc(100%-641px)] w-full border sm:min-h-[calc(100dvh-317px-62px)]">
           {/* nested main to maintain the max width for screen width larger than 1440 */}
           <div className="mr-auto max-w-[1220px]">{children}</div>
         </main>
