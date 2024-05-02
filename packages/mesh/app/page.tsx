@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import Image from 'next/image'
 
 import { getClient } from '@/apollo'
 
