@@ -22,8 +22,10 @@ module.exports = {
           xl: '320px',
         },
       },
-      height: {
+      spacing: {
         15: '3.75rem',
+      },
+      height: {
         header: {
           default: '60px',
           sm: '64px',
@@ -38,9 +40,6 @@ module.exports = {
       },
       minHeight: {
         screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
-      },
-      padding: {
-        15: '3.75rem',
       },
     },
   },

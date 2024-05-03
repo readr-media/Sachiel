@@ -26,5 +26,5 @@ export default async function Home() {
   })
 
   const title = data.data.allCategories[0].name
-  return <div>Main content: {title}</div>
+  return <main>Main content: {title}</main>
 }
