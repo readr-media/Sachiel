@@ -5,9 +5,7 @@ export default function Button({
   bgColor,
   text,
   icon,
-  activeIcon,
-  activeText,
-  isActive,
+  activeState,
   disable,
   onClick,
 }: {
@@ -15,9 +13,11 @@ export default function Button({
   bgColor: keyof typeof colorDefault
   text: string
   icon?: IconProps
-  activeIcon?: IconProps
-  activeText?: string
-  isActive?: boolean
+  activeState?: {
+    isActive: boolean
+    activeText?: string
+    activeIcon?: IconProps
+  }
   disable?: boolean
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 }) {
@@ -37,6 +37,11 @@ export default function Button({
   }
 
   const fontSize = size === 'xs' || size === 'sm' ? 'text-sm' : 'text-base'
+  const {
+    isActive = false,
+    activeText = '',
+    activeIcon = null,
+  } = activeState || {}
 
   return (
     <button
@@ -53,7 +58,7 @@ export default function Button({
           <Icon {...icon} />
         ) : null}
         <div className={`${fontSize} font-normal`}>
-          {isActive ? activeText : text}
+          {isActive && activeText !== '' ? activeText : text}
         </div>
       </span>
     </button>
