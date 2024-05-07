@@ -15,7 +15,7 @@ module.exports = {
     extend: {
       width: {
         maxContent: '1440px',
-        maxMain: '1220px',
+        maxMain: '1120px',
         nav: {
           sm: '128px',
           md: '220px',
