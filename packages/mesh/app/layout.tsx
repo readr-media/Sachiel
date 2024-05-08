@@ -3,6 +3,8 @@ import '@/styles/global.css'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
+import Header from './_components/header'
+
 export const metadata: Metadata = {
   title: 'Mesh',
 }
@@ -21,12 +23,7 @@ export default function RootLayout({
     <html lang="zh-Hant" className={notoSans.className}>
       <body className="min-h-screen">
         {/* fixed header */}
-        <header className="fixed top-0 left-0 right-0 h-[theme(height.header.default)] border-b bg-white sm:h-[theme(height.header.sm)]">
-          {/* nested header to maintain the max width for screen width larger than 1440 */}
-          <div className="mx-auto h-full max-w-[theme(width.maxContent)]">
-            這是 header
-          </div>
-        </header>
+        <Header />
         {/* block for non-fixed content, set padding for fixed blocks */}
         <div className="flex min-h-screen flex-col bg-gray-50 pb-[theme(height.nav.default)] pt-[theme(height.header.default)]  sm:pb-0 sm:pt-[theme(height.header.sm)] sm:pl-[theme(width.nav.sm)] md:pl-[theme(width.nav.md)] xl:pl-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
           {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
