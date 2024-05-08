@@ -6,7 +6,7 @@ export default function Button({
   text,
   icon,
   activeState,
-  disable,
+  disabled,
   onClick,
 }: {
   size: keyof typeof buttonStyles
@@ -18,10 +18,12 @@ export default function Button({
     activeText?: string
     activeIcon?: IconProps
   }
-  disable?: boolean
+  disabled?: boolean
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 }) {
   const buttonColor = {
+    transparent:
+      'bg-transparent text-primary-700 border border-primary-700 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
     white:
       'bg-white text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
     blue: 'bg-custom-blue text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
@@ -50,7 +52,7 @@ export default function Button({
         isActive ? buttonColor['primary'] : buttonColor[color]
       } `}
       onClick={onClick}
-      disabled={disable}
+      disabled={disabled}
     >
       {isActive && activeIcon ? (
         <Icon {...activeIcon} />
