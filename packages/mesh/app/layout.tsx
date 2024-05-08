@@ -40,7 +40,7 @@ export default function RootLayout({
           </footer>
         </div>
         {/* fixed left nav shown on tablet, desktop size */}
-        <nav className="fixed left-0 top-16 bottom-0 hidden w-[theme(width.nav.sm)] bg-white sm:flex sm:justify-end md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))] ">
+        <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))] ">
           {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
           <div className="grow border-r xl:max-w-[theme(width.nav.xl)]">
             左側 navbar, 只在平板以上尺寸顯示

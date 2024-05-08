@@ -28,7 +28,7 @@ module.exports = {
       height: {
         header: {
           default: '60px',
-          sm: '64px',
+          sm: '68px',
         },
         footer: {
           default: '641px',
