@@ -2,75 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* the typography types according to the figma */
-.hero-title {
-  @apply text-2xl font-medium leading-[130%];
-}
+@layer components {
+  /* the typography types according to the figma */
+  .hero-title {
+    @apply text-2xl font-medium leading-[130%];
+  }
 
-.title-1 {
-  @apply text-xl font-medium leading-[140%];
-}
+  .title-1 {
+    @apply text-xl font-medium leading-[140%];
+  }
 
-.title-2 {
-  @apply text-lg font-medium leading-[150%];
-}
+  .title-2 {
+    @apply text-lg font-medium leading-[150%];
+  }
 
-.list-title {
-  @apply text-lg font-medium leading-8;
-}
+  .list-title {
+    @apply text-lg font-medium leading-8;
+  }
 
-.subtitle-1 {
-  @apply text-base font-normal;
-}
+  .subtitle-1 {
+    @apply text-base font-normal;
+  }
 
-.subtitle-2 {
-  @apply text-sm font-medium leading-[130%];
-}
+  .subtitle-2 {
+    @apply text-sm font-medium leading-[130%];
+  }
 
-.body-1 {
-  @apply text-lg font-normal leading-[200%];
-}
+  .body-1 {
+    @apply text-lg font-normal leading-[200%];
+  }
 
-.body-2 {
-  @apply text-base font-normal;
-}
+  .body-2 {
+    @apply text-base font-normal;
+  }
 
-.body-3 {
-  @apply text-sm font-normal leading-[150%];
-}
+  .body-3 {
+    @apply text-sm font-normal leading-[150%];
+  }
 
-.footnote {
-  @apply text-[13px] font-normal leading-[148%];
-}
+  .footnote {
+    @apply text-[13px] font-normal leading-[148%];
+  }
 
-.caption-1 {
-  @apply text-xs font-normal leading-[148%];
-}
+  .caption-1 {
+    @apply text-xs font-normal leading-[148%];
+  }
 
-.caption-2 {
-  @apply text-[11px] font-normal leading-[100%];
-}
+  .caption-2 {
+    @apply text-[11px] font-normal leading-[100%];
+  }
 
-.button {
-  @apply text-sm font-normal leading-6;
-}
+  .button {
+    @apply text-sm font-normal leading-6;
+  }
 
-.button-large {
-  @apply text-base font-normal leading-[140%];
-}
+  .button-large {
+    @apply text-base font-normal leading-[140%];
+  }
 
-.profile-title {
-  @apply text-lg font-bold leading-6;
-}
+  .profile-title {
+    @apply text-lg font-bold leading-6;
+  }
 
-.profile-title-2 {
-  @apply text-base font-bold leading-5;
-}
+  .profile-title-2 {
+    @apply text-base font-bold leading-5;
+  }
 
-.profile-subtitle {
-  @apply text-sm font-normal leading-[100%];
-}
+  .profile-subtitle {
+    @apply text-sm font-normal leading-[100%];
+  }
 
-.quote {
-  @apply text-xl font-bold leading-[150%];
+  .quote {
+    @apply text-xl font-bold leading-[150%];
+  }
 }
