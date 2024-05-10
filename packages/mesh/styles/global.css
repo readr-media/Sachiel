@@ -13,7 +13,7 @@
   }
 
   .title-2 {
-    @apply text-lg font-medium leading-[150%];
+    @apply text-lg font-medium leading-normal;
   }
 
   .list-title {
@@ -37,19 +37,19 @@
   }
 
   .body-3 {
-    @apply text-sm font-normal leading-[150%];
+    @apply text-sm font-normal leading-normal;
   }
 
   .footnote {
-    @apply text-[13px] font-normal leading-[150%];
+    @apply text-[13px] font-normal leading-normal;
   }
 
   .caption-1 {
-    @apply text-xs font-normal leading-[150%];
+    @apply text-xs font-normal leading-normal;
   }
 
   .caption-2 {
-    @apply text-[11px] font-normal leading-[100%];
+    @apply text-[11px] font-normal leading-none;
   }
 
   .button {
@@ -69,10 +69,10 @@
   }
 
   .profile-subtitle {
-    @apply text-sm font-normal leading-[100%];
+    @apply text-sm font-normal leading-none;
   }
 
   .quote {
-    @apply text-xl font-bold leading-[150%];
+    @apply text-xl font-bold leading-normal;
   }
 }
