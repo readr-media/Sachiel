@@ -41,11 +41,11 @@
   }
 
   .footnote {
-    @apply text-[13px] font-normal leading-[148%];
+    @apply text-[13px] font-normal leading-[150%];
   }
 
   .caption-1 {
-    @apply text-xs font-normal leading-[148%];
+    @apply text-xs font-normal leading-[150%];
   }
 
   .caption-2 {
