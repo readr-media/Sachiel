@@ -57,7 +57,9 @@ export default function Button({
     >
       <div
         className={`${
-          icon ? 'flex translate-x-[-2px] items-center' : 'translate-x-0'
+          icon && size !== 'lg'
+            ? 'flex translate-x-[-2px] items-center'
+            : 'flex items-center'
         }`}
       >
         {icon && (
