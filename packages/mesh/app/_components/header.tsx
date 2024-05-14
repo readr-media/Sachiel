@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import Button from '@/components/button'
@@ -10,16 +11,19 @@ import SearchBar from '@/components/search-bar'
 const HeaderIconWrapper = ({
   children,
   className = '',
+  onClick,
 }: {
   children: React.ReactNode
   className?: string
+  onClick?: React.MouseEventHandler<HTMLDivElement>
 }) => {
   return (
     <div
       className={twMerge(
-        'flex h-11 w-11 items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
+        'flex h-11 w-11 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
         className
       )}
+      onClick={onClick}
     >
       {children}
     </div>
@@ -27,6 +31,7 @@ const HeaderIconWrapper = ({
 }
 
 export default function Header() {
+  const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
   const isLoggedIn = true
   const newNotification = true
@@ -55,17 +60,29 @@ export default function Header() {
           {isLoggedIn ? (
             newNotification ? (
               // TODO: replace with correct path
-              <HeaderIconWrapper>
-                <Link href="/">
-                  <Icon size="2xl" iconName="icon-notifications-new" />
-                </Link>
+              <HeaderIconWrapper
+                onClick={() => {
+                  // TODO: show notification panel
+                  setShowNotification(!showNotification)
+                }}
+                className={
+                  showNotification ? 'rounded-[50%] bg-primary-100' : ''
+                }
+              >
+                <Icon size="2xl" iconName="icon-notifications-new" />
               </HeaderIconWrapper>
             ) : (
               // TODO: replace with correct path
-              <HeaderIconWrapper>
-                <Link href="/">
-                  <Icon size="2xl" iconName="icon-notifications" />
-                </Link>
+              <HeaderIconWrapper
+                onClick={() => {
+                  // TODO: show notification panel
+                  setShowNotification(!showNotification)
+                }}
+                className={
+                  showNotification ? 'rounded-[50%] bg-primary-100' : ''
+                }
+              >
+                <Icon size="2xl" iconName="icon-notifications" />
               </HeaderIconWrapper>
             )
           ) : (
