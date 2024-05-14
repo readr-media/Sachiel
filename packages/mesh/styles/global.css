@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  input {
+  input,
+  input:focus {
     outline: none;
   }
 }
