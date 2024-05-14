@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
+import Footer from './_components/footer'
 import Header from './_components/header'
 
 export const metadata: Metadata = {
@@ -29,12 +30,7 @@ export default function RootLayout({
           {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
           <div className="grow xl:max-w-[theme(width.maxMain)]">{children}</div>
           {/* footer after main content */}
-          <footer className="h-[theme(height.footer.default)] border-t bg-white sm:h-[theme(height.footer.sm)]">
-            {/* nested footer to maintain the max width for screen width larger than 1440 */}
-            <div className="h-full max-w-[theme(width.maxMain)]">
-              這是 footer
-            </div>
-          </footer>
+          <Footer />
         </div>
         {/* fixed left nav shown on tablet, desktop size */}
         <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))] ">

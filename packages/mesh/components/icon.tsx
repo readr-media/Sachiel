@@ -14,6 +14,17 @@ export type IconProps = {
     | 'icon-notifications-new'
     | 'icon-search-bar'
     | 'icon-readr-logo'
+    | 'icon-readr-logo-lg'
+    | 'icon-google-play'
+    | 'icon-app-store'
+    | 'icon-facebook'
+    | 'icon-x'
+    | 'icon-instagram'
+    | 'icon-discord'
+    | 'icon-facebook-hover'
+    | 'icon-x-hover'
+    | 'icon-instagram-hover'
+    | 'icon-discord-hover'
 }
 const sizeVariant = {
   s: 16,
