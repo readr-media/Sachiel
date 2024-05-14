@@ -10,7 +10,7 @@ export default function SearchBar({ className = '' }: { className?: string }) {
         className
       )}
     >
-      <label htmlFor="search" className="cursor-pointer">
+      <label htmlFor="search" className="shrink-0 cursor-pointer">
         <Icon size="l" iconName="icon-search-bar" />
       </label>
       <input
