@@ -47,21 +47,21 @@ export default function Header() {
         {/* right side block */}
         <div className="flex">
           <HeaderIconWrapper className="sm:hidden">
-            {/* [to-do] replace with correct path */}
+            {/* TODO: replace with correct path */}
             <Link href="/">
               <Icon size="2xl" iconName="icon-search" />
             </Link>
           </HeaderIconWrapper>
           {isLoggedIn ? (
             newNotification ? (
-              // [to-do] replace with correct path
+              // TODO: replace with correct path
               <HeaderIconWrapper>
                 <Link href="/">
                   <Icon size="2xl" iconName="icon-notifications-new" />
                 </Link>
               </HeaderIconWrapper>
             ) : (
-              // [to-do] replace with correct path
+              // TODO: replace with correct path
               <HeaderIconWrapper>
                 <Link href="/">
                   <Icon size="2xl" iconName="icon-notifications" />
@@ -75,7 +75,7 @@ export default function Header() {
                 color="white"
                 text="登入"
                 onClick={() => {
-                  // [to-do] handle on login here
+                  // TODO: handle on login here
                 }}
               />
             </div>
