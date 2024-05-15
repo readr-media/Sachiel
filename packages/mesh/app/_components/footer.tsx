@@ -1,6 +1,34 @@
 import Link from 'next/link'
 
 import Icon from '@/components/icon'
+import InteractiveIcon from '@/components/interactive-icon'
+
+const logoIcons = {
+  mobile: {
+    size: { width: 100, height: 44 },
+    icon: 'icon-readr-logo',
+    href: '/',
+  },
+  nonMobile: {
+    size: { width: 120, height: 60 },
+    icon: 'icon-readr-logo-lg',
+    href: '/',
+  },
+} as const
+
+// TODO: update path
+const downloadAppLinks = [
+  {
+    size: { width: 162.1, height: 48 },
+    icon: 'icon-google-play',
+    href: '/',
+  },
+  {
+    size: { width: 130.33, height: 48 },
+    icon: 'icon-app-store',
+    href: '/',
+  },
+] as const
 
 // TODO: update path
 const footerNavLinks = [
@@ -13,28 +41,24 @@ const footerNavLinks = [
 // TODO: update path
 const footerSharedIcons = [
   {
-    name: 'icon-facebook',
+    icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
     href: '/',
     size: { width: 24, height: 24 },
-    hover: 'icon-facebook-hover',
   },
   {
-    name: 'icon-x',
+    icon: { default: 'icon-x', hover: 'icon-x-hover' },
     href: '/',
     size: { width: 24, height: 20 },
-    hover: 'icon-x-hover',
   },
   {
-    name: 'icon-instagram',
+    icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
     href: '/',
     size: { width: 22, height: 22 },
-    hover: 'icon-instagram-hover',
   },
   {
-    name: 'icon-discord',
+    icon: { default: 'icon-discord', hover: 'icon-discord-hover' },
     href: '/',
     size: { width: 21, height: 24 },
-    hover: 'icon-discord-hover',
   },
 ] as const
 
@@ -54,34 +78,27 @@ export default function Footer() {
           {/* first row left block  */}
           <div className="flex flex-col items-center sm:flex-row">
             {/* mobile logo */}
-            <Link href="/" className="sm:hidden">
+            <Link href={logoIcons.mobile.href} className="sm:hidden">
               <Icon
-                size={{ width: 100, height: 44 }}
-                iconName="icon-readr-logo"
+                size={logoIcons.mobile.size}
+                iconName={logoIcons.mobile.icon}
               />
             </Link>
             {/* tablet, desktop logo */}
-            <Link href="/" className="hidden sm:block">
+            <Link href={logoIcons.nonMobile.href} className="hidden sm:block">
               <Icon
-                size={{ width: 120, height: 60 }}
-                iconName="icon-readr-logo-lg"
+                size={logoIcons.nonMobile.size}
+                iconName={logoIcons.nonMobile.icon}
               />
             </Link>
           </div>
           {/* first row second block */}
           <div className="flex flex-col items-center gap-5 sm:flex-row">
-            <Link href="/" className="">
-              <Icon
-                size={{ width: 162.1, height: 48 }}
-                iconName="icon-google-play"
-              />
-            </Link>
-            <Link href="/" className="">
-              <Icon
-                size={{ width: 130.33, height: 48 }}
-                iconName="icon-app-store"
-              />
-            </Link>
+            {downloadAppLinks.map((linkInfo) => (
+              <Link key={linkInfo.icon} href={linkInfo.href}>
+                <Icon size={linkInfo.size} iconName={linkInfo.icon} />
+              </Link>
+            ))}
           </div>
         </div>
         {/* second row */}
@@ -96,13 +113,14 @@ export default function Footer() {
           </nav>
           {/* second row right block  */}
           <div className="flex gap-5">
-            {footerSharedIcons.map((icon) => (
-              <Link href={icon.href} key={icon.name} className="group">
-                <div className="flex h-6 w-6 items-center  justify-center group-hover:hidden">
-                  <Icon size={icon.size} iconName={icon.name} />
-                </div>
-                <div className="flex h-0 w-6 items-center justify-center  opacity-0 group-hover:h-6 group-hover:opacity-100">
-                  <Icon size={icon.size} iconName={icon.hover} />
+            {footerSharedIcons.map((iconInfo) => (
+              <Link
+                href={iconInfo.href}
+                key={iconInfo.icon.default}
+                className="group"
+              >
+                <div className="flex h-6 w-6 items-center justify-center">
+                  <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />
                 </div>
               </Link>
             ))}
