@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  input,
+  input:focus {
+    outline: none;
+  }
+}
+
 @layer components {
   /* the typography types according to the figma */
   .hero-title {
