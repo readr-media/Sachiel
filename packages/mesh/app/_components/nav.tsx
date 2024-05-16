@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 import Icon, { IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
-import { mobileNavIcons, nonMobileNavIcons } from '@/constants/layout'
+import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 
 type IconInfo = {
   icon: {
@@ -80,7 +80,7 @@ const NonMobileNav = ({
         <div className="py-10">
           {/* top first section */}
           <div className="flex flex-col border-b sm:gap-8 sm:pb-8 md:gap-2 md:pb-5">
-            {nonMobileNavIcons.first.map((iconInfo) => (
+            {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
                 isOn={path === iconInfo.href}
@@ -89,7 +89,7 @@ const NonMobileNav = ({
             ))}
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
-            {nonMobileNavIcons.second.map((iconInfo) => {
+            {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
               if (iconInfo.text === '個人檔案' && avatarUrl) {
                 return (
                   <NonMobileNavIcon
@@ -113,7 +113,7 @@ const NonMobileNav = ({
         </div>
         {/* bottom (third) part */}
         <div className="flex flex-col border-t py-6">
-          {nonMobileNavIcons.third.map((iconInfo) => (
+          {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
               isOn={path === iconInfo.href}
@@ -181,7 +181,7 @@ const MobileNav = ({
   return (
     <nav className="fixed bottom-0 left-0 right-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
-        {mobileNavIcons.map((iconInfo) => (
+        {MOBILE_NAV_ICONS.map((iconInfo) => (
           <MobileNavIcon
             key={iconInfo.icon.default}
             isOn={path === iconInfo.href}

@@ -1,4 +1,4 @@
-const logoIcons = {
+const LOGO_ICONS = {
   mobile: {
     size: { width: 100, height: 44 },
     icon: 'icon-readr-logo',
@@ -12,7 +12,7 @@ const logoIcons = {
 } as const
 
 // TODO: update path
-const downloadAppLinks = [
+const DOWNLOAD_APP_LINKS = [
   {
     size: { width: 162.1, height: 48 },
     icon: 'icon-google-play',
@@ -26,7 +26,7 @@ const downloadAppLinks = [
 ] as const
 
 // TODO: update path
-const footerNavLinks = [
+const FOOTER_NAV_LINKS = [
   { text: '關於我們', href: '/' },
   { text: '聯絡我們', href: '/' },
   { text: '隱私政策', href: '/' },
@@ -34,7 +34,7 @@ const footerNavLinks = [
 ] as const
 
 // TODO: update path
-const footerSharedIcons = [
+const FOOTER_SHARED_ICONS = [
   {
     icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
     href: '/',
@@ -57,14 +57,14 @@ const footerSharedIcons = [
   },
 ] as const
 
-const footerCompanyInfos = [
+const FOOTER_COMPANY_INFOS = [
   '精鏡傳媒股份有限公司',
   '114 台北市內湖區堤頂大道一段 365 號 7 樓',
   'readr@readr.tw',
 ] as const
 
 // TODO: update href according to SPEC
-const nonMobileNavIcons = {
+const NON_MOBILE_NAV_ICONS = {
   first: [
     {
       icon: {
@@ -137,7 +137,7 @@ const nonMobileNavIcons = {
 } as const
 
 // TODO: update href according to SPEC
-const mobileNavIcons = [
+const MOBILE_NAV_ICONS = [
   {
     icon: {
       default: 'icon-popular',
@@ -186,11 +186,11 @@ const mobileNavIcons = [
 ] as const
 
 export {
-  downloadAppLinks,
-  footerCompanyInfos,
-  footerNavLinks,
-  footerSharedIcons,
-  logoIcons,
-  mobileNavIcons,
-  nonMobileNavIcons,
+  DOWNLOAD_APP_LINKS,
+  FOOTER_COMPANY_INFOS,
+  FOOTER_NAV_LINKS,
+  FOOTER_SHARED_ICONS,
+  LOGO_ICONS,
+  MOBILE_NAV_ICONS,
+  NON_MOBILE_NAV_ICONS,
 }

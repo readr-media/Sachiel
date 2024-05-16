@@ -3,11 +3,11 @@ import Link from 'next/link'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import {
-  downloadAppLinks,
-  footerCompanyInfos,
-  footerNavLinks,
-  footerSharedIcons,
-  logoIcons,
+  DOWNLOAD_APP_LINKS,
+  FOOTER_COMPANY_INFOS,
+  FOOTER_NAV_LINKS,
+  FOOTER_SHARED_ICONS,
+  LOGO_ICONS,
 } from '@/constants/layout'
 
 export default function Footer() {
@@ -20,23 +20,23 @@ export default function Footer() {
           {/* first row left block  */}
           <div className="flex flex-col items-center sm:flex-row">
             {/* mobile logo */}
-            <Link href={logoIcons.mobile.href} className="sm:hidden">
+            <Link href={LOGO_ICONS.mobile.href} className="sm:hidden">
               <Icon
-                size={logoIcons.mobile.size}
-                iconName={logoIcons.mobile.icon}
+                size={LOGO_ICONS.mobile.size}
+                iconName={LOGO_ICONS.mobile.icon}
               />
             </Link>
             {/* tablet, desktop logo */}
-            <Link href={logoIcons.nonMobile.href} className="hidden sm:block">
+            <Link href={LOGO_ICONS.nonMobile.href} className="hidden sm:block">
               <Icon
-                size={logoIcons.nonMobile.size}
-                iconName={logoIcons.nonMobile.icon}
+                size={LOGO_ICONS.nonMobile.size}
+                iconName={LOGO_ICONS.nonMobile.icon}
               />
             </Link>
           </div>
           {/* first row second block */}
           <div className="flex flex-col items-center gap-5 sm:flex-row">
-            {downloadAppLinks.map((linkInfo) => (
+            {DOWNLOAD_APP_LINKS.map((linkInfo) => (
               <Link key={linkInfo.icon} href={linkInfo.href}>
                 <Icon size={linkInfo.size} iconName={linkInfo.icon} />
               </Link>
@@ -47,7 +47,7 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-10 sm:h-[76px] sm:flex-row sm:justify-between sm:gap-0 sm:border-b">
           {/* second row left block  */}
           <nav className="flex flex-col items-center gap-3 sm:flex-row sm:gap-10">
-            {footerNavLinks.map((link) => (
+            {FOOTER_NAV_LINKS.map((link) => (
               <Link href={link.href} key={link.text}>
                 <span className="button-large cursor-pointer">{link.text}</span>
               </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
           </nav>
           {/* second row right block  */}
           <div className="flex gap-5">
-            {footerSharedIcons.map((iconInfo) => (
+            {FOOTER_SHARED_ICONS.map((iconInfo) => (
               <Link
                 href={iconInfo.href}
                 key={iconInfo.icon.default}
@@ -71,7 +71,7 @@ export default function Footer() {
         {/* thrid row */}
         <div className="flex flex-col items-center gap-5 sm:mt-5 sm:gap-3">
           <address className="flex flex-col items-center gap-1 not-italic sm:flex-row sm:justify-center sm:gap-0">
-            {footerCompanyInfos.map((info) => (
+            {FOOTER_COMPANY_INFOS.map((info) => (
               <p
                 key={info}
                 className="caption-1 text-primary-500 sm:border-l sm:border-primary-200 sm:px-[7.5px] sm:first-of-type:border-none"
