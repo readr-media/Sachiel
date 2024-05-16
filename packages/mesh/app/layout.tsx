@@ -5,6 +5,7 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import Footer from './_components/footer'
 import Header from './_components/header'
+import Nav from './_components/nav'
 
 export const metadata: Metadata = {
   title: 'Mesh',
@@ -32,17 +33,8 @@ export default function RootLayout({
           {/* footer after main content */}
           <Footer />
         </div>
-        {/* fixed left nav shown on tablet, desktop size */}
-        <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))] ">
-          {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
-          <div className="grow border-r xl:max-w-[theme(width.nav.xl)]">
-            左側 navbar, 只在平板以上尺寸顯示
-          </div>
-        </nav>
-        {/* fixed bottom nav bar shown on mobile only */}
-        <nav className="fixed bottom-0 left-0 right-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
-          <div className="h-full">置底 nav bar, 只在手機尺寸顯示</div>
-        </nav>
+        {/* fixed nav, mobile on the bottom, otherwise on the left side */}
+        <Nav />
       </body>
     </html>
   )
