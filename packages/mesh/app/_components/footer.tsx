@@ -2,71 +2,13 @@ import Link from 'next/link'
 
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
-
-const logoIcons = {
-  mobile: {
-    size: { width: 100, height: 44 },
-    icon: 'icon-readr-logo',
-    href: '/',
-  },
-  nonMobile: {
-    size: { width: 120, height: 60 },
-    icon: 'icon-readr-logo-lg',
-    href: '/',
-  },
-} as const
-
-// TODO: update path
-const downloadAppLinks = [
-  {
-    size: { width: 162.1, height: 48 },
-    icon: 'icon-google-play',
-    href: '/',
-  },
-  {
-    size: { width: 130.33, height: 48 },
-    icon: 'icon-app-store',
-    href: '/',
-  },
-] as const
-
-// TODO: update path
-const footerNavLinks = [
-  { text: '關於我們', href: '/' },
-  { text: '聯絡我們', href: '/' },
-  { text: '隱私政策', href: '/' },
-  { text: '服務條款', href: '/' },
-] as const
-
-// TODO: update path
-const footerSharedIcons = [
-  {
-    icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
-    href: '/',
-    size: { width: 24, height: 24 },
-  },
-  {
-    icon: { default: 'icon-x', hover: 'icon-x-hover' },
-    href: '/',
-    size: { width: 24, height: 20 },
-  },
-  {
-    icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
-    href: '/',
-    size: { width: 22, height: 22 },
-  },
-  {
-    icon: { default: 'icon-discord', hover: 'icon-discord-hover' },
-    href: '/',
-    size: { width: 21, height: 24 },
-  },
-] as const
-
-const footerCompanyInfos = [
-  '精鏡傳媒股份有限公司',
-  '114 台北市內湖區堤頂大道一段 365 號 7 樓',
-  'readr@readr.tw',
-] as const
+import {
+  downloadAppLinks,
+  footerCompanyInfos,
+  footerNavLinks,
+  footerSharedIcons,
+  logoIcons,
+} from '@/constants/layout'
 
 export default function Footer() {
   return (
