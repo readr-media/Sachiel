@@ -5,6 +5,7 @@ type CustomSize = { width: number; height: number }
 
 export type IconProps = {
   size: size | CustomSize
+  className?: string
   iconName:
     | 'icon-dollar-white'
     | 'icon-star-primary'
@@ -14,6 +15,10 @@ export type IconProps = {
     | 'icon-notifications-new'
     | 'icon-search-bar'
     | 'icon-readr-logo'
+    | 'icon-more-horiz'
+    | 'icon-chat-bubble'
+    | 'icon-dot'
+    | 'icon-avatar-default'
 }
 const sizeVariant = {
   s: 16,
@@ -22,7 +27,9 @@ const sizeVariant = {
   xl: 32,
   '2xl': 44,
 }
-export default function Icon({ iconName, size }: IconProps) {
+export default function Icon({ iconName, size, className }: IconProps) {
+  const classProps = className ? ` ${className}` : ''
+
   if (typeof size === 'string') {
     return (
       <Image
@@ -30,6 +37,7 @@ export default function Icon({ iconName, size }: IconProps) {
         width={sizeVariant[size]}
         height={sizeVariant[size]}
         alt={iconName}
+        className={classProps}
       />
     )
   } else {
@@ -39,6 +47,7 @@ export default function Icon({ iconName, size }: IconProps) {
         width={size.width}
         height={size.height}
         alt={iconName}
+        className={classProps}
       />
     )
   }
