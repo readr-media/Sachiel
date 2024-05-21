@@ -163,7 +163,7 @@ const MobileNavIcon = ({
     <Link
       key={iconInfo.icon.default}
       href={iconInfo.href}
-      className="group flex h-full flex-grow flex-col items-center justify-center"
+      className="group flex h-full flex-1 flex-col items-center justify-center"
     >
       {iconJsx}
       {textJsx}
