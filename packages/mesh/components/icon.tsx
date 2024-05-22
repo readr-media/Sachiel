@@ -82,9 +82,7 @@ export const sizeVariant = {
   xl: 32,
   '2xl': 44,
 }
-export default function Icon({ iconName, size, className }: IconProps) {
-  const classProps = className ? ` ${className}` : ''
-
+export default function Icon({ iconName, size, className = '' }: IconProps) {
   if (typeof size === 'string') {
     return (
       <Image
@@ -92,7 +90,7 @@ export default function Icon({ iconName, size, className }: IconProps) {
         width={sizeVariant[size]}
         height={sizeVariant[size]}
         alt={iconName}
-        className={classProps}
+        className={className}
       />
     )
   } else {
@@ -102,7 +100,7 @@ export default function Icon({ iconName, size, className }: IconProps) {
         width={size.width}
         height={size.height}
         alt={iconName}
-        className={classProps}
+        className={className}
       />
     )
   }
