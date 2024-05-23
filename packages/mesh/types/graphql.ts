@@ -25,15 +25,17 @@ export type Comment = {
 export type Story = {
   id: string
   url: string
-  og_title: string
+  title: string
   og_image: string
   og_description: string
   source: {
-    customId: string
+    title: string
     createdAt: string
     __typeName: 'Publisher'
   }
   published_date: string
+  paywall: boolean
+  full_screen_ad: string
   pickCount: number
   pick: {
     createdAt: string

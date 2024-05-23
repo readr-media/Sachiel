@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import Icon from '@/components/icon'
+import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
 import type { Comment, Member, Story, User } from '@/types/graphql'
 
 import FeedComment from './feed-comment'
@@ -20,7 +21,7 @@ export default function Feed({
   currentUser: User
 }) {
   const isCurrentStoryPicked = currentUser.pick.some(
-    (item) => item.story.id === story.id
+    (item) => item.story?.id === story.id
   )
   const followingMember = new Set(
     currentUser.following.map((element) => element.id)
@@ -42,6 +43,8 @@ export default function Feed({
     followingWhoComments
   )
 
+  const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
+
   if (!story) {
     return null
   }
@@ -50,29 +53,30 @@ export default function Feed({
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
         {latestActionData.length !== 0 ? (
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <div className="flex -space-x-1 overflow-hidden">
-              {latestActionData.map((data) =>
-                data.member.avatar ? (
-                  <Image
-                    key={data.member.id}
-                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                    src={data.member.avatar}
-                    width={24}
-                    height={24}
-                    alt={`${data.member.id}-avatar`}
-                  />
-                ) : (
-                  <Icon
-                    key={data.member.id}
-                    iconName="icon-avatar-default"
-                    size="l"
-                  />
-                )
-              )}
+              {latestActionData.map((data, index) => (
+                <div key={data.member.id} className={`${avatarLayer[index]}`}>
+                  {data.member.avatar ? (
+                    <Image
+                      className="inline-block h-[28px] w-[28px] rounded-full bg-white ring-2 ring-white"
+                      src={data.member.avatar}
+                      width={28}
+                      height={28}
+                      alt={`${data.member.id}-avatar`}
+                    />
+                  ) : (
+                    <Icon
+                      iconName="icon-avatar-default"
+                      size={{ width: 28, height: 28 }}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
-            <div className="body-3 ml-2 text-primary-500">
-              {latestActionData[0].__typename === 'Pick' ? (
+            <div className="body-3 text-primary-500">
+              {latestActionData.length !== 0 &&
+              latestActionData[0].__typename === 'Pick' ? (
                 latestActionData.length === 1 ? (
                   <>
                     <span className="text-primary-700">
@@ -113,7 +117,7 @@ export default function Feed({
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
           <Image
             src={story.og_image}
-            alt={story.og_title}
+            alt={story.title}
             width={600}
             height={300}
             sizes="100vw"
@@ -125,43 +129,51 @@ export default function Feed({
         </div>
       ) : null}
       <div className="px-8 pb-6 pt-3">
-        <h4 className="body-3 mb-1 text-primary-500">
-          {story?.source?.customId}
-        </h4>
-        <h1 className="title-1 mb-2 break-words">{story?.og_title}</h1>
+        <h4 className="body-3 mb-1 text-primary-500">{story?.source?.title}</h4>
+        <h1 className="title-1 mb-2 line-clamp-2 break-words">
+          {story?.title}
+        </h1>
         <div className="footnote mb-4 flex items-center text-primary-500">
           <Icon iconName="icon-chat-bubble" size="s" />
-          <div className="ml-0.5">{story?.commentCount}</div>
+          <div className="pl-0.5">{story?.commentCount}</div>
           <Icon iconName="icon-dot" size="s" />
           <div>
             <span>{timeDifference(story?.published_date)}</span>
           </div>
-          <Icon iconName="icon-dot" size="s" />
-          <div>付費文章</div>
-          <Icon iconName="icon-dot" size="s" />
-          <div>蓋板廣告</div>
+          {story.paywall ? (
+            <div className="flex items-center">
+              <Icon iconName="icon-dot" size="s" />
+              付費文章
+            </div>
+          ) : null}
+          {story.full_screen_ad !== 'none' ? (
+            <div className="flex items-center">
+              <Icon iconName="icon-dot" size="s" />
+              蓋板廣告
+            </div>
+          ) : null}
         </div>
         <div className="footnote mb-4 flex h-8 justify-between text-primary-500">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1 overflow-hidden">
-              {sortedFollowingWhoPicked.map((data) =>
-                data.member.avatar ? (
-                  <Image
-                    key={data.member.id}
-                    className="inline-block h-[28px] w-[28px] rounded-full ring-2 ring-white"
-                    src={data.member.avatar}
-                    width={28}
-                    height={28}
-                    alt={`${data.member.id}-avatar`}
-                  />
-                ) : (
-                  <Icon
-                    key={data.member.id}
-                    iconName="icon-avatar-default"
-                    size="l"
-                  />
-                )
-              )}
+              {sortedFollowingWhoPicked.map((data, index) => (
+                <div key={data.member.id} className={`${avatarLayer[index]}`}>
+                  {data.member.avatar ? (
+                    <Image
+                      className="inline-block h-[28px] w-[28px] rounded-full bg-white ring-2 ring-white"
+                      src={data.member.avatar}
+                      width={28}
+                      height={28}
+                      alt={`${data.member.id}-avatar`}
+                    />
+                  ) : (
+                    <Icon
+                      iconName="icon-avatar-default"
+                      size={{ width: 28, height: 28 }}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
             <div className="flex items-center">
               <span className="pr-1 text-primary-700">
@@ -181,14 +193,29 @@ export default function Feed({
 }
 
 export const timeDifference = (date: string) => {
-  const timestamp = new Date(date).getTime()
-  const differenceInHour = (Date.now() - timestamp) / (1000 * 60 * 60)
-  if (differenceInHour < 1) {
-    return Math.floor(differenceInHour * 60) + ' 分鐘前'
-  } else if (differenceInHour < 24) {
-    return Math.floor(differenceInHour) + ' 小時前'
+  const differenceInMilliseconds = Date.now() - new Date(date).getTime()
+  const differenceInMinutes = differenceInMilliseconds / MINUTE
+  const differenceInHours = differenceInMilliseconds / HOUR
+  const differenceInDays = differenceInMilliseconds / DAY
+
+  if (differenceInMilliseconds < HOUR) {
+    return Math.floor(differenceInMinutes) + ' 分鐘前'
+  } else if (differenceInMilliseconds < 24 * HOUR) {
+    return Math.floor(differenceInHours) + ' 小時前'
+  } else if (differenceInMilliseconds < 7 * DAY) {
+    return Math.floor(differenceInDays) + ' 天前'
   } else {
-    return Math.floor(differenceInHour / 24) + ' 天前'
+    const targetDate = new Date(date)
+    const currenYear = new Date().getFullYear()
+    const year = targetDate.getFullYear()
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0')
+    const day = String(targetDate.getDate()).padStart(2, '0')
+
+    if (year === currenYear) {
+      return `${month}/${day}`
+    } else {
+      return `${year}/${month}/${day}`
+    }
   }
 }
 

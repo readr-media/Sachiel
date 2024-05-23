@@ -22,14 +22,16 @@ export const GetUserFollowing = gql`
           story {
             id
             url
-            og_title
+            title
             og_image
             og_description
             source {
-              customId
+              title
               createdAt
             }
             published_date
+            paywall
+            full_screen_ad
             pickCount
             pick {
               createdAt
