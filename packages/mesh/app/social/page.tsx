@@ -7,6 +7,7 @@ export default async function Page() {
   const userId = '175'
   const picksTakeFromEachFollowingMember = 10
   const feedsNumber = 20
+  const firstSectionAmount = 2
   const currentUser = await fetchUserFollowing(
     userId,
     picksTakeFromEachFollowingMember
@@ -15,6 +16,8 @@ export default async function Page() {
   const sortedPicksByPickTime = processedPicksData.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
+  const firstSectionPicks = sortedPicksByPickTime.slice(0, firstSectionAmount)
+  const secondSectionPicks = sortedPicksByPickTime.slice(firstSectionAmount)
 
   return (
     <>
@@ -27,7 +30,7 @@ export default async function Page() {
       ) : (
         <div className="flex justify-center gap-10 py-5">
           <div className="flex flex-col gap-4">
-            {sortedPicksByPickTime.slice(0, 2).map((pick) => (
+            {firstSectionPicks.map((pick) => (
               <Feed
                 key={pick.id}
                 story={pick.story}
@@ -39,7 +42,7 @@ export default async function Page() {
                 推薦追蹤
               </h2>
             </div>
-            {sortedPicksByPickTime.slice(2).map((pick) => (
+            {secondSectionPicks.map((pick) => (
               <Feed
                 key={pick.id}
                 story={pick.story}
