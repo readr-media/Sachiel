@@ -4,7 +4,7 @@ let API_ENDPOINT = ''
 
 switch (ENV) {
   case 'local':
-    API_ENDPOINT = 'https://mesh-gql-dev-4g6paft7cq-de.a.run.app/api/graphql'
+    API_ENDPOINT = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app/gql'
     break
   case 'dev':
     // use tv-cms api url for testing only
