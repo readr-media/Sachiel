@@ -5,6 +5,7 @@ import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
 import type { Comment, Member, Story, User } from '@/types/graphql'
 
 import FeedComment from './feed-comment'
+import FeedLatestAction from './feed-latest-action'
 import FeedPick from './feed-pick'
 
 type Pick = {
@@ -23,25 +24,22 @@ export default function Feed({
   const isCurrentStoryPicked = currentUser.pick.some(
     (item) => item.story?.id === story.id
   )
-  const followingMember = new Set(
+  const followingMembers = new Set(
     currentUser.following.map((element) => element.id)
   )
   const followingWhoPicked = story?.pick.filter((pick) =>
-    followingMember.has(pick.member.id)
+    followingMembers.has(pick.member.id)
   )
-  const sortedFollowingWhoPicked = followingWhoPicked
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 4)
-  const followingWhoComments = story?.comment.filter((comment) =>
-    followingMember.has(comment.member.id)
+
+  const followingWhoCommented = story?.comment.filter((comment) =>
+    followingMembers.has(comment.member.id)
   )
-  const latestActionData = getLatestActionData(
+  const storyPicksAndComments = processStoryPicksAndComments(
     followingWhoPicked,
-    followingWhoComments
+    followingWhoCommented
   )
+
+  const latestAction = getLatestActionData(storyPicksAndComments)
 
   const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
 
@@ -52,63 +50,7 @@ export default function Feed({
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
-        {latestActionData.length !== 0 ? (
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-1 overflow-hidden">
-              {latestActionData.map((data, index) => (
-                <div key={data.member.id} className={`${avatarLayer[index]}`}>
-                  {data.member.avatar ? (
-                    <Image
-                      className="inline-block h-[28px] w-[28px] rounded-full bg-white ring-2 ring-white"
-                      src={data.member.avatar}
-                      width={28}
-                      height={28}
-                      alt={`${data.member.id}-avatar`}
-                    />
-                  ) : (
-                    <Icon
-                      iconName="icon-avatar-default"
-                      size={{ width: 28, height: 28 }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="body-3 text-primary-500">
-              {latestActionData.length !== 0 &&
-              latestActionData[0].__typename === 'Pick' ? (
-                latestActionData.length === 1 ? (
-                  <>
-                    <span className="text-primary-700">
-                      {latestActionData[0].member.name}
-                    </span>
-                    精選了這篇
-                  </>
-                ) : (
-                  <>
-                    <span className="text-primary-700">
-                      {latestActionData[0].member.name}
-                    </span>
-                    及
-                    <span className="text-primary-700">
-                      {latestActionData[1].member.name}
-                    </span>
-                    都精選了這篇
-                  </>
-                )
-              ) : (
-                <>
-                  <span className="text-primary-700">
-                    {latestActionData[0].member.name}
-                  </span>
-                  在這篇留言
-                </>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="inline-block"></div>
-        )}
+        <FeedLatestAction actions={storyPicksAndComments} />
         <button>
           <Icon iconName="icon-more-horiz" size="l" />
         </button>
@@ -130,7 +72,7 @@ export default function Feed({
       ) : null}
       <div className="px-8 pb-6 pt-3">
         <h4 className="body-3 mb-1 text-primary-500">{story?.source?.title}</h4>
-        <h1 className="title-1 mb-2 line-clamp-2 break-words">
+        <h1 className="title-1 line-clamp-2 mb-2 break-words">
           {story?.title}
         </h1>
         <div className="footnote mb-4 flex items-center text-primary-500">
@@ -156,22 +98,9 @@ export default function Feed({
         <div className="footnote mb-4 flex h-8 justify-between text-primary-500">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1 overflow-hidden">
-              {sortedFollowingWhoPicked.map((data, index) => (
+              {storyPicksAndComments.picks?.slice(0, 4).map((data, index) => (
                 <div key={data.member.id} className={`${avatarLayer[index]}`}>
-                  {data.member.avatar ? (
-                    <Image
-                      className="inline-block h-[28px] w-[28px] rounded-full bg-white ring-2 ring-white"
-                      src={data.member.avatar}
-                      width={28}
-                      height={28}
-                      alt={`${data.member.id}-avatar`}
-                    />
-                  ) : (
-                    <Icon
-                      iconName="icon-avatar-default"
-                      size={{ width: 28, height: 28 }}
-                    />
-                  )}
+                  {renderAvatar(data.member, 28)}
                 </div>
               ))}
             </div>
@@ -184,11 +113,29 @@ export default function Feed({
           </div>
           <FeedPick isCurrentStoryPicked={isCurrentStoryPicked} />
         </div>
-        {latestActionData[0].__typename === 'Comment' ? (
-          <FeedComment comment={latestActionData[0]} />
+        {latestAction.isShowComment && latestAction.comment ? (
+          <FeedComment comment={latestAction.comment} />
         ) : null}
       </div>
     </div>
+  )
+}
+
+export const renderAvatar = (member: Member, px: number) => {
+  const avatarVariants: { [key: number]: string } = {
+    28: 'h-[28px] w-[28px]',
+    44: 'h-11 w-11',
+  }
+  return member.avatar ? (
+    <Image
+      className={`inline-block ${avatarVariants[px]} rounded-full bg-white ring-2 ring-white`}
+      src={member.avatar}
+      width={px}
+      height={px}
+      alt={`${member.id}-avatar`}
+    />
+  ) : (
+    <Icon iconName="icon-avatar-default" size={{ width: px, height: px }} />
   )
 }
 
@@ -219,29 +166,103 @@ export const timeDifference = (date: string) => {
   }
 }
 
-function getLatestActionData(picks: Pick[], comments: Comment[]) {
-  const combinedData = [...picks, ...comments].sort(
+function processStoryPicksAndComments(
+  picks: Pick[],
+  comments: Comment[]
+): {
+  actionBy: 'single' | 'multiple'
+  picks: Pick[]
+  comments: Comment[] | null
+  latestAction: Pick | Comment
+} {
+  const sortedPicksAndComments = [...picks, ...comments].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
-
-  const latestAction = combinedData[0].__typename
-
-  switch (latestAction) {
-    case 'Pick': {
-      const pickElements = combinedData
-        .filter((item) => item.__typename === 'Pick')
-        .slice(0, 2)
-      return pickElements
+  // p1 / p1+c1 / p1+p2 /p1+c2 or p2+c1
+  if (sortedPicksAndComments.length === 1) {
+    //p1
+    return {
+      actionBy: 'single',
+      picks: picks,
+      comments: null,
+      latestAction: picks[0],
     }
-
-    case 'Comment': {
-      const commentElement = combinedData.find(
-        (item) => item.__typename === 'Comment'
-      )
-      return commentElement ? [commentElement] : []
+  } else if (
+    // p1+c1
+    sortedPicksAndComments.length === 2 &&
+    picks.length === 1 &&
+    comments.length === 1 &&
+    picks[0].member.id === comments[0].member.id
+  ) {
+    return {
+      actionBy: 'single',
+      picks: picks,
+      comments: comments,
+      latestAction: sortedPicksAndComments[0],
     }
-
-    default:
-      return []
+  } else {
+    // p1+p2 /p1+c2 or p2+c1 / ppp,ppc,pcp,....
+    const sortedPicks = picks.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    const sortedComments = comments.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    return {
+      actionBy: 'multiple',
+      picks: sortedPicks,
+      comments: sortedComments,
+      latestAction: sortedPicksAndComments[0],
+    }
   }
 }
+
+type ProcessedStoryPicksAndComments = ReturnType<
+  typeof processStoryPicksAndComments
+>
+
+function getLatestActionData(data: ProcessedStoryPicksAndComments) {
+  const { latestAction, picks, comments } = data
+  switch (latestAction.__typename) {
+    case 'Pick': {
+      const PickAndComment = comments?.find(
+        (item) => item.member.id === latestAction.member.id
+      )
+
+      return {
+        isShowComment: !!PickAndComment,
+        comment: PickAndComment || null,
+      }
+    }
+    case 'Comment': {
+      const CommentAndPick = picks?.find(
+        (item) => item.member.id === latestAction.member.id
+      )
+
+      return {
+        isShowComment: !!CommentAndPick,
+        comment: latestAction,
+      }
+    }
+  }
+}
+
+/*
+followingMember
+    |- Pick (desc)    
+    |     |- Story 
+    |            |- picks(at least 1) / comments
+    |                                        |- single / multiple action (p+c)
+    |
+    |- Comment (desc)    
+          |- Story
+                 |- picks / comments(at least 1)
+                                  |- single / multiple action (p+c) 
+               
+    User -> PCCPPPPCCCC
+*/
+
+// go through all following people picks and comment. -> Story list
+// story.id story time / picks, comment , actions.

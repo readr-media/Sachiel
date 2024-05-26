@@ -1,12 +1,11 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import type { Comment } from '@/types/graphql'
 
-import { timeDifference } from './feed'
+import { renderAvatar, timeDifference } from './feed'
 
 export default function FeedComment({ comment }: { comment: Comment }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -21,17 +20,7 @@ export default function FeedComment({ comment }: { comment: Comment }) {
 
   return (
     <div className="flex flex-row border-t py-4">
-      {comment?.member?.avatar !== '' ? (
-        <Image
-          className="inline-block h-11 w-11 rounded-full ring-2 ring-white"
-          src={comment?.member?.avatar}
-          width={44}
-          height={44}
-          alt=""
-        />
-      ) : (
-        <Icon iconName="icon-avatar-default" size="2xl" />
-      )}
+      {renderAvatar(comment.member, 44)}
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">
