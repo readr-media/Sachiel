@@ -172,7 +172,7 @@ function processStoryPicksAndComments(
 ): {
   actionBy: 'single' | 'multiple'
   picks: Pick[]
-  comments: Comment[] | null
+  comments: Comment[]
   latestAction: Pick | Comment
 } {
   const sortedPicksAndComments = [...picks, ...comments].sort(
@@ -184,7 +184,7 @@ function processStoryPicksAndComments(
     return {
       actionBy: 'single',
       picks: picks,
-      comments: null,
+      comments: [],
       latestAction: picks[0],
     }
   } else if (
