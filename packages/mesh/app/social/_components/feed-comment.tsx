@@ -3,11 +3,15 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
-import type { Comment } from '@/types/graphql'
+import type { Story } from '@/graphql/query/get-user-following'
 
 import { renderAvatar, timeDifference } from './feed'
 
-export default function FeedComment({ comment }: { comment: Comment }) {
+export default function FeedComment({
+  comment,
+}: {
+  comment: Story['comment'][number]
+}) {
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
   const maxTextLength = 60

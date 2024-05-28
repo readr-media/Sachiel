@@ -1,27 +1,34 @@
 import { getClient } from '@/apollo'
 import Feed from '@/app/social/_components/feed'
-import { GetUserFollowing } from '@/graphql/query/get-user-following'
-import type { Member } from '@/types/graphql'
+import {
+  Following,
+  GetUserFollowing,
+  GetUserFollowingRequest,
+  GetUserFollowingResponse,
+} from '@/graphql/query/get-user-following'
+
+export const revalidate = 60
 
 export default async function Page() {
   const userId = '175'
-  const picksTakeFromEachFollowingMember = 10
   const feedsNumber = 20
   const firstSectionAmount = 2
-  const currentUser = await fetchUserFollowing(
-    userId,
-    picksTakeFromEachFollowingMember
+  const currentUser = await fetchUserFollowing(userId, feedsNumber)
+  const sortedFollowingMemberActionByTime = processedPicksAndCommentsData(
+    currentUser.following,
+    feedsNumber
   )
-  const processedPicksData = processPicks(currentUser.following, feedsNumber)
-  const sortedPicksByPickTime = processedPicksData.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+
+  const firstSectionPicks = sortedFollowingMemberActionByTime.slice(
+    0,
+    firstSectionAmount
   )
-  const firstSectionPicks = sortedPicksByPickTime.slice(0, firstSectionAmount)
-  const secondSectionPicks = sortedPicksByPickTime.slice(firstSectionAmount)
+  const secondSectionPicks =
+    sortedFollowingMemberActionByTime.slice(firstSectionAmount)
 
   return (
     <>
-      {sortedPicksByPickTime.length === 0 ? (
+      {sortedFollowingMemberActionByTime.length === 0 ? (
         <div className="flex justify-center py-5">
           <div className="flex flex-col gap-4">
             <p>咦？這裡好像還缺點什麼...</p>
@@ -60,43 +67,46 @@ export default async function Page() {
 }
 
 async function fetchUserFollowing(memberId: string, picksTake: number) {
-  const { data } = await getClient().query({
+  const { data } = await getClient().query<
+    GetUserFollowingResponse,
+    GetUserFollowingRequest
+  >({
     query: GetUserFollowing,
     variables: { memberId, picksTake },
   })
   return data.member
 }
 
-function processPicks(followingMember: Member[], maxPicks: number) {
-  const data = []
-  const seenPickIds = new Set()
+function processedPicksAndCommentsData(
+  followingMember: Following[],
+  maxFeeds: number
+) {
+  const picksAndComments = followingMember.flatMap((member) => [
+    ...member.pick,
+    ...member.comment,
+  ])
 
-  let pickIndex = 0
-  while (seenPickIds.size < maxPicks) {
-    let foundNewPick = false
+  const uniquePicksAndCommentsMap = new Map<
+    string,
+    Following['pick'][number] | Following['comment'][number]
+  >()
 
-    for (const member of followingMember) {
-      if (pickIndex < member.pick.length) {
-        const pick = member.pick[pickIndex]
-        if (!pick) continue
-        if (pick.story && !seenPickIds.has(pick.story.id)) {
-          data.push(pick)
-          seenPickIds.add(pick.story.id)
-          foundNewPick = true
-
-          if (seenPickIds.size >= maxPicks) {
-            return data
-          }
-        }
-      }
+  picksAndComments.forEach((actions) => {
+    if (
+      actions.story &&
+      actions.story.id !== null &&
+      !uniquePicksAndCommentsMap.has(actions.story.id)
+    ) {
+      uniquePicksAndCommentsMap.set(actions.story.id, actions)
     }
+  })
 
-    if (!foundNewPick) {
-      break
-    }
+  const uniquePicks = Array.from(uniquePicksAndCommentsMap.values())
 
-    pickIndex++
-  }
+  const sortedUniquePicksByPickTime = uniquePicks.sort(
+    (a: any, b: any) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
 
-  return data
+  return sortedUniquePicksByPickTime.slice(0, maxFeeds)
 }

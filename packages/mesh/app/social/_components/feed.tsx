@@ -2,26 +2,24 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
-import type { Comment, Member, Story, User } from '@/types/graphql'
+import type {
+  GetUserFollowingResponse,
+  Member,
+  Story,
+} from '@/graphql/query/get-user-following'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
 import FeedPick from './feed-pick'
-
-type Pick = {
-  createdAt: string
-  member: Member
-  __typename: 'Pick'
-}
 
 export default function Feed({
   story,
   currentUser,
 }: {
   story: Story
-  currentUser: User
+  currentUser: GetUserFollowingResponse['member']
 }) {
-  const isCurrentStoryPicked = currentUser.pick.some(
+  const isStoryPickedByCurrentUser = currentUser.pick.some(
     (item) => item.story?.id === story.id
   )
   const followingMembers = new Set(
@@ -39,7 +37,7 @@ export default function Feed({
     followingWhoCommented
   )
 
-  const latestAction = getLatestActionData(storyPicksAndComments)
+  const latestAction = checkLatestAction(storyPicksAndComments)
 
   const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
 
@@ -111,7 +109,7 @@ export default function Feed({
               <span>人精選</span>
             </div>
           </div>
-          <FeedPick isCurrentStoryPicked={isCurrentStoryPicked} />
+          <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
         </div>
         {latestAction.isShowComment && latestAction.comment ? (
           <FeedComment comment={latestAction.comment} />
@@ -167,28 +165,26 @@ export const timeDifference = (date: string) => {
 }
 
 function processStoryPicksAndComments(
-  picks: Pick[],
-  comments: Comment[]
+  picks: Story['pick'],
+  comments: Story['comment']
 ): {
   actionBy: 'single' | 'multiple'
-  picks: Pick[]
-  comments: Comment[]
-  latestAction: Pick | Comment
+  picks: Story['pick']
+  comments: Story['comment']
+  latestAction: Story['pick'][number] | Story['comment'][number]
 } {
   const sortedPicksAndComments = [...picks, ...comments].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
-  // p1 / p1+c1 / p1+p2 /p1+c2 or p2+c1
+
   if (sortedPicksAndComments.length === 1) {
-    //p1
     return {
       actionBy: 'single',
       picks: picks,
-      comments: [],
-      latestAction: picks[0],
+      comments: comments,
+      latestAction: sortedPicksAndComments[0],
     }
   } else if (
-    // p1+c1
     sortedPicksAndComments.length === 2 &&
     picks.length === 1 &&
     comments.length === 1 &&
@@ -201,7 +197,6 @@ function processStoryPicksAndComments(
       latestAction: sortedPicksAndComments[0],
     }
   } else {
-    // p1+p2 /p1+c2 or p2+c1 / ppp,ppc,pcp,....
     const sortedPicks = picks.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -219,12 +214,18 @@ function processStoryPicksAndComments(
   }
 }
 
-type ProcessedStoryPicksAndComments = ReturnType<
-  typeof processStoryPicksAndComments
->
+export type LatestAction = ReturnType<typeof processStoryPicksAndComments>
 
-function getLatestActionData(data: ProcessedStoryPicksAndComments) {
+function checkLatestAction(data: LatestAction) {
   const { latestAction, picks, comments } = data
+
+  if (picks.length === 0 && comments.length === 1) {
+    return {
+      isShowComment: true,
+      comment: comments[0],
+    }
+  }
+
   switch (latestAction.__typename) {
     case 'Pick': {
       const PickAndComment = comments?.find(
@@ -243,26 +244,13 @@ function getLatestActionData(data: ProcessedStoryPicksAndComments) {
 
       return {
         isShowComment: !!CommentAndPick,
-        comment: latestAction,
+        comment: comments[0],
       }
     }
+    default:
+      return {
+        isShowComment: false,
+        comment: null,
+      }
   }
 }
-
-/*
-followingMember
-    |- Pick (desc)    
-    |     |- Story 
-    |            |- picks(at least 1) / comments
-    |                                        |- single / multiple action (p+c)
-    |
-    |- Comment (desc)    
-          |- Story
-                 |- picks / comments(at least 1)
-                                  |- single / multiple action (p+c) 
-               
-    User -> PCCPPPPCCCC
-*/
-
-// go through all following people picks and comment. -> Story list
-// story.id story time / picks, comment , actions.

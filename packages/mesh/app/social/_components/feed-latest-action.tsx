@@ -1,23 +1,11 @@
-import type { Comment, Member } from '@/types/graphql'
-
+import type { LatestAction } from './feed'
 import { renderAvatar } from './feed'
 
-type Pick = {
-  createdAt: string
-  member: Member
-  __typename: 'Pick'
-}
-
-type FeedLatestActionProps = {
-  actions: {
-    actionBy: 'single' | 'multiple'
-    picks: Pick[]
-    comments: Comment[]
-    latestAction: Pick | Comment
-  }
-}
-
-export default function FeedLatestAction({ actions }: FeedLatestActionProps) {
+export default function FeedLatestAction({
+  actions,
+}: {
+  actions: LatestAction
+}) {
   const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
   const { picks = [], comments = [], actionBy } = actions
 
@@ -98,7 +86,7 @@ export default function FeedLatestAction({ actions }: FeedLatestActionProps) {
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">{picks[0].member.name}</span>及其他
           <span className="px-1 text-primary-700">{picks.length - 1}</span>
-          精選了這篇文章
+          人精選了這篇文章
         </div>
       </div>
     )
