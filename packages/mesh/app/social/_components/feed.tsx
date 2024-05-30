@@ -6,7 +6,7 @@ import type {
   GetUserFollowingResponse,
   Member,
   Story,
-} from '@/graphql/query/get-user-following'
+} from '@/graphql/query/member'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'

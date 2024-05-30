@@ -1,11 +1,13 @@
+import type { DocumentNode } from 'graphql'
+
 import { getClient } from '@/apollo'
 import Feed from '@/app/social/_components/feed'
 import {
-  Following,
-  GetUserFollowing,
-  GetUserFollowingRequest,
-  GetUserFollowingResponse,
-} from '@/graphql/query/get-user-following'
+  type Following,
+  type GetUserFollowingRequest,
+  type GetUserFollowingResponse,
+  GET_USER_FOLLOWING,
+} from '@/graphql/query/member'
 
 export const revalidate = 60
 
@@ -13,7 +15,20 @@ export default async function Page() {
   const userId = '175'
   const feedsNumber = 20
   const firstSectionAmount = 2
-  const currentUser = await fetchUserFollowing(userId, feedsNumber)
+  const currentUser = await fetchUserFollowing(GET_USER_FOLLOWING, {
+    memberId: userId,
+    takes: feedsNumber,
+  })
+
+  if (!currentUser) {
+    return (
+      <div>
+        <h1>Error Page</h1>
+        <p>Sorry, something went wrong.</p>
+      </div>
+    )
+  }
+
   const sortedFollowingMemberActionByTime = processedPicksAndCommentsData(
     currentUser.following,
     feedsNumber
@@ -27,7 +42,7 @@ export default async function Page() {
     sortedFollowingMemberActionByTime.slice(firstSectionAmount)
 
   return (
-    <>
+    <main>
       {sortedFollowingMemberActionByTime.length === 0 ? (
         <div className="flex justify-center py-5">
           <div className="flex flex-col gap-4">
@@ -62,19 +77,30 @@ export default async function Page() {
           </div>
         </div>
       )}
-    </>
+    </main>
   )
 }
 
-async function fetchUserFollowing(memberId: string, picksTake: number) {
-  const { data } = await getClient().query<
-    GetUserFollowingResponse,
-    GetUserFollowingRequest
-  >({
-    query: GetUserFollowing,
-    variables: { memberId, picksTake },
-  })
-  return data.member
+async function fetchUserFollowing(
+  query: DocumentNode,
+  variables: GetUserFollowingRequest
+): Promise<GetUserFollowingResponse['member'] | null> {
+  try {
+    const { data, error: gqlError } = await getClient().query<
+      GetUserFollowingResponse,
+      GetUserFollowingRequest
+    >({
+      query: query,
+      variables: variables,
+    })
+    if (gqlError) {
+      throw new Error(gqlError.message)
+    }
+    return data.member
+  } catch (error) {
+    console.error('Error fetching user following:', error)
+    return null
+  }
 }
 
 function processedPicksAndCommentsData(
@@ -104,8 +130,7 @@ function processedPicksAndCommentsData(
   const uniquePicks = Array.from(uniquePicksAndCommentsMap.values())
 
   const sortedUniquePicksByPickTime = uniquePicks.sort(
-    (a: any, b: any) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 
   return sortedUniquePicksByPickTime.slice(0, maxFeeds)

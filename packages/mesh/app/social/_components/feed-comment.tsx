@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
-import type { Story } from '@/graphql/query/get-user-following'
+import type { Story } from '@/graphql/query/member'
 
 import { renderAvatar, timeDifference } from './feed'
 
