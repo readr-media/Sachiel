@@ -32,14 +32,17 @@ export default function Feed({
   const followingWhoCommented = story?.comment.filter((comment) =>
     followingMembers.has(comment.member.id)
   )
-  const storyPicksAndComments = processStoryPicksAndComments(
-    followingWhoPicked,
-    followingWhoCommented
+
+  const actionData = processActions(followingWhoPicked, followingWhoCommented)
+  const storyPicksWithoutActions = story?.pick.filter(
+    (item) =>
+      !actionData?.picksData.some((pick) => pick.member.id === item.member.id)
   )
-
-  const latestAction = checkLatestAction(storyPicksAndComments)
-
-  const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
+  const actionDataPicks = actionData?.picksData || []
+  const storyPickFiltered = [
+    ...actionDataPicks,
+    ...storyPicksWithoutActions,
+  ].slice(0, 4)
 
   if (!story) {
     return null
@@ -48,7 +51,7 @@ export default function Feed({
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
-        <FeedLatestAction actions={storyPicksAndComments} />
+        <FeedLatestAction actions={actionData} />
         <button>
           <Icon iconName="icon-more-horiz" size="l" />
         </button>
@@ -70,9 +73,9 @@ export default function Feed({
       ) : null}
       <div className="px-8 pb-6 pt-3">
         <h4 className="body-3 mb-1 text-primary-500">{story?.source?.title}</h4>
-        <h1 className="title-1 line-clamp-2 mb-2 break-words">
+        <h2 className="title-1 line-clamp-2 mb-2 break-words">
           {story?.title}
-        </h1>
+        </h2>
         <div className="footnote mb-4 flex items-center text-primary-500">
           <Icon iconName="icon-chat-bubble" size="s" />
           <div className="pl-0.5">{story?.commentCount}</div>
@@ -96,29 +99,28 @@ export default function Feed({
         <div className="footnote mb-4 flex h-8 justify-between text-primary-500">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1 overflow-hidden">
-              {storyPicksAndComments.picks?.slice(0, 4).map((data, index) => (
+              {storyPickFiltered.map((data, index) => (
                 <div key={data.member.id} className={`${avatarLayer[index]}`}>
                   {renderAvatar(data.member, 28)}
                 </div>
               ))}
             </div>
             <div className="flex items-center">
-              <span className="pr-1 text-primary-700">
-                {followingWhoPicked.length}
-              </span>
+              <span className="pr-1 text-primary-700">{story.pick.length}</span>
               <span>人精選</span>
             </div>
           </div>
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
         </div>
-        {latestAction.isShowComment && latestAction.comment ? (
-          <FeedComment comment={latestAction.comment} />
+        {actionData?.feedComment.isShowComment &&
+        actionData.feedComment.comment ? (
+          <FeedComment comment={actionData.feedComment.comment} />
         ) : null}
       </div>
     </div>
   )
 }
-
+export const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
 export const renderAvatar = (member: Member, px: number) => {
   const avatarVariants: { [key: number]: string } = {
     28: 'h-[28px] w-[28px]',
@@ -164,93 +166,55 @@ export const timeDifference = (date: string) => {
   }
 }
 
-function processStoryPicksAndComments(
-  picks: Story['pick'],
-  comments: Story['comment']
-): {
-  actionBy: 'single' | 'multiple'
-  picks: Story['pick']
-  comments: Story['comment']
-  latestAction: Story['pick'][number] | Story['comment'][number]
-} {
-  const sortedPicksAndComments = [...picks, ...comments].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  )
+export type LatestAction = ReturnType<typeof processActions>
 
-  if (sortedPicksAndComments.length === 1) {
-    return {
-      actionBy: 'single',
-      picks: picks,
-      comments: comments,
-      latestAction: sortedPicksAndComments[0],
-    }
-  } else if (
-    sortedPicksAndComments.length === 2 &&
-    picks.length === 1 &&
-    comments.length === 1 &&
-    picks[0].member.id === comments[0].member.id
+function processActions(picks: Story['pick'], comments: Story['comment']) {
+  const picksNum = picks.length
+  const commentsNum = comments.length
+  let slicedPicks = picks.slice(0, 2)
+  const slicedComments = comments.slice(0, 2)
+
+  function createActions(
+    isShowComment: boolean,
+    comment: Story['comment'][number] | undefined
   ) {
     return {
-      actionBy: 'single',
-      picks: picks,
-      comments: comments,
-      latestAction: sortedPicksAndComments[0],
+      picksNum: picksNum,
+      commentsNum: commentsNum,
+      picksData: slicedPicks,
+      commentsData: slicedComments,
+      feedComment: {
+        isShowComment: isShowComment,
+        comment: comment,
+      },
     }
+  }
+
+  if (picksNum > 0 && commentsNum > 0) {
+    const pickTime = new Date(picks[0].createdAt).getTime()
+    const commentTime = new Date(comments[0].createdAt).getTime()
+    if (pickTime > commentTime) {
+      const isMemberPickAndComment = comments.find(
+        (item) => item.member.id === picks[0].member.id
+      )
+      return createActions(!!isMemberPickAndComment, isMemberPickAndComment)
+    } else {
+      const matchingPickIndex = picks.findIndex(
+        (item) => item.member.id === comments[0].member.id
+      )
+      if (matchingPickIndex === 1) {
+        slicedPicks = slicedPicks.reverse()
+      } else if (matchingPickIndex > 1) {
+        const matchingPick = picks[matchingPickIndex]
+        slicedPicks = [matchingPick, slicedPicks[0]]
+      }
+      return createActions(matchingPickIndex > -1, comments[0])
+    }
+  } else if (picksNum > 0) {
+    return createActions(false, undefined)
+  } else if (commentsNum > 0) {
+    return createActions(true, comments[0])
   } else {
-    const sortedPicks = picks.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    const sortedComments = comments.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    return {
-      actionBy: 'multiple',
-      picks: sortedPicks,
-      comments: sortedComments,
-      latestAction: sortedPicksAndComments[0],
-    }
-  }
-}
-
-export type LatestAction = ReturnType<typeof processStoryPicksAndComments>
-
-function checkLatestAction(data: LatestAction) {
-  const { latestAction, picks, comments } = data
-
-  if (picks.length === 0 && comments.length === 1) {
-    return {
-      isShowComment: true,
-      comment: comments[0],
-    }
-  }
-
-  switch (latestAction.__typename) {
-    case 'Pick': {
-      const PickAndComment = comments?.find(
-        (item) => item.member.id === latestAction.member.id
-      )
-
-      return {
-        isShowComment: !!PickAndComment,
-        comment: PickAndComment || null,
-      }
-    }
-    case 'Comment': {
-      const CommentAndPick = picks?.find(
-        (item) => item.member.id === latestAction.member.id
-      )
-
-      return {
-        isShowComment: !!CommentAndPick,
-        comment: comments[0],
-      }
-    }
-    default:
-      return {
-        isShowComment: false,
-        comment: null,
-      }
+    return null
   }
 }
