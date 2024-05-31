@@ -10,7 +10,7 @@ import { renderAvatar, timeDifference } from './feed'
 export default function FeedComment({
   comment,
 }: {
-  comment: Story['comment'][number]
+  comment: Pick<Story['comment'][0], 'member' | 'createdAt' | 'content'>
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
