@@ -7,6 +7,7 @@ export default function FeedLatestAction({
 }) {
   if (!actions) return null
   const { picksNum, commentsNum, picksData, commentsData } = actions
+  const maxNameBytes = 9
 
   if (picksNum === 0 && commentsNum === 1) {
     return (
@@ -14,7 +15,7 @@ export default function FeedLatestAction({
         {renderAvatar(commentsData[0].member, 28)}
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
-            {commentsData[0].member.name}
+            {truncateNameByBytes(commentsData[0].member.name, maxNameBytes)}
           </span>
           在這篇文章留言
         </div>
@@ -33,11 +34,11 @@ export default function FeedLatestAction({
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {commentsData[0].member.name}
+            {truncateNameByBytes(commentsData[0].member.name, maxNameBytes)}
           </span>
           及
           <span className="text-primary-700">
-            {commentsData[1].member.name}
+            {truncateNameByBytes(commentsData[1].member.name, maxNameBytes)}
           </span>
           在這篇文章留言
         </div>
@@ -52,7 +53,7 @@ export default function FeedLatestAction({
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {commentsData[0].member.name}
+            {truncateNameByBytes(commentsData[0].member.name, maxNameBytes)}
           </span>
           及其他
           <span className="px-1 text-primary-700">{commentsNum - 1}</span>
@@ -67,7 +68,9 @@ export default function FeedLatestAction({
       <div className="flex items-center gap-2">
         {renderAvatar(picksData[0].member, 28)}
         <div className="body-3 text-primary-500">
-          <span className="text-primary-700">{picksData[0].member.name}</span>
+          <span className="text-primary-700">
+            {truncateNameByBytes(picksData[0].member.name, maxNameBytes)}
+          </span>
           精選了這篇
         </div>
       </div>
@@ -84,8 +87,13 @@ export default function FeedLatestAction({
           ))}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
-          <span className="text-primary-700">{picksData[0].member.name}</span>及
-          <span className="text-primary-700">{picksData[1].member.name}</span>
+          <span className="text-primary-700">
+            {truncateNameByBytes(picksData[0].member.name, maxNameBytes)}
+          </span>
+          及
+          <span className="text-primary-700">
+            {truncateNameByBytes(picksData[1].member.name, maxNameBytes)}
+          </span>
           精選了這篇文章
         </div>
       </div>
@@ -98,7 +106,9 @@ export default function FeedLatestAction({
           {renderAvatar(picksData[0].member, 28)}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
-          <span className="text-primary-700">{picksData[0].member.name}</span>
+          <span className="text-primary-700">
+            {truncateNameByBytes(picksData[0].member.name, maxNameBytes)}
+          </span>
           及其他
           <span className="px-1 text-primary-700">{picksNum - 1}</span>
           人精選了這篇文章
@@ -108,4 +118,16 @@ export default function FeedLatestAction({
   }
 
   return null
+}
+
+function truncateNameByBytes(text: string, maxByte: number) {
+  const encoder = new TextEncoder()
+  const encodedText = encoder.encode(text)
+  const byteLength = encodedText.length
+
+  if (byteLength <= maxByte) {
+    return text
+  } else {
+    return text.substring(0, maxByte).trim() + '...'
+  }
 }
