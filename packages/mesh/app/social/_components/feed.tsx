@@ -2,11 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
-import type {
-  GetUserFollowingResponse,
-  Member,
-  Story,
-} from '@/graphql/query/member'
+import type { GetUserFollowingResponse, Story } from '@/graphql/query/member'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
@@ -101,7 +97,7 @@ export default function Feed({
             <div className="flex -space-x-1 overflow-hidden">
               {storyPickFiltered.map((data, index) => (
                 <div key={data.member.id} className={`${avatarLayer[index]}`}>
-                  {renderAvatar(data.member, 28)}
+                  {renderAvatar(data.member.avatar, 28)}
                 </div>
               ))}
             </div>
@@ -121,18 +117,18 @@ export default function Feed({
   )
 }
 export const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
-export const renderAvatar = (member: Member, px: number) => {
+export const renderAvatar = (avatar: string, px: number) => {
   const avatarVariants: { [key: number]: string } = {
     28: 'h-[28px] w-[28px]',
     44: 'h-11 w-11',
   }
-  return member.avatar ? (
+  return avatar ? (
     <Image
       className={`inline-block ${avatarVariants[px]} rounded-full bg-white ring-2 ring-white`}
-      src={member.avatar}
+      src={avatar}
       width={px}
       height={px}
-      alt={`${member.id}-avatar`}
+      alt={avatar}
     />
   ) : (
     <Icon iconName="icon-avatar-default" size={{ width: px, height: px }} />

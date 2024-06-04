@@ -24,7 +24,7 @@ export default function FeedComment({
 
   return (
     <div className="flex flex-row border-t py-4">
-      {renderAvatar(comment.member, 44)}
+      {renderAvatar(comment.member.avatar, 44)}
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">

@@ -12,7 +12,7 @@ export default function FeedLatestAction({
   if (picksNum === 0 && commentsNum === 1) {
     return (
       <div className="flex items-center gap-2">
-        {renderAvatar(commentsData[0].member, 28)}
+        {renderAvatar(commentsData[0].member.avatar, 28)}
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
             {truncateNameByBytes(commentsData[0].member.name, maxNameBytes)}
@@ -28,7 +28,7 @@ export default function FeedLatestAction({
         <div className="flex -space-x-1 overflow-hidden">
           {commentsData.map((data, index) => (
             <div key={data.member.id} className={`${avatarLayer[index]}`}>
-              {renderAvatar(data.member, 28)}
+              {renderAvatar(data.member.avatar, 28)}
             </div>
           ))}
         </div>
@@ -49,7 +49,7 @@ export default function FeedLatestAction({
     return (
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
-          {renderAvatar(commentsData[0].member, 28)}
+          {renderAvatar(commentsData[0].member.avatar, 28)}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
@@ -66,7 +66,7 @@ export default function FeedLatestAction({
   if (picksNum === 1 && commentsNum >= 0) {
     return (
       <div className="flex items-center gap-2">
-        {renderAvatar(picksData[0].member, 28)}
+        {renderAvatar(picksData[0].member.avatar, 28)}
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
             {truncateNameByBytes(picksData[0].member.name, maxNameBytes)}
@@ -82,7 +82,7 @@ export default function FeedLatestAction({
         <div className="flex -space-x-1 overflow-hidden">
           {picksData.map((data, index) => (
             <div key={data.member.id} className={`${avatarLayer[index]}`}>
-              {renderAvatar(data.member, 28)}
+              {renderAvatar(data.member.avatar, 28)}
             </div>
           ))}
         </div>
@@ -103,7 +103,7 @@ export default function FeedLatestAction({
     return (
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
-          {renderAvatar(picksData[0].member, 28)}
+          {renderAvatar(picksData[0].member.avatar, 28)}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
