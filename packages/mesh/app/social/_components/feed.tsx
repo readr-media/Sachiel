@@ -15,21 +15,28 @@ export default function Feed({
   story: Story
   currentUser: GetUserFollowingResponse['member']
 }) {
+  if (!story) {
+    return null
+  }
+
   const isStoryPickedByCurrentUser = currentUser.pick.some(
     (item) => item.story?.id === story.id
   )
   const followingMembers = new Set(
     currentUser.following.map((element) => element.id)
   )
-  const followingWhoPicked = story?.pick.filter((pick) =>
+  const picksFromFollowingMember = story?.pick.filter((pick) =>
     followingMembers.has(pick.member.id)
   )
 
-  const followingWhoCommented = story?.comment.filter((comment) =>
+  const commentsFromFollowingMember = story?.comment.filter((comment) =>
     followingMembers.has(comment.member.id)
   )
 
-  const actionData = processActions(followingWhoPicked, followingWhoCommented)
+  const actionData = processActions(
+    picksFromFollowingMember,
+    commentsFromFollowingMember
+  )
   const storyPicksWithoutActions = story?.pick.filter(
     (item) =>
       !actionData?.picksData.some((pick) => pick.member.id === item.member.id)
@@ -39,10 +46,6 @@ export default function Feed({
     ...actionDataPicks,
     ...storyPicksWithoutActions,
   ].slice(0, 4)
-
-  if (!story) {
-    return null
-  }
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
@@ -142,10 +145,10 @@ const renderTotalPicks = (picksCount: number) => {
       </>
     )
   } else {
-    const convertPickCount = (Math.floor(picksCount / 1000) / 10).toFixed(1)
+    const convertedPickCount = (Math.floor(picksCount / 1000) / 10).toFixed(1)
     return (
       <>
-        <span className="pr-1 text-primary-700">{convertPickCount}</span>
+        <span className="pr-1 text-primary-700">{convertedPickCount}</span>
         <span>萬人精選</span>
       </>
     )
@@ -207,10 +210,10 @@ function processActions(picks: Story['pick'], comments: Story['comment']) {
     const pickTime = new Date(picks[0].createdAt).getTime()
     const commentTime = new Date(comments[0].createdAt).getTime()
     if (pickTime > commentTime) {
-      const isMemberPickAndComment = comments.find(
+      const commentFromMember = comments.find(
         (item) => item.member.id === picks[0].member.id
       )
-      return createActions(!!isMemberPickAndComment, isMemberPickAndComment)
+      return createActions(!!commentFromMember, commentFromMember)
     } else {
       const matchingPickIndex = picks.findIndex(
         (item) => item.member.id === comments[0].member.id
