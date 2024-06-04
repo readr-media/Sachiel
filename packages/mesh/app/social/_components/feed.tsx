@@ -102,8 +102,7 @@ export default function Feed({
               ))}
             </div>
             <div className="flex items-center">
-              <span className="pr-1 text-primary-700">{story.pick.length}</span>
-              <span>人精選</span>
+              {renderTotalPicks(story.pickCount)}
             </div>
           </div>
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
@@ -133,6 +132,24 @@ export const renderAvatar = (avatar: string, px: number) => {
   ) : (
     <Icon iconName="icon-avatar-default" size={{ width: px, height: px }} />
   )
+}
+const renderTotalPicks = (picksCount: number) => {
+  if (picksCount < 10000) {
+    return (
+      <>
+        <span className="pr-1 text-primary-700">{picksCount}</span>
+        <span>人精選</span>
+      </>
+    )
+  } else {
+    const convertPickCount = (Math.floor(picksCount / 1000) / 10).toFixed(1)
+    return (
+      <>
+        <span className="pr-1 text-primary-700">{convertPickCount}</span>
+        <span>萬人精選</span>
+      </>
+    )
+  }
 }
 
 export const timeDifference = (date: string) => {
