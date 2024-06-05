@@ -1,5 +1,3 @@
-import type { DocumentNode } from 'graphql'
-
 import { getClient } from '@/apollo'
 import Feed from '@/app/social/_components/feed'
 import {
@@ -15,7 +13,7 @@ export default async function Page() {
   const userId = '175'
   const feedsNumber = 20
   const firstSectionAmount = 2
-  const currentUser = await fetchUserFollowing(GET_USER_FOLLOWING, {
+  const currentUser = await fetchUserFollowing({
     memberId: userId,
     takes: feedsNumber,
   })
@@ -29,21 +27,21 @@ export default async function Page() {
     )
   }
 
-  const sortedFollowingMemberActionByTime = processedPicksAndCommentsData(
+  const storiesFromMemberActions = retrieveStoriesFromFollowingMemberActions(
     currentUser.following,
     feedsNumber
   )
 
-  const firstSectionPicks = sortedFollowingMemberActionByTime.slice(
+  const firstSectionStories = storiesFromMemberActions.slice(
     0,
     firstSectionAmount
   )
-  const secondSectionPicks =
-    sortedFollowingMemberActionByTime.slice(firstSectionAmount)
+  const secondSectionStories =
+    storiesFromMemberActions.slice(firstSectionAmount)
 
   return (
     <main>
-      {sortedFollowingMemberActionByTime.length === 0 ? (
+      {storiesFromMemberActions.length === 0 ? (
         <div className="flex justify-center py-5">
           <div className="flex flex-col gap-4">
             <p>咦？這裡好像還缺點什麼...</p>
@@ -52,10 +50,10 @@ export default async function Page() {
       ) : (
         <div className="flex justify-center gap-10 py-5">
           <div className="flex flex-col gap-4">
-            {firstSectionPicks.map((pick) => (
+            {firstSectionStories.map((item) => (
               <Feed
-                key={pick.id}
-                story={pick.story}
+                key={item.id}
+                story={item.story}
                 currentUser={currentUser}
               />
             ))}
@@ -64,10 +62,10 @@ export default async function Page() {
                 推薦追蹤
               </h2>
             </div>
-            {secondSectionPicks.map((pick) => (
+            {secondSectionStories.map((item) => (
               <Feed
-                key={pick.id}
-                story={pick.story}
+                key={item.id}
+                story={item.story}
                 currentUser={currentUser}
               />
             ))}
@@ -82,56 +80,61 @@ export default async function Page() {
 }
 
 async function fetchUserFollowing(
-  query: DocumentNode,
   variables: GetUserFollowingRequest
 ): Promise<GetUserFollowingResponse['member'] | null> {
   try {
-    const { data, error: gqlError } = await getClient().query<
+    const { data, errors: gqlError } = await getClient().query<
       GetUserFollowingResponse,
       GetUserFollowingRequest
     >({
-      query: query,
+      query: GET_USER_FOLLOWING,
       variables: variables,
     })
-    if (gqlError) {
-      throw new Error(gqlError.message)
+
+    if (gqlError && gqlError.length > 0) {
+      throw new Error('[GraphQL error]: ' + gqlError[0].message)
     }
     return data.member
   } catch (error) {
-    console.error('Error fetching user following:', error)
+    console.error(
+      JSON.stringify({
+        severity: 'ERROR',
+        message: 'failed to fetching user following ' + error,
+      })
+    )
     return null
   }
 }
 
-function processedPicksAndCommentsData(
+function retrieveStoriesFromFollowingMemberActions(
   followingMember: Following[],
   maxFeeds: number
 ) {
-  const picksAndComments = followingMember.flatMap((member) => [
-    ...member.pick,
-    ...member.comment,
-  ])
+  const storiesFromFollowingMemberActions = followingMember.flatMap(
+    (member) => [...member.pick, ...member.comment]
+  )
 
-  const uniquePicksAndCommentsMap = new Map<
+  const uniqueStoriesFromFollowingMemberActions = new Map<
     string,
     Following['pick'][number] | Following['comment'][number]
   >()
 
-  picksAndComments.forEach((actions) => {
+  storiesFromFollowingMemberActions.forEach((actions) => {
     if (
       actions.story &&
-      actions.story.id !== null &&
-      !uniquePicksAndCommentsMap.has(actions.story.id)
+      !uniqueStoriesFromFollowingMemberActions.has(actions.story.id)
     ) {
-      uniquePicksAndCommentsMap.set(actions.story.id, actions)
+      uniqueStoriesFromFollowingMemberActions.set(actions.story.id, actions)
     }
   })
 
-  const uniquePicks = Array.from(uniquePicksAndCommentsMap.values())
+  const uniqueStories = Array.from(
+    uniqueStoriesFromFollowingMemberActions.values()
+  )
 
-  const sortedUniquePicksByPickTime = uniquePicks.sort(
+  const uniqueStoriesSortedByActionTime = uniqueStories.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
 
-  return sortedUniquePicksByPickTime.slice(0, maxFeeds)
+  return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
 }
