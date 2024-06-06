@@ -2,18 +2,24 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 
-export const RenderAvatar = (avatar: string, px: 28 | 44) => {
+export default function RenderAvatar({
+  src,
+  px,
+}: {
+  src: string
+  px: 28 | 44
+}) {
   const avatarVariants: { [key: number]: string } = {
     28: 'h-[28px] w-[28px]',
     44: 'h-11 w-11',
   }
-  return avatar ? (
+  return src ? (
     <Image
       className={`inline-block ${avatarVariants[px]} rounded-full bg-white ring-2 ring-white`}
-      src={avatar}
+      src={src}
       width={px}
       height={px}
-      alt={avatar}
+      alt={src}
     />
   ) : (
     <Icon iconName="icon-avatar-default" size={{ width: px, height: px }} />
