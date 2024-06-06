@@ -98,7 +98,7 @@ async function fetchUserFollowing(
   variables: GetUserFollowingRequest
 ): Promise<GetUserFollowingResponse['member'] | null> {
   try {
-    const { data, errors: gqlError } = await getClient().query<
+    const { data, errors: gqlErrors } = await getClient().query<
       GetUserFollowingResponse,
       GetUserFollowingRequest
     >({
@@ -106,17 +106,28 @@ async function fetchUserFollowing(
       variables: variables,
     })
 
-    if (gqlError && gqlError.length > 0) {
-      throw new Error('[GraphQL error]: ' + gqlError[0].message)
+    if (gqlErrors && gqlErrors.length > 0) {
+      throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
     }
     return data.member
   } catch (error) {
-    console.error(
-      JSON.stringify({
-        severity: 'ERROR',
-        message: 'failed to fetching user following ' + error,
-      })
-    )
+    if (error instanceof Error) {
+      console.error(
+        JSON.stringify({
+          severity: 'ERROR',
+          message: `fetchUserFollowing failed: ${error.message}`,
+          stack: error.stack || 'No stack available',
+        })
+      )
+    } else {
+      console.error(
+        JSON.stringify({
+          severity: 'ERROR',
+          message: 'fetchUserFollowing failed: Unknown error',
+          stack: 'No stack available',
+        })
+      )
+    }
     return null
   }
 }
