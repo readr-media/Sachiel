@@ -13,6 +13,9 @@ module.exports = {
       xxl: '1920px',
     },
     extend: {
+      zIndex: {
+        header: 10,
+      },
       width: {
         maxContent: '1440px',
         maxMain: '1120px',

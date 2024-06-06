@@ -65,10 +65,15 @@ export type IconName =
   | 'icon-setting-lg'
   | 'icon-setting-lg-hover'
   | 'icon-setting-lg-on'
+  | 'icon-more-horiz'
+  | 'icon-chat-bubble'
+  | 'icon-dot'
+  | 'icon-avatar-default'
 
 export type IconProps = {
   size: Size
   iconName: IconName
+  className?: string
 }
 export const sizeVariant = {
   s: 16,
@@ -77,7 +82,7 @@ export const sizeVariant = {
   xl: 32,
   '2xl': 44,
 }
-export default function Icon({ iconName, size }: IconProps) {
+export default function Icon({ iconName, size, className = '' }: IconProps) {
   if (typeof size === 'string') {
     return (
       <Image
@@ -85,6 +90,7 @@ export default function Icon({ iconName, size }: IconProps) {
         width={sizeVariant[size]}
         height={sizeVariant[size]}
         alt={iconName}
+        className={className}
       />
     )
   } else {
@@ -94,6 +100,7 @@ export default function Icon({ iconName, size }: IconProps) {
         width={size.width}
         height={size.height}
         alt={iconName}
+        className={className}
       />
     )
   }
