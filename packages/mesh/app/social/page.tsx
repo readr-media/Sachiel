@@ -26,6 +26,9 @@ export default async function Page() {
       </div>
     )
   }
+  const followingMemberIds = new Set(
+    currentUser.following.map((element) => element.id)
+  )
 
   const storiesFromMemberActions = retrieveStoriesFromFollowingMemberActions(
     currentUser.following,
@@ -50,25 +53,37 @@ export default async function Page() {
       ) : (
         <div className="flex justify-center gap-10 py-5">
           <div className="flex flex-col gap-4">
-            {firstSectionStories.map((item) => (
-              <Feed
-                key={item.id}
-                story={item.story}
-                currentUser={currentUser}
-              />
-            ))}
+            {firstSectionStories.map((item) => {
+              const isStoryPickedByCurrentUser = currentUser.pick.some(
+                (pick) => pick.story?.id === item.id
+              )
+              return (
+                <Feed
+                  key={item.id}
+                  story={item.story}
+                  isStoryPickedByCurrentUser={isStoryPickedByCurrentUser}
+                  followingMemberIds={followingMemberIds}
+                />
+              )
+            })}
             <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 drop-shadow sm:rounded-md lg:hidden">
               <h2 className="list-title pb-3 text-primary-700 sm:pb-1">
                 推薦追蹤
               </h2>
             </div>
-            {secondSectionStories.map((item) => (
-              <Feed
-                key={item.id}
-                story={item.story}
-                currentUser={currentUser}
-              />
-            ))}
+            {secondSectionStories.map((item) => {
+              const isStoryPickedByCurrentUser = currentUser.pick.some(
+                (pick) => pick.story?.id === item.story.id
+              )
+              return (
+                <Feed
+                  key={item.id}
+                  story={item.story}
+                  isStoryPickedByCurrentUser={isStoryPickedByCurrentUser}
+                  followingMemberIds={followingMemberIds}
+                />
+              )
+            })}
           </div>
           <div className="hidden grow flex-col lg:flex lg:max-w-[260px] xl:max-w-[400px]">
             <h2 className="list-title pb-1 text-primary-700">推薦追蹤</h2>

@@ -1,15 +1,19 @@
-import { type LatestAction, avatarLayer, renderAvatar } from './feed'
+import { socialPageAvatarLayer } from '@/constants/z-index'
+
+import { type LatestAction } from './feed'
+import { renderAvatar } from './render-avatar'
 
 export default function FeedLatestAction({
   actions,
 }: {
   actions: LatestAction
 }) {
-  if (!actions) return null
   const { picksNum, commentsNum, picksData, commentsData } = actions
   const maxNameBytes = 9
   if (picksNum === 0) {
-    if (commentsNum === 1) {
+    if (commentsNum === 0) {
+      return null
+    } else if (commentsNum === 1 && commentsData) {
       return (
         <div className="flex items-center gap-2">
           {renderAvatar(commentsData[0].member.avatar, 28)}
@@ -21,12 +25,15 @@ export default function FeedLatestAction({
           </div>
         </div>
       )
-    } else if (commentsNum === 2) {
+    } else if (commentsNum === 2 && commentsData) {
       return (
         <div className="flex items-center gap-2">
           <div className="flex -space-x-1 overflow-hidden">
             {commentsData.map((data, index) => (
-              <div key={data.member.id} className={`${avatarLayer[index]}`}>
+              <div
+                key={data.member.id}
+                style={{ zIndex: socialPageAvatarLayer[index] }}
+              >
                 {renderAvatar(data.member.avatar, 28)}
               </div>
             ))}
@@ -43,7 +50,7 @@ export default function FeedLatestAction({
           </div>
         </div>
       )
-    } else if (commentsNum > 2) {
+    } else if (commentsNum > 2 && commentsData) {
       return (
         <div className="flex items-center gap-2">
           <div className="flex -space-x-1 overflow-hidden">
@@ -77,7 +84,10 @@ export default function FeedLatestAction({
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
           {picksData.map((data, index) => (
-            <div key={data.member.id} className={`${avatarLayer[index]}`}>
+            <div
+              key={data.member.id}
+              style={{ zIndex: socialPageAvatarLayer[index] }}
+            >
               {renderAvatar(data.member.avatar, 28)}
             </div>
           ))}
@@ -111,9 +121,8 @@ export default function FeedLatestAction({
       </div>
     )
   }
-
-  return null
 }
+
 function truncateNameByBytes(text: string, maxByte: number) {
   const encoder = new TextEncoder()
   const encodedText = encoder.encode(text)

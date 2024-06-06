@@ -4,8 +4,9 @@ import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import type { Story } from '@/graphql/query/member'
+import { displayTimeFromNow } from '@/utils/story-display'
 
-import { renderAvatar, timeDifference } from './feed'
+import { renderAvatar } from './render-avatar'
 
 export default function FeedComment({
   comment,
@@ -32,7 +33,7 @@ export default function FeedComment({
           </div>
           <Icon iconName="icon-dot" size="s" />
           <div className="caption-1 text-primary-500">
-            <span>{timeDifference(comment?.createdAt)}</span>
+            <span>{displayTimeFromNow(comment?.createdAt)}</span>
           </div>
         </span>
         <p className="body-3 text-primary-600">

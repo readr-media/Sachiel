@@ -1,61 +1,61 @@
 import Image from 'next/image'
 
 import Icon from '@/components/icon'
-import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
-import type { GetUserFollowingResponse, Story } from '@/graphql/query/member'
+import { socialPageAvatarLayer } from '@/constants/z-index'
+import type { Story } from '@/graphql/query/member'
+import { displayTimeFromNow } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
 import FeedPick from './feed-pick'
+import { renderAvatar } from './render-avatar'
 
 export default function Feed({
   story,
-  currentUser,
+  isStoryPickedByCurrentUser,
+  followingMemberIds,
 }: {
   story: Story
-  currentUser: GetUserFollowingResponse['member']
+  isStoryPickedByCurrentUser: boolean
+  followingMemberIds: Set<string>
 }) {
   if (!story) {
     return null
   }
+  const picksFromFollowingMember: Story['pick'] = []
+  const picksFromStranger: Story['pick'] = []
+  let picksFromAll: Story['pick'] = []
 
-  const isStoryPickedByCurrentUser = currentUser.pick.some(
-    (item) => item.story?.id === story.id
-  )
-  const followingMembers = new Set(
-    currentUser.following.map((element) => element.id)
-  )
-  const picksFromFollowingMember = story?.pick.filter((pick) =>
-    followingMembers.has(pick.member.id)
-  )
-
-  const commentsFromFollowingMember = story?.comment.filter((comment) =>
-    followingMembers.has(comment.member.id)
+  story.pick.forEach((pick) =>
+    followingMemberIds.has(pick.member.id)
+      ? picksFromFollowingMember.push(pick)
+      : picksFromStranger.push(pick)
   )
 
-  const actionData = processActions(
+  const commentsFromFollowingMember = story.comment.filter((comment) =>
+    followingMemberIds.has(comment.member.id)
+  )
+
+  const storyActions = processStoryActions(
     picksFromFollowingMember,
     commentsFromFollowingMember
   )
-  const storyPicksWithoutActions = story?.pick.filter(
-    (item) =>
-      !actionData?.picksData.some((pick) => pick.member.id === item.member.id)
-  )
-  const actionDataPicks = actionData?.picksData || []
-  const storyPickFiltered = [
-    ...actionDataPicks,
-    ...storyPicksWithoutActions,
-  ].slice(0, 4)
+
+  if (storyActions.picksData.length < 4) {
+    picksFromAll = [...storyActions.picksData, ...picksFromStranger].slice(0, 4)
+  } else {
+    picksFromAll = [...storyActions.picksData]
+  }
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
-        <FeedLatestAction actions={actionData} />
+        <FeedLatestAction actions={storyActions} />
         <button>
           <Icon iconName="icon-more-horiz" size="l" />
         </button>
       </div>
-      {story?.og_image ? (
+      {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
           <Image
             src={story.og_image}
@@ -65,22 +65,21 @@ export default function Feed({
             sizes="100vw"
             style={{
               width: '100%',
-              height: 'auto',
+              height: '100%',
+              objectFit: 'cover',
             }}
           />
         </div>
       ) : null}
       <div className="px-8 pb-6 pt-3">
-        <h4 className="body-3 mb-1 text-primary-500">{story?.source?.title}</h4>
-        <h2 className="title-1 line-clamp-2 mb-2 break-words">
-          {story?.title}
-        </h2>
+        <h4 className="body-3 mb-1 text-primary-500">{story.source?.title}</h4>
+        <h2 className="title-1 line-clamp-2 mb-2 break-words">{story.title}</h2>
         <div className="footnote mb-4 flex items-center text-primary-500">
           <Icon iconName="icon-chat-bubble" size="s" />
-          <div className="pl-0.5">{story?.commentCount}</div>
+          <div className="pl-0.5">{story.commentCount}</div>
           <Icon iconName="icon-dot" size="s" />
           <div>
-            <span>{timeDifference(story?.published_date)}</span>
+            <span>{displayTimeFromNow(story.published_date)}</span>
           </div>
           {story.paywall ? (
             <div className="flex items-center">
@@ -98,8 +97,11 @@ export default function Feed({
         <div className="footnote mb-4 flex h-8 justify-between text-primary-500">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-1 overflow-hidden">
-              {storyPickFiltered.map((data, index) => (
-                <div key={data.member.id} className={`${avatarLayer[index]}`}>
+              {picksFromAll.map((data, index) => (
+                <div
+                  key={data.member.id}
+                  style={{ zIndex: socialPageAvatarLayer[index] }}
+                >
                   {renderAvatar(data.member.avatar, 28)}
                 </div>
               ))}
@@ -110,32 +112,14 @@ export default function Feed({
           </div>
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
         </div>
-        {actionData?.feedComment.isShowComment &&
-        actionData.feedComment.comment ? (
-          <FeedComment comment={actionData.feedComment.comment} />
+        {storyActions.commentsData ? (
+          <FeedComment comment={storyActions.commentsData[0]} />
         ) : null}
       </div>
     </div>
   )
 }
-export const avatarLayer = ['z-[4]', 'z-[3]', 'z-[2]', 'z-[1]']
-export const renderAvatar = (avatar: string, px: number) => {
-  const avatarVariants: { [key: number]: string } = {
-    28: 'h-[28px] w-[28px]',
-    44: 'h-11 w-11',
-  }
-  return avatar ? (
-    <Image
-      className={`inline-block ${avatarVariants[px]} rounded-full bg-white ring-2 ring-white`}
-      src={avatar}
-      width={px}
-      height={px}
-      alt={avatar}
-    />
-  ) : (
-    <Icon iconName="icon-avatar-default" size={{ width: px, height: px }} />
-  )
-}
+
 const renderTotalPicks = (picksCount: number) => {
   if (picksCount < 10000) {
     return (
@@ -155,82 +139,60 @@ const renderTotalPicks = (picksCount: number) => {
   }
 }
 
-export const timeDifference = (date: string) => {
-  const differenceInMilliseconds = Date.now() - new Date(date).getTime()
-  const differenceInMinutes = differenceInMilliseconds / MINUTE
-  const differenceInHours = differenceInMilliseconds / HOUR
-  const differenceInDays = differenceInMilliseconds / DAY
+export type LatestAction = ReturnType<typeof processStoryActions>
 
-  if (differenceInMilliseconds < HOUR) {
-    return Math.floor(differenceInMinutes) + ' 分鐘前'
-  } else if (differenceInMilliseconds < 24 * HOUR) {
-    return Math.floor(differenceInHours) + ' 小時前'
-  } else if (differenceInMilliseconds < 7 * DAY) {
-    return Math.floor(differenceInDays) + ' 天前'
-  } else {
-    const targetDate = new Date(date)
-    const currenYear = new Date().getFullYear()
-    const year = targetDate.getFullYear()
-    const month = String(targetDate.getMonth() + 1).padStart(2, '0')
-    const day = String(targetDate.getDate()).padStart(2, '0')
-
-    if (year === currenYear) {
-      return `${month}/${day}`
-    } else {
-      return `${year}/${month}/${day}`
-    }
-  }
-}
-
-export type LatestAction = ReturnType<typeof processActions>
-
-function processActions(picks: Story['pick'], comments: Story['comment']) {
+function processStoryActions(picks: Story['pick'], comments: Story['comment']) {
   const picksNum = picks.length
   const commentsNum = comments.length
-  let slicedPicks = picks.slice(0, 2)
+  let slicedPicks = picks.slice(0, 4)
   const slicedComments = comments.slice(0, 2)
 
-  function createActions(
-    isShowComment: boolean,
-    comment: Story['comment'][number] | undefined
-  ) {
-    return {
-      picksNum: picksNum,
-      commentsNum: commentsNum,
-      picksData: slicedPicks,
-      commentsData: slicedComments,
-      feedComment: {
-        isShowComment: isShowComment,
-        comment: comment,
-      },
-    }
-  }
-
   if (picksNum > 0 && commentsNum > 0) {
-    const pickTime = new Date(picks[0].createdAt).getTime()
-    const commentTime = new Date(comments[0].createdAt).getTime()
-    if (pickTime > commentTime) {
-      const commentFromMember = comments.find(
+    const latestPick = new Date(picks[0].createdAt).getTime()
+    const latestComment = new Date(comments[0].createdAt).getTime()
+    if (latestPick > latestComment) {
+      const commentFromLatestPickMember = comments.find(
         (item) => item.member.id === picks[0].member.id
       )
-      return createActions(!!commentFromMember, commentFromMember)
+      return {
+        picksNum,
+        commentsNum,
+        picksData: slicedPicks,
+        commentsData: commentFromLatestPickMember
+          ? [commentFromLatestPickMember, ...slicedComments]
+          : null,
+      }
     } else {
       const matchingPickIndex = picks.findIndex(
         (item) => item.member.id === comments[0].member.id
       )
-      if (matchingPickIndex === 1) {
-        slicedPicks = slicedPicks.reverse()
-      } else if (matchingPickIndex > 1) {
-        const matchingPick = picks[matchingPickIndex]
-        slicedPicks = [matchingPick, slicedPicks[0]]
+      if (matchingPickIndex !== -1) {
+        const notMatchPicks = picks.filter(
+          (item) => item.member.id !== comments[0].member.id
+        )
+        slicedPicks = [picks[matchingPickIndex], ...notMatchPicks.slice(0, 3)]
       }
-      return createActions(matchingPickIndex > -1, comments[0])
+
+      return {
+        picksNum,
+        commentsNum,
+        picksData: slicedPicks,
+        commentsData: matchingPickIndex !== -1 ? slicedComments : null,
+      }
     }
-  } else if (picksNum > 0) {
-    return createActions(false, undefined)
   } else if (commentsNum > 0) {
-    return createActions(true, comments[0])
+    return {
+      picksNum,
+      commentsNum,
+      picksData: slicedPicks,
+      commentsData: slicedComments,
+    }
   } else {
-    return null
+    return {
+      picksNum,
+      commentsNum,
+      picksData: slicedPicks,
+      commentsData: null,
+    }
   }
 }
