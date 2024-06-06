@@ -8,7 +8,7 @@ import { displayTimeFromNow } from '@/utils/story-display'
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
 import FeedPick from './feed-pick'
-import { renderAvatar } from './render-avatar'
+import { RenderAvatar } from './render-avatar'
 
 export default function Feed({
   story,
@@ -102,7 +102,7 @@ export default function Feed({
                   key={data.member.id}
                   style={{ zIndex: socialPageAvatarLayer[index] }}
                 >
-                  {renderAvatar(data.member.avatar, 28)}
+                  {RenderAvatar(data.member.avatar, 28)}
                 </div>
               ))}
             </div>

@@ -1,7 +1,7 @@
 import { socialPageAvatarLayer } from '@/constants/z-index'
 
 import { type LatestAction } from './feed'
-import { renderAvatar } from './render-avatar'
+import { RenderAvatar } from './render-avatar'
 
 export default function FeedLatestAction({
   actions,
@@ -16,7 +16,7 @@ export default function FeedLatestAction({
     } else if (commentsNum === 1 && commentsData) {
       return (
         <div className="flex items-center gap-2">
-          {renderAvatar(commentsData[0].member.avatar, 28)}
+          {RenderAvatar(commentsData[0].member.avatar, 28)}
           <div className="body-3 text-primary-500">
             <span className="text-primary-700">
               {truncateNameByBytes(commentsData[0].member.name, maxNameBytes)}
@@ -34,7 +34,7 @@ export default function FeedLatestAction({
                 key={data.member.id}
                 style={{ zIndex: socialPageAvatarLayer[index] }}
               >
-                {renderAvatar(data.member.avatar, 28)}
+                {RenderAvatar(data.member.avatar, 28)}
               </div>
             ))}
           </div>
@@ -54,7 +54,7 @@ export default function FeedLatestAction({
       return (
         <div className="flex items-center gap-2">
           <div className="flex -space-x-1 overflow-hidden">
-            {renderAvatar(commentsData[0].member.avatar, 28)}
+            {RenderAvatar(commentsData[0].member.avatar, 28)}
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="text-primary-700">
@@ -70,7 +70,7 @@ export default function FeedLatestAction({
   } else if (picksNum === 1) {
     return (
       <div className="flex items-center gap-2">
-        {renderAvatar(picksData[0].member.avatar, 28)}
+        {RenderAvatar(picksData[0].member.avatar, 28)}
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
             {truncateNameByBytes(picksData[0].member.name, maxNameBytes)}
@@ -88,7 +88,7 @@ export default function FeedLatestAction({
               key={data.member.id}
               style={{ zIndex: socialPageAvatarLayer[index] }}
             >
-              {renderAvatar(data.member.avatar, 28)}
+              {RenderAvatar(data.member.avatar, 28)}
             </div>
           ))}
         </div>
@@ -108,7 +108,7 @@ export default function FeedLatestAction({
     return (
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
-          {renderAvatar(picksData[0].member.avatar, 28)}
+          {RenderAvatar(picksData[0].member.avatar, 28)}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">

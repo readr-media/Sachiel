@@ -6,7 +6,7 @@ import Icon from '@/components/icon'
 import type { Story } from '@/graphql/query/member'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { renderAvatar } from './render-avatar'
+import { RenderAvatar } from './render-avatar'
 
 export default function FeedComment({
   comment,
@@ -25,7 +25,7 @@ export default function FeedComment({
 
   return (
     <div className="flex flex-row border-t py-4">
-      {renderAvatar(comment.member.avatar, 44)}
+      {RenderAvatar(comment.member.avatar, 44)}
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">

@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 
-export const renderAvatar = (avatar: string, px: 28 | 44) => {
+export const RenderAvatar = (avatar: string, px: 28 | 44) => {
   const avatarVariants: { [key: number]: string } = {
     28: 'h-[28px] w-[28px]',
     44: 'h-11 w-11',
