@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import useWindowDimensions from '@/app/hooks/use-window-dimension'
 import { type Story } from '@/graphql/query/stories'
@@ -26,19 +26,12 @@ function DesktopStories({
 
   return (
     <>
-      <section className="grid gap-x-10 gap-y-5 p-10 pt-0">
+      <section className="grid gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) => {
           if (i === 0) {
             return <HeroStory key={story.id} story={story} />
           }
-          return (
-            <StoryCard
-              key={story.id}
-              story={story}
-              isMobile={false}
-              hideBorderB={false}
-            />
-          )
+          return <StoryCard key={story.id} story={story} isMobile={false} />
         })}
       </section>
       {mostPickedStory && (
@@ -46,9 +39,20 @@ function DesktopStories({
       )}
       <div className="flex gap-10 p-10 pb-15">
         <section>
-          {secondSectionStories.map((story) => (
-            <StoryCard key={story.id} story={story} isMobile={false} />
-          ))}
+          {secondSectionStories.map((story, i) => {
+            return (
+              <StoryCard
+                key={story.id}
+                className={`first-of-type:pt-0 ${
+                  i === secondSectionStories.length - 1
+                    ? 'last-of-type:border-b-0'
+                    : ''
+                }`}
+                story={story}
+                isMobile={false}
+              />
+            )
+          })}
         </section>
         <aside className="flex w-[400px] flex-col gap-3">
           {displayPublishers.map((displayPublisher, i) => (
@@ -72,19 +76,48 @@ function NonDesktopStories({
   displayPublishers: DisplayPublisher[]
   isMobile: boolean
 }) {
-  // TODO: insert most picked story and five media blocks
+  const specialBlocks = mostPickedStory
+    ? [mostPickedStory, ...displayPublishers]
+    : [...displayPublishers]
 
   return (
-    <>
-      {mostPickedStory && (
-        <MostPickedStory story={mostPickedStory} isDesktop={false} />
-      )}
-      <div className="flex flex-col gap-5 px-5 sm:pb-10 md:px-[70px]">
-        {stories.map((story) => (
-          <StoryCard key={story.id} story={story} isMobile={isMobile} />
-        ))}
-      </div>
-    </>
+    <div className="flex flex-col sm:pb-10">
+      {stories.map((story, i) => {
+        const insertSpecialBlock = (i + 1) % 5 === 0
+        const specialBlock = specialBlocks[Math.floor((i + 1) / 5) - 1]
+
+        if (insertSpecialBlock && specialBlock) {
+          const specialBlockJsx =
+            'stories' in specialBlock ? (
+              <div className="p-5 md:px-[70px]">
+                <Publisher key={specialBlock.id} publisher={specialBlock} />
+              </div>
+            ) : (
+              <MostPickedStory story={specialBlock} isDesktop={false} />
+            )
+          return (
+            <Fragment key={story.id}>
+              <StoryCard
+                key={story.id}
+                className="mx-5 border-b-0 first-of-type:pt-0 md:mx-[70px]"
+                story={story}
+                isMobile={isMobile}
+              />
+              {specialBlockJsx}
+            </Fragment>
+          )
+        } else {
+          return (
+            <StoryCard
+              key={story.id}
+              className="mx-5 first-of-type:pt-0 md:mx-[70px]"
+              story={story}
+              isMobile={isMobile}
+            />
+          )
+        }
+      })}
+    </div>
   )
 }
 

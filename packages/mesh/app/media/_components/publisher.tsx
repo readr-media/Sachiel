@@ -13,21 +13,19 @@ const PublisherStory = ({
   showImage: boolean
 }) => {
   return (
-    <article>
-      <div className="border-b py-3">
-        {showImage && story.og_image && (
-          <div className="relative aspect-[2/1]">
-            <Image
-              className="mb-3 object-cover"
-              src={story.og_image}
-              alt={story.title}
-              fill
-            />
-          </div>
-        )}
-        <div className="subtitle-2">{story.title}</div>
-        <div className="caption-1 mt-1">comment 數量。發布時間</div>
-      </div>
+    <article className="border-b py-3 last-of-type:border-b-0">
+      {showImage && story.og_image && (
+        <div className="relative aspect-[2/1]">
+          <Image
+            className="mb-3 object-cover"
+            src={story.og_image}
+            alt={story.title}
+            fill
+          />
+        </div>
+      )}
+      <div className="subtitle-2">{story.title}</div>
+      <div className="caption-1 mt-1">comment 數量。發布時間</div>
     </article>
   )
 }
@@ -38,7 +36,7 @@ export default function Publisher({
   publisher: DisplayPublisher
 }) {
   return (
-    <div className="rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
+    <section className="rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
       <div className="flex h-[68px] items-center justify-between gap-1">
         <div className="flex gap-3">
           <div>logo</div>
@@ -54,6 +52,6 @@ export default function Publisher({
       {publisher.stories.map((story, i) => (
         <PublisherStory key={story.id} story={story} showImage={i === 0} />
       ))}
-    </div>
+    </section>
   )
 }

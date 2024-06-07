@@ -10,16 +10,16 @@ export default function MostPickedStory({
   isDesktop: boolean
 }) {
   return (
-    <article className="bg-primary-100">
+    <section className="bg-primary-100">
       <div className="p-5 md:px-[70px] lg:px-10 lg:pt-8">
         <div
           className={`${
             isDesktop ? 'title-1' : 'list-title'
           } text-primary-500 lg:h-8`}
         >
-          今日最多人精選
+          最多人精選
         </div>
-        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
+        <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:h-[168px] sm:w-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
             <Image
               className="rounded-md"
@@ -62,8 +62,8 @@ export default function MostPickedStory({
               </div>
             </div>
           </div>
-        </div>
+        </article>
       </div>
-    </article>
+    </section>
   )
 }

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { twMerge } from 'tailwind-merge'
 
 import { imageSizes } from '@/constants/media'
 import type { Story } from '@/graphql/query/stories'
@@ -6,11 +7,11 @@ import type { Story } from '@/graphql/query/stories'
 export default function StoryCard({
   story,
   isMobile,
-  hideBorderB = true,
+  className = '',
 }: {
   story: Story
   isMobile: boolean
-  hideBorderB?: boolean
+  className?: string
 }) {
   const imageSize = isMobile ? imageSizes.mobile : imageSizes.nonMobile
   const titleClass = isMobile ? 'subtitle-1' : 'title-2'
@@ -23,9 +24,10 @@ export default function StoryCard({
 
   return (
     <article
-      className={`border-b ${
-        hideBorderB && 'last-of-type:border-b-0'
-      } flex flex-col justify-between pb-4`}
+      className={twMerge(
+        'flex flex-col justify-between border-b pb-4 pt-5',
+        className
+      )}
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
