@@ -3,15 +3,13 @@
 import { useMemo } from 'react'
 
 import useWindowDimensions from '@/app/hooks/use-window-dimension'
-import { type Publisher } from '@/graphql/query/publishers'
 import { type Story } from '@/graphql/query/stories'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
 import HeroStory from './hero-story-card'
 import MostPickedStory from './most-picked-story'
+import Publisher, { type DisplayPublisher } from './publisher'
 import StoryCard from './story-card'
-
-type DisplayPublisher = Publisher & { stories: Story[] }
 
 function DesktopStories({
   stories,
@@ -52,14 +50,9 @@ function DesktopStories({
             <StoryCard key={story.id} story={story} isMobile={false} />
           ))}
         </section>
-        <aside className="flex flex-col gap-3">
-          {Array.from(new Array(5)).map((e, i) => (
-            <div
-              className="h-[284px] w-[400px] rounded-lg bg-primary-100"
-              key={i}
-            >
-              第{i}家媒體
-            </div>
+        <aside className="flex w-[400px] flex-col gap-3">
+          {displayPublishers.map((displayPublisher, i) => (
+            <Publisher key={displayPublisher.id} publisher={displayPublisher} />
           ))}
         </aside>
       </div>
