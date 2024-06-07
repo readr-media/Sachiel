@@ -7,7 +7,15 @@ import {
   GET_USER_FOLLOWING,
 } from '@/graphql/query/member'
 
+import FollowSuggestionFeed from './_components/follow-suggestion-feed'
+import FollowSuggestionWidget from './_components/follow-suggestion-widget'
+
 export const revalidate = 60
+
+export type CommonFollowingMembers = Following['following'][number] & {
+  followedBy: string
+  isFollow: boolean
+}
 
 export default async function Page() {
   const userId = '175'
@@ -42,6 +50,12 @@ export default async function Page() {
   const secondSectionStories =
     storiesFromMemberActions.slice(firstSectionAmount)
 
+  const commonFollowingMembers = getCommonFollowingMembers(
+    currentUser.following,
+    followingMemberIds,
+    5
+  )
+
   return (
     <main>
       {storiesFromMemberActions.length === 0 ? (
@@ -66,11 +80,7 @@ export default async function Page() {
                 />
               )
             })}
-            <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 drop-shadow sm:rounded-md lg:hidden">
-              <h2 className="list-title pb-3 text-primary-700 sm:pb-1">
-                推薦追蹤
-              </h2>
-            </div>
+            <FollowSuggestionFeed suggestedFollowers={commonFollowingMembers} />
             {secondSectionStories.map((item) => {
               const isStoryPickedByCurrentUser = currentUser.pick.some(
                 (pick) => pick.story?.id === item.story.id
@@ -85,9 +95,7 @@ export default async function Page() {
               )
             })}
           </div>
-          <div className="hidden grow flex-col lg:flex lg:max-w-[260px] xl:max-w-[400px]">
-            <h2 className="list-title pb-1 text-primary-700">推薦追蹤</h2>
-          </div>
+          <FollowSuggestionWidget suggestedFollowers={commonFollowingMembers} />
         </div>
       )}
     </main>
@@ -163,4 +171,61 @@ function retrieveStoriesFromFollowingMemberActions(
   )
 
   return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
+}
+
+function getCommonFollowingMembers(
+  currentUserFollowing: Following[],
+  followingMemberIds: Set<string>,
+  take: number
+) {
+  const commonFollowingMembers: CommonFollowingMembers[] = []
+
+  const followingsOfFollowings = currentUserFollowing
+    .map((member) =>
+      member.following.filter((member) => !followingMemberIds.has(member.id))
+    )
+    .flat()
+
+  const occurrenceOfFollowing = followingsOfFollowings.reduce((map, item) => {
+    const count = map.get(item.id) || 0
+    map.set(item.id, count + 1)
+    return map
+  }, new Map<string, number>())
+
+  const commonFollowingList = Array.from(occurrenceOfFollowing.entries()).sort(
+    (a, b) => b[1] - a[1]
+  )
+
+  for (
+    let i = 0;
+    i < commonFollowingList.length && commonFollowingMembers.length < take;
+    i++
+  ) {
+    const [commonId] = commonFollowingList[i]
+    const member = followingsOfFollowings.find(
+      (member) => member.id === commonId
+    )
+    const followedBy = currentUserFollowing.reduce((acc, member) => {
+      const matchIndex = member.following.findIndex(
+        (item) => item.id === commonId
+      )
+      if (matchIndex > -1) {
+        acc.push(member.name)
+      }
+      return acc
+    }, [] as string[])
+
+    if (member) {
+      const randomIndex = Math.floor(Math.random() * followedBy.length)
+      const randomFollower = followedBy[randomIndex]
+      commonFollowingMembers.push({
+        ...member,
+        followedBy: randomFollower,
+        isFollow: false,
+      })
+    }
+  }
+
+  // consider case if commonFollowingMembers.length < 5
+  return commonFollowingMembers
 }

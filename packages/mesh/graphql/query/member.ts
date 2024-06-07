@@ -49,6 +49,16 @@ export const GET_USER_FOLLOWING = gql`
         id
         name
         avatar
+        following(
+          where: { verified: { equals: false } }
+          orderBy: { id: asc }
+          take: 10000
+        ) {
+          id
+          name
+          avatar
+          followerCount
+        }
         pick(orderBy: { createdAt: desc }, take: $takes) {
           id
           createdAt
@@ -116,6 +126,12 @@ export type Following = {
   id: string
   name: string
   avatar: string
+  following: {
+    id: string
+    name: string
+    avatar: string
+    followerCount: number
+  }[]
   pick: {
     id: string
     createdAt: string

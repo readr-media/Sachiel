@@ -7,11 +7,12 @@ export default function RenderAvatar({
   px,
 }: {
   src: string
-  px: 28 | 44
+  px: 28 | 44 | 64
 }) {
   const avatarVariants: { [key: number]: string } = {
     28: 'h-[28px] w-[28px]',
     44: 'h-11 w-11',
+    64: 'h-16,w-16',
   }
   return src ? (
     <Image
