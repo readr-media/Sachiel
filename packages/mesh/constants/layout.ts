@@ -72,7 +72,7 @@ const NON_MOBILE_NAV_ICONS = {
         hover: 'icon-popular-lg-hover',
         on: 'icon-popular-lg-on',
       },
-      href: '/popular',
+      href: '/',
       text: '熱門',
     },
     {
@@ -90,7 +90,7 @@ const NON_MOBILE_NAV_ICONS = {
         hover: 'icon-latest-lg-hover',
         on: 'icon-latest-lg-on',
       },
-      href: '/latest',
+      href: '/media',
       text: '最新',
     },
   ],
@@ -144,7 +144,7 @@ const MOBILE_NAV_ICONS = [
       hover: 'icon-popular-hover',
       on: 'icon-popular-on',
     },
-    href: '/popular',
+    href: '/',
     text: '熱門',
   },
   {
@@ -162,7 +162,7 @@ const MOBILE_NAV_ICONS = [
       hover: 'icon-latest-hover',
       on: 'icon-latest-on',
     },
-    href: '/latest',
+    href: '/media',
     text: '最新',
   },
   {

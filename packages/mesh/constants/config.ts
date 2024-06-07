@@ -4,6 +4,8 @@ let API_ENDPOINT = ''
 
 switch (ENV) {
   case 'local':
+    API_ENDPOINT = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app/gql'
+    break
   case 'dev':
     API_ENDPOINT = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app/gql'
     break
