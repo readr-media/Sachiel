@@ -10,8 +10,8 @@ export default function HeroStoryCard({ story }: { story: Story }) {
         {/* use padding-top to set aspect-ratio to prevent height growing when right block grows in too many lines of titles */}
         <div className="relative h-0 w-[calc((100%-40px)/2)] flex-1 pt-[calc((100%-40px)/4)]">
           <Image
-            src={story.og_image}
             className="rounded-md object-cover"
+            src={story.og_image || '/images/default-story-image.webP'}
             alt={story.title}
             fill
           />

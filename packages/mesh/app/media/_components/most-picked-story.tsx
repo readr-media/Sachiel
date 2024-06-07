@@ -23,7 +23,7 @@ export default function MostPickedStory({
           <div className="relative aspect-[2/1] sm:aspect-square sm:h-[168px] sm:w-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
             <Image
               className="rounded-md"
-              src={story.og_image}
+              src={story.og_image || '/images/default-story-image.webP'}
               alt={story.title}
               fill
               style={{ objectFit: 'cover' }}
