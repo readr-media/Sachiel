@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "type": "tsc --noEmit",
+    "codegen": "graphql-codegen",
+    "codegen:watch": "graphql-codegen -w"
   },
   "engines": {
     "node": ">=18.17.0"
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
+    "@graphql-codegen/introspection": "^4.0.3",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@types/node": "^20",
     "@types/react": "^18",

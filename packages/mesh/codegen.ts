@@ -4,13 +4,21 @@ import { API_ENDPOINT } from './constants/config'
 
 const config: CodegenConfig = {
   schema: API_ENDPOINT,
-  documents: ['./**/*.{ts,tsx}'],
+  documents: ['./**/*.{gql,graphql}'],
   generates: {
-    './apollo/types/': {
+    './graphql/__generated__/': {
       preset: 'client',
-      hooks: { afterOneFileWrite: ['prettier --write'] },
+      plugins: [],
       presetConfig: {
         gqlTagName: 'gql',
+        fragmentMasking: false,
+      },
+      hooks: { afterOneFileWrite: ['prettier --write'] },
+    },
+    'introspection.json': {
+      plugins: ['introspection'],
+      config: {
+        minify: true,
       },
     },
   },

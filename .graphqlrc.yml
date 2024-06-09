@@ -1,0 +1,4 @@
+projects: 
+  mesh:
+    schema: 'packages/mesh/introspection.json'
+    documents: 'packages/mesh/**/*.{graphql,fragment.graphql}'

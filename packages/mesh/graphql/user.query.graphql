@@ -1,0 +1,32 @@
+query GetUserFollowing($memberId: ID!, $takes: Int!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    following {
+      id
+      name
+      avatar
+      pick(orderBy: { createdAt: desc }, take: $takes) {
+        id
+        createdAt
+        story {
+          ...StoryFields
+        }
+      }
+      comment(orderBy: { createdAt: desc }, take: $takes) {
+        id
+        createdAt
+        story {
+          ...StoryFields
+        }
+      }
+    }
+    pick {
+      id
+      story {
+        id
+      }
+    }
+  }
+}
