@@ -13,7 +13,7 @@ import FollowSuggestionWidget from './_components/follow-suggestion-widget'
 export const revalidate = 60
 
 export type CommonFollowingMembers = Following['following'][number] & {
-  followedBy: string
+  followedByFollowings: string
   isFollow: boolean
 }
 
@@ -50,10 +50,16 @@ export default async function Page() {
   const secondSectionStories =
     storiesFromMemberActions.slice(firstSectionAmount)
 
-  const commonFollowingMembers = getCommonFollowingMembers(
+  const mostFollowedMembers = await getMostFollowedMembers()
+
+  const commonFollowingMembers = processCommonFollowingMembers(
     currentUser.following,
     followingMemberIds,
     5
+  )
+  const recommendFollowers = processRecommendFollower(
+    commonFollowingMembers,
+    mostFollowedMembers
   )
 
   return (
@@ -80,7 +86,7 @@ export default async function Page() {
                 />
               )
             })}
-            <FollowSuggestionFeed suggestedFollowers={commonFollowingMembers} />
+            <FollowSuggestionFeed suggestedFollowers={recommendFollowers} />
             {secondSectionStories.map((item) => {
               const isStoryPickedByCurrentUser = currentUser.pick.some(
                 (pick) => pick.story?.id === item.story.id
@@ -95,7 +101,7 @@ export default async function Page() {
               )
             })}
           </div>
-          <FollowSuggestionWidget suggestedFollowers={commonFollowingMembers} />
+          <FollowSuggestionWidget suggestedFollowers={recommendFollowers} />
         </div>
       )}
     </main>
@@ -173,7 +179,25 @@ function retrieveStoriesFromFollowingMemberActions(
   return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
 }
 
-function getCommonFollowingMembers(
+async function getMostFollowedMembers() {
+  try {
+    const response = await fetch(
+      `https://storage.googleapis.com/statics-mesh-tw-dev/data/most_followers.json`,
+      {
+        next: { revalidate: 10 },
+      }
+    )
+    if (!response.ok) {
+      throw new Error(`Fail to fetch: ${response.statusText}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function processCommonFollowingMembers(
   currentUserFollowing: Following[],
   followingMemberIds: Set<string>,
   take: number
@@ -201,13 +225,13 @@ function getCommonFollowingMembers(
     i < commonFollowingList.length && commonFollowingMembers.length < take;
     i++
   ) {
-    const [commonId] = commonFollowingList[i]
-    const member = followingsOfFollowings.find(
-      (member) => member.id === commonId
+    const [commonFollowingId] = commonFollowingList[i]
+    const commonFollowingMember = followingsOfFollowings.find(
+      (member) => member.id === commonFollowingId
     )
-    const followedBy = currentUserFollowing.reduce((acc, member) => {
+    const followedByFollowings = currentUserFollowing.reduce((acc, member) => {
       const matchIndex = member.following.findIndex(
-        (item) => item.id === commonId
+        (item) => item.id === commonFollowingId
       )
       if (matchIndex > -1) {
         acc.push(member.name)
@@ -215,17 +239,53 @@ function getCommonFollowingMembers(
       return acc
     }, [] as string[])
 
-    if (member) {
-      const randomIndex = Math.floor(Math.random() * followedBy.length)
-      const randomFollower = followedBy[randomIndex]
+    if (commonFollowingMember) {
+      const randomIndex = Math.floor(
+        Math.random() * followedByFollowings.length
+      )
+      const randomFollowedByFollowings = followedByFollowings[randomIndex]
       commonFollowingMembers.push({
-        ...member,
-        followedBy: randomFollower,
+        ...commonFollowingMember,
+        followedByFollowings: randomFollowedByFollowings,
         isFollow: false,
       })
     }
   }
 
-  // consider case if commonFollowingMembers.length < 5
   return commonFollowingMembers
+}
+
+function processRecommendFollower(
+  commonFollowingMembers: CommonFollowingMembers[],
+  mostFollowedMembers: unknown[]
+) {
+  if (commonFollowingMembers.length < 5) {
+    const commonIdsSet = new Set<string>()
+    const transformedData: CommonFollowingMembers[] = []
+
+    commonFollowingMembers.forEach((member) => commonIdsSet.add(member.id))
+    mostFollowedMembers.forEach((member) => {
+      const typedMember = member as {
+        id: string
+        name: string
+        avatar: string
+        followerCount: number
+      }
+      // Bucket static JSON id type should be string
+      if (!commonIdsSet.has(typedMember.id.toString())) {
+        transformedData.push({
+          id: typedMember.id.toString(),
+          name: typedMember.name,
+          avatar: typedMember.avatar,
+          followerCount: typedMember.followerCount,
+          followedByFollowings: '',
+          isFollow: false,
+        })
+      }
+    })
+
+    return [...commonFollowingMembers, ...transformedData].slice(0, 5)
+  } else {
+    return commonFollowingMembers
+  }
 }

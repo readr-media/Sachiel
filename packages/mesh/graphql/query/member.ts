@@ -50,7 +50,7 @@ export const GET_USER_FOLLOWING = gql`
         name
         avatar
         following(
-          where: { verified: { equals: false } }
+          where: { id: { gte: 0 } }
           orderBy: { id: asc }
           take: 10000
         ) {

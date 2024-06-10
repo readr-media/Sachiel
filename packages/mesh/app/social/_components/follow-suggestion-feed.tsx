@@ -23,9 +23,17 @@ export default function FollowSuggestionFeed({
                   <div className="flex flex-col items-center gap-1 sm:items-start sm:gap-0.5">
                     <p className="subtitle-2 text-primary-700">{user.name}</p>
                     <p className="caption-1 text-center text-primary-500 sm:text-left">
-                      <span>{user.followedBy}</span>
-                      及其他<span> {user.followerCount} </span>
-                      的追蹤對象
+                      {user.followedByFollowings !== '' ? (
+                        <>
+                          <span>{user.followedByFollowings}</span>
+                          及其他<span> {user.followerCount} </span>
+                          的追蹤對象
+                        </>
+                      ) : (
+                        <>
+                          <span> {user.followerCount} </span>人正在追蹤
+                        </>
+                      )}
                     </p>
                   </div>
                   <FollowButton id={user.id} />

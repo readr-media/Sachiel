@@ -20,9 +20,17 @@ export default function FollowSuggestionWidget({
                   {user.name}
                 </p>
                 <p className="caption-1 break-words text-primary-500 line-clamp-1">
-                  <span>{user.followedBy}</span>
-                  及其他<span> {user.followerCount} </span>
-                  的追蹤對象
+                  {user.followedByFollowings !== '' ? (
+                    <>
+                      <span>{user.followedByFollowings}</span>
+                      及其他<span> {user.followerCount} </span>
+                      的追蹤對象
+                    </>
+                  ) : (
+                    <>
+                      <span> {user.followerCount} </span>人正在追蹤
+                    </>
+                  )}
                 </p>
               </div>
               <FollowButton id={user.id} />
