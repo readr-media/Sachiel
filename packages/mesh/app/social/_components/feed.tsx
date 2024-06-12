@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import { socialPageAvatarLayer } from '@/constants/z-index'
-import type { StoryFieldsFragment } from '@/graphql/__generated__/graphql'
+import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'
@@ -15,16 +15,16 @@ export default function Feed({
   isStoryPickedByCurrentUser,
   followingMemberIds,
 }: {
-  story: StoryFieldsFragment
+  story: UserActionStoryFragment
   isStoryPickedByCurrentUser: boolean
   followingMemberIds: Set<string>
 }) {
   if (!story) {
     return null
   }
-  const picksFromFollowingMember: StoryFieldsFragment['pick'] = []
-  const picksFromStranger: StoryFieldsFragment['pick'] = []
-  let picksFromAll: StoryFieldsFragment['pick'] = []
+  const picksFromFollowingMember: UserActionStoryFragment['pick'] = []
+  const picksFromStranger: UserActionStoryFragment['pick'] = []
+  let picksFromAll: UserActionStoryFragment['pick'] = []
 
   story.pick?.forEach((pick) =>
     followingMemberIds.has(pick.member?.id ?? '')
@@ -143,8 +143,8 @@ const renderTotalPicks = (picksCount: number) => {
 export type LatestAction = ReturnType<typeof processStoryActions>
 
 function processStoryActions(
-  picks: StoryFieldsFragment['pick'],
-  comments: StoryFieldsFragment['comment']
+  picks: UserActionStoryFragment['pick'],
+  comments: UserActionStoryFragment['comment']
 ) {
   if (!picks || !comments)
     return {

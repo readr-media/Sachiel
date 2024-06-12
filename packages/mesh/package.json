@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev & graphql-codegen -w",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type": "tsc --noEmit",
-    "codegen": "graphql-codegen",
-    "codegen:watch": "graphql-codegen -w"
+    "postinstall": "graphql-codegen"
   },
   "engines": {
     "node": ">=18.17.0"

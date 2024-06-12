@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
-import { Comment } from '@/graphql/__generated__/graphql'
+import type { Comment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import RenderAvatar from './render-avatar'

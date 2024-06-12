@@ -3048,7 +3048,7 @@ export type UserWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
-export type StoryFieldsFragment = {
+export type UserActionStoryFragment = {
   __typename?: 'Story'
   id: string
   url?: string | null
@@ -3211,12 +3211,12 @@ export type GetMemberFollowingQuery = {
   } | null
 }
 
-export const StoryFieldsFragmentDoc = {
+export const UserActionStoryFragmentDoc = {
   kind: 'Document',
   definitions: [
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'StoryFields' },
+      name: { kind: 'Name', value: 'UserActionStory' },
       typeCondition: {
         kind: 'NamedType',
         name: { kind: 'Name', value: 'Story' },
@@ -3306,7 +3306,7 @@ export const StoryFieldsFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<StoryFieldsFragment, unknown>
+} as unknown as DocumentNode<UserActionStoryFragment, unknown>
 export const GetMemberFollowingDocument = {
   kind: 'Document',
   definitions: [
@@ -3429,7 +3429,7 @@ export const GetMemberFollowingDocument = {
                                     kind: 'FragmentSpread',
                                     name: {
                                       kind: 'Name',
-                                      value: 'StoryFields',
+                                      value: 'UserActionStory',
                                     },
                                   },
                                 ],
@@ -3486,7 +3486,7 @@ export const GetMemberFollowingDocument = {
                                     kind: 'FragmentSpread',
                                     name: {
                                       kind: 'Name',
-                                      value: 'StoryFields',
+                                      value: 'UserActionStory',
                                     },
                                   },
                                 ],
@@ -3529,7 +3529,7 @@ export const GetMemberFollowingDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'StoryFields' },
+      name: { kind: 'Name', value: 'UserActionStory' },
       typeCondition: {
         kind: 'NamedType',
         name: { kind: 'Name', value: 'Story' },

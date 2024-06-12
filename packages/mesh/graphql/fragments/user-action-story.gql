@@ -1,4 +1,4 @@
-fragment StoryFields on Story {
+fragment UserActionStory on Story {
   id
   url
   title

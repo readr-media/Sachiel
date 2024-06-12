@@ -11,14 +11,14 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
         id
         createdAt
         story {
-          ...StoryFields
+          ...UserActionStory
         }
       }
       comment(orderBy: { createdAt: desc }, take: $takes) {
         id
         createdAt
         story {
-          ...StoryFields
+          ...UserActionStory
         }
       }
     }
