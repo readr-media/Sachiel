@@ -3,14 +3,14 @@ import {
   type Publisher,
   type Publishers,
   GET_PUBLISHERS,
-} from '@/graphql/query/publishers'
+} from '@/graphql/query/publisher'
 import {
   type LatestStories,
   type Story,
   GET_LATEST_STORIES,
   GET_MOST_PICKED_STORY,
   MostPickedStory,
-} from '@/graphql/query/stories'
+} from '@/graphql/query/story'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'

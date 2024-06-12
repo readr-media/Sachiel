@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { type Story } from '@/graphql/query/stories'
+import { type Story } from '@/graphql/query/story'
 
 export default function MostPickedStory({
   story,

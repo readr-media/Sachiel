@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import { type Publisher } from '@/graphql/query/publishers'
-import { type Story } from '@/graphql/query/stories'
+import { type Publisher } from '@/graphql/query/publisher'
+import { type Story } from '@/graphql/query/story'
 
 export type DisplayPublisher = Publisher & { stories: Story[] }
 

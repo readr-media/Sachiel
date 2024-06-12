@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import type { Story } from '@/graphql/query/stories'
+import type { Story } from '@/graphql/query/story'
 
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
@@ -28,7 +28,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             <div className="hero-title mt-1 text-primary-700">
               {story.title}
             </div>
-            <div className="body-3 mt-3 line-clamp-1 text-primary-600">
+            <div className="body-3 line-clamp-1 mt-3 text-primary-600">
               {story.summary}
             </div>
             <div className="footnote mt-3 flex flex-row justify-between text-primary-500">

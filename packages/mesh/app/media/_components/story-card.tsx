@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { twMerge } from 'tailwind-merge'
 
 import { imageSizes } from '@/constants/media'
-import type { Story } from '@/graphql/query/stories'
+import type { Story } from '@/graphql/query/story'
 
 export default function StoryCard({
   story,
