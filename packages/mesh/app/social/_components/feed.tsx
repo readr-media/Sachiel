@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import { socialPageAvatarLayer } from '@/constants/z-index'
-import type { Story } from '@/graphql/query/member'
+import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'
@@ -15,36 +15,37 @@ export default function Feed({
   isStoryPickedByCurrentUser,
   followingMemberIds,
 }: {
-  story: Story
+  story: UserActionStoryFragment
   isStoryPickedByCurrentUser: boolean
   followingMemberIds: Set<string>
 }) {
   if (!story) {
     return null
   }
-  const picksFromFollowingMember: Story['pick'] = []
-  const picksFromStranger: Story['pick'] = []
-  let picksFromAll: Story['pick'] = []
+  const picksFromFollowingMember: UserActionStoryFragment['pick'] = []
+  const picksFromStranger: UserActionStoryFragment['pick'] = []
+  let picksFromAll: UserActionStoryFragment['pick'] = []
 
-  story.pick.forEach((pick) =>
-    followingMemberIds.has(pick.member.id)
+  story.pick?.forEach((pick) =>
+    followingMemberIds.has(pick.member?.id ?? '')
       ? picksFromFollowingMember.push(pick)
       : picksFromStranger.push(pick)
   )
 
-  const commentsFromFollowingMember = story.comment.filter((comment) =>
-    followingMemberIds.has(comment.member.id)
+  const commentsFromFollowingMember = story.comment?.filter((comment) =>
+    followingMemberIds.has(comment.member?.id ?? '')
   )
 
   const storyActions = processStoryActions(
     picksFromFollowingMember,
     commentsFromFollowingMember
   )
+  const storyActionsPicksData = storyActions.picksData ?? []
 
-  if (storyActions.picksData.length < 4) {
-    picksFromAll = [...storyActions.picksData, ...picksFromStranger].slice(0, 4)
+  if (storyActions.picksData && storyActions.picksData.length < 4) {
+    picksFromAll = [...storyActionsPicksData, ...picksFromStranger].slice(0, 4)
   } else {
-    picksFromAll = [...storyActions.picksData]
+    picksFromAll = [...storyActionsPicksData]
   }
 
   return (
@@ -59,7 +60,7 @@ export default function Feed({
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
           <Image
             src={story.og_image}
-            alt={story.title}
+            alt={story.title ?? ''}
             width={600}
             height={300}
             sizes="100vw"
@@ -73,7 +74,7 @@ export default function Feed({
       ) : null}
       <div className="px-8 pb-6 pt-3">
         <h4 className="body-3 mb-1 text-primary-500">{story.source?.title}</h4>
-        <h2 className="title-1 line-clamp-2 mb-2 break-words">{story.title}</h2>
+        <h2 className="title-1 mb-2 break-words line-clamp-2">{story.title}</h2>
         <div className="footnote mb-4 flex items-center text-primary-500">
           <Icon iconName="icon-chat-bubble" size="s" />
           <div className="pl-0.5">{story.commentCount}</div>
@@ -99,15 +100,15 @@ export default function Feed({
             <div className="flex -space-x-1 overflow-hidden">
               {picksFromAll.map((data, index) => (
                 <div
-                  key={data.member.id}
+                  key={data.member?.id}
                   style={{ zIndex: socialPageAvatarLayer[index] }}
                 >
-                  <RenderAvatar src={data.member.avatar} px={28} />
+                  <RenderAvatar src={data.member?.avatar ?? ''} px={28} />
                 </div>
               ))}
             </div>
             <div className="flex items-center">
-              {renderTotalPicks(story.pickCount)}
+              {renderTotalPicks(story.pickCount ?? 0)}
             </div>
           </div>
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
@@ -141,7 +142,17 @@ const renderTotalPicks = (picksCount: number) => {
 
 export type LatestAction = ReturnType<typeof processStoryActions>
 
-function processStoryActions(picks: Story['pick'], comments: Story['comment']) {
+function processStoryActions(
+  picks: UserActionStoryFragment['pick'],
+  comments: UserActionStoryFragment['comment']
+) {
+  if (!picks || !comments)
+    return {
+      picksNum: 0,
+      commentsNum: 0,
+      picksData: [],
+      commentsData: null,
+    }
   const picksNum = picks.length
   const commentsNum = comments.length
   let slicedPicks = picks.slice(0, 4)
@@ -152,7 +163,7 @@ function processStoryActions(picks: Story['pick'], comments: Story['comment']) {
     const latestComment = new Date(comments[0].createdAt).getTime()
     if (latestPick > latestComment) {
       const commentFromLatestPickMember = comments.find(
-        (item) => item.member.id === picks[0].member.id
+        (item) => item.member?.id === picks[0].member?.id
       )
       return {
         picksNum,
@@ -164,11 +175,11 @@ function processStoryActions(picks: Story['pick'], comments: Story['comment']) {
       }
     } else {
       const matchingPickIndex = picks.findIndex(
-        (item) => item.member.id === comments[0].member.id
+        (item) => item.member?.id === comments[0].member?.id
       )
       if (matchingPickIndex !== -1) {
         const notMatchPicks = picks.filter(
-          (item) => item.member.id !== comments[0].member.id
+          (item) => item.member?.id !== comments[0].member?.id
         )
         slicedPicks = [picks[matchingPickIndex], ...notMatchPicks.slice(0, 3)]
       }
