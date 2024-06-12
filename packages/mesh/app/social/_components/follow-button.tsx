@@ -9,7 +9,6 @@ export default function FollowButton({ id }: { id: string }) {
 
   const handelClickFollow = () => {
     setIsFollow(!isFollow)
-    console.log(id)
   }
 
   return (

@@ -31,7 +31,7 @@ export default function FollowSuggestionFeed({
                         </>
                       ) : (
                         <>
-                          <span> {user.followerCount} </span>人正在追蹤
+                          有<span> {user.followerCount} </span>人正在追蹤
                         </>
                       )}
                     </p>

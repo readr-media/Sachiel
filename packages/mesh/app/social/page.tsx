@@ -271,7 +271,7 @@ function processRecommendFollower(
         avatar: string
         followerCount: number
       }
-      // Bucket static JSON id type should be string
+
       if (!commonIdsSet.has(typedMember.id.toString())) {
         transformedData.push({
           id: typedMember.id.toString(),
