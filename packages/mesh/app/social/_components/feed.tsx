@@ -1,14 +1,13 @@
 import Image from 'next/image'
 
 import Icon from '@/components/icon'
-import { socialPageAvatarLayer } from '@/constants/z-index'
+import FeedMeta from '@/components/story-card/story-meta'
+import FeedPick from '@/components/story-card/story-pick'
+import FeedPickInfo from '@/components/story-card/story-pick-info'
 import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
-import { displayTimeFromNow } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
-import FeedPick from './feed-pick'
-import RenderAvatar from './render-avatar'
 
 export default function Feed({
   story,
@@ -75,42 +74,19 @@ export default function Feed({
       <div className="px-8 pb-6 pt-3">
         <h4 className="body-3 mb-1 text-primary-500">{story.source?.title}</h4>
         <h2 className="title-1 line-clamp-2 mb-2 break-words">{story.title}</h2>
-        <div className="footnote mb-4 flex items-center text-primary-500">
-          <Icon iconName="icon-chat-bubble" size="s" />
-          <div className="pl-0.5">{story.commentCount}</div>
-          <Icon iconName="icon-dot" size="s" />
-          <div>
-            <span>{displayTimeFromNow(story.published_date)}</span>
-          </div>
-          {story.paywall ? (
-            <div className="flex items-center">
-              <Icon iconName="icon-dot" size="s" />
-              付費文章
-            </div>
-          ) : null}
-          {story.full_screen_ad !== 'none' ? (
-            <div className="flex items-center">
-              <Icon iconName="icon-dot" size="s" />
-              蓋板廣告
-            </div>
-          ) : null}
+        <div className="mb-4">
+          <FeedMeta
+            commentCount={story.commentCount ?? 0}
+            publishDate={story.published_date}
+            paywall={story.paywall ?? false}
+            fullScreenAd={story.full_screen_ad ?? ''}
+          />
         </div>
-        <div className="footnote mb-4 flex h-8 justify-between text-primary-500">
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-1 overflow-hidden">
-              {picksFromAll.map((data, index) => (
-                <div
-                  key={data.member?.id}
-                  style={{ zIndex: socialPageAvatarLayer[index] }}
-                >
-                  <RenderAvatar src={data.member?.avatar ?? ''} px={28} />
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center">
-              {renderTotalPicks(story.pickCount ?? 0)}
-            </div>
-          </div>
+        <div className="mb-4 flex h-8 justify-between">
+          <FeedPickInfo
+            sortedPicks={picksFromAll}
+            pickCount={story.pickCount ?? 0}
+          />
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
         </div>
         {storyActions.commentsData ? (
@@ -119,25 +95,6 @@ export default function Feed({
       </div>
     </div>
   )
-}
-
-const renderTotalPicks = (picksCount: number) => {
-  if (picksCount < 10000) {
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{picksCount}</span>
-        <span>人精選</span>
-      </>
-    )
-  } else {
-    const convertedPickCount = (Math.floor(picksCount / 1000) / 10).toFixed(1)
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{convertedPickCount}</span>
-        <span>萬人精選</span>
-      </>
-    )
-  }
 }
 
 export type LatestAction = ReturnType<typeof processStoryActions>

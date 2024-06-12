@@ -19,7 +19,7 @@ export default function Button({
     activeIcon?: IconProps
   }
   disabled?: boolean
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: React.MouseEventHandler<HTMLButtonElement>
 }) {
   const buttonColor = {
     transparent:
@@ -32,11 +32,11 @@ export default function Button({
       'bg-primary-700 text-white hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
   }
   const buttonStyles = {
-    xs: 'h-[30px] px-4 py-2 rounded-[100px] text-sm',
-    sm: 'h-8 px-3 py-1 rounded text-sm',
-    md: 'h-[38px] px-5 py-2 rounded text-base',
-    'md-100': 'h-[38px] px-4 py-2 rounded-[100px] text-base',
-    lg: 'w-full h-[46px] px-6 py-3 rounded text-base',
+    xs: 'profile-subtitle h-[30px] px-4 py-2 rounded-[100px]',
+    sm: 'button h-8 px-3 py-1 rounded', // all Button Mini
+    md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
+    'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]',
+    lg: 'button-large w-full h-[46px] px-6 py-3 rounded', // Primary Button, Second Button (wide)
   }
 
   const {
@@ -47,9 +47,7 @@ export default function Button({
 
   return (
     <button
-      className={`flex ${
-        buttonStyles[size]
-      } items-center justify-center font-normal ${
+      className={`flex ${buttonStyles[size]} items-center justify-center ${
         isActive ? buttonColor['primary'] : buttonColor[color]
       } `}
       onClick={onClick}
