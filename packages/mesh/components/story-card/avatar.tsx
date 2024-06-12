@@ -9,12 +9,18 @@ const avatarSizes = {
   l: 44,
 } as const
 
+const avatarClasses = {
+  m: 'h-[28px] w-[28px]',
+  l: 'h-11 w-11',
+}
+
 export default function Avatar({ src, size }: { src: string; size: Size }) {
   const sideLength = avatarSizes[size]
+  const avatarClass = avatarClasses[size]
 
   return src ? (
     <Image
-      className={`inline-block h-[${sideLength}px] w-[${sideLength}px] rounded-full bg-white ring-2 ring-white`}
+      className={`${avatarClass} inline-block rounded-full bg-white ring-2 ring-white`}
       src={src}
       width={sideLength}
       height={sideLength}
