@@ -1,6 +1,6 @@
 import {
-  type GetUserFollowingQuery,
-  GetUserFollowingDocument,
+  type GetMemberFollowingQuery,
+  GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const feedsNumber = 20
   const firstSectionAmount = 2
 
-  const data = await fetchGraphQL(GetUserFollowingDocument, {
+  const data = await fetchGraphQL(GetMemberFollowingDocument, {
     memberId: userId,
     takes: feedsNumber,
   })
@@ -103,7 +103,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   )
 }
 
-const dataSelector = (data: GetUserFollowingQuery['member']) => data?.following
+const dataSelector = (data: GetMemberFollowingQuery['member']) =>
+  data?.following
 type FollowingMember = ReturnType<typeof dataSelector>
 
 function retrieveStoriesFromFollowingMemberActions(

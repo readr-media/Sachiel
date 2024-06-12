@@ -1,4 +1,4 @@
-query GetUserFollowing($memberId: ID!, $takes: Int!) {
+query GetMemberFollowing($memberId: ID!, $takes: Int!) {
   member(where: { id: $memberId }) {
     id
     name

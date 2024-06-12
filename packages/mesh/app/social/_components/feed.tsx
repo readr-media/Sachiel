@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import { socialPageAvatarLayer } from '@/constants/z-index'
-import { StoryFieldsFragment } from '@/graphql/__generated__/graphql'
+import type { StoryFieldsFragment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'

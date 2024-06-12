@@ -1,5 +1,5 @@
 import type { OperationVariables } from '@apollo/client'
-import { TypedDocumentNode } from '@graphql-typed-document-node/core'
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
 import { getClient } from '@/apollo'
 

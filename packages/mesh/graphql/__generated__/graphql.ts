@@ -3091,12 +3091,12 @@ export type StoryFieldsFragment = {
   }> | null
 }
 
-export type GetUserFollowingQueryVariables = Exact<{
+export type GetMemberFollowingQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
   takes: Scalars['Int']['input']
 }>
 
-export type GetUserFollowingQuery = {
+export type GetMemberFollowingQuery = {
   __typename?: 'Query'
   member?: {
     __typename?: 'Member'
@@ -3307,13 +3307,13 @@ export const StoryFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<StoryFieldsFragment, unknown>
-export const GetUserFollowingDocument = {
+export const GetMemberFollowingDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetUserFollowing' },
+      name: { kind: 'Name', value: 'GetMemberFollowing' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -3620,6 +3620,6 @@ export const GetUserFollowingDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetUserFollowingQuery,
-  GetUserFollowingQueryVariables
+  GetMemberFollowingQuery,
+  GetMemberFollowingQueryVariables
 >
