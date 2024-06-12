@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
-import type { Story } from '@/graphql/query/member'
+import type { Comment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import RenderAvatar from './render-avatar'
@@ -11,7 +11,7 @@ import RenderAvatar from './render-avatar'
 export default function FeedComment({
   comment,
 }: {
-  comment: Pick<Story['comment'][0], 'member' | 'createdAt' | 'content'>
+  comment: Pick<Comment, 'member' | 'createdAt' | 'content'>
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
@@ -25,7 +25,7 @@ export default function FeedComment({
 
   return (
     <div className="flex flex-row border-t py-4">
-      <RenderAvatar src={comment.member.avatar} px={44} />
+      <RenderAvatar src={comment.member?.avatar ?? ''} px={44} />
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">
