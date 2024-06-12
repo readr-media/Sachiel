@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
 import Icon from '@/components/icon'
-import FeedMeta from '@/components/story-card/story-meta'
-import FeedPick from '@/components/story-card/story-pick'
-import FeedPickInfo from '@/components/story-card/story-pick-info'
+import StoryMeta from '@/components/story-card/story-meta'
+import StoryPick from '@/components/story-card/story-pick'
+import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
@@ -65,7 +65,7 @@ export default function Feed({
         <h4 className="body-3 mb-1 text-primary-500">{story.source?.title}</h4>
         <h2 className="title-1 line-clamp-2 mb-2 break-words">{story.title}</h2>
         <div className="mb-4">
-          <FeedMeta
+          <StoryMeta
             commentCount={story.commentCount ?? 0}
             publishDate={story.published_date}
             paywall={story.paywall ?? false}
@@ -73,11 +73,11 @@ export default function Feed({
           />
         </div>
         <div className="mb-4 flex h-8 justify-between">
-          <FeedPickInfo
+          <StoryPickInfo
             displayPicks={displayPicks}
             pickCount={story.pickCount ?? 0}
           />
-          <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
+          <StoryPick isFeedPicked={isStoryPickedByCurrentUser} />
         </div>
         {storyActions.commentsData ? (
           <FeedComment comment={storyActions.commentsData[0]} />
