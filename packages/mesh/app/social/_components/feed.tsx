@@ -5,6 +5,7 @@ import FeedMeta from '@/components/story-card/story-meta'
 import FeedPick from '@/components/story-card/story-pick'
 import FeedPickInfo from '@/components/story-card/story-pick-info'
 import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
+import { getDisplayPicks } from '@/utils/story-display'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
@@ -21,14 +22,8 @@ export default function Feed({
   if (!story) {
     return null
   }
-  const picksFromFollowingMember: UserActionStoryFragment['pick'] = []
-  const picksFromStranger: UserActionStoryFragment['pick'] = []
-  let picksFromAll: UserActionStoryFragment['pick'] = []
-
-  story.pick?.forEach((pick) =>
+  const picksFromFollowingMember = story.pick?.filter((pick) =>
     followingMemberIds.has(pick.member?.id ?? '')
-      ? picksFromFollowingMember.push(pick)
-      : picksFromStranger.push(pick)
   )
 
   const commentsFromFollowingMember = story.comment?.filter((comment) =>
@@ -39,13 +34,8 @@ export default function Feed({
     picksFromFollowingMember,
     commentsFromFollowingMember
   )
-  const storyActionsPicksData = storyActions.picksData ?? []
 
-  if (storyActions.picksData && storyActions.picksData.length < 4) {
-    picksFromAll = [...storyActionsPicksData, ...picksFromStranger].slice(0, 4)
-  } else {
-    picksFromAll = [...storyActionsPicksData]
-  }
+  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
@@ -84,7 +74,7 @@ export default function Feed({
         </div>
         <div className="mb-4 flex h-8 justify-between">
           <FeedPickInfo
-            sortedPicks={picksFromAll}
+            displayPicks={displayPicks}
             pickCount={story.pickCount ?? 0}
           />
           <FeedPick isFeedPicked={isStoryPickedByCurrentUser} />
