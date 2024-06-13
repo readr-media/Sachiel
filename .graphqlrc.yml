@@ -1,4 +1,4 @@
-projects: 
+projects:
   mesh:
     schema: 'packages/mesh/introspection.json'
     documents: 'packages/mesh/**/*.{gql,graphql}'
