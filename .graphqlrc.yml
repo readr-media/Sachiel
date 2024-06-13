@@ -1,4 +1,22 @@
-projects: 
+projects:
   mesh:
     schema: 'packages/mesh/introspection.json'
     documents: 'packages/mesh/**/*.{gql,graphql}'
+    extensions:
+      codegen:
+        generates:
+          'packages/mesh/graphql/__generated__/':
+            preset: client
+            plugins: []
+            presetConfig:
+              gqlTagName: gql
+              fragmentMasking: false
+            hooks:
+              afterOneFileWrite:
+                - prettier --write
+          'packages/mesh/introspection.json':
+            plugins:
+              - introspection
+            config:
+              minify: true
+        ignoreNoDocuments: true
