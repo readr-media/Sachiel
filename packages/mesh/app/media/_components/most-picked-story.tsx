@@ -1,6 +1,8 @@
 import Image from 'next/image'
 
-import { type Story } from '@/graphql/query/story'
+import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+
+type Story = ListStoryFragment
 
 export default function MostPickedStory({
   story,
@@ -24,7 +26,7 @@ export default function MostPickedStory({
             <Image
               className="rounded-md"
               src={story.og_image || '/images/default-story-image.webP'}
-              alt={story.title}
+              alt={story.title ?? ''}
               fill
               style={{ objectFit: 'cover' }}
             />
@@ -38,7 +40,7 @@ export default function MostPickedStory({
                     isDesktop ? 'body-3' : 'footnote'
                   } h-5 text-primary-500 lg:h-auto`}
                 >
-                  {story.source.title}
+                  {story.source?.title ?? ''}
                 </h4>
                 <button>...</button>
               </div>
@@ -50,7 +52,7 @@ export default function MostPickedStory({
                 {story.title}
               </div>
               <div className="mt-2 flex flex-row justify-between text-primary-500">
-                comment 數量。發布時間{' '}
+                comment 數量。發布時間
               </div>
             </div>
             {/* right bottom section */}

@@ -1,6 +1,8 @@
 import Image from 'next/image'
 
-import type { Story } from '@/graphql/query/story'
+import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+
+type Story = ListStoryFragment
 
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
@@ -12,7 +14,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
           <Image
             className="rounded-md object-cover"
             src={story.og_image || '/images/default-story-image.webP'}
-            alt={story.title}
+            alt={story.title ?? ''}
             fill
           />
         </div>
@@ -26,10 +28,10 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               <button>...</button>
             </div>
             <div className="hero-title mt-1 text-primary-700">
-              {story.title}
+              {story.title ?? ''}
             </div>
             <div className="body-3 line-clamp-1 mt-3 text-primary-600">
-              {story.summary}
+              {story.summary ?? ''}
             </div>
             <div className="footnote mt-3 flex flex-row justify-between text-primary-500">
               comment 數量。發布時間

@@ -1,0 +1,9 @@
+fragment ListStory on Story {
+  id
+  title
+  summary
+  og_image
+  source {
+    title
+  }
+}

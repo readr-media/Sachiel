@@ -3,13 +3,15 @@
 import { Fragment, useMemo } from 'react'
 
 import useWindowDimensions from '@/app/hooks/use-window-dimension'
-import { type Story } from '@/graphql/query/story'
+import { ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
 import HeroStory from './hero-story-card'
 import MostPickedStory from './most-picked-story'
-import Publisher, { type DisplayPublisher } from './publisher'
+import PublisherCard, { type DisplayPublisher } from './publisher'
 import StoryCard from './story-card'
+
+type Story = ListStoryFragment
 
 function DesktopStories({
   stories,
@@ -17,11 +19,11 @@ function DesktopStories({
   displayPublishers,
 }: {
   stories: Story[]
-  mostPickedStory: Story | null
+  mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
 }) {
   const [firstSectionStories, secondSectionStories] = useMemo(() => {
-    return [stories.slice(0, 5), stories.slice(5)]
+    return [stories?.slice(0, 5), stories.slice(5)]
   }, [stories])
 
   return (
@@ -56,7 +58,10 @@ function DesktopStories({
         </section>
         <aside className="flex w-[400px] flex-col gap-3">
           {displayPublishers.map((displayPublisher, i) => (
-            <Publisher key={displayPublisher.id} publisher={displayPublisher} />
+            <PublisherCard
+              key={displayPublisher.id}
+              publisher={displayPublisher}
+            />
           ))}
         </aside>
       </div>
@@ -72,7 +77,7 @@ function NonDesktopStories({
   isMobile,
 }: {
   stories: Story[]
-  mostPickedStory: Story | null
+  mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
   isMobile: boolean
 }) {
@@ -90,7 +95,7 @@ function NonDesktopStories({
           const specialBlockJsx =
             'stories' in specialBlock ? (
               <div className="p-5 md:px-[70px]">
-                <Publisher key={specialBlock.id} publisher={specialBlock} />
+                <PublisherCard key={specialBlock.id} publisher={specialBlock} />
               </div>
             ) : (
               <MostPickedStory story={specialBlock} isDesktop={false} />
@@ -127,7 +132,7 @@ export default function Media({
   displayPublishers,
 }: {
   stories: Story[]
-  mostPickedStory: Story | null
+  mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
 }) {
   const { width } = useWindowDimensions()

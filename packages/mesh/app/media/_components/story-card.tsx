@@ -2,7 +2,9 @@ import Image from 'next/image'
 import { twMerge } from 'tailwind-merge'
 
 import { imageSizes } from '@/constants/media'
-import type { Story } from '@/graphql/query/story'
+import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+
+type Story = ListStoryFragment
 
 export default function StoryCard({
   story,
@@ -38,7 +40,9 @@ export default function StoryCard({
         </div>
         <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
           <div>
-            <h2 className={`${titleClass} text-primary-700`}>{story.title}</h2>
+            <h2 className={`${titleClass} text-primary-700`}>
+              {story.title ?? ''}
+            </h2>
             {!isMobile && metaJsx}
           </div>
           {story.og_image && (
@@ -49,7 +53,7 @@ export default function StoryCard({
               }}
               className={`flex-shrink-0 rounded-[4px]`}
               src={story.og_image}
-              alt={story.title}
+              alt={story.title ?? ''}
               width={imageSize.width}
               height={imageSize.height}
             />
