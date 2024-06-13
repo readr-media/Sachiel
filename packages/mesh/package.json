@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & graphql-codegen -w",
+    "dev": "concurrently \"next dev\" \"graphql-codegen -w\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type": "tsc --noEmit",
-    "postinstall": "graphql-codegen"
+    "type": "tsc --noEmit"
   },
   "engines": {
     "node": ">=18.17.0"
@@ -31,6 +30,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
     "cssnano": "^6.1.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
