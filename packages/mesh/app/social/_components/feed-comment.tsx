@@ -3,10 +3,9 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
+import Avatar from '@/components/story-card/avatar'
 import type { Comment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
-
-import RenderAvatar from './render-avatar'
 
 export default function FeedComment({
   comment,
@@ -25,7 +24,7 @@ export default function FeedComment({
 
   return (
     <div className="flex flex-row border-t py-4">
-      <RenderAvatar src={comment.member?.avatar ?? ''} px={44} />
+      <Avatar src={comment.member?.avatar ?? ''} size="l" />
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">

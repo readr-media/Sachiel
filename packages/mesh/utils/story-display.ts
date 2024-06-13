@@ -1,4 +1,5 @@
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
+import { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
 export const displayTimeFromNow = (date: string) => {
   const differenceInMilliseconds = Date.now() - new Date(date).getTime()
@@ -25,4 +26,27 @@ export const displayTimeFromNow = (date: string) => {
       return `${year}/${month}/${day}`
     }
   }
+}
+
+type Picks = UserActionStoryFragment['pick']
+
+export const getDisplayPicks = (
+  picks: Picks,
+  followingMemberIds: Set<string>
+) => {
+  const picksFromFollowingMember: Picks = []
+  const picksFromStranger: Picks = []
+
+  picks?.forEach((pick) =>
+    followingMemberIds.has(pick.member?.id ?? '')
+      ? picksFromFollowingMember.push(pick)
+      : picksFromStranger.push(pick)
+  )
+
+  const displayPicks = [
+    ...picksFromFollowingMember,
+    ...picksFromStranger,
+  ].slice(0, 4)
+
+  return displayPicks
 }
