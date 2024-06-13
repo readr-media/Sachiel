@@ -1,11 +1,19 @@
 import Image from 'next/image'
 
+import StoryMeta from '@/components/story-card/story-meta'
+import StoryPick from '@/components/story-card/story-pick'
+import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+import { getDisplayPicks } from '@/utils/story-display'
 
 type Story = ListStoryFragment
 
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
+  // TODO: replace props chain by using redux to store user related data
+  const followingMemberIds = new Set('')
+  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+
   return (
     <article className="col-span-2 border-b pb-4 pt-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
@@ -33,16 +41,24 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             <div className="body-3 line-clamp-1 mt-3 text-primary-600">
               {story.summary ?? ''}
             </div>
-            <div className="footnote mt-3 flex flex-row justify-between text-primary-500">
-              comment 數量。發布時間
+            <div className="footnote mt-3">
+              <StoryMeta
+                commentCount={story.commentCount ?? 0}
+                publishDate={story.published_date}
+                paywall={story.paywall ?? false}
+                fullScreenAd={story.full_screen_ad ?? ''}
+              />
             </div>
           </div>
           {/* right bottom section */}
           <div>
             <div className="mt-4 flex h-8 flex-row justify-between">
-              <div>OOO</div>
-              {/* 改成共用元件 */}
-              <button>精選</button>
+              <StoryPickInfo
+                displayPicks={displayPicks}
+                pickCount={story.pickCount ?? 0}
+              />
+              {/* TODO: add user pick info to check if already picked */}
+              <StoryPick isStoryPicked={false} />
             </div>
           </div>
         </div>

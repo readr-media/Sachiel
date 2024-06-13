@@ -3,7 +3,20 @@ fragment ListStory on Story {
   title
   summary
   og_image
+  published_date
   source {
     title
   }
+  pickCount
+  pick {
+    createdAt
+    member {
+      id
+      name
+      avatar
+    }
+  }
+  commentCount
+  paywall
+  full_screen_ad
 }

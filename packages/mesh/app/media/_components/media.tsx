@@ -6,7 +6,7 @@ import useWindowDimensions from '@/app/hooks/use-window-dimension'
 import { ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
-import HeroStory from './hero-story-card'
+import HeroStoryCard from './hero-story-card'
 import MostPickedStory from './most-picked-story'
 import PublisherCard, { type DisplayPublisher } from './publisher'
 import StoryCard from './story-card'
@@ -31,7 +31,7 @@ function DesktopStories({
       <section className="grid gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) => {
           if (i === 0) {
-            return <HeroStory key={story.id} story={story} />
+            return <HeroStoryCard key={story.id} story={story} />
           }
           return <StoryCard key={story.id} story={story} isMobile={false} />
         })}
@@ -57,7 +57,7 @@ function DesktopStories({
           })}
         </section>
         <aside className="flex w-[400px] flex-col gap-3">
-          {displayPublishers.map((displayPublisher, i) => (
+          {displayPublishers.map((displayPublisher) => (
             <PublisherCard
               key={displayPublisher.id}
               publisher={displayPublisher}

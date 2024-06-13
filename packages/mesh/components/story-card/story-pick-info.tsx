@@ -30,7 +30,9 @@ export default function StoryPickInfo({
 }
 
 const renderTotalPicks = (picksCount: number) => {
-  if (picksCount < 10000) {
+  if (!picksCount) {
+    return <span>尚無人精選</span>
+  } else if (picksCount < 10000) {
     return (
       <>
         <span className="pr-1 text-primary-700">{picksCount}</span>

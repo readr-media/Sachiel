@@ -7,13 +7,7 @@ export const displayTimeFromNow = (date: string) => {
   const differenceInHours = differenceInMilliseconds / HOUR
   const differenceInDays = differenceInMilliseconds / DAY
 
-  if (differenceInMilliseconds < HOUR) {
-    return Math.floor(differenceInMinutes) + ' 分鐘前'
-  } else if (differenceInMilliseconds < 24 * HOUR) {
-    return Math.floor(differenceInHours) + ' 小時前'
-  } else if (differenceInMilliseconds < 7 * DAY) {
-    return Math.floor(differenceInDays) + ' 天前'
-  } else {
+  const fullDisplayTime = (date: string) => {
     const targetDate = new Date(date)
     const currentYear = new Date().getFullYear()
     const year = targetDate.getFullYear()
@@ -25,6 +19,18 @@ export const displayTimeFromNow = (date: string) => {
     } else {
       return `${year}/${month}/${day}`
     }
+  }
+
+  if (differenceInMilliseconds < 0) {
+    return fullDisplayTime(date)
+  } else if (differenceInMilliseconds < HOUR) {
+    return Math.floor(differenceInMinutes) + ' 分鐘前'
+  } else if (differenceInMilliseconds < 24 * HOUR) {
+    return Math.floor(differenceInHours) + ' 小時前'
+  } else if (differenceInMilliseconds < 7 * DAY) {
+    return Math.floor(differenceInDays) + ' 天前'
+  } else {
+    return fullDisplayTime(date)
   }
 }
 

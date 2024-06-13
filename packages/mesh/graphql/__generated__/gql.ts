@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  'fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  source {\n    title\n  }\n}':
+  'fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  published_date\n  source {\n    title\n  }\n  pickCount\n  pick {\n    createdAt\n    member {\n      id\n      name\n      avatar\n    }\n  }\n  commentCount\n  paywall\n  full_screen_ad\n}':
     types.ListStoryFragmentDoc,
   'fragment UserActionStory on Story {\n  id\n  url\n  title\n  og_image\n  og_description\n  source {\n    title\n    createdAt\n  }\n  published_date\n  paywall\n  full_screen_ad\n  pickCount\n  pick {\n    createdAt\n    member {\n      id\n      name\n      avatar\n    }\n  }\n  commentCount\n  comment {\n    id\n    content\n    state\n    published_date\n    createdAt\n    member {\n      id\n      name\n      avatar\n    }\n  }\n}':
     types.UserActionStoryFragmentDoc,
@@ -43,8 +43,8 @@ export function gql(source: string): unknown
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: 'fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  source {\n    title\n  }\n}'
-): typeof documents['fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  source {\n    title\n  }\n}']
+  source: 'fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  published_date\n  source {\n    title\n  }\n  pickCount\n  pick {\n    createdAt\n    member {\n      id\n      name\n      avatar\n    }\n  }\n  commentCount\n  paywall\n  full_screen_ad\n}'
+): typeof documents['fragment ListStory on Story {\n  id\n  title\n  summary\n  og_image\n  published_date\n  source {\n    title\n  }\n  pickCount\n  pick {\n    createdAt\n    member {\n      id\n      name\n      avatar\n    }\n  }\n  commentCount\n  paywall\n  full_screen_ad\n}']
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

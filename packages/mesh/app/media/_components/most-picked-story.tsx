@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import StoryMeta from '@/components/story-card/story-meta'
 import { ListStoryFragment } from '@/graphql/__generated__/graphql'
 
 type Story = ListStoryFragment
@@ -51,8 +52,13 @@ export default function MostPickedStory({
               >
                 {story.title}
               </div>
-              <div className="mt-2 flex flex-row justify-between text-primary-500">
-                comment 數量。發布時間
+              <div className="footnote mt-2">
+                <StoryMeta
+                  commentCount={story.commentCount ?? 0}
+                  publishDate={story.published_date}
+                  paywall={story.paywall ?? false}
+                  fullScreenAd={story.full_screen_ad ?? ''}
+                />
               </div>
             </div>
             {/* right bottom section */}

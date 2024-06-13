@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import StoryMeta from '@/components/story-card/story-meta'
 import {
   GetPublishersQuery,
   ListStoryFragment,
@@ -22,9 +23,9 @@ const PublisherStory = ({
   return (
     <article className="border-b py-3 last-of-type:border-b-0">
       {showImage && story.og_image && (
-        <div className="relative aspect-[2/1]">
+        <div className="relative mb-3 aspect-[2/1]">
           <Image
-            className="mb-3 object-cover"
+            className="object-cover"
             src={story.og_image}
             alt={story.title ?? ''}
             fill
@@ -32,7 +33,14 @@ const PublisherStory = ({
         </div>
       )}
       <div className="subtitle-2">{story.title ?? ''}</div>
-      <div className="caption-1 mt-1">comment 數量。發布時間</div>
+      <div className="caption-1 mt-1">
+        <StoryMeta
+          commentCount={story.commentCount ?? 0}
+          publishDate={story.published_date}
+          paywall={story.paywall ?? false}
+          fullScreenAd={story.full_screen_ad ?? ''}
+        />
+      </div>
     </article>
   )
 }
@@ -52,6 +60,7 @@ export default function PublisherCard({
               {publisher.title ?? ''}
             </div>
             <div className="caption-1 line-clamp-1 text-primary-500">
+              {/* TODO: use real sponsor count */}
               本月獲得<span className="text-custom-blue">26</span>次贊助
             </div>
           </div>

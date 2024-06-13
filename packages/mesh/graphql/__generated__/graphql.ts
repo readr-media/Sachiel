@@ -3054,7 +3054,22 @@ export type ListStoryFragment = {
   title?: string | null
   summary?: string | null
   og_image?: string | null
+  published_date?: any | null
+  pickCount?: number | null
+  commentCount?: number | null
+  paywall?: boolean | null
+  full_screen_ad?: string | null
   source?: { __typename?: 'Publisher'; title?: string | null } | null
+  pick?: Array<{
+    __typename?: 'Pick'
+    createdAt?: any | null
+    member?: {
+      __typename?: 'Member'
+      id: string
+      name?: string | null
+      avatar?: string | null
+    } | null
+  }> | null
 }
 
 export type UserActionStoryFragment = {
@@ -3245,7 +3260,22 @@ export type GetLatestStoriesQuery = {
     title?: string | null
     summary?: string | null
     og_image?: string | null
+    published_date?: any | null
+    pickCount?: number | null
+    commentCount?: number | null
+    paywall?: boolean | null
+    full_screen_ad?: string | null
     source?: { __typename?: 'Publisher'; title?: string | null } | null
+    pick?: Array<{
+      __typename?: 'Pick'
+      createdAt?: any | null
+      member?: {
+        __typename?: 'Member'
+        id: string
+        name?: string | null
+        avatar?: string | null
+      } | null
+    }> | null
   }> | null
 }
 
@@ -3261,7 +3291,22 @@ export type GetMostPickedStoryQuery = {
     title?: string | null
     summary?: string | null
     og_image?: string | null
+    published_date?: any | null
+    pickCount?: number | null
+    commentCount?: number | null
+    paywall?: boolean | null
+    full_screen_ad?: string | null
     source?: { __typename?: 'Publisher'; title?: string | null } | null
+    pick?: Array<{
+      __typename?: 'Pick'
+      createdAt?: any | null
+      member?: {
+        __typename?: 'Member'
+        id: string
+        name?: string | null
+        avatar?: string | null
+      } | null
+    }> | null
   } | null
 }
 
@@ -3282,6 +3327,7 @@ export const ListStoryFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'title' } },
           { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
           { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'source' },
@@ -3292,6 +3338,35 @@ export const ListStoryFragmentDoc = {
               ],
             },
           },
+          { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'pick' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'member' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'commentCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
         ],
       },
     },
@@ -3823,6 +3898,7 @@ export const GetLatestStoriesDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'title' } },
           { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
           { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'source' },
@@ -3833,6 +3909,35 @@ export const GetLatestStoriesDocument = {
               ],
             },
           },
+          { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'pick' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'member' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'commentCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
         ],
       },
     },
@@ -3907,6 +4012,7 @@ export const GetMostPickedStoryDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'title' } },
           { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
           { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'source' },
@@ -3917,6 +4023,35 @@ export const GetMostPickedStoryDocument = {
               ],
             },
           },
+          { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'pick' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'member' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'commentCount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
         ],
       },
     },
