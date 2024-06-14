@@ -12,11 +12,11 @@ import FeedLatestAction from './feed-latest-action'
 
 export default function Feed({
   story,
-  isStoryPickedByCurrentUser,
+  isStoryPickedByCurrentMember,
   followingMemberIds,
 }: {
   story: UserActionStoryFragment
-  isStoryPickedByCurrentUser: boolean
+  isStoryPickedByCurrentMember: boolean
   followingMemberIds: Set<string>
 }) {
   if (!story) {
@@ -77,7 +77,7 @@ export default function Feed({
             displayPicks={displayPicks}
             pickCount={story.pickCount ?? 0}
           />
-          <StoryPick isFeedPicked={isStoryPickedByCurrentUser} />
+          <StoryPick isFeedPicked={isStoryPickedByCurrentMember} />
         </div>
         {storyActions.commentsData ? (
           <FeedComment comment={storyActions.commentsData[0]} />

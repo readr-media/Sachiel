@@ -5,22 +5,25 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import Feed from '../_components/feed'
+import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
+import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
 
 export const revalidate = 60
 
 export default async function Page({ params }: { params: { id: string } }) {
   const userId = params.id
   const feedsNumber = 20
-  const firstSectionAmount = 2
+  const firstSectionAmount = 3
+  const suggestedFollowersNumber = 5
 
   const data = await fetchGraphQL(GetMemberFollowingDocument, {
     memberId: userId,
     takes: feedsNumber,
   })
-  const currentUser = data?.member
-  const currentUserFollowings = dataSelector(currentUser)
+  const currentMember = data?.member
+  const currentMemberFollowings = selectCurrentMemberFollowings(currentMember)
 
-  if (!currentUser) {
+  if (!currentMember) {
     return (
       <main>
         <div>
@@ -31,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   }
 
-  if (!currentUserFollowings || currentUserFollowings.length === 0) {
+  if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
     return (
       <main>
         <div className="flex justify-center py-5">
@@ -43,76 +46,109 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   }
 
-  const followingMemberIds = new Set(
-    currentUserFollowings.map((element) => element.id)
+  const currentMemberFollowingMemberIds = new Set(
+    currentMemberFollowings.map((element) => element.id)
   )
 
-  const storiesFromMemberActions = retrieveStoriesFromFollowingMemberActions(
-    currentUserFollowings,
-    feedsNumber
-  )
+  const storiesFromFollowingMemberActions =
+    processStoriesFromFollowingMemberActions(
+      currentMemberFollowings,
+      feedsNumber
+    )
 
-  const firstSectionStories = storiesFromMemberActions.slice(
+  const firstSectionStories = storiesFromFollowingMemberActions.slice(
     0,
     firstSectionAmount
   )
   const secondSectionStories =
-    storiesFromMemberActions.slice(firstSectionAmount)
+    storiesFromFollowingMemberActions.slice(firstSectionAmount)
+
+  const mostFollowedMembersByFollowings =
+    processMostFollowedMembersByFollowings(
+      userId,
+      currentMemberFollowings,
+      currentMemberFollowingMemberIds,
+      suggestedFollowersNumber
+    )
+  const suggestedFollowers = await processSuggestedFollowers(
+    mostFollowedMembersByFollowings,
+    suggestedFollowersNumber
+  )
 
   return (
     <main>
       <div className="flex justify-center gap-10 py-5">
         <div className="flex flex-col gap-4">
           {firstSectionStories.map((item) => {
-            const isStoryPickedByCurrentUser = currentUser.pick?.some(
+            const isStoryPickedByCurrentMember = currentMember.pick?.some(
               (pick) => pick.story?.id === item.id
             )
             return (
               <Feed
                 key={item.id}
                 story={item.story ?? { id: '' }}
-                isStoryPickedByCurrentUser={isStoryPickedByCurrentUser ?? false}
-                followingMemberIds={followingMemberIds}
+                isStoryPickedByCurrentMember={
+                  isStoryPickedByCurrentMember ?? false
+                }
+                followingMemberIds={currentMemberFollowingMemberIds}
               />
             )
           })}
-          <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 drop-shadow sm:rounded-md lg:hidden">
-            <h2 className="list-title pb-3 text-primary-700 sm:pb-1">
-              推薦追蹤
-            </h2>
-          </div>
+          <FollowSuggestionFeed suggestedFollowers={suggestedFollowers} />
           {secondSectionStories.map((item) => {
-            const isStoryPickedByCurrentUser = currentUser.pick?.some(
+            const isStoryPickedByCurrentMember = currentMember.pick?.some(
               (pick) => pick.story?.id === item.story?.id
             )
             return (
               <Feed
                 key={item.id}
                 story={item.story ?? { id: '' }}
-                isStoryPickedByCurrentUser={isStoryPickedByCurrentUser ?? false}
-                followingMemberIds={followingMemberIds}
+                isStoryPickedByCurrentMember={
+                  isStoryPickedByCurrentMember ?? false
+                }
+                followingMemberIds={currentMemberFollowingMemberIds}
               />
             )
           })}
         </div>
-        <div className="hidden grow flex-col lg:flex lg:max-w-[260px] xl:max-w-[400px]">
-          <h2 className="list-title pb-1 text-primary-700">推薦追蹤</h2>
-        </div>
+        <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
       </div>
     </main>
   )
 }
 
-const dataSelector = (data: GetMemberFollowingQuery['member']) =>
-  data?.following
-type FollowingMember = ReturnType<typeof dataSelector>
+const selectCurrentMemberFollowings = (
+  data: GetMemberFollowingQuery['member']
+) => data?.following ?? []
 
-function retrieveStoriesFromFollowingMemberActions(
-  followingMember: FollowingMember,
+type CurrentMemberFollowing = ReturnType<typeof selectCurrentMemberFollowings>
+
+const selectFollowedMembersByFollowings = (data: CurrentMemberFollowing) => {
+  return data[0].following ?? []
+}
+
+type FollowedMembersByFollowings = ReturnType<
+  typeof selectFollowedMembersByFollowings
+>
+export type SuggestedFollowers = FollowedMembersByFollowings[number] & {
+  currentMemberFollowingMember: string
+  isFollow: boolean
+}
+
+type MostFollowedMembers = {
+  id: number
+  followerCount: number
+  name: string
+  nickname: string
+  avatar: string
+}
+
+function processStoriesFromFollowingMemberActions(
+  followingMember: CurrentMemberFollowing,
   maxFeeds: number
 ) {
   const storiesFromFollowingMemberActions =
-    followingMember?.flatMap((member) => {
+    followingMember.flatMap((member) => {
       const picks = member.pick ?? []
       const comments = member.comment ?? []
       return [...picks, ...comments]
@@ -141,4 +177,133 @@ function retrieveStoriesFromFollowingMemberActions(
   )
 
   return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
+}
+
+async function getMostFollowedMembers() {
+  try {
+    const response = await fetch(
+      `https://storage.googleapis.com/statics-mesh-tw-dev/data/most_followers.json`,
+      {
+        next: { revalidate: 10 },
+      }
+    )
+    if (!response.ok) {
+      throw new Error(`Fail to fetch: ${response.statusText}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+function processMostFollowedMembersByFollowings(
+  currentMemberId: string,
+  currentMemberFollowing: CurrentMemberFollowing,
+  currentMemberFollowingMemberIds: Set<string>,
+  take: number
+) {
+  const mostFollowedMembersByFollowings: SuggestedFollowers[] = []
+  const followedMembersByFollowings = currentMemberFollowing.flatMap(
+    (member) =>
+      member.following?.filter(
+        (member) =>
+          !currentMemberFollowingMemberIds.has(member.id) &&
+          member.id !== currentMemberId
+      ) ?? []
+  )
+
+  type FollowedMembersByFollowingsMap =
+    typeof followedMembersByFollowings[number] & {
+      followCountByFollowings: number
+    }
+  const followedMembersByFollowingsMap = followedMembersByFollowings.reduce(
+    (map, member) => {
+      if (member) {
+        const existData = map.get(member.id)
+        if (existData) {
+          existData.followCountByFollowings += 1
+        } else {
+          map.set(member.id, { ...member, followCountByFollowings: 1 })
+        }
+      }
+      return map
+    },
+    new Map<string, FollowedMembersByFollowingsMap>()
+  )
+
+  const followedMembersByFollowingsSortByFollowCount = Array.from(
+    followedMembersByFollowingsMap.values()
+  ).sort((a, b) => b.followCountByFollowings - a.followCountByFollowings)
+
+  for (
+    let i = 0;
+    i < followedMembersByFollowingsSortByFollowCount.length &&
+    mostFollowedMembersByFollowings.length < take;
+    i++
+  ) {
+    const id = followedMembersByFollowingsSortByFollowCount[i].id
+    const memberData = followedMembersByFollowingsMap.get(id)
+
+    const followersFromMemberFollowing = currentMemberFollowing.reduce(
+      (acc: string[], member) => {
+        const matchIndex = member.following?.findIndex((item) => item.id === id)
+        if (matchIndex !== undefined && matchIndex !== -1) {
+          acc.push(member.name ?? '')
+        }
+        return acc
+      },
+      []
+    )
+
+    if (memberData && followersFromMemberFollowing) {
+      const randomIndex = Math.floor(
+        Math.random() * followersFromMemberFollowing.length
+      )
+      const randomMember = followersFromMemberFollowing[randomIndex]
+      mostFollowedMembersByFollowings.push({
+        ...memberData,
+        currentMemberFollowingMember: randomMember,
+        isFollow: false,
+      })
+    }
+  }
+
+  return mostFollowedMembersByFollowings
+}
+
+async function processSuggestedFollowers(
+  mostFollowedMembersByFollowings: SuggestedFollowers[],
+  take: number
+) {
+  if (mostFollowedMembersByFollowings.length < 5) {
+    const mostFollowedMembersByFollowingsIds = new Set<string>()
+    const mostFollowedMembers: MostFollowedMembers[] =
+      (await getMostFollowedMembers()) ?? []
+
+    mostFollowedMembersByFollowings.forEach((member) =>
+      mostFollowedMembersByFollowingsIds.add(member.id)
+    )
+
+    const transformedData: SuggestedFollowers[] = mostFollowedMembers
+      .filter(
+        (member) =>
+          !mostFollowedMembersByFollowingsIds.has(member.id.toString())
+      )
+      .map((member) => ({
+        id: member.id.toString(),
+        name: member.name,
+        avatar: member.avatar,
+        followerCount: member.followerCount,
+        currentMemberFollowingMember: '',
+        isFollow: false,
+      }))
+
+    return [...mostFollowedMembersByFollowings, ...transformedData].slice(
+      0,
+      take
+    )
+  } else {
+    return mostFollowedMembersByFollowings
+  }
 }

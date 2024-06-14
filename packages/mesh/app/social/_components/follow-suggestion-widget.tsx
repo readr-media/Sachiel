@@ -1,11 +1,12 @@
-import type { CommonFollowingMembers } from '../page'
+import Avatar from '@/components/story-card/avatar'
+
+import type { SuggestedFollowers } from '../[id]/page'
 import FollowButton from './follow-button'
-import RenderAvatar from './render-avatar'
 
 export default function FollowSuggestionWidget({
   suggestedFollowers,
 }: {
-  suggestedFollowers: CommonFollowingMembers[]
+  suggestedFollowers: SuggestedFollowers[]
 }) {
   return (
     <div className="hidden grow flex-col lg:flex lg:max-w-[260px] xl:max-w-[400px]">
@@ -13,16 +14,16 @@ export default function FollowSuggestionWidget({
       {suggestedFollowers?.map((user, index) => (
         <div key={user.id}>
           <div className="flex flex-row items-center py-3">
-            <RenderAvatar src={user.avatar} px={44} />
+            <Avatar src={user.avatar ?? ''} size="l" />
             <div className="flex w-full items-center justify-between">
               <div className="ml-3 overflow-hidden lg:max-w-[96px] xl:max-w-[236px]">
                 <p className="subtitle-2 mb-[2px] text-primary-700">
                   {user.name}
                 </p>
                 <p className="caption-1 break-words text-primary-500 line-clamp-1">
-                  {user.followedByFollowings !== '' ? (
+                  {user.currentMemberFollowingMember !== '' ? (
                     <>
-                      <span>{user.followedByFollowings}</span>
+                      <span>{user.currentMemberFollowingMember}</span>
                       及其他<span> {user.followerCount} </span>
                       的追蹤對象
                     </>

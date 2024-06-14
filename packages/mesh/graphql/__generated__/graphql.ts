@@ -3108,6 +3108,13 @@ export type GetMemberFollowingQuery = {
       id: string
       name?: string | null
       avatar?: string | null
+      following?: Array<{
+        __typename?: 'Member'
+        id: string
+        name?: string | null
+        avatar?: string | null
+        followerCount?: number | null
+      }> | null
       pick?: Array<{
         __typename?: 'Pick'
         id: string
@@ -3380,6 +3387,75 @@ export const GetMemberFollowingDocument = {
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'avatar' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'following' },
+                        arguments: [
+                          {
+                            kind: 'Argument',
+                            name: { kind: 'Name', value: 'where' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gte' },
+                                        value: { kind: 'IntValue', value: '0' },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'Argument',
+                            name: { kind: 'Name', value: 'orderBy' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: { kind: 'EnumValue', value: 'asc' },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'Argument',
+                            name: { kind: 'Name', value: 'take' },
+                            value: { kind: 'IntValue', value: '10000' },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'avatar' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'followerCount' },
+                            },
+                          ],
+                        },
                       },
                       {
                         kind: 'Field',
