@@ -19,12 +19,16 @@ export default function FollowSuggestionFeed({
               className="rounded-md border border-primary-200 px-3 pt-3 pb-4 sm:border-0 sm:p-0"
             >
               <div className="flex h-[180px] w-[124px] flex-col items-center gap-3 sm:h-[68px] sm:w-full sm:flex-row sm:py-3">
-                <Avatar src={member.avatar ?? ''} size="xl" />
-                {/* 44px,64px */}
+                <Avatar src={member.avatar ?? ''} size="xl" extra="sm:hidden" />
+                <Avatar
+                  src={member.avatar ?? ''}
+                  size="l"
+                  extra="hidden sm:block"
+                />
                 <div className="flex flex-col justify-center gap-3 sm:w-full sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex flex-col items-center gap-1 sm:items-start sm:gap-0.5">
                     <p className="subtitle-2 text-primary-700">{member.name}</p>
-                    <p className="caption-1 text-center text-primary-500 sm:text-left">
+                    <p className="caption-1 h-9 w-[124px] text-center text-primary-500 sm:h-[18px] sm:w-full sm:text-left">
                       {member.currentMemberFollowingMember !== '' ? (
                         <>
                           <span>{member.currentMemberFollowingMember}</span>

@@ -9,7 +9,7 @@ export default function FollowSuggestionWidget({
   suggestedFollowers: SuggestedFollowers[]
 }) {
   return (
-    <div className="hidden grow flex-col lg:flex lg:max-w-[260px] xl:max-w-[400px]">
+    <div className="hidden grow flex-col px-5 lg:flex lg:max-w-[260px] xl:max-w-[400px]">
       <h2 className="list-title pb-1 text-primary-700">推薦追蹤</h2>
       {suggestedFollowers?.map((user, index) => (
         <div key={user.id}>
