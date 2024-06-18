@@ -40,7 +40,7 @@ function DesktopStories({
         <MostPickedStory story={mostPickedStory} isDesktop={true} />
       )}
       <div className="flex gap-10 p-10 pb-15">
-        <section>
+        <section className="w-[600px] flex-shrink-0">
           {secondSectionStories.map((story, i) => {
             return (
               <StoryCard
@@ -56,7 +56,7 @@ function DesktopStories({
             )
           })}
         </section>
-        <aside className="flex w-[400px] flex-col gap-3">
+        <aside className="flex flex-col gap-3">
           {displayPublishers.map((displayPublisher) => (
             <PublisherCard
               key={displayPublisher.id}
@@ -67,7 +67,6 @@ function DesktopStories({
       </div>
     </>
   )
-  return
 }
 
 function NonDesktopStories({

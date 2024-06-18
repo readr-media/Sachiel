@@ -15,8 +15,8 @@ export default function HeroStoryCard({ story }: { story: Story }) {
   const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
 
   return (
-    <article className="col-span-2 border-b pb-4 pt-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
+    <article className="col-span-2 border-b pb-5 pt-3">
+      <div className="flex gap-10">
         {/* use padding-top to set aspect-ratio to prevent height growing when right block grows in too many lines of titles */}
         <div className="relative h-0 w-[calc((100%-40px)/2)] flex-1 pt-[calc((100%-40px)/4)]">
           <Image

@@ -14,7 +14,7 @@ export default function MostPickedStory({
 }) {
   return (
     <section className="bg-primary-100">
-      <div className="p-5 md:px-[70px] lg:px-10 lg:pt-8">
+      <div className="p-5 md:px-[70px] lg:px-10 lg:py-8">
         <div
           className={`${
             isDesktop ? 'title-1' : 'list-title'
