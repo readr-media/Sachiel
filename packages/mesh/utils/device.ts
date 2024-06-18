@@ -1,18 +1,18 @@
 import { getTailwindConfig } from './tailwind'
 
 const tailwindFullConfig = getTailwindConfig()
-const screenConfig = tailwindFullConfig?.theme?.screens
+const breakpoints = tailwindFullConfig?.theme?.screens
 
 function isDeviceMobile(windowWidth: number) {
   // @ts-ignore: next line
-  const boundary = Number(screenConfig?.sm?.split('px')[0])
+  const boundary = parseInt(breakpoints?.sm)
 
   return windowWidth < boundary
 }
 
 function isDeviceDesktop(windowWidth: number) {
   // @ts-ignore: next line
-  const boundary = Number(screenConfig?.lg?.split('px')[0])
+  const boundary = parseInt(breakpoints?.lg)
 
   return windowWidth >= boundary
 }
