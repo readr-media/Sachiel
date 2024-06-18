@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import StoryMeta from '@/components/story-card/story-meta'
-import StoryPick from '@/components/story-card/story-pick'
+import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
@@ -58,7 +58,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
                 pickCount={story.pickCount ?? 0}
               />
               {/* TODO: add user pick info to check if already picked */}
-              <StoryPick isStoryPicked={false} />
+              <StoryPickButton isStoryPicked={false} />
             </div>
           </div>
         </div>

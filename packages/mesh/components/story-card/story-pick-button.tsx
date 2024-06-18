@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import Button from '@/components/button'
 
-export default function StoryPick({
+export default function StoryPickButton({
   isStoryPicked,
 }: {
   isStoryPicked: boolean

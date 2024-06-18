@@ -5,7 +5,7 @@ import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 
 type Story = ListStoryFragment
 
-export default function MostPickedStory({
+export default function MostPickedStoryCard({
   story,
   isDesktop,
 }: {

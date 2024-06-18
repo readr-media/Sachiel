@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
-import StoryPick from '@/components/story-card/story-pick'
+import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
@@ -77,7 +77,7 @@ export default function Feed({
             displayPicks={displayPicks}
             pickCount={story.pickCount ?? 0}
           />
-          <StoryPick isStoryPicked={isStoryPickedByCurrentUser} />
+          <StoryPickButton isStoryPicked={isStoryPickedByCurrentUser} />
         </div>
         {storyActions.commentsData ? (
           <FeedComment comment={storyActions.commentsData[0]} />

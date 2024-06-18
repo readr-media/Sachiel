@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { twMerge } from 'tailwind-merge'
 
 import StoryMeta from '@/components/story-card/story-meta'
-import StoryPick from '@/components/story-card/story-pick'
+import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { imageSizes } from '@/constants/media'
 import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
@@ -79,7 +79,7 @@ export default function StoryCard({
           pickCount={story.pickCount ?? 0}
         />
         {/* TODO: add user pick info to check if already picked */}
-        <StoryPick isStoryPicked={false} />
+        <StoryPickButton isStoryPicked={false} />
       </div>
     </article>
   )

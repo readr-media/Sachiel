@@ -7,8 +7,8 @@ import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
 import HeroStoryCard from './hero-story-card'
-import MostPickedStory from './most-picked-story'
-import PublisherCard, { type DisplayPublisher } from './publisher'
+import MostPickedStoryCard from './most-picked-story-card'
+import PublisherCard, { type DisplayPublisher } from './publisher-card'
 import StoryCard from './story-card'
 
 type Story = ListStoryFragment
@@ -37,7 +37,7 @@ function DesktopStories({
         })}
       </section>
       {mostPickedStory && (
-        <MostPickedStory story={mostPickedStory} isDesktop={true} />
+        <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
       <div className="flex gap-10 p-10 pb-15">
         <section className="w-[600px] flex-shrink-0">
@@ -97,7 +97,7 @@ function NonDesktopStories({
                 <PublisherCard key={specialBlock.id} publisher={specialBlock} />
               </div>
             ) : (
-              <MostPickedStory story={specialBlock} isDesktop={false} />
+              <MostPickedStoryCard story={specialBlock} isDesktop={false} />
             )
           return (
             <Fragment key={story.id}>
