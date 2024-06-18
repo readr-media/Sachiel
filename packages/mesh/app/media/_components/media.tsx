@@ -35,11 +35,10 @@ function DesktopStories({
   return (
     <>
       <section className="grid gap-x-10 p-10 pt-0">
-        {firstSectionStories.map((story, i) => {
-          if (i === 0) {
-            return <HeroStoryCard key={story.id} story={story} />
-          }
-          return (
+        {firstSectionStories.map((story, i) =>
+          i === 0 ? (
+            <HeroStoryCard key={story.id} story={story} />
+          ) : (
             <StoryCard
               key={story.id}
               story={story}
@@ -47,7 +46,7 @@ function DesktopStories({
               className={i >= indexWithoutBorderB ? 'border-b-0' : ''}
             />
           )
-        })}
+        )}
       </section>
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
