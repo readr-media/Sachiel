@@ -59,7 +59,7 @@ export default function PublisherCard({
             <div className="subtitle-2 text-primary-700">
               {publisher.title ?? ''}
             </div>
-            <div className="caption-1 line-clamp-1 text-primary-500">
+            <div className="footnote line-clamp-1 text-primary-500">
               {/* TODO: use real sponsor count */}
               本月獲得<span className="text-custom-blue">26</span>次贊助
             </div>
