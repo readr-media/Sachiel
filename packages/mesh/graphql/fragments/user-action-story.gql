@@ -1,0 +1,36 @@
+fragment UserActionStory on Story {
+  id
+  url
+  title
+  og_image
+  og_description
+  source {
+    title
+    createdAt
+  }
+  published_date
+  paywall
+  full_screen_ad
+  pickCount
+  pick {
+    createdAt
+    member {
+      id
+      name
+      avatar
+    }
+  }
+  commentCount
+  comment {
+    id
+    content
+    state
+    published_date
+    createdAt
+    member {
+      id
+      name
+      avatar
+    }
+  }
+}

@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
+import ComScoreScript from '~/components/comscore-script'
 import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
@@ -75,18 +76,7 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
         </ThemeProvider>
       </ApolloProvider>
       {/* use react script rather than next/Script to let the script show on the source of the html (view-source:) */}
-      <script
-        id="comScore"
-        dangerouslySetInnerHTML={{
-          __html: `var _comscore = _comscore || [];
-          _comscore.push({ c1: "2", c2: "24318560" });
-          (function() {
-           var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
-           s.src = "https://sb.scorecardresearch.com/cs/24318560/beacon.js";
-           el.parentNode.insertBefore(s, el);
-          })();`,
-        }}
-      />
+      <ComScoreScript />
     </>
   )
 }
