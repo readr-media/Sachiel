@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { debounce } from '@/utils/performance'
+
 interface WindowDimensions {
   width: number
   height: number
@@ -25,7 +27,7 @@ export default function useWindowDimensions(): WindowDimensions {
       setWindowDimensions(getWindowDimensions())
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', debounce(handleResize))
 
     // Call handler right away so state gets updated with initial window size
     handleResize()
