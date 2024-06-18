@@ -1,7 +1,10 @@
 import Image from 'next/image'
 
 import StoryMeta from '@/components/story-card/story-meta'
+import StoryPickButton from '@/components/story-card/story-pick-button'
+import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
+import { getDisplayPicks } from '@/utils/story-display'
 
 type Story = ListStoryFragment
 
@@ -12,6 +15,10 @@ export default function MostPickedStoryCard({
   story: Story
   isDesktop: boolean
 }) {
+  // TODO: replace props chain by using redux to store user related data
+  const followingMemberIds = new Set('')
+  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+
   return (
     <section className="bg-primary-100">
       <div className="p-5 md:px-[70px] lg:px-10 lg:py-8">
@@ -63,10 +70,14 @@ export default function MostPickedStoryCard({
             </div>
             {/* right bottom section */}
             <div>
-              <div className="mt-4 flex h-8 flex-row justify-between sm:mt-3 lg:mt-[19px] xl:mt-[40px]">
-                <div>OOO</div>
-                {/* 改成共用元件 */}
-                <button>精選</button>
+              {/* for sm and above, mt is set to space this div and top section when title is too long */}
+              <div className="mt-4 flex h-8 flex-row justify-between sm:mt-3 lg:mt-4">
+                <StoryPickInfo
+                  displayPicks={displayPicks}
+                  pickCount={story.pickCount ?? 0}
+                />
+                {/* TODO: add user pick info to check if already picked */}
+                <StoryPickButton isStoryPicked={false} />
               </div>
             </div>
           </div>
