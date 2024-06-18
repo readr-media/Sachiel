@@ -22,9 +22,15 @@ function DesktopStories({
   mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
 }) {
+  const firstSectionCount = 5
   const [firstSectionStories, secondSectionStories] = useMemo(() => {
-    return [stories?.slice(0, 5), stories.slice(5)]
+    return [
+      stories?.slice(0, firstSectionCount),
+      stories.slice(firstSectionCount),
+    ]
   }, [stories])
+  // last two story shows no border-b
+  const indexWithoutBorderB = firstSectionCount - 2
 
   return (
     <>
@@ -33,7 +39,14 @@ function DesktopStories({
           if (i === 0) {
             return <HeroStoryCard key={story.id} story={story} />
           }
-          return <StoryCard key={story.id} story={story} isMobile={false} />
+          return (
+            <StoryCard
+              key={story.id}
+              story={story}
+              isMobile={false}
+              className={i >= indexWithoutBorderB ? 'border-b-0' : ''}
+            />
+          )
         })}
       </section>
       {mostPickedStory && (
