@@ -124,3 +124,6 @@ dist
 # generated static file
 **/politics-tracker/public/robots.txt
 **/politics-tracker/public/sitemap*.xml
+
+# vscode
+.vscode/
