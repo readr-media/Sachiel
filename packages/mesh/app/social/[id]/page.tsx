@@ -1,8 +1,10 @@
+import { API_URLS } from '@/constants/config'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
+import fetchData from '@/utils/fetch-statics'
 
 import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
@@ -179,24 +181,6 @@ function processStoriesFromFollowingMemberActions(
   return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
 }
 
-async function getMostFollowedMembers() {
-  try {
-    const response = await fetch(
-      `https://storage.googleapis.com/statics-mesh-tw-dev/data/most_followers.json`,
-      {
-        next: { revalidate: 10 },
-      }
-    )
-    if (!response.ok) {
-      throw new Error(`Fail to fetch: ${response.statusText}`)
-    }
-
-    return await response.json()
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 function processMostFollowedMembersByFollowings(
   currentMemberId: string,
   currentMemberFollowing: CurrentMemberFollowing,
@@ -277,13 +261,13 @@ async function processSuggestedFollowers(
   take: number
 ) {
   if (mostFollowedMembersByFollowings.length < 5) {
-    const mostFollowedMembersByFollowingsIds = new Set<string>()
-    const mostFollowedMembers: MostFollowedMembers[] =
-      (await getMostFollowedMembers()) ?? []
-
-    mostFollowedMembersByFollowings.forEach((member) =>
-      mostFollowedMembersByFollowingsIds.add(member.id)
+    const mostFollowedMembersByFollowingsIds = new Set(
+      mostFollowedMembersByFollowings.map((member) => member.id)
     )
+    const mostFollowedMembers =
+      (await fetchData<MostFollowedMembers[]>(API_URLS.mostFollowers, {
+        next: { revalidate: 10 },
+      })) ?? []
 
     const transformedData: SuggestedFollowers[] = mostFollowedMembers
       .filter(
