@@ -1,5 +1,5 @@
 import { socialPageAvatarLayer } from '@/constants/z-index'
-import { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
+import { type UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
 import Avatar from './avatar'
 

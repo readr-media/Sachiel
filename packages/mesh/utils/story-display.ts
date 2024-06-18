@@ -1,5 +1,5 @@
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
-import { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
+import { type UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
 export const displayTimeFromNow = (date: string) => {
   const differenceInMilliseconds = Date.now() - new Date(date).getTime()

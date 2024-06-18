@@ -1,10 +1,10 @@
 import { getClient } from '@/apollo'
 import {
   type GetPublishersQuery,
+  type ListStoryFragment,
   GetLatestStoriesDocument,
   GetMostPickedStoryDocument,
   GetPublishersDocument,
-  ListStoryFragment,
 } from '@/graphql/__generated__/graphql'
 
 import CategorySelector from './_components/category-selector'

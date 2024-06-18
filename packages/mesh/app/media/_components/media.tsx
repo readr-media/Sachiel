@@ -3,7 +3,7 @@
 import { Fragment, useMemo } from 'react'
 
 import useWindowDimensions from '@/app/hooks/use-window-dimension'
-import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
 import HeroStoryCard from './hero-story-card'

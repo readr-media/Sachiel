@@ -3,7 +3,7 @@ import Image from 'next/image'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPick from '@/components/story-card/story-pick'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
 type Story = ListStoryFragment

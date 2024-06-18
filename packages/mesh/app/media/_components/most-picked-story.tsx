@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import StoryMeta from '@/components/story-card/story-meta'
-import { ListStoryFragment } from '@/graphql/__generated__/graphql'
+import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 
 type Story = ListStoryFragment
 

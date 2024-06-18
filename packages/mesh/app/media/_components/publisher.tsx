@@ -2,8 +2,8 @@ import Image from 'next/image'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import {
-  GetPublishersQuery,
-  ListStoryFragment,
+  type GetPublishersQuery,
+  type ListStoryFragment,
 } from '@/graphql/__generated__/graphql'
 
 export type DisplayPublisher = NonNullable<
