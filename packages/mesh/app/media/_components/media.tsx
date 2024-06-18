@@ -2,8 +2,8 @@
 
 import { Fragment, useMemo } from 'react'
 
-import useWindowDimensions from '@/app/hooks/use-window-dimension'
 import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
+import useWindowDimensions from '@/hooks/use-window-dimension'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
 import HeroStoryCard from './hero-story-card'
