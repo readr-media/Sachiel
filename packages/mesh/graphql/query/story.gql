@@ -1,12 +1,39 @@
-query GetLatestStories($take: Int) {
-  stories(take: $take, orderBy: { published_date: desc }) {
-    ...ListStory
-  }
-}
-
-# mock gql query to get one story
-query GetMostPickedStory($id: ID) {
-  story(where: { id: $id }) {
-    ...ListStory
+# sync cronjob query [gql_mesh_latest_stories](https://github.com/readr-media/mesh-feed-parser/blob/dev/app/gql.py#L145-L187) to create gql types
+query LatestStories($date: DateTime) {
+  stories(
+    where: { published_date: { gte: $date }, category: { id: { gt: 0 } } }
+    orderBy: { published_date: desc }
+  ) {
+    id
+    url
+    title
+    category {
+      id
+      slug
+    }
+    source {
+      id
+      title
+    }
+    published_date
+    summary
+    content
+    og_title
+    og_image
+    og_description
+    full_content
+    origid
+    picksCount: pickCount(where: { kind: { equals: "read" } })
+    picks: pick(where: { kind: { equals: "read" } }) {
+      createdAt
+      member {
+        id
+        name
+        avatar
+      }
+    }
+    commentCount
+    paywall
+    full_screen_ad
   }
 }

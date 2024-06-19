@@ -3,10 +3,9 @@ import Image from 'next/image'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
-type Story = ListStoryFragment
+import { type Story } from '../page'
 
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
@@ -38,7 +37,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             <div className="hero-title mt-1 text-primary-700">
               {story.title ?? ''}
             </div>
-            <div className="body-3 mt-3 line-clamp-1 text-primary-600">
+            <div className="body-3 line-clamp-1 mt-3 text-primary-600">
               {story.summary ?? ''}
             </div>
             <div className="footnote mt-3">

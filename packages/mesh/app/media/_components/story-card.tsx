@@ -5,10 +5,9 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { imageSizes } from '@/constants/media'
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
-type Story = ListStoryFragment
+import { type Story } from '../page'
 
 export default function StoryCard({
   story,

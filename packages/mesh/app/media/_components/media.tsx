@@ -2,16 +2,14 @@
 
 import { Fragment, useMemo } from 'react'
 
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
+import { type Story } from '../page'
 import HeroStoryCard from './hero-story-card'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard, { type DisplayPublisher } from './publisher-card'
 import StoryCard from './story-card'
-
-type Story = ListStoryFragment
 
 function DesktopStories({
   stories,

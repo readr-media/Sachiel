@@ -1,17 +1,12 @@
 import Image from 'next/image'
 
 import StoryMeta from '@/components/story-card/story-meta'
-import {
-  type GetPublishersQuery,
-  type ListStoryFragment,
-} from '@/graphql/__generated__/graphql'
 
-export type DisplayPublisher = NonNullable<
-  GetPublishersQuery['publishers']
->[number] & {
-  stories: ListStoryFragment[]
+import { type Story, Publisher } from '../page'
+
+export type DisplayPublisher = Publisher & {
+  stories: Story[]
 }
-type Story = ListStoryFragment
 
 const PublisherStory = ({
   story,
@@ -62,7 +57,11 @@ export default function PublisherCard({
             </div>
             <div className="footnote line-clamp-1 text-primary-500">
               {/* TODO: use real sponsor count */}
-              本月獲得<span className="text-custom-blue">26</span>次贊助
+              已獲得
+              <span className="text-custom-blue">
+                {` ${publisher.sponsorCount ?? 0} `}
+              </span>
+              次贊助
             </div>
           </div>
         </div>
