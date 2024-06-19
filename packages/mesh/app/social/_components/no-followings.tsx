@@ -1,8 +1,30 @@
 import Image from 'next/image'
 
-export default function NoFollowings() {
+import { API_URLS } from '@/constants/config'
+import fetchData from '@/utils/fetch-statics'
+
+import type { MostFollowedMembers, SuggestedFollowers } from '../[id]/page'
+import FollowSuggestionFeed from './follow-suggestion-feed'
+import FollowSuggestionWidget from './follow-suggestion-widget'
+
+export default async function NoFollowings() {
+  const mostFollowedMembers =
+    (await fetchData<MostFollowedMembers[]>(API_URLS.mostFollowers, {
+      next: { revalidate: 10 },
+    })) ?? []
+
+  const suggestedFollowers: SuggestedFollowers[] = mostFollowedMembers.map(
+    (member) => ({
+      id: member.id.toString(),
+      name: member.name,
+      avatar: member.avatar,
+      followerCount: member.followerCount,
+      currentMemberFollowingMember: '',
+      isFollow: false,
+    })
+  )
   return (
-    <main className="flex justify-center gap-10 bg-white p-5 sm:bg-gray-50">
+    <main className="flex flex-col items-center justify-center gap-4 bg-white p-5 sm:bg-gray-50 lg:flex-row lg:items-start lg:justify-start lg:gap-10">
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center gap-6">
@@ -26,6 +48,11 @@ export default function NoFollowings() {
           </div>
         </div>
       </div>
+      <FollowSuggestionFeed
+        suggestedFollowers={suggestedFollowers}
+        isNoFollowings={true}
+      />
+      <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
     </main>
   )
 }

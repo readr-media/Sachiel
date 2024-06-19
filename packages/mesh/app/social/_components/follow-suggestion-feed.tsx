@@ -5,12 +5,24 @@ import FollowButton from './follow-button'
 
 export default function FollowSuggestionFeed({
   suggestedFollowers,
+  isNoFollowings,
 }: {
   suggestedFollowers: SuggestedFollowers[]
+  isNoFollowings: boolean
 }) {
   return (
-    <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 drop-shadow sm:rounded-md lg:hidden">
-      <h2 className="list-title pb-3 text-primary-700 sm:pb-1">推薦追蹤</h2>
+    <div
+      className={`flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 ${
+        isNoFollowings ? 'sm:drop-shadow' : 'drop-shadow'
+      } sm:rounded-md lg:hidden`}
+    >
+      {isNoFollowings ? (
+        <h2 className="list-title hidden pb-3 text-primary-700 sm:block sm:pb-1">
+          推薦追蹤
+        </h2>
+      ) : (
+        <h2 className="list-title pb-3 text-primary-700 sm:pb-1">推薦追蹤</h2>
+      )}
       <div className="flex h-[210px] flex-row gap-3 overflow-x-auto sm:h-[345px] sm:flex-col sm:gap-0">
         {suggestedFollowers?.map((member, index) => {
           return (

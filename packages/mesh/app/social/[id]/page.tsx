@@ -89,7 +89,10 @@ export default async function Page({ params }: { params: { id: string } }) {
               />
             )
           })}
-          <FollowSuggestionFeed suggestedFollowers={suggestedFollowers} />
+          <FollowSuggestionFeed
+            suggestedFollowers={suggestedFollowers}
+            isNoFollowings={false}
+          />
           {secondSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
               (pick) => pick.story?.id === item.story?.id
@@ -130,7 +133,7 @@ export type SuggestedFollowers = FollowedMembersByFollowings[number] & {
   isFollow: boolean
 }
 
-type MostFollowedMembers = {
+export type MostFollowedMembers = {
   id: number
   followerCount: number
   name: string
