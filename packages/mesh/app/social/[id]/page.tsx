@@ -5,6 +5,7 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import Feed from '../_components/feed'
+import NoFollowings from '../_components/no-followings'
 
 export const revalidate = 60
 
@@ -32,15 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentUserFollowings || currentUserFollowings.length === 0) {
-    return (
-      <main>
-        <div className="flex justify-center py-5">
-          <div className="flex flex-col gap-4">
-            <p>咦？這裡好像還缺點什麼...</p>
-          </div>
-        </div>
-      </main>
-    )
+    return <NoFollowings />
   }
 
   const followingMemberIds = new Set(
