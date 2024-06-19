@@ -1,0 +1,12 @@
+query GetLatestStories($take: Int) {
+  stories(take: $take, orderBy: { published_date: desc }) {
+    ...ListStory
+  }
+}
+
+# mock gql query to get one story
+query GetMostPickedStory($id: ID) {
+  story(where: { id: $id }) {
+    ...ListStory
+  }
+}

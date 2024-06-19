@@ -1,5 +1,10 @@
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
+export const API_URLS = {
+  mostFollowers:
+    'https://storage.googleapis.com/statics-mesh-tw-dev/data/most_followers.json',
+} as const
+
 let API_ENDPOINT = ''
 
 switch (ENV) {
