@@ -1,4 +1,4 @@
-import { API_URLS } from '@/constants/config'
+import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
@@ -265,9 +265,12 @@ async function processSuggestedFollowers(
       mostFollowedMembersByFollowings.map((member) => member.id)
     )
     const mostFollowedMembers =
-      (await fetchData<MostFollowedMembers[]>(API_URLS.mostFollowers, {
-        next: { revalidate: 10 },
-      })) ?? []
+      (await fetchData<MostFollowedMembers[]>(
+        STATIC_FILE_ENDPOINTS.mostFollowers,
+        {
+          next: { revalidate: 10 },
+        }
+      )) ?? []
 
     const transformedData: SuggestedFollowers[] = mostFollowedMembers
       .filter(

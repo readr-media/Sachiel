@@ -3,7 +3,7 @@ import 'server-only'
 import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 
-import { API_ENDPOINT } from '@/constants/config'
+import { GQL_ENDPOINT } from '@/constants/config'
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -15,7 +15,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.error(`[Network error]: ${networkError}`)
 })
 
-const httpLink = new HttpLink({ uri: API_ENDPOINT })
+const httpLink = new HttpLink({ uri: GQL_ENDPOINT })
 // reference: https://www.apollographql.com/blog/how-to-use-apollo-client-with-next-js-13
 // makes sure that we only instance the Apollo Client once per request,
 // since Apollo Client’s cache is designed with a single user in mind, we recommend that your Next.js server instantiates a new cache for each SSR request, rather than reusing the same long-lived instance for multiple users’ data.
