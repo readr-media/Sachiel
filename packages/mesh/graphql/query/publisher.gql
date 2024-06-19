@@ -1,0 +1,6 @@
+query GetPublishers($take: Int) {
+  publishers(take: $take) {
+    id
+    title
+  }
+}
