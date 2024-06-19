@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
     return (
       <main>
-        <div className="flex justify-center py-5 px-10">
+        <div className="flex justify-center px-10 py-5">
           <div className="flex flex-col gap-4">
             <p>咦？這裡好像還缺點什麼...</p>
           </div>
@@ -79,11 +79,11 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <div className="flex justify-center gap-10 py-5 px-10">
+      <div className="flex justify-center gap-10 px-10 py-5">
         <div className="flex flex-col gap-4">
           {firstSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
-              (pick) => pick.story?.id === item.id
+              (pick) => pick.story?.id === item.story?.id
             )
             return (
               <Feed
