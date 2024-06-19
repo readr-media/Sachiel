@@ -22,8 +22,8 @@ const RESTFUL_ENDPOINTS = {
   latestStories: `${API_ORIGIN}/latest_stories`,
   pubsub: `${API_ORIGIN}/pubsub`,
 }
-const STATIC_FILE_URLS = {
+const STATIC_FILE_ENDPOINTS = {
   mostFollowers: `${STATIC_FILE_ORIGIN}/data/most_followers.json`,
 }
 
-export { ENV, GQL_ENDPOINT, RESTFUL_ENDPOINTS, STATIC_FILE_URLS }
+export { ENV, GQL_ENDPOINT, RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS }
