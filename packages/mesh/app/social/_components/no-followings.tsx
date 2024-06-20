@@ -1,5 +1,4 @@
-import Image from 'next/image'
-
+import Icon from '@/components/icon'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import fetchData from '@/utils/fetch-statics'
 
@@ -31,12 +30,7 @@ export default async function NoFollowings() {
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center gap-6">
-            <Image
-              src={`/icons/icon-user-dash.svg`}
-              width={80}
-              height={78}
-              alt={'icon-user-dash'}
-            />
+            <Icon iconName="icon-user-dash" size={{ width: 80, height: 78 }} />
             <div className="flex flex-col items-center gap-2">
               <p className="title-1 text-primary-700">
                 咦？這裡好像還缺點什麼...
