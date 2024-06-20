@@ -27,7 +27,7 @@ export default async function NoFollowings() {
     })
   )
   return (
-    <main className="flex flex-col items-center justify-center gap-4 overflow-auto bg-white p-5 sm:bg-gray-50 lg:h-[calc(100vh-383px)] lg:flex-row lg:items-start lg:justify-start lg:gap-10">
+    <main className="flex flex-col items-center justify-center gap-4 bg-white p-5 sm:bg-gray-50 lg:flex-row lg:items-start lg:justify-start lg:gap-10">
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-center gap-6">

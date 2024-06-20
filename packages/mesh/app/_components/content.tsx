@@ -16,7 +16,9 @@ export default function Content({
 
   return (
     <div className={isBgWhite ? 'bg-white' : 'bg-gray-50'}>
-      <div className="grow xl:max-w-[theme(width.maxMain)]">{children}</div>
+      <div className="grow sm:min-h-[calc(100vh-theme(height.header.sm)-theme(height.footer.sm))] xl:max-w-[theme(width.maxMain)]">
+        {children}
+      </div>
     </div>
   )
 }
