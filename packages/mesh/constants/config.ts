@@ -27,7 +27,7 @@ const RESTFUL_ENDPOINTS = {
 const STATIC_FILE_ENDPOINTS = {
   mostFollowers: `${STATIC_FILE_ORIGIN}/data/most_followers.json`,
   mostPickStoriesInCategoryFn: (categoryName: string) =>
-    `${STATIC_FILE_ORIGIN}/data/most_pick_stories_${categoryName}.json`,
+    `${STATIC_FILE_ORIGIN}/data/most_read_stories_${categoryName}.json`,
   mostSponsorPublishers: `${STATIC_FILE_ORIGIN}/data/most_sponsor_publishers.json`,
 }
 

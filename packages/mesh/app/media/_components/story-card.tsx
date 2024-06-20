@@ -22,7 +22,7 @@ export default function StoryCard({
   const titleClass = isMobile ? 'subtitle-1' : 'title-2'
   // TODO: replace props chain by using redux to store user related data
   const followingMemberIds = new Set('')
-  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   const metaJsx = (
     <div className="caption-1 mt-2 sm:mt-1">
@@ -75,7 +75,7 @@ export default function StoryCard({
       <div className="mt-4 flex h-8 flex-row justify-between">
         <StoryPickInfo
           displayPicks={displayPicks}
-          pickCount={story.pickCount ?? 0}
+          pickCount={story.picksCount ?? 0}
         />
         {/* TODO: add user pick info to check if already picked */}
         <StoryPickButton isStoryPicked={false} />

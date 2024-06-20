@@ -11,7 +11,7 @@ import { type Story } from '../page'
 export default function HeroStoryCard({ story }: { story: Story }) {
   // TODO: replace props chain by using redux to store user related data
   const followingMemberIds = new Set('')
-  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   return (
     <article className="col-span-2 border-b pb-5 pt-3">
@@ -37,7 +37,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             <div className="hero-title mt-1 text-primary-700">
               {story.title ?? ''}
             </div>
-            <div className="body-3 line-clamp-1 mt-3 text-primary-600">
+            <div className="body-3 mt-3 line-clamp-1 text-primary-600">
               {story.summary ?? ''}
             </div>
             <div className="footnote mt-3">
@@ -54,7 +54,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             <div className="mt-4 flex h-8 flex-row justify-between">
               <StoryPickInfo
                 displayPicks={displayPicks}
-                pickCount={story.pickCount ?? 0}
+                pickCount={story.picksCount ?? 0}
               />
               {/* TODO: add user pick info to check if already picked */}
               <StoryPickButton isStoryPicked={false} />
