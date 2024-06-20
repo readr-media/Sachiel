@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 
 import { type Story, Publisher } from '../page'
@@ -65,7 +66,7 @@ export default function PublisherCard({
             </div>
           </div>
         </div>
-        <button>贊助</button>
+        <PublisherDonateButton />
       </div>
       {publisher.stories.map((story, i) => (
         <PublisherStory key={story.id} story={story} showImage={i === 0} />
