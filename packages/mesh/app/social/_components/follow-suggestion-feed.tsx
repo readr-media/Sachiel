@@ -12,8 +12,10 @@ export default function FollowSuggestionFeed({
 }) {
   return (
     <div
-      className={`flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 ${
-        isNoFollowings ? 'sm:drop-shadow' : 'drop-shadow'
+      className={`flex w-screen min-w-[375px] flex-col bg-white px-5 py-4 ${
+        isNoFollowings
+          ? 'sm:max-w-[600px] sm:drop-shadow'
+          : 'max-w-[600px] drop-shadow'
       } sm:rounded-md lg:hidden`}
     >
       {isNoFollowings ? (
