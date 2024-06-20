@@ -20,40 +20,21 @@ export default function StoryPickButton({
 
   const handleClickPick = async () => {
     setIsPicked(!isPicked)
-    if (!isPicked) {
-      console.log('add-pub-sub: ', storyId, memberId)
-      const addPickPayload = {
-        action: 'add_pick',
-        memberId,
-        objective: 'story',
-        targetId: storyId,
-        state: 'public',
-      }
-      const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(addPickPayload),
-      })
-      console.log('Pick added:', response)
-    } else {
-      console.log('delete-pub-sub: ', storyId, memberId)
-      const removePickPayload = {
-        action: 'remove_pick',
-        memberId,
-        objective: 'story',
-        targetId: storyId,
-      }
-      const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(removePickPayload),
-      })
-      console.log('Remove added:', response)
+
+    const payload = {
+      action: isPicked ? 'remove_pick' : 'add_pick',
+      memberId,
+      objective: 'story',
+      targetId: storyId,
+      ...(!isPicked && { state: 'public' }),
     }
+    const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
   }
 
   return (
