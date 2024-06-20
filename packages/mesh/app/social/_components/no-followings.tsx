@@ -1,30 +1,12 @@
 import Icon from '@/components/icon'
-import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
-import fetchData from '@/utils/fetch-statics'
+import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
-import type { MostFollowedMembers, SuggestedFollowers } from '../[id]/page'
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
 export default async function NoFollowings() {
-  const mostFollowedMembers =
-    (await fetchData<MostFollowedMembers[]>(
-      STATIC_FILE_ENDPOINTS.mostFollowers,
-      {
-        next: { revalidate: 10 },
-      }
-    )) ?? []
+  const suggestedFollowers = await processMostFollowedMembers()
 
-  const suggestedFollowers: SuggestedFollowers[] = mostFollowedMembers.map(
-    (member) => ({
-      id: member.id.toString(),
-      name: member.name,
-      avatar: member.avatar,
-      followerCount: member.followerCount,
-      currentMemberFollowingMember: '',
-      isFollow: false,
-    })
-  )
   return (
     <main className="flex flex-col items-center justify-center gap-4 bg-white p-5 sm:bg-gray-50 lg:flex-row lg:items-start lg:justify-start lg:gap-10">
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">

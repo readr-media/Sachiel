@@ -1,10 +1,9 @@
-import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import fetchData from '@/utils/fetch-statics'
+import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
 import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
@@ -133,14 +132,6 @@ export type SuggestedFollowers = FollowedMembersByFollowings[number] & {
   isFollow: boolean
 }
 
-export type MostFollowedMembers = {
-  id: number
-  followerCount: number
-  name: string
-  nickname: string
-  avatar: string
-}
-
 function processStoriesFromFollowingMemberActions(
   followingMember: CurrentMemberFollowing,
   maxFeeds: number
@@ -260,29 +251,10 @@ async function processSuggestedFollowers(
     const mostFollowedMembersByFollowingsIds = new Set(
       mostFollowedMembersByFollowings.map((member) => member.id)
     )
-    const mostFollowedMembers =
-      (await fetchData<MostFollowedMembers[]>(
-        STATIC_FILE_ENDPOINTS.mostFollowers,
-        {
-          next: { revalidate: 10 },
-        }
-      )) ?? []
-
-    const transformedData: SuggestedFollowers[] = mostFollowedMembers
-      .filter(
-        (member) =>
-          !mostFollowedMembersByFollowingsIds.has(member.id.toString())
-      )
-      .map((member) => ({
-        id: member.id.toString(),
-        name: member.name,
-        avatar: member.avatar,
-        followerCount: member.followerCount,
-        currentMemberFollowingMember: '',
-        isFollow: false,
-      }))
-
-    return [...mostFollowedMembersByFollowings, ...transformedData].slice(
+    const mostFollowedMembers = await processMostFollowedMembers(
+      mostFollowedMembersByFollowingsIds
+    )
+    return [...mostFollowedMembersByFollowings, ...mostFollowedMembers].slice(
       0,
       take
     )
