@@ -10,7 +10,7 @@ import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
 import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
 
-export const revalidate = 60
+export const revalidate = 0
 
 export default async function Page({ params }: { params: { id: string } }) {
   const userId = params.id
