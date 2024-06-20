@@ -36,3 +36,30 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
     }
   }
 }
+
+query GetMember($memberId: ID!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    followingMembers: following {
+      id
+      name
+    }
+    picks: pick {
+      id
+      story {
+        id
+      }
+    }
+    followingCategories: following_category {
+      id
+      title
+      slug
+    }
+    followPublishers: follow_publisher {
+      id
+      title
+    }
+  }
+}

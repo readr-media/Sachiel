@@ -24,11 +24,14 @@ export default async function Page({ params }: { params: { id: string } }) {
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
 
-  const data = await fetchGraphQL(GetMemberFollowingDocument, {
-    memberId: userId,
-    takes: feedsNumber,
-    globalLogFields,
-  })
+  const data = await fetchGraphQL(
+    GetMemberFollowingDocument,
+    {
+      memberId: userId,
+      takes: feedsNumber,
+    },
+    globalLogFields
+  )
   const currentMember = data?.member
   const currentMemberFollowings = selectCurrentMemberFollowings(currentMember)
 

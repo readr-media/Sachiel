@@ -13,15 +13,15 @@ export default function StoryCard({
   story,
   isMobile,
   className = '',
+  followingMemberIds,
 }: {
   story: Story
   isMobile: boolean
   className?: string
+  followingMemberIds: Set<string>
 }) {
   const imageSize = isMobile ? imageSizes.mobile : imageSizes.nonMobile
   const titleClass = isMobile ? 'subtitle-1' : 'title-2'
-  // TODO: replace props chain by using redux to store user related data
-  const followingMemberIds = new Set('')
   const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   const metaJsx = (

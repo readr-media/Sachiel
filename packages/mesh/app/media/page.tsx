@@ -1,10 +1,13 @@
 import { headers } from 'next/headers'
+import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type LatestStoriesQuery,
   type PublishersQuery,
+  GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
+import fetchGraphQL from '@/utils/fetch-graphql'
 import fetchRestful from '@/utils/fetch-restful'
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObject, logServerSideError } from '@/utils/log'
@@ -26,11 +29,29 @@ export default async function Page() {
   const headersList = headers()
   const globalLogFields = getLogTraceObject(headersList)
 
-  const followingPublishers = ['4', '84'],
-    categoryId = '3',
-    categoryName = 'society',
-    mediaCount = 5,
-    latestStoryPageCount = 20
+  const memberId = '19'
+
+  const data = await fetchGraphQL(
+    GetMemberDocument,
+    {
+      memberId,
+    },
+    globalLogFields
+  )
+
+  if (!data) {
+    return notFound()
+  }
+
+  const followingPublishers =
+    data.member?.followPublishers?.map((publiser) => publiser.id) ?? []
+  const firstCategory = data.member?.followingCategories?.[0]
+  const followingMemberIds = new Set(
+    data.member?.followingMembers?.map((member) => member.id ?? '')
+  )
+
+  const mediaCount = 5
+  const latestStoryPageCount = 20
   let stories: Story[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
@@ -46,7 +67,7 @@ export default async function Page() {
         RESTFUL_ENDPOINTS.latestStories,
         {
           publishers: followingPublishers,
-          category: categoryId,
+          category: firstCategory?.id ?? '',
           index: 0,
           take: latestStoryPageCount,
         },
@@ -56,7 +77,9 @@ export default async function Page() {
         globalLogFields
       ),
       fetchStatic<Story[]>(
-        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(categoryName),
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
+          firstCategory?.slug ?? ''
+        ),
         {
           next: { revalidate: 10 },
         },
@@ -75,8 +98,11 @@ export default async function Page() {
     responses = [null, null, null]
   }
 
-  stories = responses[0]?.stories ?? []
   mostPickedStory = responses[1]?.[0]
+  stories =
+    responses[0]?.stories?.filter(
+      (story) => story.id !== mostPickedStory?.id
+    ) ?? []
   publishers = responses[2]?.slice(0, mediaCount) ?? []
 
   // TODO: fetch real publiser stories
@@ -92,6 +118,7 @@ export default async function Page() {
         stories={stories}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
+        followingMemberIds={followingMemberIds}
       />
     </main>
   )

@@ -8,9 +8,13 @@ import { getDisplayPicks } from '@/utils/story-display'
 import { type Story } from '../page'
 
 // only used in desktop width
-export default function HeroStoryCard({ story }: { story: Story }) {
-  // TODO: replace props chain by using redux to store user related data
-  const followingMemberIds = new Set('')
+export default function HeroStoryCard({
+  story,
+  followingMemberIds,
+}: {
+  story: Story
+  followingMemberIds: Set<string>
+}) {
   const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   return (
