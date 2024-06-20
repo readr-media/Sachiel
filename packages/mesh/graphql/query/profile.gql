@@ -1,0 +1,97 @@
+# Write your query or mutation here
+query GetMemberProfile($memberId: ID!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    avatar_image {
+      urlOriginal
+    }
+    intro
+    pickCount
+    followingCount
+    followerCount
+
+    picks: pick(where: { kind: { equals: "read" }}) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          member {
+            avatar
+            avatar_image {
+              urlOriginal
+            }
+          }
+        }
+        pickCount
+        comment(
+          where: { member: { id: { equals: $memberId } } }
+          orderBy: { createdAt: desc }
+        ) {
+          id
+          content
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+
+    books: pick(where: { kind: { equals: "bookmark" } }) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          member {
+            avatar
+            avatar_image {
+              urlOriginal
+            }
+          }
+        }
+        pickCount
+        comment(
+          where: { member: { id: { equals: $memberId } } }
+          orderBy: { createdAt: desc }
+        ) {
+          id
+          content
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+  }
+}
