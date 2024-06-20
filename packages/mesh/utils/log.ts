@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
 
 import { GCP_PROJECT_ID } from '@/constants/config'
@@ -16,7 +18,7 @@ function getLogTraceObject(headers: ReadonlyHeaders) {
   return globalLogFields
 }
 
-function logFetchError(
+function logServerSideError(
   error: unknown,
   errorMessage: string,
   traceObject?: TraceObject
@@ -35,4 +37,4 @@ function logFetchError(
   )
 }
 
-export { getLogTraceObject, logFetchError }
+export { getLogTraceObject, logServerSideError }

@@ -1,6 +1,6 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
-import { type TraceObject, logFetchError } from './log'
+import { type TraceObject, logServerSideError } from './log'
 
 export default async function fetchStatic<T>(
   url: string | URL | Request,
@@ -20,7 +20,7 @@ export default async function fetchStatic<T>(
   } catch (error) {
     const fallbackErrorMessage =
       'Fetch static failed, info: ' + JSON.stringify({ url, init })
-    logFetchError(error, errorMessage || fallbackErrorMessage, traceObject)
+    logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
     return null
   }
 }

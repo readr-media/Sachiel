@@ -3,7 +3,7 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
 import { getClient } from '@/apollo'
 
-import { type TraceObject, logFetchError } from './log'
+import { type TraceObject, logServerSideError } from './log'
 
 export default async function fetchGraphQL<
   TResult,
@@ -28,7 +28,7 @@ export default async function fetchGraphQL<
     const fallbackErrorMessage =
       'Fetch GraphQL failed, info: ' + JSON.stringify({ query, variables })
 
-    logFetchError(error, errorMessage || fallbackErrorMessage, traceObject)
+    logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
     return null
   }
 }

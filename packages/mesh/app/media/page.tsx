@@ -7,7 +7,7 @@ import {
 } from '@/graphql/__generated__/graphql'
 import fetchRestful from '@/utils/fetch-restful'
 import fetchStatic from '@/utils/fetch-static'
-import { getLogTraceObject } from '@/utils/log'
+import { getLogTraceObject, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'
@@ -28,57 +28,56 @@ export default async function Page() {
 
   const followingPublishers = ['4', '84'],
     categoryId = '3',
-    categoryName = 'society'
-  const mediaCount = 5
+    categoryName = 'society',
+    mediaCount = 5,
+    latestStoryPageCount = 20
   let stories: Story[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
 
-  const responses = await Promise.allSettled([
-    fetchRestful<LatestStoriesResponse>(
-      RESTFUL_ENDPOINTS.latestStories,
-      {
-        publishers: followingPublishers,
-        category: categoryId,
-      },
-      globalLogFields
-    ),
-    fetchStatic<Story[]>(
-      STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(categoryName),
-      {
-        next: { revalidate: 10 },
-      },
-      globalLogFields
-    ),
-    fetchStatic<Publisher[]>(
-      STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
-      {
-        next: { revalidate: 10 },
-      },
-      globalLogFields
-    ),
-  ])
-
-  if (responses[0].status === 'fulfilled') {
-    stories = responses[0].value?.stories ?? []
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[0].reason)
+  let responses: [
+    LatestStoriesResponse | null,
+    Story[] | null,
+    Publisher[] | null
+  ]
+  try {
+    responses = await Promise.all([
+      fetchRestful<LatestStoriesResponse>(
+        RESTFUL_ENDPOINTS.latestStories,
+        {
+          publishers: followingPublishers,
+          category: categoryId,
+          index: 0,
+          take: latestStoryPageCount,
+        },
+        {
+          next: { revalidate },
+        },
+        globalLogFields
+      ),
+      fetchStatic<Story[]>(
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(categoryName),
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      ),
+      fetchStatic<Publisher[]>(
+        STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      ),
+    ])
+  } catch (error) {
+    logServerSideError(error, 'Unhandled error in media page', globalLogFields)
+    responses = [null, null, null]
   }
 
-  if (responses[1].status === 'fulfilled') {
-    mostPickedStory = responses[1].value?.[0]
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[1].reason)
-  }
-
-  if (responses[2].status === 'fulfilled') {
-    publishers = responses[2].value?.slice(0, mediaCount) ?? []
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[2].reason)
-  }
+  stories = responses[0]?.stories ?? []
+  mostPickedStory = responses[1]?.[0]
+  publishers = responses[2]?.slice(0, mediaCount) ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({

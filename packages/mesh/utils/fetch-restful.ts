@@ -1,4 +1,4 @@
-import { type TraceObject, logFetchError } from './log'
+import { type TraceObject, logServerSideError } from './log'
 
 export default async function fetchRestful<T>(
   url: string | URL | Request,
@@ -25,8 +25,8 @@ export default async function fetchRestful<T>(
     return data
   } catch (error) {
     const fallbackErrorMessage =
-      'Fetch Restful failed, info: ' + JSON.stringify({ url, init })
-    logFetchError(error, errorMessage || fallbackErrorMessage, traceObject)
+      'Fetch Restful failed, info: ' + JSON.stringify({ url, json, init })
+    logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
     return null
   }
 }
