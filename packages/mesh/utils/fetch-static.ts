@@ -1,8 +1,12 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request'
 
-export default async function fetchData<T>(
+import { type TraceObject, logFetchError } from './log'
+
+export default async function fetchStatic<T>(
   url: string | URL | Request,
-  init?: RequestInit
+  init?: RequestInit,
+  traceObject?: TraceObject,
+  errorMessage?: string
 ) {
   try {
     const response = await fetch(url, init)
@@ -14,8 +18,9 @@ export default async function fetchData<T>(
     const data: T = await response.json()
     return data
   } catch (error) {
-    // TODO: Structured logging
-    console.error(error)
+    const fallbackErrorMessage =
+      'Fetch static failed, info: ' + JSON.stringify({ url, init })
+    logFetchError(error, errorMessage || fallbackErrorMessage, traceObject)
     return null
   }
 }

@@ -1,10 +1,13 @@
+import { headers } from 'next/headers'
+
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import fetchData from '@/utils/fetch-statics'
+import fetchStatic from '@/utils/fetch-static'
+import { getLogTraceObject, TraceObject } from '@/utils/log'
 
 import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
@@ -13,6 +16,9 @@ import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
 export const revalidate = 60
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const headersList = headers()
+  const globalLogFields = getLogTraceObject(headersList)
+
   const userId = params.id
   const feedsNumber = 20
   const firstSectionAmount = 3
@@ -21,6 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const data = await fetchGraphQL(GetMemberFollowingDocument, {
     memberId: userId,
     takes: feedsNumber,
+    globalLogFields,
   })
   const currentMember = data?.member
   const currentMemberFollowings = selectCurrentMemberFollowings(currentMember)
@@ -39,7 +46,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
     return (
       <main>
-        <div className="flex justify-center py-5 px-10">
+        <div className="flex justify-center px-10 py-5">
           <div className="flex flex-col gap-4">
             <p>咦？這裡好像還缺點什麼...</p>
           </div>
@@ -74,12 +81,13 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   const suggestedFollowers = await processSuggestedFollowers(
     mostFollowedMembersByFollowings,
-    suggestedFollowersNumber
+    suggestedFollowersNumber,
+    globalLogFields
   )
 
   return (
     <main>
-      <div className="flex justify-center gap-10 py-5 px-10">
+      <div className="flex justify-center gap-10 px-10 py-5">
         <div className="flex flex-col gap-4">
           {firstSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
@@ -258,18 +266,20 @@ function processMostFollowedMembersByFollowings(
 
 async function processSuggestedFollowers(
   mostFollowedMembersByFollowings: SuggestedFollowers[],
-  take: number
+  take: number,
+  traceObject: TraceObject
 ) {
   if (mostFollowedMembersByFollowings.length < 5) {
     const mostFollowedMembersByFollowingsIds = new Set(
       mostFollowedMembersByFollowings.map((member) => member.id)
     )
     const mostFollowedMembers =
-      (await fetchData<MostFollowedMembers[]>(
+      (await fetchStatic<MostFollowedMembers[]>(
         STATIC_FILE_ENDPOINTS.mostFollowers,
         {
           next: { revalidate: 10 },
-        }
+        },
+        traceObject
       )) ?? []
 
     const transformedData: SuggestedFollowers[] = mostFollowedMembers

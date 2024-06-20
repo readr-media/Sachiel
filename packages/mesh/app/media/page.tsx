@@ -1,9 +1,13 @@
+import { headers } from 'next/headers'
+
 import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type LatestStoriesQuery,
   type PublishersQuery,
 } from '@/graphql/__generated__/graphql'
-import fetchData from '@/utils/fetch-statics'
+import fetchRestful from '@/utils/fetch-restful'
+import fetchStatic from '@/utils/fetch-static'
+import { getLogTraceObject } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'
@@ -19,17 +23,40 @@ type LatestStoriesResponse = {
 }
 
 export default async function Page() {
+  const headersList = headers()
+  const globalLogFields = getLogTraceObject(headersList)
+
   const followingPublishers = ['4', '84'],
-    categoryId = '3'
+    categoryId = '3',
+    categoryName = 'society'
   const mediaCount = 5
   let stories: Story[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
 
   const responses = await Promise.allSettled([
-    fetchLatestStories(followingPublishers, categoryId),
-    fetchMostPickedStory(),
-    fetchMedia(),
+    fetchRestful<LatestStoriesResponse>(
+      RESTFUL_ENDPOINTS.latestStories,
+      {
+        publishers: followingPublishers,
+        category: categoryId,
+      },
+      globalLogFields
+    ),
+    fetchStatic<Story[]>(
+      STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(categoryName),
+      {
+        next: { revalidate: 10 },
+      },
+      globalLogFields
+    ),
+    fetchStatic<Publisher[]>(
+      STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
+      {
+        next: { revalidate: 10 },
+      },
+      globalLogFields
+    ),
   ])
 
   if (responses[0].status === 'fulfilled') {
@@ -69,31 +96,4 @@ export default async function Page() {
       />
     </main>
   )
-}
-
-// TODO: update to fetch latest stories by category
-async function fetchLatestStories(publishers: string[], category: string) {
-  return fetchData<LatestStoriesResponse>(RESTFUL_ENDPOINTS.latestStories, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      publishers,
-      category,
-    }),
-  })
-}
-
-// TODO: update to fetch categroy most picked story from proxy server through restful api
-async function fetchMostPickedStory(category: string = 'society') {
-  return fetchData<Story[]>(
-    STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(category)
-  )
-}
-
-// TODO: phase1 update to 5 hardcoded publisers ids
-// TODO: phase2 update to fetch 5 most sponsored or hardcoded promote publishers ids through proxy server
-async function fetchMedia() {
-  return fetchData<Publisher[]>(STATIC_FILE_ENDPOINTS.mostSponsorPublishers)
 }

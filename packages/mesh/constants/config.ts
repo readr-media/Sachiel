@@ -1,3 +1,4 @@
+const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
 let API_ORIGIN = ''
@@ -30,4 +31,10 @@ const STATIC_FILE_ENDPOINTS = {
   mostSponsorPublishers: `${STATIC_FILE_ORIGIN}/data/most_sponsor_publishers.json`,
 }
 
-export { ENV, GQL_ENDPOINT, RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS }
+export {
+  ENV,
+  GCP_PROJECT_ID,
+  GQL_ENDPOINT,
+  RESTFUL_ENDPOINTS,
+  STATIC_FILE_ENDPOINTS,
+}
