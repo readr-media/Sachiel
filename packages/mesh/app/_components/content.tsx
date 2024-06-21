@@ -15,7 +15,7 @@ export default function Content({
   )
 
   return (
-    <div className={isBgWhite ? 'bg-white' : 'bg-gray-50'}>
+    <div className={`grow ${isBgWhite ? 'bg-white' : 'bg-gray-50'}`}>
       <div className="grow xl:max-w-[theme(width.maxMain)]">{children}</div>
     </div>
   )
