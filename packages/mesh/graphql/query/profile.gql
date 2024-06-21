@@ -12,7 +12,7 @@ query GetMemberProfile($memberId: ID!) {
     followingCount
     followerCount
 
-    picks: pick(where: { kind: { equals: "read" }}) {
+    picks: pick(where: { kind: { equals: "read" } }) {
       story {
         id
         og_image
@@ -29,16 +29,20 @@ query GetMemberProfile($memberId: ID!) {
           name
         }
         pick {
+          createdAt
           member {
+            id
+            name
             avatar
-            avatar_image {
-              urlOriginal
-            }
           }
         }
         pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
         comment(
-          where: { member: { id: { equals: $memberId } } }
+          where: { member: { id: { equals: 187 } } }
           orderBy: { createdAt: desc }
         ) {
           id
@@ -79,7 +83,7 @@ query GetMemberProfile($memberId: ID!) {
         }
         pickCount
         comment(
-          where: { member: { id: { equals: $memberId } } }
+          where: { member: { id: { equals: 187 } } }
           orderBy: { createdAt: desc }
         ) {
           id
