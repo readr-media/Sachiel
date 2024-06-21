@@ -24,13 +24,21 @@ function logServerSideError(
   traceObject?: TraceObject
 ) {
   const stack = error instanceof Error ? error.stack : 'No stack available'
+  const debugError =
+    error instanceof Error
+      ? {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+        }
+      : error
   console.error(
     JSON.stringify({
       severity: 'ERROR',
       message: errorMessage,
       stack,
       debugPayload: {
-        error,
+        error: debugError,
       },
       ...(traceObject ?? {}),
     })
