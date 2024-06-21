@@ -50,6 +50,11 @@ export default async function Page() {
     data.member?.followingMembers?.map((member) => member.id ?? '')
   )
 
+  if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
+    // TODO: user has no category to render, show empty category UI
+    return <div>Empty Caegory UI</div>
+  }
+
   const mediaCount = 5
   const latestStoryPageCount = 20
   let stories: Story[] = []
@@ -57,31 +62,29 @@ export default async function Page() {
   let publishers: Publisher[] = []
 
   let responses: [
-    LatestStoriesResponse | null,
     Story[] | null,
+    LatestStoriesResponse | null,
     Publisher[] | null
   ]
   try {
     responses = await Promise.all([
+      fetchStatic<Story[]>(
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(firstCategory?.slug),
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      ),
       fetchRestful<LatestStoriesResponse>(
         RESTFUL_ENDPOINTS.latestStories,
         {
           publishers: followingPublishers,
-          category: firstCategory?.id ?? '',
+          category: firstCategory?.id,
           index: 0,
           take: latestStoryPageCount,
         },
         {
           next: { revalidate },
-        },
-        globalLogFields
-      ),
-      fetchStatic<Story[]>(
-        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
-          firstCategory?.slug ?? ''
-        ),
-        {
-          next: { revalidate: 10 },
         },
         globalLogFields
       ),
@@ -98,9 +101,9 @@ export default async function Page() {
     responses = [null, null, null]
   }
 
-  mostPickedStory = responses[1]?.[0]
+  mostPickedStory = responses[0]?.[0]
   stories =
-    responses[0]?.stories?.filter(
+    responses[1]?.stories?.filter(
       (story) => story.id !== mostPickedStory?.id
     ) ?? []
   publishers = responses[2]?.slice(0, mediaCount) ?? []
