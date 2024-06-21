@@ -6,6 +6,7 @@ import { useState } from 'react'
 import Button from '@/components/button'
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import fetchData from '@/utils/fetch-statics'
+import { debounce } from '@/utils/performance'
 
 export default function StoryPickButton({
   isStoryPicked,
@@ -15,10 +16,11 @@ export default function StoryPickButton({
   storyId: string
 }) {
   const [isPicked, setIsPicked] = useState(isStoryPicked)
+  //TODO: replace with logged-in member's status
   const params = useParams()
   const { id: memberId } = params
 
-  const handleClickPick = async () => {
+  const handleClickPick = debounce(async () => {
     setIsPicked(!isPicked)
 
     const payload = {
@@ -35,7 +37,7 @@ export default function StoryPickButton({
       },
       body: JSON.stringify(payload),
     })
-  }
+  })
 
   return (
     <Button
