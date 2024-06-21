@@ -21,22 +21,30 @@ export default function StoryPickButton({
   const { id: memberId } = params
 
   const handleClickPick = debounce(async () => {
-    setIsPicked(!isPicked)
+    try {
+      const payload = {
+        action: isPicked ? 'remove_pick' : 'add_pick',
+        memberId,
+        objective: 'story',
+        targetId: storyId,
+        ...(!isPicked && { state: 'public' }),
+      }
+      const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
 
-    const payload = {
-      action: isPicked ? 'remove_pick' : 'add_pick',
-      memberId,
-      objective: 'story',
-      targetId: storyId,
-      ...(!isPicked && { state: 'public' }),
+      if (!response) {
+        throw new Error('Failed to update pick status')
+      }
+      setIsPicked(!isPicked)
+    } catch (error) {
+      //TODO: globalLogFields
+      console.error('Error in handleClickPick:', error)
     }
-    const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
   })
 
   return (
