@@ -197,6 +197,7 @@ const MobileNav = ({
 export default function Nav() {
   const path = usePathname()
   // TODO: fetch user avatar, use centralize state manage system to store the avatar
+  // FIXME: need to add z-index because the avatar has higher z-index than fixed nav
   const avatarUrl =
     'https://lh3.googleusercontent.com/a/AATXAJyqlWWzuL-doLfL8JVibMqJq32PR9AO2FT9U4SW=s96-c'
 
