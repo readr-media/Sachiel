@@ -20,7 +20,7 @@ export default function FollowSuggestionWidget({
                 <p className="subtitle-2 mb-[2px] text-primary-700">
                   {user.name}
                 </p>
-                <p className="caption-1 break-words text-primary-500 line-clamp-1">
+                <p className="caption-1 line-clamp-1 break-words text-primary-500">
                   {user.currentMemberFollowingMember !== '' ? (
                     <>
                       <span>{user.currentMemberFollowingMember}</span>

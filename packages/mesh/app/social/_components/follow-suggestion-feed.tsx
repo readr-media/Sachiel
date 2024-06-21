@@ -5,18 +5,32 @@ import FollowButton from './follow-button'
 
 export default function FollowSuggestionFeed({
   suggestedFollowers,
+  isNoFollowings,
 }: {
   suggestedFollowers: SuggestedFollowers[]
+  isNoFollowings: boolean
 }) {
   return (
-    <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white px-5 py-4 drop-shadow sm:rounded-md lg:hidden">
-      <h2 className="list-title pb-3 text-primary-700 sm:pb-1">推薦追蹤</h2>
+    <div
+      className={`flex w-screen min-w-[375px] flex-col bg-white px-5 py-4 ${
+        isNoFollowings
+          ? 'sm:max-w-[600px] sm:drop-shadow'
+          : 'max-w-[600px] drop-shadow'
+      } sm:rounded-md lg:hidden`}
+    >
+      {isNoFollowings ? (
+        <h2 className="list-title hidden pb-3 text-primary-700 sm:block sm:pb-1">
+          推薦追蹤
+        </h2>
+      ) : (
+        <h2 className="list-title pb-3 text-primary-700 sm:pb-1">推薦追蹤</h2>
+      )}
       <div className="flex h-[210px] flex-row gap-3 overflow-x-auto sm:h-[345px] sm:flex-col sm:gap-0">
         {suggestedFollowers?.map((member, index) => {
           return (
             <div
               key={member.id}
-              className="rounded-md border border-primary-200 px-3 pt-3 pb-4 sm:border-0 sm:p-0"
+              className="rounded-md border border-primary-200 px-3 pb-4 pt-3 sm:border-0 sm:p-0"
             >
               <div className="flex h-[180px] w-[124px] flex-col items-center gap-3 sm:h-[68px] sm:w-full sm:flex-row sm:py-3">
                 <Avatar src={member.avatar ?? ''} size="xl" extra="sm:hidden" />
