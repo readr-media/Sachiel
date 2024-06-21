@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
+import { type ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
 
 import { GCP_PROJECT_ID } from '@/constants/config'
 

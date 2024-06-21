@@ -1,4 +1,4 @@
-import { RequestInit } from 'next/dist/server/web/spec-extension/request'
+import { type RequestInit } from 'next/dist/server/web/spec-extension/request'
 
 import { type TraceObject, logServerSideError } from './log'
 
