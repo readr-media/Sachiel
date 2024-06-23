@@ -74,14 +74,18 @@ query GetMemberProfile($memberId: ID!) {
           name
         }
         pick {
+          createdAt
           member {
+            id
+            name
             avatar
-            avatar_image {
-              urlOriginal
-            }
           }
         }
         pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
         comment(
           where: { member: { id: { equals: 187 } } }
           orderBy: { createdAt: desc }
