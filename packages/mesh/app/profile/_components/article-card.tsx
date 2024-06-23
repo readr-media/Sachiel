@@ -5,14 +5,21 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 
+import Comment from './comment'
+
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
-type StoryList = NonNullable<PickList>[number]['story']
-type Props = {
+export type StoryList = NonNullable<PickList>[number]['story']
+type ArticleCardProps = {
   data: NonNullable<StoryList>
   isLast: boolean
+  id: string
 }
-const ArticleCard = ({ data, isLast }: Props) => {
+const ArticleCard = ({ data, isLast, id }: ArticleCardProps) => {
+  const commentList = data.comment || []
+  const authorComment = commentList.find(
+    (comment) => comment?.member?.id === id
+  )
   return (
     <div
       className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-[rgba(0,0,0,0.1)] ${
@@ -49,6 +56,7 @@ const ArticleCard = ({ data, isLast }: Props) => {
         />
         <StoryPickButton isStoryPicked={false} />
       </section>
+      <Comment data={authorComment} />
     </div>
   )
 }

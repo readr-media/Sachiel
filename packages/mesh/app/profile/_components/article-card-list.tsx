@@ -8,8 +8,13 @@ import Tab, { TabCategory } from './tab'
 type ArticleCardListProps = {
   picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
   bookmarkData: NonNullable<GetMemberProfileQuery['member']>['books']
+  id: string
 }
-const ArticleCardList = ({ picksData, bookmarkData }: ArticleCardListProps) => {
+const ArticleCardList = ({
+  picksData,
+  bookmarkData,
+  id,
+}: ArticleCardListProps) => {
   const [showData, setShowData] = useState(picksData)
   const [category, setCategory] = useState<TabCategory>(TabCategory.picks)
 
@@ -31,10 +36,11 @@ const ArticleCardList = ({ picksData, bookmarkData }: ArticleCardListProps) => {
         {showData.map((pick, idx) => {
           if (!pick.story) return <></>
           return (
-            <li key={pick.story?.id} className="relative">
+            <li key={pick.story?.id || ''} className="relative">
               <ArticleCard
                 data={pick.story}
                 isLast={idx === showData.length - 1}
+                id={id}
               />
             </li>
           )

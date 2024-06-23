@@ -32,7 +32,11 @@ const page = async ({ params }: { params: { id: string } }) => {
         followingCount={userData.followingCount || 0}
         followerCount={userData.followerCount || 0}
       />
-      <ArticleCardList picksData={picksData} bookmarkData={bookmarkData} />
+      <ArticleCardList
+        picksData={picksData}
+        bookmarkData={bookmarkData}
+        id={params.id}
+      />
     </div>
   )
 }

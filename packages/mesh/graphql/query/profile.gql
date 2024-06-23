@@ -41,12 +41,10 @@ query GetMemberProfile($memberId: ID!) {
         paywall
         full_screen_ad
         published_date
-        comment(
-          where: { member: { id: { equals: 187 } } }
-          orderBy: { createdAt: desc }
-        ) {
+        comment(orderBy: { createdAt: desc }) {
           id
           content
+          createdAt
           member {
             id
             name
@@ -86,12 +84,10 @@ query GetMemberProfile($memberId: ID!) {
         paywall
         full_screen_ad
         published_date
-        comment(
-          where: { member: { id: { equals: 187 } } }
-          orderBy: { createdAt: desc }
-        ) {
+        comment(orderBy: { createdAt: desc }) {
           id
           content
+          createdAt
           member {
             id
             name
