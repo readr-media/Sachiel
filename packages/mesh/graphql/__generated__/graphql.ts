@@ -3336,6 +3336,7 @@ export type GetMemberProfileQuery = {
           __typename?: 'Comment'
           id: string
           content?: string | null
+          createdAt?: any | null
           member?: {
             __typename?: 'Member'
             id: string
@@ -3384,6 +3385,7 @@ export type GetMemberProfileQuery = {
           __typename?: 'Comment'
           id: string
           content?: string | null
+          createdAt?: any | null
           member?: {
             __typename?: 'Member'
             id: string
@@ -4589,47 +4591,6 @@ export const GetMemberProfileDocument = {
                               arguments: [
                                 {
                                   kind: 'Argument',
-                                  name: { kind: 'Name', value: 'where' },
-                                  value: {
-                                    kind: 'ObjectValue',
-                                    fields: [
-                                      {
-                                        kind: 'ObjectField',
-                                        name: { kind: 'Name', value: 'member' },
-                                        value: {
-                                          kind: 'ObjectValue',
-                                          fields: [
-                                            {
-                                              kind: 'ObjectField',
-                                              name: {
-                                                kind: 'Name',
-                                                value: 'id',
-                                              },
-                                              value: {
-                                                kind: 'ObjectValue',
-                                                fields: [
-                                                  {
-                                                    kind: 'ObjectField',
-                                                    name: {
-                                                      kind: 'Name',
-                                                      value: 'equals',
-                                                    },
-                                                    value: {
-                                                      kind: 'IntValue',
-                                                      value: '187',
-                                                    },
-                                                  },
-                                                ],
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                                {
-                                  kind: 'Argument',
                                   name: { kind: 'Name', value: 'orderBy' },
                                   value: {
                                     kind: 'ObjectValue',
@@ -4659,6 +4620,10 @@ export const GetMemberProfileDocument = {
                                   {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'content' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'createdAt' },
                                   },
                                   {
                                     kind: 'Field',
@@ -4860,47 +4825,6 @@ export const GetMemberProfileDocument = {
                               arguments: [
                                 {
                                   kind: 'Argument',
-                                  name: { kind: 'Name', value: 'where' },
-                                  value: {
-                                    kind: 'ObjectValue',
-                                    fields: [
-                                      {
-                                        kind: 'ObjectField',
-                                        name: { kind: 'Name', value: 'member' },
-                                        value: {
-                                          kind: 'ObjectValue',
-                                          fields: [
-                                            {
-                                              kind: 'ObjectField',
-                                              name: {
-                                                kind: 'Name',
-                                                value: 'id',
-                                              },
-                                              value: {
-                                                kind: 'ObjectValue',
-                                                fields: [
-                                                  {
-                                                    kind: 'ObjectField',
-                                                    name: {
-                                                      kind: 'Name',
-                                                      value: 'equals',
-                                                    },
-                                                    value: {
-                                                      kind: 'IntValue',
-                                                      value: '187',
-                                                    },
-                                                  },
-                                                ],
-                                              },
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                                {
-                                  kind: 'Argument',
                                   name: { kind: 'Name', value: 'orderBy' },
                                   value: {
                                     kind: 'ObjectValue',
@@ -4930,6 +4854,10 @@ export const GetMemberProfileDocument = {
                                   {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'content' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'createdAt' },
                                   },
                                   {
                                     kind: 'Field',
