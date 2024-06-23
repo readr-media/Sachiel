@@ -11,6 +11,7 @@ import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
 import NoFollowings from '../_components/no-followings'
 
 export const revalidate = 0
+//TODO: cache setting
 
 export default async function Page({ params }: { params: { id: string } }) {
   const userId = params.id
