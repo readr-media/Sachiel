@@ -70,6 +70,7 @@ export type IconName =
   | 'icon-dot'
   | 'icon-avatar-default'
   | 'icon-donate'
+  | 'icon-user-dash'
 
 export type IconProps = {
   size: Size

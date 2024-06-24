@@ -1,9 +1,8 @@
-import type { Config } from 'tailwindcss'
 import resolveConfig from 'tailwindcss/resolveConfig'
 
 import tailwindConfig from '@/tailwind.config'
 
-function getTailwindConfig(): Config {
+function getTailwindConfig() {
   return resolveConfig(tailwindConfig)
 }
 

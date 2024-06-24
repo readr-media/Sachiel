@@ -1,4 +1,3 @@
-import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
@@ -10,7 +9,7 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 import fetchRestful from '@/utils/fetch-restful'
 import fetchStatic from '@/utils/fetch-static'
-import { getLogTraceObject, logServerSideError } from '@/utils/log'
+import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'
@@ -26,8 +25,7 @@ type LatestStoriesResponse = {
 }
 
 export default async function Page() {
-  const headersList = headers()
-  const globalLogFields = getLogTraceObject(headersList)
+  const globalLogFields = getLogTraceObjectFromHeaders()
 
   const memberId = '19'
 

@@ -1,13 +1,13 @@
 import 'server-only'
 
-import { type ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers'
+import { headers } from 'next/headers'
 
 import { GCP_PROJECT_ID } from '@/constants/config'
 
 export type TraceObject = Record<string, any>
 
-function getLogTraceObject(headers: ReadonlyHeaders) {
-  const traceHeader = headers?.get('x-cloud-trace-context')
+function getLogTraceObjectFromHeaders() {
+  const traceHeader = headers()?.get('x-cloud-trace-context')
   let globalLogFields: TraceObject = {}
   if (traceHeader && !Array.isArray(traceHeader)) {
     const [trace] = traceHeader.split('/')
@@ -45,4 +45,4 @@ function logServerSideError(
   )
 }
 
-export { getLogTraceObject, logServerSideError }
+export { getLogTraceObjectFromHeaders, logServerSideError }

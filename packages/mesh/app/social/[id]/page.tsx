@@ -1,23 +1,20 @@
-import { headers } from 'next/headers'
-
-import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import fetchStatic from '@/utils/fetch-static'
-import { getLogTraceObject, TraceObject } from '@/utils/log'
+import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
 import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
 import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
+import NoFollowings from '../_components/no-followings'
 
 export const revalidate = 60
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const headersList = headers()
-  const globalLogFields = getLogTraceObject(headersList)
+  const globalLogFields = getLogTraceObjectFromHeaders()
 
   const userId = params.id
   const feedsNumber = 20
@@ -47,15 +44,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    return (
-      <main>
-        <div className="flex justify-center px-10 py-5">
-          <div className="flex flex-col gap-4">
-            <p>咦？這裡好像還缺點什麼...</p>
-          </div>
-        </div>
-      </main>
-    )
+    return <NoFollowings />
   }
 
   const currentMemberFollowingMemberIds = new Set(
@@ -84,8 +73,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   const suggestedFollowers = await processSuggestedFollowers(
     mostFollowedMembersByFollowings,
-    suggestedFollowersNumber,
-    globalLogFields
+    suggestedFollowersNumber
   )
 
   return (
@@ -107,7 +95,10 @@ export default async function Page({ params }: { params: { id: string } }) {
               />
             )
           })}
-          <FollowSuggestionFeed suggestedFollowers={suggestedFollowers} />
+          <FollowSuggestionFeed
+            suggestedFollowers={suggestedFollowers}
+            isNoFollowings={false}
+          />
           {secondSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
               (pick) => pick.story?.id === item.story?.id
@@ -146,14 +137,6 @@ type FollowedMembersByFollowings = ReturnType<
 export type SuggestedFollowers = FollowedMembersByFollowings[number] & {
   currentMemberFollowingMember: string
   isFollow: boolean
-}
-
-type MostFollowedMembers = {
-  id: number
-  followerCount: number
-  name: string
-  nickname: string
-  avatar: string
 }
 
 function processStoriesFromFollowingMemberActions(
@@ -269,37 +252,16 @@ function processMostFollowedMembersByFollowings(
 
 async function processSuggestedFollowers(
   mostFollowedMembersByFollowings: SuggestedFollowers[],
-  take: number,
-  traceObject: TraceObject
+  take: number
 ) {
   if (mostFollowedMembersByFollowings.length < 5) {
     const mostFollowedMembersByFollowingsIds = new Set(
       mostFollowedMembersByFollowings.map((member) => member.id)
     )
-    const mostFollowedMembers =
-      (await fetchStatic<MostFollowedMembers[]>(
-        STATIC_FILE_ENDPOINTS.mostFollowers,
-        {
-          next: { revalidate: 10 },
-        },
-        traceObject
-      )) ?? []
-
-    const transformedData: SuggestedFollowers[] = mostFollowedMembers
-      .filter(
-        (member) =>
-          !mostFollowedMembersByFollowingsIds.has(member.id.toString())
-      )
-      .map((member) => ({
-        id: member.id.toString(),
-        name: member.name,
-        avatar: member.avatar,
-        followerCount: member.followerCount,
-        currentMemberFollowingMember: '',
-        isFollow: false,
-      }))
-
-    return [...mostFollowedMembersByFollowings, ...transformedData].slice(
+    const mostFollowedMembers = await processMostFollowedMembers(
+      mostFollowedMembersByFollowingsIds
+    )
+    return [...mostFollowedMembersByFollowings, ...mostFollowedMembers].slice(
       0,
       take
     )
