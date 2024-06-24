@@ -3,21 +3,20 @@ import Image from 'next/image'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
-type Story = ListStoryFragment
+import { type Story } from '../page'
 
 export default function MostPickedStoryCard({
   story,
   isDesktop,
+  followingMemberIds,
 }: {
   story: Story
   isDesktop: boolean
+  followingMemberIds: Set<string>
 }) {
-  // TODO: replace props chain by using redux to store user related data
-  const followingMemberIds = new Set('')
-  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   return (
     <section className="bg-primary-100">
@@ -74,7 +73,7 @@ export default function MostPickedStoryCard({
               <div className="mt-4 flex h-8 flex-row justify-between sm:mt-3 lg:mt-4">
                 <StoryPickInfo
                   displayPicks={displayPicks}
-                  pickCount={story.pickCount ?? 0}
+                  pickCount={story.picksCount ?? 0}
                 />
                 {/* TODO: add user pick info to check if already picked */}
                 <StoryPickButton isStoryPicked={false} />

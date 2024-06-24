@@ -2,25 +2,25 @@
 
 import { Fragment, useMemo } from 'react'
 
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
 
+import { type Story } from '../page'
 import HeroStoryCard from './hero-story-card'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard, { type DisplayPublisher } from './publisher-card'
 import StoryCard from './story-card'
 
-type Story = ListStoryFragment
-
 function DesktopStories({
   stories,
   mostPickedStory,
   displayPublishers,
+  followingMemberIds,
 }: {
   stories: Story[]
   mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
+  followingMemberIds: Set<string>
 }) {
   const firstSectionCount = 5
   const [firstSectionStories, secondSectionStories] = useMemo(() => {
@@ -37,19 +37,28 @@ function DesktopStories({
       <section className="grid gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) =>
           i === 0 ? (
-            <HeroStoryCard key={story.id} story={story} />
+            <HeroStoryCard
+              key={story.id}
+              story={story}
+              followingMemberIds={followingMemberIds}
+            />
           ) : (
             <StoryCard
               key={story.id}
               story={story}
               isMobile={false}
               className={i >= indexWithoutBorderB ? 'border-b-0' : ''}
+              followingMemberIds={followingMemberIds}
             />
           )
         )}
       </section>
       {mostPickedStory && (
-        <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
+        <MostPickedStoryCard
+          story={mostPickedStory}
+          isDesktop={true}
+          followingMemberIds={followingMemberIds}
+        />
       )}
       <div className="flex gap-10 p-10 pb-15">
         <section className="w-[600px] flex-shrink-0">
@@ -64,6 +73,7 @@ function DesktopStories({
                 }`}
                 story={story}
                 isMobile={false}
+                followingMemberIds={followingMemberIds}
               />
             )
           })}
@@ -86,11 +96,13 @@ function NonDesktopStories({
   mostPickedStory,
   displayPublishers,
   isMobile,
+  followingMemberIds,
 }: {
   stories: Story[]
   mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
   isMobile: boolean
+  followingMemberIds: Set<string>
 }) {
   const specialBlocks = mostPickedStory
     ? [mostPickedStory, ...displayPublishers]
@@ -109,7 +121,11 @@ function NonDesktopStories({
                 <PublisherCard key={specialBlock.id} publisher={specialBlock} />
               </div>
             ) : (
-              <MostPickedStoryCard story={specialBlock} isDesktop={false} />
+              <MostPickedStoryCard
+                story={specialBlock}
+                isDesktop={false}
+                followingMemberIds={followingMemberIds}
+              />
             )
           return (
             <Fragment key={story.id}>
@@ -118,6 +134,7 @@ function NonDesktopStories({
                 className="mx-5 border-b-0 first-of-type:pt-0 md:mx-[70px]"
                 story={story}
                 isMobile={isMobile}
+                followingMemberIds={followingMemberIds}
               />
               {specialBlockJsx}
             </Fragment>
@@ -129,6 +146,7 @@ function NonDesktopStories({
               className="mx-5 first-of-type:pt-0 md:mx-[70px]"
               story={story}
               isMobile={isMobile}
+              followingMemberIds={followingMemberIds}
             />
           )
         }
@@ -141,10 +159,12 @@ export default function Media({
   stories = [],
   mostPickedStory,
   displayPublishers,
+  followingMemberIds,
 }: {
   stories: Story[]
   mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
+  followingMemberIds: Set<string>
 }) {
   const { width } = useWindowDimensions()
 
@@ -154,6 +174,7 @@ export default function Media({
         stories={stories}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
+        followingMemberIds={followingMemberIds}
       />
     )
   } else {
@@ -163,6 +184,7 @@ export default function Media({
         isMobile={isDeviceMobile(width)}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
+        followingMemberIds={followingMemberIds}
       />
     )
   }
