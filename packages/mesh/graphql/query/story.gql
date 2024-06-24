@@ -23,8 +23,12 @@ query LatestStories($date: DateTime) {
     og_description
     full_content
     origid
-    picksCount: pickCount(where: { kind: { equals: "read" } })
-    picks: pick(where: { kind: { equals: "read" } }) {
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    ) {
       createdAt
       member {
         id
