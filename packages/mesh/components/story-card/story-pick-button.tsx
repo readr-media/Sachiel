@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import Button from '@/components/button'
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchData from '@/utils/fetch-statics'
+import fetchStatic from '@/utils/fetch-static'
 import { debounce } from '@/utils/performance'
 
 export default function StoryPickButton({
@@ -29,7 +29,7 @@ export default function StoryPickButton({
         targetId: storyId,
         ...(!isPicked && { state: 'public' }),
       }
-      const response = await fetchData(RESTFUL_ENDPOINTS.pubsub, {
+      const response = await fetchStatic(RESTFUL_ENDPOINTS.pubsub, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

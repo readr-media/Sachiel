@@ -1,7 +1,7 @@
 import type { SuggestedFollowers } from '@/app/social/[id]/page'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 
-import fetchData from './fetch-statics'
+import fetchStatic from './fetch-static'
 
 type MostFollowedMembers = {
   id: number
@@ -13,7 +13,7 @@ type MostFollowedMembers = {
 
 export async function processMostFollowedMembers(filterData?: Set<string>) {
   const mostFollowersData =
-    (await fetchData<MostFollowedMembers[]>(
+    (await fetchStatic<MostFollowedMembers[]>(
       STATIC_FILE_ENDPOINTS.mostFollowers,
       {
         next: { revalidate: 10 },

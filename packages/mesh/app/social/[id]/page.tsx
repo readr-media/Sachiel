@@ -3,6 +3,7 @@ import {
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
+import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
 import Feed from '../_components/feed'
@@ -14,15 +15,21 @@ export const revalidate = 0
 //TODO: cache setting
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   const userId = params.id
   const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
 
-  const data = await fetchGraphQL(GetMemberFollowingDocument, {
-    memberId: userId,
-    takes: feedsNumber,
-  })
+  const data = await fetchGraphQL(
+    GetMemberFollowingDocument,
+    {
+      memberId: userId,
+      takes: feedsNumber,
+    },
+    globalLogFields
+  )
   const currentMember = data?.member
   const currentMemberFollowings = selectCurrentMemberFollowings(currentMember)
 

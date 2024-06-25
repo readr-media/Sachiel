@@ -1,3 +1,4 @@
+const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
 let API_ORIGIN = ''
@@ -22,8 +23,18 @@ const RESTFUL_ENDPOINTS = {
   latestStories: `${API_ORIGIN}/latest_stories`,
   pubsub: `${API_ORIGIN}/pubsub`,
 }
+
 const STATIC_FILE_ENDPOINTS = {
   mostFollowers: `${STATIC_FILE_ORIGIN}/data/most_followers.json`,
+  mostPickStoriesInCategoryFn: (categoryName: string) =>
+    `${STATIC_FILE_ORIGIN}/data/most_read_stories_${categoryName}.json`,
+  mostSponsorPublishers: `${STATIC_FILE_ORIGIN}/data/most_sponsor_publishers.json`,
 }
 
-export { ENV, GQL_ENDPOINT, RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS }
+export {
+  ENV,
+  GCP_PROJECT_ID,
+  GQL_ENDPOINT,
+  RESTFUL_ENDPOINTS,
+  STATIC_FILE_ENDPOINTS,
+}

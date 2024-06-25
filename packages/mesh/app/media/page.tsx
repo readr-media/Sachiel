@@ -1,53 +1,110 @@
-import { getClient } from '@/apollo'
+import { notFound } from 'next/navigation'
+
+import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
-  type GetPublishersQuery,
-  type ListStoryFragment,
-  GetLatestStoriesDocument,
-  GetMostPickedStoryDocument,
-  GetPublishersDocument,
+  type LatestStoriesQuery,
+  type PublishersQuery,
+  GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
+import fetchGraphQL from '@/utils/fetch-graphql'
+import fetchRestful from '@/utils/fetch-restful'
+import fetchStatic from '@/utils/fetch-static'
+import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'
 
 export const revalidate = 0
-
-type Story = ListStoryFragment
-type Publisher = NonNullable<GetPublishersQuery['publishers']>[number]
+export type Story = NonNullable<LatestStoriesQuery['stories']>[number]
+export type Publisher = NonNullable<PublishersQuery['publishers']>[number]
+type LatestStoriesResponse = {
+  update_time: number
+  expire_time: number
+  num_stories: number
+  stories: Story[]
+}
 
 export default async function Page() {
-  const mockMostPickedStoryId = '1175202'
-  const pageStoriesCount = 20
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const memberId = '19'
+
+  const data = await fetchGraphQL(
+    GetMemberDocument,
+    {
+      memberId,
+    },
+    globalLogFields
+  )
+
+  if (!data) {
+    return notFound()
+  }
+
+  const followingPublishers =
+    data.member?.followPublishers?.map((publiser) => publiser.id) ?? []
+  const firstCategory = data.member?.followingCategories?.[0]
+  const followingMemberIds = new Set(
+    data.member?.followingMembers?.map((member) => member.id ?? '')
+  )
+
+  if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
+    // TODO: user has no category to render, show empty category UI
+    return <div>Empty Caegory UI</div>
+  }
+
   const mediaCount = 5
+  const latestStoryPageCount = 20
   let stories: Story[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
 
-  const responses = await Promise.allSettled([
-    fetchLatestStories({ take: pageStoriesCount }),
-    fetchMostPickedStory({ id: mockMostPickedStoryId }),
-    fetchMedia({ take: mediaCount }),
-  ])
-  if (responses[0].status === 'fulfilled') {
-    stories = responses[0].value.data.stories ?? []
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[0].reason)
+  let responses: [
+    Story[] | null,
+    LatestStoriesResponse | null,
+    Publisher[] | null
+  ]
+  try {
+    responses = await Promise.all([
+      fetchStatic<Story[]>(
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(firstCategory?.slug),
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      ),
+      fetchRestful<LatestStoriesResponse>(
+        RESTFUL_ENDPOINTS.latestStories,
+        {
+          publishers: followingPublishers,
+          category: firstCategory?.id,
+          index: 0,
+          take: latestStoryPageCount,
+        },
+        {
+          next: { revalidate },
+        },
+        globalLogFields
+      ),
+      fetchStatic<Publisher[]>(
+        STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      ),
+    ])
+  } catch (error) {
+    logServerSideError(error, 'Unhandled error in media page', globalLogFields)
+    responses = [null, null, null]
   }
 
-  if (responses[1].status === 'fulfilled') {
-    mostPickedStory = responses[1].value.data.story
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[1].reason)
-  }
-
-  if (responses[2].status === 'fulfilled') {
-    publishers = responses[2].value.data.publishers ?? []
-  } else {
-    // TODO: handle gql failed error
-    console.error(responses[2].reason)
-  }
+  mostPickedStory = responses[0]?.[0]
+  stories =
+    responses[1]?.stories?.filter(
+      (story) => story.id !== mostPickedStory?.id
+    ) ?? []
+  publishers = responses[2]?.slice(0, mediaCount) ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({
@@ -62,38 +119,8 @@ export default async function Page() {
         stories={stories}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
+        followingMemberIds={followingMemberIds}
       />
     </main>
   )
-}
-
-// TODO: update to fetch latest stories by category
-async function fetchLatestStories({ take }: { take: number }) {
-  return getClient().query({
-    query: GetLatestStoriesDocument,
-    variables: {
-      take,
-    },
-  })
-}
-
-// TODO: update to fetch categroy most picked story from proxy server through restful api
-async function fetchMostPickedStory({ id }: { id: string }) {
-  return getClient().query({
-    query: GetMostPickedStoryDocument,
-    variables: {
-      id,
-    },
-  })
-}
-
-// TODO: phase1 update to 5 hardcoded publisers ids
-// TODO: phase2 update to fetch 5 most sponsored or hardcoded promote publishers ids through proxy server
-async function fetchMedia({ take }: { take: number }) {
-  return getClient().query({
-    query: GetPublishersDocument,
-    variables: {
-      take,
-    },
-  })
 }
