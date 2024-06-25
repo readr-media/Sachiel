@@ -10,7 +10,8 @@ import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
-import Media from './_components/media'
+import DesktopStories from './_components/desktop-stories'
+import NonDesktopStories from './_components/non-desktop-stories'
 import getLatestStoriesInCategory, {
   type GetLatestStoriesBody,
   type LatestStoriesResponse,
@@ -125,7 +126,13 @@ export default async function Page() {
   return (
     <main className="bg-white">
       <CategorySelector />
-      <Media
+      <DesktopStories
+        latestStoriesInfo={latestStoriesInfo}
+        mostPickedStory={mostPickedStory}
+        displayPublishers={displayPublishers}
+        followingMemberIds={followingMemberIds}
+      />
+      <NonDesktopStories
         latestStoriesInfo={latestStoriesInfo}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
