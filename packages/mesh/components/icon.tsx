@@ -70,6 +70,12 @@ export type IconName =
   | 'icon-dot'
   | 'icon-avatar-default'
   | 'icon-user-dash'
+  | 'icon-apple'
+  | 'icon-facebook-square'
+  | 'icon-google'
+  | 'icon-email'
+  | 'icon-chevron-left'
+  | 'icon-login-step-1'
 
 export type IconProps = {
   size: Size
