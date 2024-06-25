@@ -3337,6 +3337,7 @@ export type GetMemberProfileQuery = {
           id: string
           content?: string | null
           createdAt?: any | null
+          likeCount?: number | null
           member?: {
             __typename?: 'Member'
             id: string
@@ -3386,6 +3387,7 @@ export type GetMemberProfileQuery = {
           id: string
           content?: string | null
           createdAt?: any | null
+          likeCount?: number | null
           member?: {
             __typename?: 'Member'
             id: string
@@ -4627,6 +4629,10 @@ export const GetMemberProfileDocument = {
                                   },
                                   {
                                     kind: 'Field',
+                                    name: { kind: 'Name', value: 'likeCount' },
+                                  },
+                                  {
+                                    kind: 'Field',
                                     name: { kind: 'Name', value: 'member' },
                                     selectionSet: {
                                       kind: 'SelectionSet',
@@ -4858,6 +4864,10 @@ export const GetMemberProfileDocument = {
                                   {
                                     kind: 'Field',
                                     name: { kind: 'Name', value: 'createdAt' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'likeCount' },
                                   },
                                   {
                                     kind: 'Field',

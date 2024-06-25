@@ -45,6 +45,7 @@ query GetMemberProfile($memberId: ID!) {
           id
           content
           createdAt
+          likeCount
           member {
             id
             name
@@ -88,6 +89,7 @@ query GetMemberProfile($memberId: ID!) {
           id
           content
           createdAt
+          likeCount
           member {
             id
             name

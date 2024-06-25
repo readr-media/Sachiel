@@ -84,6 +84,7 @@ export type IconName =
   | 'icon-dynamicxyz'
   | 'icon-check-circle-gray'
   | 'icon-check-circle-blue'
+  | 'icon-heart'
 
 export type IconProps = {
   size: Size
