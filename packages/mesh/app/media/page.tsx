@@ -1,28 +1,31 @@
 import { notFound } from 'next/navigation'
 
-import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
+import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
-  type LatestStoriesQuery,
   type PublishersQuery,
   GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import fetchRestful from '@/utils/fetch-restful'
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import Media from './_components/media'
+import getLatestStoriesInCategory, {
+  type GetLatestStoriesBody,
+  type LatestStoriesResponse,
+  type Story,
+} from './actions'
 
-export const revalidate = 0
-export type Story = NonNullable<LatestStoriesQuery['stories']>[number]
+export const revalidate = 60000
 export type Publisher = NonNullable<PublishersQuery['publishers']>[number]
-type LatestStoriesResponse = {
-  update_time: number
-  expire_time: number
-  num_stories: number
+export type LatestStoriesInfo = {
   stories: Story[]
+  totalCount: number
+  fetchBody: GetLatestStoriesBody
+  fetchListInPage: (pageIndex: number) => Promise<Story[]>
 }
+export { type Story } from './actions'
 
 export default async function Page() {
   const globalLogFields = getLogTraceObjectFromHeaders()
@@ -55,9 +58,14 @@ export default async function Page() {
 
   const mediaCount = 5
   const latestStoryPageCount = 20
-  let stories: Story[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
+  const fetchBody = {
+    publishers: followingPublishers,
+    category: firstCategory?.id,
+    index: 0,
+    take: latestStoryPageCount,
+  }
 
   let responses: [
     Story[] | null,
@@ -73,19 +81,7 @@ export default async function Page() {
         },
         globalLogFields
       ),
-      fetchRestful<LatestStoriesResponse>(
-        RESTFUL_ENDPOINTS.latestStories,
-        {
-          publishers: followingPublishers,
-          category: firstCategory?.id,
-          index: 0,
-          take: latestStoryPageCount,
-        },
-        {
-          next: { revalidate },
-        },
-        globalLogFields
-      ),
+      getLatestStoriesInCategory(fetchBody),
       fetchStatic<Publisher[]>(
         STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
         {
@@ -100,23 +96,37 @@ export default async function Page() {
   }
 
   mostPickedStory = responses[0]?.[0]
-  stories =
-    responses[1]?.stories?.filter(
-      (story) => story.id !== mostPickedStory?.id
-    ) ?? []
+  const latestStoriesInfo: LatestStoriesInfo = {
+    stories:
+      responses[1]?.stories?.filter(
+        (story) => story.id !== mostPickedStory?.id
+      ) ?? [],
+    totalCount: responses[1]?.num_stories ?? 0,
+    fetchBody,
+    fetchListInPage: async (pageIndex) => {
+      'use server'
+      const response = await getLatestStoriesInCategory({
+        ...fetchBody,
+        index: (pageIndex - 1) * fetchBody.take,
+      })
+      // TODO: filter out stories existed in mostPickStory, publisher stories
+      return response?.stories ?? []
+    },
+  }
+
   publishers = responses[2]?.slice(0, mediaCount) ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({
     ...publisher,
-    stories: stories?.slice(0, 3) ?? [],
+    stories: latestStoriesInfo.stories?.slice(0, 3) ?? [],
   }))
 
   return (
     <main className="bg-white">
       <CategorySelector />
       <Media
-        stories={stories}
+        latestStoriesInfo={latestStoriesInfo}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
         followingMemberIds={followingMemberIds}

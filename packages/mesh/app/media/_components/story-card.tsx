@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import StoryMeta from '@/components/story-card/story-meta'
@@ -9,17 +10,20 @@ import { getDisplayPicks } from '@/utils/story-display'
 
 import { type Story } from '../page'
 
-export default function StoryCard({
-  story,
-  isMobile,
-  className = '',
-  followingMemberIds,
-}: {
-  story: Story
-  isMobile: boolean
-  className?: string
-  followingMemberIds: Set<string>
-}) {
+export default forwardRef(function StoryCard(
+  {
+    story,
+    isMobile,
+    className = '',
+    followingMemberIds,
+  }: {
+    story: Story
+    isMobile: boolean
+    className?: string
+    followingMemberIds: Set<string>
+  },
+  ref
+) {
   const imageSize = isMobile ? imageSizes.mobile : imageSizes.nonMobile
   const titleClass = isMobile ? 'subtitle-1' : 'title-2'
   const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
@@ -41,6 +45,7 @@ export default function StoryCard({
         'flex flex-col justify-between border-b pb-4 pt-5',
         className
       )}
+      ref={ref as React.RefObject<HTMLElement>}
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
@@ -82,4 +87,4 @@ export default function StoryCard({
       </div>
     </article>
   )
-}
+})

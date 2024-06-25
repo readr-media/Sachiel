@@ -3,7 +3,7 @@ import Image from 'next/image'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 
-import { type Story, Publisher } from '../page'
+import { type Publisher, type Story } from '../page'
 
 export type DisplayPublisher = Publisher & {
   stories: Story[]
