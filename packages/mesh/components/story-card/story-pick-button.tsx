@@ -4,8 +4,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 import Button from '@/components/button'
-import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchStatic from '@/utils/fetch-static'
+import { addPick, removePick } from '@/utils/action'
 import { debounce } from '@/utils/performance'
 
 export default function StoryPickButton({
@@ -18,32 +17,16 @@ export default function StoryPickButton({
   const [isPicked, setIsPicked] = useState(isStoryPicked)
   //TODO: replace with logged-in member's status
   const params = useParams()
-  const { id: memberId } = params
+  const { id } = params
+  const memberId = Array.isArray(id) ? id[0] : id
 
   const handleClickPick = debounce(async () => {
-    try {
-      const payload = {
-        action: isPicked ? 'remove_pick' : 'add_pick',
-        memberId,
-        objective: 'story',
-        targetId: storyId,
-        ...(!isPicked && { state: 'public' }),
-      }
-      const response = await fetchStatic(RESTFUL_ENDPOINTS.pubsub, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response) {
-        throw new Error('Failed to update pick status')
-      }
+    if (isPicked) {
+      const removePickResponse = await removePick({ memberId, storyId })
       setIsPicked(!isPicked)
-    } catch (error) {
-      //TODO: globalLogFields
-      console.error('Error in handleClickPick:', error)
+    } else {
+      const addPickResponse = await addPick({ memberId, storyId })
+      setIsPicked(!isPicked)
     }
   })
 
