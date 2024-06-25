@@ -3,9 +3,6 @@
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { Fragment, useMemo } from 'react'
 
-import useWindowDimensions from '@/hooks/use-window-dimension'
-import { isDeviceDesktop, isDeviceMobile } from '@/utils/device'
-
 import { type LatestStoriesInfo, type Story } from '../page'
 import HeroStoryCard from './hero-story-card'
 import MostPickedStoryCard from './most-picked-story-card'
@@ -33,7 +30,7 @@ function DesktopStories({
   }, [stories])
 
   return (
-    <>
+    <div className="hidden lg:block">
       <section className="grid gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) =>
           i === 0 ? (
@@ -46,7 +43,6 @@ function DesktopStories({
             <StoryCard
               key={story.id}
               story={story}
-              isMobile={false}
               // last two story shows no border-b
               className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
               followingMemberIds={followingMemberIds}
@@ -80,7 +76,6 @@ function DesktopStories({
                       i === list.length - 1 ? 'last-of-type:border-b-0' : ''
                     }`}
                     story={story}
-                    isMobile={false}
                     followingMemberIds={followingMemberIds}
                     ref={shouldSetTriggerRef ? customTriggerRef : undefined}
                   />
@@ -98,20 +93,18 @@ function DesktopStories({
           ))}
         </aside>
       </div>
-    </>
+    </div>
   )
 }
 
 function NonDesktopStories({
   mostPickedStory,
   displayPublishers,
-  isMobile,
   followingMemberIds,
   latestStoriesInfo,
 }: {
   mostPickedStory: Story | null | undefined
   displayPublishers: DisplayPublisher[]
-  isMobile: boolean
   followingMemberIds: Set<string>
   latestStoriesInfo: LatestStoriesInfo
 }) {
@@ -120,7 +113,7 @@ function NonDesktopStories({
     : [...displayPublishers]
 
   return (
-    <div className="flex flex-col sm:pb-10">
+    <div className="flex flex-col sm:pb-10 lg:hidden">
       <InfiniteScrollList
         initialList={latestStoriesInfo.stories}
         pageSize={latestStoriesInfo.fetchBody.take}
@@ -156,7 +149,6 @@ function NonDesktopStories({
                     key={story.id}
                     className="mx-5 border-b-0 first-of-type:pt-0 md:mx-[70px]"
                     story={story}
-                    isMobile={isMobile}
                     followingMemberIds={followingMemberIds}
                     ref={shouldSetTriggerRef ? customTriggerRef : undefined}
                   />
@@ -169,7 +161,6 @@ function NonDesktopStories({
                   key={story.id}
                   className="mx-5 first-of-type:pt-0 md:mx-[70px]"
                   story={story}
-                  isMobile={isMobile}
                   followingMemberIds={followingMemberIds}
                   ref={shouldSetTriggerRef ? customTriggerRef : undefined}
                 />
@@ -193,26 +184,20 @@ export default function Media({
   displayPublishers: DisplayPublisher[]
   followingMemberIds: Set<string>
 }) {
-  const { width } = useWindowDimensions()
-
-  if (isDeviceDesktop(width)) {
-    return (
+  return (
+    <>
       <DesktopStories
         latestStoriesInfo={latestStoriesInfo}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
         followingMemberIds={followingMemberIds}
       />
-    )
-  } else {
-    return (
       <NonDesktopStories
         latestStoriesInfo={latestStoriesInfo}
-        isMobile={isDeviceMobile(width)}
         mostPickedStory={mostPickedStory}
         displayPublishers={displayPublishers}
         followingMemberIds={followingMemberIds}
       />
-    )
-  }
+    </>
+  )
 }

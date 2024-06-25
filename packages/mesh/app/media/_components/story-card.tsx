@@ -5,31 +5,19 @@ import { twMerge } from 'tailwind-merge'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { imageSizes } from '@/constants/media'
 import { getDisplayPicks } from '@/utils/story-display'
 
 import { type Story } from '../page'
 
-export default forwardRef(function StoryCard(
-  {
-    story,
-    isMobile,
-    className = '',
-    followingMemberIds,
-  }: {
-    story: Story
-    isMobile: boolean
-    className?: string
-    followingMemberIds: Set<string>
-  },
-  ref
-) {
-  const imageSize = isMobile ? imageSizes.mobile : imageSizes.nonMobile
-  const titleClass = isMobile ? 'subtitle-1' : 'title-2'
-  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
-
-  const metaJsx = (
-    <div className="caption-1 mt-2 sm:mt-1">
+const StoryMetaWrapper = ({
+  story,
+  className,
+}: {
+  story: Story
+  className: string
+}) => {
+  return (
+    <div className={twMerge('caption-1 mt-2 sm:mt-1', className)}>
       <StoryMeta
         commentCount={story.commentCount ?? 0}
         publishDate={story.published_date}
@@ -38,6 +26,21 @@ export default forwardRef(function StoryCard(
       />
     </div>
   )
+}
+
+export default forwardRef(function StoryCard(
+  {
+    story,
+    className = '',
+    followingMemberIds,
+  }: {
+    story: Story
+    className?: string
+    followingMemberIds: Set<string>
+  },
+  ref
+) {
+  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   return (
     <article
@@ -56,26 +59,26 @@ export default forwardRef(function StoryCard(
         </div>
         <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
           <div>
-            <h2 className={`${titleClass} text-primary-700`}>
+            <h2 className={`subtitle-1 text-primary-700 sm:hidden`}>
               {story.title ?? ''}
             </h2>
-            {!isMobile && metaJsx}
+            <h2 className={`title-2 hidden text-primary-700 sm:block`}>
+              {story.title ?? ''}
+            </h2>
+            <StoryMetaWrapper story={story} className="hidden sm:block" />
           </div>
           {story.og_image && (
-            <Image
-              style={{
-                width: imageSize.width,
-                height: imageSize.height,
-              }}
-              className="flex-shrink-0 rounded-[4px] object-cover"
-              src={story.og_image}
-              alt={story.title ?? ''}
-              width={imageSize.width}
-              height={imageSize.height}
-            />
+            <div className="relative h-[48px] w-[96px] flex-shrink-0  sm:h-[80px] sm:w-[160px]">
+              <Image
+                className="rounded-[4px] object-cover "
+                src={story.og_image}
+                alt={story.title ?? ''}
+                fill
+              />
+            </div>
           )}
         </div>
-        {isMobile && metaJsx}
+        <StoryMetaWrapper story={story} className="sm:hidden" />
       </div>
       <div className="mt-4 flex h-8 flex-row justify-between">
         <StoryPickInfo
