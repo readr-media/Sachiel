@@ -71,6 +71,7 @@ export type IconName =
   | 'icon-avatar-default'
   | 'icon-donate'
   | 'icon-user-dash'
+  | 'icon-heart'
 
 export type IconProps = {
   size: Size
