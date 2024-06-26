@@ -98,6 +98,7 @@ export default async function Page() {
         },
         globalLogFields
       ),
+      // TODO: fetch json instead
       fetchGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
     ])
   } catch (error) {
