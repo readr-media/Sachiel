@@ -3091,6 +3091,18 @@ export type UserActionStoryFragment = {
   }> | null
 }
 
+export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllCategoriesQuery = {
+  __typename?: 'Query'
+  categories?: Array<{
+    __typename?: 'Category'
+    id: string
+    slug?: string | null
+    title?: string | null
+  }> | null
+}
+
 export type GetMemberFollowingQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
   takes: Scalars['Int']['input']
@@ -3409,6 +3421,36 @@ export const UserActionStoryFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<UserActionStoryFragment, unknown>
+export const GetAllCategoriesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetAllCategories' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'categories' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetAllCategoriesQuery,
+  GetAllCategoriesQueryVariables
+>
 export const GetMemberFollowingDocument = {
   kind: 'Document',
   definitions: [
