@@ -10,7 +10,6 @@ export default async function fetchRestful<T>(
   try {
     const response = await fetch(url, {
       ...init,
-      next: { revalidate: 3600 },
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
