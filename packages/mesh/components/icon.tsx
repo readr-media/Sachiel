@@ -76,6 +76,8 @@ export type IconName =
   | 'icon-email'
   | 'icon-chevron-left'
   | 'icon-login-step-1'
+  | 'icon-login-step-2'
+  | 'icon-login-step-3'
 
 export type IconProps = {
   size: Size

@@ -66,9 +66,9 @@ export default function LoginEmail({
         <button onClick={handleClickChevron}>
           <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
         </button>
-        <p className="list-title mx-auto">
+        <h2 className="list-title mx-auto">
           {isEmailSubmit ? '確認收件匣' : 'Email'}
-        </p>
+        </h2>
         <div className="h-5 w-5 px-5"></div>
       </div>
       <div className="flex w-full justify-center sm:h-full sm:items-center">

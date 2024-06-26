@@ -6,6 +6,8 @@ import Icon from '@/components/icon'
 
 import LoginEmail from './_components/login-email'
 import LoginEntry from './_components/login-entry'
+import LoginSetCategory from './_components/login-set-category'
+import LoginSetFollowing from './_components/login-set-following'
 import LoginSetName from './_components/login-set-name'
 
 export type LoginProcess =
@@ -40,6 +42,19 @@ export default function Page() {
     ),
     'set-name': (
       <LoginSetName
+        handleLoginProcess={handleLoginProcess}
+        formData={formData}
+        setFormData={setFormData}
+      />
+    ),
+    'set-category': (
+      <LoginSetCategory
+        handleLoginProcess={handleLoginProcess}
+        setFormData={setFormData}
+      />
+    ),
+    'set-following': (
+      <LoginSetFollowing
         handleLoginProcess={handleLoginProcess}
         setFormData={setFormData}
       />

@@ -7,12 +7,14 @@ import type { LoginProcess, UserFormData } from '../page'
 
 export default function LoginSetName({
   handleLoginProcess,
+  formData,
   setFormData,
 }: {
   handleLoginProcess: (step: LoginProcess) => void
+  formData: UserFormData
   setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
 }) {
-  const [name, setName] = useState('')
+  const [name, setName] = useState(formData.name)
   const [helperText, setHelperText] = useState('')
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
