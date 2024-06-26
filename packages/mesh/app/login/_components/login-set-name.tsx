@@ -62,11 +62,11 @@ export default function LoginSetName({
         <h2 className="list-title">姓名</h2>
       </div>
       <div className="flex w-full justify-center sm:h-full sm:items-center">
-        <div className="flex max-w-[480px] flex-col bg-white sm:rounded-md sm:drop-shadow">
+        <div className="flex w-[480px] flex-col bg-white sm:rounded-md sm:drop-shadow">
           <div className="hidden h-15 w-full items-center justify-center border-b sm:flex">
             <h2 className="list-title">姓名</h2>
           </div>
-          <div className="flex flex-col items-center gap-10 px-5 pb-10 pt-5">
+          <div className="flex flex-col items-center gap-10 px-5 pb-10 pt-5 sm:px-10">
             <Icon
               iconName="icon-login-step-1"
               size={{ width: 335, height: 20 }}
