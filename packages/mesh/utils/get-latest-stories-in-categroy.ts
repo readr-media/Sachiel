@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { type LatestStoriesQuery } from '@/graphql/__generated__/graphql'

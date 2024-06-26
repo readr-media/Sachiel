@@ -7,16 +7,16 @@ import {
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import fetchStatic from '@/utils/fetch-static'
+import getLatestStoriesInCategory, {
+  type GetLatestStoriesBody,
+  type LatestStoriesResponse,
+  type Story,
+} from '@/utils/get-latest-stories-in-categroy'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import DesktopStories from './_components/desktop-stories'
 import NonDesktopStories from './_components/non-desktop-stories'
-import getLatestStoriesInCategory, {
-  type GetLatestStoriesBody,
-  type LatestStoriesResponse,
-  type Story,
-} from './actions'
 
 export const revalidate = 60000
 export type Publisher = NonNullable<PublishersQuery['publishers']>[number]
@@ -26,7 +26,7 @@ export type LatestStoriesInfo = {
   fetchBody: GetLatestStoriesBody
   fetchListInPage: (pageIndex: number) => Promise<Story[]>
 }
-export { type Story } from './actions'
+export { type Story } from '@/utils/get-latest-stories-in-categroy'
 
 export default async function Page() {
   const globalLogFields = getLogTraceObjectFromHeaders()
