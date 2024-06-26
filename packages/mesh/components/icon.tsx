@@ -69,6 +69,7 @@ export type IconName =
   | 'icon-chat-bubble'
   | 'icon-dot'
   | 'icon-avatar-default'
+  | 'icon-donate'
   | 'icon-user-dash'
   | 'icon-apple'
   | 'icon-facebook-square'

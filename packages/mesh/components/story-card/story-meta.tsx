@@ -27,7 +27,7 @@ export default function StoryMeta({
           付費文章
         </div>
       )}
-      {fullScreenAd !== 'none' && (
+      {fullScreenAd && fullScreenAd !== 'none' && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
           蓋板廣告

@@ -1,32 +1,23 @@
 import Image from 'next/image'
+import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { imageSizes } from '@/constants/media'
-import { type ListStoryFragment } from '@/graphql/__generated__/graphql'
 import { getDisplayPicks } from '@/utils/story-display'
 
-type Story = ListStoryFragment
+import { type Story } from '../page'
 
-export default function StoryCard({
+const StoryMetaWrapper = ({
   story,
-  isMobile,
-  className = '',
+  className,
 }: {
   story: Story
-  isMobile: boolean
-  className?: string
-}) {
-  const imageSize = isMobile ? imageSizes.mobile : imageSizes.nonMobile
-  const titleClass = isMobile ? 'subtitle-1' : 'title-2'
-  // TODO: replace props chain by using redux to store user related data
-  const followingMemberIds = new Set('')
-  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
-
-  const metaJsx = (
-    <div className="caption-1 mt-2 sm:mt-1">
+  className: string
+}) => {
+  return (
+    <div className={twMerge('caption-1 mt-2 sm:mt-1', className)}>
       <StoryMeta
         commentCount={story.commentCount ?? 0}
         publishDate={story.published_date}
@@ -35,6 +26,21 @@ export default function StoryCard({
       />
     </div>
   )
+}
+
+export default forwardRef(function StoryCard(
+  {
+    story,
+    className = '',
+    followingMemberIds,
+  }: {
+    story: Story
+    className?: string
+    followingMemberIds: Set<string>
+  },
+  ref
+) {
+  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
   return (
     <article
@@ -42,6 +48,7 @@ export default function StoryCard({
         'flex flex-col justify-between border-b pb-4 pt-5',
         className
       )}
+      ref={ref as React.RefObject<HTMLElement>}
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
@@ -52,35 +59,35 @@ export default function StoryCard({
         </div>
         <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
           <div>
-            <h2 className={`${titleClass} text-primary-700`}>
+            <h2 className={`subtitle-1 text-primary-700 sm:hidden`}>
               {story.title ?? ''}
             </h2>
-            {!isMobile && metaJsx}
+            <h2 className={`title-2 hidden text-primary-700 sm:block`}>
+              {story.title ?? ''}
+            </h2>
+            <StoryMetaWrapper story={story} className="hidden sm:block" />
           </div>
           {story.og_image && (
-            <Image
-              style={{
-                width: imageSize.width,
-                height: imageSize.height,
-              }}
-              className="flex-shrink-0 rounded-[4px] object-cover"
-              src={story.og_image}
-              alt={story.title ?? ''}
-              width={imageSize.width}
-              height={imageSize.height}
-            />
+            <div className="relative h-[48px] w-[96px] flex-shrink-0  sm:h-[80px] sm:w-[160px]">
+              <Image
+                className="rounded-[4px] object-cover "
+                src={story.og_image}
+                alt={story.title ?? ''}
+                fill
+              />
+            </div>
           )}
         </div>
-        {isMobile && metaJsx}
+        <StoryMetaWrapper story={story} className="sm:hidden" />
       </div>
       <div className="mt-4 flex h-8 flex-row justify-between">
         <StoryPickInfo
           displayPicks={displayPicks}
-          pickCount={story.pickCount ?? 0}
+          pickCount={story.picksCount ?? 0}
         />
         {/* TODO: add user pick info to check if already picked */}
-        <StoryPickButton isStoryPicked={false} />
+        <StoryPickButton isStoryPicked={false} storyId={story.id} />
       </div>
     </article>
   )
-}
+})
