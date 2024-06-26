@@ -1,9 +1,8 @@
 'use server'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-
-import fetchStatic from './fetch-static'
-import { getLogTraceObjectFromHeaders } from './log'
+import fetchStatic from '@/utils/fetch-static'
+import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export async function addPick({
   memberId,

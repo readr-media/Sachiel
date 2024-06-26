@@ -24,10 +24,18 @@ export default function StoryPickButton({
   const handleClickPick = debounce(async () => {
     if (isPicked) {
       const removePickResponse = await removePick({ memberId, storyId })
-      setIsPicked(!isPicked)
+      if (removePickResponse) {
+        setIsPicked(!isPicked)
+      } else {
+        console.log('toast')
+      }
     } else {
       const addPickResponse = await addPick({ memberId, storyId })
-      setIsPicked(!isPicked)
+      if (addPickResponse) {
+        setIsPicked(!isPicked)
+      } else {
+        console.log('toast')
+      }
     }
   })
 
