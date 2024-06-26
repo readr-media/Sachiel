@@ -3,10 +3,9 @@
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { addPick, removePick } from '@/app/actions/pick'
 import Button from '@/components/button'
 import { debounce } from '@/utils/performance'
-
-import { addPick, removePick } from '../action'
 
 export default function StoryPickButton({
   isStoryPicked,
@@ -27,6 +26,7 @@ export default function StoryPickButton({
       if (removePickResponse) {
         setIsPicked(!isPicked)
       } else {
+        //TODO: error toast
         console.log('toast')
       }
     } else {
@@ -34,6 +34,7 @@ export default function StoryPickButton({
       if (addPickResponse) {
         setIsPicked(!isPicked)
       } else {
+        //TODO: error toast
         console.log('toast')
       }
     }
