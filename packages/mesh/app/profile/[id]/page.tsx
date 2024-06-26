@@ -35,6 +35,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       <ArticleCardList
         picksData={picksData}
         bookmarkData={bookmarkData}
+        avatar={userData.avatar || ''}
         id={params.id}
       />
     </div>

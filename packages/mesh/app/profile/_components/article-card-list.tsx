@@ -9,11 +9,13 @@ type ArticleCardListProps = {
   picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
   bookmarkData: NonNullable<GetMemberProfileQuery['member']>['books']
   id: string
+  avatar: string
 }
 const ArticleCardList = ({
   picksData,
   bookmarkData,
   id,
+  avatar,
 }: ArticleCardListProps) => {
   const [showData, setShowData] = useState(picksData)
   const [category, setCategory] = useState<TabCategory>(TabCategory.picks)
@@ -32,15 +34,20 @@ const ArticleCardList = ({
   return (
     <>
       <Tab category={category} setCategory={setCategory} />
-      <ul>
+      <ul className="max-w-[1120px] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
         {showData.map((pick, idx) => {
-          if (!pick.story) return <></>
+          if (!pick.story) return
           return (
-            <li key={pick.story?.id || ''} className="relative">
+            <li
+              key={pick.story.id}
+              className="relative h-full w-full bg-white md:rounded-md md:shadow-[0_2px_2px_0px_rgba(0,9,40,0.1)]"
+            >
               <ArticleCard
                 data={pick.story}
                 isLast={idx === showData.length - 1}
                 id={id}
+                avatar={avatar}
+                category={category}
               />
             </li>
           )
