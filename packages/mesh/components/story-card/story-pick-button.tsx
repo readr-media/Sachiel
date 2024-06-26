@@ -4,8 +4,9 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 import Button from '@/components/button'
-import { addPick, removePick } from '@/utils/action'
 import { debounce } from '@/utils/performance'
+
+import { addPick, removePick } from '../action'
 
 export default function StoryPickButton({
   isStoryPicked,
