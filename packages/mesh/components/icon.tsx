@@ -69,6 +69,8 @@ export type IconName =
   | 'icon-chat-bubble'
   | 'icon-dot'
   | 'icon-avatar-default'
+  | 'icon-donate'
+  | 'icon-user-dash'
 
 export type IconProps = {
   size: Size

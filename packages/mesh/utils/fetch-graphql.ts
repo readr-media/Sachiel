@@ -3,12 +3,16 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
 import { getClient } from '@/apollo'
 
+import { type TraceObject, logServerSideError } from './log'
+
 export default async function fetchGraphQL<
   TResult,
   TVariables extends OperationVariables
 >(
   query: TypedDocumentNode<TResult, TVariables>,
-  variables?: TVariables
+  variables?: TVariables,
+  traceObject?: TraceObject,
+  errorMessage?: string
 ): Promise<TResult | null> {
   try {
     const { data, errors: gqlErrors } = await getClient().query({
@@ -21,23 +25,10 @@ export default async function fetchGraphQL<
     }
     return data
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(
-        JSON.stringify({
-          severity: 'ERROR',
-          message: `fetchGraphQL failed: ${error.message}`,
-          stack: error.stack || 'No stack available',
-        })
-      )
-    } else {
-      console.error(
-        JSON.stringify({
-          severity: 'ERROR',
-          message: 'fetchGraphQL failed: Unknown error',
-          stack: 'No stack available',
-        })
-      )
-    }
+    const fallbackErrorMessage =
+      'Fetch GraphQL failed, info: ' + JSON.stringify({ query, variables })
+
+    logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
     return null
   }
 }

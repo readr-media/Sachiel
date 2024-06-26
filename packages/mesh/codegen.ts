@@ -1,9 +1,9 @@
 import { CodegenConfig } from '@graphql-codegen/cli'
 
-import { API_ENDPOINT } from './constants/config'
+import { GQL_ENDPOINT } from './constants/config'
 
 const config: CodegenConfig = {
-  schema: API_ENDPOINT,
+  schema: GQL_ENDPOINT,
   documents: ['./**/*.{gql,graphql}'],
   generates: {
     './graphql/__generated__/': {

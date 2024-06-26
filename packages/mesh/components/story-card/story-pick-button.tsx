@@ -2,10 +2,14 @@
 
 import { useState } from 'react'
 
-import Button from '@/components/button'
+import Button from '../button'
 
-export default function StoryPick({ isFeedPicked }: { isFeedPicked: boolean }) {
-  const [isPicked, setIsPicked] = useState(isFeedPicked)
+export default function StoryPickButton({
+  isStoryPicked,
+}: {
+  isStoryPicked: boolean
+}) {
+  const [isPicked, setIsPicked] = useState(isStoryPicked)
 
   const handleClickPick = () => {
     setIsPicked(!isPicked)

@@ -7,6 +7,12 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
       id
       name
       avatar
+      following(where: { id: { gte: 0 } }, orderBy: { id: asc }, take: 10000) {
+        id
+        name
+        avatar
+        followerCount
+      }
       pick(orderBy: { createdAt: desc }, take: $takes) {
         id
         createdAt
@@ -27,6 +33,33 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
       story {
         id
       }
+    }
+  }
+}
+
+query GetMember($memberId: ID!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    followingMembers: following {
+      id
+      name
+    }
+    picks: pick {
+      id
+      story {
+        id
+      }
+    }
+    followingCategories: following_category {
+      id
+      title
+      slug
+    }
+    followPublishers: follow_publisher {
+      id
+      title
     }
   }
 }
