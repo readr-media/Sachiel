@@ -61,7 +61,7 @@ export default function HeroStoryCard({
                 pickCount={story.picksCount ?? 0}
               />
               {/* TODO: add user pick info to check if already picked */}
-              <StoryPickButton isStoryPicked={false} />
+              <StoryPickButton isStoryPicked={false} storyId={story.id} />
             </div>
           </div>
         </div>
