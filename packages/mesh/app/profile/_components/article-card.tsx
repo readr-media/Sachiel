@@ -11,30 +11,34 @@ import { TabCategory } from './tab'
 
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
-export type StoryList = NonNullable<PickList>[number]['story']
+export type StoryItem = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
-  data: NonNullable<StoryList>
+  data: NonNullable<StoryItem>
   isLast: boolean
   id: string
-  avatar: string
-  category: TabCategory
+  avatar?: string
+  category?: TabCategory
+  userType?: string
 }
 const ArticleCard = ({
   data,
   isLast,
   id,
-  avatar,
+  avatar = '',
   category,
+  userType,
 }: ArticleCardProps) => {
   const commentList = data.comment || []
   const authorComment = commentList.find(
     (comment) => comment?.member?.id === id
   )
+  const isCommentShow =
+    userType !== 'publisher' && category !== TabCategory.bookmarks
   return (
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
         <Image
-          src={data.og_image ?? ''}
+          src={data.og_image || '/images/default-story-image.webP'}
           alt="alt"
           width={96}
           height={48}
@@ -66,26 +70,28 @@ const ArticleCard = ({
               />
             </span>
           </div>
-          <div className="relative ml-3 min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:aspect-[2/1] sm:w-40 sm:min-w-40 md:hidden">
+          <div className="relative ml-3 aspect-[2/1] min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:w-40 sm:min-w-40 md:hidden">
             <Image
-              src={data.og_image ?? ''}
+              src={data.og_image || '/images/default-story-image.webP'}
               alt="alt"
               fill
               className="object-cover"
             />
           </div>
         </section>
-        <section className="mt-4 flex justify-between">
-          <StoryPickInfo
-            displayPicks={data.pick}
-            pickCount={data.pickCount || 0}
-            maxCount={4}
-          />
-          <StoryPickButton isStoryPicked={false} />
+        <section className="mt-4 grid grid-cols-3">
+          <div className="col-span-2">
+            <StoryPickInfo
+              displayPicks={data.pick}
+              pickCount={data.pickCount || 0}
+              maxCount={4}
+            />
+          </div>
+          <div className="place-self-end">
+            <StoryPickButton isStoryPicked={false} />
+          </div>
         </section>
-        <span className={`${category === TabCategory.bookmarks && 'hidden'}`}>
-          <Comment data={authorComment} avatar={avatar} />
-        </span>
+        {isCommentShow && <Comment data={authorComment} avatar={avatar} />}
       </div>
     </>
   )

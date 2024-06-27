@@ -21,6 +21,8 @@ const documents = {
     types.GetMemberProfileDocument,
   'query GetPublishers($take: Int) {\n  publishers(take: $take) {\n    id\n    title\n  }\n}':
     types.GetPublishersDocument,
+  'query GetPublisherProfile($memberId: ID!) {\n  publisher(where: {id: $memberId}) {\n    id\n    title\n    logo\n    followerCount\n    description\n  }\n  stories(where: {source: {id: {equals: $memberId}}}) {\n    title\n    id\n    og_image\n    source {\n      title\n      official_site\n    }\n    title\n    og_title\n    commentCount\n    createdAt\n    tag {\n      id\n      name\n    }\n    pick {\n      createdAt\n      member {\n        id\n        name\n        avatar\n      }\n    }\n    pickCount\n    commentCount\n    paywall\n    full_screen_ad\n    published_date\n    comment(orderBy: {createdAt: desc}) {\n      id\n      content\n      createdAt\n      likeCount\n      member {\n        id\n        name\n        avatar\n      }\n    }\n  }\n}':
+    types.GetPublisherProfileDocument,
   'query GetLatestStories($take: Int) {\n  stories(take: $take, orderBy: {published_date: desc}) {\n    ...ListStory\n  }\n}\n\nquery GetMostPickedStory($id: ID) {\n  story(where: {id: $id}) {\n    ...ListStory\n  }\n}':
     types.GetLatestStoriesDocument,
 }
@@ -61,8 +63,20 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: 'query LatestStories($date: DateTime) {\n  stories(\n    where: {published_date: {gte: $date}, category: {id: {gt: 0}}}\n    orderBy: {published_date: desc}\n  ) {\n    id\n    url\n    title\n    category {\n      id\n      slug\n    }\n    source {\n      id\n      title\n    }\n    published_date\n    summary\n    content\n    og_title\n    og_image\n    og_description\n    full_content\n    origid\n    picksCount: pickCount(\n      where: {kind: {equals: "read"}, is_active: {equals: true}}\n    )\n    picks: pick(where: {kind: {equals: "read"}, is_active: {equals: true}}) {\n      createdAt\n      member {\n        id\n        name\n        avatar\n      }\n    }\n    commentCount\n    paywall\n    full_screen_ad\n  }\n}'
-): typeof documents['query LatestStories($date: DateTime) {\n  stories(\n    where: {published_date: {gte: $date}, category: {id: {gt: 0}}}\n    orderBy: {published_date: desc}\n  ) {\n    id\n    url\n    title\n    category {\n      id\n      slug\n    }\n    source {\n      id\n      title\n    }\n    published_date\n    summary\n    content\n    og_title\n    og_image\n    og_description\n    full_content\n    origid\n    picksCount: pickCount(\n      where: {kind: {equals: "read"}, is_active: {equals: true}}\n    )\n    picks: pick(where: {kind: {equals: "read"}, is_active: {equals: true}}) {\n      createdAt\n      member {\n        id\n        name\n        avatar\n      }\n    }\n    commentCount\n    paywall\n    full_screen_ad\n  }\n}']
+  source: 'query GetPublishers($take: Int) {\n  publishers(take: $take) {\n    id\n    title\n  }\n}'
+): typeof documents['query GetPublishers($take: Int) {\n  publishers(take: $take) {\n    id\n    title\n  }\n}']
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: 'query GetPublisherProfile($memberId: ID!) {\n  publisher(where: {id: $memberId}) {\n    id\n    title\n    logo\n    followerCount\n    description\n  }\n  stories(where: {source: {id: {equals: $memberId}}}) {\n    title\n    id\n    og_image\n    source {\n      title\n      official_site\n    }\n    title\n    og_title\n    commentCount\n    createdAt\n    tag {\n      id\n      name\n    }\n    pick {\n      createdAt\n      member {\n        id\n        name\n        avatar\n      }\n    }\n    pickCount\n    commentCount\n    paywall\n    full_screen_ad\n    published_date\n    comment(orderBy: {createdAt: desc}) {\n      id\n      content\n      createdAt\n      likeCount\n      member {\n        id\n        name\n        avatar\n      }\n    }\n  }\n}'
+): typeof documents['query GetPublisherProfile($memberId: ID!) {\n  publisher(where: {id: $memberId}) {\n    id\n    title\n    logo\n    followerCount\n    description\n  }\n  stories(where: {source: {id: {equals: $memberId}}}) {\n    title\n    id\n    og_image\n    source {\n      title\n      official_site\n    }\n    title\n    og_title\n    commentCount\n    createdAt\n    tag {\n      id\n      name\n    }\n    pick {\n      createdAt\n      member {\n        id\n        name\n        avatar\n      }\n    }\n    pickCount\n    commentCount\n    paywall\n    full_screen_ad\n    published_date\n    comment(orderBy: {createdAt: desc}) {\n      id\n      content\n      createdAt\n      likeCount\n      member {\n        id\n        name\n        avatar\n      }\n    }\n  }\n}']
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: 'query GetLatestStories($take: Int) {\n  stories(take: $take, orderBy: {published_date: desc}) {\n    ...ListStory\n  }\n}\n\nquery GetMostPickedStory($id: ID) {\n  story(where: {id: $id}) {\n    ...ListStory\n  }\n}'
+): typeof documents['query GetLatestStories($take: Int) {\n  stories(take: $take, orderBy: {published_date: desc}) {\n    ...ListStory\n  }\n}\n\nquery GetMostPickedStory($id: ID) {\n  story(where: {id: $id}) {\n    ...ListStory\n  }\n}']
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {}

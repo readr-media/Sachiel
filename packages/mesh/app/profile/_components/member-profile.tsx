@@ -1,15 +1,18 @@
-/* eslint-disable no-console */
 import { GetMemberProfileDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
-import ArticleCardList from '../_components/article-card-list'
-import UserIntro from '../_components/user-intro'
+import ArticleCardList from './article-card-list'
+import UserIntro from './user-intro/index'
 
-const page = async ({ params }: { params: { id: string } }) => {
-  const userId = params.id
+type MemberProfileProps = {
+  userID: string
+  visitID: string
+  userType: string
+}
 
+const MemberProfile = async ({ visitID, userType }: MemberProfileProps) => {
   const response = await fetchGraphQL(GetMemberProfileDocument, {
-    memberId: userId,
+    memberId: visitID,
   })
   // TODO: handle gql failed error
   if (!response) {
@@ -22,7 +25,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   const picksData = userData.picks || []
   const bookmarkData = userData.books || []
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex h-full flex-col bg-white">
       <UserIntro
         id={userData.id}
         name={userData.name || ''}
@@ -36,10 +39,11 @@ const page = async ({ params }: { params: { id: string } }) => {
         picksData={picksData}
         bookmarkData={bookmarkData}
         avatar={userData.avatar || ''}
-        id={params.id}
+        id={visitID}
+        userType={userType}
       />
     </div>
   )
 }
 
-export default page
+export default MemberProfile
