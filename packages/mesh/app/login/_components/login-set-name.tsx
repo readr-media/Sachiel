@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -8,13 +8,15 @@ import type { LoginProcess, UserFormData } from '../page'
 
 export default function LoginSetName({
   handleLoginProcess,
-  formData,
-  setFormData,
+  formDataState,
 }: {
   handleLoginProcess: (step: LoginProcess) => void
-  formData: UserFormData
-  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  formDataState: {
+    formData: UserFormData
+    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  }
 }) {
+  const { formData, setFormData } = formDataState
   const [name, setName] = useState(formData.name)
   const [helperText, setHelperText] = useState('')
 

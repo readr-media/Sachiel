@@ -45,20 +45,19 @@ export default function Page() {
     'set-name': (
       <LoginSetName
         handleLoginProcess={handleLoginProcess}
-        formData={formData}
-        setFormData={setFormData}
+        formDataState={{ formData, setFormData }}
       />
     ),
     'set-category': (
       <LoginSetCategory
         handleLoginProcess={handleLoginProcess}
-        setFormData={setFormData}
+        formDataState={{ formData, setFormData }}
       />
     ),
     'set-following': (
       <LoginSetFollowing
         handleLoginProcess={handleLoginProcess}
-        setFormData={setFormData}
+        formDataState={{ formData, setFormData }}
       />
     ),
     'set-wallet': <LoginSetWallet />,

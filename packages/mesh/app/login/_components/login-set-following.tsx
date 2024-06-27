@@ -12,25 +12,27 @@ import type { LoginProcess, UserFormData } from '../page'
 
 export default function LoginSetFollowing({
   handleLoginProcess,
-  setFormData,
+  formDataState,
 }: {
   handleLoginProcess: (step: LoginProcess) => void
-  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  formDataState: {
+    formData: UserFormData
+    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  }
 }) {
-  const memberId = '175'
   //TODO: need to replace with new real id.
+  const memberId = '175'
+  const { formData, setFormData } = formDataState
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      const memberSelectedSlugs = ['1', '4']
-      //TODO: replace selectedSlugs state
-      const data = await GetMemberByFollowingCategory(memberSelectedSlugs)
+      const data = await GetMemberByFollowingCategory(formData.interests)
       setRecommend(data)
     }
     fetchData()
-  }, [])
+  }, [formData.interests])
 
   const handleClickChevron = () => {
     handleLoginProcess('set-category')

@@ -3,28 +3,99 @@ import Icon from '@/components/icon'
 
 import type { LoginProcess, UserFormData } from '../page'
 
-const categoryTitle = [
-  '國際',
-  '政治',
-  '社會',
-  '經濟/財經',
-  '科技',
-  '醫療健康',
-  '體育',
-  '藝文',
-  '娛樂',
-  '生活/風尚',
-  '教育',
-  '環境/氣候',
+const allCategories = [
+  {
+    id: '1',
+    slug: 'internation',
+    title: '國際',
+  },
+  {
+    id: '2',
+    slug: 'politics',
+    title: '政治',
+  },
+  {
+    id: '3',
+    slug: 'society',
+    title: '社會',
+  },
+  {
+    id: '4',
+    slug: 'finance',
+    title: '財經',
+  },
+  {
+    id: '5',
+    slug: 'technology',
+    title: '科技',
+  },
+  {
+    id: '6',
+    slug: 'health',
+    title: '醫療健康',
+  },
+  {
+    id: '7',
+    slug: 'sport',
+    title: '體育',
+  },
+  {
+    id: '8',
+    slug: 'art',
+    title: '藝文',
+  },
+  {
+    id: '9',
+    slug: 'entertainment',
+    title: '娛樂',
+  },
+  {
+    id: '10',
+    slug: 'life',
+    title: '生活',
+  },
+  {
+    id: '11',
+    slug: 'education',
+    title: '教育',
+  },
+  {
+    id: '12',
+    slug: 'environment',
+    title: '環境',
+  },
 ]
 
 export default function LoginSetCategory({
   handleLoginProcess,
-  setFormData,
+  formDataState,
 }: {
   handleLoginProcess: (step: LoginProcess) => void
-  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  formDataState: {
+    formData: UserFormData
+    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
+  }
 }) {
+  const { formData, setFormData } = formDataState
+
+  const handleCategoryToggle = (categoryId: string) => {
+    const categoryIndex = formData.interests.findIndex(
+      (val) => val === categoryId
+    )
+
+    const newInterests = [...formData.interests]
+    if (categoryIndex === -1) {
+      newInterests.push(categoryId)
+    } else {
+      newInterests.splice(categoryIndex, 1)
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      interests: newInterests,
+    }))
+  }
+
   const handleClickChevron = () => {
     handleLoginProcess('set-name')
   }
@@ -55,16 +126,18 @@ export default function LoginSetCategory({
             <p className="subtitle-1 text-center text-primary-500">
               請選擇您想追蹤的新聞類別
             </p>
-            <div className="flex flex-wrap gap-3">
-              {categoryTitle.map((item, idx) => (
-                <div key={idx}>
-                  <Button
-                    size="xs"
-                    color="white"
-                    text={item}
-                    onClick={() => console.log(item)}
-                  />
-                </div>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              {allCategories.map((category) => (
+                <Button
+                  key={category.id}
+                  size="md-100"
+                  color="white"
+                  text={category.title ?? ''}
+                  activeState={{
+                    isActive: formData.interests.includes(category.id),
+                  }}
+                  onClick={() => handleCategoryToggle(category.id)}
+                />
               ))}
             </div>
           </div>
@@ -72,8 +145,9 @@ export default function LoginSetCategory({
             <Button
               size="lg"
               color="primary"
-              text="下一步"
+              text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
               onClick={() => handleLoginProcess('set-following')}
+              disabled={formData.interests.length < 3}
             />
           </div>
         </div>
