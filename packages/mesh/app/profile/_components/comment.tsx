@@ -48,7 +48,6 @@ const Comment = ({ data, clampLineCount = 3, avatar }: CommentProps) => {
     if (!isTooLong) return
     setIsOpened(true)
   }
-  // TODO: 有些情境不需要toggle
   if (!data)
     return (
       <section className="mt-4 hidden w-full flex-col gap-2 rounded-md border border-primary-200 bg-primary-100 p-3 md:flex ">

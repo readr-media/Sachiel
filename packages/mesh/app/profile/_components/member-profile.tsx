@@ -14,7 +14,6 @@ const MemberProfile = async ({ visitID, userType }: MemberProfileProps) => {
   const response = await fetchGraphQL(GetMemberProfileDocument, {
     memberId: visitID,
   })
-  // TODO: handle gql failed error
   if (!response) {
     return <div>Error</div>
   }
