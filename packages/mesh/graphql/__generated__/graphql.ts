@@ -3218,6 +3218,41 @@ export type GetMemberFollowingQuery = {
   } | null
 }
 
+export type GetMemberQueryVariables = Exact<{
+  memberId: Scalars['ID']['input']
+}>
+
+export type GetMemberQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    id: string
+    name?: string | null
+    avatar?: string | null
+    followingMembers?: Array<{
+      __typename?: 'Member'
+      id: string
+      name?: string | null
+    }> | null
+    picks?: Array<{
+      __typename?: 'Pick'
+      id: string
+      story?: { __typename?: 'Story'; id: string } | null
+    }> | null
+    followingCategories?: Array<{
+      __typename?: 'Category'
+      id: string
+      title?: string | null
+      slug?: string | null
+    }> | null
+    followPublishers?: Array<{
+      __typename?: 'Publisher'
+      id: string
+      title?: string | null
+    }> | null
+  } | null
+}
+
 export type GetMemberProfileQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
 }>
@@ -3337,16 +3372,17 @@ export type GetMemberProfileQuery = {
   } | null
 }
 
-export type GetPublishersQueryVariables = Exact<{
-  take?: InputMaybe<Scalars['Int']['input']>
-}>
+export type PublishersQueryVariables = Exact<{ [key: string]: never }>
 
-export type GetPublishersQuery = {
+export type PublishersQuery = {
   __typename?: 'Query'
   publishers?: Array<{
     __typename?: 'Publisher'
     id: string
     title?: string | null
+    rss?: string | null
+    official_site?: string | null
+    sponsorCount?: number | null
   }> | null
 }
 
@@ -3408,29 +3444,13 @@ export type GetPublisherProfileQuery = {
   }> | null
 }
 
-export type GetLatestStoriesQueryVariables = Exact<{
-  take?: InputMaybe<Scalars['Int']['input']>
+export type LatestStoriesQueryVariables = Exact<{
+  date?: InputMaybe<Scalars['DateTime']['input']>
 }>
 
-export type PublishersQuery = {
+export type LatestStoriesQuery = {
   __typename?: 'Query'
-  publishers?: Array<{
-    __typename?: 'Publisher'
-    id: string
-    title?: string | null
-    rss?: string | null
-    official_site?: string | null
-    sponsorCount?: number | null
-  }> | null
-}
-
-export type GetMostPickedStoryQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['ID']['input']>
-}>
-
-export type GetMostPickedStoryQuery = {
-  __typename?: 'Query'
-  story?: {
+  stories?: Array<{
     __typename?: 'Story'
     id: string
     url?: string | null
@@ -4081,6 +4101,126 @@ export const GetMemberFollowingDocument = {
   GetMemberFollowingQuery,
   GetMemberFollowingQueryVariables
 >
+export const GetMemberDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMember' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'followingMembers' },
+                  name: { kind: 'Name', value: 'following' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'picks' },
+                  name: { kind: 'Name', value: 'pick' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'story' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'followingCategories' },
+                  name: { kind: 'Name', value: 'following_category' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'followPublishers' },
+                  name: { kind: 'Name', value: 'follow_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetMemberQuery, GetMemberQueryVariables>
 export const GetMemberProfileDocument = {
   kind: 'Document',
   definitions: [
@@ -4642,117 +4782,33 @@ export const GetMemberProfileDocument = {
   GetMemberProfileQuery,
   GetMemberProfileQueryVariables
 >
-export const GetMemberDocument = {
+export const PublishersDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetMember' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-      ],
+      name: { kind: 'Name', value: 'Publishers' },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'member' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
+            name: { kind: 'Name', value: 'publishers' },
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'rss' } },
                 {
                   kind: 'Field',
-                  alias: { kind: 'Name', value: 'followingMembers' },
-                  name: { kind: 'Name', value: 'following' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
+                  name: { kind: 'Name', value: 'official_site' },
                 },
                 {
                   kind: 'Field',
-                  alias: { kind: 'Name', value: 'picks' },
-                  name: { kind: 'Name', value: 'pick' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'story' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  alias: { kind: 'Name', value: 'followingCategories' },
-                  name: { kind: 'Name', value: 'following_category' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  alias: { kind: 'Name', value: 'followPublishers' },
-                  name: { kind: 'Name', value: 'follow_publisher' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                    ],
-                  },
+                  alias: { kind: 'Name', value: 'sponsorCount' },
+                  name: { kind: 'Name', value: 'followerCount' },
                 },
               ],
             },
@@ -4761,7 +4817,7 @@ export const GetMemberDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetPublishersQuery, GetPublishersQueryVariables>
+} as unknown as DocumentNode<PublishersQuery, PublishersQueryVariables>
 export const GetPublisherProfileDocument = {
   kind: 'Document',
   definitions: [
@@ -5017,42 +5073,6 @@ export const GetPublisherProfileDocument = {
   GetPublisherProfileQuery,
   GetPublisherProfileQueryVariables
 >
-export const GetLatestStoriesDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Publishers' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'publishers' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'rss' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'official_site' },
-                },
-                {
-                  kind: 'Field',
-                  alias: { kind: 'Name', value: 'sponsorCount' },
-                  name: { kind: 'Name', value: 'followerCount' },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<PublishersQuery, PublishersQueryVariables>
 export const LatestStoriesDocument = {
   kind: 'Document',
   definitions: [
