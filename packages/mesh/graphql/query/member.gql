@@ -13,7 +13,16 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
         avatar
         followerCount
       }
-      pick(orderBy: { createdAt: desc }, take: $takes) {
+      pick( where:  {
+         kind:  {
+            equals: "read"
+         }
+         AND: [ {
+            is_active:  {
+               equals: true
+            }
+         }]
+      } orderBy: { createdAt: desc }, take: $takes) {
         id
         createdAt
         story {
@@ -28,7 +37,16 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
         }
       }
     }
-    pick {
+    pick (where:  {
+       kind:  {
+          equals: "read"
+       },
+       AND: [ {
+          is_active:  {
+             equals: true
+          }
+       }]
+    }) {
       id
       story {
         id

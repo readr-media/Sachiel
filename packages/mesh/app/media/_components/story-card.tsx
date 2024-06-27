@@ -86,7 +86,7 @@ export default forwardRef(function StoryCard(
           pickCount={story.picksCount ?? 0}
         />
         {/* TODO: add user pick info to check if already picked */}
-        <StoryPickButton isStoryPicked={false} />
+        <StoryPickButton isStoryPicked={false} storyId={story.id} />
       </div>
     </article>
   )
