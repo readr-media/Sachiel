@@ -14,7 +14,7 @@ export default function StoryMeta({
   fullScreenAd: string
 }) {
   return (
-    <div className="footnote flex items-center text-primary-500">
+    <div className="flex items-center text-primary-500">
       <Icon iconName="icon-chat-bubble" size="s" />
       <div className="pl-0.5">{commentCount}</div>
       <Icon iconName="icon-dot" size="s" />
@@ -27,7 +27,7 @@ export default function StoryMeta({
           付費文章
         </div>
       )}
-      {fullScreenAd !== 'none' && (
+      {fullScreenAd && fullScreenAd !== 'none' && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
           蓋板廣告
