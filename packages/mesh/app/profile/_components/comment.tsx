@@ -1,59 +1,30 @@
 'use client'
 import Image from 'next/image'
-import { useEffect, useReducer, useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 import Icon from '@/components/icon'
+import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { type StoryList } from './article-card'
-type CommentList = NonNullable<StoryList>['comment']
+import { type StoryItem } from './article-card'
+type CommentList = NonNullable<StoryItem>['comment']
 type CommentProps = {
   data?: NonNullable<CommentList>[number]
   clampLineCount?: number
   avatar: string
 }
-type CommentState = {
-  isCommentToggled: boolean
-  isTooLong: boolean
-  needClamp: boolean
-}
-enum CommentActionKind {
-  TOGGLE_COMMENT = 'TOGGLE_COMMENT',
-  SET_IS_TOO_LONG = 'SET_IS_TOO_LONG',
-}
-type CommentAction =
-  | { type: CommentActionKind.TOGGLE_COMMENT }
-  | { type: CommentActionKind.SET_IS_TOO_LONG; payload: boolean }
-
-const initialState: CommentState = {
-  isCommentToggled: true,
-  isTooLong: false,
-  needClamp: false,
-}
-
-const reducer = (state: CommentState, action: CommentAction) => {
-  switch (action.type) {
-    case 'TOGGLE_COMMENT':
-      return {
-        ...state,
-        isCommentToggled: !state.isCommentToggled,
-        needClamp: !state.isCommentToggled && state.isTooLong,
-      }
-    case 'SET_IS_TOO_LONG':
-      return {
-        ...state,
-        isTooLong: action.payload,
-        needClamp: state.isCommentToggled && action.payload,
-      }
-    default:
-      return state
-  }
-}
 
 const Comment = ({ data, clampLineCount = 3, avatar }: CommentProps) => {
-  const [{ needClamp, isTooLong }, dispatch] = useReducer(reducer, initialState)
-  const commentRef = useRef<null | HTMLParagraphElement>(null)
+  const router = useRouter()
+  const [isTooLong, setIsTooLing] = useState(false)
+  const [isOpened, setIsOpened] = useState(false)
+  const { width } = useWindowDimensions()
 
+  const shouldRedirect = width >= 960
+  const needClamp = !isOpened && isTooLong
+  const commentRef = useRef<null | HTMLParagraphElement>(null)
+  const defaultLineClamp = `line-clamp-${clampLineCount}`
   useEffect(() => {
     if (!commentRef.current) return
 
@@ -61,20 +32,21 @@ const Comment = ({ data, clampLineCount = 3, avatar }: CommentProps) => {
     const lineHeight = parseInt(styleMap.lineHeight, 10)
     const paragraphHeight = parseInt(styleMap.height, 10)
     const expectedParagraphHeight = lineHeight * clampLineCount
-    dispatch({
-      type: CommentActionKind.SET_IS_TOO_LONG,
-      payload: paragraphHeight > expectedParagraphHeight,
-    })
-  }, [])
+    setIsTooLing(paragraphHeight > expectedParagraphHeight)
+  }, [clampLineCount])
   const lineClampClassName = needClamp
-    ? `line-clamp-${clampLineCount} md:line-clamp-1`
+    ? `${defaultLineClamp} md:line-clamp-1`
     : `line-clamp-none`
-
   const toggledPseudoClassName = needClamp ? '' : 'after:opacity-0'
 
   const handleToggleClamp = () => {
+    if (shouldRedirect) {
+      // TODO: navigate to story and anchor
+      router.push('/story/')
+    }
+    if (isOpened) return
     if (!isTooLong) return
-    dispatch({ type: CommentActionKind.TOGGLE_COMMENT })
+    setIsOpened(true)
   }
   // TODO: 有些情境不需要toggle
   if (!data)
@@ -109,7 +81,7 @@ const Comment = ({ data, clampLineCount = 3, avatar }: CommentProps) => {
         <div className="flex items-center">
           <div className="mr-2 h-7 w-7 overflow-hidden rounded-full">
             <Image
-              src={data.member?.avatar || ''}
+              src={data.member?.avatar || '/images/default-avatar-image.png'}
               width={28}
               height={28}
               alt={data.member?.name || 'avatar'}
@@ -140,7 +112,7 @@ const Comment = ({ data, clampLineCount = 3, avatar }: CommentProps) => {
       >
         <div className="mr-2 hidden h-7 w-7 overflow-hidden rounded-full md:flex">
           <Image
-            src={data.member?.avatar || ''}
+            src={data.member?.avatar || '/images/default-avatar-image.png'}
             width={28}
             height={28}
             alt={data.member?.name || 'avatar'}
