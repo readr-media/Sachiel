@@ -67,9 +67,14 @@ export default function LoginSetCategory({
                 </div>
               ))}
             </div>
-            <button onClick={() => handleLoginProcess('set-following')}>
-              <p className="body-3 text-center text-primary-200">next step</p>
-            </button>
+          </div>
+          <div className="border-t px-5 py-3  sm:px-10 sm:py-5">
+            <Button
+              size="lg"
+              color="primary"
+              text="下一步"
+              onClick={() => handleLoginProcess('set-following')}
+            />
           </div>
         </div>
       </div>

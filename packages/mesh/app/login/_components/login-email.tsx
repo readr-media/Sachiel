@@ -54,12 +54,6 @@ export default function LoginEmail({
     }
   }
 
-  const isValidEmail = (email: string) => {
-    const regex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    return regex.test(email)
-  }
-
   return (
     <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50">
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
@@ -88,15 +82,17 @@ export default function LoginEmail({
                 <p className="subtitle-1 pb-6 text-center text-primary-700">
                   我們已將登入連結寄到 readr@gmail.com，請點擊信件中的連結登入。
                 </p>
-                <p className="body-3 text-center text-primary-400">
+                <p className="footnote text-center text-primary-400">
                   沒收到信件？請檢查垃圾信件匣
                 </p>
-                <p className="body-3 pb-5 text-center text-primary-400">
+                <p className="footnote pb-5 text-center text-primary-400">
                   或
                   <button
                     onClick={() => console.log('re-send confirmed email')}
                   >
-                    <span className="text-primary-700">重新發送信件(60s)</span>
+                    <span className="text-primary-700 underline underline-offset-2">
+                      重新發送信件(60s)
+                    </span>
                   </button>
                 </p>
                 <button
@@ -106,7 +102,7 @@ export default function LoginEmail({
                     handleLoginProcess('entry')
                   }}
                 >
-                  <p className="body-3 text-center text-primary-700">
+                  <p className="footnote text-center text-primary-700 underline underline-offset-2">
                     嘗試其他登入方式
                   </p>
                 </button>
@@ -139,7 +135,7 @@ export default function LoginEmail({
                 </p>
                 <div className="h-5 w-5 px-5"></div>
               </div>
-              <div className="flex flex-col items-center gap-10 p-10">
+              <div className="flex flex-col items-center gap-10 px-5 py-10 sm:px-10">
                 <div className="flex flex-col">
                   <input
                     className={`w-full appearance-none border-b ${
@@ -159,7 +155,7 @@ export default function LoginEmail({
                       {helperText}
                     </p>
                   ) : null}
-                  <p className="body-3 pt-3 text-primary-500">
+                  <p className="footnote pt-3 text-primary-500">
                     我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。
                   </p>
                 </div>
@@ -178,4 +174,10 @@ export default function LoginEmail({
       </div>
     </div>
   )
+}
+
+function isValidEmail(email: string) {
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  return emailRegex.test(email)
 }

@@ -61,11 +61,15 @@ export default function LoginEntry({
           <p className="footnote text-center text-primary-400">
             繼續使用代表您同意與接受我們的
             <Link href={'/'}>
-              <span className="text-primary-700">《服務條款》</span>
+              <span className="text-primary-700 underline underline-offset-2">
+                《服務條款》
+              </span>
             </Link>
             及
             <Link href={'/'}>
-              <span className="text-primary-700">《隱私政策》</span>
+              <span className="text-primary-700 underline underline-offset-2">
+                《隱私政策》
+              </span>
             </Link>
           </p>
         </div>

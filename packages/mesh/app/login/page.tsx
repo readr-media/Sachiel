@@ -9,6 +9,7 @@ import LoginEntry from './_components/login-entry'
 import LoginSetCategory from './_components/login-set-category'
 import LoginSetFollowing from './_components/login-set-following'
 import LoginSetName from './_components/login-set-name'
+import LoginSetWallet from './_components/login-set-wallet'
 
 export type LoginProcess =
   | 'entry'
@@ -17,6 +18,7 @@ export type LoginProcess =
   | 'set-name'
   | 'set-category'
   | 'set-following'
+  | 'set-wallet'
 
 export type UserFormData = { email: string; name: string; interests: string[] }
 
@@ -59,6 +61,7 @@ export default function Page() {
         setFormData={setFormData}
       />
     ),
+    'set-wallet': <LoginSetWallet />,
   }
 
   console.log({ process })

@@ -25,6 +25,7 @@ export default function LoginSetFollowing({
   useEffect(() => {
     const fetchData = async () => {
       const memberSelectedSlugs = ['1', '4']
+      //TODO: replace selectedSlugs state
       const data = await GetMemberByFollowingCategory(memberSelectedSlugs)
       setRecommend(data)
     }
@@ -82,7 +83,12 @@ export default function LoginSetFollowing({
                     人
                   </p>
                 </div>
-                <p className="body-3 ml-auto text-custom-blue">一次追蹤全部</p>
+                <button
+                  className="body-3 ml-auto text-custom-blue"
+                  onClick={() => console.log('follow-all')}
+                >
+                  一次追蹤全部
+                </button>
               </div>
             </div>
             <div className="w-full overflow-auto">
@@ -109,12 +115,12 @@ export default function LoginSetFollowing({
               ))}
             </div>
           </div>
-          <div className="border-t px-5 py-3  sm:px-10 sm:py-5 sm:drop-shadow">
+          <div className="border-t px-5 py-3  sm:px-10 sm:py-5">
             <Button
               size="lg"
               color="primary"
               text="完成"
-              onClick={() => console.log('finish')}
+              onClick={() => handleLoginProcess('set-wallet')}
             />
           </div>
         </div>

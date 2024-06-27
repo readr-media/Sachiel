@@ -79,6 +79,7 @@ export type IconName =
   | 'icon-login-step-1'
   | 'icon-login-step-2'
   | 'icon-login-step-3'
+  | 'icon-dynamicxyz'
 
 export type IconProps = {
   size: Size
