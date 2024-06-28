@@ -1,79 +1,69 @@
 'use client'
 
-import { useState } from 'react'
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from 'react'
 
-import Icon from '@/components/icon'
+import LoginProcess from './_components/login-process'
 
-import LoginEmail from './_components/login-email'
-import LoginEntry from './_components/login-entry'
-import LoginSetCategory from './_components/login-set-category'
-import LoginSetFollowing from './_components/login-set-following'
-import LoginSetName from './_components/login-set-name'
-import LoginSetWallet from './_components/login-set-wallet'
+export default function Page() {
+  return (
+    <LoginProvider>
+      <LoginProcess />
+    </LoginProvider>
+  )
+}
 
 export type LoginProcess =
   | 'entry'
   | 'email'
-  | 'email-confirm'
+  | 'email-confirmation'
   | 'set-name'
   | 'set-category'
   | 'set-following'
   | 'set-wallet'
 
-export type UserFormData = { email: string; name: string; interests: string[] }
+type UserFormData = {
+  email: string
+  name: string
+  interests: string[]
+  followings: string[]
+}
+type LoginContextType = {
+  process: LoginProcess
+  formData: UserFormData
+  setProcess: Dispatch<SetStateAction<LoginProcess>>
+  setFormData: Dispatch<SetStateAction<UserFormData>>
+}
 
-export default function Page() {
+const LoginContext = createContext<LoginContextType | undefined>(undefined)
+
+function LoginProvider({ children }: { children: React.ReactNode }) {
   const [process, setProcess] = useState<LoginProcess>('entry')
   const [formData, setFormData] = useState<UserFormData>({
     email: '',
     name: '',
     interests: [],
+    followings: [],
   })
 
-  const handleLoginProcess = (step: LoginProcess) => {
-    setProcess(step)
-  }
-
-  const processComponent: Record<string, JSX.Element> = {
-    entry: <LoginEntry handleLoginProcess={handleLoginProcess} />,
-    email: (
-      <LoginEmail
-        handleLoginProcess={handleLoginProcess}
-        setFormData={setFormData}
-      />
-    ),
-    'set-name': (
-      <LoginSetName
-        handleLoginProcess={handleLoginProcess}
-        formDataState={{ formData, setFormData }}
-      />
-    ),
-    'set-category': (
-      <LoginSetCategory
-        handleLoginProcess={handleLoginProcess}
-        formDataState={{ formData, setFormData }}
-      />
-    ),
-    'set-following': (
-      <LoginSetFollowing
-        handleLoginProcess={handleLoginProcess}
-        formDataState={{ formData, setFormData }}
-      />
-    ),
-    'set-wallet': <LoginSetWallet />,
-  }
-
-  console.log({ process })
-  console.log(formData)
-
   return (
-    <>
-      <header className="absolute left-0 right-0 top-0 z-header hidden h-[60px] border-b bg-white sm:block">
-        <div className="flex h-full w-full items-center justify-center">
-          <Icon size={{ width: 100, height: 44 }} iconName="icon-readr-logo" />
-        </div>
-      </header>
-      {processComponent[process]}
-    </>
+    <LoginContext.Provider
+      value={{ process, formData, setProcess, setFormData }}
+    >
+      {children}
+    </LoginContext.Provider>
   )
+}
+
+export function useLogin() {
+  const context = useContext(LoginContext)
+  if (context === undefined) {
+    throw new Error('LoginProvider Error')
+  }
+  return context
 }

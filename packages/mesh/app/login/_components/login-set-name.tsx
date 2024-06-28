@@ -4,20 +4,10 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { debounce } from '@/utils/performance'
 
-import type { LoginProcess, UserFormData } from '../page'
+import { useLogin } from '../page'
 
-export default function LoginSetName({
-  handleLoginProcess,
-  formDataState,
-}: {
-  handleLoginProcess: (step: LoginProcess) => void
-  formDataState: {
-    formData: UserFormData
-    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
-  }
-}) {
-  const { formData, setFormData } = formDataState
-  const [name, setName] = useState(formData.name)
+export default function LoginSetName() {
+  const { formData, setFormData, setProcess } = useLogin()
   const [helperText, setHelperText] = useState('')
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,17 +17,13 @@ export default function LoginSetName({
   }
 
   const handleSubmit = () => {
-    if (name === '') {
+    if (formData.name === '') {
       setHelperText('請輸入您的姓名')
     } else {
-      const { isValid, errorMessage } = isValidName(name)
+      const { isValid, errorMessage } = isValidName(formData.name)
       if (isValid) {
         setHelperText(errorMessage)
-        setFormData((prev) => ({
-          ...prev,
-          name: name,
-        }))
-        handleLoginProcess('set-category')
+        setProcess('set-category')
       } else {
         setHelperText(errorMessage)
       }
@@ -65,8 +51,13 @@ export default function LoginSetName({
                   helperText ? 'border-custom-red-text' : 'border-primary-200'
                 }`}
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
                 onKeyDown={handleKeyDown}
                 required
               ></input>

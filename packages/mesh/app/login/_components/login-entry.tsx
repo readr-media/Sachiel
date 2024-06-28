@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 
-import type { LoginProcess } from '../page'
+import { useLogin } from '../page'
 
 const loginOptions = [
   {
@@ -24,11 +24,8 @@ const loginOptions = [
   },
 ] as const
 
-export default function LoginEntry({
-  handleLoginProcess,
-}: {
-  handleLoginProcess: (step: LoginProcess) => void
-}) {
+export default function LoginEntry() {
+  const { setProcess } = useLogin()
   return (
     <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50">
       <div className="flex h-15 w-full flex-row items-center justify-center border-b sm:hidden">
@@ -53,7 +50,7 @@ export default function LoginEntry({
                   color="white"
                   text={transformedBtnText(option.method)}
                   icon={{ iconName: option.iconName, size: 'm' }}
-                  onClick={() => handleLoginProcess('email')}
+                  onClick={() => setProcess('email')}
                 />
               </div>
             ))}

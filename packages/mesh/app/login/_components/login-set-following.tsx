@@ -1,30 +1,19 @@
 import { useEffect, useState } from 'react'
 
 import GetMemberByFollowingCategory from '@/app/actions/get-members-by-category'
-import FollowButton from '@/app/social/_components/follow-button'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
 
-import type { LoginProcess, UserFormData } from '../page'
+import { useLogin } from '../page'
 
-export default function LoginSetFollowing({
-  handleLoginProcess,
-  formDataState,
-}: {
-  handleLoginProcess: (step: LoginProcess) => void
-  formDataState: {
-    formData: UserFormData
-    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
-  }
-}) {
-  //TODO: need to replace with new real id.
-  const memberId = '175'
-  const { formData, setFormData } = formDataState
+export default function LoginSetFollowing() {
+  const { formData, setFormData, setProcess } = useLogin()
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
+  const [isFollowAll, setIsFollowAll] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +24,41 @@ export default function LoginSetFollowing({
   }, [formData.interests])
 
   const handleClickChevron = () => {
-    handleLoginProcess('set-category')
+    setProcess('set-category')
+  }
+
+  const handleFollowAllBtn = () => {
+    const followAllIds = recommend?.members?.map((member) => member.id) ?? []
+
+    if (isFollowAll) {
+      setFormData((prev) => ({
+        ...prev,
+        followings: [],
+      }))
+      setIsFollowAll(false)
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        followings: followAllIds,
+      }))
+      setIsFollowAll(true)
+    }
+  }
+
+  const handleFollowToggle = (selectId: string) => {
+    const isFollowed = formData.followings.includes(selectId)
+    if (isFollowed) {
+      const removeSelect = formData.followings.filter((id) => id !== selectId)
+      setFormData((prev) => ({
+        ...prev,
+        followings: removeSelect,
+      }))
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        followings: [...prev.followings, selectId],
+      }))
+    }
   }
 
   return (
@@ -87,9 +110,9 @@ export default function LoginSetFollowing({
                 </div>
                 <button
                   className="body-3 ml-auto text-custom-blue"
-                  onClick={() => console.log('follow-all')}
+                  onClick={handleFollowAllBtn}
                 >
-                  一次追蹤全部
+                  {isFollowAll ? '取消追蹤全部' : '一次追蹤全部'}
                 </button>
               </div>
             </div>
@@ -107,7 +130,16 @@ export default function LoginSetFollowing({
                       </h4>
                     </div>
                     <div className="ml-auto">
-                      <FollowButton id={memberId} />
+                      <Button
+                        size="sm"
+                        color="transparent"
+                        text="追蹤"
+                        activeState={{
+                          isActive: formData.followings.includes(member.id),
+                          activeText: '追蹤中',
+                        }}
+                        onClick={() => handleFollowToggle(member.id)}
+                      />
                     </div>
                   </div>
                   {index !== recommend?.members?.length ?? 0 - 1 ? (
@@ -122,7 +154,7 @@ export default function LoginSetFollowing({
               size="lg"
               color="primary"
               text="完成"
-              onClick={() => handleLoginProcess('set-wallet')}
+              onClick={() => setProcess('set-wallet')}
             />
           </div>
         </div>

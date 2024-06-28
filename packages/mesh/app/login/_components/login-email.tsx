@@ -3,18 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 
-import type { LoginProcess, UserFormData } from '../page'
+import { useLogin } from '../page'
 
-export default function LoginEmail({
-  handleLoginProcess,
-  setFormData,
-}: {
-  handleLoginProcess: (step: LoginProcess) => void
-  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
-}) {
-  const [emailAddress, setEmailAddress] = useState('')
+export default function LoginEmail() {
+  const { formData, setFormData, process, setProcess } = useLogin()
   const [helperText, setHelperText] = useState('')
-  const [isEmailSubmit, setIsEmailSubmit] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -24,10 +17,10 @@ export default function LoginEmail({
   }, [])
 
   const handleClickChevron = () => {
-    if (isEmailSubmit) {
-      setIsEmailSubmit(false)
+    if (process === 'email-confirmation') {
+      setProcess('email')
     } else {
-      handleLoginProcess('entry')
+      setProcess('entry')
     }
   }
 
@@ -38,16 +31,12 @@ export default function LoginEmail({
   }
 
   const handleSubmit = () => {
-    if (emailAddress === '') {
+    if (formData.email === '') {
       setHelperText('請輸入您的 Email 地址')
     } else {
-      if (isValidEmail(emailAddress)) {
+      if (isValidEmail(formData.email)) {
         setHelperText('')
-        setFormData((prev) => ({
-          ...prev,
-          email: emailAddress,
-        }))
-        setIsEmailSubmit(true)
+        setProcess('email-confirmation')
       } else {
         setHelperText('請輸入有效的 Email 地址')
       }
@@ -61,20 +50,18 @@ export default function LoginEmail({
           <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
         </button>
         <h2 className="list-title mx-auto">
-          {isEmailSubmit ? '確認收件匣' : 'Email'}
+          {process === 'email-confirmation' ? '確認收件匣' : 'Email'}
         </h2>
         <div className="h-5 w-5 px-5"></div>
       </div>
       <div className="flex w-full justify-center sm:h-full sm:items-center">
-        {isEmailSubmit ? (
+        {process === 'email-confirmation' ? (
           <div className="flex flex-col items-center justify-center bg-white sm:w-[480px] sm:rounded-md sm:drop-shadow">
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">
               <button onClick={handleClickChevron}>
                 <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
               </button>
-              <p className="list-title mx-auto">
-                {isEmailSubmit ? '確認收件匣' : 'Email'}
-              </p>
+              <p className="list-title mx-auto">確認收件匣</p>
               <div className="h-5 w-5 px-5"></div>
             </div>
             <div className="p-10">
@@ -98,8 +85,7 @@ export default function LoginEmail({
                 <button
                   className="w-full"
                   onClick={() => {
-                    setIsEmailSubmit(false)
-                    handleLoginProcess('entry')
+                    setProcess('entry')
                   }}
                 >
                   <p className="footnote text-center text-primary-700 underline underline-offset-2">
@@ -109,7 +95,7 @@ export default function LoginEmail({
                 <button
                   className="w-full"
                   onClick={() => {
-                    handleLoginProcess('set-name')
+                    setProcess('set-name')
                   }}
                 >
                   <p className="body-3 text-center text-primary-200">
@@ -130,9 +116,7 @@ export default function LoginEmail({
                     className="ml-5"
                   />
                 </button>
-                <p className="list-title mx-auto">
-                  {isEmailSubmit ? '確認收件匣' : 'Email'}
-                </p>
+                <p className="list-title mx-auto">Email</p>
                 <div className="h-5 w-5 px-5"></div>
               </div>
               <div className="flex flex-col items-center gap-10 px-5 py-10 sm:px-10">
@@ -145,8 +129,13 @@ export default function LoginEmail({
                     }`}
                     ref={inputRef}
                     type="email"
-                    value={emailAddress}
-                    onChange={(e) => setEmailAddress(e.target.value)}
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     onKeyDown={handleKeyDown}
                     required
                   ></input>

@@ -1,8 +1,7 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 
-import type { LoginProcess, UserFormData } from '../page'
-
+import { useLogin } from '../page'
 const allCategories = [
   {
     id: '1',
@@ -66,17 +65,8 @@ const allCategories = [
   },
 ]
 
-export default function LoginSetCategory({
-  handleLoginProcess,
-  formDataState,
-}: {
-  handleLoginProcess: (step: LoginProcess) => void
-  formDataState: {
-    formData: UserFormData
-    setFormData: React.Dispatch<React.SetStateAction<UserFormData>>
-  }
-}) {
-  const { formData, setFormData } = formDataState
+export default function LoginSetCategory() {
+  const { formData, setFormData, setProcess } = useLogin()
 
   const handleCategoryToggle = (categoryId: string) => {
     const categoryIndex = formData.interests.findIndex(
@@ -97,7 +87,7 @@ export default function LoginSetCategory({
   }
 
   const handleClickChevron = () => {
-    handleLoginProcess('set-name')
+    setProcess('set-name')
   }
 
   return (
@@ -146,7 +136,7 @@ export default function LoginSetCategory({
               size="lg"
               color="primary"
               text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
-              onClick={() => handleLoginProcess('set-following')}
+              onClick={() => setProcess('set-following')}
               disabled={formData.interests.length < 3}
             />
           </div>
