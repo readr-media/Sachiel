@@ -18,7 +18,7 @@ export default function Page() {
   )
 }
 
-export type LoginProcess =
+export type LoginProcessKey =
   | 'entry'
   | 'email'
   | 'email-confirmation'
@@ -34,16 +34,16 @@ type UserFormData = {
   followings: string[]
 }
 type LoginContextType = {
-  process: LoginProcess
+  process: LoginProcessKey
   formData: UserFormData
-  setProcess: Dispatch<SetStateAction<LoginProcess>>
+  setProcess: Dispatch<SetStateAction<LoginProcessKey>>
   setFormData: Dispatch<SetStateAction<UserFormData>>
 }
 
 const LoginContext = createContext<LoginContextType | undefined>(undefined)
 
 function LoginProvider({ children }: { children: React.ReactNode }) {
-  const [process, setProcess] = useState<LoginProcess>('entry')
+  const [process, setProcess] = useState<LoginProcessKey>('entry')
   const [formData, setFormData] = useState<UserFormData>({
     email: '',
     name: '',

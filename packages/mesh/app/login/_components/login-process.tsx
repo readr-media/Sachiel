@@ -1,4 +1,4 @@
-import { useLogin } from '../page'
+import { type LoginProcessKey, useLogin } from '../page'
 import LoginEmail from './login-email'
 import LoginEntry from './login-entry'
 import LoginSetCategory from './login-set-category'
@@ -9,7 +9,7 @@ import LoginSetWallet from './login-set-wallet'
 export default function LoginProcess() {
   const { process } = useLogin()
 
-  const processComponent: Record<string, JSX.Element> = {
+  const processComponent: Record<LoginProcessKey, JSX.Element> = {
     entry: <LoginEntry />,
     email: <LoginEmail />,
     'email-confirmation': <LoginEmail />,

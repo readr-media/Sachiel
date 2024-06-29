@@ -23,9 +23,23 @@ const loginOptions = [
     iconName: 'icon-email',
   },
 ] as const
+type LoginMethod = typeof loginOptions[number]['method']
 
 export default function LoginEntry() {
   const { setProcess } = useLogin()
+
+  const handleLoginMethod = (method: LoginMethod) => {
+    switch (method) {
+      case 'apple':
+        return console.log('AppleAuthProvider')
+      case 'facebook':
+        return console.log('FacebookAuthProvider')
+      case 'google':
+        return console.log('GoogleAuthProvider')
+      case 'email':
+        return setProcess('email')
+    }
+  }
   return (
     <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50">
       <div className="flex h-15 w-full flex-row items-center justify-center border-b sm:hidden">
@@ -50,7 +64,7 @@ export default function LoginEntry() {
                   color="white"
                   text={transformedBtnText(option.method)}
                   icon={{ iconName: option.iconName, size: 'm' }}
-                  onClick={() => setProcess('email')}
+                  onClick={() => handleLoginMethod(option.method)}
                 />
               </div>
             ))}
