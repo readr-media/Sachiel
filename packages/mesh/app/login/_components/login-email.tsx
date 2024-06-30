@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import Button from '@/components/button'
 
 import { useLogin } from '../page'
 
 export default function LoginEmail() {
-  const { formData, setFormData, process, setProcess } = useLogin()
-  const [helperText, setHelperText] = useState('')
+  const { formData, setFormData, step, setStep } = useLogin()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -21,22 +20,23 @@ export default function LoginEmail() {
     }
   }
 
-  const handleSubmit = () => {
+  const { isValid, errorMessage } = useMemo(() => {
     if (formData.email === '') {
-      setHelperText('請輸入您的 Email 地址')
+      return { isValid: false, errorMessage: '請輸入您的 Email 地址' }
     } else {
-      if (isValidEmail(formData.email)) {
-        setHelperText('')
-        setProcess('email-confirmation')
-      } else {
-        setHelperText('請輸入有效的 Email 地址')
-      }
+      return isValidEmail(formData.email)
+    }
+  }, [formData.email])
+
+  const handleSubmit = () => {
+    if (isValid) {
+      setStep('email-confirmation')
     }
   }
 
   return (
     <>
-      {process === 'email-confirmation' ? (
+      {step === 'email-confirmation' ? (
         <div className="flex w-full justify-center p-10">
           <div className="w-[295px]">
             <p className="subtitle-1 pb-6 text-center text-primary-700">
@@ -57,7 +57,7 @@ export default function LoginEmail() {
             <button
               className="footnote w-full text-center text-primary-700 underline underline-offset-2"
               onClick={() => {
-                setProcess('entry')
+                setStep('entry')
               }}
             >
               嘗試其他登入方式
@@ -65,7 +65,7 @@ export default function LoginEmail() {
             <button
               className="body-3 w-full text-center text-primary-200"
               onClick={() => {
-                setProcess('set-name')
+                setStep('set-name')
               }}
             >
               temp-next,todo:redirect
@@ -77,7 +77,7 @@ export default function LoginEmail() {
           <div className="flex flex-col">
             <input
               className={`w-full appearance-none border-b ${
-                helperText ? 'border-custom-red-text' : 'border-primary-200'
+                errorMessage ? 'border-custom-red-text' : 'border-primary-200'
               }`}
               ref={inputRef}
               type="email"
@@ -91,8 +91,8 @@ export default function LoginEmail() {
               onKeyDown={handleKeyDown}
               required
             ></input>
-            {helperText ? (
-              <p className="body-3 pt-2 text-custom-red-text">{helperText}</p>
+            {errorMessage ? (
+              <p className="body-3 pt-2 text-custom-red-text">{errorMessage}</p>
             ) : null}
             <p className="footnote pt-3 text-primary-500">
               我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。
@@ -115,5 +115,8 @@ export default function LoginEmail() {
 function isValidEmail(email: string) {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-  return emailRegex.test(email)
+  return {
+    isValid: emailRegex.test(email),
+    errorMessage: '請輸入有效的 Email 地址',
+  }
 }

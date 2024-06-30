@@ -66,7 +66,7 @@ const allCategories = [
 ]
 
 export default function LoginSetCategory() {
-  const { formData, setFormData, setProcess } = useLogin()
+  const { formData, setFormData, setStep } = useLogin()
 
   const handleCategoryToggle = (categoryId: string) => {
     const categoryIndex = formData.interests.findIndex(
@@ -113,7 +113,7 @@ export default function LoginSetCategory() {
           size="lg"
           color="primary"
           text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
-          onClick={() => setProcess('set-following')}
+          onClick={() => setStep('set-following')}
           disabled={formData.interests.length < 3}
         />
       </div>

@@ -8,17 +8,17 @@ import {
   useState,
 } from 'react'
 
-import LoginProcess from './_components/login-process'
+import LoginSteps from './_components/login-steps'
 
 export default function Page() {
   return (
     <LoginProvider>
-      <LoginProcess />
+      <LoginSteps />
     </LoginProvider>
   )
 }
 
-export type LoginProcessKey =
+export type LoginStepsKey =
   | 'entry'
   | 'email'
   | 'email-confirmation'
@@ -34,16 +34,16 @@ type UserFormData = {
   followings: string[]
 }
 type LoginContextType = {
-  process: LoginProcessKey
+  step: LoginStepsKey
   formData: UserFormData
-  setProcess: Dispatch<SetStateAction<LoginProcessKey>>
+  setStep: Dispatch<SetStateAction<LoginStepsKey>>
   setFormData: Dispatch<SetStateAction<UserFormData>>
 }
 
 const LoginContext = createContext<LoginContextType | undefined>(undefined)
 
 function LoginProvider({ children }: { children: React.ReactNode }) {
-  const [process, setProcess] = useState<LoginProcessKey>('entry')
+  const [step, setStep] = useState<LoginStepsKey>('entry')
   const [formData, setFormData] = useState<UserFormData>({
     email: '',
     name: '',
@@ -52,9 +52,7 @@ function LoginProvider({ children }: { children: React.ReactNode }) {
   })
 
   return (
-    <LoginContext.Provider
-      value={{ process, formData, setProcess, setFormData }}
-    >
+    <LoginContext.Provider value={{ step, formData, setStep, setFormData }}>
       {children}
     </LoginContext.Provider>
   )

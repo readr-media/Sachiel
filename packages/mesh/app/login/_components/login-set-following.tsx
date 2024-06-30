@@ -10,7 +10,7 @@ import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/
 import { useLogin } from '../page'
 
 export default function LoginSetFollowing() {
-  const { formData, setFormData, setProcess } = useLogin()
+  const { formData, setFormData, setStep } = useLogin()
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
   const [isFollowAll, setIsFollowAll] = useState(false)
@@ -127,7 +127,7 @@ export default function LoginSetFollowing() {
           size="lg"
           color="primary"
           text="完成"
-          onClick={() => setProcess('set-wallet')}
+          onClick={() => setStep('set-wallet')}
         />
       </div>
     </>

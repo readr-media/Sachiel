@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -7,8 +7,7 @@ import { debounce } from '@/utils/performance'
 import { useLogin } from '../page'
 
 export default function LoginSetName() {
-  const { formData, setFormData, setProcess } = useLogin()
-  const [helperText, setHelperText] = useState('')
+  const { formData, setFormData, setStep } = useLogin()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -23,17 +22,17 @@ export default function LoginSetName() {
     }
   }
 
-  const handleSubmit = () => {
+  const { isValid, errorMessage } = useMemo(() => {
     if (formData.name === '') {
-      setHelperText('請輸入您的姓名')
+      return { isValid: false, errorMessage: '請輸入您的姓名' }
     } else {
-      const { isValid, errorMessage } = isValidName(formData.name)
-      if (isValid) {
-        setHelperText(errorMessage)
-        setProcess('set-category')
-      } else {
-        setHelperText(errorMessage)
-      }
+      return isValidName(formData.name)
+    }
+  }, [formData.name])
+
+  const handleSubmit = () => {
+    if (isValid) {
+      setStep('set-category')
     }
   }
 
@@ -43,7 +42,7 @@ export default function LoginSetName() {
       <div>
         <input
           className={`w-full appearance-none border-b ${
-            helperText ? 'border-custom-red-text' : 'border-primary-200'
+            errorMessage ? 'border-custom-red-text' : 'border-primary-200'
           }`}
           ref={inputRef}
           type="text"
@@ -57,8 +56,8 @@ export default function LoginSetName() {
           onKeyDown={handleKeyDown}
           required
         ></input>
-        {helperText ? (
-          <p className="body-3 pt-2 text-custom-red-text">{helperText}</p>
+        {errorMessage ? (
+          <p className="body-3 pt-2 text-custom-red-text">{errorMessage}</p>
         ) : null}
         <p className="footnote pt-3 text-primary-500">
           輸入您想使用的公開顯示名稱。我們鼓勵使用者填寫真實姓名。這裡可以放其他規定。字數限制。之類的。
@@ -91,27 +90,19 @@ function isValidName(name: string) {
     中央社: true,
   }
 
-  let errorMessage = ''
+  const result = { isValid: false, errorMessage: '' }
 
-  switch (true) {
-    case invalidNames[name]:
-      errorMessage = '這個 ID 目前無法使用，請使用其他 ID'
-      break
-    case name.length < 2:
-      errorMessage = 'ID至少要有2個字元'
-      break
-    case name.length > 32:
-      errorMessage = 'ID最多不能超過 32 個字元。'
-      break
-    case !nameRegex.test(name):
-      errorMessage = 'ID包含無效字元。只能使用中英字母和數字'
-      break
-    default:
-      return { isValid: true, errorMessage: '' }
+  if (invalidNames[name]) {
+    result.errorMessage = '這個 ID 目前無法使用，請使用其他 ID'
+  } else if (name.length < 2) {
+    result.errorMessage = 'ID至少要有2個字元'
+  } else if (name.length > 32) {
+    result.errorMessage = 'ID最多不能超過 32 個字元。'
+  } else if (!nameRegex.test(name)) {
+    result.errorMessage = 'ID包含無效字元。只能使用中英字母和數字'
+  } else {
+    return { isValid: true, errorMessage: '' }
   }
 
-  return {
-    isValid: false,
-    errorMessage,
-  }
+  return result
 }

@@ -1,8 +1,9 @@
 import { useRouter } from 'next/navigation'
+import { createElement } from 'react'
 
 import Icon from '@/components/icon'
 
-import { type LoginProcessKey, useLogin } from '../page'
+import { type LoginStepsKey, useLogin } from '../page'
 import LoginEmail from './login-email'
 import LoginEntry from './login-entry'
 import LoginSetCategory from './login-set-category'
@@ -10,22 +11,22 @@ import LoginSetFollowing from './login-set-following'
 import LoginSetName from './login-set-name'
 import LoginSetWallet from './login-set-wallet'
 
-export default function LoginProcess() {
-  const { process, setProcess } = useLogin()
+export default function LoginSteps() {
+  const { step, setStep } = useLogin()
   const router = useRouter()
 
-  const processComponent: Record<LoginProcessKey, JSX.Element> = {
-    entry: <LoginEntry />,
-    email: <LoginEmail />,
-    'email-confirmation': <LoginEmail />,
-    'set-name': <LoginSetName />,
-    'set-category': <LoginSetCategory />,
-    'set-following': <LoginSetFollowing />,
-    'set-wallet': <LoginSetWallet />,
+  const loginStepComponents: Record<LoginStepsKey, React.FC> = {
+    entry: LoginEntry,
+    email: LoginEmail,
+    'email-confirmation': LoginEmail,
+    'set-name': LoginSetName,
+    'set-category': LoginSetCategory,
+    'set-following': LoginSetFollowing,
+    'set-wallet': LoginSetWallet,
   }
 
   const chevronMap: Pick<
-    Record<LoginProcessKey, { title: string; clickChevron: LoginProcessKey }>,
+    Record<LoginStepsKey, { title: string; clickChevron: LoginStepsKey }>,
     'email' | 'email-confirmation' | 'set-category' | 'set-following'
   > = {
     email: { title: 'Email', clickChevron: 'entry' },
@@ -34,11 +35,11 @@ export default function LoginProcess() {
     'set-following': { title: '推薦追蹤', clickChevron: 'set-category' },
   }
 
-  const titleWithChevron = (process: keyof typeof chevronMap) => {
-    const chevronInfo = chevronMap[process]
+  const innerTitleWithChevron = (step: keyof typeof chevronMap) => {
+    const chevronInfo = chevronMap[step]
     return (
       <>
-        <button onClick={() => setProcess(chevronInfo.clickChevron)}>
+        <button onClick={() => setStep(chevronInfo.clickChevron)}>
           <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
         </button>
         <h2 className="list-title mx-auto">{chevronInfo.title}</h2>
@@ -47,7 +48,7 @@ export default function LoginProcess() {
     )
   }
 
-  const innerTitle = (process: LoginProcessKey) => {
+  const innerTitle = (process: LoginStepsKey) => {
     switch (process) {
       case 'entry':
         return (
@@ -62,7 +63,7 @@ export default function LoginProcess() {
       case 'email-confirmation':
       case 'set-category':
       case 'set-following':
-        return titleWithChevron(process)
+        return innerTitleWithChevron(process)
       case 'set-name':
         return <h2 className="list-title mx-auto">姓名</h2>
       case 'set-wallet':
@@ -84,16 +85,16 @@ export default function LoginProcess() {
   return (
     <>
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
-        {innerTitle(process)}
+        {innerTitle(step)}
       </div>
       <div className="flex w-full justify-center overflow-auto sm:h-full sm:items-center">
         <div className="flex flex-col items-center justify-center bg-white sm:w-[480px] sm:rounded-md sm:drop-shadow">
-          {process !== 'entry' && (
+          {step !== 'entry' && (
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">
-              {innerTitle(process)}
+              {innerTitle(step)}
             </div>
           )}
-          {processComponent[process]}
+          {createElement(loginStepComponents[step])}
         </div>
       </div>
     </>

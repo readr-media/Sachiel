@@ -25,7 +25,7 @@ const loginOptions = [
 type LoginMethod = typeof loginOptions[number]['method']
 
 export default function LoginEntry() {
-  const { setProcess } = useLogin()
+  const { setStep } = useLogin()
 
   const handleLoginMethod = (method: LoginMethod) => {
     switch (method) {
@@ -36,7 +36,7 @@ export default function LoginEntry() {
       case 'google':
         return console.log('GoogleAuthProvider')
       case 'email':
-        return setProcess('email')
+        return setStep('email')
     }
   }
   return (
