@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -9,6 +9,13 @@ import { useLogin } from '../page'
 export default function LoginSetName() {
   const { formData, setFormData, setProcess } = useLogin()
   const [helperText, setHelperText] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -31,53 +38,39 @@ export default function LoginSetName() {
   }
 
   return (
-    <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50">
-      <div className="flex h-15 w-full items-center justify-center border-b sm:hidden">
-        <h2 className="list-title">姓名</h2>
+    <div className="flex flex-col items-center gap-10 px-5 pb-10 pt-5 sm:px-10">
+      <Icon iconName="icon-login-step-1" size={{ width: 335, height: 20 }} />
+      <div>
+        <input
+          className={`w-full appearance-none border-b ${
+            helperText ? 'border-custom-red-text' : 'border-primary-200'
+          }`}
+          ref={inputRef}
+          type="text"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              name: e.target.value,
+            }))
+          }
+          onKeyDown={handleKeyDown}
+          required
+        ></input>
+        {helperText ? (
+          <p className="body-3 pt-2 text-custom-red-text">{helperText}</p>
+        ) : null}
+        <p className="footnote pt-3 text-primary-500">
+          輸入您想使用的公開顯示名稱。我們鼓勵使用者填寫真實姓名。這裡可以放其他規定。字數限制。之類的。
+        </p>
       </div>
-      <div className="flex w-full justify-center sm:h-full sm:items-center">
-        <div className="flex w-[480px] flex-col bg-white sm:rounded-md sm:drop-shadow">
-          <div className="hidden h-15 w-full items-center justify-center border-b sm:flex">
-            <h2 className="list-title">姓名</h2>
-          </div>
-          <div className="flex flex-col items-center gap-10 px-5 pb-10 pt-5 sm:px-10">
-            <Icon
-              iconName="icon-login-step-1"
-              size={{ width: 335, height: 20 }}
-            />
-            <div>
-              <input
-                className={`w-full appearance-none border-b ${
-                  helperText ? 'border-custom-red-text' : 'border-primary-200'
-                }`}
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-                onKeyDown={handleKeyDown}
-                required
-              ></input>
-              {helperText ? (
-                <p className="body-3 pt-2 text-custom-red-text">{helperText}</p>
-              ) : null}
-              <p className="footnote pt-3 text-primary-500">
-                輸入您想使用的公開顯示名稱。我們鼓勵使用者填寫真實姓名。這裡可以放其他規定。字數限制。之類的。
-              </p>
-            </div>
-            <div className="w-full max-w-[320px] px-5">
-              <Button
-                size="lg"
-                color="primary"
-                text="下一步"
-                onClick={handleSubmit}
-              />
-            </div>
-          </div>
-        </div>
+      <div className="w-full max-w-[320px] px-5">
+        <Button
+          size="lg"
+          color="primary"
+          text="下一步"
+          onClick={handleSubmit}
+        />
       </div>
     </div>
   )

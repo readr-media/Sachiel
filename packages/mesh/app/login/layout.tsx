@@ -12,7 +12,9 @@ export default function LoginLayout({
           <Icon size={{ width: 100, height: 44 }} iconName="icon-readr-logo" />
         </div>
       </header>
-      {children}
+      <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50 sm:pt-15">
+        {children}
+      </div>
     </main>
   )
 }

@@ -86,62 +86,37 @@ export default function LoginSetCategory() {
     }))
   }
 
-  const handleClickChevron = () => {
-    setProcess('set-name')
-  }
-
   return (
-    <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50">
-      <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
-        <button onClick={handleClickChevron}>
-          <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
-        </button>
-        <h2 className="list-title mx-auto">新聞類別</h2>
-        <div className="h-5 w-5 px-5"></div>
-      </div>
-      <div className="flex w-full justify-center sm:h-full sm:items-center">
-        <div className="flex max-w-[480px] flex-col bg-white sm:rounded-md sm:drop-shadow">
-          <div className="hidden h-15 w-full items-center justify-center border-b sm:flex">
-            <button onClick={handleClickChevron}>
-              <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
-            </button>
-            <h2 className="list-title mx-auto">新聞類別</h2>
-            <div className="h-5 w-5 px-5"></div>
-          </div>
-          <div className="flex flex-col items-center gap-5 p-5">
-            <Icon
-              iconName="icon-login-step-2"
-              size={{ width: 335, height: 20 }}
-            />
-            <p className="subtitle-1 text-center text-primary-500">
-              請選擇您想追蹤的新聞類別
-            </p>
-            <div className="mt-5 flex flex-wrap justify-center gap-3">
-              {allCategories.map((category) => (
-                <Button
-                  key={category.id}
-                  size="md-100"
-                  color="white"
-                  text={category.title ?? ''}
-                  activeState={{
-                    isActive: formData.interests.includes(category.id),
-                  }}
-                  onClick={() => handleCategoryToggle(category.id)}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="border-t px-5 py-3  sm:px-10 sm:py-5">
+    <>
+      <div className="flex flex-col items-center gap-5 p-5">
+        <Icon iconName="icon-login-step-2" size={{ width: 335, height: 20 }} />
+        <p className="subtitle-1 text-center text-primary-500">
+          請選擇您想追蹤的新聞類別
+        </p>
+        <div className="mt-5 flex flex-wrap justify-center gap-3">
+          {allCategories.map((category) => (
             <Button
-              size="lg"
-              color="primary"
-              text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
-              onClick={() => setProcess('set-following')}
-              disabled={formData.interests.length < 3}
+              key={category.id}
+              size="md-100"
+              color="white"
+              text={category.title ?? ''}
+              activeState={{
+                isActive: formData.interests.includes(category.id),
+              }}
+              onClick={() => handleCategoryToggle(category.id)}
             />
-          </div>
+          ))}
         </div>
       </div>
-    </div>
+      <div className="w-full border-t px-5 py-3 sm:px-10 sm:py-5">
+        <Button
+          size="lg"
+          color="primary"
+          text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
+          onClick={() => setProcess('set-following')}
+          disabled={formData.interests.length < 3}
+        />
+      </div>
+    </>
   )
 }

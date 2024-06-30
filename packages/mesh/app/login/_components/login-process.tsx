@@ -1,3 +1,7 @@
+import { useRouter } from 'next/navigation'
+
+import Icon from '@/components/icon'
+
 import { type LoginProcessKey, useLogin } from '../page'
 import LoginEmail from './login-email'
 import LoginEntry from './login-entry'
@@ -7,7 +11,8 @@ import LoginSetName from './login-set-name'
 import LoginSetWallet from './login-set-wallet'
 
 export default function LoginProcess() {
-  const { process } = useLogin()
+  const { process, setProcess } = useLogin()
+  const router = useRouter()
 
   const processComponent: Record<LoginProcessKey, JSX.Element> = {
     entry: <LoginEntry />,
@@ -18,5 +23,79 @@ export default function LoginProcess() {
     'set-following': <LoginSetFollowing />,
     'set-wallet': <LoginSetWallet />,
   }
-  return <>{processComponent[process]}</>
+
+  const chevronMap: Pick<
+    Record<LoginProcessKey, { title: string; clickChevron: LoginProcessKey }>,
+    'email' | 'email-confirmation' | 'set-category' | 'set-following'
+  > = {
+    email: { title: 'Email', clickChevron: 'entry' },
+    'email-confirmation': { title: '確認收件匣', clickChevron: 'email' },
+    'set-category': { title: '新聞類別', clickChevron: 'set-name' },
+    'set-following': { title: '推薦追蹤', clickChevron: 'set-category' },
+  }
+
+  const titleWithChevron = (process: keyof typeof chevronMap) => {
+    const chevronInfo = chevronMap[process]
+    return (
+      <>
+        <button onClick={() => setProcess(chevronInfo.clickChevron)}>
+          <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
+        </button>
+        <h2 className="list-title mx-auto">{chevronInfo.title}</h2>
+        <div className="h-5 w-5 px-5"></div>
+      </>
+    )
+  }
+
+  const innerTitle = (process: LoginProcessKey) => {
+    switch (process) {
+      case 'entry':
+        return (
+          <div className="flex w-full justify-center">
+            <Icon
+              size={{ width: 100, height: 44 }}
+              iconName="icon-readr-logo"
+            />
+          </div>
+        )
+      case 'email':
+      case 'email-confirmation':
+      case 'set-category':
+      case 'set-following':
+        return titleWithChevron(process)
+      case 'set-name':
+        return <h2 className="list-title mx-auto">姓名</h2>
+      case 'set-wallet':
+        return (
+          <div className="flex w-full px-5">
+            <div className="w-9"></div>
+            <h2 className="list-title mx-auto">連結錢包</h2>
+            <button
+              className="list-title text-custom-blue"
+              onClick={() => router.push('/callbackURL')}
+            >
+              略過
+            </button>
+          </div>
+        )
+    }
+  }
+
+  return (
+    <>
+      <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
+        {innerTitle(process)}
+      </div>
+      <div className="flex w-full justify-center overflow-auto sm:h-full sm:items-center">
+        <div className="flex flex-col items-center justify-center bg-white sm:w-[480px] sm:rounded-md sm:drop-shadow">
+          {process !== 'entry' && (
+            <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">
+              {innerTitle(process)}
+            </div>
+          )}
+          {processComponent[process]}
+        </div>
+      </div>
+    </>
+  )
 }
