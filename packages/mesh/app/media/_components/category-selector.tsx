@@ -1,7 +1,28 @@
-export default function CategorySelector() {
+'use client'
+
+import { useState } from 'react'
+
+import CategoryEditor, { type Category } from './category-editor'
+
+export default function CategorySelector({
+  allCategories,
+  memberFollowingCategoryIds,
+}: {
+  allCategories: Category[]
+  memberFollowingCategoryIds: Set<string>
+}) {
+  const [selectingCategoryIds, setSelectingCategoryIds] = useState(
+    memberFollowingCategoryIds
+  )
   return (
-    <div className="flex h-15 items-center justify-center sm:h-[76px]">
-      類別選擇器...
+    <div className="flex items-center justify-center">
+      <div className="w-[303px]">
+        <CategoryEditor
+          allCategories={allCategories}
+          selectingCategoryIds={selectingCategoryIds}
+          setSelectingCategoryIds={setSelectingCategoryIds}
+        />
+      </div>
     </div>
   )
 }
