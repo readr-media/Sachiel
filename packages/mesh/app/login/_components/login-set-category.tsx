@@ -1,72 +1,26 @@
+import { useEffect, useState } from 'react'
+
+import GetAllCategories from '@/app/actions/get-all-categories'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
 
 import { useLogin } from '../page'
-const allCategories = [
-  {
-    id: '1',
-    slug: 'internation',
-    title: '國際',
-  },
-  {
-    id: '2',
-    slug: 'politics',
-    title: '政治',
-  },
-  {
-    id: '3',
-    slug: 'society',
-    title: '社會',
-  },
-  {
-    id: '4',
-    slug: 'finance',
-    title: '財經',
-  },
-  {
-    id: '5',
-    slug: 'technology',
-    title: '科技',
-  },
-  {
-    id: '6',
-    slug: 'health',
-    title: '醫療健康',
-  },
-  {
-    id: '7',
-    slug: 'sport',
-    title: '體育',
-  },
-  {
-    id: '8',
-    slug: 'art',
-    title: '藝文',
-  },
-  {
-    id: '9',
-    slug: 'entertainment',
-    title: '娛樂',
-  },
-  {
-    id: '10',
-    slug: 'life',
-    title: '生活',
-  },
-  {
-    id: '11',
-    slug: 'education',
-    title: '教育',
-  },
-  {
-    id: '12',
-    slug: 'environment',
-    title: '環境',
-  },
-]
 
 export default function LoginSetCategory() {
   const { formData, setFormData, setStep } = useLogin()
+  const [allCategories, setAllCategories] = useState<
+    GetAllCategoriesQuery['categories'] | null
+  >(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await GetAllCategories()
+      const data = response?.categories ?? []
+      setAllCategories(data)
+    }
+    fetchData()
+  }, [])
 
   const handleCategoryToggle = (categoryId: string) => {
     const categoryIndex = formData.interests.findIndex(
@@ -94,11 +48,11 @@ export default function LoginSetCategory() {
           請選擇您想追蹤的新聞類別
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
-          {allCategories.map((category) => (
+          {allCategories?.map((category) => (
             <Button
               key={category.id}
               size="md-100"
-              color="white"
+              color="lightbox"
               text={category.title ?? ''}
               activeState={{
                 isActive: formData.interests.includes(category.id),
