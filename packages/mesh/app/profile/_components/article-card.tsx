@@ -6,7 +6,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 
-import Comment from './comment'
+import CommentContainer from './comment/comment'
 import { TabCategory } from './tab'
 
 type Member = GetMemberProfileQuery['member']
@@ -91,7 +91,9 @@ const ArticleCard = ({
             <StoryPickButton isStoryPicked={false} />
           </div>
         </section>
-        {isCommentShow && <Comment data={authorComment} avatar={avatar} />}
+        {isCommentShow && (
+          <CommentContainer data={authorComment} avatar={avatar} />
+        )}
       </div>
     </>
   )
