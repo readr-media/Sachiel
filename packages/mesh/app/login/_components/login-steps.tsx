@@ -87,8 +87,8 @@ export default function LoginSteps() {
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
         {innerTitle(step)}
       </div>
-      <div className="flex w-full justify-center overflow-auto sm:h-full sm:items-center">
-        <div className="flex flex-col items-center justify-center bg-white sm:w-[480px] sm:rounded-md sm:drop-shadow">
+      <div className="flex h-full w-full justify-center overflow-auto sm:items-center">
+        <div className="sm:w-[480px] sm:rounded-md sm:bg-white sm:drop-shadow">
           {step !== 'entry' && (
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">
               {innerTitle(step)}

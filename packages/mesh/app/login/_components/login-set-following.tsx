@@ -59,7 +59,7 @@ export default function LoginSetFollowing() {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-131px)] w-full flex-col items-center gap-5 px-5 pt-5 sm:h-[600px] sm:px-10 sm:pt-5">
+      <div className="flex h-[calc(100vh-127px)] w-full flex-col items-center gap-5 overflow-hidden px-5 pt-5 sm:h-[calc(100vh-378px)] sm:px-10">
         <Icon iconName="icon-login-step-3" size={{ width: 335, height: 20 }} />
         <div className="w-full">
           <p className="subtitle-1 pb-3 text-center text-primary-500">
@@ -68,7 +68,7 @@ export default function LoginSetFollowing() {
           <div className="flex h-15 items-center rounded-md border border-primary-200 bg-primary-100 px-4">
             <div className="flex flex-row items-center gap-2">
               <div className="flex -space-x-1 overflow-hidden">
-                {recommend?.members?.slice(0, 4).map((member, index) => (
+                {recommend?.members?.slice(0, 3).map((member, index) => (
                   <div
                     key={member.id}
                     style={{ zIndex: socialPageAvatarLayer[index] }}
@@ -77,9 +77,12 @@ export default function LoginSetFollowing() {
                   </div>
                 ))}
               </div>
-              <p className="body-3 text-primary-500">
-                {recommend?.members?.[0].name}等
-                <span className="text-primary-700">
+              <p className="body-3 flex flex-row items-center text-primary-500">
+                <div className="inline-block w-15 truncate">
+                  {recommend?.members?.[0].name}
+                </div>
+                等
+                <span className="px-0.5 text-primary-700">
                   {recommend?.members?.length}
                 </span>
                 人
