@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type PublishersQuery,
+  GetAllCategoriesDocument,
+  GetAllCategoriesQuery,
   GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
@@ -20,6 +22,7 @@ import NonDesktopStories from './_components/non-desktop-stories'
 
 export const revalidate = 60000
 export type Publisher = NonNullable<PublishersQuery['publishers']>[number]
+export type Category = NonNullable<GetAllCategoriesQuery['categories']>[number]
 export type LatestStoriesInfo = {
   stories: Story[]
   totalCount: number
@@ -51,6 +54,9 @@ export default async function Page() {
   const followingMemberIds = new Set(
     data.member?.followingMembers?.map((member) => member.id ?? '')
   )
+  const memberFollowingCategoryIds = new Set(
+    data.member?.followingCategories?.map((category) => category.id)
+  )
 
   if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
     // TODO: user has no category to render, show empty category UI
@@ -61,6 +67,7 @@ export default async function Page() {
   const latestStoryPageCount = 20
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
+  let allCategories: Category[] = []
   const fetchBody = {
     publishers: followingPublishers,
     category: firstCategory?.id,
@@ -71,7 +78,8 @@ export default async function Page() {
   let responses: [
     Story[] | null,
     LatestStoriesResponse | null,
-    Publisher[] | null
+    Publisher[] | null,
+    GetAllCategoriesQuery | null
   ]
   try {
     responses = await Promise.all([
@@ -90,10 +98,12 @@ export default async function Page() {
         },
         globalLogFields
       ),
+      // TODO: fetch json instead
+      fetchGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
     ])
   } catch (error) {
     logServerSideError(error, 'Unhandled error in media page', globalLogFields)
-    responses = [null, null, null]
+    responses = [null, null, null, null]
   }
 
   mostPickedStory = responses[0]?.[0]
@@ -114,8 +124,8 @@ export default async function Page() {
       return response?.stories ?? []
     },
   }
-
   publishers = responses[2]?.slice(0, mediaCount) ?? []
+  allCategories = responses[3]?.categories ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({
@@ -125,7 +135,10 @@ export default async function Page() {
 
   return (
     <main className="bg-white">
-      <CategorySelector />
+      <CategorySelector
+        allCategories={allCategories}
+        memberFollowingCategoryIds={memberFollowingCategoryIds}
+      />
       <DesktopStories
         latestStoriesInfo={latestStoriesInfo}
         mostPickedStory={mostPickedStory}

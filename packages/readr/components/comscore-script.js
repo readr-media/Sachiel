@@ -11,7 +11,7 @@ export default function ComScoreScript() {
           <!-- Begin Comscore Tag -->
           var _comscore = _comscore || [];
           _comscore.push({
-          c1: "2", c2: "35880649", cs_ucfr: "1",
+          c1: "2", c2: "24318560", cs_ucfr: "1",
           options: {
           enableFirstPartyCookie: true
           }
