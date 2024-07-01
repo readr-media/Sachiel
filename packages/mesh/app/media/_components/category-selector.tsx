@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 
-import CategoryEditor from '@/components/category-editor'
-
-import { type Category } from '../category/[slug]/page'
+import CategoryEditor, { type Category } from './category-editor'
 
 export default function CategorySelector({
   allCategories,

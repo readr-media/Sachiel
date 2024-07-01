@@ -1,8 +1,8 @@
 import { type Dispatch, type SetStateAction } from 'react'
 
-import Button from './button'
+import Button from '@/components/button'
 
-type Category = {
+export type Category = {
   id: string
   title?: string | null
   slug?: string | null
