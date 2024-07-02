@@ -30,9 +30,10 @@ export default function Button({
       'bg-custom-blue text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
     primary:
       'bg-primary-700 text-white hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+    gray: 'bg-primary-700-dark text-primary-700 hover:bg-custom-gray-light',
   }
   const buttonStyles = {
-    xs: 'profile-subtitle h-[30px] px-4 py-2 rounded-[100px]',
+    xs: 'profile-subtitle h-[36px] px-4 py-2 rounded-[100px]',
     sm: 'button h-8 px-3 py-1 rounded', // all Button Mini
     md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
     'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]',

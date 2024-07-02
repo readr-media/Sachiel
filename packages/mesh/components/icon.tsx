@@ -71,6 +71,8 @@ export type IconName =
   | 'icon-avatar-default'
   | 'icon-donate'
   | 'icon-user-dash'
+  | 'icon-navigate-next'
+  | 'icon-navigate-previous'
 
 export type IconProps = {
   size: Size
