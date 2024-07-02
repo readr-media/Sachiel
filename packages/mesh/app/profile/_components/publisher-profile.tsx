@@ -1,10 +1,14 @@
-import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
+import {
+  GetPublisherProfileDocument,
+  GetPublisherProfileQuery,
+} from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import StoryCardList from './story-card-list'
 import UserIntro from './user-intro/index'
+import { type userType } from './user-intro/types'
 
-type PublisherProfileProps = { visitID: string; userType: string }
+type PublisherProfileProps = { visitID: string; userType: userType }
 
 const PublisherProfile = async ({
   visitID,
@@ -40,11 +44,16 @@ const PublisherProfile = async ({
   const userIntro = userData.description || '使用者介紹'
   const userFollowerCount = userData.followerCount || 0
   const storyData = response.stories || []
+
+  const hasContent = storyData.length > 0
+  const contentHeight = hasContent
+    ? 'h-full'
+    : 'min-h-screen-without-header-nav sm:min-h-sm-screen-without-header-footer'
+
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className={`${contentHeight} flex flex-col bg-white`}>
       <UserIntro
         userType={userType}
-        id={userData.id}
         name={userName}
         avatar={userLogo}
         intro={userIntro}

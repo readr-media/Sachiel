@@ -9,6 +9,7 @@ type UserIntroBaseProps = UserIntroProps & {
   buttons: ButtonConfig[]
   children?: ReactNode
 }
+const emptyStatusMaxHeight = 'max-h-[calc(100%_-_152px)]'
 
 const UserIntroBase = ({
   avatar,
@@ -19,7 +20,9 @@ const UserIntroBase = ({
   buttons,
   children,
 }: UserIntroBaseProps) => (
-  <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6">
+  <div
+    className={`flex ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
+  >
     <section className="flex w-full gap-4">
       <UserAvatar name={name} avatar={avatar} userType={userType} />
       <div className="flex flex-col justify-center gap-1">
@@ -29,7 +32,7 @@ const UserIntroBase = ({
         {children}
       </div>
     </section>
-    <p className="mt-6 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">
+    <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">
       {intro}
     </p>
     <div className="mt-6 flex w-full flex-col gap-2 text-base font-normal leading-[22.4px] sm:order-3 md:flex-row">

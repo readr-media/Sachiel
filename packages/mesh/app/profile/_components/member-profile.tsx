@@ -1,13 +1,17 @@
-import { GetMemberProfileDocument } from '@/graphql/__generated__/graphql'
+import {
+  GetMemberProfileDocument,
+  GetMemberProfileQuery,
+} from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import ArticleCardList from './article-card-list'
 import UserIntro from './user-intro/index'
+import { type userType } from './user-intro/types'
 
 type MemberProfileProps = {
   userID: string
   visitID: string
-  userType: string
+  userType: userType
 }
 
 const MemberProfile = async ({ visitID, userType }: MemberProfileProps) => {
@@ -21,12 +25,18 @@ const MemberProfile = async ({ visitID, userType }: MemberProfileProps) => {
   if (!userData) {
     return <div>Error</div>
   }
+
   const picksData = userData.picks || []
   const bookmarkData = userData.books || []
+  const hasContent = picksData.length > 0 || bookmarkData.length > 0
+  const contentHeight = hasContent
+    ? 'h-full'
+    : 'min-h-screen-without-header-nav sm:min-h-sm-screen-without-header-footer'
+
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className={`flex ${contentHeight}  flex-col bg-white`}>
       <UserIntro
-        id={userData.id}
+        userType={userType}
         name={userData.name || ''}
         avatar={userData.avatar || ''}
         intro={userData.intro || ''}
