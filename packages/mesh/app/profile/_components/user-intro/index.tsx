@@ -5,7 +5,6 @@ import { tabFilter } from './utils'
 import VisitorUserIntro from './visitor-user-intro'
 
 const UserIntro: React.FC<UserIntroProps> = (props) => {
-  console.log(props)
   const userStatusList = [
     { key: TabKey.PICK, value: props.pickCount },
     { key: TabKey.FOLLOWER, value: props.followerCount },
