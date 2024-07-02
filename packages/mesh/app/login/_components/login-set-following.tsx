@@ -77,16 +77,16 @@ export default function LoginSetFollowing() {
                   </div>
                 ))}
               </div>
-              <p className="body-3 flex flex-row items-center text-primary-500">
-                <div className="inline-block w-15 truncate">
+              <div className="body-3 flex flex-row items-center text-primary-500">
+                <span className="inline-block w-15 truncate">
                   {recommend?.members?.[0].name}
-                </div>
+                </span>
                 等
                 <span className="px-0.5 text-primary-700">
                   {recommend?.members?.length}
                 </span>
                 人
-              </p>
+              </div>
             </div>
             <button
               className="body-3 ml-auto text-custom-blue"
