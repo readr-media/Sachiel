@@ -6,8 +6,29 @@ import { debounce } from '@/utils/performance'
 
 import { useLogin } from '../page'
 
+const validationMessage = [
+  '姓名在 2-32 字間',
+  '不包含特殊符號',
+  '沒有跟媒體名稱重複',
+]
+
+//TODO: replace with whitelist in GCS
+const invalidNames: { [key: string]: boolean } = {
+  CNN: true,
+  BBC: true,
+  WSJ: true,
+  Readr: true,
+  鏡週刊: true,
+  鏡新聞: true,
+  鏡文學: true,
+  鏡報: true,
+  報導者: true,
+  中央社: true,
+}
+
 export default function LoginSetName() {
   const { formData, setFormData, setStep } = useLogin()
+  const { name } = formData
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -22,13 +43,7 @@ export default function LoginSetName() {
     }
   }
 
-  const { isValid, errorMessage } = useMemo(() => {
-    if (formData.name === '') {
-      return { isValid: false, errorMessage: '請輸入您的姓名' }
-    } else {
-      return isValidName(formData.name)
-    }
-  }, [formData.name])
+  const { validCondition, isValid } = useMemo(() => isValidName(name), [name])
 
   const handleSubmit = () => {
     if (isValid) {
@@ -41,12 +56,10 @@ export default function LoginSetName() {
       <Icon iconName="icon-login-step-1" size={{ width: 335, height: 20 }} />
       <div>
         <input
-          className={`w-full appearance-none border-b ${
-            errorMessage ? 'border-custom-red-text' : 'border-primary-200'
-          }`}
+          className="w-full appearance-none border-b border-primary-200"
           ref={inputRef}
           type="text"
-          value={formData.name}
+          value={name}
           onChange={(e) =>
             setFormData((prev) => ({
               ...prev,
@@ -56,9 +69,28 @@ export default function LoginSetName() {
           onKeyDown={handleKeyDown}
           required
         ></input>
-        {errorMessage ? (
-          <p className="body-3 pt-2 text-custom-red-text">{errorMessage}</p>
-        ) : null}
+        <div className="pt-2">
+          {validationMessage.map((message, idx) => (
+            <div
+              key={idx}
+              className={`flex h-6 flex-row items-center gap-1 ${
+                validCondition.includes(idx)
+                  ? 'text-custom-blue'
+                  : 'text-primary-500'
+              }`}
+            >
+              <Icon
+                iconName={
+                  validCondition.includes(idx)
+                    ? 'icon-check-circle-blue'
+                    : 'icon-check-circle-gray'
+                }
+                size="m"
+              />
+              <p className="body-3">{message}</p>
+            </div>
+          ))}
+        </div>
         <p className="footnote pt-3 text-primary-500">
           輸入您想使用的公開顯示名稱。我們鼓勵使用者填寫真實姓名。這裡可以放其他規定。字數限制。之類的。
         </p>
@@ -69,6 +101,7 @@ export default function LoginSetName() {
           color="primary"
           text="下一步"
           onClick={handleSubmit}
+          disabled={!isValid}
         />
       </div>
     </div>
@@ -76,33 +109,20 @@ export default function LoginSetName() {
 }
 
 function isValidName(name: string) {
-  const nameRegex = /^[a-zA-Z0-9\u4e00-\u9fa5]{2,32}$/
-  const invalidNames: { [key: string]: boolean } = {
-    CNN: true,
-    BBC: true,
-    WSJ: true,
-    Readr: true,
-    鏡週刊: true,
-    鏡新聞: true,
-    鏡文學: true,
-    鏡報: true,
-    報導者: true,
-    中央社: true,
+  const nameRegex = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/
+  const validCondition: number[] = []
+
+  if (name === '') return { validCondition, isValid: false }
+  if (!invalidNames[name]) {
+    validCondition.push(2)
   }
-
-  const result = { isValid: false, errorMessage: '' }
-
-  if (invalidNames[name]) {
-    result.errorMessage = '這個 ID 目前無法使用，請使用其他 ID'
-  } else if (name.length < 2) {
-    result.errorMessage = 'ID至少要有2個字元'
-  } else if (name.length > 32) {
-    result.errorMessage = 'ID最多不能超過 32 個字元。'
-  } else if (!nameRegex.test(name)) {
-    result.errorMessage = 'ID包含無效字元。只能使用中英字母和數字'
-  } else {
-    return { isValid: true, errorMessage: '' }
+  if (nameRegex.test(name)) {
+    validCondition.push(1)
   }
+  if (2 <= name.length && name.length <= 32) {
+    validCondition.push(0)
+  }
+  const isValid = validCondition.length === 3
 
-  return result
+  return { validCondition, isValid }
 }

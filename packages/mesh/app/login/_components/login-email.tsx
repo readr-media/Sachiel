@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import Button from '@/components/button'
+import Icon from '@/components/icon'
 
 import { useLogin } from '../page'
 
 export default function LoginEmail() {
   const { formData, setFormData, step, setStep } = useLogin()
+  const { email } = formData
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -20,13 +22,7 @@ export default function LoginEmail() {
     }
   }
 
-  const { isValid, errorMessage } = useMemo(() => {
-    if (formData.email === '') {
-      return { isValid: false, errorMessage: '請輸入您的 Email 地址' }
-    } else {
-      return isValidEmail(formData.email)
-    }
-  }, [formData.email])
+  const isValid = useMemo(() => isValidEmail(email), [email])
 
   const handleSubmit = () => {
     if (isValid) {
@@ -73,15 +69,13 @@ export default function LoginEmail() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-10 px-5 py-10 sm:px-10">
+        <div className="flex flex-col items-center gap-5 px-5 py-10 sm:gap-10 sm:px-10">
           <div className="flex flex-col">
             <input
-              className={`w-full appearance-none border-b ${
-                errorMessage ? 'border-custom-red-text' : 'border-primary-200'
-              }`}
+              className="w-full appearance-none border-b border-primary-200"
               ref={inputRef}
               type="email"
-              value={formData.email}
+              value={email}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
@@ -91,9 +85,19 @@ export default function LoginEmail() {
               onKeyDown={handleKeyDown}
               required
             ></input>
-            {errorMessage ? (
-              <p className="body-3 pt-2 text-custom-red-text">{errorMessage}</p>
-            ) : null}
+            <div
+              className={`flex h-6 flex-row items-center gap-1 pt-2 ${
+                isValid ? 'text-custom-blue' : 'text-primary-500'
+              }`}
+            >
+              <Icon
+                iconName={
+                  isValid ? 'icon-check-circle-blue' : 'icon-check-circle-gray'
+                }
+                size="m"
+              />
+              <p className="body-3">Email 符合格式</p>
+            </div>
             <p className="footnote pt-3 text-primary-500">
               我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。
             </p>
@@ -104,6 +108,7 @@ export default function LoginEmail() {
               color="white"
               text="送出"
               onClick={handleSubmit}
+              disabled={!isValid}
             />
           </div>
         </div>
@@ -115,8 +120,6 @@ export default function LoginEmail() {
 function isValidEmail(email: string) {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-  return {
-    isValid: emailRegex.test(email),
-    errorMessage: '請輸入有效的 Email 地址',
-  }
+
+  return email !== '' && emailRegex.test(email)
 }

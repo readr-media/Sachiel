@@ -80,6 +80,8 @@ export type IconName =
   | 'icon-login-step-2'
   | 'icon-login-step-3'
   | 'icon-dynamicxyz'
+  | 'icon-check-circle-gray'
+  | 'icon-check-circle-blue'
 
 export type IconProps = {
   size: Size
