@@ -13,6 +13,8 @@ export type IconName =
   | 'icon-search-bar'
   | 'icon-readr-logo'
   | 'icon-readr-logo-lg'
+  | 'icon-readr-logoA-mobile'
+  | 'icon-readr-logoA-desktop'
   | 'icon-google-play'
   | 'icon-app-store'
   | 'icon-facebook'

@@ -54,8 +54,8 @@ export default function LoginSteps() {
         return (
           <div className="flex w-full justify-center">
             <Icon
-              size={{ width: 100, height: 44 }}
-              iconName="icon-readr-logo"
+              size={{ width: 144, height: 36 }}
+              iconName="icon-readr-logoA-mobile"
             />
           </div>
         )
