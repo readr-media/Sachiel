@@ -45,7 +45,7 @@ export const useCommentLogic = (
       )
       setIsOpened(false)
     } else {
-      commentRef.current.style.setProperty('-webkit-line-clamp', 'none')
+      commentRef.current.style.setProperty('-webkit-line-clamp', 'inherit')
       setIsOpened(true)
     }
   }, [
