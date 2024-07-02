@@ -29,6 +29,9 @@ module.exports = {
         15: '3.75rem',
       },
       height: {
+        body: {
+          DEFAULT: '100dvh',
+        },
         header: {
           default: '60px',
           sm: '68px',
@@ -135,7 +138,24 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities, theme, e }) {
+      const emptyStatusMinHeight = {
+        '.min-h-screen-without-header-nav': {
+          height: `calc(100dvh - ${theme('height.header.default')} - ${theme(
+            'height.nav.default'
+          )})`,
+        },
+        '.min-h-sm-screen-without-header-footer': {
+          height: `calc(100dvh - ${theme('height.header.sm')} - ${theme(
+            'height.footer.sm'
+          )})`,
+        },
+      }
+
+      addUtilities(emptyStatusMinHeight, ['responsive', 'hover'])
+    },
+  ],
   future: {
     hoverOnlyWhenSupported: true,
   },

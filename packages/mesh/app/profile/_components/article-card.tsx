@@ -6,7 +6,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 
-import CommentContainer from './comment/comment'
+import CommentContainer from './comment'
 import { TabCategory } from './tab'
 
 type Member = GetMemberProfileQuery['member']
@@ -20,6 +20,13 @@ type ArticleCardProps = {
   category?: TabCategory
   userType?: string
 }
+
+const shouldShowComments = (userType?: string, category?: TabCategory) => {
+  if (userType === 'publisher') return false
+  if (category === TabCategory.bookmarks) return false
+  return true
+}
+
 const ArticleCard = ({
   data,
   isLast,
@@ -32,8 +39,7 @@ const ArticleCard = ({
   const authorComment = commentList.find(
     (comment) => comment?.member?.id === id
   )
-  const isCommentShow =
-    userType !== 'publisher' && category !== TabCategory.bookmarks
+  const isCommentShow = shouldShowComments(userType, category)
   return (
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">

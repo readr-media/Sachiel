@@ -53,7 +53,7 @@ const ArticleCardList = ({
           setCategory={setCategory}
         />
         <section className="flex h-full flex-1 items-center justify-center whitespace-pre bg-primary-700-dark  text-center text-base text-primary-400 sm:min-h-full">
-          <p className="full my-10">{getMessage(userType, category)}</p>
+          <p className="my-10 w-full">{getMessage(userType, category)}</p>
         </section>
       </div>
     )
@@ -66,7 +66,7 @@ const ArticleCardList = ({
           return (
             <li
               key={pick?.story?.id}
-              className="relative h-full w-full bg-white md:rounded-md md:shadow-[0_2px_2px_0px_rgba(0,9,40,0.1)]"
+              className="relative w-full bg-white md:h-full md:rounded-md md:shadow-[0_2px_2px_0px_rgba(0,9,40,0.1)]"
             >
               <ArticleCard
                 data={pick.story}
