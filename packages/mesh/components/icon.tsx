@@ -75,6 +75,7 @@ export type IconName =
   | 'icon-navigate-previous'
   | 'icon-add'
   | 'icon-modal-close'
+  | 'icon-no-story'
 
 export type IconProps = {
   size: Size

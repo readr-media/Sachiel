@@ -18,6 +18,7 @@ import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import CategorySelector from './_components/category-selector'
 import DesktopStories from './_components/desktop-stories'
+import NoStories from './_components/no-stories'
 import NonDesktopStories from './_components/non-desktop-stories'
 
 //TODO: cache setting
@@ -112,6 +113,18 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   mostPickedStory = responses[0]?.[0]
+
+  if (responses[1]?.stories?.length === 0) {
+    return (
+      <NoStories
+        allCategories={allCategories}
+        followingCategories={followingCategories}
+        activeCategorySlug={currentCategorySlug}
+        memberId={memberId}
+      />
+    )
+  }
+
   const latestStoriesInfo: LatestStoriesInfo = {
     stories:
       responses[1]?.stories?.filter(
