@@ -73,6 +73,8 @@ export type IconName =
   | 'icon-user-dash'
   | 'icon-navigate-next'
   | 'icon-navigate-previous'
+  | 'icon-add'
+  | 'icon-modal-close'
 
 export type IconProps = {
   size: Size

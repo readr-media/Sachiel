@@ -20,7 +20,9 @@ import CategorySelector from './_components/category-selector'
 import DesktopStories from './_components/desktop-stories'
 import NonDesktopStories from './_components/non-desktop-stories'
 
-export const revalidate = 60000
+//TODO: cache setting
+export const revalidate = 0
+
 export type Publisher = NonNullable<PublishersQuery['publishers']>[number]
 export type Category = NonNullable<GetAllCategoriesQuery['categories']>[number]
 export type LatestStoriesInfo = {
@@ -31,7 +33,8 @@ export type LatestStoriesInfo = {
 }
 export { type Story } from '@/utils/get-latest-stories-in-categroy'
 
-export default async function Page() {
+export default async function Page({ params }: { params: { slug: string } }) {
+  const currentCategorySlug = params.slug
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const memberId = '19'
@@ -50,15 +53,15 @@ export default async function Page() {
 
   const followingPublishers =
     data.member?.followPublishers?.map((publiser) => publiser.id) ?? []
-  const firstCategory = data.member?.followingCategories?.[0]
+  const followingCategories = data.member?.followingCategories ?? []
+  const currentCategory = followingCategories.find(
+    (category) => category.slug === currentCategorySlug
+  )
   const followingMemberIds = new Set(
     data.member?.followingMembers?.map((member) => member.id ?? '')
   )
-  const memberFollowingCategoryIds = new Set(
-    data.member?.followingCategories?.map((category) => category.id)
-  )
 
-  if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
+  if (!currentCategory || !currentCategory.id || !currentCategory.slug) {
     // TODO: user has no category to render, show empty category UI
     return <div>Empty Caegory UI</div>
   }
@@ -68,9 +71,9 @@ export default async function Page() {
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
   let allCategories: Category[] = []
-  const fetchBody = {
+  const getLatestStoriesfetchBody = {
     publishers: followingPublishers,
-    category: firstCategory?.id,
+    category: currentCategory?.id,
     index: 0,
     take: latestStoryPageCount,
   }
@@ -84,13 +87,15 @@ export default async function Page() {
   try {
     responses = await Promise.all([
       fetchStatic<Story[]>(
-        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(firstCategory?.slug),
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
+          currentCategory?.slug
+        ),
         {
           next: { revalidate: 10 },
         },
         globalLogFields
       ),
-      getLatestStoriesInCategory(fetchBody),
+      getLatestStoriesInCategory(getLatestStoriesfetchBody),
       fetchStatic<Publisher[]>(
         STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
         {
@@ -113,12 +118,12 @@ export default async function Page() {
         (story) => story.id !== mostPickedStory?.id
       ) ?? [],
     totalCount: responses[1]?.num_stories ?? 0,
-    fetchBody,
+    fetchBody: getLatestStoriesfetchBody,
     fetchListInPage: async (pageIndex) => {
       'use server'
       const response = await getLatestStoriesInCategory({
-        ...fetchBody,
-        index: (pageIndex - 1) * fetchBody.take,
+        ...getLatestStoriesfetchBody,
+        index: (pageIndex - 1) * getLatestStoriesfetchBody.take,
       })
       // TODO: filter out stories existed in mostPickStory, publisher stories
       return response?.stories ?? []
@@ -137,7 +142,9 @@ export default async function Page() {
     <main className="bg-white">
       <CategorySelector
         allCategories={allCategories}
-        memberFollowingCategoryIds={memberFollowingCategoryIds}
+        followingCategories={followingCategories}
+        activeCategorySlug={currentCategorySlug}
+        memberId={memberId}
       />
       <DesktopStories
         latestStoriesInfo={latestStoriesInfo}
