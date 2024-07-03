@@ -79,7 +79,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <div className="flex justify-center gap-10 px-10 py-5">
+      <div className="flex justify-center gap-10 sm:px-5  sm:py-5 lg:px-10">
         <div className="flex flex-col gap-4">
           {firstSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
