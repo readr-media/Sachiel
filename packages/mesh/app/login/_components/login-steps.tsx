@@ -5,6 +5,7 @@ import Icon from '@/components/icon'
 
 import { type LoginStepsKey, useLogin } from '../page'
 import LoginEmail from './login-email'
+import LoginEmailConfirmation from './login-email-confirmation'
 import LoginEntry from './login-entry'
 import LoginSetCategory from './login-set-category'
 import LoginSetFollowing from './login-set-following'
@@ -18,7 +19,7 @@ export default function LoginSteps() {
   const loginStepComponents: Record<LoginStepsKey, React.FC> = {
     entry: LoginEntry,
     email: LoginEmail,
-    'email-confirmation': LoginEmail,
+    'email-confirmation': LoginEmailConfirmation,
     'set-name': LoginSetName,
     'set-category': LoginSetCategory,
     'set-following': LoginSetFollowing,

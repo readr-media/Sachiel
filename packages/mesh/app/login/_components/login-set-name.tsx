@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -13,29 +13,22 @@ const validationMessage = [
 ]
 
 //TODO: replace with whitelist in GCS
-const invalidNames: { [key: string]: boolean } = {
-  CNN: true,
-  BBC: true,
-  WSJ: true,
-  Readr: true,
-  鏡週刊: true,
-  鏡新聞: true,
-  鏡文學: true,
-  鏡報: true,
-  報導者: true,
-  中央社: true,
-}
+const invalidNames = new Set([
+  'CNN',
+  'BBC',
+  'WSJ',
+  'Readr',
+  '鏡週刊',
+  '鏡新聞',
+  '鏡文學',
+  '鏡報',
+  '報導者',
+  '中央社',
+])
 
 export default function LoginSetName() {
   const { formData, setFormData, setStep } = useLogin()
   const { name } = formData
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
-  }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -57,7 +50,7 @@ export default function LoginSetName() {
       <div>
         <input
           className="w-full appearance-none border-b border-primary-200"
-          ref={inputRef}
+          // ref={inputRef}
           type="text"
           value={name}
           onChange={(e) =>
@@ -67,6 +60,7 @@ export default function LoginSetName() {
             }))
           }
           onKeyDown={handleKeyDown}
+          autoFocus
           required
         ></input>
         <div className="pt-2">
@@ -113,7 +107,7 @@ function isValidName(name: string) {
   const validCondition: number[] = []
 
   if (name === '') return { validCondition, isValid: false }
-  if (!invalidNames[name]) {
+  if (!invalidNames.has(name)) {
     validCondition.push(2)
   }
   if (nameRegex.test(name)) {

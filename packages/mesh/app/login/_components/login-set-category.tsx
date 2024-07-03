@@ -9,9 +9,8 @@ import { useLogin } from '../page'
 
 export default function LoginSetCategory() {
   const { formData, setFormData, setStep } = useLogin()
-  const [allCategories, setAllCategories] = useState<
-    GetAllCategoriesQuery['categories'] | null
-  >(null)
+  const [allCategories, setAllCategories] =
+    useState<GetAllCategoriesQuery['categories']>(null)
 
   useEffect(() => {
     const fetchData = async () => {
