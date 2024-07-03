@@ -15,7 +15,7 @@ export default function LoginEmail() {
     }
   }
 
-  const isValid = useMemo(() => isValidEmail(email), [email])
+  const isValid = isValidEmail(email)
 
   const handleSubmit = () => {
     if (isValid) {
