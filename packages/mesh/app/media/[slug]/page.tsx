@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
@@ -37,6 +37,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const currentCategorySlug = params.slug
   const globalLogFields = getLogTraceObjectFromHeaders()
 
+  // TODO: get user id or redirect to login page
   const memberId = '19'
 
   const data = await fetchGraphQL(
@@ -62,8 +63,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   )
 
   if (!currentCategory || !currentCategory.id || !currentCategory.slug) {
-    // TODO: user has no category to render, show empty category UI
-    return <div>Empty Caegory UI</div>
+    redirect(`${followingCategories[0].slug}`)
   }
 
   const mediaCount = 5
