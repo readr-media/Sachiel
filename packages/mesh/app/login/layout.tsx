@@ -6,7 +6,7 @@ export default function LoginLayout({
   children: React.ReactNode
 }) {
   return (
-    <main className="h-dvh">
+    <div className="h-dvh">
       <header className="absolute left-0 right-0 top-0 z-header hidden h-[60px] border-b bg-white sm:block">
         <div className="flex h-full w-full items-center justify-center">
           <Icon
@@ -15,9 +15,9 @@ export default function LoginLayout({
           />
         </div>
       </header>
-      <section className="flex h-full flex-col items-center bg-white sm:bg-gray-50 sm:pt-15">
+      <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50 sm:pt-15">
         {children}
-      </section>
-    </main>
+      </div>
+    </div>
   )
 }
