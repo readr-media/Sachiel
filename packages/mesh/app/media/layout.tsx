@@ -14,8 +14,10 @@ export default function MediaLayout({
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
-        <div className="bg-gray-50">
-          <div className="grow xl:max-w-[theme(width.maxMain)]">{children}</div>
+        <div className="flex grow bg-gray-50">
+          <div className="flex grow xl:max-w-[theme(width.maxMain)]">
+            {children}
+          </div>
         </div>
         {/* footer after main content */}
         <Footer />

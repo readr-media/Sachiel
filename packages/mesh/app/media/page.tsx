@@ -134,7 +134,7 @@ export default async function Page() {
   }))
 
   return (
-    <main className="bg-white">
+    <main>
       <CategorySelector
         allCategories={allCategories}
         memberFollowingCategoryIds={memberFollowingCategoryIds}
