@@ -3091,16 +3091,33 @@ export type UserActionStoryFragment = {
   }> | null
 }
 
-export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
+export type GetFollowingListQueryVariables = Exact<{
+  memberId: Scalars['ID']['input']
+}>
 
-export type GetAllCategoriesQuery = {
+export type GetFollowingListQuery = {
   __typename?: 'Query'
-  categories?: Array<{
-    __typename?: 'Category'
+  member?: {
+    __typename?: 'Member'
+    name?: string | null
     id: string
-    slug?: string | null
-    title?: string | null
-  }> | null
+    followingCount?: number | null
+    follow_publisherCount?: number | null
+    follow_publisher?: Array<{
+      __typename?: 'Publisher'
+      id: string
+      customId?: string | null
+      logo?: string | null
+      title?: string | null
+    }> | null
+    following?: Array<{
+      __typename?: 'Member'
+      id: string
+      customId?: string | null
+      name?: string | null
+      avatar?: string | null
+    }> | null
+  } | null
 }
 
 export type GetMemberFollowingQueryVariables = Exact<{
@@ -3683,30 +3700,46 @@ export const UserActionStoryFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<UserActionStoryFragment, unknown>
-export const GetAllCategoriesDocument = {
+export const GetFollowingListDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetAllCategories' },
+      name: { kind: 'Name', value: 'GetFollowingList' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'categories' },
+            name: { kind: 'Name', value: 'member' },
             arguments: [
               {
                 kind: 'Argument',
-                name: { kind: 'Name', value: 'orderBy' },
+                name: { kind: 'Name', value: 'where' },
                 value: {
                   kind: 'ObjectValue',
                   fields: [
                     {
                       kind: 'ObjectField',
                       name: { kind: 'Name', value: 'id' },
-                      value: { kind: 'EnumValue', value: 'asc' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
                     },
                   ],
                 },
@@ -3715,9 +3748,51 @@ export const GetAllCategoriesDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'followingCount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'follow_publisherCount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'follow_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'following' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -3726,8 +3801,8 @@ export const GetAllCategoriesDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetAllCategoriesQuery,
-  GetAllCategoriesQueryVariables
+  GetFollowingListQuery,
+  GetFollowingListQueryVariables
 >
 export const GetMemberFollowingDocument = {
   kind: 'Document',
