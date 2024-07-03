@@ -34,8 +34,12 @@ export type LatestStoriesInfo = {
 }
 export { type Story } from '@/utils/get-latest-stories-in-categroy'
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const currentCategorySlug = params.slug
+export default async function Page({
+  params,
+}: {
+  params: { categorySlug: string }
+}) {
+  const currentCategorySlug = params.categorySlug
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   // TODO: get user id or redirect to login page
