@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 
@@ -129,7 +130,7 @@ export default function CategorySelector({
               className="mr-[-8px]"
             />
             {displayCategories.map((category) => (
-              <a
+              <Link
                 key={category.id}
                 className="flex-shrink-0"
                 href={category.slug ?? ''}
@@ -143,7 +144,7 @@ export default function CategorySelector({
                   }}
                   onClick={() => {}}
                 />
-              </a>
+              </Link>
             ))}
             <div className="flex-shrink-0">
               <Button
