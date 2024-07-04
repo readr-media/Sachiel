@@ -1,12 +1,12 @@
 import Image from 'next/image'
 
+import CommentContainer from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 
-import CommentContainer from './comment'
 import { TabCategory } from './tab'
 
 type Member = GetMemberProfileQuery['member']
@@ -15,7 +15,7 @@ export type StoryItem = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
   data: NonNullable<StoryItem>
   isLast: boolean
-  id: string
+  id?: string
   avatar?: string
   category?: TabCategory
   userType?: string

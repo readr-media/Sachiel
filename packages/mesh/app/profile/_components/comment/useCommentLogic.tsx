@@ -1,22 +1,21 @@
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import useWindowDimensions from '@/hooks/use-window-dimension'
-
-import type { CommentData } from './type'
+type Redirect = {
+  cond: boolean
+  route: string
+}
 
 export const useCommentLogic = (
   clampLineCount: number,
-  data?: CommentData,
-  canToggle: boolean = false
+  canToggle: boolean = false,
+  shouldRedirect?: Redirect
 ) => {
   const [isTooLong, setIsTooLong] = useState(false)
   const [isOpened, setIsOpened] = useState(false)
-  const { width } = useWindowDimensions()
   const commentRef = useRef<HTMLParagraphElement>(null)
   const router = useRouter()
 
-  const shouldRedirect = width >= 960
   const needClamp = !isOpened && isTooLong
   const defaultLineClamp = clampLineCount
 
@@ -28,12 +27,12 @@ export const useCommentLogic = (
     const realHeight = commentRef.current.scrollHeight
     const expectedParagraphHeight = lineHeight * clampLineCount
     setIsTooLong(realHeight > expectedParagraphHeight)
-  }, [clampLineCount, data?.content])
+  }, [clampLineCount])
 
   const handleToggleClamp = useCallback(() => {
     if (!commentRef.current) return
-    if (shouldRedirect) {
-      router.push('/story/')
+    if (shouldRedirect && shouldRedirect.cond) {
+      router.push(shouldRedirect.route)
       return
     }
     if (!isTooLong) return
