@@ -48,7 +48,7 @@ const page = async ({ params }: PageProps) => {
     : 'min-h-screen-without-header-nav sm:min-h-sm-screen-without-header-footer'
 
   return (
-    <div className={`${contentHeight} flex flex-col bg-white`}>
+    <main className={`${contentHeight} flex flex-col bg-white`}>
       <PublisherPage
         name={userName}
         avatar={userLogo}
@@ -59,7 +59,7 @@ const page = async ({ params }: PageProps) => {
         pickCount={null}
         storyData={storyData}
       />
-    </div>
+    </main>
   )
 }
 

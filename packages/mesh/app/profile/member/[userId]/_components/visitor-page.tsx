@@ -1,11 +1,11 @@
 'use client'
 import { useState } from 'react'
 
-import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
+import { type GetVisitorProfileQuery } from '@/graphql/__generated__/graphql'
 import { tabFilter, TabKey } from '@/utils/profile-tab'
 
 import ArticleCardList from './article-card-list'
-import { userType } from './member-page'
+import { type userType } from './member-page'
 import ProfileButtonLIst from './profile-button-list'
 import Tab, { TabCategory } from './tab'
 import UserProfile from './user-profile'
@@ -19,7 +19,7 @@ type VisitorPageProps = {
   followingCount: number | null
   followerCount: number
   userType: userType
-  picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
+  picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
   visitID: string
 }
 
