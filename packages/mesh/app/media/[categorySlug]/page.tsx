@@ -54,7 +54,7 @@ export default async function Page({
   )
 
   if (!data) {
-    return notFound()
+    notFound()
   }
 
   const followingPublishers =

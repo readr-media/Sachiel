@@ -23,14 +23,14 @@ export default async function Page() {
   )
 
   if (!data) {
-    return notFound()
+    notFound()
   }
 
   const firstCategory = data.member?.followingCategories?.[0]
 
   if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
     // TODO: user has no category to render, show empty category UI
-    return notFound()
+    notFound()
   }
 
   redirect(`media/${firstCategory.slug}`)
