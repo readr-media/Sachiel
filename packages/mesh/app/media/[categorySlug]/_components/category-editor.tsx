@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
