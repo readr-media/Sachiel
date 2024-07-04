@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 
-export type Category = {
-  id: string
-  title?: string | null
-  slug?: string | null
-}
+import type { Category } from '../page'
 
 export default function CategoryEditor({
   allCategories,

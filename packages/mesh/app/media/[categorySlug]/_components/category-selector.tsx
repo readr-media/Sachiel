@@ -14,7 +14,8 @@ import {
   undoDeleteCategroies,
 } from '@/utils/edit-category'
 
-import CategoryEditor, { type Category } from './category-editor'
+import type { Category } from '../page'
+import CategoryEditor from './category-editor'
 
 const scrollDistance = 200
 
