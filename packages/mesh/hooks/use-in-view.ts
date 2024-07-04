@@ -16,12 +16,7 @@ export default function useInView() {
     })
 
     if (targetRef.current) {
-      const _observer = new IntersectionObserver(callback, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0,
-      })
-      _observer.observe(targetRef.current)
+      observer.observe(targetRef.current)
     }
 
     return () => {
