@@ -15,7 +15,7 @@ export default function LoginLayout({
           />
         </div>
       </header>
-      <div className="flex h-full flex-col items-center bg-white sm:bg-gray-50 sm:pt-15">
+      <div className="flex h-full flex-col items-center bg-white sm:bg-multi-layer-light sm:pt-15">
         {children}
       </div>
     </div>

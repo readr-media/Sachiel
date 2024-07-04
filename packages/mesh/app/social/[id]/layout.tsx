@@ -14,7 +14,7 @@ export default function SocialLayout({
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
-        <div className="flex grow bg-white">
+        <div className="flex grow bg-multi-layer-light">
           <div className="flex grow xl:max-w-[theme(width.maxMain)]">
             {children}
           </div>
