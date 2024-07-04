@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import GetMemberByFollowingCategory from '@/app/actions/get-members-by-category'
+import getMemberByFollowingCategory from '@/app/actions/get-members-by-category'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
@@ -17,7 +17,7 @@ export default function LoginSetFollowing() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await GetMemberByFollowingCategory(formData.interests)
+      const data = await getMemberByFollowingCategory(formData.interests)
       setRecommend(data)
     }
     fetchData()

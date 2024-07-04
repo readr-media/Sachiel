@@ -1,12 +1,10 @@
-import { useMemo } from 'react'
-
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { debounce } from '@/utils/performance'
 
 import { useLogin } from '../page'
 
-const validationMessage = [
+const validationMessages = [
   '姓名在 2-32 字間',
   '不包含特殊符號',
   '沒有跟媒體名稱重複',
@@ -36,7 +34,7 @@ export default function LoginSetName() {
     }
   }
 
-  const { validCondition, isValid } = useMemo(() => isValidName(name), [name])
+  const { validCondition, isValid } = isValidName(name)
 
   const handleSubmit = () => {
     if (isValid) {
@@ -50,7 +48,6 @@ export default function LoginSetName() {
       <div>
         <input
           className="w-full appearance-none border-b border-primary-200"
-          // ref={inputRef}
           type="text"
           value={name}
           onChange={(e) =>
@@ -64,7 +61,7 @@ export default function LoginSetName() {
           required
         ></input>
         <div className="pt-2">
-          {validationMessage.map((message, idx) => (
+          {validationMessages.map((message, idx) => (
             <div
               key={idx}
               className={`flex h-6 flex-row items-center gap-1 ${

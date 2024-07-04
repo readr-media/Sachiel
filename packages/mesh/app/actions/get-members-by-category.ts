@@ -4,7 +4,7 @@ import { GetMemberByFollowingCategoryDocument } from '@/graphql/__generated__/gr
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-export default async function GetMemberByFollowingCategory(
+export default async function getMemberByFollowingCategory(
   slugs: string | string[]
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()

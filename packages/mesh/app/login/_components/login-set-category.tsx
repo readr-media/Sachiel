@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import GetAllCategories from '@/app/actions/get-all-categories'
+import getAllCategories from '@/app/actions/get-all-categories'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
@@ -14,7 +14,7 @@ export default function LoginSetCategory() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GetAllCategories()
+      const response = await getAllCategories()
       const data = response?.categories ?? []
       setAllCategories(data)
     }

@@ -74,6 +74,7 @@ export default function LoginSteps() {
             <h2 className="list-title mx-auto">連結錢包</h2>
             <button
               className="list-title text-custom-blue"
+              //TODO: update URL
               onClick={() => router.push('/callbackURL')}
             >
               略過
