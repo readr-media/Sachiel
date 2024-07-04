@@ -2,9 +2,9 @@ import { notFound, redirect } from 'next/navigation'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
+  type GetAllCategoriesQuery,
   type PublishersQuery,
   GetAllCategoriesDocument,
-  GetAllCategoriesQuery,
   GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
