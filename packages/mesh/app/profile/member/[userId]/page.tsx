@@ -47,6 +47,7 @@ const page = async ({ params, searchParams }: PageProps) => {
     }
   }
   const response = await fetchGraphQLByIdentify(isVisitor)
+  // TODO: replace for error page
   if (!response) {
     return <div>Error</div>
   }
