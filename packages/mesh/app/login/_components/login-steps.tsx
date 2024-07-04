@@ -3,7 +3,7 @@ import { createElement } from 'react'
 
 import Icon from '@/components/icon'
 
-import { type LoginStepsKey, useLogin } from '../page'
+import { type LoginStepsKey, LoginState, useLogin } from '../page'
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
 import LoginEntry from './login-entry'
@@ -17,23 +17,35 @@ export default function LoginSteps() {
   const router = useRouter()
 
   const loginStepComponents: Record<LoginStepsKey, React.FC> = {
-    entry: LoginEntry,
-    email: LoginEmail,
-    'email-confirmation': LoginEmailConfirmation,
-    'set-name': LoginSetName,
-    'set-category': LoginSetCategory,
-    'set-following': LoginSetFollowing,
-    'set-wallet': LoginSetWallet,
+    [LoginState.Entry]: LoginEntry,
+    [LoginState.Email]: LoginEmail,
+    [LoginState.EmailConfirmation]: LoginEmailConfirmation,
+    [LoginState.SetName]: LoginSetName,
+    [LoginState.SetCategory]: LoginSetCategory,
+    [LoginState.SetFollowing]: LoginSetFollowing,
+    [LoginState.SetWallet]: LoginSetWallet,
   }
 
   const chevronMap: Pick<
     Record<LoginStepsKey, { title: string; clickChevron: LoginStepsKey }>,
-    'email' | 'email-confirmation' | 'set-category' | 'set-following'
+    | typeof LoginState.Email
+    | typeof LoginState.EmailConfirmation
+    | typeof LoginState.SetCategory
+    | typeof LoginState.SetFollowing
   > = {
-    email: { title: 'Email', clickChevron: 'entry' },
-    'email-confirmation': { title: '確認收件匣', clickChevron: 'email' },
-    'set-category': { title: '新聞類別', clickChevron: 'set-name' },
-    'set-following': { title: '推薦追蹤', clickChevron: 'set-category' },
+    [LoginState.Email]: { title: 'Email', clickChevron: LoginState.Entry },
+    [LoginState.EmailConfirmation]: {
+      title: '確認收件匣',
+      clickChevron: LoginState.Email,
+    },
+    [LoginState.SetCategory]: {
+      title: '新聞類別',
+      clickChevron: LoginState.SetName,
+    },
+    [LoginState.SetFollowing]: {
+      title: '推薦追蹤',
+      clickChevron: LoginState.SetCategory,
+    },
   }
 
   const innerTitleWithChevron = (step: keyof typeof chevronMap) => {
@@ -51,7 +63,7 @@ export default function LoginSteps() {
 
   const innerTitle = (process: LoginStepsKey) => {
     switch (process) {
-      case 'entry':
+      case LoginState.Entry:
         return (
           <div className="flex w-full justify-center">
             <Icon
@@ -60,14 +72,14 @@ export default function LoginSteps() {
             />
           </div>
         )
-      case 'email':
-      case 'email-confirmation':
-      case 'set-category':
-      case 'set-following':
+      case LoginState.Email:
+      case LoginState.EmailConfirmation:
+      case LoginState.SetCategory:
+      case LoginState.SetFollowing:
         return innerTitleWithChevron(process)
-      case 'set-name':
+      case LoginState.SetName:
         return <h2 className="list-title mx-auto">姓名</h2>
-      case 'set-wallet':
+      case LoginState.SetWallet:
         return (
           <div className="flex w-full px-5">
             <div className="w-9"></div>

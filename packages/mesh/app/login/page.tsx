@@ -18,14 +18,17 @@ export default function Page() {
   )
 }
 
-export type LoginStepsKey =
-  | 'entry'
-  | 'email'
-  | 'email-confirmation'
-  | 'set-name'
-  | 'set-category'
-  | 'set-following'
-  | 'set-wallet'
+export const LoginState = {
+  Entry: 'entry',
+  Email: 'email',
+  EmailConfirmation: 'email-confirmation',
+  SetName: 'set-name',
+  SetCategory: 'set-category',
+  SetFollowing: 'set-following',
+  SetWallet: 'set-wallet',
+} as const
+
+export type LoginStepsKey = typeof LoginState[keyof typeof LoginState]
 
 type UserFormData = {
   email: string
@@ -43,7 +46,7 @@ type LoginContextType = {
 const LoginContext = createContext<LoginContextType | undefined>(undefined)
 
 function LoginProvider({ children }: { children: React.ReactNode }) {
-  const [step, setStep] = useState<LoginStepsKey>('entry')
+  const [step, setStep] = useState<LoginStepsKey>(LoginState.Entry)
   const [formData, setFormData] = useState<UserFormData>({
     email: '',
     name: '',
