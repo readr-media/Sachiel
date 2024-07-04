@@ -14,13 +14,21 @@ const invalidNames = new Set([
   'CNN',
   'BBC',
   'WSJ',
-  'Readr',
+  'READr',
+  'Mirror Media',
+  'Mirror News',
+  'The Reporter',
+  'SET News',
+  'PTS',
+  'Public Television Service',
   '鏡週刊',
   '鏡新聞',
   '鏡文學',
   '鏡報',
   '報導者',
   '中央社',
+  '公視',
+  '三立新聞',
 ])
 
 export default function LoginSetName() {
