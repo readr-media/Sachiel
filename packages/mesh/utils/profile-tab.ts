@@ -1,5 +1,14 @@
-import { type TabItem, TabKey } from './types'
+export enum TabKey {
+  PICK = '精選',
+  FOLLOWER = '粉絲',
+  FOLLOWING = '追蹤中',
+  SPONSORED = '本月獲得贊助',
+}
 
+export type TabItem = {
+  key: TabKey
+  value: number | string | null
+}
 const PUBLISHER_TAB_KEYS = new Set([TabKey.FOLLOWER, TabKey.SPONSORED])
 const MEMBER_TAB_KEYS = new Set([
   TabKey.PICK,

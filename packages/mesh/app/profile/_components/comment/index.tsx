@@ -1,14 +1,32 @@
 'use client'
+import { type StoryItem } from '../article-card'
+import Comment from './comment'
 
-import Comment from './comment-compound'
-import { type CommentProps } from './type'
+export type CommentType = NonNullable<CommentList>[number]
 
-const CommentContainer: React.FC<CommentProps> = (props) => {
-  return (
-    <Comment {...props}>
-      <Comment.Header />
-      <Comment.Content />
-    </Comment>
-  )
+export type CommentList = NonNullable<StoryItem>['comment']
+export type CommentProps = {
+  data?: NonNullable<CommentList>[number]
+  clampLineCount?: number
+  avatar: string
+  canToggle?: boolean
+  children?: React.ReactNode
 }
+export type Member = {
+  avatar: string
+  name: string
+}
+export type CommentData = CommentProps['data']
+
+type CommentContainerProps = {
+  data: CommentType
+  clampLineCount?: number
+  avatar: string
+  canToggle?: boolean
+}
+
+const CommentContainer: React.FC<CommentContainerProps> = (props) => {
+  return <Comment {...props} />
+}
+
 export default CommentContainer

@@ -1,21 +1,18 @@
-import {
-  GetPublisherProfileDocument,
-  GetPublisherProfileQuery,
-} from '@/graphql/__generated__/graphql'
+import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
-import StoryCardList from './story-card-list'
-import UserIntro from './user-intro/index'
-import { type userType } from './user-intro/types'
+import PublisherPage from './_component/publisher-page'
 
-type PublisherProfileProps = { visitID: string; userType: userType }
-
-const PublisherProfile = async ({
-  visitID,
-  userType,
-}: PublisherProfileProps) => {
+type PageProps = {
+  params: {
+    userId: string
+    type: string
+  }
+}
+const page = async ({ params }: PageProps) => {
+  const userId = params.userId
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
-    memberId: visitID,
+    memberId: userId,
   })
 
   if (!response) {
@@ -52,18 +49,18 @@ const PublisherProfile = async ({
 
   return (
     <div className={`${contentHeight} flex flex-col bg-white`}>
-      <UserIntro
-        userType={userType}
+      <PublisherPage
         name={userName}
         avatar={userLogo}
         intro={userIntro}
+        followerCount={userFollowerCount || 0}
+        userId={userId}
+        userType="publisher"
         pickCount={null}
-        followingCount={null}
-        followerCount={userFollowerCount}
+        storyData={storyData}
       />
-      <StoryCardList storyData={storyData} id={visitID} userType={userType} />
     </div>
   )
 }
 
-export default PublisherProfile
+export default page

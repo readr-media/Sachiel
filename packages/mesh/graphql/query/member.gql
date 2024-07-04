@@ -13,16 +13,14 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
         avatar
         followerCount
       }
-      pick( where:  {
-         kind:  {
-            equals: "read"
-         }
-         AND: [ {
-            is_active:  {
-               equals: true
-            }
-         }]
-      } orderBy: { createdAt: desc }, take: $takes) {
+      pick(
+        where: {
+          kind: { equals: "read" }
+          AND: [{ is_active: { equals: true } }]
+        }
+        orderBy: { createdAt: desc }
+        take: $takes
+      ) {
         id
         createdAt
         story {
@@ -37,16 +35,12 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
         }
       }
     }
-    pick (where:  {
-       kind:  {
-          equals: "read"
-       },
-       AND: [ {
-          is_active:  {
-             equals: true
-          }
-       }]
-    }) {
+    pick(
+      where: {
+        kind: { equals: "read" }
+        AND: [{ is_active: { equals: true } }]
+      }
+    ) {
       id
       story {
         id
@@ -78,6 +72,168 @@ query GetMember($memberId: ID!) {
     followPublishers: follow_publisher {
       id
       title
+    }
+  }
+}
+
+query GetMemberProfile($memberId: ID!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    avatar_image {
+      urlOriginal
+    }
+    intro
+    pickCount
+    followingCount
+    followerCount
+
+    picks: pick(where: { kind: { equals: "read" } }) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(orderBy: { createdAt: desc }) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+
+    books: pick(where: { kind: { equals: "bookmark" } }) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(orderBy: { createdAt: desc }) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+  }
+}
+
+query GetVisitorProfile($memberId: ID!) {
+  member(where: { id: $memberId }) {
+    id
+    name
+    avatar
+    avatar_image {
+      urlOriginal
+    }
+    intro
+    pickCount
+    followingCount
+    followerCount
+
+    picks: pick(where: { kind: { equals: "read" } }) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(orderBy: { createdAt: desc }) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
     }
   }
 }
