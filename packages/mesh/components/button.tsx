@@ -30,6 +30,8 @@ export default function Button({
       'bg-custom-blue text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
     primary:
       'bg-primary-700 text-white hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+    lightbox:
+      'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   }
   const buttonStyles = {
     xs: 'profile-subtitle h-[30px] px-4 py-2 rounded-[100px]',
