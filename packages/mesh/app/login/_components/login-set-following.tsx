@@ -5,9 +5,8 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
+import { useLogin } from '@/context/login'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
-
-import { useLogin } from '../page'
 
 export default function LoginSetFollowing() {
   const { formData, setFormData, setStep } = useLogin()

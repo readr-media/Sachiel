@@ -1,7 +1,6 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-
-import { useLogin } from '../page'
+import { useLogin } from '@/context/login'
 
 export default function LoginEmail() {
   const { formData, setFormData, setStep } = useLogin()

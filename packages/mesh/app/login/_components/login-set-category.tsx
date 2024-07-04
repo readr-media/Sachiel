@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react'
 import getAllCategories from '@/app/actions/get-all-categories'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { useLogin } from '@/context/login'
 import { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
-
-import { useLogin } from '../page'
 
 export default function LoginSetCategory() {
   const { formData, setFormData, setStep } = useLogin()

@@ -1,8 +1,7 @@
 import Link from 'next/link'
 
 import Button from '@/components/button'
-
-import { useLogin } from '../page'
+import { useLogin } from '@/context/login'
 
 const loginOptions = [
   {

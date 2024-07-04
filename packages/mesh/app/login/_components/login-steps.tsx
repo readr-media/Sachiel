@@ -2,8 +2,8 @@ import { useRouter } from 'next/navigation'
 import { createElement } from 'react'
 
 import Icon from '@/components/icon'
+import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 
-import { type LoginStepsKey, LoginState, useLogin } from '../page'
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
 import LoginEntry from './login-entry'

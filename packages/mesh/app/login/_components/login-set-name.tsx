@@ -1,8 +1,7 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { useLogin } from '@/context/login'
 import { debounce } from '@/utils/performance'
-
-import { useLogin } from '../page'
 
 const validationMessages = [
   '姓名在 2-32 字間',

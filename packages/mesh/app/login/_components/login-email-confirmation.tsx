@@ -1,4 +1,4 @@
-import { useLogin } from '../page'
+import { useLogin } from '@/context/login'
 
 export default function LoginEmailConfirmation() {
   const { setStep } = useLogin()
