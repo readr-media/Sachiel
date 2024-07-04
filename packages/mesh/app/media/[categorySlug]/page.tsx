@@ -128,7 +128,6 @@ export default async function Page({
       />
     )
   }
-
   const latestStoriesInfo: LatestStoriesInfo = {
     stories:
       responses[1]?.stories?.filter(
@@ -146,7 +145,9 @@ export default async function Page({
       return response?.stories ?? []
     },
   }
+
   publishers = responses[2]?.slice(0, mediaCount) ?? []
+
   allCategories = responses[3]?.categories ?? []
 
   // TODO: fetch real publiser stories
