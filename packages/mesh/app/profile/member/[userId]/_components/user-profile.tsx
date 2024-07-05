@@ -13,7 +13,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
   name,
   pickCount,
   avatar,
-  userType,
   intro,
 }) => {
   return (
