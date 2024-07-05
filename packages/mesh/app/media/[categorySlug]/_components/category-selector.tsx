@@ -110,10 +110,12 @@ export default function CategorySelector({
       (category) => category.slug === activeCategorySlug
     )
     if (activeCategoryDeleted) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         // wait for followingCategories to update
         router.replace(displayCategories[0].slug ?? '')
       }, 500)
+
+      return () => clearTimeout(timeout)
     }
   }, [activeCategorySlug, displayCategories, router])
 
