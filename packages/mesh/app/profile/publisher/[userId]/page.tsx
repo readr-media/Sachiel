@@ -42,13 +42,8 @@ const page = async ({ params }: PageProps) => {
   const userFollowerCount = userData.followerCount || 0
   const storyData = response.stories || []
 
-  const hasContent = storyData.length > 0
-  const contentHeight = hasContent
-    ? 'h-full'
-    : 'min-h-screen-without-header-nav sm:min-h-sm-screen-without-header-footer'
-
   return (
-    <main className={`${contentHeight} flex flex-col bg-white`}>
+    <main className="flex h-full grow flex-col">
       <PublisherPage
         name={userName}
         avatar={userLogo}

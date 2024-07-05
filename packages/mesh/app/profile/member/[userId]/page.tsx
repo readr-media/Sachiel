@@ -58,14 +58,9 @@ const page = async ({ params, searchParams }: PageProps) => {
   const picksData = userData.picks || []
   const bookmarkData =
     'books' in userData && userData.books ? userData.books : []
-  const hasContent = picksData.length > 0 || bookmarkData.length > 0
-  const contentHeight = hasContent
-    ? 'h-full'
-    : 'min-h-screen-without-header-nav sm:min-h-sm-screen-without-header-footer'
 
   return (
-    // TODO: change to grow
-    <main className={`flex ${contentHeight}  flex-col bg-white`}>
+    <>
       {isVisitor ? (
         <VisitorPage
           name={userData.name || ''}
@@ -92,7 +87,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           visitID={visitID}
         />
       )}
-    </main>
+    </>
   )
 }
 

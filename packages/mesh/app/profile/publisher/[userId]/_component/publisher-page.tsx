@@ -50,9 +50,9 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   ]
 
   return (
-    <div>
+    <>
       <div
-        className={`flex ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
+        className={`flex grow ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
       >
         <UserProfile
           name={name}
@@ -70,7 +70,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         userType={userType}
         id={userId}
       />
-    </div>
+    </>
   )
 }
 

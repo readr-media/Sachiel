@@ -50,9 +50,9 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   const buttonList = [{ text: '追蹤' }]
 
   return (
-    <div>
+    <>
       <div
-        className={`flex ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
+        className={`flex grow ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
       >
         <UserProfile
           name={name}
@@ -73,7 +73,7 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
         userType={userType}
         category={category}
       />
-    </div>
+    </>
   )
 }
 
