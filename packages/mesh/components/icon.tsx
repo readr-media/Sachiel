@@ -84,6 +84,13 @@ export type IconName =
   | 'icon-dynamicxyz'
   | 'icon-check-circle-gray'
   | 'icon-check-circle-blue'
+  | 'icon-navigate-next'
+  | 'icon-navigate-next-hover'
+  | 'icon-navigate-previous'
+  | 'icon-navigate-previous-hover'
+  | 'icon-add'
+  | 'icon-modal-close'
+  | 'icon-no-story'
 
 export type IconProps = {
   size: Size
