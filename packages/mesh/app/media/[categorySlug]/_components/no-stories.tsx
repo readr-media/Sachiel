@@ -1,6 +1,6 @@
 import Icon from '@/components/icon'
 
-import { type Category } from './category-editor'
+import { type Category } from '../page'
 import CategorySelector from './category-selector'
 
 export default function NoStories({
