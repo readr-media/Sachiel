@@ -67,7 +67,7 @@ const MemberPage: React.FC<MemberPageProps> = ({
   return (
     <>
       <div
-        className={`flex grow ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
+        className={`flex ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
       >
         <UserProfile
           name={name}

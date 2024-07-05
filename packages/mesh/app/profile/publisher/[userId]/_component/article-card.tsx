@@ -57,17 +57,17 @@ const ArticleCard = ({
         }`}
       >
         <section className="mb-1 flex items-center justify-between">
-          <p className=" text-xs font-normal leading-[18px] text-primary-500">
+          <p className="caption-1 leading-[18px] text-primary-500">
             {(data.source && data.source.title) ?? ''}
           </p>
           <Icon iconName="icon-more-horiz" size="l" />
         </section>
         <section className="mb-2 flex items-start justify-between sm:gap-10">
           <div className="flex h-full flex-col justify-between">
-            <p className="mb-2 w-full text-base font-normal leading-6 sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
+            <p className="body-2 mb-2 w-full leading-6 sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
               {data.title}
             </p>
-            <span className=" *:text-xs *:font-normal *:leading-[18px] *:text-primary-500">
+            <span className=" *:caption-1 *:leading-[18px] *:text-primary-500">
               <StoryMeta
                 commentCount={data.commentCount || 0}
                 publishDate={data.published_date}

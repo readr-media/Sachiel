@@ -40,16 +40,16 @@ const Comment: React.FC<CommentProps> = ({
               className="object-cover"
             />
           </div>
-          <p className="text-xs font-normal leading-[18px] text-primary-500">
+          <p className="caption-3 leading-[18px] text-primary-500">
             {displayTimeFromNow(data.createdAt)}
           </p>
           <Icon iconName="icon-dot" size="s" />
-          <button className="text-xs font-normal leading-[18px] text-primary-500">
+          <button className="caption-3 leading-[18px] text-primary-500">
             編輯留言
           </button>
         </div>
         <div className="flex items-center justify-end">
-          <p className="text-xs font-normal leading-[18px] text-primary-600">
+          <p className="caption-3 leading-[18px] text-primary-600">
             {data.likeCount}
           </p>
           <button>
@@ -60,7 +60,7 @@ const Comment: React.FC<CommentProps> = ({
       <div
         className={`relative md:flex md:items-center ${
           needClamp ? '' : 'after:opacity-0'
-        } after:absolute after:bottom-0 after:right-1 after:bg-gradient-to-r after:from-transparent after:from-0% after:to-primary-100 after:to-25% after:pl-6 after:text-sm after:font-normal after:leading-[21px] after:text-primary-400 after:content-['...繼續閱讀'] md:after:bottom-[3px]`}
+        } after:body-3 after:absolute after:bottom-0 after:right-1 after:bg-gradient-to-r after:from-transparent after:from-0% after:to-primary-100 after:to-25% after:pl-6 after:leading-[21px] after:text-primary-400 after:content-['...繼續閱讀'] md:after:bottom-[3px]`}
         onClick={handleToggleClamp}
       >
         <div className="mr-2 hidden h-7 w-7 overflow-hidden rounded-full md:flex">
@@ -73,7 +73,7 @@ const Comment: React.FC<CommentProps> = ({
           />
         </div>
         <p
-          className={`line-clamp-3 h-full w-full text-sm font-normal leading-[21px] text-primary-600 sm:line-clamp-1`}
+          className={`body-3 line-clamp-3 h-full w-full leading-[21px] text-primary-600 sm:line-clamp-1`}
           ref={commentRef}
           style={{
             overflow: 'hidden',

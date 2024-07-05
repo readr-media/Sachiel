@@ -33,8 +33,8 @@ const ArticleCardList = ({
 
   if (!showData?.length)
     return (
-      <div className="flex h-full flex-col">
-        <section className="flex h-full flex-1 items-center justify-center whitespace-pre bg-primary-700-dark  text-center text-base text-primary-400 sm:min-h-full">
+      <div className="flex grow flex-col">
+        <section className="flex h-full grow items-center justify-center whitespace-pre bg-primary-700-dark  text-center text-base text-primary-400 sm:min-h-full">
           <p className="my-10 w-full">{getMessage(userType, category)}</p>
         </section>
       </div>

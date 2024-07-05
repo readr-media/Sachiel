@@ -31,7 +31,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <p className="text-lg font-bold leading-6 text-primary-700 sm:text-xl sm:font-medium sm:leading-7">
             {name}
           </p>
-          <p className="text-[13px] font-normal leading-[19.5px] text-primary-500 sm:text-sm sm:leading-[14px]">
+          <p className="footnote leading-[19.5px] text-primary-500 sm:text-sm sm:leading-[14px]">
             本週精選了
             <span className="text-primary-800"> {pickCount} </span>
             篇文章
