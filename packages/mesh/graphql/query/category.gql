@@ -1,5 +1,5 @@
 query GetAllCategories {
-  categories {
+  categories(orderBy: { id: asc }) {
     id
     slug
     title

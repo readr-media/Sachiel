@@ -15,8 +15,12 @@ export default function Content({
   )
 
   return (
-    <div className={`grow ${isBgWhite ? 'bg-white' : 'bg-gray-50'}`}>
-      <div className="grow xl:max-w-[theme(width.maxMain)]">{children}</div>
+    <div
+      className={`flex grow flex-col ${isBgWhite ? 'bg-white' : 'bg-gray-50'}`}
+    >
+      <div className="flex grow flex-col xl:max-w-[theme(width.maxMain)]">
+        {children}
+      </div>
     </div>
   )
 }

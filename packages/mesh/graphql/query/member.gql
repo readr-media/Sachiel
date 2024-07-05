@@ -64,7 +64,7 @@ query GetMember($memberId: ID!) {
         id
       }
     }
-    followingCategories: following_category {
+    followingCategories: following_category(orderBy: { id: asc }) {
       id
       title
       slug
