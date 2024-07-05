@@ -34,8 +34,8 @@ export default function Button({
       'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 hover:border-primary-700',
     'nav-chip':
       'bg-multi-layer-light text-primary-700 hover:bg-custom-gray-light',
-    'lightbox-chip':
-      'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 hover:border-primary-400',
+    lightbox:
+      'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   }
   const buttonStyles = {
     xs: 'profile-subtitle h-[36px] px-4 py-2 rounded-[100px]', // Nav Chip, Nav Button-Add

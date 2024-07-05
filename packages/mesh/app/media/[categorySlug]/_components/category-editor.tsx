@@ -59,7 +59,7 @@ export default function CategoryEditor({
                   <Button
                     key={category.id}
                     size="md-100"
-                    color="white"
+                    color="lightbox"
                     text={category.title ?? ''}
                     activeState={{
                       isActive: isSelecting,

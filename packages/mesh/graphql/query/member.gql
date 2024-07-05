@@ -75,3 +75,28 @@ query GetMember($memberId: ID!) {
     }
   }
 }
+
+query GetMemberByFollowingCategory($slugs: [String!]!) {
+  members(
+    where: {
+      following_category: {
+        every: {
+          slug: {
+            in: $slugs
+          }
+        }
+      }
+    },
+    orderBy: [{
+      id: desc
+    }],
+    take: 20,
+    skip: 0
+  ) {
+    id
+    customId
+    name
+    nickname
+    avatar
+  }
+}
