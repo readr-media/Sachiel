@@ -6,7 +6,7 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
-import Icon from '@/components/icon'
+import InteractiveIcon, { Icon } from '@/components/interactive-icon'
 import useInView from '@/hooks/use-in-view'
 import {
   getAddedCategoryIds,
@@ -22,17 +22,14 @@ const scrollDistance = 200
 
 const NavigateButton = ({
   onClick,
-  iconName,
+  icon,
 }: {
   onClick: MouseEventHandler<HTMLButtonElement>
-  iconName: 'icon-navigate-previous' | 'icon-navigate-next'
+  icon: Icon
 }) => {
   return (
-    <button
-      className="hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100"
-      onClick={onClick}
-    >
-      <Icon size={{ width: 36, height: 36 }} iconName={iconName} />
+    <button onClick={onClick} className="group">
+      <InteractiveIcon size={{ width: 36, height: 36 }} icon={icon} />
     </button>
   )
 }
@@ -176,7 +173,10 @@ export default function CategorySelector({
               }`}
             >
               <NavigateButton
-                iconName="icon-navigate-previous"
+                icon={{
+                  default: 'icon-navigate-previous',
+                  hover: 'icon-navigate-previous-hover',
+                }}
                 onClick={() => {
                   if (categoriesRef.current) {
                     categoriesRef.current.scrollBy({
@@ -194,7 +194,10 @@ export default function CategorySelector({
               }`}
             >
               <NavigateButton
-                iconName="icon-navigate-next"
+                icon={{
+                  default: 'icon-navigate-next',
+                  hover: 'icon-navigate-next-hover',
+                }}
                 onClick={() => {
                   if (categoriesRef.current) {
                     categoriesRef.current.scrollBy({
