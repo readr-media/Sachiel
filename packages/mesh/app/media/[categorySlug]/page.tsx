@@ -89,6 +89,7 @@ export default async function Page({
     Publisher[] | null,
     GetAllCategoriesQuery | null
   ]
+
   try {
     responses = await Promise.all([
       fetchStatic<Story[]>(
@@ -116,9 +117,16 @@ export default async function Page({
     responses = [null, null, null, null]
   }
 
-  mostPickedStory = responses[0]?.[0]
+  const [
+    mostPickedStoryResponse,
+    latestStoriesResponse,
+    publishersResponse,
+    allCategoriesResponse,
+  ] = responses
 
-  if (responses[1]?.stories?.length === 0) {
+  mostPickedStory = mostPickedStoryResponse?.[0]
+
+  if (latestStoriesResponse?.stories?.length === 0) {
     return (
       <NoStories
         allCategories={allCategories}
@@ -130,10 +138,10 @@ export default async function Page({
   }
   const latestStoriesInfo: LatestStoriesInfo = {
     stories:
-      responses[1]?.stories?.filter(
+      latestStoriesResponse?.stories?.filter(
         (story) => story.id !== mostPickedStory?.id
       ) ?? [],
-    totalCount: responses[1]?.num_stories ?? 0,
+    totalCount: latestStoriesResponse?.num_stories ?? 0,
     fetchBody: getLatestStoriesfetchBody,
     fetchListInPage: async (pageIndex) => {
       'use server'
@@ -146,9 +154,9 @@ export default async function Page({
     },
   }
 
-  publishers = responses[2]?.slice(0, mediaCount) ?? []
+  publishers = publishersResponse?.slice(0, mediaCount) ?? []
 
-  allCategories = responses[3]?.categories ?? []
+  allCategories = allCategoriesResponse?.categories ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({
