@@ -1,13 +1,10 @@
 import Image from 'next/image'
 
-import CommentContainer from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-
-import { TabCategory } from './tab'
 
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
@@ -15,31 +12,9 @@ export type StoryItem = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
   data: NonNullable<StoryItem>
   isLast: boolean
-  id?: string
-  avatar?: string
-  category?: TabCategory
-  userType?: string
 }
 
-const shouldShowComments = (userType?: string, category?: TabCategory) => {
-  if (userType === 'publisher') return false
-  if (category === TabCategory.bookmarks) return false
-  return true
-}
-
-const ArticleCard = ({
-  data,
-  isLast,
-  id,
-  avatar = '',
-  category,
-  userType,
-}: ArticleCardProps) => {
-  const commentList = data.comment || []
-  const authorComment = commentList.find(
-    (comment) => comment?.member?.id === id
-  )
-  const isCommentShow = shouldShowComments(userType, category)
+const ArticleCard = ({ data, isLast }: ArticleCardProps) => {
   return (
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -97,9 +72,6 @@ const ArticleCard = ({
             <StoryPickButton isStoryPicked={false} storyId={data.id} />
           </div>
         </section>
-        {isCommentShow && (
-          <CommentContainer data={authorComment} avatar={avatar} />
-        )}
       </div>
     </>
   )

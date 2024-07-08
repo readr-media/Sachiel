@@ -30,7 +30,6 @@ const Tab = ({ category, setCategory, userType }: TabProps) => {
     setCategory(category)
   }
   const tabFilterByRole = (tab: TabItem) => {
-    if (userType === 'publisher') return tab.category === TabCategory.publish
     if (userType === 'visitor') return tab.category === TabCategory.picks
     return tab.category !== TabCategory.publish
   }
@@ -44,11 +43,6 @@ const Tab = ({ category, setCategory, userType }: TabProps) => {
       name: '書籤',
       category: TabCategory.bookmarks,
       activeStyle: bookmarksActiveStyle,
-    },
-    {
-      name: '報導',
-      category: TabCategory.publish,
-      activeStyle: activeTabStyle,
     },
   ]
   return (

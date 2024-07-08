@@ -3282,7 +3282,7 @@ export type GetMemberByFollowingCategoryQuery = {
 }
 
 export type GetMemberProfileQueryVariables = Exact<{
-  memberId: Scalars['ID']['input']
+  memberId?: InputMaybe<Scalars['String']['input']>
 }>
 
 export type GetMemberProfileQuery = {
@@ -3401,7 +3401,7 @@ export type GetMemberProfileQuery = {
 }
 
 export type GetVisitorProfileQueryVariables = Exact<{
-  memberId: Scalars['ID']['input']
+  memberId?: InputMaybe<Scalars['String']['input']>
 }>
 
 export type GetVisitorProfileQuery = {
@@ -4526,10 +4526,7 @@ export const GetMemberProfileDocument = {
             kind: 'Variable',
             name: { kind: 'Name', value: 'memberId' },
           },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
       ],
       selectionSet: {
@@ -4547,7 +4544,7 @@ export const GetMemberProfileDocument = {
                   fields: [
                     {
                       kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
+                      name: { kind: 'Name', value: 'customId' },
                       value: {
                         kind: 'Variable',
                         name: { kind: 'Name', value: 'memberId' },
@@ -5087,10 +5084,7 @@ export const GetVisitorProfileDocument = {
             kind: 'Variable',
             name: { kind: 'Name', value: 'memberId' },
           },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
       ],
       selectionSet: {
@@ -5108,7 +5102,7 @@ export const GetVisitorProfileDocument = {
                   fields: [
                     {
                       kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
+                      name: { kind: 'Name', value: 'customId' },
                       value: {
                         kind: 'Variable',
                         name: { kind: 'Name', value: 'memberId' },

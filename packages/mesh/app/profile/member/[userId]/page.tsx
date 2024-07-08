@@ -1,8 +1,8 @@
 import {
+  type GetMemberProfileQuery,
+  type GetVisitorProfileQuery,
   GetMemberProfileDocument,
-  GetMemberProfileQuery,
   GetVisitorProfileDocument,
-  GetVisitorProfileQuery,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 

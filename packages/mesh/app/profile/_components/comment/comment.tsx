@@ -4,7 +4,7 @@ import Icon from '@/components/icon'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { CommentType } from './index'
+import { type CommentType } from './index'
 import { useCommentLogic } from './useCommentLogic'
 
 type CommentProps = {

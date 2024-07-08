@@ -6,7 +6,6 @@ import PublisherPage from './_component/publisher-page'
 type PageProps = {
   params: {
     userId: string
-    type: string
   }
 }
 const page = async ({ params }: PageProps) => {

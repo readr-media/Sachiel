@@ -30,9 +30,8 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   pickCount,
   followerCount,
   storyData,
-  userId,
 }) => {
-  const [category, setCategory] = useState<TabCategory>(TabCategory.picks)
+  const [_, setCategory] = useState<TabCategory>(TabCategory.publish)
   const getUserStatusList = () => {
     const userStatusList = [
       { key: TabKey.PICK, value: pickCount },
@@ -63,12 +62,11 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         <ProfileButtonLIst buttonList={buttonList} />
         <UserStatusList userStatusList={getUserStatusList()} />
       </div>
-      <Tab userType={userType} category={category} setCategory={setCategory} />
+      <Tab userType={userType} setCategory={setCategory} />
       <StoryCardList
         storyData={storyData}
         avatar={avatar}
         userType={userType}
-        id={userId}
       />
     </>
   )

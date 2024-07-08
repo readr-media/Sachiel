@@ -1,4 +1,3 @@
-'use client'
 import '@/styles/global.css'
 
 import Nav from '@/app/_components/nav'

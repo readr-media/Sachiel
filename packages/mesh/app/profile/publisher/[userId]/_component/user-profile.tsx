@@ -26,7 +26,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
             className="object-cover"
           />
         </div>
-        {/* title */}
         <div className="flex flex-col justify-center gap-1">
           <p className="text-lg font-bold leading-6 text-primary-700 sm:text-xl sm:font-medium sm:leading-7">
             {name}
@@ -38,7 +37,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
           </p>
         </div>
       </section>
-      {/* intro */}
       <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">
         {intro}
       </p>
