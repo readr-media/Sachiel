@@ -9,7 +9,7 @@ query Publishers {
   }
 }
 
-query GetPublisherProfile($memberId: ID) {
+query GetPublisherProfile($memberId: ID!) {
   publisher(where: { id: $memberId }) {
     id
     title
@@ -17,7 +17,7 @@ query GetPublisherProfile($memberId: ID) {
     followerCount
     description
   }
-  stories(where: { source: { id: $memberId } }) {
+  stories(where: { source: { id: { equals: $memberId } } }) {
     title
     id
     og_image

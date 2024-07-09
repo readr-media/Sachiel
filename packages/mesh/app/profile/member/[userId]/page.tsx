@@ -9,7 +9,7 @@ import fetchGraphQL from '@/utils/fetch-graphql'
 import MemberPage from './_components/member-page'
 import VisitorPage from './_components/visitor-page'
 
-type PageProps = {
+export type PageProps = {
   params: {
     userId: string
     type: string

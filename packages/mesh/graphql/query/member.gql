@@ -252,3 +252,24 @@ query GetVisitorProfile($memberId: String) {
     }
   }
 }
+query GetMemberFollowingList($customId: String) {
+  member(where: { customId: $customId }) {
+    id
+    name
+    avatar
+    followingCount
+    follow_publisherCount
+    following {
+      id
+      customId
+      name
+      avatar
+    }
+    follow_publisher {
+      id
+      customId
+      title
+      logo
+    }
+  }
+}

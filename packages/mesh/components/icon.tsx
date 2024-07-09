@@ -92,6 +92,8 @@ export type IconName =
   | 'icon-add'
   | 'icon-modal-close'
   | 'icon-no-story'
+  | 'icon-up-arrow'
+  | 'icon-down-arrow'
 
 export type IconProps = {
   size: Size
