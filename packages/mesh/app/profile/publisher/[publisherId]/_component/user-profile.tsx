@@ -24,7 +24,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ name, avatar, intro }) => {
           <p className="profile-title h-[46px] text-primary-700">{name}</p>
         </div>
       </section>
-      <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">
+      <p className="body-3 sm:body-2 mt-3 line-clamp-6 w-full text-primary-500 sm:mt-4">
         {intro}
       </p>
     </>

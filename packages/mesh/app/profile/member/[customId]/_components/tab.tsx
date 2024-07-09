@@ -53,7 +53,7 @@ sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px]"
         <li
           key={name}
           onClick={() => handleTabOnClick(category)}
-          className={`relative cursor-pointer p-[14px] pt-3 font-normal leading-[22.4px] ${activeStyle} sm:px-8 sm:py-[13px]`}
+          className={`button-large relative cursor-pointer p-[14px] pt-3 ${activeStyle} sm:px-8 sm:py-[13px]`}
         >
           {name}
         </li>

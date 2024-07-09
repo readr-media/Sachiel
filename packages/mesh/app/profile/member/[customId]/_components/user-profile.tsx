@@ -28,14 +28,14 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </div>
         <div className="flex flex-col justify-center gap-1">
           <p className="profile-title  text-primary-700">{name}</p>
-          <p className="footnote leading-[19.5px] text-primary-500 sm:text-sm sm:leading-[14px]">
+          <p className="footnote sm:profile-subtitle text-primary-500">
             本週精選了
             <span className="text-primary-800"> {pickCount} </span>
             篇文章
           </p>
         </div>
       </section>
-      <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">
+      <p className="body-3 sm:body-2 mt-3 line-clamp-6 w-full text-primary-500 sm:mt-4">
         {intro}
       </p>
     </>
