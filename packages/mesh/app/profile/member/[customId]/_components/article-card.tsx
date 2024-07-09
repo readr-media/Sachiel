@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import CommentContainer, {
-  CommentType,
+  type CommentType,
 } from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -54,7 +54,6 @@ const ArticleCard = ({
             avatar,
           },
         }
-  console.log(authorComment, commentList.length)
   const isCommentShow = shouldShowComments(category)
   return (
     <>
