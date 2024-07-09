@@ -13,7 +13,7 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
   buttonList,
 }) => {
   return (
-    <div className="body-2 mt-6 flex w-full flex-col gap-2 leading-[22.4px] sm:order-3 md:flex-row">
+    <div className="button-large mt-6 flex w-full flex-col gap-2 sm:order-3 md:flex-row">
       {buttonList.map((button, index) => (
         <div key={index} className="sm:w-[180px]">
           <Button
