@@ -8,7 +8,7 @@ type UserProfileProps = {
 const UserProfile: React.FC<UserProfileProps> = ({ name, avatar, intro }) => {
   return (
     <>
-      <section className="flex w-full gap-4">
+      <section className="flex w-full items-center gap-4">
         <div
           className="relative aspect-square w-16 overflow-hidden rounded-lg
           sm:w-20"
@@ -19,6 +19,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ name, avatar, intro }) => {
             fill
             className="object-cover"
           />
+        </div>
+        <div className="flex h-full flex-col items-center justify-center gap-1">
+          <p className="profile-title h-[46px] text-primary-700">{name}</p>
         </div>
       </section>
       <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">

@@ -7,7 +7,7 @@ type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']
 type ArticleCardListProps = {
   showData: picksData | bookmarkData
-  id: string
+  id?: string
   avatar: string
   userType: string
   category: TabCategory

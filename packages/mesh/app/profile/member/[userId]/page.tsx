@@ -71,7 +71,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           followerCount={userData.followerCount || 0}
           userType={userType}
           picksData={picksData}
-          visitID={visitID}
+          visitID={userData.id}
         />
       ) : (
         <MemberPage
@@ -84,7 +84,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           userType={userType}
           picksData={picksData}
           bookmarkData={bookmarkData}
-          visitID={visitID}
+          visitID={userData.id}
         />
       )}
     </>

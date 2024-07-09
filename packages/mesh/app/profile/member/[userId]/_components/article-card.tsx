@@ -21,8 +21,7 @@ type ArticleCardProps = {
   userType?: string
 }
 
-const shouldShowComments = (userType?: string, category?: TabCategory) => {
-  if (userType === 'publisher') return false
+const shouldShowComments = (category?: TabCategory) => {
   if (category === TabCategory.BOOKMARKS) return false
   return true
 }
@@ -33,13 +32,12 @@ const ArticleCard = ({
   id,
   avatar = '',
   category,
-  userType,
 }: ArticleCardProps) => {
   const commentList = data.comment || []
   const authorComment = commentList.find(
     (comment) => comment?.member?.id === id
   )
-  const isCommentShow = shouldShowComments(userType, category)
+  const isCommentShow = shouldShowComments(category)
   return (
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">

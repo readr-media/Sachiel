@@ -59,10 +59,6 @@
     @apply text-[11px] font-normal leading-none;
   }
 
-  .caption-3 {
-    @apply text-xs font-normal;
-  }
-
   .button {
     @apply text-sm font-normal leading-6;
   }
@@ -77,10 +73,6 @@
 
   .profile-title-2 {
     @apply text-base font-bold leading-5;
-  }
-
-  .profile-title-3 {
-    @apply text-xl font-medium leading-7;
   }
 
   .profile-subtitle {

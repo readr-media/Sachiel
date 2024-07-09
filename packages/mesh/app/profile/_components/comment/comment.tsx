@@ -40,16 +40,16 @@ const Comment: React.FC<CommentProps> = ({
               className="object-cover"
             />
           </div>
-          <p className="caption-3 leading-[18px] text-primary-500">
+          <p className="caption-1 leading-[18px] text-primary-500">
             {displayTimeFromNow(data.createdAt)}
           </p>
           <Icon iconName="icon-dot" size="s" />
-          <button className="caption-3 leading-[18px] text-primary-500">
+          <button className="caption-1 leading-[18px] text-primary-500">
             編輯留言
           </button>
         </div>
         <div className="flex items-center justify-end">
-          <p className="caption-3 leading-[18px] text-primary-600">
+          <p className="caption-1 leading-[18px] text-primary-600">
             {data.likeCount}
           </p>
           <button>

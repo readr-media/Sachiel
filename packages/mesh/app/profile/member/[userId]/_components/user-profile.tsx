@@ -27,9 +27,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           />
         </div>
         <div className="flex flex-col justify-center gap-1">
-          <p className="profile-title sm:profile-title-3 text-primary-700">
-            {name}
-          </p>
+          <p className="profile-title  text-primary-700">{name}</p>
           <p className="footnote leading-[19.5px] text-primary-500 sm:text-sm sm:leading-[14px]">
             本週精選了
             <span className="text-primary-800"> {pickCount} </span>
