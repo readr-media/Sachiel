@@ -1,7 +1,7 @@
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
+import { type TabCategory } from '@/types/tab'
 
 import ArticleCard from './article-card'
-import { TabCategory } from './tab'
 
 type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']

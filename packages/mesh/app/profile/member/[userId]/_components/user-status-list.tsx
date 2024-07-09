@@ -1,4 +1,7 @@
-import { TabItem } from '@/utils/profile-tab'
+type TabItem = {
+  key: string
+  value: number | string | null
+}
 
 type UserStatusListProps = {
   userStatusList: TabItem[]

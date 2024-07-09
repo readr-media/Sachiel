@@ -6,8 +6,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-
-import { TabCategory } from './tab'
+import { TabCategory } from '@/types/tab'
 
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
@@ -24,7 +23,7 @@ type ArticleCardProps = {
 
 const shouldShowComments = (userType?: string, category?: TabCategory) => {
   if (userType === 'publisher') return false
-  if (category === TabCategory.bookmarks) return false
+  if (category === TabCategory.BOOKMARKS) return false
   return true
 }
 
