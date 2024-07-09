@@ -5,28 +5,37 @@ import { useState } from 'react'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 
-import { type FollowingPublisherListType } from '../page'
+import { type FollowingListType } from '../page'
 type FollowingPublisherListProps = {
-  followingList: FollowingPublisherListType
+  followingList: FollowingListType
+  title: string
 }
 const FollowingPublisherList = ({
   followingList = [],
+  title = '媒體',
 }: FollowingPublisherListProps) => {
   const [resultShowing, toggleResultShowing] = useState(false)
   const toggleResult = () => {
     toggleResultShowing((prev) => !prev)
   }
+  const hasResult = !!followingList?.length
   return (
-    <div className="px-5 pb-3 pt-4">
+    <div className="bg-white px-5 pb-3 pt-4">
       <section
-        className="flex cursor-pointer items-center"
+        className={`flex ${hasResult && 'cursor-pointer'} items-center`}
         onClick={toggleResult}
       >
-        <p className="w-full">媒體({followingList?.length})</p>
+        <p className="list-title w-full">
+          {title}({followingList?.length})
+        </p>
         {resultShowing ? (
-          <Icon iconName="icon-up-arrow" size={{ height: 32, width: 32 }} />
+          <span className={`${hasResult ? 'block' : 'opacity-0'}`}>
+            <Icon iconName="icon-up-arrow" size={{ height: 32, width: 32 }} />
+          </span>
         ) : (
-          <Icon iconName="icon-down-arrow" size={{ height: 32, width: 32 }} />
+          <span className={`${hasResult ? 'block' : 'opacity-0'}`}>
+            <Icon iconName="icon-down-arrow" size={{ height: 32, width: 32 }} />
+          </span>
         )}
       </section>
       {resultShowing && (
@@ -40,13 +49,15 @@ const FollowingPublisherList = ({
                 <span className="flex items-center">
                   <Image
                     className=" mr-2 aspect-square rounded-full"
-                    src={following.logo || '/images/default-avatar-image.png'}
-                    alt={`${following.title}'s avatar`}
+                    src={
+                      following?.avatar || '/images/default-avatar-image.png'
+                    }
+                    alt={`${following.name}'s avatar`}
                     width={44}
                     height={44}
                   />
                   <div className="flex flex-col">
-                    <p className="subtitle-1">{following.title}</p>
+                    <p className="subtitle-1">{following.name}</p>
                     <p className="body-3 text-primary-500">
                       {following.customId}
                     </p>

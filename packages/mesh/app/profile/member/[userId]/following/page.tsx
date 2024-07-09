@@ -5,7 +5,6 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import { PageProps } from '../page'
-import FollowingMemberList from './_components/following-member-list'
 import FollowingPublisherList from './_components/following-publisher-list'
 
 export type FollowingListType = NonNullable<
@@ -20,12 +19,23 @@ const FollowerList = async ({ params }: PageProps) => {
   const response = await fetchGraphQL(GetMemberFollowingListDocument, {
     customId: params.userId,
   })
+  const followPublisherResponse = response?.member?.follow_publisher || []
+  const followResponse = response?.member?.following || []
+  const followPublisherData = followPublisherResponse.map((followItem) => {
+    return {
+      ...followItem,
+      avatar: followItem.logo,
+      name: followItem.title,
+    }
+  })
+
   return (
-    <div>
+    <div className="flex flex-col bg-multi-layer-light sm:gap-5 sm:p-5">
       <FollowingPublisherList
-        followingList={response?.member?.follow_publisher}
+        title="媒體"
+        followingList={followPublisherData as FollowingListType}
       />
-      <FollowingMemberList followingList={response?.member?.following} />
+      <FollowingPublisherList title="人物" followingList={followResponse} />
     </div>
   )
 }
