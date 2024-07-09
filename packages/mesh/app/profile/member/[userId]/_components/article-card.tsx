@@ -45,7 +45,7 @@ const ArticleCard = ({
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
         <Image
           src={data.og_image || '/images/default-story-image.webP'}
-          alt="alt"
+          alt={`${data.title}'s story cover image`}
           width={96}
           height={48}
           className="h-full w-full object-cover"
@@ -79,7 +79,7 @@ const ArticleCard = ({
           <div className="relative ml-3 aspect-[2/1] min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:w-40 sm:min-w-40 md:hidden">
             <Image
               src={data.og_image || '/images/default-story-image.webP'}
-              alt="alt"
+              alt={`${data.title}'s story cover image`}
               fill
               className="object-cover"
             />
