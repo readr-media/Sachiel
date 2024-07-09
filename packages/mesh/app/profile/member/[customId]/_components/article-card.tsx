@@ -1,6 +1,8 @@
 import Image from 'next/image'
 
-import CommentContainer from '@/app/profile/_components/comment'
+import CommentContainer, {
+  CommentType,
+} from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
@@ -19,6 +21,7 @@ type ArticleCardProps = {
   avatar?: string
   category?: TabCategory
   userType?: string
+  name?: string
 }
 
 const shouldShowComments = (category?: TabCategory) => {
@@ -32,11 +35,26 @@ const ArticleCard = ({
   id,
   avatar = '',
   category,
+  name,
 }: ArticleCardProps) => {
   const commentList = data.comment || []
-  const authorComment = commentList.find(
-    (comment) => comment?.member?.id === id
-  )
+  const authorComment =
+    commentList.length !== 0
+      ? commentList[0]
+      : {
+          __typename: 'Comment',
+          id: '',
+          content: '',
+          createdAt: '',
+          likeCount: 0,
+          member: {
+            __typename: 'Member',
+            id,
+            name,
+            avatar,
+          },
+        }
+  console.log(authorComment, commentList.length)
   const isCommentShow = shouldShowComments(category)
   return (
     <>
@@ -95,8 +113,11 @@ const ArticleCard = ({
             <StoryPickButton isStoryPicked={false} storyId={data.id} />
           </div>
         </section>
-        {isCommentShow && authorComment && (
-          <CommentContainer data={authorComment} avatar={avatar} />
+        {isCommentShow && (
+          <CommentContainer
+            data={authorComment as CommentType}
+            avatar={avatar}
+          />
         )}
       </div>
     </>

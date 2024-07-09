@@ -5,13 +5,15 @@ import PublisherPage from './_component/publisher-page'
 
 type PageProps = {
   params: {
-    userId: string
+    publisherId: string
   }
 }
 const page = async ({ params }: PageProps) => {
-  const userId = params.userId
+  const publisherId = params.publisherId
+  const takesCount = 20
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
-    memberId: userId,
+    publisherId,
+    takes: takesCount,
   })
 
   if (!response) {
@@ -46,7 +48,7 @@ const page = async ({ params }: PageProps) => {
         name={userName}
         avatar={userLogo}
         intro={userIntro}
-        userId={userId}
+        userId={publisherId}
         userType="publisher"
         storyData={storyData}
       />

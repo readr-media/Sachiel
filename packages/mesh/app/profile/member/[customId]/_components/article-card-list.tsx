@@ -11,6 +11,7 @@ type ArticleCardListProps = {
   avatar: string
   userType: string
   category: TabCategory
+  name?: string
 }
 const ArticleCardList = ({
   showData,
@@ -18,6 +19,7 @@ const ArticleCardList = ({
   avatar,
   userType,
   category,
+  name,
 }: ArticleCardListProps) => {
   const messages: { [key: string]: string } = {
     member_PICKS: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
@@ -55,6 +57,7 @@ const ArticleCardList = ({
                 id={id}
                 avatar={avatar}
                 category={category}
+                name={name}
               />
             </li>
           )

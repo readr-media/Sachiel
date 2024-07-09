@@ -91,8 +91,8 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
   }
 }
 
-query GetMemberProfile($memberId: String) {
-  member(where: { customId: $memberId }) {
+query GetMemberProfile($customId: String, $takes: Int!) {
+  member(where: { customId: $customId }) {
     id
     name
     avatar
@@ -100,11 +100,14 @@ query GetMemberProfile($memberId: String) {
       urlOriginal
     }
     intro
-    pickCount
+    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
     followingCount
     followerCount
 
-    picks: pick(where: { kind: { equals: "read" } }) {
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $takes
+    ) {
       story {
         id
         og_image
@@ -133,7 +136,11 @@ query GetMemberProfile($memberId: String) {
         paywall
         full_screen_ad
         published_date
-        comment(orderBy: { createdAt: desc }) {
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+          take: 1
+        ) {
           id
           content
           createdAt
@@ -148,7 +155,13 @@ query GetMemberProfile($memberId: String) {
       kind
     }
 
-    books: pick(where: { kind: { equals: "bookmark" } }) {
+    booksCount: pickCount(
+      where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+    )
+    books: pick(
+      where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+      take: $takes
+    ) {
       story {
         id
         og_image
@@ -177,7 +190,11 @@ query GetMemberProfile($memberId: String) {
         paywall
         full_screen_ad
         published_date
-        comment(orderBy: { createdAt: desc }) {
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+          take: 1
+        ) {
           id
           content
           createdAt
@@ -194,8 +211,8 @@ query GetMemberProfile($memberId: String) {
   }
 }
 
-query GetVisitorProfile($memberId: String) {
-  member(where: { customId: $memberId }) {
+query GetVisitorProfile($customId: String, $takes: Int!) {
+  member(where: { customId: $customId }) {
     id
     name
     avatar
@@ -203,11 +220,14 @@ query GetVisitorProfile($memberId: String) {
       urlOriginal
     }
     intro
-    pickCount
+    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
     followingCount
     followerCount
 
-    picks: pick(where: { kind: { equals: "read" } }) {
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $takes
+    ) {
       story {
         id
         og_image

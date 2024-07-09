@@ -5,6 +5,7 @@ import { TabCategory } from '@/types/tab'
 type TabProps = {
   setCategory?: Dispatch<SetStateAction<TabCategory>>
   category?: TabCategory
+  userType?: string
 }
 
 type TabItem = {
@@ -13,7 +14,7 @@ type TabItem = {
   activeStyle: string
 }
 
-const Tab = ({ category, setCategory }: TabProps) => {
+const Tab = ({ category, setCategory, userType }: TabProps) => {
   const activeTabStyle =
     'after:absolute after:bottom-[-1px] after:left-0 after:w-full after:border after:border-primary-800 text-primary-700'
   const inactiveTabStyle = 'text-primary-400'
@@ -37,12 +38,18 @@ const Tab = ({ category, setCategory }: TabProps) => {
       activeStyle: bookmarksActiveStyle,
     },
   ]
+  const tabFilter = (item: TabItem) => {
+    if (userType === 'visitor') {
+      return item.category === TabCategory.PICK
+    }
+    return true
+  }
   return (
     <ul
       className="flex h-[48px] w-full items-center justify-around  border-b border-t border-[rgba(0,9,40,0.1)]
 sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px]"
     >
-      {tabList.map(({ name, category, activeStyle }) => (
+      {tabList.filter(tabFilter).map(({ name, category, activeStyle }) => (
         <li
           key={name}
           onClick={() => handleTabOnClick(category)}

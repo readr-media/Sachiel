@@ -1,17 +1,18 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { type GetVisitorProfileQuery } from '@/graphql/__generated__/graphql'
+import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 import { TabCategory, TabKey } from '@/types/tab'
 
 import ArticleCardList from './article-card-list'
-import { type userType } from './member-page'
-import ProfileButtonLIst from './profile-button-list'
+import ProfileButtonList from './profile-button-list'
 import Tab from './tab'
 import UserProfile from './user-profile'
 import UserStatusList from './user-status-list'
 
-type VisitorPageProps = {
+export type userType = 'member' | 'visitor'
+
+type MemberPageProps = {
   name: string
   avatar: string
   intro: string
@@ -19,11 +20,12 @@ type VisitorPageProps = {
   followingCount: number | null
   followerCount: number
   userType: userType
-  picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
+  picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
+  bookmarkData: NonNullable<GetMemberProfileQuery['member']>['books']
   visitID: string
 }
 
-const VisitorPage: React.FC<VisitorPageProps> = ({
+const MemberPage: React.FC<MemberPageProps> = ({
   userType,
   name,
   avatar,
@@ -32,8 +34,10 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   followingCount,
   followerCount,
   picksData,
+  bookmarkData,
   visitID,
 }) => {
+  const [showData, setShowData] = useState(picksData)
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
@@ -42,7 +46,18 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
     { key: TabKey.FOLLOWING, value: followingCount },
   ]
 
-  const buttonList = [{ text: '追蹤' }]
+  const buttonList = [{ text: '編輯個人檔案' }]
+
+  useEffect(() => {
+    switch (category) {
+      case TabCategory.PICK:
+        return setShowData(picksData)
+      case TabCategory.BOOKMARKS:
+        return setShowData(bookmarkData)
+      default:
+        return setShowData(picksData)
+    }
+  }, [bookmarkData, category, picksData])
 
   return (
     <>
@@ -54,20 +69,21 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
           userType={userType}
           intro={intro}
         />
-        <ProfileButtonLIst buttonList={buttonList} />
+        <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab category={category} setCategory={setCategory} />
+      <Tab category={category} setCategory={setCategory} userType={userType} />
       <ArticleCardList
-        showData={picksData}
+        showData={showData}
         id={visitID}
         avatar={avatar}
         userType={userType}
         category={category}
+        name={name}
       />
     </>
   )
 }
 
-export default VisitorPage
+export default MemberPage
