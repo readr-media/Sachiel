@@ -1,9 +1,9 @@
 'use client'
 
 import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
+import { TabCategory } from '@/types/tab'
 
 import ArticleCard from './article-card'
-import { TabCategory } from './tab'
 type StoryCardListProps = {
   storyData: GetPublisherProfileQuery['stories']
   avatar?: string
@@ -23,7 +23,7 @@ const StoryCardList = ({ storyData, userType }: StoryCardListProps) => {
       <div className="flex grow flex-col">
         <section className="flex h-full grow items-center justify-center whitespace-pre bg-primary-700-dark  text-center text-base text-primary-400 sm:min-h-full">
           <p className="my-10 w-full">
-            {getMessage(userType || 'publisher', TabCategory.publish)}
+            {getMessage(userType || 'publisher', TabCategory.PUBLISH)}
           </p>
         </section>
       </div>

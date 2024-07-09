@@ -2,16 +2,10 @@ import Image from 'next/image'
 
 type UserProfileProps = {
   name: string
-  pickCount: number
   avatar: string
   intro: string
 }
-const UserProfile: React.FC<UserProfileProps> = ({
-  name,
-  pickCount,
-  avatar,
-  intro,
-}) => {
+const UserProfile: React.FC<UserProfileProps> = ({ name, avatar, intro }) => {
   return (
     <>
       <section className="flex w-full gap-4">
@@ -25,16 +19,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
             fill
             className="object-cover"
           />
-        </div>
-        <div className="flex flex-col justify-center gap-1">
-          <p className="text-lg font-bold leading-6 text-primary-700 sm:text-xl sm:font-medium sm:leading-7">
-            {name}
-          </p>
-          <p className="footnote leading-[19.5px] text-primary-500 sm:text-sm sm:leading-[14px]">
-            本週精選了
-            <span className="text-primary-800"> {pickCount} </span>
-            篇文章
-          </p>
         </div>
       </section>
       <p className="mt-3 line-clamp-6 w-full text-[14px] font-normal leading-[21px] text-primary-500 sm:mt-4">

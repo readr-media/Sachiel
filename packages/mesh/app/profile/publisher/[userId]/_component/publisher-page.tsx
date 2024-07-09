@@ -12,7 +12,6 @@ type PublisherPageProps = {
   name: string
   avatar: string
   intro: string
-  pickCount: number | null
   userType: userType
   storyData: NonNullable<GetPublisherProfileQuery['stories']>
   userId: string
@@ -23,7 +22,6 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   name,
   avatar,
   intro,
-  pickCount,
   storyData,
 }) => {
   const userStatusList = [{ key: TabKey.SPONSORED, count: '9999次' }]
@@ -36,12 +34,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   return (
     <>
       <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
-        <UserProfile
-          name={name}
-          pickCount={pickCount || 0}
-          avatar={avatar}
-          intro={intro}
-        />
+        <UserProfile name={name} avatar={avatar} intro={intro} />
         <ProfileButtonLIst buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
