@@ -1,13 +1,61 @@
+import { sendSignInLinkToEmail } from 'firebase/auth'
+import { useEffect, useState } from 'react'
+
 import { useLogin } from '@/context/login'
+import { auth } from '@/firebase/client'
 
 export default function LoginEmailConfirmation() {
-  const { setStep } = useLogin()
+  const { formData, setStep } = useLogin()
+  const { email } = formData
+  const [countdown, setCountdown] = useState(60)
+  const [isReadyToSend, setIsReadyToSend] = useState(true)
+
+  useEffect(() => {
+    const actionCodeSettings = {
+      url: 'http://localhost:3000/login',
+      handleCodeInApp: true,
+      dynamicLinkDomain: 'readrdev.page.link',
+    }
+    const sendEmailLink = async () => {
+      try {
+        await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        window.localStorage.setItem('emailForSignIn', email)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    if (isReadyToSend) {
+      sendEmailLink()
+      setIsReadyToSend(false)
+      startCountdown()
+    }
+  }, [email, isReadyToSend])
+
+  const startCountdown = () => {
+    setCountdown(60)
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev > 0) {
+          return prev - 1
+        } else {
+          clearInterval(interval)
+          return 0
+        }
+      })
+    }, 1000)
+  }
+
+  const resendEmail = () => {
+    if (countdown === 0) {
+      setIsReadyToSend(true)
+    }
+  }
 
   return (
     <div className="flex w-full justify-center p-10">
       <div className="w-[295px]">
         <p className="subtitle-1 pb-6 text-center text-primary-700">
-          我們已將登入連結寄到 readr@gmail.com，請點擊信件中的連結登入。
+          我們已將登入連結寄到 {email}，請點擊信件中的連結登入。
         </p>
         <p className="footnote text-center text-primary-400">
           沒收到信件？請檢查垃圾信件匣
@@ -16,9 +64,10 @@ export default function LoginEmailConfirmation() {
           或
           <button
             className="text-primary-700 underline underline-offset-2"
-            onClick={() => console.log('re-send confirmed email')}
+            onClick={resendEmail}
+            disabled={countdown > 0}
           >
-            重新發送信件(60s)
+            重新發送信件({countdown}s)
           </button>
         </p>
         <button

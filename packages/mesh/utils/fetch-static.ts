@@ -1,4 +1,5 @@
 import { type RequestInit } from 'next/dist/server/web/spec-extension/request'
+import { cookies } from 'next/headers'
 
 import { type TraceObject, logServerSideError } from './log'
 
@@ -8,8 +9,16 @@ export default async function fetchStatic<T>(
   traceObject?: TraceObject,
   errorMessage?: string
 ) {
+  const idToken = cookies().get('token')?.value
   try {
-    const response = await fetch(url, init)
+    const headers = new Headers(init?.headers)
+    if (idToken) {
+      headers.set('token', idToken)
+    }
+    const response = await fetch(url, {
+      ...init,
+      headers,
+    })
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`)

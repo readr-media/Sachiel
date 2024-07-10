@@ -1,8 +1,17 @@
-import { useRouter } from 'next/navigation'
-import { createElement } from 'react'
+import {
+  browserLocalPersistence,
+  isSignInWithEmailLink,
+  setPersistence,
+  signInWithEmailLink,
+} from 'firebase/auth'
+import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { createElement, useEffect } from 'react'
 
-import Icon from '@/components/icon'
+import { clearTokenCookie, validateIdToken } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
+import { auth } from '@/firebase/client'
+import useAuthState from '@/hooks/useAuthState'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -11,101 +20,96 @@ import LoginSetCategory from './login-set-category'
 import LoginSetFollowing from './login-set-following'
 import LoginSetName from './login-set-name'
 import LoginSetWallet from './login-set-wallet'
+import LoginStepsTitle from './login-steps-title'
+
+const loginStepComponents: Record<LoginStepsKey, React.FC> = {
+  [LoginState.Entry]: LoginEntry,
+  [LoginState.Email]: LoginEmail,
+  [LoginState.EmailConfirmation]: LoginEmailConfirmation,
+  [LoginState.SetName]: LoginSetName,
+  [LoginState.SetCategory]: LoginSetCategory,
+  [LoginState.SetFollowing]: LoginSetFollowing,
+  [LoginState.SetWallet]: LoginSetWallet,
+}
 
 export default function LoginSteps() {
   const { step, setStep } = useLogin()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { isLogin } = useAuthState()
 
-  const loginStepComponents: Record<LoginStepsKey, React.FC> = {
-    [LoginState.Entry]: LoginEntry,
-    [LoginState.Email]: LoginEmail,
-    [LoginState.EmailConfirmation]: LoginEmailConfirmation,
-    [LoginState.SetName]: LoginSetName,
-    [LoginState.SetCategory]: LoginSetCategory,
-    [LoginState.SetFollowing]: LoginSetFollowing,
-    [LoginState.SetWallet]: LoginSetWallet,
-  }
+  useEffect(() => {
+    const handleEmailLinkSignIn = async () => {
+      let email = window.localStorage.getItem('emailForSignIn')
+      if (!email) {
+        // email = window.prompt('Please provide your email for confirmation')
+        router.push('/login')
+        return
+      }
+      try {
+        await setPersistence(auth, browserLocalPersistence)
+        const res = await signInWithEmailLink(auth, email, window.location.href)
+        const idToken = await res.user.getIdToken()
+        // const { emailVerified, uid } = res.user
+        // const apiKey = searchParams.get('apiKey')
+        // const mode = searchParams.get('mode')
+        // const oobCode = searchParams.get('oobCode')
+        // const continueUrl = searchParams.get('continueUrl')
+        // const lang = searchParams.get('lang') || 'en'
 
-  const chevronMap: Pick<
-    Record<LoginStepsKey, { title: string; clickChevron: LoginStepsKey }>,
-    | typeof LoginState.Email
-    | typeof LoginState.EmailConfirmation
-    | typeof LoginState.SetCategory
-    | typeof LoginState.SetFollowing
-  > = {
-    [LoginState.Email]: { title: 'Email', clickChevron: LoginState.Entry },
-    [LoginState.EmailConfirmation]: {
-      title: '確認收件匣',
-      clickChevron: LoginState.Email,
-    },
-    [LoginState.SetCategory]: {
-      title: '新聞類別',
-      clickChevron: LoginState.SetName,
-    },
-    [LoginState.SetFollowing]: {
-      title: '推薦追蹤',
-      clickChevron: LoginState.SetCategory,
-    },
-  }
-
-  const innerTitleWithChevron = (step: keyof typeof chevronMap) => {
-    const chevronInfo = chevronMap[step]
-    return (
-      <>
-        <button onClick={() => setStep(chevronInfo.clickChevron)}>
-          <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
-        </button>
-        <h2 className="list-title mx-auto">{chevronInfo.title}</h2>
-        <div className="h-5 w-5 px-5"></div>
-      </>
-    )
-  }
-
-  const innerTitle = (process: LoginStepsKey) => {
-    switch (process) {
-      case LoginState.Entry:
-        return (
-          <div className="flex w-full justify-center">
-            <Icon
-              size={{ width: 144, height: 36 }}
-              iconName="icon-readr-logoA-mobile"
-            />
-          </div>
-        )
-      case LoginState.Email:
-      case LoginState.EmailConfirmation:
-      case LoginState.SetCategory:
-      case LoginState.SetFollowing:
-        return innerTitleWithChevron(process)
-      case LoginState.SetName:
-        return <h2 className="list-title mx-auto">姓名</h2>
-      case LoginState.SetWallet:
-        return (
-          <div className="flex w-full px-5">
-            <div className="w-9"></div>
-            <h2 className="list-title mx-auto">連結錢包</h2>
-            <button
-              className="list-title text-custom-blue"
-              //TODO: update URL
-              onClick={() => router.push('/callbackURL')}
-            >
-              略過
-            </button>
-          </div>
-        )
+        window.localStorage.removeItem('emailForSignIn')
+        if (idToken) {
+          // console.log(idToken)
+          const response = await validateIdToken(idToken)
+          if (response) {
+            setStep('set-name')
+          } else {
+            router.push('/login')
+          }
+        }
+      } catch (error) {
+        console.error('EmailLinkSignIn Error:', error)
+        router.push('/login')
+      }
     }
-  }
+
+    const handleOAuthSignIn = async () => {
+      console.log('oath')
+      try {
+        const idToken = await auth.currentUser?.getIdToken()
+        console.log({ idToken })
+        if (idToken) {
+          const response = await handleToken(idToken, router)
+          if (response.ok) {
+            console.log('login-success: redirect to url')
+            router.push('/media')
+          }
+        }
+      } catch (error) {
+        console.error('OAuthSignIn Error:', error)
+        router.push('/login')
+      }
+    }
+
+    if (isLogin) {
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        handleEmailLinkSignIn()
+      } else {
+        handleOAuthSignIn()
+      }
+    }
+  }, [isLogin, router, searchParams, setStep])
 
   return (
     <>
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
-        {innerTitle(step)}
+        <LoginStepsTitle />
       </div>
       <div className="flex h-full w-full justify-center overflow-auto sm:items-center">
         <div className="sm:w-[480px] sm:rounded-md sm:bg-white sm:drop-shadow">
           {step !== 'entry' && (
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">
-              {innerTitle(step)}
+              <LoginStepsTitle />
             </div>
           )}
           {createElement(loginStepComponents[step])}
@@ -113,4 +117,45 @@ export default function LoginSteps() {
       </div>
     </>
   )
+}
+
+async function handleToken(token: string, router: AppRouterInstance) {
+  const response = await validateIdToken(token)
+  if (!response.ok && response.status === 'refresh') {
+    const newToken = await refreshIdToken()
+    if (newToken) {
+      const newResponse = await validateIdToken(newToken)
+      if (!newResponse.ok) {
+        router.push('/login')
+      }
+    } else {
+      router.push('/login')
+    }
+  } else if (!response.ok) {
+    router.push('/login')
+  }
+  return response
+}
+
+async function refreshIdToken() {
+  const user = auth.currentUser
+  if (user) {
+    try {
+      const newToken = await user.getIdToken(true)
+      return newToken
+    } catch (error) {
+      console.error('Error refreshing token:', error)
+      return null
+    }
+  }
+  return null
+}
+
+export async function logout() {
+  try {
+    await auth.signOut()
+    await clearTokenCookie()
+  } catch (error) {
+    console.error('Logout Error', error)
+  }
 }

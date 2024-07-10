@@ -16,6 +16,7 @@
     "@apollo/client": "^3.10.4",
     "@readr-media/react-infinite-scroll-list": "^1.1.0",
     "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0",
     "graphql": "^16.8.1",
     "next": "^14.2.3",
     "react": "^18",

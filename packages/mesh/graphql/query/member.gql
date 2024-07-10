@@ -106,3 +106,9 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
     avatar
   }
 }
+
+query GetCurrentUserMemberId($uid: String!) {
+  member(where: { firebaseId: $uid }) {
+    id
+  }
+}

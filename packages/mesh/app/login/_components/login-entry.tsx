@@ -1,8 +1,16 @@
+import {
+  browserLocalPersistence,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  OAuthProvider,
+  setPersistence,
+  signInWithPopup,
+} from 'firebase/auth'
 import Link from 'next/link'
 
 import Button from '@/components/button'
 import { useLogin } from '@/context/login'
-
+import { auth } from '@/firebase/client'
 const loginOptions = [
   {
     method: 'apple',
@@ -26,18 +34,19 @@ type LoginMethod = typeof loginOptions[number]['method']
 export default function LoginEntry() {
   const { setStep } = useLogin()
 
-  const handleLoginMethod = (method: LoginMethod) => {
-    switch (method) {
-      case 'apple':
-        return console.log('AppleAuthProvider')
-      case 'facebook':
-        return console.log('FacebookAuthProvider')
-      case 'google':
-        return console.log('GoogleAuthProvider')
-      case 'email':
-        return setStep('email')
+  const handleLoginMethod = async (method: LoginMethod) => {
+    if (method === 'email') {
+      setStep('email')
+      return
+    }
+
+    const provider = createAuthProvider(method)
+    if (provider) {
+      await setPersistence(auth, browserLocalPersistence)
+      await signInWithPopup(auth, provider)
     }
   }
+
   return (
     <div className="flex flex-col gap-6 p-10">
       <div className="flex flex-col items-center gap-2">
@@ -86,4 +95,23 @@ function transformedBtnText(text: string) {
   if (!text) return ''
   const capitalizeFirstLetter = text.charAt(0).toUpperCase() + text.slice(1)
   return `以 ${capitalizeFirstLetter} 帳號繼續`
+}
+
+function createAuthProvider(method: LoginMethod) {
+  let provider = null
+  switch (method) {
+    case 'apple':
+      provider = new OAuthProvider('apple.com')
+      break
+    case 'facebook':
+      provider = new FacebookAuthProvider()
+      break
+    case 'google':
+      provider = new GoogleAuthProvider()
+      break
+    default:
+      return null
+  }
+  provider.addScope('email')
+  return provider
 }

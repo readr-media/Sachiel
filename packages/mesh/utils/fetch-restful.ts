@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers'
+
 import { type TraceObject, logServerSideError } from './log'
 
 export default async function fetchRestful<T>(
@@ -7,12 +9,14 @@ export default async function fetchRestful<T>(
   traceObject?: TraceObject,
   errorMessage?: string
 ) {
+  const idToken = cookies().get('token')?.value ?? ''
   try {
     const response = await fetch(url, {
       ...init,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        token: idToken,
       },
       body: JSON.stringify(json),
     })

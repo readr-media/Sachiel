@@ -1,7 +1,9 @@
 import 'server-only'
 
 import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
+import { cookies } from 'next/headers'
 
 import { GQL_ENDPOINT } from '@/constants/config'
 
@@ -15,6 +17,17 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.error(`[Network error]: ${networkError}`)
 })
 
+const authLink = setContext((_, { headers }) => {
+  const idToken = cookies().get('token')?.value ?? ''
+
+  return {
+    headers: {
+      ...headers,
+      token: idToken,
+    },
+  }
+})
+
 const httpLink = new HttpLink({ uri: GQL_ENDPOINT })
 // reference: https://www.apollographql.com/blog/how-to-use-apollo-client-with-next-js-13
 // makes sure that we only instance the Apollo Client once per request,
@@ -23,7 +36,7 @@ export const getClient = () => {
   // creat a new client if there's no existing one
   // or if we are running on the server.
   return new ApolloClient({
-    link: from([errorLink, httpLink]),
+    link: from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache(),
     defaultOptions: {
       query: {

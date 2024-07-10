@@ -110,6 +110,7 @@ export type Category = {
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
   id: Scalars['ID']['output']
+  priority?: Maybe<Scalars['Int']['output']>
   slug?: Maybe<Scalars['String']['output']>
   summary?: Maybe<Scalars['String']['output']>
   title?: Maybe<Scalars['String']['output']>
@@ -120,6 +121,7 @@ export type Category = {
 export type CategoryCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  priority?: InputMaybe<Scalars['Int']['input']>
   slug?: InputMaybe<Scalars['String']['input']>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
@@ -136,6 +138,7 @@ export type CategoryManyRelationFilter = {
 export type CategoryOrderByInput = {
   createdAt?: InputMaybe<OrderDirection>
   id?: InputMaybe<OrderDirection>
+  priority?: InputMaybe<OrderDirection>
   slug?: InputMaybe<OrderDirection>
   summary?: InputMaybe<OrderDirection>
   title?: InputMaybe<OrderDirection>
@@ -173,6 +176,7 @@ export type CategoryUpdateArgs = {
 export type CategoryUpdateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  priority?: InputMaybe<Scalars['Int']['input']>
   slug?: InputMaybe<Scalars['String']['input']>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
@@ -187,6 +191,7 @@ export type CategoryWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
   id?: InputMaybe<IdFilter>
+  priority?: InputMaybe<IntFilter>
   slug?: InputMaybe<StringFilter>
   summary?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
@@ -783,6 +788,17 @@ export type ImageFieldOutput = {
   ref: Scalars['String']['output']
   url: Scalars['String']['output']
   width: Scalars['Int']['output']
+}
+
+export type IntFilter = {
+  equals?: InputMaybe<Scalars['Int']['input']>
+  gt?: InputMaybe<Scalars['Int']['input']>
+  gte?: InputMaybe<Scalars['Int']['input']>
+  in?: InputMaybe<Array<Scalars['Int']['input']>>
+  lt?: InputMaybe<Scalars['Int']['input']>
+  lte?: InputMaybe<Scalars['Int']['input']>
+  not?: InputMaybe<IntFilter>
+  notIn?: InputMaybe<Array<Scalars['Int']['input']>>
 }
 
 export type IntNullableFilter = {
@@ -3281,6 +3297,15 @@ export type GetMemberByFollowingCategoryQuery = {
   }> | null
 }
 
+export type GetCurrentUserMemberIdQueryVariables = Exact<{
+  uid: Scalars['String']['input']
+}>
+
+export type GetCurrentUserMemberIdQuery = {
+  __typename?: 'Query'
+  member?: { __typename?: 'Member'; id: string } | null
+}
+
 export type PublishersQueryVariables = Exact<{ [key: string]: never }>
 
 export type PublishersQuery = {
@@ -4233,6 +4258,66 @@ export const GetMemberByFollowingCategoryDocument = {
 } as unknown as DocumentNode<
   GetMemberByFollowingCategoryQuery,
   GetMemberByFollowingCategoryQueryVariables
+>
+export const GetCurrentUserMemberIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCurrentUserMemberId' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'uid' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'firebaseId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'uid' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCurrentUserMemberIdQuery,
+  GetCurrentUserMemberIdQueryVariables
 >
 export const PublishersDocument = {
   kind: 'Document',

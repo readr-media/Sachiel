@@ -1,12 +1,16 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
+import useAuthState from '@/hooks/useAuthState'
+
+import { logout } from '../login/_components/login-steps'
 
 const HeaderIconWrapper = ({
   children,
@@ -33,8 +37,10 @@ const HeaderIconWrapper = ({
 export default function Header() {
   const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
-  const isLoggedIn = true
+  const router = useRouter()
+  const { isLogin: isLoggedIn } = useAuthState()
   const newNotification = true
+
   return (
     <header className="fixed left-0 right-0 top-0 z-header h-[theme(height.header.default)] border-b bg-white sm:h-[theme(height.header.sm)]">
       {/* nested header to maintain the max width for screen width larger than 1440 */}
@@ -61,8 +67,10 @@ export default function Header() {
             newNotification ? (
               // TODO: replace with correct path
               <HeaderIconWrapper
-                onClick={() => {
+                onClick={async () => {
                   // TODO: show notification panel
+                  // Temporary Logout button
+                  await logout()
                   setShowNotification(!showNotification)
                 }}
                 className={
@@ -93,6 +101,7 @@ export default function Header() {
                 text="登入"
                 onClick={() => {
                   // TODO: handle on login here
+                  router.push('/login')
                 }}
               />
             </div>

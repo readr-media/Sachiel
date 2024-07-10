@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
@@ -16,6 +16,7 @@ import getLatestStoriesInCategory, {
 } from '@/utils/get-latest-stories-in-categroy'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
+import getCurrentUserMemberId from '../actions/auth'
 import CategorySelector from './_components/category-selector'
 import DesktopStories from './_components/desktop-stories'
 import NonDesktopStories from './_components/non-desktop-stories'
@@ -34,7 +35,9 @@ export { type Story } from '@/utils/get-latest-stories-in-categroy'
 export default async function Page() {
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const memberId = '19'
+  const memberId = await getCurrentUserMemberId()
+
+  if (!memberId) redirect('/login')
 
   const data = await fetchGraphQL(
     GetMemberDocument,
