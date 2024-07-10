@@ -9,18 +9,21 @@ import { type FollowingListType } from '../page'
 type FollowingPublisherListProps = {
   followingList: FollowingListType
   title: string
+  defaultToggle: boolean
 }
 const FollowingPublisherList = ({
   followingList = [],
   title = '媒體',
+  defaultToggle,
 }: FollowingPublisherListProps) => {
-  const [resultShowing, toggleResultShowing] = useState(false)
+  // TODO: default toggle set to props
+  const [resultShowing, toggleResultShowing] = useState(defaultToggle)
   const toggleResult = () => {
     toggleResultShowing((prev) => !prev)
   }
   const hasResult = !!followingList?.length
   return (
-    <div className="bg-white px-5 pb-3 pt-4">
+    <div className="w-full bg-white px-5 pb-3 pt-4">
       <section
         className={`flex ${hasResult && 'cursor-pointer'} items-center`}
         onClick={toggleResult}
@@ -39,7 +42,7 @@ const FollowingPublisherList = ({
         )}
       </section>
       {resultShowing && (
-        <ul>
+        <ul className="lg:grid lg:grid-cols-2 lg:gap-x-5">
           {followingList?.map((following) => {
             return (
               <li

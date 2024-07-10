@@ -11,7 +11,7 @@ export default function ProfileLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="flex grow flex-col">
+    <div className="flex grow flex-col  bg-multi-layer-light">
       <ProfileHeader />
       <Body>
         {children}
