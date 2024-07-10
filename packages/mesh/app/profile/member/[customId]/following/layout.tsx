@@ -14,7 +14,7 @@ const FollowingLayout = ({
   }
   return (
     <div className="flex grow flex-col bg-multi-layer-light">
-      <header className="absolute left-0 right-0 top-0 z-header flex h-[60px] border-b bg-white sm:hidden">
+      <header className="flex h-[60px] border-b bg-white">
         <div className="grid grow grid-cols-3 items-center">
           <button
             type="button"

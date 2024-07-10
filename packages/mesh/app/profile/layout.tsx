@@ -31,7 +31,7 @@ export default function ProfileLayout({
       <div className="hidden sm:block">
         <Header />
       </div>
-      <div className="primary-container pb-0">
+      <div className="primary-container py-0 sm:pt-[68px]">
         <div className="flex grow flex-col bg-multi-layer-light">
           {children}
         </div>
