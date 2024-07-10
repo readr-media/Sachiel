@@ -1,6 +1,6 @@
 import Icon, { IconName, Size } from './icon'
 
-type Icon = {
+export type Icon = {
   default: IconName
   hover: IconName
 }
