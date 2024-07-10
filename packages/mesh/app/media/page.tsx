@@ -4,7 +4,7 @@ import { GetMemberDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-import getCurrentUserMemberId from '../actions/auth'
+import { getCurrentUserMemberId } from '../actions/auth'
 
 export { type Story } from '@/utils/get-latest-stories-in-categroy'
 

@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 
+import { getCurrentUserMemberId } from '@/app/actions/auth'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetAllCategoriesQuery,
@@ -42,8 +43,9 @@ export default async function Page({
   const currentCategorySlug = params.categorySlug
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  // TODO: get user id or redirect to login page
-  const memberId = '19'
+  const memberId = await getCurrentUserMemberId()
+
+  if (!memberId) redirect('/login')
 
   const data = await fetchGraphQL(
     GetMemberDocument,

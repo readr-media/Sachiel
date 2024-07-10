@@ -78,19 +78,9 @@ query GetMember($memberId: ID!) {
 
 query GetMemberByFollowingCategory($slugs: [String!]!) {
   members(
-    where: {
-      following_category: {
-        every: {
-          slug: {
-            in: $slugs
-          }
-        }
-      }
-    },
-    orderBy: [{
-      id: desc
-    }],
-    take: 20,
+    where: { following_category: { every: { slug: { in: $slugs } } } }
+    orderBy: [{ id: desc }]
+    take: 20
     skip: 0
   ) {
     id
@@ -104,5 +94,12 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
+  }
+}
+
+mutation SignUpMember($registrationData: MemberCreateInput!) {
+  createMember(data: $registrationData) {
+    id
+    firebaseId
   }
 }

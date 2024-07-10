@@ -4,11 +4,14 @@ import {
   setPersistence,
   signInWithEmailLink,
 } from 'firebase/auth'
-import { type AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createElement, useEffect } from 'react'
 
-import { clearTokenCookie, validateIdToken } from '@/app/actions/auth'
+import {
+  clearTokenCookie,
+  getCurrentUserMemberId,
+  validateIdToken,
+} from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
 import useAuthState from '@/hooks/useAuthState'
@@ -59,7 +62,6 @@ export default function LoginSteps() {
 
         window.localStorage.removeItem('emailForSignIn')
         if (idToken) {
-          // console.log(idToken)
           const response = await validateIdToken(idToken)
           if (response) {
             setStep('set-name')
@@ -74,15 +76,18 @@ export default function LoginSteps() {
     }
 
     const handleOAuthSignIn = async () => {
-      console.log('oath')
       try {
         const idToken = await auth.currentUser?.getIdToken()
-        console.log({ idToken })
+
         if (idToken) {
-          const response = await handleToken(idToken, router)
-          if (response.ok) {
-            console.log('login-success: redirect to url')
+          const response = await handleToken(idToken)
+          if (!response.ok) router.push('/login')
+
+          const memberId = await getCurrentUserMemberId()
+          if (memberId) {
             router.push('/media')
+          } else {
+            setStep('set-name')
           }
         }
       } catch (error) {
@@ -119,20 +124,19 @@ export default function LoginSteps() {
   )
 }
 
-async function handleToken(token: string, router: AppRouterInstance) {
+async function handleToken(
+  token: string
+): Promise<ReturnType<typeof validateIdToken>> {
   const response = await validateIdToken(token)
-  if (!response.ok && response.status === 'refresh') {
+  if (response.ok) return response
+
+  if (response.status === 'refresh') {
     const newToken = await refreshIdToken()
     if (newToken) {
-      const newResponse = await validateIdToken(newToken)
-      if (!newResponse.ok) {
-        router.push('/login')
-      }
+      return await validateIdToken(newToken)
     } else {
-      router.push('/login')
+      return { ok: false, status: 'error', message: 'refresh token Error' }
     }
-  } else if (!response.ok) {
-    router.push('/login')
   }
   return response
 }

@@ -18,7 +18,7 @@ export const LoginState = {
 
 export type LoginStepsKey = typeof LoginState[keyof typeof LoginState]
 
-type UserFormData = {
+export type UserFormData = {
   email: string
   name: string
   interests: string[]

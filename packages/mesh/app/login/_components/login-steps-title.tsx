@@ -63,7 +63,7 @@ export default function LoginStepsTitle() {
           <button
             className="list-title text-custom-blue"
             //TODO: update URL
-            onClick={() => router.push('/callbackURL')}
+            onClick={() => router.push('/media')}
           >
             略過
           </button>
