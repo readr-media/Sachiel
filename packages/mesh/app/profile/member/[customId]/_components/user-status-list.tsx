@@ -1,4 +1,7 @@
-import { TabItem } from '@/utils/profile-tab'
+type TabItem = {
+  key: string
+  value: number | string | null
+}
 
 type UserStatusListProps = {
   userStatusList: TabItem[]
@@ -12,9 +15,7 @@ const UserStatusList = ({ userStatusList }: UserStatusListProps) => (
         className="relative flex h-[38px] w-[84px] flex-col items-center justify-between after:absolute after:-right-3 after:top-[9px] after:h-5 after:w-[0.5px] after:bg-primary-200 last:after:hidden sm:w-fit sm:flex-row sm:gap-1 sm:after:hidden"
       >
         <p className="profile-title-2 text-primary-700">{value}</p>
-        <p className="button leading-[14px] text-primary-500 sm:text-base sm:leading-6">
-          {key}
-        </p>
+        <p className="profile-subtitle sm:body-2 text-primary-500">{key}</p>
       </li>
     ))}
   </ul>

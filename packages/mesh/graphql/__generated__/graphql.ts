@@ -3327,7 +3327,8 @@ export type GetMemberByFollowingCategoryQuery = {
 }
 
 export type GetMemberProfileQueryVariables = Exact<{
-  memberId?: InputMaybe<Scalars['String']['input']>
+  customId?: InputMaybe<Scalars['String']['input']>
+  takes: Scalars['Int']['input']
 }>
 
 export type GetMemberProfileQuery = {
@@ -3341,6 +3342,7 @@ export type GetMemberProfileQuery = {
     pickCount?: number | null
     followingCount?: number | null
     followerCount?: number | null
+    booksCount?: number | null
     avatar_image?: { __typename?: 'Photo'; urlOriginal?: string | null } | null
     picks?: Array<{
       __typename?: 'Pick'
@@ -3446,7 +3448,8 @@ export type GetMemberProfileQuery = {
 }
 
 export type GetVisitorProfileQueryVariables = Exact<{
-  memberId?: InputMaybe<Scalars['String']['input']>
+  customId?: InputMaybe<Scalars['String']['input']>
+  takes: Scalars['Int']['input']
 }>
 
 export type GetVisitorProfileQuery = {
@@ -3559,11 +3562,13 @@ export type PublishersQuery = {
 }
 
 export type GetPublisherProfileQueryVariables = Exact<{
-  memberId: Scalars['ID']['input']
+  publisherId: Scalars['ID']['input']
+  takes: Scalars['Int']['input']
 }>
 
 export type GetPublisherProfileQuery = {
   __typename?: 'Query'
+  storiesCount?: number | null
   publisher?: {
     __typename?: 'Publisher'
     id: string
@@ -3593,19 +3598,6 @@ export type GetPublisherProfileQuery = {
     pick?: Array<{
       __typename?: 'Pick'
       createdAt?: any | null
-      member?: {
-        __typename?: 'Member'
-        id: string
-        name?: string | null
-        avatar?: string | null
-      } | null
-    }> | null
-    comment?: Array<{
-      __typename?: 'Comment'
-      id: string
-      content?: string | null
-      createdAt?: any | null
-      likeCount?: number | null
       member?: {
         __typename?: 'Member'
         id: string
@@ -4703,9 +4695,20 @@ export const GetMemberProfileDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
+            name: { kind: 'Name', value: 'customId' },
           },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'takes' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
         },
       ],
       selectionSet: {
@@ -4726,7 +4729,7 @@ export const GetMemberProfileDocument = {
                       name: { kind: 'Name', value: 'customId' },
                       value: {
                         kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
+                        name: { kind: 'Name', value: 'customId' },
                       },
                     },
                   ],
@@ -4753,7 +4756,53 @@ export const GetMemberProfileDocument = {
                   },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'intro' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pickCount' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'kind' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'read',
+                                    block: false,
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'followingCount' },
@@ -4791,7 +4840,29 @@ export const GetMemberProfileDocument = {
                               ],
                             },
                           },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
                         ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'takes' },
                       },
                     },
                   ],
@@ -4945,6 +5016,55 @@ export const GetMemberProfileDocument = {
                                       },
                                     ],
                                   },
+                                },
+                                {
+                                  kind: 'Argument',
+                                  name: { kind: 'Name', value: 'where' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'member' },
+                                        value: {
+                                          kind: 'ObjectValue',
+                                          fields: [
+                                            {
+                                              kind: 'ObjectField',
+                                              name: {
+                                                kind: 'Name',
+                                                value: 'customId',
+                                              },
+                                              value: {
+                                                kind: 'ObjectValue',
+                                                fields: [
+                                                  {
+                                                    kind: 'ObjectField',
+                                                    name: {
+                                                      kind: 'Name',
+                                                      value: 'equals',
+                                                    },
+                                                    value: {
+                                                      kind: 'Variable',
+                                                      name: {
+                                                        kind: 'Name',
+                                                        value: 'customId',
+                                                      },
+                                                    },
+                                                  },
+                                                ],
+                                              },
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                                {
+                                  kind: 'Argument',
+                                  name: { kind: 'Name', value: 'take' },
+                                  value: { kind: 'IntValue', value: '1' },
                                 },
                               ],
                               selectionSet: {
@@ -5002,6 +5122,54 @@ export const GetMemberProfileDocument = {
                 },
                 {
                   kind: 'Field',
+                  alias: { kind: 'Name', value: 'booksCount' },
+                  name: { kind: 'Name', value: 'pickCount' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'kind' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'bookmark',
+                                    block: false,
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+                {
+                  kind: 'Field',
                   alias: { kind: 'Name', value: 'books' },
                   name: { kind: 'Name', value: 'pick' },
                   arguments: [
@@ -5029,7 +5197,29 @@ export const GetMemberProfileDocument = {
                               ],
                             },
                           },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
                         ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'takes' },
                       },
                     },
                   ],
@@ -5183,6 +5373,55 @@ export const GetMemberProfileDocument = {
                                       },
                                     ],
                                   },
+                                },
+                                {
+                                  kind: 'Argument',
+                                  name: { kind: 'Name', value: 'where' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'member' },
+                                        value: {
+                                          kind: 'ObjectValue',
+                                          fields: [
+                                            {
+                                              kind: 'ObjectField',
+                                              name: {
+                                                kind: 'Name',
+                                                value: 'customId',
+                                              },
+                                              value: {
+                                                kind: 'ObjectValue',
+                                                fields: [
+                                                  {
+                                                    kind: 'ObjectField',
+                                                    name: {
+                                                      kind: 'Name',
+                                                      value: 'equals',
+                                                    },
+                                                    value: {
+                                                      kind: 'Variable',
+                                                      name: {
+                                                        kind: 'Name',
+                                                        value: 'customId',
+                                                      },
+                                                    },
+                                                  },
+                                                ],
+                                              },
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                                {
+                                  kind: 'Argument',
+                                  name: { kind: 'Name', value: 'take' },
+                                  value: { kind: 'IntValue', value: '1' },
                                 },
                               ],
                               selectionSet: {
@@ -5261,9 +5500,20 @@ export const GetVisitorProfileDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
+            name: { kind: 'Name', value: 'customId' },
           },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'takes' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
         },
       ],
       selectionSet: {
@@ -5284,7 +5534,7 @@ export const GetVisitorProfileDocument = {
                       name: { kind: 'Name', value: 'customId' },
                       value: {
                         kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
+                        name: { kind: 'Name', value: 'customId' },
                       },
                     },
                   ],
@@ -5311,7 +5561,53 @@ export const GetVisitorProfileDocument = {
                   },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'intro' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pickCount' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'kind' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'read',
+                                    block: false,
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'followingCount' },
@@ -5349,7 +5645,29 @@ export const GetVisitorProfileDocument = {
                               ],
                             },
                           },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
                         ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'takes' },
                       },
                     },
                   ],
@@ -5719,11 +6037,22 @@ export const GetPublisherProfileDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
+            name: { kind: 'Name', value: 'publisherId' },
           },
           type: {
             kind: 'NonNullType',
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'takes' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           },
         },
       ],
@@ -5745,7 +6074,7 @@ export const GetPublisherProfileDocument = {
                       name: { kind: 'Name', value: 'id' },
                       value: {
                         kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
+                        name: { kind: 'Name', value: 'publisherId' },
                       },
                     },
                   ],
@@ -5765,6 +6094,50 @@ export const GetPublisherProfileDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'description' } },
               ],
             },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'storiesCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'source' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'id' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
           },
           {
             kind: 'Field',
@@ -5793,7 +6166,10 @@ export const GetPublisherProfileDocument = {
                                   name: { kind: 'Name', value: 'equals' },
                                   value: {
                                     kind: 'Variable',
-                                    name: { kind: 'Name', value: 'memberId' },
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
                                   },
                                 },
                               ],
@@ -5803,6 +6179,14 @@ export const GetPublisherProfileDocument = {
                       },
                     },
                   ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'takes' },
                 },
               },
             ],
@@ -5891,65 +6275,6 @@ export const GetPublisherProfileDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'published_date' },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'comment' },
-                  arguments: [
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'orderBy' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'createdAt' },
-                            value: { kind: 'EnumValue', value: 'desc' },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'content' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'likeCount' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'member' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'avatar' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
                 },
               ],
             },

@@ -9,15 +9,16 @@ query Publishers {
   }
 }
 
-query GetPublisherProfile($memberId: ID!) {
-  publisher(where: { id: $memberId }) {
+query GetPublisherProfile($publisherId: ID!, $takes: Int!) {
+  publisher(where: { id: $publisherId }) {
     id
     title
     logo
     followerCount
     description
   }
-  stories(where: { source: { id: { equals: $memberId } } }) {
+  storiesCount(where: { source: { id: { equals: $publisherId } } })
+  stories(where: { source: { id: { equals: $publisherId } } }, take: $takes) {
     title
     id
     og_image
@@ -46,16 +47,5 @@ query GetPublisherProfile($memberId: ID!) {
     paywall
     full_screen_ad
     published_date
-    comment(orderBy: { createdAt: desc }) {
-      id
-      content
-      createdAt
-      likeCount
-      member {
-        id
-        name
-        avatar
-      }
-    }
   }
 }

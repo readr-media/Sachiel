@@ -2,11 +2,11 @@
 import { useEffect, useState } from 'react'
 
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-import { tabFilter, TabKey } from '@/utils/profile-tab'
+import { TabCategory, TabKey } from '@/types/tab'
 
 import ArticleCardList from './article-card-list'
-import ProfileButtonLIst from './profile-button-list'
-import Tab, { TabCategory } from './tab'
+import ProfileButtonList from './profile-button-list'
+import Tab from './tab'
 import UserProfile from './user-profile'
 import UserStatusList from './user-status-list'
 
@@ -38,26 +38,21 @@ const MemberPage: React.FC<MemberPageProps> = ({
   visitID,
 }) => {
   const [showData, setShowData] = useState(picksData)
-  const [category, setCategory] = useState<TabCategory>(TabCategory.picks)
-  const getUserStatusList = () => {
-    const userStatusList = [
-      { key: TabKey.PICK, value: pickCount },
-      { key: TabKey.FOLLOWER, value: followerCount },
-      { key: TabKey.FOLLOWING, value: followingCount },
-      // TODO: sponsored value need api
-      { key: TabKey.SPONSORED, value: '9999次' },
-    ].filter(tabFilter(userType))
-    return userStatusList
-  }
+  const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
-  const emptyStatusMaxHeight = 'max-h-[calc(100%_-_152px)]'
+  const userStatusList = [
+    { key: TabKey.PICK, value: pickCount },
+    { key: TabKey.FOLLOWER, value: followerCount },
+    { key: TabKey.FOLLOWING, value: followingCount },
+  ]
+
   const buttonList = [{ text: '編輯個人檔案' }]
 
   useEffect(() => {
     switch (category) {
-      case TabCategory.picks:
+      case TabCategory.PICK:
         return setShowData(picksData)
-      case TabCategory.bookmarks:
+      case TabCategory.BOOKMARKS:
         return setShowData(bookmarkData)
       default:
         return setShowData(picksData)
@@ -66,9 +61,7 @@ const MemberPage: React.FC<MemberPageProps> = ({
 
   return (
     <>
-      <div
-        className={`flex ${emptyStatusMaxHeight} flex-col items-center px-5 pb-8 pt-6 sm:max-h-full`}
-      >
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
           name={name}
           pickCount={pickCount || 0}
@@ -76,17 +69,18 @@ const MemberPage: React.FC<MemberPageProps> = ({
           userType={userType}
           intro={intro}
         />
-        <ProfileButtonLIst buttonList={buttonList} />
-        <UserStatusList userStatusList={getUserStatusList()} />
+        <ProfileButtonList buttonList={buttonList} />
+        <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab userType={userType} category={category} setCategory={setCategory} />
+      <Tab category={category} setCategory={setCategory} userType={userType} />
       <ArticleCardList
         showData={showData}
         id={visitID}
         avatar={avatar}
         userType={userType}
         category={category}
+        name={name}
       />
     </>
   )

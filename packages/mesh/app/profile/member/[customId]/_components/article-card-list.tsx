@@ -1,16 +1,17 @@
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
+import { type TabCategory } from '@/types/tab'
 
 import ArticleCard from './article-card'
-import { TabCategory } from './tab'
 
 type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']
 type ArticleCardListProps = {
   showData: picksData | bookmarkData
-  id: string
+  id?: string
   avatar: string
   userType: string
   category: TabCategory
+  name?: string
 }
 const ArticleCardList = ({
   showData,
@@ -18,6 +19,7 @@ const ArticleCardList = ({
   avatar,
   userType,
   category,
+  name,
 }: ArticleCardListProps) => {
   const messages: { [key: string]: string } = {
     member_PICKS: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
@@ -55,6 +57,7 @@ const ArticleCardList = ({
                 id={id}
                 avatar={avatar}
                 category={category}
+                name={name}
               />
             </li>
           )

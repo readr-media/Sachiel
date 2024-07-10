@@ -11,7 +11,7 @@ import VisitorPage from './_components/visitor-page'
 
 export type PageProps = {
   params: {
-    userId: string
+    customId: string
     type: string
   }
   searchParams: {
@@ -22,15 +22,17 @@ type FetchGraphQLByIdentify = (
   isVisitor: boolean
 ) => Promise<GetMemberProfileQuery> | Promise<GetVisitorProfileQuery>
 const page = async ({ params, searchParams }: PageProps) => {
-  const visitID = params.userId
-  const isVisitor = searchParams.user !== visitID
+  const customId = params.customId
+  const isVisitor = searchParams.user !== customId
   const userType = isVisitor ? 'visitor' : 'member'
+  const takesCount = 20
   const fetchGraphQLByIdentify: FetchGraphQLByIdentify = async (
     isVisitor: boolean
   ) => {
     if (isVisitor) {
       const response = await fetchGraphQL(GetVisitorProfileDocument, {
-        memberId: visitID,
+        customId,
+        takes: takesCount,
       })
       if (response === null) {
         throw new Error('Failed to fetch visitor profile')
@@ -38,7 +40,8 @@ const page = async ({ params, searchParams }: PageProps) => {
       return response
     } else {
       const response = await fetchGraphQL(GetMemberProfileDocument, {
-        memberId: visitID,
+        customId,
+        takes: takesCount,
       })
       if (response === null) {
         throw new Error('Failed to fetch member profile')
@@ -71,7 +74,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           followerCount={userData.followerCount || 0}
           userType={userType}
           picksData={picksData}
-          visitID={visitID}
+          visitID={userData.id}
         />
       ) : (
         <MemberPage
@@ -84,7 +87,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           userType={userType}
           picksData={picksData}
           bookmarkData={bookmarkData}
-          visitID={visitID}
+          visitID={userData.id}
         />
       )}
     </>

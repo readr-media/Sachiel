@@ -1,12 +1,13 @@
 'use client'
-import { type StoryItem } from '../article-card'
+
+import { StoryItem } from '../../member/[customId]/_components/article-card'
 import Comment from './comment'
 
 export type CommentType = NonNullable<CommentList>[number]
 
 export type CommentList = NonNullable<StoryItem>['comment']
 export type CommentProps = {
-  data?: NonNullable<CommentList>[number]
+  data?: CommentType
   clampLineCount?: number
   avatar: string
   canToggle?: boolean
