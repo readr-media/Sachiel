@@ -6,7 +6,7 @@ import fetchGraphQL from '@/utils/fetch-graphql'
 
 import { PageProps } from '../page'
 import EmptyFollowingStatus from './_components/empty-following-status'
-import FollowingPublisherList from './_components/following-publisher-list'
+import FollowingList from './_components/following-list'
 
 export type FollowingListType = NonNullable<
   GetMemberFollowingListQuery['member']
@@ -18,9 +18,9 @@ export type FollowingPublisherListType = NonNullable<
 
 const FollowerList = async ({ params, searchParams }: PageProps) => {
   const response = await fetchGraphQL(GetMemberFollowingListDocument, {
-    customId: params.userId,
+    customId: params.customId,
   })
-  const isVisitor = params.userId === searchParams.user
+  const isVisitor = params.customId === searchParams.user
   const followPublisherResponse = response?.member?.follow_publisher || []
   const followResponse = response?.member?.following || []
   const hasPublisherData = !!followPublisherResponse.length
@@ -38,12 +38,12 @@ const FollowerList = async ({ params, searchParams }: PageProps) => {
   return (
     <div className="flex max-w-[1120px] grow flex-col items-center sm:gap-5  sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
       {/**TODO: map list*/}
-      <FollowingPublisherList
+      <FollowingList
         title="媒體"
         followingList={followPublisherData as FollowingListType}
         defaultToggle={false}
       />
-      <FollowingPublisherList
+      <FollowingList
         title="人物"
         followingList={followResponse}
         defaultToggle={true}

@@ -6,16 +6,16 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 
 import { type FollowingListType } from '../page'
-type FollowingPublisherListProps = {
+type FollowingListProps = {
   followingList: FollowingListType
   title: string
   defaultToggle: boolean
 }
-const FollowingPublisherList = ({
+const FollowingList = ({
   followingList = [],
   title = '媒體',
   defaultToggle,
-}: FollowingPublisherListProps) => {
+}: FollowingListProps) => {
   // TODO: default toggle set to props
   const [resultShowing, toggleResultShowing] = useState(defaultToggle)
   const toggleResult = () => {
@@ -85,4 +85,4 @@ const FollowingPublisherList = ({
   )
 }
 
-export default FollowingPublisherList
+export default FollowingList

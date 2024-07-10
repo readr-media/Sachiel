@@ -1,7 +1,12 @@
+'use client'
 import '@/styles/global.css'
+
+import { usePathname } from 'next/navigation'
 
 import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
+import { NO_NAV } from '@/constants/page-style'
+import useWindowDimensions from '@/hooks/use-window-dimension'
 
 import Footer from '../_components/footer'
 import Header from '../_components/header'
@@ -11,26 +16,30 @@ export default function ProfileLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pathName = usePathname()
+  const { width } = useWindowDimensions()
+
+  const hasNav = (pathName: string, width: number): boolean => {
+    const hasTargetPath = NO_NAV.some((path) => pathName.endsWith(path))
+    const isMobileWidth = width < 768
+
+    return !hasTargetPath || !isMobileWidth
+  }
+
   return (
     <div className="flex grow flex-col">
-      <header className="absolute left-0 right-0 top-0 z-header h-[60px] border-b bg-white sm:hidden">
-        <div className="flex h-full w-full items-center justify-center">
-          <Icon
-            size={{ width: 176, height: 44 }}
-            iconName="icon-readr-logoA-desktop"
-          />
-        </div>
-      </header>
       <div className="hidden sm:block">
         <Header />
       </div>
-      <div className="primary-container">
-        <div className="flex grow flex-col">{children}</div>
+      <div className="primary-container pb-0">
+        <div className="flex grow flex-col bg-multi-layer-light">
+          {children}
+        </div>
         <div className="hidden sm:block">
           <Footer />
         </div>
       </div>
-      <Nav />
+      {hasNav(pathName, width) && <Nav />}
     </div>
   )
 }
