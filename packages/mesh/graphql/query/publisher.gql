@@ -49,3 +49,18 @@ query GetPublisherProfile($publisherId: ID!, $takes: Int!) {
     published_date
   }
 }
+
+query GetPublisherFollowerList($publisherId: ID!, $takes: Int!) {
+  publisher(where: { id: $publisherId }) {
+    id
+    title
+    logo
+    followerCount
+    follower(take: $takes) {
+      id
+      customId
+      name
+      avatar
+    }
+  }
+}

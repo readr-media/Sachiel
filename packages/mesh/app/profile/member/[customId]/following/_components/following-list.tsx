@@ -47,7 +47,7 @@ const FollowingList = ({
             return (
               <li
                 key={following.id}
-                className="flex items-center justify-between pb-5 pt-[12.5px] first-of-type:pt-[24.5px]"
+                className="flex items-center justify-between pb-5 pt-[12.5px] first-of-type:pt-[24.5px] lg:px-5"
               >
                 <span className="flex items-center">
                   <Image

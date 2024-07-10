@@ -16,11 +16,13 @@ export type FollowingPublisherListType = NonNullable<
   GetMemberFollowingListQuery['member']
 >['follow_publisher']
 
-const FollowerList = async ({ params, searchParams }: PageProps) => {
+const FollowingPage = async ({ params, searchParams }: PageProps) => {
+  const takeCount = 20
   const response = await fetchGraphQL(GetMemberFollowingListDocument, {
     customId: params.customId,
+    take: takeCount,
   })
-  const isVisitor = params.customId === searchParams.user
+  const isVisitor = params.customId !== searchParams.user
   const followPublisherResponse = response?.member?.follow_publisher || []
   const followResponse = response?.member?.following || []
   const hasPublisherData = !!followPublisherResponse.length
@@ -52,4 +54,4 @@ const FollowerList = async ({ params, searchParams }: PageProps) => {
   )
 }
 
-export default FollowerList
+export default FollowingPage

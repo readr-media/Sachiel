@@ -3,7 +3,7 @@ import fetchGraphQL from '@/utils/fetch-graphql'
 
 import PublisherPage from './_component/publisher-page'
 
-type PageProps = {
+export type PageProps = {
   params: {
     publisherId: string
   }

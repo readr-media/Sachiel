@@ -3519,6 +3519,7 @@ export type GetVisitorProfileQuery = {
 
 export type GetMemberFollowingListQueryVariables = Exact<{
   customId?: InputMaybe<Scalars['String']['input']>
+  take: Scalars['Int']['input']
 }>
 
 export type GetMemberFollowingListQuery = {
@@ -3543,6 +3544,29 @@ export type GetMemberFollowingListQuery = {
       customId?: string | null
       title?: string | null
       logo?: string | null
+    }> | null
+  } | null
+}
+
+export type GetMemberFollowerListQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+  take: Scalars['Int']['input']
+}>
+
+export type GetMemberFollowerListQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    id: string
+    name?: string | null
+    avatar?: string | null
+    followingCount?: number | null
+    follower?: Array<{
+      __typename?: 'Member'
+      id: string
+      customId?: string | null
+      name?: string | null
+      avatar?: string | null
     }> | null
   } | null
 }
@@ -3606,6 +3630,29 @@ export type GetPublisherProfileQuery = {
       } | null
     }> | null
   }> | null
+}
+
+export type GetPublisherFollowerListQueryVariables = Exact<{
+  publisherId: Scalars['ID']['input']
+  takes: Scalars['Int']['input']
+}>
+
+export type GetPublisherFollowerListQuery = {
+  __typename?: 'Query'
+  publisher?: {
+    __typename?: 'Publisher'
+    id: string
+    title?: string | null
+    logo?: string | null
+    followerCount?: number | null
+    follower?: Array<{
+      __typename?: 'Member'
+      id: string
+      customId?: string | null
+      name?: string | null
+      avatar?: string | null
+    }> | null
+  } | null
 }
 
 export type LatestStoriesQueryVariables = Exact<{
@@ -5903,6 +5950,14 @@ export const GetMemberFollowingListDocument = {
           },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -5946,6 +6001,16 @@ export const GetMemberFollowingListDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'following' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'take' },
+                      },
+                    },
+                  ],
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
@@ -5965,6 +6030,16 @@ export const GetMemberFollowingListDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'follow_publisher' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'take' },
+                      },
+                    },
+                  ],
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
@@ -5988,6 +6063,106 @@ export const GetMemberFollowingListDocument = {
 } as unknown as DocumentNode<
   GetMemberFollowingListQuery,
   GetMemberFollowingListQueryVariables
+>
+export const GetMemberFollowerListDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMemberFollowerList' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'followingCount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'follower' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'take' },
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetMemberFollowerListQuery,
+  GetMemberFollowerListQueryVariables
 >
 export const PublishersDocument = {
   kind: 'Document',
@@ -6286,6 +6461,112 @@ export const GetPublisherProfileDocument = {
 } as unknown as DocumentNode<
   GetPublisherProfileQuery,
   GetPublisherProfileQueryVariables
+>
+export const GetPublisherFollowerListDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherFollowerList' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'takes' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publisher' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'publisherId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'followerCount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'follower' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'takes' },
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherFollowerListQuery,
+  GetPublisherFollowerListQueryVariables
 >
 export const LatestStoriesDocument = {
   kind: 'Document',
