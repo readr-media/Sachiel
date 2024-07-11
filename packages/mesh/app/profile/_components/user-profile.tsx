@@ -1,10 +1,10 @@
 import Avatar from '@/components/story-card/avatar'
 
-import { userType } from './member-page'
+type userType = 'member' | 'visitor' | 'publisher'
 
 type UserProfileProps = {
   name: string
-  pickCount: number
+  pickCount?: number
   avatar: string
   userType: userType
   intro: string
@@ -14,18 +14,21 @@ const UserProfile: React.FC<UserProfileProps> = ({
   pickCount,
   avatar,
   intro,
+  userType,
 }) => {
   return (
     <>
       <section className="flex w-full gap-4">
-        <Avatar size="xl" src={avatar} extra="sm:w-20 object-cover" />
+        <Avatar size="xl" src={avatar} extra="sm:w-20 sm:h-20 object-cover" />
         <div className="flex flex-col justify-center gap-1">
           <p className="profile-title  sm:title-1 text-primary-700">{name}</p>
-          <p className="footnote sm:profile-subtitle text-primary-500">
-            本週精選了
-            <span className="text-primary-800"> {pickCount} </span>
-            篇文章
-          </p>
+          {userType !== 'publisher' && (
+            <p className="footnote sm:profile-subtitle text-primary-500">
+              本週精選了
+              <span className="text-primary-800"> {pickCount} </span>
+              篇文章
+            </p>
+          )}
         </div>
       </section>
       <p className="body-3 sm:body-2 mt-3 line-clamp-6 w-full text-primary-500 sm:mt-4">

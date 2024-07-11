@@ -1,7 +1,6 @@
+import ArticleCard from '@/app/profile/_components/article-card'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 import { type TabCategory } from '@/types/tab'
-
-import ArticleCard from './article-card'
 
 type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']
@@ -55,10 +54,11 @@ const ArticleCardList = ({
               <ArticleCard
                 data={pick.story}
                 isLast={idx === picksOrBookmarks.length - 1}
-                memeberId={memeberId}
+                memberId={memeberId}
                 avatar={avatar}
                 category={category}
                 name={name}
+                userType={userType}
               />
             </li>
           )

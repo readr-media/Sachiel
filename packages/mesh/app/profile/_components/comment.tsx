@@ -4,7 +4,7 @@ import { useCommentLogic } from '@/hooks/use-comment-logic'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { type StoryData } from '../member/[customId]/_components/article-card'
+import { StoryData } from './article-card'
 
 export type CommentList = NonNullable<StoryData>['comment']
 export type CommentType = NonNullable<CommentList>[number]

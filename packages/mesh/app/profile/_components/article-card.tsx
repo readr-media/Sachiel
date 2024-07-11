@@ -15,20 +15,21 @@ export type StoryData = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
   data: NonNullable<StoryData>
   isLast: boolean
-  memeberId: string
+  memberId?: string
   avatar?: string
   category?: TabCategory
-  userType?: string
+  userType: string
   name?: string
 }
 
 const ArticleCard = ({
   data,
   isLast,
-  memeberId,
+  memberId,
   avatar = '',
   category,
   name,
+  userType,
 }: ArticleCardProps) => {
   const commentList = data.comment || []
   const authorComment =
@@ -42,12 +43,13 @@ const ArticleCard = ({
           likeCount: 0,
           member: {
             __typename: 'Member',
-            id: memeberId,
+            id: memberId,
             name,
             avatar,
           },
         }
-  const isCommentShow = category !== TabCategory.BOOKMARKS
+  const isCommentShow =
+    category !== TabCategory.BOOKMARKS && userType !== 'publisher'
 
   return (
     <>

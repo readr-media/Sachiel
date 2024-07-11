@@ -1,9 +1,9 @@
 'use client'
 
+import ArticleCard from '@/app/profile/_components/article-card'
 import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
 import { TabCategory } from '@/types/tab'
 
-import ArticleCard from './article-card'
 type StoryCardListProps = {
   storyData: GetPublisherProfileQuery['stories']
   userType?: string
@@ -38,7 +38,11 @@ const StoryCardList = ({ storyData, userType }: StoryCardListProps) => {
               key={story?.id}
               className="relative h-full w-full bg-white md:rounded-md md:drop-shadow"
             >
-              <ArticleCard data={story} isLast={idx === storyData.length - 1} />
+              <ArticleCard
+                data={story}
+                isLast={idx === storyData.length - 1}
+                userType="publisher"
+              />
             </li>
           )
         })}

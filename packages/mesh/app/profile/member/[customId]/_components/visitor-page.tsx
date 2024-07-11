@@ -1,15 +1,15 @@
 'use client'
 import { useState } from 'react'
 
+import ProfileButtonList from '@/app/profile/_components/profile-button-list'
+import Tab from '@/app/profile/_components/tab'
+import UserProfile from '@/app/profile/_components/user-profile'
+import UserStatusList from '@/app/profile/_components/user-status-list'
 import { type GetVisitorProfileQuery } from '@/graphql/__generated__/graphql'
 import { TabCategory, TabKey } from '@/types/tab'
 
 import ArticleCardList from './article-card-list'
 import { type userType } from './member-page'
-import ProfileButtonList from './profile-button-list'
-import Tab from './tab'
-import UserProfile from './user-profile'
-import UserStatusList from './user-status-list'
 
 type VisitorPageProps = {
   name: string
@@ -46,7 +46,7 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
           name={name}
           pickCount={pickCount || 0}

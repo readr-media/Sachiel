@@ -1,3 +1,4 @@
+'use client'
 import { Dispatch, SetStateAction } from 'react'
 
 import { TabCategory } from '@/types/tab'
@@ -5,7 +6,7 @@ import { TabCategory } from '@/types/tab'
 type TabProps = {
   setCategory?: Dispatch<SetStateAction<TabCategory>>
   category?: TabCategory
-  userType?: string
+  userType: string
 }
 
 type TabItem = {
@@ -22,6 +23,8 @@ const Tab = ({ category, setCategory, userType }: TabProps) => {
     category === TabCategory.BOOKMARKS ? activeTabStyle : inactiveTabStyle
   const picksActiveStyle =
     category === TabCategory.PICK ? activeTabStyle : inactiveTabStyle
+  const storiesActiveStyle =
+    category === TabCategory.PUBLISH ? activeTabStyle : inactiveTabStyle
   function handleTabOnClick(category: TabCategory) {
     if (!setCategory) return
     setCategory(category)
@@ -37,12 +40,23 @@ const Tab = ({ category, setCategory, userType }: TabProps) => {
       category: TabCategory.BOOKMARKS,
       activeStyle: bookmarksActiveStyle,
     },
+    {
+      name: '報導',
+      category: TabCategory.PUBLISH,
+      activeStyle: storiesActiveStyle,
+    },
   ]
   const tabFilter = (item: TabItem) => {
     if (userType === 'visitor') {
       return item.category === TabCategory.PICK
     }
-    return true
+    if (userType === 'publisher') {
+      return item.category === TabCategory.PUBLISH
+    }
+    return (
+      item.category === TabCategory.PICK ||
+      item.category === TabCategory.BOOKMARKS
+    )
   }
   return (
     <ul

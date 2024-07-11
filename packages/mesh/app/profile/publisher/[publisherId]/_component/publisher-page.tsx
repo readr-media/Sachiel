@@ -1,11 +1,11 @@
+import ProfileButtonList from '@/app/profile/_components/profile-button-list'
+import Tab from '@/app/profile/_components/tab'
+import UserProfile from '@/app/profile/_components/user-profile'
+import UserStatusList from '@/app/profile/_components/user-status-list'
 import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabKey } from '@/types/tab'
+import { TabCategory, TabKey } from '@/types/tab'
 
-import ProfileButtonList from './profile-button-list'
 import StoryCardList from './story-card-list'
-import Tab from './tab'
-import UserProfile from './user-profile'
-import UserStatusList from './user-status-list'
 
 export type userType = 'publisher'
 type PublisherPageProps = {
@@ -33,12 +33,17 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
-        <UserProfile name={name} avatar={avatar} intro={intro} />
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+        <UserProfile
+          userType="publisher"
+          name={name}
+          avatar={avatar}
+          intro={intro}
+        />
         <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
-      <Tab />
+      <Tab userType="publisher" category={TabCategory.PUBLISH} />
       <StoryCardList storyData={storyData} userType={userType} />
     </>
   )
