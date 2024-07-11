@@ -100,7 +100,9 @@ query GetMemberProfile($customId: String, $takes: Int!) {
       urlOriginal
     }
     intro
-    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
     followingCount
     followerCount
 
@@ -220,7 +222,9 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
       urlOriginal
     }
     intro
-    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
     followingCount
     followerCount
 

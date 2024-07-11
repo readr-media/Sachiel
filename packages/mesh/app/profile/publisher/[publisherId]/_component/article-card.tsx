@@ -8,9 +8,9 @@ import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
-export type StoryItem = NonNullable<PickList>[number]['story']
+export type StoryData = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
-  data: NonNullable<StoryItem>
+  data: NonNullable<StoryData>
   isLast: boolean
 }
 
@@ -27,7 +27,7 @@ const ArticleCard = ({ data, isLast }: ArticleCardProps) => {
         />
       </section>
       <div
-        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-[rgba(0,0,0,0.1)] md:line-clamp-3 md:pt-[12px] md:after:hidden ${
+        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-primary-200 md:line-clamp-3 md:pt-[12px] md:after:hidden ${
           isLast && 'after:hidden'
         }`}
       >

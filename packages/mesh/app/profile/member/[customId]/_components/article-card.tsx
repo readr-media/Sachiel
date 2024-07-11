@@ -1,8 +1,6 @@
 import Image from 'next/image'
 
-import CommentContainer, {
-  type CommentType,
-} from '@/app/profile/_components/comment'
+import Comment, { type CommentType } from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
@@ -13,26 +11,21 @@ import { TabCategory } from '@/types/tab'
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
 
-export type StoryItem = NonNullable<PickList>[number]['story']
+export type StoryData = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
-  data: NonNullable<StoryItem>
+  data: NonNullable<StoryData>
   isLast: boolean
-  id?: string
+  memeberId: string
   avatar?: string
   category?: TabCategory
   userType?: string
   name?: string
 }
 
-const shouldShowComments = (category?: TabCategory) => {
-  if (category === TabCategory.BOOKMARKS) return false
-  return true
-}
-
 const ArticleCard = ({
   data,
   isLast,
-  id,
+  memeberId,
   avatar = '',
   category,
   name,
@@ -49,12 +42,13 @@ const ArticleCard = ({
           likeCount: 0,
           member: {
             __typename: 'Member',
-            id,
+            id: memeberId,
             name,
             avatar,
           },
         }
-  const isCommentShow = shouldShowComments(category)
+  const isCommentShow = category !== TabCategory.BOOKMARKS
+
   return (
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -67,7 +61,7 @@ const ArticleCard = ({
         />
       </section>
       <div
-        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-[rgba(0,0,0,0.1)] md:line-clamp-3 md:pt-[12px] md:after:hidden ${
+        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-primary-200 md:line-clamp-3 md:pt-[12px] md:after:hidden ${
           isLast && 'after:hidden'
         }`}
       >
@@ -113,9 +107,11 @@ const ArticleCard = ({
           </div>
         </section>
         {isCommentShow && (
-          <CommentContainer
+          <Comment
             data={authorComment as CommentType}
             avatar={avatar}
+            clampLineCount={3}
+            canToggle={false}
           />
         )}
       </div>

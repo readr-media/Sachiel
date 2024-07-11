@@ -15,12 +15,12 @@ type VisitorPageProps = {
   name: string
   avatar: string
   intro: string
-  pickCount: number | null
+  pickCount: number
   followingCount: number | null
   followerCount: number
   userType: userType
   picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
-  visitID: string
+  memberId: string
 }
 
 const VisitorPage: React.FC<VisitorPageProps> = ({
@@ -32,14 +32,14 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   followingCount,
   followerCount,
   picksData,
-  visitID,
+  memberId,
 }) => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
-    { key: TabKey.PICK, value: pickCount },
-    { key: TabKey.FOLLOWER, value: followerCount },
-    { key: TabKey.FOLLOWING, value: followingCount },
+    { tabName: TabKey.PICK, count: pickCount },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+    { tabName: TabKey.FOLLOWING, count: followingCount },
   ]
 
   const buttonList = [{ text: '追蹤' }]
@@ -60,8 +60,8 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
 
       <Tab category={category} setCategory={setCategory} userType={userType} />
       <ArticleCardList
-        showData={picksData}
-        id={visitID}
+        picksOrBookmarks={picksData}
+        memeberId={memberId}
         avatar={avatar}
         userType={userType}
         category={category}

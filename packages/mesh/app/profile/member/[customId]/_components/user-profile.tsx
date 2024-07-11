@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Avatar from '@/components/story-card/avatar'
 
 import { userType } from './member-page'
 
@@ -18,16 +18,9 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <>
       <section className="flex w-full gap-4">
-        <div className="relative aspect-square w-16 overflow-hidden rounded-full sm:w-20">
-          <Image
-            alt={`${name}'s avatar`}
-            src={avatar || '/images/default-avatar-image.png'}
-            fill
-            className="object-cover"
-          />
-        </div>
+        <Avatar size="xl" src={avatar} extra="sm:w-20 object-cover" />
         <div className="flex flex-col justify-center gap-1">
-          <p className="profile-title  text-primary-700">{name}</p>
+          <p className="profile-title  sm:title-1 text-primary-700">{name}</p>
           <p className="footnote sm:profile-subtitle text-primary-500">
             本週精選了
             <span className="text-primary-800"> {pickCount} </span>

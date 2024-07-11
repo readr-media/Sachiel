@@ -8,6 +8,7 @@ const avatarSizes = {
   m: 28,
   l: 44,
   xl: 64,
+  xxl: 80,
 } as const
 
 const avatarClasses = {

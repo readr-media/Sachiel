@@ -12,17 +12,20 @@ import UserStatusList from './user-status-list'
 
 export type userType = 'member' | 'visitor'
 
+type Picks = NonNullable<GetMemberProfileQuery['member']>['picks']
+type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']
+
 type MemberPageProps = {
   name: string
   avatar: string
   intro: string
-  pickCount: number | null
+  pickCount: number
   followingCount: number | null
   followerCount: number
   userType: userType
-  picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
-  bookmarkData: NonNullable<GetMemberProfileQuery['member']>['books']
-  visitID: string
+  picksData: Picks
+  bookmarks: Bookmarks
+  memeberId: string
 }
 
 const MemberPage: React.FC<MemberPageProps> = ({
@@ -34,16 +37,18 @@ const MemberPage: React.FC<MemberPageProps> = ({
   followingCount,
   followerCount,
   picksData,
-  bookmarkData,
-  visitID,
+  bookmarks,
+  memeberId,
 }) => {
-  const [showData, setShowData] = useState(picksData)
+  const [picksOrBookmarks, setPicksOrBookmarks] = useState<Picks | Bookmarks>(
+    picksData
+  )
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
-    { key: TabKey.PICK, value: pickCount },
-    { key: TabKey.FOLLOWER, value: followerCount },
-    { key: TabKey.FOLLOWING, value: followingCount },
+    { tabName: TabKey.PICK, count: pickCount },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+    { tabName: TabKey.FOLLOWING, count: followingCount },
   ]
 
   const buttonList = [{ text: '編輯個人檔案' }]
@@ -51,13 +56,13 @@ const MemberPage: React.FC<MemberPageProps> = ({
   useEffect(() => {
     switch (category) {
       case TabCategory.PICK:
-        return setShowData(picksData)
+        return setPicksOrBookmarks(picksData)
       case TabCategory.BOOKMARKS:
-        return setShowData(bookmarkData)
+        return setPicksOrBookmarks(bookmarks)
       default:
-        return setShowData(picksData)
+        return setPicksOrBookmarks(picksData)
     }
-  }, [bookmarkData, category, picksData])
+  }, [bookmarks, category, picksData])
 
   return (
     <>
@@ -75,8 +80,8 @@ const MemberPage: React.FC<MemberPageProps> = ({
 
       <Tab category={category} setCategory={setCategory} userType={userType} />
       <ArticleCardList
-        showData={showData}
-        id={visitID}
+        picksOrBookmarks={picksOrBookmarks}
+        memeberId={memeberId}
         avatar={avatar}
         userType={userType}
         category={category}

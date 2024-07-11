@@ -38,12 +38,12 @@ const page = async ({ params }: PageProps) => {
     )
   }
   const userName = userData.title || '使用者名稱'
-  const userLogo = userData.logo || '/images/default-avatar-image.png'
+  const userLogo = userData.logo || ''
   const userIntro = userData.description || '使用者介紹'
   const storyData = response.stories || []
 
   return (
-    <main className="flex h-full grow flex-col">
+    <main className="flex grow flex-col">
       <PublisherPage
         name={userName}
         avatar={userLogo}

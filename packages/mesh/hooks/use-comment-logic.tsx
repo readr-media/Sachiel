@@ -30,7 +30,7 @@ export const useCommentLogic = (
   }, [clampLineCount])
 
   const handleToggleClamp = useCallback(() => {
-    if (!commentRef.current) return
+    if (!commentRef.current || !isTooLong) return
     if (shouldRedirect && shouldRedirect.cond) {
       router.push(shouldRedirect.route)
       return

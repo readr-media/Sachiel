@@ -6,16 +6,16 @@ import ArticleCard from './article-card'
 type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']
 type ArticleCardListProps = {
-  showData: picksData | bookmarkData
-  id?: string
+  picksOrBookmarks: picksData | bookmarkData
+  memeberId: string
   avatar: string
   userType: string
   category: TabCategory
   name?: string
 }
 const ArticleCardList = ({
-  showData,
-  id,
+  picksOrBookmarks,
+  memeberId,
   avatar,
   userType,
   category,
@@ -33,7 +33,7 @@ const ArticleCardList = ({
     return messages[key] || ''
   }
 
-  if (!showData?.length)
+  if (!picksOrBookmarks?.length)
     return (
       <div className="flex grow flex-col">
         <section className="flex h-full grow items-center justify-center whitespace-pre bg-primary-700-dark  text-center text-base text-primary-400 sm:min-h-full">
@@ -43,18 +43,19 @@ const ArticleCardList = ({
     )
   return (
     <>
+      {/* TODO: comment to remind adding infinite-scroll in the future */}
       <ul className="max-w-[1120px] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
-        {showData.map((pick, idx) => {
+        {picksOrBookmarks.map((pick, idx) => {
           if (!pick.story) return
           return (
             <li
               key={pick?.story?.id}
-              className="relative w-full bg-white md:h-full md:rounded-md md:shadow-[0_2px_2px_0px_rgba(0,9,40,0.1)]"
+              className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
             >
               <ArticleCard
                 data={pick.story}
-                isLast={idx === showData.length - 1}
-                id={id}
+                isLast={idx === picksOrBookmarks.length - 1}
+                memeberId={memeberId}
                 avatar={avatar}
                 category={category}
                 name={name}

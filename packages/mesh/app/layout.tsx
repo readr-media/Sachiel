@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hant" className={notoSans.className}>
-      <body className="flex min-h-screen grow flex-col">{children}</body>
+      <body className="min-h-screen">{children}</body>
     </html>
   )
 }

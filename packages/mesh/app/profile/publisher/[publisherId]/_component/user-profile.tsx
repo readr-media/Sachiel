@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Avatar from '@/components/story-card/avatar'
 
 type UserProfileProps = {
   name: string
@@ -9,17 +9,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ name, avatar, intro }) => {
   return (
     <>
       <section className="flex w-full items-center gap-4">
-        <div
-          className="relative aspect-square w-16 overflow-hidden rounded-lg
-          sm:w-20"
-        >
-          <Image
-            alt={`${name}'s avatar`}
-            src={avatar || '/images/default-avatar-image.png'}
-            fill
-            className="object-cover"
-          />
-        </div>
+        <Avatar size="xl" src={avatar} extra="sm:w-20 object-cover" />
         <div className="flex h-full flex-col items-center justify-center gap-1">
           <p className="profile-title h-[46px] text-primary-700">{name}</p>
         </div>

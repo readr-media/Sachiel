@@ -1,3 +1,4 @@
+'use client'
 import '@/styles/global.css'
 
 import { usePathname, useRouter } from 'next/navigation'

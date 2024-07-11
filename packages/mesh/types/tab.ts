@@ -6,7 +6,7 @@ export enum TabKey {
 }
 
 export type TabItem = {
-  key: TabKey
+  tabName: TabKey
   count: number | string | null
 }
 export enum TabCategory {
