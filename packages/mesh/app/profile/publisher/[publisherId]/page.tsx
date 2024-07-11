@@ -11,6 +11,7 @@ type PageProps = {
 const page = async ({ params }: PageProps) => {
   const publisherId = params.publisherId
   const takesCount = 20
+  const userType = 'publisher'
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
     publisherId,
     takes: takesCount,
@@ -49,7 +50,7 @@ const page = async ({ params }: PageProps) => {
         avatar={userLogo}
         intro={userIntro}
         userId={publisherId}
-        userType="publisher"
+        userType={userType}
         storyData={storyData}
       />
     </main>

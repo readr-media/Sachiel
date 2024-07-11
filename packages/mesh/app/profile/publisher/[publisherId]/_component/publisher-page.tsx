@@ -18,11 +18,11 @@ type PublisherPageProps = {
 }
 
 const PublisherPage: React.FC<PublisherPageProps> = ({
-  userType,
   name,
   avatar,
   intro,
   storyData,
+  userType,
 }) => {
   const userStatusList = [{ tabName: TabKey.SPONSORED, count: '9999次' }]
 
@@ -35,7 +35,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     <>
       <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
-          userType="publisher"
+          userType={userType}
           name={name}
           avatar={avatar}
           intro={intro}
@@ -43,8 +43,8 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
-      <Tab userType="publisher" category={TabCategory.PUBLISH} />
-      <StoryCardList storyData={storyData} userType={userType} />
+      <Tab userType={userType} category={TabCategory.PUBLISH} />
+      <StoryCardList storyData={storyData} />
     </>
   )
 }

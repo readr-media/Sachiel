@@ -24,7 +24,6 @@ const ArticleCardList = ({
     member_PICKS: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
     member_BOOKMARKS: '沒有已儲存的書籤',
     visitor_PICKS: '這個人還沒有精選新聞',
-    publisher_PUBLISH: '這個媒體還沒有發佈任何新聞',
   }
 
   const getMessage = (userType: string, category: TabCategory): string => {
