@@ -73,9 +73,9 @@ export default async function Page({
 
   const mediaCount = 5
   const latestStoryPageCount = 20
+  let allCategories: Category[] = []
   let mostPickedStory: Story | null | undefined
   let publishers: Publisher[] = []
-  let allCategories: Category[] = []
   const getLatestStoriesfetchBody = {
     publishers: followingPublishers,
     category: currentCategory?.id,
@@ -84,14 +84,16 @@ export default async function Page({
   }
 
   let responses: [
+    GetAllCategoriesQuery | null,
     Story[] | null,
     LatestStoriesResponse | null,
-    Publisher[] | null,
-    GetAllCategoriesQuery | null
+    Publisher[] | null
   ]
 
   try {
     responses = await Promise.all([
+      // TODO: fetch json instead
+      fetchGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
       fetchStatic<Story[]>(
         STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
           currentCategory?.slug
@@ -109,8 +111,6 @@ export default async function Page({
         },
         globalLogFields
       ),
-      // TODO: fetch json instead
-      fetchGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
     ])
   } catch (error) {
     logServerSideError(error, 'Unhandled error in media page', globalLogFields)
@@ -118,13 +118,14 @@ export default async function Page({
   }
 
   const [
+    allCategoriesResponse,
     mostPickedStoryResponse,
     latestStoriesResponse,
     publishersResponse,
-    allCategoriesResponse,
   ] = responses
 
   mostPickedStory = mostPickedStoryResponse?.[0]
+  allCategories = allCategoriesResponse?.categories ?? []
 
   if (latestStoriesResponse?.stories?.length === 0) {
     return (
@@ -155,8 +156,6 @@ export default async function Page({
   }
 
   publishers = publishersResponse?.slice(0, mediaCount) ?? []
-
-  allCategories = allCategoriesResponse?.categories ?? []
 
   // TODO: fetch real publiser stories
   const displayPublishers = publishers.map((publisher) => ({
