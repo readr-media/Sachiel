@@ -14,6 +14,7 @@ import {
 } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
+import useAuthState from '@/hooks/useAuthState'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -37,6 +38,7 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const { step, setStep } = useLogin()
   const router = useRouter()
+  const { idToken } = useAuthState()
 
   useEffect(() => {
     const handleEmailLinkSignIn = async () => {
@@ -60,7 +62,6 @@ export default function LoginSteps() {
 
     const handleOAuthSignIn = async () => {
       try {
-        const idToken = await auth.currentUser?.getIdToken()
         if (idToken) {
           await handleAfterSignInRedirect(idToken)
         }
@@ -93,7 +94,7 @@ export default function LoginSteps() {
       }
     }
     handleSignIn()
-  }, [router, setStep])
+  }, [idToken, router, setStep])
 
   return (
     <>

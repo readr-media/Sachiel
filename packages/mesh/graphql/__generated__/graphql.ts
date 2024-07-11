@@ -757,6 +757,17 @@ export type DateTimeNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>
 }
 
+export type FloatNullableFilter = {
+  equals?: InputMaybe<Scalars['Float']['input']>
+  gt?: InputMaybe<Scalars['Float']['input']>
+  gte?: InputMaybe<Scalars['Float']['input']>
+  in?: InputMaybe<Array<Scalars['Float']['input']>>
+  lt?: InputMaybe<Scalars['Float']['input']>
+  lte?: InputMaybe<Scalars['Float']['input']>
+  not?: InputMaybe<FloatNullableFilter>
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>
+}
+
 export type IdFilter = {
   equals?: InputMaybe<Scalars['ID']['input']>
   gt?: InputMaybe<Scalars['ID']['input']>
@@ -1385,12 +1396,16 @@ export type Mutation = {
   createPhotos?: Maybe<Array<Maybe<Photo>>>
   createPick?: Maybe<Pick>
   createPicks?: Maybe<Array<Maybe<Pick>>>
+  createPolicies?: Maybe<Array<Maybe<Policy>>>
+  createPolicy?: Maybe<Policy>
   createPublisher?: Maybe<Publisher>
   createPublishers?: Maybe<Array<Maybe<Publisher>>>
   createStories?: Maybe<Array<Maybe<Story>>>
   createStory?: Maybe<Story>
   createTag?: Maybe<Tag>
   createTags?: Maybe<Array<Maybe<Tag>>>
+  createTransaction?: Maybe<Transaction>
+  createTransactions?: Maybe<Array<Maybe<Transaction>>>
   createUser?: Maybe<User>
   createUsers?: Maybe<Array<Maybe<User>>>
   deleteAnnouncement?: Maybe<Announcement>
@@ -1415,12 +1430,16 @@ export type Mutation = {
   deletePhotos?: Maybe<Array<Maybe<Photo>>>
   deletePick?: Maybe<Pick>
   deletePicks?: Maybe<Array<Maybe<Pick>>>
+  deletePolicies?: Maybe<Array<Maybe<Policy>>>
+  deletePolicy?: Maybe<Policy>
   deletePublisher?: Maybe<Publisher>
   deletePublishers?: Maybe<Array<Maybe<Publisher>>>
   deleteStories?: Maybe<Array<Maybe<Story>>>
   deleteStory?: Maybe<Story>
   deleteTag?: Maybe<Tag>
   deleteTags?: Maybe<Array<Maybe<Tag>>>
+  deleteTransaction?: Maybe<Transaction>
+  deleteTransactions?: Maybe<Array<Maybe<Transaction>>>
   deleteUser?: Maybe<User>
   deleteUsers?: Maybe<Array<Maybe<User>>>
   endSession: Scalars['Boolean']['output']
@@ -1446,12 +1465,16 @@ export type Mutation = {
   updatePhotos?: Maybe<Array<Maybe<Photo>>>
   updatePick?: Maybe<Pick>
   updatePicks?: Maybe<Array<Maybe<Pick>>>
+  updatePolicies?: Maybe<Array<Maybe<Policy>>>
+  updatePolicy?: Maybe<Policy>
   updatePublisher?: Maybe<Publisher>
   updatePublishers?: Maybe<Array<Maybe<Publisher>>>
   updateStories?: Maybe<Array<Maybe<Story>>>
   updateStory?: Maybe<Story>
   updateTag?: Maybe<Tag>
   updateTags?: Maybe<Array<Maybe<Tag>>>
+  updateTransaction?: Maybe<Transaction>
+  updateTransactions?: Maybe<Array<Maybe<Transaction>>>
   updateUser?: Maybe<User>
   updateUsers?: Maybe<Array<Maybe<User>>>
 }
@@ -1553,6 +1576,14 @@ export type MutationCreatePicksArgs = {
   data: Array<PickCreateInput>
 }
 
+export type MutationCreatePoliciesArgs = {
+  data: Array<PolicyCreateInput>
+}
+
+export type MutationCreatePolicyArgs = {
+  data: PolicyCreateInput
+}
+
 export type MutationCreatePublisherArgs = {
   data: PublisherCreateInput
 }
@@ -1575,6 +1606,14 @@ export type MutationCreateTagArgs = {
 
 export type MutationCreateTagsArgs = {
   data: Array<TagCreateInput>
+}
+
+export type MutationCreateTransactionArgs = {
+  data: TransactionCreateInput
+}
+
+export type MutationCreateTransactionsArgs = {
+  data: Array<TransactionCreateInput>
 }
 
 export type MutationCreateUserArgs = {
@@ -1673,6 +1712,14 @@ export type MutationDeletePicksArgs = {
   where: Array<PickWhereUniqueInput>
 }
 
+export type MutationDeletePoliciesArgs = {
+  where: Array<PolicyWhereUniqueInput>
+}
+
+export type MutationDeletePolicyArgs = {
+  where: PolicyWhereUniqueInput
+}
+
 export type MutationDeletePublisherArgs = {
   where: PublisherWhereUniqueInput
 }
@@ -1695,6 +1742,14 @@ export type MutationDeleteTagArgs = {
 
 export type MutationDeleteTagsArgs = {
   where: Array<TagWhereUniqueInput>
+}
+
+export type MutationDeleteTransactionArgs = {
+  where: TransactionWhereUniqueInput
+}
+
+export type MutationDeleteTransactionsArgs = {
+  where: Array<TransactionWhereUniqueInput>
 }
 
 export type MutationDeleteUserArgs = {
@@ -1804,6 +1859,15 @@ export type MutationUpdatePicksArgs = {
   data: Array<PickUpdateArgs>
 }
 
+export type MutationUpdatePoliciesArgs = {
+  data: Array<PolicyUpdateArgs>
+}
+
+export type MutationUpdatePolicyArgs = {
+  data: PolicyUpdateInput
+  where: PolicyWhereUniqueInput
+}
+
 export type MutationUpdatePublisherArgs = {
   data: PublisherUpdateInput
   where: PublisherWhereUniqueInput
@@ -1829,6 +1893,15 @@ export type MutationUpdateTagArgs = {
 
 export type MutationUpdateTagsArgs = {
   data: Array<TagUpdateArgs>
+}
+
+export type MutationUpdateTransactionArgs = {
+  data: TransactionUpdateInput
+  where: TransactionWhereUniqueInput
+}
+
+export type MutationUpdateTransactionsArgs = {
+  data: Array<TransactionUpdateArgs>
 }
 
 export type MutationUpdateUserArgs = {
@@ -2163,6 +2236,113 @@ export type PickWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
+export type Policy = {
+  __typename?: 'Policy'
+  charge?: Maybe<Scalars['Float']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  duration?: Maybe<Scalars['Int']['output']>
+  explanation?: Maybe<Scalars['String']['output']>
+  id: Scalars['ID']['output']
+  name?: Maybe<Scalars['String']['output']>
+  publisher?: Maybe<Publisher>
+  type?: Maybe<PolicyTypeType>
+  unlockSingle?: Maybe<Scalars['Boolean']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type PolicyCreateInput = {
+  charge?: InputMaybe<Scalars['Float']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  duration?: InputMaybe<Scalars['Int']['input']>
+  explanation?: InputMaybe<Scalars['String']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForCreateInput>
+  type?: InputMaybe<PolicyTypeType>
+  unlockSingle?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type PolicyOrderByInput = {
+  charge?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  duration?: InputMaybe<OrderDirection>
+  explanation?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  name?: InputMaybe<OrderDirection>
+  type?: InputMaybe<OrderDirection>
+  unlockSingle?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type PolicyRelateToOneForCreateInput = {
+  connect?: InputMaybe<PolicyWhereUniqueInput>
+  create?: InputMaybe<PolicyCreateInput>
+}
+
+export type PolicyRelateToOneForUpdateInput = {
+  connect?: InputMaybe<PolicyWhereUniqueInput>
+  create?: InputMaybe<PolicyCreateInput>
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export enum PolicyTypeType {
+  Deposit = 'deposit',
+  UnlockAllPublishers = 'unlock_all_publishers',
+  UnlockOnePublisher = 'unlock_one_publisher',
+}
+
+export type PolicyTypeTypeNullableFilter = {
+  equals?: InputMaybe<PolicyTypeType>
+  in?: InputMaybe<Array<PolicyTypeType>>
+  not?: InputMaybe<PolicyTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<PolicyTypeType>>
+}
+
+export type PolicyUpdateArgs = {
+  data: PolicyUpdateInput
+  where: PolicyWhereUniqueInput
+}
+
+export type PolicyUpdateInput = {
+  charge?: InputMaybe<Scalars['Float']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  duration?: InputMaybe<Scalars['Int']['input']>
+  explanation?: InputMaybe<Scalars['String']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  type?: InputMaybe<PolicyTypeType>
+  unlockSingle?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type PolicyWhereInput = {
+  AND?: InputMaybe<Array<PolicyWhereInput>>
+  NOT?: InputMaybe<Array<PolicyWhereInput>>
+  OR?: InputMaybe<Array<PolicyWhereInput>>
+  charge?: InputMaybe<FloatNullableFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  duration?: InputMaybe<IntNullableFilter>
+  explanation?: InputMaybe<StringFilter>
+  id?: InputMaybe<IdFilter>
+  name?: InputMaybe<StringFilter>
+  publisher?: InputMaybe<PublisherWhereInput>
+  type?: InputMaybe<PolicyTypeTypeNullableFilter>
+  unlockSingle?: InputMaybe<BooleanFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type PolicyWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
 export type Publisher = {
   __typename?: 'Publisher'
   createdAt?: Maybe<Scalars['DateTime']['output']>
@@ -2359,6 +2539,9 @@ export type Query = {
   pick?: Maybe<Pick>
   picks?: Maybe<Array<Pick>>
   picksCount?: Maybe<Scalars['Int']['output']>
+  policies?: Maybe<Array<Policy>>
+  policiesCount?: Maybe<Scalars['Int']['output']>
+  policy?: Maybe<Policy>
   publisher?: Maybe<Publisher>
   publishers?: Maybe<Array<Publisher>>
   publishersCount?: Maybe<Scalars['Int']['output']>
@@ -2368,6 +2551,9 @@ export type Query = {
   tag?: Maybe<Tag>
   tags?: Maybe<Array<Tag>>
   tagsCount?: Maybe<Scalars['Int']['output']>
+  transaction?: Maybe<Transaction>
+  transactions?: Maybe<Array<Transaction>>
+  transactionsCount?: Maybe<Scalars['Int']['output']>
   user?: Maybe<User>
   users?: Maybe<Array<User>>
   usersCount?: Maybe<Scalars['Int']['output']>
@@ -2538,6 +2724,21 @@ export type QueryPicksCountArgs = {
   where?: PickWhereInput
 }
 
+export type QueryPoliciesArgs = {
+  orderBy?: Array<PolicyOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: PolicyWhereInput
+}
+
+export type QueryPoliciesCountArgs = {
+  where?: PolicyWhereInput
+}
+
+export type QueryPolicyArgs = {
+  where: PolicyWhereUniqueInput
+}
+
 export type QueryPublisherArgs = {
   where: PublisherWhereUniqueInput
 }
@@ -2581,6 +2782,21 @@ export type QueryTagsArgs = {
 
 export type QueryTagsCountArgs = {
   where?: TagWhereInput
+}
+
+export type QueryTransactionArgs = {
+  where: TransactionWhereUniqueInput
+}
+
+export type QueryTransactionsArgs = {
+  orderBy?: Array<TransactionOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: TransactionWhereInput
+}
+
+export type QueryTransactionsCountArgs = {
+  where?: TransactionWhereInput
 }
 
 export type QueryUserArgs = {
@@ -2980,6 +3196,109 @@ export type TagWhereInput = {
 }
 
 export type TagWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
+export type Transaction = {
+  __typename?: 'Transaction'
+  active?: Maybe<Scalars['Boolean']['output']>
+  complement?: Maybe<Scalars['String']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  depositVolume?: Maybe<Scalars['Float']['output']>
+  expireDate?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['ID']['output']
+  member?: Maybe<Member>
+  policy?: Maybe<Policy>
+  status?: Maybe<TransactionStatusType>
+  tid?: Maybe<Scalars['String']['output']>
+  unlockStory?: Maybe<Story>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type TransactionCreateInput = {
+  active?: InputMaybe<Scalars['Boolean']['input']>
+  complement?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  depositVolume?: InputMaybe<Scalars['Float']['input']>
+  expireDate?: InputMaybe<Scalars['DateTime']['input']>
+  member?: InputMaybe<MemberRelateToOneForCreateInput>
+  policy?: InputMaybe<PolicyRelateToOneForCreateInput>
+  status?: InputMaybe<TransactionStatusType>
+  tid?: InputMaybe<Scalars['String']['input']>
+  unlockStory?: InputMaybe<StoryRelateToOneForCreateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type TransactionOrderByInput = {
+  active?: InputMaybe<OrderDirection>
+  complement?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  depositVolume?: InputMaybe<OrderDirection>
+  expireDate?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  status?: InputMaybe<OrderDirection>
+  tid?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export enum TransactionStatusType {
+  Failed = 'Failed',
+  Success = 'Success',
+}
+
+export type TransactionStatusTypeNullableFilter = {
+  equals?: InputMaybe<TransactionStatusType>
+  in?: InputMaybe<Array<TransactionStatusType>>
+  not?: InputMaybe<TransactionStatusTypeNullableFilter>
+  notIn?: InputMaybe<Array<TransactionStatusType>>
+}
+
+export type TransactionUpdateArgs = {
+  data: TransactionUpdateInput
+  where: TransactionWhereUniqueInput
+}
+
+export type TransactionUpdateInput = {
+  active?: InputMaybe<Scalars['Boolean']['input']>
+  complement?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  depositVolume?: InputMaybe<Scalars['Float']['input']>
+  expireDate?: InputMaybe<Scalars['DateTime']['input']>
+  member?: InputMaybe<MemberRelateToOneForUpdateInput>
+  policy?: InputMaybe<PolicyRelateToOneForUpdateInput>
+  status?: InputMaybe<TransactionStatusType>
+  tid?: InputMaybe<Scalars['String']['input']>
+  unlockStory?: InputMaybe<StoryRelateToOneForUpdateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type TransactionWhereInput = {
+  AND?: InputMaybe<Array<TransactionWhereInput>>
+  NOT?: InputMaybe<Array<TransactionWhereInput>>
+  OR?: InputMaybe<Array<TransactionWhereInput>>
+  active?: InputMaybe<BooleanFilter>
+  complement?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  depositVolume?: InputMaybe<FloatNullableFilter>
+  expireDate?: InputMaybe<DateTimeNullableFilter>
+  id?: InputMaybe<IdFilter>
+  member?: InputMaybe<MemberWhereInput>
+  policy?: InputMaybe<PolicyWhereInput>
+  status?: InputMaybe<TransactionStatusTypeNullableFilter>
+  tid?: InputMaybe<StringFilter>
+  unlockStory?: InputMaybe<StoryWhereInput>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type TransactionWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
