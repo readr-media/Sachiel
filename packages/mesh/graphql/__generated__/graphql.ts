@@ -3107,6 +3107,19 @@ export type UserActionStoryFragment = {
   }> | null
 }
 
+export type SignUpMemberMutationVariables = Exact<{
+  registrationData: MemberCreateInput
+}>
+
+export type SignUpMemberMutation = {
+  __typename?: 'Mutation'
+  createMember?: {
+    __typename?: 'Member'
+    id: string
+    firebaseId?: string | null
+  } | null
+}
+
 export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllCategoriesQuery = {
@@ -3306,19 +3319,6 @@ export type GetCurrentUserMemberIdQuery = {
   member?: { __typename?: 'Member'; id: string } | null
 }
 
-export type SignUpMemberMutationVariables = Exact<{
-  registrationData: MemberCreateInput
-}>
-
-export type SignUpMemberMutation = {
-  __typename?: 'Mutation'
-  createMember?: {
-    __typename?: 'Member'
-    id: string
-    firebaseId?: string | null
-  } | null
-}
-
 export type PublishersQueryVariables = Exact<{ [key: string]: never }>
 
 export type PublishersQuery = {
@@ -3475,6 +3475,61 @@ export const UserActionStoryFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<UserActionStoryFragment, unknown>
+export const SignUpMemberDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'SignUpMember' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'registrationData' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'MemberCreateInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'registrationData' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'firebaseId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SignUpMemberMutation,
+  SignUpMemberMutationVariables
+>
 export const GetAllCategoriesDocument = {
   kind: 'Document',
   definitions: [
@@ -4363,61 +4418,6 @@ export const GetCurrentUserMemberIdDocument = {
 } as unknown as DocumentNode<
   GetCurrentUserMemberIdQuery,
   GetCurrentUserMemberIdQueryVariables
->
-export const SignUpMemberDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'SignUpMember' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'registrationData' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'MemberCreateInput' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createMember' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'data' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'registrationData' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'firebaseId' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  SignUpMemberMutation,
-  SignUpMemberMutationVariables
 >
 export const PublishersDocument = {
   kind: 'Document',

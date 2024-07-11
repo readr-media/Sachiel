@@ -96,10 +96,3 @@ query GetCurrentUserMemberId($uid: String!) {
     id
   }
 }
-
-mutation SignUpMember($registrationData: MemberCreateInput!) {
-  createMember(data: $registrationData) {
-    id
-    firebaseId
-  }
-}

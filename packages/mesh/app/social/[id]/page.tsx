@@ -20,9 +20,9 @@ export const revalidate = 0
 export default async function Page({ params }: { params: { id: string } }) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   const memberId = await getCurrentUserMemberId()
-  if (!memberId || params.id !== memberId) redirect('/login')
+  if (!memberId) redirect('/login')
+  if (params.id !== memberId) redirect(`/social/${memberId}`)
 
-  // const userId = params.id
   const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5

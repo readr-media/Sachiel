@@ -4,7 +4,7 @@ import {
   setPersistence,
   signInWithEmailLink,
 } from 'firebase/auth'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createElement, useEffect } from 'react'
 
 import {
@@ -14,7 +14,6 @@ import {
 } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
-import useAuthState from '@/hooks/useAuthState'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -38,14 +37,11 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const { step, setStep } = useLogin()
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const { isLogin } = useAuthState()
 
   useEffect(() => {
     const handleEmailLinkSignIn = async () => {
       let email = window.localStorage.getItem('emailForSignIn')
       if (!email) {
-        // email = window.prompt('Please provide your email for confirmation')
         router.push('/login')
         return
       }
@@ -53,22 +49,9 @@ export default function LoginSteps() {
         await setPersistence(auth, browserLocalPersistence)
         const res = await signInWithEmailLink(auth, email, window.location.href)
         const idToken = await res.user.getIdToken()
-        // const { emailVerified, uid } = res.user
-        // const apiKey = searchParams.get('apiKey')
-        // const mode = searchParams.get('mode')
-        // const oobCode = searchParams.get('oobCode')
-        // const continueUrl = searchParams.get('continueUrl')
-        // const lang = searchParams.get('lang') || 'en'
 
         window.localStorage.removeItem('emailForSignIn')
-        if (idToken) {
-          const response = await validateIdToken(idToken)
-          if (response) {
-            setStep('set-name')
-          } else {
-            router.push('/login')
-          }
-        }
+        await handleAfterSignInRedirect(idToken)
       } catch (error) {
         console.error('EmailLinkSignIn Error:', error)
         router.push('/login')
@@ -78,17 +61,8 @@ export default function LoginSteps() {
     const handleOAuthSignIn = async () => {
       try {
         const idToken = await auth.currentUser?.getIdToken()
-
         if (idToken) {
-          const response = await handleToken(idToken)
-          if (!response.ok) router.push('/login')
-
-          const memberId = await getCurrentUserMemberId()
-          if (memberId) {
-            router.push('/media')
-          } else {
-            setStep('set-name')
-          }
+          await handleAfterSignInRedirect(idToken)
         }
       } catch (error) {
         console.error('OAuthSignIn Error:', error)
@@ -96,14 +70,30 @@ export default function LoginSteps() {
       }
     }
 
-    if (isLogin) {
-      if (isSignInWithEmailLink(auth, window.location.href)) {
-        handleEmailLinkSignIn()
+    const handleAfterSignInRedirect = async (idToken: string) => {
+      const response = await handleToken(idToken)
+      if (!response.ok) {
+        router.push('/login')
+        return
+      }
+
+      const memberId = await getCurrentUserMemberId()
+      if (memberId) {
+        router.push('/media')
       } else {
-        handleOAuthSignIn()
+        setStep('set-name')
       }
     }
-  }, [isLogin, router, searchParams, setStep])
+
+    const handleSignIn = async () => {
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        await handleEmailLinkSignIn()
+      } else {
+        await handleOAuthSignIn()
+      }
+    }
+    handleSignIn()
+  }, [router, setStep])
 
   return (
     <>
