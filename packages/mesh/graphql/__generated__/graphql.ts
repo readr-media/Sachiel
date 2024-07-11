@@ -3822,21 +3822,21 @@ export type PublishersQuery = {
 }
 
 export type GetPublisherProfileQueryVariables = Exact<{
-  publisherId: Scalars['ID']['input']
+  publisherId?: InputMaybe<Scalars['String']['input']>
   takes: Scalars['Int']['input']
 }>
 
 export type GetPublisherProfileQuery = {
   __typename?: 'Query'
   storiesCount?: number | null
-  publisher?: {
+  publishers?: Array<{
     __typename?: 'Publisher'
     id: string
     title?: string | null
     logo?: string | null
     followerCount?: number | null
     description?: string | null
-  } | null
+  }> | null
   stories?: Array<{
     __typename?: 'Story'
     title?: string | null
@@ -6095,10 +6095,7 @@ export const GetPublisherProfileDocument = {
             kind: 'Variable',
             name: { kind: 'Name', value: 'publisherId' },
           },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
         },
         {
           kind: 'VariableDefinition',
@@ -6117,7 +6114,7 @@ export const GetPublisherProfileDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'publisher' },
+            name: { kind: 'Name', value: 'publishers' },
             arguments: [
               {
                 kind: 'Argument',
@@ -6127,10 +6124,19 @@ export const GetPublisherProfileDocument = {
                   fields: [
                     {
                       kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
+                      name: { kind: 'Name', value: 'customId' },
                       value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'publisherId' },
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'publisherId' },
+                            },
+                          },
+                        ],
                       },
                     },
                   ],
@@ -6169,7 +6175,7 @@ export const GetPublisherProfileDocument = {
                         fields: [
                           {
                             kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'id' },
+                            name: { kind: 'Name', value: 'customId' },
                             value: {
                               kind: 'ObjectValue',
                               fields: [
@@ -6213,7 +6219,7 @@ export const GetPublisherProfileDocument = {
                         fields: [
                           {
                             kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'id' },
+                            name: { kind: 'Name', value: 'customId' },
                             value: {
                               kind: 'ObjectValue',
                               fields: [

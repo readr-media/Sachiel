@@ -44,7 +44,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         <UserStatusList userStatusList={userStatusList} />
       </div>
       <Tab userType={userType} category={TabCategory.PUBLISH} />
-      <StoryCardList storyData={storyData} />
+      <StoryCardList storyData={storyData} userType={userType} />
     </>
   )
 }

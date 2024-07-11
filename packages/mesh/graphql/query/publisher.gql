@@ -9,16 +9,20 @@ query Publishers {
   }
 }
 
-query GetPublisherProfile($publisherId: ID!, $takes: Int!) {
-  publisher(where: { id: $publisherId }) {
+query GetPublisherProfile($publisherId: String, $takes: Int!) {
+  #  使用publishers因為query publisher的where沒有提供customId的篩選
+  publishers(where: { customId: { equals: $publisherId } }) {
     id
     title
     logo
     followerCount
     description
   }
-  storiesCount(where: { source: { id: { equals: $publisherId } } })
-  stories(where: { source: { id: { equals: $publisherId } } }, take: $takes) {
+  storiesCount(where: { source: { customId: { equals: $publisherId } } })
+  stories(
+    where: { source: { customId: { equals: $publisherId } } }
+    take: $takes
+  ) {
     title
     id
     og_image

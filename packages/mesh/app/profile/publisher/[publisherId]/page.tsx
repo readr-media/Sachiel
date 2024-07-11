@@ -10,6 +10,7 @@ type PageProps = {
 }
 const page = async ({ params }: PageProps) => {
   const publisherId = params.publisherId
+  console.log(publisherId)
   const takesCount = 20
   const userType = 'publisher'
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
@@ -27,7 +28,8 @@ const page = async ({ params }: PageProps) => {
       </main>
     )
   }
-  const userData = response.publisher
+  // 使用publishers因為query publisher的where沒有提供customId的篩選
+  const userData = response.publishers && response.publishers[0]
   if (!userData) {
     return (
       <main>
