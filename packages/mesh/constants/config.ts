@@ -3,15 +3,39 @@ const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
 let API_ORIGIN = ''
 let STATIC_FILE_ORIGIN = ''
+let FIREBASE_CONFIG = {
+  API_KEY: '',
+  AUTH_DOMAIN: '',
+  PROJECT_ID: '',
+  STORAGE_BUCKET: '',
+  MESSAGING_SENDER_ID: '',
+  APP_ID: '',
+}
 
 switch (ENV) {
   case 'local':
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    FIREBASE_CONFIG = {
+      API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
+      AUTH_DOMAIN: 'readr-dev-38eec.firebaseapp.com',
+      PROJECT_ID: 'readr-dev-38eec',
+      STORAGE_BUCKET: 'readr-dev-38eec.appspot.com',
+      MESSAGING_SENDER_ID: '611179505112',
+      APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
+    }
     break
   case 'dev':
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    FIREBASE_CONFIG = {
+      API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
+      AUTH_DOMAIN: 'readr-dev-38eec.firebaseapp.com',
+      PROJECT_ID: 'readr-dev-38eec',
+      STORAGE_BUCKET: 'readr-dev-38eec.appspot.com',
+      MESSAGING_SENDER_ID: '611179505112',
+      APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
+    }
     break
 
   default:
@@ -33,6 +57,7 @@ const STATIC_FILE_ENDPOINTS = {
 
 export {
   ENV,
+  FIREBASE_CONFIG,
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
   RESTFUL_ENDPOINTS,
