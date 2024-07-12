@@ -39,7 +39,11 @@ const Comment: React.FC<CommentProps> = ({
     <section className="mt-4 flex w-full flex-col gap-2 rounded-md border border-primary-200 bg-primary-100 p-3">
       <div className="flex items-center justify-between md:hidden">
         <div className="flex items-center">
-          <Avatar src={avatar || ''} size="m" extra="mr-2" />
+          <Avatar
+            src={avatar || ''}
+            size="m"
+            extra="mr-2 min-w-[28px] min-h-[28px]"
+          />
           <p className="caption-1 text-primary-500">
             {displayTimeFromNow(data.createdAt)}
           </p>
@@ -61,9 +65,15 @@ const Comment: React.FC<CommentProps> = ({
         onClick={handleToggleClamp}
       >
         {/* non-mobile comment avatar */}
-        <Avatar src={avatar || ''} size="m" extra="mr-2 hidden md:flex" />
+        <Avatar
+          src={avatar || ''}
+          size="m"
+          extra="mr-2 hidden md:flex min-w-[28px] min-h-[28px]"
+        />
         <p
-          className="body-3 line-clamp-3 h-full w-full text-primary-600 sm:line-clamp-1"
+          className={`body-3 line-clamp-3 h-full w-full ${
+            data.content ? 'text-primary-600' : 'text-primary-400'
+          } sm:line-clamp-1`}
           ref={commentRef}
         >
           {data.content || '沒有評論'}

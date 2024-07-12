@@ -61,7 +61,7 @@ const Tab = ({ tabCategory, setCategory, userType }: TabProps) => {
   return (
     <ul
       className="flex h-[48px] w-full items-center justify-around  border-b border-t border-primary-200
-sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px]"
+bg-white sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px]"
     >
       {tabList
         .filter(tabFilter)
