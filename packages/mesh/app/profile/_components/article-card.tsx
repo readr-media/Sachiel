@@ -11,9 +11,9 @@ import { TabCategory } from '@/types/tab'
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
 
-export type StoryData = NonNullable<PickList>[number]['story']
+export type storyData = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
-  data: NonNullable<StoryData>
+  storyData: NonNullable<storyData>
   isLast: boolean
   memberId?: string
   avatar?: string
@@ -23,7 +23,7 @@ type ArticleCardProps = {
 }
 
 const ArticleCard = ({
-  data,
+  storyData,
   isLast,
   memberId,
   avatar = '',
@@ -31,7 +31,7 @@ const ArticleCard = ({
   name,
   userType,
 }: ArticleCardProps) => {
-  const commentList = data.comment || []
+  const commentList = storyData.comment || []
   const authorComment =
     commentList.length !== 0
       ? commentList[0]
@@ -55,8 +55,8 @@ const ArticleCard = ({
     <>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
         <Image
-          src={data.og_image || '/images/default-story-image.webP'}
-          alt={`${data.title}'s story cover image`}
+          src={storyData.og_image || '/images/default-story-image.webP'}
+          alt={`${storyData.title}'s story cover image`}
           width={96}
           height={48}
           className="h-full w-full object-cover"
@@ -69,28 +69,28 @@ const ArticleCard = ({
       >
         <section className="mb-1 flex items-center justify-between">
           <p className="caption-1 text-primary-500">
-            {(data.source && data.source.title) ?? ''}
+            {(storyData.source && storyData.source.title) ?? ''}
           </p>
           <Icon iconName="icon-more-horiz" size="l" />
         </section>
         <section className="mb-2 flex items-start justify-between sm:gap-10">
           <div className="flex h-full flex-col justify-between">
             <p className="body-2 mb-2 w-full sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
-              {data.title}
+              {storyData.title}
             </p>
             <span className=" *:caption-1 *:text-primary-500">
               <StoryMeta
-                commentCount={data.commentCount || 0}
-                publishDate={data.published_date}
-                paywall={data.paywall || false}
-                fullScreenAd={data.full_screen_ad || ''}
+                commentCount={storyData.commentCount || 0}
+                publishDate={storyData.published_date}
+                paywall={storyData.paywall || false}
+                fullScreenAd={storyData.full_screen_ad || ''}
               />
             </span>
           </div>
           <div className="relative ml-3 aspect-[2/1] min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:w-40 sm:min-w-40 md:hidden">
             <Image
-              src={data.og_image || '/images/default-story-image.webP'}
-              alt={`${data.title}'s story cover image`}
+              src={storyData.og_image || '/images/default-story-image.webP'}
+              alt={`${storyData.title}'s story cover image`}
               fill
               className="object-cover"
             />
@@ -99,13 +99,13 @@ const ArticleCard = ({
         <section className="mt-4 grid grid-cols-3">
           <div className="col-span-2">
             <StoryPickInfo
-              displayPicks={data.pick}
-              pickCount={data.pickCount || 0}
+              displayPicks={storyData.pick}
+              pickCount={storyData.pickCount || 0}
               maxCount={4}
             />
           </div>
           <div className="place-self-end">
-            <StoryPickButton isStoryPicked={false} storyId={data.id} />
+            <StoryPickButton isStoryPicked={false} storyId={storyData.id} />
           </div>
         </section>
         {isCommentShow && (

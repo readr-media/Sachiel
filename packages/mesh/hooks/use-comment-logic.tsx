@@ -35,7 +35,6 @@ export const useCommentLogic = (
       router.push(shouldRedirect.route)
       return
     }
-    if (!isTooLong) return
     if (isOpened) {
       if (!canToggle) return
       commentRef.current.style.setProperty(

@@ -5,6 +5,7 @@ import {
   GetVisitorProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
+import { formatFollowCount } from '@/utils/format-follow-count'
 
 import MemberPage from './_components/member-page'
 import VisitorPage from './_components/visitor-page'
@@ -61,7 +62,10 @@ const page = async ({ params, searchParams }: PageProps) => {
   const picksData = userData.picks || []
   const bookmarkData =
     'books' in userData && userData.books ? userData.books : []
-
+  const followingCount = userData.followingCount || 0
+  const convertedFollowingCount = formatFollowCount(followingCount)
+  const followerCount = userData.followerCount || 0
+  const convertedFollowerCount = formatFollowCount(followerCount)
   return (
     <main className="flex grow flex-col">
       {isVisitor ? (
@@ -70,8 +74,8 @@ const page = async ({ params, searchParams }: PageProps) => {
           avatar={userData.avatar || ''}
           intro={userData.intro || ''}
           pickCount={userData.picksCount || 0}
-          followingCount={userData.followingCount || 0}
-          followerCount={userData.followerCount || 0}
+          followingCount={convertedFollowingCount}
+          followerCount={convertedFollowerCount}
           userType={userType}
           picksData={picksData}
           memberId={userData.id}
@@ -82,12 +86,12 @@ const page = async ({ params, searchParams }: PageProps) => {
           avatar={userData.avatar || ''}
           intro={userData.intro || ''}
           pickCount={userData.picksCount || 0}
-          followingCount={userData.followingCount || 0}
-          followerCount={userData.followerCount || 0}
+          followingCount={convertedFollowingCount}
+          followerCount={convertedFollowerCount}
           userType={userType}
           picksData={picksData}
           bookmarks={bookmarkData}
-          memeberId={userData.id}
+          memberId={userData.id}
         />
       )}
     </main>

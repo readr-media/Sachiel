@@ -28,7 +28,7 @@ const StoryCardList = ({ storyData, userType }: StoryCardListProps) => {
               className="relative h-full w-full bg-white md:rounded-md md:drop-shadow"
             >
               <ArticleCard
-                data={story}
+                storyData={story}
                 isLast={idx === storyData.length - 1}
                 userType={userType}
               />

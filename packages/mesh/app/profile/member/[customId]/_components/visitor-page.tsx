@@ -16,8 +16,8 @@ type VisitorPageProps = {
   avatar: string
   intro: string
   pickCount: number
-  followingCount: number | null
-  followerCount: number
+  followingCount: string
+  followerCount: string
   userType: userType
   picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
   memberId: string
@@ -49,7 +49,7 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
       <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
           name={name}
-          pickCount={pickCount || 0}
+          pickCount={pickCount}
           avatar={avatar}
           userType={userType}
           intro={intro}
@@ -58,10 +58,14 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
         <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab category={category} setCategory={setCategory} userType={userType} />
+      <Tab
+        tabCategory={category}
+        setCategory={setCategory}
+        userType={userType}
+      />
       <ArticleCardList
         picksOrBookmarks={picksData}
-        memeberId={memberId}
+        memberId={memberId}
         avatar={avatar}
         userType={userType}
         category={category}

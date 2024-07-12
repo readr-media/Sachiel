@@ -5,57 +5,57 @@ import { TabCategory } from '@/types/tab'
 
 type TabProps = {
   setCategory?: Dispatch<SetStateAction<TabCategory>>
-  category?: TabCategory
+  tabCategory?: TabCategory
   userType: string
 }
 
 type TabItem = {
-  name: string
-  category: TabCategory
-  activeStyle: string
+  tabName: string
+  tabCategory: TabCategory
+  tabActiveStyle: string
 }
 
-const Tab = ({ category, setCategory, userType }: TabProps) => {
+const Tab = ({ tabCategory, setCategory, userType }: TabProps) => {
   const activeTabStyle =
     'after:absolute after:bottom-[-1px] after:left-0 after:w-full after:border after:border-primary-800 text-primary-700'
   const inactiveTabStyle = 'text-primary-400'
   const bookmarksActiveStyle =
-    category === TabCategory.BOOKMARKS ? activeTabStyle : inactiveTabStyle
+    tabCategory === TabCategory.BOOKMARKS ? activeTabStyle : inactiveTabStyle
   const picksActiveStyle =
-    category === TabCategory.PICK ? activeTabStyle : inactiveTabStyle
+    tabCategory === TabCategory.PICK ? activeTabStyle : inactiveTabStyle
   const storiesActiveStyle =
-    category === TabCategory.PUBLISH ? activeTabStyle : inactiveTabStyle
-  function handleTabOnClick(category: TabCategory) {
+    tabCategory === TabCategory.PUBLISH ? activeTabStyle : inactiveTabStyle
+  function handleTabOnClick(tabCategory: TabCategory) {
     if (!setCategory) return
-    setCategory(category)
+    setCategory(tabCategory)
   }
   const tabList: TabItem[] = [
     {
-      name: '精選',
-      category: TabCategory.PICK,
-      activeStyle: picksActiveStyle,
+      tabName: '精選',
+      tabCategory: TabCategory.PICK,
+      tabActiveStyle: picksActiveStyle,
     },
     {
-      name: '書籤',
-      category: TabCategory.BOOKMARKS,
-      activeStyle: bookmarksActiveStyle,
+      tabName: '書籤',
+      tabCategory: TabCategory.BOOKMARKS,
+      tabActiveStyle: bookmarksActiveStyle,
     },
     {
-      name: '報導',
-      category: TabCategory.PUBLISH,
-      activeStyle: storiesActiveStyle,
+      tabName: '報導',
+      tabCategory: TabCategory.PUBLISH,
+      tabActiveStyle: storiesActiveStyle,
     },
   ]
   const tabFilter = (item: TabItem) => {
     if (userType === 'visitor') {
-      return item.category === TabCategory.PICK
+      return item.tabCategory === TabCategory.PICK
     }
     if (userType === 'publisher') {
-      return item.category === TabCategory.PUBLISH
+      return item.tabCategory === TabCategory.PUBLISH
     }
     return (
-      item.category === TabCategory.PICK ||
-      item.category === TabCategory.BOOKMARKS
+      item.tabCategory === TabCategory.PICK ||
+      item.tabCategory === TabCategory.BOOKMARKS
     )
   }
   return (
@@ -63,15 +63,17 @@ const Tab = ({ category, setCategory, userType }: TabProps) => {
       className="flex h-[48px] w-full items-center justify-around  border-b border-t border-primary-200
 sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px]"
     >
-      {tabList.filter(tabFilter).map(({ name, category, activeStyle }) => (
-        <li
-          key={name}
-          onClick={() => handleTabOnClick(category)}
-          className={`button-large relative cursor-pointer p-[14px] pt-3 ${activeStyle} sm:px-8 sm:py-[13px]`}
-        >
-          {name}
-        </li>
-      ))}
+      {tabList
+        .filter(tabFilter)
+        .map(({ tabName, tabCategory, tabActiveStyle }) => (
+          <li
+            key={tabName}
+            onClick={() => handleTabOnClick(tabCategory)}
+            className={`button-large relative cursor-pointer p-[14px] pt-3 ${tabActiveStyle} sm:px-8 sm:py-[13px]`}
+          >
+            {tabName}
+          </li>
+        ))}
     </ul>
   )
 }

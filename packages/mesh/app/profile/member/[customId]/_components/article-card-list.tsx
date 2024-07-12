@@ -6,7 +6,7 @@ type picksData = NonNullable<GetMemberProfileQuery['member']>['picks']
 type bookmarkData = NonNullable<GetMemberProfileQuery['member']>['books']
 type ArticleCardListProps = {
   picksOrBookmarks: picksData | bookmarkData
-  memeberId: string
+  memberId: string
   avatar: string
   userType: string
   category: TabCategory
@@ -14,7 +14,7 @@ type ArticleCardListProps = {
 }
 const ArticleCardList = ({
   picksOrBookmarks,
-  memeberId,
+  memberId,
   avatar,
   userType,
   category,
@@ -51,9 +51,9 @@ const ArticleCardList = ({
               className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
             >
               <ArticleCard
-                data={pick.story}
+                storyData={pick.story}
                 isLast={idx === picksOrBookmarks.length - 1}
-                memberId={memeberId}
+                memberId={memberId}
                 avatar={avatar}
                 category={category}
                 name={name}

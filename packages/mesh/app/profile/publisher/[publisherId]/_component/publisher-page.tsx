@@ -15,6 +15,8 @@ type PublisherPageProps = {
   userType: userType
   storyData: NonNullable<GetPublisherProfileQuery['stories']>
   userId: string
+  followerCount: string
+  sponsoredCount: string
 }
 
 const PublisherPage: React.FC<PublisherPageProps> = ({
@@ -23,8 +25,13 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   intro,
   storyData,
   userType,
+  followerCount,
+  sponsoredCount,
 }) => {
-  const userStatusList = [{ tabName: TabKey.SPONSORED, count: '9999次' }]
+  const userStatusList = [
+    { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+  ]
 
   const buttonList = [
     { text: '追蹤' },
