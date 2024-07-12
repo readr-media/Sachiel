@@ -17,6 +17,7 @@ type PublisherPageProps = {
   userId: string
   followerCount: string
   sponsoredCount: string
+  pickedCount: number
 }
 
 const PublisherPage: React.FC<PublisherPageProps> = ({
@@ -27,6 +28,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   userType,
   followerCount,
   sponsoredCount,
+  pickedCount,
 }) => {
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
@@ -46,11 +48,12 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
           name={name}
           avatar={avatar}
           intro={intro}
+          pickedCount={pickedCount}
         />
         <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
-      <Tab userType={userType} category={TabCategory.PUBLISH} />
+      <Tab userType={userType} tabCategory={TabCategory.PUBLISH} />
       <StoryCardList storyData={storyData} userType={userType} />
     </>
   )

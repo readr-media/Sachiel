@@ -49,9 +49,12 @@ const page = async ({ params }: PageProps) => {
   const convertedFollowerCount = formatFollowCount(followerCount)
   // TODO: wait for api
   const convertedSponsoredCount = formatFollowCount(999999)
+  // TODO: wait for api
+  const pickedCount = 100
   return (
     <main className="flex grow flex-col">
       <PublisherPage
+        pickedCount={pickedCount}
         sponsoredCount={convertedSponsoredCount}
         followerCount={convertedFollowerCount}
         name={userName}
