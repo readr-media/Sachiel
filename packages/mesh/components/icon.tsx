@@ -91,6 +91,8 @@ export type IconName =
   | 'icon-add'
   | 'icon-modal-close'
   | 'icon-no-story'
+  | 'icon-mesh-point'
+  | 'icon-question-mark-circle'
 
 export type IconProps = {
   size: Size
