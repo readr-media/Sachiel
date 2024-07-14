@@ -12,9 +12,9 @@ export default function PointLayout({
       {/* fixed header */}
       <Header />
       {/* block for non-fixed content, set padding for fixed blocks */}
-      <div className="primary-container">
+      <div className="primary-container bg-white sm:bg-multi-layer-light">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
-        <div className="flex grow flex-col bg-white sm:bg-multi-layer-light">
+        <div className="flex grow flex-col">
           <div className="flex grow flex-col xl:max-w-[theme(width.maxMain)]">
             {children}
           </div>

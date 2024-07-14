@@ -11,7 +11,7 @@ export default function TooltipButton({
   className?: string
   color: 'light' | 'dark'
   direction: 'right' | 'left' | 'top' | 'bottom'
-  buttonContent: any
+  buttonContent: React.ReactNode
   tooltipText: string
   onClick: () => void
 }) {
