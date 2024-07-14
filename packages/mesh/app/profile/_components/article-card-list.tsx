@@ -1,6 +1,6 @@
 import { type TabCategory } from '@/types/tab'
 
-interface GenericCardListProps<CardItemType> {
+interface ArticleCardListProps<CardItemType> {
   items: CardItemType[]
   renderItem: (
     item: CardItemType,
@@ -16,7 +16,7 @@ function ArticleCardList<CardItemType>({
   items,
   renderItem,
   emptyMessage,
-}: GenericCardListProps<CardItemType>) {
+}: ArticleCardListProps<CardItemType>) {
   if (!items?.length) {
     return (
       <div className="flex grow flex-col">
