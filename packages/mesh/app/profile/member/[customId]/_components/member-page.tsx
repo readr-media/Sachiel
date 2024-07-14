@@ -1,14 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+import ArticleCard from '@/app/profile/_components/article-card'
+import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 import { TabCategory, TabKey } from '@/types/tab'
-
-import ArticleCardList from './article-card-list'
 
 export type userType = 'member' | 'visitor'
 
@@ -53,6 +53,13 @@ const MemberPage: React.FC<MemberPageProps> = ({
 
   const buttonList = [{ text: '編輯個人檔案' }]
 
+  const getMessage = (category: TabCategory): string => {
+    const messages: { [key: string]: string } = {
+      PICKS: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
+      BOOKMARKS: '沒有已儲存的書籤',
+    }
+    return messages[category] || ''
+  }
   useEffect(() => {
     switch (category) {
       case TabCategory.PICK:
@@ -84,12 +91,25 @@ const MemberPage: React.FC<MemberPageProps> = ({
         userType={userType}
       />
       <ArticleCardList
-        picksOrBookmarks={picksOrBookmarks}
-        memberId={memberId}
-        avatar={avatar}
+        items={picksOrBookmarks || []}
+        renderItem={(pick, index, isLast) =>
+          pick.story ? (
+            <ArticleCard
+              storyData={pick.story}
+              isLast={isLast}
+              memberId={memberId}
+              avatar={avatar}
+              category={category}
+              name={name}
+              userType={userType}
+            />
+          ) : (
+            <></>
+          )
+        }
         userType={userType}
         category={category}
-        name={name}
+        emptyMessage={getMessage(category)}
       />
     </>
   )

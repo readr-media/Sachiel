@@ -11,9 +11,9 @@ import { TabCategory } from '@/types/tab'
 type Member = GetMemberProfileQuery['member']
 type PickList = NonNullable<Member>['picks']
 
-export type storyData = NonNullable<PickList>[number]['story']
+export type StoryData = NonNullable<PickList>[number]['story']
 type ArticleCardProps = {
-  storyData: NonNullable<storyData>
+  storyData: NonNullable<StoryData>
   isLast: boolean
   memberId?: string
   avatar?: string

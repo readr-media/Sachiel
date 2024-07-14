@@ -1,3 +1,4 @@
+'use client'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { useCommentLogic } from '@/hooks/use-comment-logic'

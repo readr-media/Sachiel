@@ -1,11 +1,11 @@
+import ArticleCard from '@/app/profile/_components/article-card'
+import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
 import { TabCategory, TabKey } from '@/types/tab'
-
-import StoryCardList from './story-card-list'
 
 export type userType = 'publisher'
 type PublisherPageProps = {
@@ -54,7 +54,22 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         <UserStatusList userStatusList={userStatusList} />
       </div>
       <Tab userType={userType} tabCategory={TabCategory.PUBLISH} />
-      <StoryCardList storyData={storyData} userType={userType} />
+      <ArticleCardList
+        items={storyData}
+        renderItem={(story, _, isLast) =>
+          story ? (
+            <ArticleCard
+              storyData={story}
+              isLast={isLast}
+              userType={userType}
+            />
+          ) : (
+            <></>
+          )
+        }
+        userType={userType}
+        emptyMessage="這個媒體還沒有發佈任何新聞"
+      />
     </>
   )
 }
