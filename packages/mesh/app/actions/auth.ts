@@ -24,7 +24,7 @@ export async function validateIdToken(
       return { status: 'expired' }
     }
 
-    cookies().set('token', token, {
+    cookies().set('Authorization', `Bearer ${token}`, {
       path: '/',
       httpOnly: true,
       sameSite: 'lax',
@@ -43,7 +43,7 @@ export async function validateIdToken(
 }
 
 export async function clearTokenCookie() {
-  cookies().set('token', '', {
+  cookies().set('Authorization', '', {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
