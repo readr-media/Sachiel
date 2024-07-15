@@ -77,32 +77,42 @@ export async function getCurrentUserMemberId() {
 }
 
 export async function signUpMember(formData: UserFormData) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
   const idToken = cookies().get('token')?.value
+  const globalLogFields = getLogTraceObjectFromHeaders()
   if (!idToken) return undefined
-  const decodedToken = await admin.auth().verifyIdToken(idToken)
 
-  const registrationData: MemberCreateInput = {
-    firebaseId: decodedToken.uid,
-    name: decodedToken.name,
-    nickname: decodedToken.name,
-    email: decodedToken.email,
-    customId: decodedToken.email?.split('@')[0],
-    avatar: decodedToken.picture,
-    following: {
-      connect: formData.followings.map((id) => ({ id })),
-    },
-    following_category: {
-      connect: formData.interests.map((id) => ({ id })),
-    },
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken)
+
+    const registrationData: MemberCreateInput = {
+      firebaseId: decodedToken.uid,
+      name: decodedToken.name,
+      nickname: decodedToken.name,
+      email: decodedToken.email,
+      customId: decodedToken.email?.split('@')[0],
+      avatar: decodedToken.picture,
+      following: {
+        connect: formData.followings.map((id) => ({ id })),
+      },
+      following_category: {
+        connect: formData.interests.map((id) => ({ id })),
+      },
+    }
+
+    const data = await fetchGraphQL(
+      SignUpMemberDocument,
+      { registrationData },
+      globalLogFields,
+      'Failed to sign up new member'
+    )
+
+    return data?.createMember
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to verify firebase token',
+      globalLogFields
+    )
+    return undefined
   }
-
-  const data = await fetchGraphQL(
-    SignUpMemberDocument,
-    { registrationData },
-    globalLogFields,
-    'Failed to sign up new member'
-  )
-
-  return data?.createMember
 }
