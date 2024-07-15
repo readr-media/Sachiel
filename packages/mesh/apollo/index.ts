@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      token: idToken,
+      Authorization: `Bearer ${idToken}`,
     },
   }
 })

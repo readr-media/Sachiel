@@ -16,7 +16,7 @@ export default async function fetchRestful<T>(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        token: idToken,
+        Authorization: `Bearer ${idToken}`,
       },
       body: JSON.stringify(json),
     })

@@ -13,7 +13,7 @@ export default async function fetchStatic<T>(
   try {
     const headers = new Headers(init?.headers)
     if (idToken) {
-      headers.set('token', idToken)
+      headers.set('Authorization', `Bearer ${idToken}`)
     }
     const response = await fetch(url, {
       ...init,
