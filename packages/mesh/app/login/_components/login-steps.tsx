@@ -72,8 +72,8 @@ export default function LoginSteps() {
     }
 
     const handleAfterSignInRedirect = async (idToken: string) => {
-      const response = await handleToken(idToken)
-      if (!response.ok) {
+      const { status } = await handleToken(idToken)
+      if (status !== 'verified') {
         router.push('/login')
         return
       }
@@ -119,17 +119,21 @@ async function handleToken(
   token: string
 ): Promise<ReturnType<typeof validateIdToken>> {
   const response = await validateIdToken(token)
-  if (response.ok) return response
-
-  if (response.status === 'refresh') {
-    const newToken = await refreshIdToken()
-    if (newToken) {
-      return await validateIdToken(newToken)
-    } else {
-      return { ok: false, status: 'error', message: 'refresh token Error' }
+  switch (response.status) {
+    case 'verified':
+      return response
+    case 'expired': {
+      const newToken = await refreshIdToken()
+      if (newToken) {
+        return await validateIdToken(newToken)
+      } else {
+        return { status: 'error' }
+      }
     }
+    case 'error':
+    default:
+      return response
   }
-  return response
 }
 
 async function refreshIdToken() {

@@ -9,20 +9,19 @@ import {
   SignUpMemberDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import admin from '../../firebase/server'
 
-export async function validateIdToken(token: string): Promise<{
-  ok: boolean
-  status: 'refresh' | 'verified' | 'error'
-  message: string
-}> {
+export async function validateIdToken(
+  token: string
+): Promise<{ status: 'verified' | 'expired' | 'error' }> {
+  const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const decodedToken = await admin.auth().verifyIdToken(token)
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      return { ok: false, status: 'refresh', message: 'need to refresh token' }
+      return { status: 'expired' }
     }
 
     cookies().set('token', token, {
@@ -32,13 +31,14 @@ export async function validateIdToken(token: string): Promise<{
       secure: true,
       maxAge: DAY,
     })
-    return { ok: true, status: 'verified', message: 'token verified' }
+    return { status: 'verified' }
   } catch (error) {
-    return {
-      ok: false,
-      status: 'error',
-      message: `verify token Error: ${error}`,
-    }
+    logServerSideError(
+      error,
+      'Failed to verify firebase token',
+      globalLogFields
+    )
+    return { status: 'error' }
   }
 }
 
@@ -54,17 +54,26 @@ export async function clearTokenCookie() {
 
 export async function getCurrentUserMemberId() {
   const idToken = cookies().get('token')?.value
+  const globalLogFields = getLogTraceObjectFromHeaders()
   if (!idToken) return undefined
 
-  const { uid } = await admin.auth().verifyIdToken(idToken)
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await fetchGraphQL(
-    GetCurrentUserMemberIdDocument,
-    { uid },
-    globalLogFields,
-    'Failed to get current user member id'
-  )
-  return data?.member?.id
+  try {
+    const { uid } = await admin.auth().verifyIdToken(idToken)
+    const data = await fetchGraphQL(
+      GetCurrentUserMemberIdDocument,
+      { uid },
+      globalLogFields,
+      'Failed to get current user member id'
+    )
+    return data?.member?.id
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to verify firebase token',
+      globalLogFields
+    )
+    return undefined
+  }
 }
 
 export async function signUpMember(formData: UserFormData) {
