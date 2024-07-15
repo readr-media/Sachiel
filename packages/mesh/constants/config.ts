@@ -1,6 +1,7 @@
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
+let SITE_URL = ''
 let API_ORIGIN = ''
 let STATIC_FILE_ORIGIN = ''
 let FIREBASE_CONFIG = {
@@ -14,6 +15,7 @@ let FIREBASE_CONFIG = {
 
 switch (ENV) {
   case 'local':
+    SITE_URL = 'http://localhost:3000'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     FIREBASE_CONFIG = {
@@ -26,6 +28,7 @@ switch (ENV) {
     }
     break
   case 'dev':
+    SITE_URL = 'https://sachel-mesh-dev-4g6paft7cq-de.a.run.app'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     FIREBASE_CONFIG = {
@@ -61,5 +64,6 @@ export {
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
   RESTFUL_ENDPOINTS,
+  SITE_URL,
   STATIC_FILE_ENDPOINTS,
 }

@@ -1,6 +1,7 @@
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
+import { SITE_URL } from '@/constants/config'
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
 
@@ -12,7 +13,7 @@ export default function LoginEmailConfirmation() {
 
   useEffect(() => {
     const actionCodeSettings = {
-      url: 'http://localhost:3000/login',
+      url: `${SITE_URL}/login`,
       handleCodeInApp: true,
       dynamicLinkDomain: 'readrdev.page.link',
     }
