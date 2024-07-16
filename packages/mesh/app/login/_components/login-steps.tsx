@@ -8,11 +8,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect } from 'react'
 
-import {
-  clearTokenCookie,
-  getCurrentUser,
-  validateIdToken,
-} from '@/app/actions/auth'
+import { getCurrentUser, validateIdToken } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
 import useAuthState from '@/hooks/use-auth-state'
@@ -98,7 +94,6 @@ export default function LoginSteps() {
     }
 
     const init = async () => {
-      console.log(isLogin)
       if (isLogin) {
         router.push('/media')
       } else {
@@ -161,13 +156,4 @@ async function refreshIdToken() {
     }
   }
   return null
-}
-
-export async function logout() {
-  try {
-    await auth.signOut()
-    await clearTokenCookie()
-  } catch (error) {
-    console.error('Logout Error', error)
-  }
 }

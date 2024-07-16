@@ -9,8 +9,7 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
 import useAuthState from '@/hooks/use-auth-state'
-
-import { logout } from '../login/_components/login-steps'
+import { logout } from '@/utils/logout'
 
 const HeaderIconWrapper = ({
   children,
