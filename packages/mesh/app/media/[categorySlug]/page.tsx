@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 
-import { getCurrentUserMemberId } from '@/app/actions/auth'
+import { getCurrentUser } from '@/app/actions/auth'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   type GetAllCategoriesQuery,
@@ -43,7 +43,8 @@ export default async function Page({
   const currentCategorySlug = params.categorySlug
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const memberId = await getCurrentUserMemberId()
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
 
   if (!memberId) redirect('/login')
 

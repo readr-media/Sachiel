@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { getCurrentUserMemberId } from '@/app/actions/auth'
+import { getCurrentUser } from '@/app/actions/auth'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
@@ -19,7 +19,9 @@ export const revalidate = 0
 
 export default async function Page({ params }: { params: { id: string } }) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const memberId = await getCurrentUserMemberId()
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
+
   if (!memberId) redirect('/login')
   if (params.id !== memberId) redirect(`/social/${memberId}`)
 

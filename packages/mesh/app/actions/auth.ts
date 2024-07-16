@@ -52,10 +52,15 @@ export async function clearTokenCookie() {
   })
 }
 
-export async function getCurrentUserMemberId() {
-  const idToken = cookies().get('token')?.value
+export async function getCurrentUser() {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  if (!idToken) return undefined
+  const authorizationHeader = cookies().get('Authorization')?.value
+
+  if (!authorizationHeader) return undefined
+
+  const idToken = authorizationHeader.startsWith('Bearer ')
+    ? authorizationHeader.slice(7)
+    : authorizationHeader
 
   try {
     const { uid } = await admin.auth().verifyIdToken(idToken)
@@ -65,7 +70,11 @@ export async function getCurrentUserMemberId() {
       globalLogFields,
       'Failed to get current user member id'
     )
-    return data?.member?.id
+    if (data?.member?.id) {
+      return { memberId: data?.member?.id, idToken }
+    } else {
+      return undefined
+    }
   } catch (error) {
     logServerSideError(
       error,
@@ -77,9 +86,12 @@ export async function getCurrentUserMemberId() {
 }
 
 export async function signUpMember(formData: UserFormData) {
-  const idToken = cookies().get('token')?.value
   const globalLogFields = getLogTraceObjectFromHeaders()
-  if (!idToken) return undefined
+  const authorizationHeader = cookies().get('Authorization')?.value
+  if (!authorizationHeader) return undefined
+  const idToken = authorizationHeader.startsWith('Bearer ')
+    ? authorizationHeader.slice(7)
+    : authorizationHeader
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)

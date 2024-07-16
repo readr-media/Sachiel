@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
 
-import { auth } from '@/firebase/client'
+import { getCurrentUser } from '@/app/actions/auth'
 
 export default function useAuthState() {
   const [isLogin, setIsLogin] = useState<boolean>(false)
-  const [idToken, setIdToken] = useState<string>('')
+  const [currentUser, setCurrentUser] = useState<{
+    memberId: string
+    idToken: string
+  } | null>()
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        const token = await authUser.getIdToken()
+    const authState = async () => {
+      const user = await getCurrentUser()
+      if (user) {
         setIsLogin(true)
-        setIdToken(token)
+        setCurrentUser(user)
       } else {
         setIsLogin(false)
-        setIdToken('')
+        setCurrentUser(null)
       }
-    })
+    }
 
-    return () => unsubscribe()
+    authState()
   }, [])
 
-  return { isLogin, idToken }
+  return { isLogin, currentUser }
 }

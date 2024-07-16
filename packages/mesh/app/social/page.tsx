@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
 
-import { getCurrentUserMemberId } from '../actions/auth'
+import { getCurrentUser } from '../actions/auth'
 
 export default async function Page() {
-  const memberId = await getCurrentUserMemberId()
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
 
   if (memberId) {
     redirect(`/social/${memberId}`)

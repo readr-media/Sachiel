@@ -10,12 +10,12 @@ import { createElement, useEffect } from 'react'
 
 import {
   clearTokenCookie,
-  getCurrentUserMemberId,
+  getCurrentUser,
   validateIdToken,
 } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
-import useAuthState from '@/hooks/useAuthState'
+import useAuthState from '@/hooks/use-auth-state'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -39,7 +39,7 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const { step, setStep } = useLogin()
   const router = useRouter()
-  const { idToken } = useAuthState()
+  const { isLogin } = useAuthState()
 
   useEffect(() => {
     const handleEmailLinkSignIn = async () => {
@@ -63,7 +63,7 @@ export default function LoginSteps() {
 
     const handleOAuthSignIn = async () => {
       const result = await getRedirectResult(auth)
-      console.log({ result })
+      const idToken = await result?.user.getIdToken()
       try {
         if (idToken) {
           await handleAfterSignInRedirect(idToken)
@@ -81,8 +81,8 @@ export default function LoginSteps() {
         return
       }
 
-      const memberId = await getCurrentUserMemberId()
-      if (memberId) {
+      const user = await getCurrentUser()
+      if (user?.memberId) {
         router.push('/media')
       } else {
         setStep('set-name')
@@ -96,8 +96,18 @@ export default function LoginSteps() {
         await handleOAuthSignIn()
       }
     }
-    handleSignIn()
-  }, [idToken, router, setStep])
+
+    const init = async () => {
+      console.log(isLogin)
+      if (isLogin) {
+        router.push('/media')
+      } else {
+        await handleSignIn()
+      }
+    }
+
+    init()
+  }, [isLogin, router, setStep])
 
   return (
     <>
