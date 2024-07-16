@@ -20,7 +20,7 @@ switch (ENV) {
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
-      AUTH_DOMAIN: 'readr-dev-38eec.firebaseapp.com',
+      AUTH_DOMAIN: 'localhost:3000',
       PROJECT_ID: 'readr-dev-38eec',
       STORAGE_BUCKET: 'readr-dev-38eec.appspot.com',
       MESSAGING_SENDER_ID: '611179505112',
@@ -33,7 +33,7 @@ switch (ENV) {
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
-      AUTH_DOMAIN: 'readr-dev-38eec.firebaseapp.com',
+      AUTH_DOMAIN: 'sachel-mesh-dev-4g6paft7cq-de.a.run.app',
       PROJECT_ID: 'readr-dev-38eec',
       STORAGE_BUCKET: 'readr-dev-38eec.appspot.com',
       MESSAGING_SENDER_ID: '611179505112',
