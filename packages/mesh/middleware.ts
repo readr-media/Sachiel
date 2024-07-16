@@ -1,16 +1,24 @@
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const idToken = request.cookies.get('token')?.value
+export async function middleware(request: NextRequest) {
+  const protectRoutes = ['/media', '/social']
+  const currentPath = request.nextUrl.pathname
+  const isProtectedRoute = protectRoutes.includes(currentPath)
 
-  if (request.url === '/' || request.url === '/login') {
-    return NextResponse.next()
+  if (isProtectedRoute) {
+    const cookie = cookies().get('Authorization')?.value
+    if (!cookie) {
+      return NextResponse.redirect(new URL('/login', request.nextUrl))
+    }
   }
-
-  if (!idToken) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  return NextResponse.next()
 }
+
 export const config = {
-  matcher: [],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|icons).*)',
+    '/media/:path*',
+    '/social/:path*',
+  ],
 }
