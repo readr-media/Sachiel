@@ -16,6 +16,10 @@ const nextConfig = {
         source: '/robots.txt',
         destination: '/api/robots',
       },
+      {
+        source: '/__/auth/:path*',
+        destination: 'https://readr-dev-38eec.firebaseapp.com/__/auth/:path*',
+      },
     ]
   },
 }

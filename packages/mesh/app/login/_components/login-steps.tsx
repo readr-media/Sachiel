@@ -1,5 +1,6 @@
 import {
   browserLocalPersistence,
+  getRedirectResult,
   isSignInWithEmailLink,
   setPersistence,
   signInWithEmailLink,
@@ -61,6 +62,8 @@ export default function LoginSteps() {
     }
 
     const handleOAuthSignIn = async () => {
+      const result = await getRedirectResult(auth)
+      console.log({ result })
       try {
         if (idToken) {
           await handleAfterSignInRedirect(idToken)

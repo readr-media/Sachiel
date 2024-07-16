@@ -5,6 +5,7 @@ import {
   OAuthProvider,
   setPersistence,
   signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth'
 import Link from 'next/link'
 
@@ -43,7 +44,8 @@ export default function LoginEntry() {
     const provider = createAuthProvider(method)
     if (provider) {
       await setPersistence(auth, browserLocalPersistence)
-      await signInWithPopup(auth, provider)
+      await signInWithRedirect(auth, provider)
+      // await signInWithPopup(auth, provider)
     }
   }
 

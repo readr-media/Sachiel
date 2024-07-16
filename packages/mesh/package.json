@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"next dev\" \"graphql-codegen -w\"",
+    "dev:https":"concurrently \"next dev --experimental-https\" \"graphql-codegen -w\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
