@@ -119,7 +119,6 @@ query GetMemberProfile($customId: String, $takes: Int!) {
         }
         title
         og_title
-        commentCount
         createdAt
         tag {
           id
@@ -241,7 +240,6 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
         }
         title
         og_title
-        commentCount
         createdAt
         tag {
           id

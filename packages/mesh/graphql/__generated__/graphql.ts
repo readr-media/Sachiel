@@ -3643,9 +3643,9 @@ export type GetMemberProfileQuery = {
         og_image?: string | null
         title?: string | null
         og_title?: string | null
-        commentCount?: number | null
         createdAt?: any | null
         pickCount?: number | null
+        commentCount?: number | null
         paywall?: boolean | null
         full_screen_ad?: string | null
         published_date?: any | null
@@ -3763,9 +3763,9 @@ export type GetVisitorProfileQuery = {
         og_image?: string | null
         title?: string | null
         og_title?: string | null
-        commentCount?: number | null
         createdAt?: any | null
         pickCount?: number | null
+        commentCount?: number | null
         paywall?: boolean | null
         full_screen_ad?: string | null
         published_date?: any | null
@@ -5070,10 +5070,6 @@ export const GetMemberProfileDocument = {
                             },
                             {
                               kind: 'Field',
-                              name: { kind: 'Name', value: 'commentCount' },
-                            },
-                            {
-                              kind: 'Field',
                               name: { kind: 'Name', value: 'createdAt' },
                             },
                             {
@@ -5873,10 +5869,6 @@ export const GetVisitorProfileDocument = {
                             {
                               kind: 'Field',
                               name: { kind: 'Name', value: 'og_title' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'commentCount' },
                             },
                             {
                               kind: 'Field',
