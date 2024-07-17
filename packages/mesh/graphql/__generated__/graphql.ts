@@ -5972,6 +5972,50 @@ export const GetVisitorProfileDocument = {
                                     ],
                                   },
                                 },
+                                {
+                                  kind: 'Argument',
+                                  name: { kind: 'Name', value: 'where' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'member' },
+                                        value: {
+                                          kind: 'ObjectValue',
+                                          fields: [
+                                            {
+                                              kind: 'ObjectField',
+                                              name: {
+                                                kind: 'Name',
+                                                value: 'customId',
+                                              },
+                                              value: {
+                                                kind: 'ObjectValue',
+                                                fields: [
+                                                  {
+                                                    kind: 'ObjectField',
+                                                    name: {
+                                                      kind: 'Name',
+                                                      value: 'equals',
+                                                    },
+                                                    value: {
+                                                      kind: 'Variable',
+                                                      name: {
+                                                        kind: 'Name',
+                                                        value: 'customId',
+                                                      },
+                                                    },
+                                                  },
+                                                ],
+                                              },
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                               selectionSet: {
                                 kind: 'SelectionSet',
@@ -6317,10 +6361,6 @@ export const GetPublisherProfileDocument = {
                   },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'commentCount' },
-                },
                 { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
                 {
                   kind: 'Field',

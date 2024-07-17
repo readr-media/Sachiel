@@ -1,16 +1,17 @@
 'use client'
 import { useState } from 'react'
 
-import ArticleCard from '@/app/profile/_components/article-card'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import { type GetVisitorProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabCategory, TabKey } from '@/types/tab'
-
-import { type userType } from './member-page'
+import {
+  type PickList,
+  type userType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
 type VisitorPageProps = {
   name: string
@@ -20,7 +21,7 @@ type VisitorPageProps = {
   followingCount: string
   followerCount: string
   userType: userType
-  picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
+  picksData: PickList
   memberId: string
 }
 
@@ -66,24 +67,11 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
       />
       <ArticleCardList
         items={picksData || []}
-        renderItem={(pick, index, isLast) =>
-          pick.story ? (
-            <ArticleCard
-              storyData={pick.story}
-              isLast={isLast}
-              memberId={memberId}
-              avatar={avatar}
-              category={category}
-              name={name}
-              userType={userType}
-            />
-          ) : (
-            <></>
-          )
-        }
-        userType={userType}
-        category={category}
+        shouldShowComment={true}
         emptyMessage="這個人還沒有精選新聞"
+        memberId={memberId}
+        avatar={avatar}
+        name={name}
       />
     </>
   )

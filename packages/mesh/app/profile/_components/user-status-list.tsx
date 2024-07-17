@@ -1,4 +1,4 @@
-import { type TabItem } from '@/types/tab'
+import { type TabItem } from '@/types/profile'
 
 type UserStatusListProps = {
   userStatusList: TabItem[]

@@ -258,7 +258,10 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
         paywall
         full_screen_ad
         published_date
-        comment(orderBy: { createdAt: desc }) {
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+        ) {
           id
           content
           createdAt

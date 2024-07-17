@@ -1,22 +1,25 @@
-import { type TabCategory } from '@/types/tab'
+import ArticleCard from '@/app/profile/_components/article-card'
+import type { Bookmarks, PickList } from '@/types/profile'
 
-interface ArticleCardListProps<CardItemType> {
-  items: CardItemType[]
-  renderItem: (
-    item: CardItemType,
-    index: number,
-    isLast: boolean
-  ) => React.ReactNode
-  userType: string
-  category?: TabCategory
+type StoryData = any // 請根據實際類型定義替換
+
+interface ArticleCardListProps {
+  items: StoryData[] | PickList | Bookmarks
   emptyMessage: string
+  memberId?: string
+  avatar?: string
+  name?: string
+  shouldShowComment: boolean
 }
 
-function ArticleCardList<CardItemType>({
+function ArticleCardList({
   items,
-  renderItem,
+  shouldShowComment,
   emptyMessage,
-}: ArticleCardListProps<CardItemType>) {
+  memberId,
+  avatar,
+  name,
+}: ArticleCardListProps) {
   if (!items?.length) {
     return (
       <div className="flex grow flex-col">
@@ -26,17 +29,34 @@ function ArticleCardList<CardItemType>({
       </div>
     )
   }
-
   return (
     <ul className="max-w-[1120px] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
-      {items.map((item, index) => (
-        <li
-          key={index}
-          className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
-        >
-          {renderItem(item, index, index === items.length - 1)}
-        </li>
-      ))}
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1
+        return (
+          <li
+            key={index}
+            className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
+          >
+            {'story' in item ? (
+              <ArticleCard
+                storyData={item.story}
+                isLast={isLast}
+                memberId={memberId}
+                avatar={avatar}
+                name={name}
+                shouldShowComment={shouldShowComment}
+              />
+            ) : (
+              <ArticleCard
+                storyData={item}
+                isLast={isLast}
+                shouldShowComment={shouldShowComment}
+              />
+            )}
+          </li>
+        )
+      })}
     </ul>
   )
 }

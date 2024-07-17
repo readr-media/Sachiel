@@ -1,19 +1,19 @@
 'use client'
+import { useRouter } from 'next/navigation'
+
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import { useCommentLogic } from '@/hooks/use-comment-logic'
+import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useWindowDimensions from '@/hooks/use-window-dimension'
+import { type CommentType } from '@/types/profile'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { StoryData } from './article-card'
-
-export type CommentList = NonNullable<StoryData>['comment']
-export type CommentType = NonNullable<CommentList>[number]
 type CommentProps = {
   data: CommentType
   clampLineCount?: number
   avatar: string
   canToggle?: boolean
+  storyId?: string
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -21,17 +21,22 @@ const Comment: React.FC<CommentProps> = ({
   clampLineCount = 3,
   avatar,
   canToggle = false,
+  // 之後有文章在更改成slug或id傳入做跳轉功能。
+  storyId = '',
 }) => {
   const { width } = useWindowDimensions()
-  const shouldRedirect = {
-    cond: width > 960,
-    route: '/story/',
-  }
-  const { needClamp, commentRef, handleToggleClamp } = useCommentLogic(
+  const router = useRouter()
+  const { needClamp, commentRef, handleToggleClamp } = useCommentClamp(
     clampLineCount,
-    canToggle,
-    shouldRedirect
+    canToggle
   )
+  const handleCommentClick = () => {
+    if (width > 960) {
+      router.push(`/story/${storyId}`)
+    } else {
+      handleToggleClamp()
+    }
+  }
   {
     /* mobile has not default comment UI; instead desktop has. */
   }
@@ -63,7 +68,7 @@ const Comment: React.FC<CommentProps> = ({
         className={`relative md:flex md:items-start ${
           needClamp ? '' : 'after:opacity-0'
         } after:body-3 after:absolute after:bottom-0 after:right-1 after:bg-gradient-to-r after:from-transparent after:from-0% after:to-primary-100 after:to-25% after:pl-6 after:text-primary-400 after:content-['...繼續閱讀'] md:after:bottom-[6px]`}
-        onClick={handleToggleClamp}
+        onClick={handleCommentClick}
       >
         {/* non-mobile comment avatar */}
         <Avatar

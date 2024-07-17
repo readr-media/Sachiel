@@ -1,19 +1,21 @@
-import ArticleCard from '@/app/profile/_components/article-card'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabCategory, TabKey } from '@/types/tab'
+import {
+  type StoryData,
+  type userType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
-export type userType = 'publisher'
 type PublisherPageProps = {
   name: string
   avatar: string
   intro: string
   userType: userType
-  storyData: NonNullable<GetPublisherProfileQuery['stories']>
+  storyData: StoryData
   userId: string
   followerCount: string
   sponsoredCount: string
@@ -56,18 +58,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
       <Tab userType={userType} tabCategory={TabCategory.PUBLISH} />
       <ArticleCardList
         items={storyData}
-        renderItem={(story, _, isLast) =>
-          story ? (
-            <ArticleCard
-              storyData={story}
-              isLast={isLast}
-              userType={userType}
-            />
-          ) : (
-            <></>
-          )
-        }
-        userType={userType}
+        shouldShowComment={false}
         emptyMessage="這個媒體還沒有發佈任何新聞"
       />
     </>

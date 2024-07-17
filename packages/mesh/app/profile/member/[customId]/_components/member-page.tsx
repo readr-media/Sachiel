@@ -1,19 +1,18 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import ArticleCard from '@/app/profile/_components/article-card'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabCategory, TabKey } from '@/types/tab'
-
-export type userType = 'member' | 'visitor'
-
-type Picks = NonNullable<GetMemberProfileQuery['member']>['picks']
-type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']
+import {
+  type Bookmarks,
+  type PickList,
+  type userType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
 type MemberPageProps = {
   name: string
@@ -23,7 +22,7 @@ type MemberPageProps = {
   followingCount: string
   followerCount: string
   userType: userType
-  picksData: Picks
+  picksData: PickList
   bookmarks: Bookmarks
   memberId: string
 }
@@ -40,9 +39,9 @@ const MemberPage: React.FC<MemberPageProps> = ({
   bookmarks,
   memberId,
 }) => {
-  const [picksOrBookmarks, setPicksOrBookmarks] = useState<Picks | Bookmarks>(
-    picksData
-  )
+  const [picksOrBookmarks, setPicksOrBookmarks] = useState<
+    PickList | Bookmarks
+  >(picksData)
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
@@ -60,6 +59,8 @@ const MemberPage: React.FC<MemberPageProps> = ({
     }
     return messages[category] || ''
   }
+
+  const shouldShowComment = category !== TabCategory.BOOKMARKS
   useEffect(() => {
     switch (category) {
       case TabCategory.PICK:
@@ -92,24 +93,11 @@ const MemberPage: React.FC<MemberPageProps> = ({
       />
       <ArticleCardList
         items={picksOrBookmarks || []}
-        renderItem={(pick, index, isLast) =>
-          pick.story ? (
-            <ArticleCard
-              storyData={pick.story}
-              isLast={isLast}
-              memberId={memberId}
-              avatar={avatar}
-              category={category}
-              name={name}
-              userType={userType}
-            />
-          ) : (
-            <></>
-          )
-        }
-        userType={userType}
-        category={category}
+        shouldShowComment={shouldShowComment}
         emptyMessage={getMessage(category)}
+        memberId={memberId}
+        avatar={avatar}
+        name={name}
       />
     </>
   )

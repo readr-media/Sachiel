@@ -1,6 +1,5 @@
 import Avatar from '@/components/story-card/avatar'
-
-type userType = 'member' | 'visitor' | 'publisher'
+import { type userType } from '@/types/profile'
 
 type UserProfileProps = {
   name: string
