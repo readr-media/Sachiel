@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectRoutes.includes(currentPath)
 
   if (isProtectedRoute) {
-    const cookie = cookies().get('Authorization')?.value
+    const cookie = cookies().get('token')?.value
     if (!cookie) {
       return NextResponse.redirect(new URL('/login', request.nextUrl))
     }
