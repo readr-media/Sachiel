@@ -1,5 +1,5 @@
 import { sendSignInLinkToEmail } from 'firebase/auth'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
@@ -13,42 +13,28 @@ const actionCodeSettings = {
 export default function LoginEmailConfirmation() {
   const { formData, setStep } = useLogin()
   const { email } = formData
-  const [countdown, setCountdown] = useState(60)
+  const { countdown, resetCountdown } = useCountdown(60)
 
   useEffect(() => {
     const sendEmailLink = async () => {
       try {
         await sendSignInLinkToEmail(auth, email, actionCodeSettings)
         window.localStorage.setItem('emailForSignIn', email)
-        startCountdown()
+        resetCountdown()
       } catch (error) {
         console.error(error)
       }
     }
 
     sendEmailLink()
-  }, [email])
-
-  const startCountdown = () => {
-    setCountdown(60)
-    const interval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev > 0) {
-          return prev - 1
-        } else {
-          clearInterval(interval)
-          return 0
-        }
-      })
-    }, 1000)
-  }
+  }, [email, resetCountdown])
 
   const resendEmail = async () => {
     if (countdown === 0) {
       try {
         await sendSignInLinkToEmail(auth, email, actionCodeSettings)
         window.localStorage.setItem('emailForSignIn', email)
-        setCountdown(60)
+        resetCountdown()
       } catch (error) {
         console.error(error)
       }
@@ -85,4 +71,24 @@ export default function LoginEmailConfirmation() {
       </div>
     </div>
   )
+}
+
+const useCountdown = (initialCount: number) => {
+  const [countdown, setCountdown] = useState(initialCount)
+
+  useEffect(() => {
+    if (countdown <= 0) return
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0))
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [countdown])
+
+  const resetCountdown = useCallback(() => {
+    setCountdown(initialCount)
+  }, [initialCount])
+
+  return { countdown, resetCountdown }
 }
