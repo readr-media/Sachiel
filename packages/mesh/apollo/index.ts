@@ -18,7 +18,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const authLink = setContext((_, { headers }) => {
-  const idToken = cookies().get('Authorization')?.value ?? ''
+  const idToken = cookies().get('token')?.value ?? ''
 
   return {
     headers: {

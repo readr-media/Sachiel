@@ -9,7 +9,8 @@ export default async function fetchRestful<T>(
   traceObject?: TraceObject,
   errorMessage?: string
 ) {
-  const idToken = cookies().get('Authorization')?.value ?? ''
+  const idToken = cookies().get('token')?.value ?? ''
+
   try {
     const response = await fetch(url, {
       ...init,

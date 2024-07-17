@@ -24,7 +24,7 @@ export async function validateIdToken(
       return { status: 'expired' }
     }
 
-    cookies().set('Authorization', `Bearer ${token}`, {
+    cookies().set('token', token, {
       path: '/',
       httpOnly: true,
       sameSite: 'lax',
@@ -43,7 +43,7 @@ export async function validateIdToken(
 }
 
 export async function clearTokenCookie() {
-  cookies().set('Authorization', '', {
+  cookies().set('token', '', {
     path: '/',
     httpOnly: true,
     sameSite: 'lax',
@@ -54,13 +54,9 @@ export async function clearTokenCookie() {
 
 export async function getCurrentUser() {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const authorizationHeader = cookies().get('Authorization')?.value
+  const idToken = cookies().get('token')?.value
 
-  if (!authorizationHeader) return undefined
-
-  const idToken = authorizationHeader.startsWith('Bearer ')
-    ? authorizationHeader.slice(7)
-    : authorizationHeader
+  if (!idToken) return undefined
 
   try {
     const { uid } = await admin.auth().verifyIdToken(idToken)
@@ -93,11 +89,9 @@ export async function getCurrentUser() {
 
 export async function signUpMember(formData: UserFormData) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const authorizationHeader = cookies().get('Authorization')?.value
-  if (!authorizationHeader) return undefined
-  const idToken = authorizationHeader.startsWith('Bearer ')
-    ? authorizationHeader.slice(7)
-    : authorizationHeader
+  const idToken = cookies().get('token')?.value
+
+  if (!idToken) return undefined
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)
