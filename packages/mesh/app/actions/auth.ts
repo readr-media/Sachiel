@@ -96,6 +96,24 @@ export async function signUpMember(formData: UserFormData) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)
 
+    const defaultPublishers = [
+      '1',
+      '2',
+      '4',
+      '81',
+      '82',
+      '83',
+      '84',
+      '85',
+      '86',
+      '87',
+      '88',
+      '89',
+      '90',
+      '91',
+      '92',
+    ]
+
     const registrationData: MemberCreateInput = {
       firebaseId: decodedToken.uid,
       name: decodedToken.name,
@@ -108,6 +126,9 @@ export async function signUpMember(formData: UserFormData) {
       },
       following_category: {
         connect: formData.interests.map((id) => ({ id })),
+      },
+      follow_publisher: {
+        connect: defaultPublishers.map((id) => ({ id })),
       },
     }
 
