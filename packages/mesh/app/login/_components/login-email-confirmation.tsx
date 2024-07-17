@@ -1,6 +1,7 @@
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import { useCallback, useEffect, useState } from 'react'
 
+import { SECOND } from '@/constants/time-unit'
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
 
@@ -81,7 +82,7 @@ const useCountdown = (initialCount: number) => {
 
     const interval = setInterval(() => {
       setCountdown((prev) => (prev > 0 ? prev - 1 : 0))
-    }, 1000)
+    }, SECOND)
 
     return () => clearInterval(interval)
   }, [countdown])
