@@ -4,8 +4,7 @@ import LoadMoreTransaction from './_components/load-more-transaction'
 import MeshPointHelper from './_components/mesh-point-helper'
 
 export default async function Page() {
-  const payRecord: any[] = []
-  const payRecord2 = [
+  const payRecord = [
     {
       month: 12,
       record: [

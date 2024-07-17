@@ -1,25 +1,41 @@
-import { useState } from 'react'
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+
+import Icon from '@/components/icon'
 
 export default function TooltipButton({
-  className = '',
   color,
   direction,
   buttonContent,
-  tooltipText,
-  onClick,
+  tooltipContent,
 }: {
-  className?: string
   color: 'light' | 'dark'
   direction: 'right' | 'left' | 'top' | 'bottom'
   buttonContent: React.ReactNode
-  tooltipText: string
-  onClick: () => void
+  tooltipContent: React.ReactElement
 }) {
-  const [tooltipVisible, setTooltipVisible] = useState(false)
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
 
-  const toggleTooltip = () => {
-    setTooltipVisible(!tooltipVisible)
-  }
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(event.target as Node)
+      ) {
+        setIsTooltipVisible(false)
+      }
+    }
+
+    if (isTooltipVisible) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isTooltipVisible])
 
   const getTooltipPositionClass = () => {
     switch (direction) {
@@ -30,7 +46,7 @@ export default function TooltipButton({
       case 'top':
         return 'bottom-8 left-1/2 transform -translate-x-1/2'
       default:
-        return 'top-full left-1/2 transform -translate-x-1/2 sm:-translate-x-1/4'
+        return 'top-[calc(100%+4px)] left-1/2 transform -translate-x-1/2 sm:-translate-x-1/4'
     }
   }
 
@@ -43,7 +59,7 @@ export default function TooltipButton({
       case 'top':
         return 'left-1/2 bottom-7 transform -translate-x-1/2 rotate-45'
       default:
-        return '-top-1 left-1/2 transform -translate-x-1/2 rotate-45'
+        return 'top-1/2 left-1/2 transform -translate-x-1/2 rotate-45'
     }
   }
 
@@ -64,23 +80,40 @@ export default function TooltipButton({
   }
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div className="relative">
       <button
-        onMouseEnter={toggleTooltip}
-        onMouseLeave={toggleTooltip}
-        onClick={onClick}
+        onClick={() => setIsTooltipVisible(true)}
+        className="inline-flex items-center"
       >
         {buttonContent}
       </button>
-      {tooltipVisible && (
-        <div className="drop-shadow transition-opacity duration-300">
+      {isTooltipVisible && (
+        <div
+          className="drop-shadow transition-opacity duration-300"
+          ref={tooltipRef}
+        >
           <span
             className={`absolute h-2 w-2 border-l border-t ${getArrowPositionClass()} ${getArrowColorClass()}`}
           ></span>
           <div
-            className={`caption-1 absolute w-[280px] rounded p-2 ${getTooltipColorClass()} ${getTooltipPositionClass()}`}
+            className={`absolute w-[280px] rounded p-3 ${getTooltipColorClass()} ${getTooltipPositionClass()}`}
           >
-            {tooltipText}
+            <div className="flex flex-row justify-between gap-4">
+              <div className="flex-1">{tooltipContent}</div>
+              <button
+                className="h-6 w-6"
+                onClick={() => setIsTooltipVisible(false)}
+              >
+                <Icon
+                  iconName={
+                    color === 'dark'
+                      ? 'icon-modal-close-white'
+                      : 'icon-modal-close'
+                  }
+                  size="l"
+                />
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -90,6 +90,7 @@ export type IconName =
   | 'icon-navigate-previous-hover'
   | 'icon-add'
   | 'icon-modal-close'
+  | 'icon-modal-close-white'
   | 'icon-no-story'
   | 'icon-mesh-point'
   | 'icon-question-mark-circle'
