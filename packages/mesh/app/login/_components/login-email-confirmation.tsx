@@ -1,14 +1,15 @@
 import { sendSignInLinkToEmail } from 'firebase/auth'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 
-import { SECOND } from '@/constants/time-unit'
+import { FIREBASE_CONFIG } from '@/constants/config'
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
+import useCountdown from '@/hooks/use-countdown'
 
 const actionCodeSettings = {
-  url: `https://localhost:3000/login`,
+  url: `https://${FIREBASE_CONFIG.AUTH_DOMAIN}/login`,
   handleCodeInApp: true,
-  dynamicLinkDomain: 'readrdev.page.link',
+  dynamicLinkDomain: `${FIREBASE_CONFIG.AUTH_DOMAIN}.page.link`,
 }
 
 export default function LoginEmailConfirmation() {
@@ -16,29 +17,23 @@ export default function LoginEmailConfirmation() {
   const { email } = formData
   const { countdown, resetCountdown } = useCountdown(60)
 
-  useEffect(() => {
-    const sendEmailLink = async () => {
-      try {
-        await sendSignInLinkToEmail(auth, email, actionCodeSettings)
-        window.localStorage.setItem('emailForSignIn', email)
-        resetCountdown()
-      } catch (error) {
-        console.error(error)
-      }
+  const sendEmailLink = useCallback(async () => {
+    try {
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      window.localStorage.setItem('emailForSignIn', email)
+      resetCountdown()
+    } catch (error) {
+      console.error(`Failed to send sign-in link to ${email}`, error)
     }
-
-    sendEmailLink()
   }, [email, resetCountdown])
+
+  useEffect(() => {
+    sendEmailLink()
+  }, [sendEmailLink])
 
   const resendEmail = async () => {
     if (countdown === 0) {
-      try {
-        await sendSignInLinkToEmail(auth, email, actionCodeSettings)
-        window.localStorage.setItem('emailForSignIn', email)
-        resetCountdown()
-      } catch (error) {
-        console.error(error)
-      }
+      sendEmailLink()
     }
   }
 
@@ -72,24 +67,4 @@ export default function LoginEmailConfirmation() {
       </div>
     </div>
   )
-}
-
-const useCountdown = (initialCount: number) => {
-  const [countdown, setCountdown] = useState(initialCount)
-
-  useEffect(() => {
-    if (countdown <= 0) return
-
-    const interval = setInterval(() => {
-      setCountdown((prev) => (prev > 0 ? prev - 1 : 0))
-    }, SECOND)
-
-    return () => clearInterval(interval)
-  }, [countdown])
-
-  const resetCountdown = useCallback(() => {
-    setCountdown(initialCount)
-  }, [initialCount])
-
-  return { countdown, resetCountdown }
 }
