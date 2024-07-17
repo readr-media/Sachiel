@@ -70,8 +70,14 @@ export async function getCurrentUser() {
       globalLogFields,
       'Failed to get current user member id'
     )
-    if (data?.member?.id) {
-      return { memberId: data?.member?.id, idToken }
+    if (data?.member) {
+      return {
+        memberId: data.member.id,
+        customId: data.member.customId ?? '',
+        name: data.member.name ?? '',
+        avatar: data.member.avatar ?? '',
+        idToken,
+      }
     } else {
       return undefined
     }
