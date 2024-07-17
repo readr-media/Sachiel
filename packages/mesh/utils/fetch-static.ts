@@ -9,7 +9,7 @@ export default async function fetchStatic<T>(
   traceObject?: TraceObject,
   errorMessage?: string
 ) {
-  const idToken = cookies().get('token')?.value
+  const idToken = cookies().get('Authorization')?.value
   try {
     const headers = new Headers(init?.headers)
     if (idToken) {
