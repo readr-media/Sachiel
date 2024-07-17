@@ -1,36 +1,33 @@
 import { sendSignInLinkToEmail } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
-import { SITE_URL } from '@/constants/config'
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
+
+const actionCodeSettings = {
+  url: `https://localhost:3000/login`,
+  handleCodeInApp: true,
+  dynamicLinkDomain: 'readrdev.page.link',
+}
 
 export default function LoginEmailConfirmation() {
   const { formData, setStep } = useLogin()
   const { email } = formData
   const [countdown, setCountdown] = useState(60)
-  const [isReadyToSend, setIsReadyToSend] = useState(true)
 
   useEffect(() => {
-    const actionCodeSettings = {
-      url: `${SITE_URL}/login`,
-      handleCodeInApp: true,
-      dynamicLinkDomain: 'readrdev.page.link',
-    }
     const sendEmailLink = async () => {
       try {
         await sendSignInLinkToEmail(auth, email, actionCodeSettings)
         window.localStorage.setItem('emailForSignIn', email)
+        startCountdown()
       } catch (error) {
         console.error(error)
       }
     }
-    if (isReadyToSend) {
-      sendEmailLink()
-      setIsReadyToSend(false)
-      startCountdown()
-    }
-  }, [email, isReadyToSend])
+
+    sendEmailLink()
+  }, [email])
 
   const startCountdown = () => {
     setCountdown(60)
@@ -46,9 +43,15 @@ export default function LoginEmailConfirmation() {
     }, 1000)
   }
 
-  const resendEmail = () => {
+  const resendEmail = async () => {
     if (countdown === 0) {
-      setIsReadyToSend(true)
+      try {
+        await sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        window.localStorage.setItem('emailForSignIn', email)
+        setCountdown(60)
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 
@@ -68,7 +71,7 @@ export default function LoginEmailConfirmation() {
             onClick={resendEmail}
             disabled={countdown > 0}
           >
-            重新發送信件({countdown}s)
+            重新發送信件 {countdown === 0 ? '' : `(${countdown}s)`}
           </button>
         </p>
         <button
@@ -78,14 +81,6 @@ export default function LoginEmailConfirmation() {
           }}
         >
           嘗試其他登入方式
-        </button>
-        <button
-          className="body-3 w-full text-center text-primary-200"
-          onClick={() => {
-            setStep('set-name')
-          }}
-        >
-          temp-next,todo:redirect
         </button>
       </div>
     </div>
