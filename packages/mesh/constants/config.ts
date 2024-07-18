@@ -1,9 +1,14 @@
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
-let SITE_URL = ''
+const FIREBASE_CLIENT_EMAIL =
+  process.env.FIREBASE_CLIENT_EMAIL || 'admin-sdk-service-account-keys'
+const FIREBASE_PRIVATE_KEY =
+  process.env.FIREBASE_PRIVATE_KEY || 'admin-sdk-service-account-keys'
+
 let API_ORIGIN = ''
 let STATIC_FILE_ORIGIN = ''
+let FIREBASE_DOMAIN = ''
 let FIREBASE_CONFIG = {
   API_KEY: '',
   AUTH_DOMAIN: '',
@@ -15,9 +20,9 @@ let FIREBASE_CONFIG = {
 
 switch (ENV) {
   case 'local':
-    SITE_URL = 'http://localhost:3000'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
       AUTH_DOMAIN: 'localhost:3000',
@@ -28,9 +33,9 @@ switch (ENV) {
     }
     break
   case 'dev':
-    SITE_URL = 'https://sachel-mesh-dev-4g6paft7cq-de.a.run.app'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
       AUTH_DOMAIN: 'sachel-mesh-dev-4g6paft7cq-de.a.run.app',
@@ -60,10 +65,12 @@ const STATIC_FILE_ENDPOINTS = {
 
 export {
   ENV,
+  FIREBASE_CLIENT_EMAIL,
   FIREBASE_CONFIG,
+  FIREBASE_DOMAIN,
+  FIREBASE_PRIVATE_KEY,
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
   RESTFUL_ENDPOINTS,
-  SITE_URL,
   STATIC_FILE_ENDPOINTS,
 }
