@@ -2842,6 +2842,7 @@ export type Story = {
   full_content?: Maybe<Scalars['Boolean']['output']>
   full_screen_ad?: Maybe<Scalars['String']['output']>
   id: Scalars['ID']['output']
+  isMember?: Maybe<Scalars['Boolean']['output']>
   is_active?: Maybe<Scalars['Boolean']['output']>
   og_description?: Maybe<Scalars['String']['output']>
   og_image?: Maybe<Scalars['String']['output']>
@@ -2920,6 +2921,7 @@ export type StoryCreateInput = {
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
   og_image?: InputMaybe<Scalars['String']['input']>
@@ -2953,6 +2955,7 @@ export type StoryOrderByInput = {
   full_content?: InputMaybe<OrderDirection>
   full_screen_ad?: InputMaybe<OrderDirection>
   id?: InputMaybe<OrderDirection>
+  isMember?: InputMaybe<OrderDirection>
   is_active?: InputMaybe<OrderDirection>
   og_description?: InputMaybe<OrderDirection>
   og_image?: InputMaybe<OrderDirection>
@@ -3006,6 +3009,7 @@ export type StoryUpdateInput = {
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
   og_image?: InputMaybe<Scalars['String']['input']>
@@ -3040,6 +3044,7 @@ export type StoryWhereInput = {
   full_content?: InputMaybe<BooleanFilter>
   full_screen_ad?: InputMaybe<StringNullableFilter>
   id?: InputMaybe<IdFilter>
+  isMember?: InputMaybe<BooleanFilter>
   is_active?: InputMaybe<BooleanFilter>
   og_description?: InputMaybe<StringFilter>
   og_image?: InputMaybe<StringFilter>
