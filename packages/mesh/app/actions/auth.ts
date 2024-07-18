@@ -12,6 +12,7 @@ import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import admin from '../../firebase/server'
+import getAllPublishers from './get-all-publishers'
 
 export async function validateIdToken(
   token: string
@@ -96,23 +97,8 @@ export async function signUpMember(formData: UserFormData) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)
 
-    const defaultPublishers = [
-      '1',
-      '2',
-      '4',
-      '81',
-      '82',
-      '83',
-      '84',
-      '85',
-      '86',
-      '87',
-      '88',
-      '89',
-      '90',
-      '91',
-      '92',
-    ]
+    //TODO: sync with different environment JSON/Class
+    const publishersData = (await getAllPublishers()) ?? []
 
     const registrationData: MemberCreateInput = {
       firebaseId: decodedToken.uid,
@@ -128,7 +114,7 @@ export async function signUpMember(formData: UserFormData) {
         connect: formData.interests.map((id) => ({ id })),
       },
       follow_publisher: {
-        connect: defaultPublishers.map((id) => ({ id })),
+        connect: publishersData.map((data) => ({ id: data.id })),
       },
     }
 
