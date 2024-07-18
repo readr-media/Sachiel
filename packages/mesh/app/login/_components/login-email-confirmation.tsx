@@ -9,7 +9,6 @@ import useCountdown from '@/hooks/use-countdown'
 const actionCodeSettings = {
   url: `https://${FIREBASE_CONFIG.AUTH_DOMAIN}/login`,
   handleCodeInApp: true,
-  dynamicLinkDomain: `${FIREBASE_CONFIG.AUTH_DOMAIN}.page.link`,
 }
 
 export default function LoginEmailConfirmation() {

@@ -10,7 +10,7 @@ export default async function getAllPublishers() {
     PublishersDocument,
     undefined,
     globalLogFields,
-    'Failed to get all categories'
+    'Failed to get all publishers'
   )
   return data?.publishers
 }
