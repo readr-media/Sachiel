@@ -6,7 +6,7 @@ type CurrentUserType = Awaited<ReturnType<typeof getCurrentUser>>
 
 export default function useAuthState() {
   const [isLogin, setIsLogin] = useState<boolean>(false)
-  const [currentUser, setCurrentUser] = useState<CurrentUserType>()
+  const [currentUser, setCurrentUser] = useState<CurrentUserType>(undefined)
 
   useEffect(() => {
     const authState = async () => {

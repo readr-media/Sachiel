@@ -4,6 +4,7 @@ import {
   isSignInWithEmailLink,
   setPersistence,
   signInWithEmailLink,
+  UserCredential,
 } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect } from 'react'
@@ -57,9 +58,8 @@ export default function LoginSteps() {
       }
     }
 
-    const handleOAuthSignIn = async () => {
-      const result = await getRedirectResult(auth)
-      const idToken = await result?.user.getIdToken()
+    const handleOAuthSignIn = async (result: UserCredential) => {
+      const idToken = await result.user.getIdToken()
       try {
         if (idToken) {
           await handleAfterSignInRedirect(idToken)
@@ -86,22 +86,20 @@ export default function LoginSteps() {
     }
 
     const handleSignIn = async () => {
-      if (isSignInWithEmailLink(auth, window.location.href)) {
-        await handleEmailLinkSignIn()
-      } else {
-        await handleOAuthSignIn()
-      }
-    }
-
-    const init = async () => {
       if (isLogin) {
         router.push('/media')
-      } else {
-        await handleSignIn()
+        return
+      }
+
+      const redirectResult = await getRedirectResult(auth)
+
+      if (redirectResult) {
+        await handleOAuthSignIn(redirectResult)
+      } else if (isSignInWithEmailLink(auth, window.location.href)) {
+        await handleEmailLinkSignIn()
       }
     }
-
-    init()
+    handleSignIn()
   }, [isLogin, router, setStep])
 
   return (
