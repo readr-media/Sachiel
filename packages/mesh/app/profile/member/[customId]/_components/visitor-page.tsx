@@ -8,7 +8,7 @@ import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import {
   type PickList,
-  type userType,
+  type UserType,
   TabCategory,
   TabKey,
 } from '@/types/profile'
@@ -20,7 +20,7 @@ type VisitorPageProps = {
   pickCount: number
   followingCount: string
   followerCount: string
-  userType: userType
+  userType: UserType
   picksData: PickList
   memberId: string
 }

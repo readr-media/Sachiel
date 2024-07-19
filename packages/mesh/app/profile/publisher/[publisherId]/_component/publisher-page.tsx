@@ -5,7 +5,7 @@ import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import {
   type StoryData,
-  type userType,
+  type UserType,
   TabCategory,
   TabKey,
 } from '@/types/profile'
@@ -14,7 +14,7 @@ type PublisherPageProps = {
   name: string
   avatar: string
   intro: string
-  userType: userType
+  userType: UserType
   storyData: StoryData
   userId: string
   followerCount: string

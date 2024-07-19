@@ -1,12 +1,12 @@
 import Avatar from '@/components/story-card/avatar'
-import { type userType } from '@/types/profile'
+import { type UserType } from '@/types/profile'
 
 type UserProfileProps = {
   name: string
   pickCount?: number
   pickedCount?: number
   avatar: string
-  userType: userType
+  userType: UserType
   intro: string
 }
 const UserProfile: React.FC<UserProfileProps> = ({

@@ -1,12 +1,12 @@
 'use client'
 import { Dispatch, SetStateAction } from 'react'
 
-import { type userType, TabCategory } from '@/types/profile'
+import { type UserType, TabCategory } from '@/types/profile'
 
 type TabProps = {
   setCategory?: Dispatch<SetStateAction<TabCategory>>
   tabCategory?: TabCategory
-  userType: userType
+  userType: UserType
 }
 
 type TabItem = {

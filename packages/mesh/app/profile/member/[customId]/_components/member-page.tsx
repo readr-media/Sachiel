@@ -9,7 +9,7 @@ import UserStatusList from '@/app/profile/_components/user-status-list'
 import {
   type Bookmarks,
   type PickList,
-  type userType,
+  type UserType,
   TabCategory,
   TabKey,
 } from '@/types/profile'
@@ -21,7 +21,7 @@ type MemberPageProps = {
   pickCount: number
   followingCount: string
   followerCount: string
-  userType: userType
+  userType: UserType
   picksData: PickList
   bookmarks: Bookmarks
   memberId: string
