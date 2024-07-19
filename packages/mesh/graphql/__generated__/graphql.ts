@@ -6313,7 +6313,6 @@ export const GetPublisherProfileDocument = {
                     ],
                   },
                 },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'og_title' } },
                 {
                   kind: 'Field',

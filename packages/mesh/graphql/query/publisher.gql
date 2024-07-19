@@ -30,7 +30,6 @@ query GetPublisherProfile($publisherId: String, $takes: Int!) {
       title
       official_site
     }
-    title
     og_title
     commentCount
     createdAt

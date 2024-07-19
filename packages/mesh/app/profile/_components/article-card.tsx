@@ -5,15 +5,25 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import { type CommentType, type PickListItem } from '@/types/profile'
+import {
+  type CommentType,
+  type PickListItem,
+  type StoryDataItem,
+} from '@/types/profile'
 
 type ArticleCardProps = {
-  storyData: NonNullable<PickListItem>
+  storyData: NonNullable<PickListItem> | StoryDataItem
   isLast: boolean
   memberId?: string
   avatar?: string
   name?: string
   shouldShowComment: boolean
+}
+function hasComment(
+  storyData: NonNullable<PickListItem> | StoryDataItem
+): storyData is NonNullable<PickListItem> {
+  if (!storyData) return false
+  return 'comment' in storyData
 }
 
 const ArticleCard = ({
@@ -24,8 +34,13 @@ const ArticleCard = ({
   name,
   shouldShowComment,
 }: ArticleCardProps) => {
-  // 此處在gql部分只會拿最新、且是個人檔案本人的留言。
-  const commentList = storyData?.comment || []
+  /**
+   * 此處的gql方法主要有三個：
+   * GetMemberProfile 只會取用最新並且是作者的留言（一個）
+   * GetVisitorProfile 只會取用最新並且是作者的留言（一個）
+   * GetPublisherProfile 不會取用留言，因為Publisher不會顯示留言
+   */
+  const commentList = (hasComment(storyData) && storyData.comment) || []
   const authorComment =
     commentList.length !== 0
       ? commentList[0]
@@ -72,7 +87,7 @@ const ArticleCard = ({
             <span className=" *:caption-1 *:text-primary-500">
               <StoryMeta
                 commentCount={storyData?.commentCount || 0}
-                publishDate={storyData?.published_date || Date.now()}
+                publishDate={storyData?.published_date || ''}
                 paywall={storyData?.paywall || false}
                 fullScreenAd={storyData?.full_screen_ad || ''}
               />

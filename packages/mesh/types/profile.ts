@@ -24,6 +24,7 @@ export type Member = GetMemberProfileQuery['member']
 export type PickList = NonNullable<Member>['picks']
 export type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']
 export type StoryData = NonNullable<GetPublisherProfileQuery['stories']>
+export type StoryDataItem = NonNullable<NonNullable<StoryData>[number]>
 export type PickListItem = NonNullable<PickList>[number]['story']
 export type UserType = 'member' | 'visitor' | 'publisher'
 export type CommentList = NonNullable<PickListItem>['comment']

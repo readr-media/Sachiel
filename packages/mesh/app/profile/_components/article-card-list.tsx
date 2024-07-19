@@ -1,10 +1,14 @@
 import ArticleCard from '@/app/profile/_components/article-card'
-import type { Bookmarks, PickList } from '@/types/profile'
-
-type StoryData = any // 請根據實際類型定義替換
+import type {
+  Bookmarks,
+  PickList,
+  PickListItem,
+  StoryData,
+  StoryDataItem,
+} from '@/types/profile'
 
 interface ArticleCardListProps {
-  items: StoryData[] | PickList | Bookmarks
+  items: StoryData | PickList | Bookmarks
   emptyMessage: string
   memberId?: string
   avatar?: string
@@ -29,6 +33,7 @@ function ArticleCardList({
       </div>
     )
   }
+
   return (
     <ul className="max-w-[1120px] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
       {items.map((item, index) => {
@@ -40,7 +45,7 @@ function ArticleCardList({
           >
             {'story' in item ? (
               <ArticleCard
-                storyData={item.story}
+                storyData={item.story as NonNullable<PickListItem>}
                 isLast={isLast}
                 memberId={memberId}
                 avatar={avatar}
@@ -49,7 +54,7 @@ function ArticleCardList({
               />
             ) : (
               <ArticleCard
-                storyData={item}
+                storyData={item as StoryDataItem}
                 isLast={isLast}
                 shouldShowComment={shouldShowComment}
               />

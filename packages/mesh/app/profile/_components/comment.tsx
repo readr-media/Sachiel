@@ -7,6 +7,7 @@ import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { type CommentType } from '@/types/profile'
 import { displayTimeFromNow } from '@/utils/story-display'
+import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
 type CommentProps = {
   data: CommentType
@@ -21,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
   clampLineCount = 3,
   avatar,
   canToggle = false,
-  // 之後有文章在更改成slug或id傳入做跳轉功能。
+  //TODO: 之後有文章在更改成slug或id傳入做跳轉功能。
   storyId = '',
 }) => {
   const { width } = useWindowDimensions()
@@ -31,7 +32,7 @@ const Comment: React.FC<CommentProps> = ({
     canToggle
   )
   const handleCommentClick = () => {
-    if (width > 960) {
+    if (width > getTailwindConfigBreakpointNumber('md')) {
       router.push(`/story/${storyId}`)
     } else {
       handleToggleClamp()
@@ -40,7 +41,8 @@ const Comment: React.FC<CommentProps> = ({
   {
     /* mobile has not default comment UI; instead desktop has. */
   }
-  if (width < 960 && !data.content) return <></>
+  if (width < getTailwindConfigBreakpointNumber('md') && !data.content)
+    return <></>
   return (
     <section className="mt-4 flex w-full flex-col gap-2 rounded-md border border-primary-200 bg-primary-100 p-3">
       <div className="flex items-center justify-between md:hidden">
