@@ -1,38 +1,16 @@
-import { sendSignInLinkToEmail } from 'firebase/auth'
-import { useCallback, useEffect } from 'react'
-
-import { FIREBASE_CONFIG } from '@/constants/config'
 import { useLogin } from '@/context/login'
-import { auth } from '@/firebase/client'
 import useCountdown from '@/hooks/use-countdown'
-
-const actionCodeSettings = {
-  url: `https://${FIREBASE_CONFIG.AUTH_DOMAIN}/login`,
-  handleCodeInApp: true,
-}
+import { sendEmailLink } from '@/utils/send-sign-in-email'
 
 export default function LoginEmailConfirmation() {
   const { formData, setStep } = useLogin()
   const { email } = formData
   const { countdown, resetCountdown } = useCountdown(60)
 
-  const sendEmailLink = useCallback(async () => {
-    try {
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings)
-      window.localStorage.setItem('emailForSignIn', email)
-      resetCountdown()
-    } catch (error) {
-      console.error(`Failed to send sign-in link to ${email}`, error)
-    }
-  }, [email, resetCountdown])
-
-  useEffect(() => {
-    sendEmailLink()
-  }, [sendEmailLink])
-
   const resendEmail = async () => {
     if (countdown === 0) {
-      sendEmailLink()
+      sendEmailLink(email)
+      resetCountdown()
     }
   }
 
