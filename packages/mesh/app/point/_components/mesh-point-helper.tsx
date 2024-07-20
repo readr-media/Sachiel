@@ -26,6 +26,7 @@ export default function MeshPointHelper() {
               讀選點數（READR）能用來贊助媒體、支持你喜歡的報導。你可以透過閱讀新聞獲得讀選點數。
             </p>
             <Link href={'/'} target={'_blank'} className="footnote">
+              {/*TODO: update link */}
               了解更多
             </Link>
           </div>

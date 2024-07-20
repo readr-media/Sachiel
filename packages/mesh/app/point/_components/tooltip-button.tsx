@@ -13,7 +13,7 @@ export default function TooltipButton({
   color: 'light' | 'dark'
   direction: 'right' | 'left' | 'top' | 'bottom'
   buttonContent: React.ReactNode
-  tooltipContent: React.ReactElement
+  tooltipContent: React.ReactNode
 }) {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false)
   const tooltipRef = useRef<HTMLDivElement>(null)
@@ -40,13 +40,13 @@ export default function TooltipButton({
   const getTooltipPositionClass = () => {
     switch (direction) {
       case 'right':
-        return 'left-[calc(100%+4px)] -top-2 transform -translate-y-6'
+        return 'left-[calc(100%+4px)] -top-2 -translate-y-6'
       case 'left':
-        return 'right-[calc(100%+4px)] -top-2 transform -translate-y-1/2'
+        return 'right-[calc(100%+4px)] -top-2 -translate-y-1/2'
       case 'top':
-        return 'bottom-8 left-1/2 transform -translate-x-1/2'
+        return 'bottom-8 left-1/2 -translate-x-1/2'
       default:
-        return 'top-[calc(100%+4px)] left-1/2 transform -translate-x-1/2 sm:-translate-x-1/4'
+        return 'top-[calc(100%+4px)] left-1/2 -translate-x-1/2 sm:-translate-x-1/4'
     }
   }
 
@@ -55,11 +55,11 @@ export default function TooltipButton({
       case 'right':
         return 'left-full bottom-3 rotate-45'
       case 'left':
-        return 'bottom-3 transform -translate-x-2 rotate-45'
+        return 'bottom-3 -translate-x-2 rotate-45'
       case 'top':
-        return 'left-1/2 bottom-7 transform -translate-x-1/2 rotate-45'
+        return 'left-1/2 bottom-7 -translate-x-1/2 rotate-45'
       default:
-        return 'top-1/2 left-1/2 transform -translate-x-1/2 rotate-45'
+        return 'top-1/2 left-1/2 -translate-x-1/2 rotate-45'
     }
   }
 
