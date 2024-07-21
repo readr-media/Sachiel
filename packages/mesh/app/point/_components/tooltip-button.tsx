@@ -1,5 +1,5 @@
 'use client'
-
+import { useId } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -17,6 +17,7 @@ export default function TooltipButton({
 }) {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false)
   const tooltipRef = useRef<HTMLDivElement>(null)
+  const tooltipId = useId()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,6 +83,9 @@ export default function TooltipButton({
   return (
     <div className="relative">
       <button
+        aria-expanded={isTooltipVisible}
+        aria-controls={tooltipId}
+        aria-describedby={tooltipId}
         onClick={() => setIsTooltipVisible(true)}
         className="inline-flex items-center"
       >
@@ -99,7 +103,9 @@ export default function TooltipButton({
             className={`absolute w-[280px] rounded p-3 ${getTooltipColorClass()} ${getTooltipPositionClass()}`}
           >
             <div className="flex flex-row justify-between gap-4">
-              <div className="flex-1">{tooltipContent}</div>
+              <div className="flex-1" id={tooltipId} role="tooltip">
+                {tooltipContent}
+              </div>
               <button
                 className="h-6 w-6"
                 onClick={() => setIsTooltipVisible(false)}
