@@ -40,7 +40,7 @@ export default function Button({
   const buttonStyles = {
     xs: 'profile-subtitle h-[36px] px-4 py-2 rounded-[100px]', // Nav Chip, Nav Button-Add
     sm: 'button h-8 px-3 py-1 rounded', // all Button Mini
-    md: 'w-full button-large h-[38px] px-5 py-2 rounded', // Secondary Button
+    md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
     'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]', // Lightbox Chip
     lg: 'button-large w-full h-[46px] px-6 py-3 rounded', // Primary Button, Second Button (wide)
   }

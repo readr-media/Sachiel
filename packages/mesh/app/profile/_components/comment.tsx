@@ -1,17 +1,20 @@
-import Image from 'next/image'
+'use client'
+import { useRouter } from 'next/navigation'
 
 import Icon from '@/components/icon'
+import Avatar from '@/components/story-card/avatar'
+import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useWindowDimensions from '@/hooks/use-window-dimension'
+import { type CommentType } from '@/types/profile'
 import { displayTimeFromNow } from '@/utils/story-display'
-
-import { type CommentType } from './index'
-import { useCommentLogic } from './useCommentLogic'
+import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
 type CommentProps = {
   data: CommentType
   clampLineCount?: number
   avatar: string
   canToggle?: boolean
+  storyId?: string
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -19,31 +22,36 @@ const Comment: React.FC<CommentProps> = ({
   clampLineCount = 3,
   avatar,
   canToggle = false,
+  //TODO: 之後有文章在更改成slug或id傳入做跳轉功能。
+  storyId = '',
 }) => {
   const { width } = useWindowDimensions()
-  const shouldRedirect = {
-    cond: width > 960,
-    route: '/story/',
-  }
-  const { needClamp, commentRef, handleToggleClamp } = useCommentLogic(
+  const router = useRouter()
+  const { needClamp, commentRef, handleToggleClamp } = useCommentClamp(
     clampLineCount,
-    canToggle,
-    shouldRedirect
+    canToggle
   )
-  if (width < 960 && !data.content) return <></>
+  const handleCommentClick = () => {
+    if (width > getTailwindConfigBreakpointNumber('md')) {
+      router.push(`/story/${storyId}`)
+    } else {
+      handleToggleClamp()
+    }
+  }
+  {
+    /* mobile has not default comment UI; instead desktop has. */
+  }
+  if (width < getTailwindConfigBreakpointNumber('md') && !data.content)
+    return <></>
   return (
     <section className="mt-4 flex w-full flex-col gap-2 rounded-md border border-primary-200 bg-primary-100 p-3">
       <div className="flex items-center justify-between md:hidden">
         <div className="flex items-center">
-          <div className="mr-2 h-7 w-7 overflow-hidden rounded-full">
-            <Image
-              src={data.member?.avatar || '/images/default-avatar-image.png'}
-              width={28}
-              height={28}
-              alt={data.member?.name || 'avatar'}
-              className="object-cover"
-            />
-          </div>
+          <Avatar
+            src={avatar || ''}
+            size="m"
+            extra="mr-2 min-w-[28px] min-h-[28px]"
+          />
           <p className="caption-1 text-primary-500">
             {displayTimeFromNow(data.createdAt)}
           </p>
@@ -62,19 +70,18 @@ const Comment: React.FC<CommentProps> = ({
         className={`relative md:flex md:items-start ${
           needClamp ? '' : 'after:opacity-0'
         } after:body-3 after:absolute after:bottom-0 after:right-1 after:bg-gradient-to-r after:from-transparent after:from-0% after:to-primary-100 after:to-25% after:pl-6 after:text-primary-400 after:content-['...繼續閱讀'] md:after:bottom-[6px]`}
-        onClick={handleToggleClamp}
+        onClick={handleCommentClick}
       >
-        <div className="mr-2 hidden h-7 min-h-7 w-7 min-w-7 overflow-hidden rounded-full md:flex">
-          <Image
-            src={data.member?.avatar || avatar}
-            width={28}
-            height={28}
-            alt={data.member?.name || 'avatar'}
-            className="object-cover"
-          />
-        </div>
+        {/* non-mobile comment avatar */}
+        <Avatar
+          src={avatar || ''}
+          size="m"
+          extra="mr-2 hidden md:flex min-w-[28px] min-h-[28px]"
+        />
         <p
-          className="body-3 line-clamp-3 h-full w-full text-primary-600 sm:line-clamp-1"
+          className={`body-3 line-clamp-3 h-full w-full ${
+            data.content ? 'text-primary-600' : 'text-primary-400'
+          } sm:line-clamp-1`}
           ref={commentRef}
         >
           {data.content || '沒有評論'}

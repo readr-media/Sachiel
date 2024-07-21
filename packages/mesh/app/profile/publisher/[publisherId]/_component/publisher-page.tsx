@@ -1,30 +1,41 @@
-import { type GetPublisherProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabKey } from '@/types/tab'
+import ArticleCardList from '@/app/profile/_components/article-card-list'
+import ProfileButtonList from '@/app/profile/_components/profile-button-list'
+import Tab from '@/app/profile/_components/tab'
+import UserProfile from '@/app/profile/_components/user-profile'
+import UserStatusList from '@/app/profile/_components/user-status-list'
+import {
+  type StoryData,
+  type UserType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
-import ProfileButtonLIst from './profile-button-list'
-import StoryCardList from './story-card-list'
-import Tab from './tab'
-import UserProfile from './user-profile'
-import UserStatusList from './user-status-list'
-
-export type userType = 'publisher'
 type PublisherPageProps = {
   name: string
   avatar: string
   intro: string
-  userType: userType
-  storyData: NonNullable<GetPublisherProfileQuery['stories']>
+  userType: UserType
+  storyData: StoryData
   userId: string
+  followerCount: string
+  sponsoredCount: string
+  pickedCount: number
 }
 
 const PublisherPage: React.FC<PublisherPageProps> = ({
-  userType,
   name,
   avatar,
   intro,
   storyData,
+  userType,
+  followerCount,
+  sponsoredCount,
+  pickedCount,
 }) => {
-  const userStatusList = [{ key: TabKey.SPONSORED, count: '9999次' }]
+  const userStatusList = [
+    { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+  ]
 
   const buttonList = [
     { text: '追蹤' },
@@ -33,16 +44,22 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
-        <UserProfile name={name} avatar={avatar} intro={intro} />
-        <ProfileButtonLIst buttonList={buttonList} />
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+        <UserProfile
+          userType={userType}
+          name={name}
+          avatar={avatar}
+          intro={intro}
+          pickedCount={pickedCount}
+        />
+        <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
-      <Tab />
-      <StoryCardList
-        storyData={storyData}
-        avatar={avatar}
-        userType={userType}
+      <Tab userType={userType} tabCategory={TabCategory.PUBLISH} />
+      <ArticleCardList
+        items={storyData}
+        shouldShowComment={false}
+        emptyMessage="這個媒體還沒有發佈任何新聞"
       />
     </>
   )

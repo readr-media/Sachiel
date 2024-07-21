@@ -1,26 +1,28 @@
 'use client'
 import { useState } from 'react'
 
-import { type GetVisitorProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabCategory, TabKey } from '@/types/tab'
-
-import ArticleCardList from './article-card-list'
-import { type userType } from './member-page'
-import ProfileButtonList from './profile-button-list'
-import Tab from './tab'
-import UserProfile from './user-profile'
-import UserStatusList from './user-status-list'
+import ArticleCardList from '@/app/profile/_components/article-card-list'
+import ProfileButtonList from '@/app/profile/_components/profile-button-list'
+import Tab from '@/app/profile/_components/tab'
+import UserProfile from '@/app/profile/_components/user-profile'
+import UserStatusList from '@/app/profile/_components/user-status-list'
+import {
+  type PickList,
+  type UserType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
 type VisitorPageProps = {
   name: string
   avatar: string
   intro: string
-  pickCount: number | null
-  followingCount: number | null
-  followerCount: number
-  userType: userType
-  picksData: NonNullable<GetVisitorProfileQuery['member']>['picks']
-  visitID: string
+  pickCount: number
+  followingCount: string
+  followerCount: string
+  userType: UserType
+  picksData: PickList
+  memberId: string
 }
 
 const VisitorPage: React.FC<VisitorPageProps> = ({
@@ -32,24 +34,24 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   followingCount,
   followerCount,
   picksData,
-  visitID,
+  memberId,
 }) => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
-    { key: TabKey.PICK, value: pickCount },
-    { key: TabKey.FOLLOWER, value: followerCount },
-    { key: TabKey.FOLLOWING, value: followingCount },
+    { tabName: TabKey.PICK, count: pickCount },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+    { tabName: TabKey.FOLLOWING, count: followingCount },
   ]
 
   const buttonList = [{ text: '追蹤' }]
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
           name={name}
-          pickCount={pickCount || 0}
+          pickCount={pickCount}
           avatar={avatar}
           userType={userType}
           intro={intro}
@@ -58,13 +60,17 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
         <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab category={category} setCategory={setCategory} userType={userType} />
-      <ArticleCardList
-        showData={picksData}
-        id={visitID}
-        avatar={avatar}
+      <Tab
+        tabCategory={category}
+        setCategory={setCategory}
         userType={userType}
-        category={category}
+      />
+      <ArticleCardList
+        items={picksData || []}
+        shouldShowComment={true}
+        emptyMessage="這個人還沒有精選新聞"
+        memberId={memberId}
+        avatar={avatar}
         name={name}
       />
     </>

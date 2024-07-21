@@ -1,2 +1,2 @@
 export const BG_GRAY_PAGE_PATHS = ['/social'] as const
-export const NO_NAV = ['/following'] as const
+export const FOLLOW_LIST_PATHS = ['/following', '/follower'] as const

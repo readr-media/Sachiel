@@ -1,5 +1,6 @@
 import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
+import { formatFollowCount } from '@/utils/format-follow-count'
 
 import PublisherPage from './_component/publisher-page'
 
@@ -11,6 +12,7 @@ export type PageProps = {
 const page = async ({ params }: PageProps) => {
   const publisherId = params.publisherId
   const takesCount = 20
+  const userType = 'publisher'
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
     publisherId,
     takes: takesCount,
@@ -26,7 +28,8 @@ const page = async ({ params }: PageProps) => {
       </main>
     )
   }
-  const userData = response.publisher
+  // 使用publishers因為query publisher的where沒有提供customId的篩選
+  const userData = response.publishers && response.publishers[0]
   if (!userData) {
     return (
       <main>
@@ -37,19 +40,28 @@ const page = async ({ params }: PageProps) => {
       </main>
     )
   }
+
   const userName = userData.title || '使用者名稱'
-  const userLogo = userData.logo || '/images/default-avatar-image.png'
+  const userLogo = userData.logo || ''
   const userIntro = userData.description || '使用者介紹'
   const storyData = response.stories || []
-
+  const followerCount = userData.followerCount || 0
+  const convertedFollowerCount = formatFollowCount(followerCount)
+  // TODO: wait for api
+  const convertedSponsoredCount = formatFollowCount(999999)
+  // TODO: wait for api
+  const pickedCount = 100
   return (
-    <main className="flex h-full grow flex-col">
+    <main className="flex grow flex-col">
       <PublisherPage
+        pickedCount={pickedCount}
+        sponsoredCount={convertedSponsoredCount}
+        followerCount={convertedFollowerCount}
         name={userName}
         avatar={userLogo}
         intro={userIntro}
         userId={publisherId}
-        userType="publisher"
+        userType={userType}
         storyData={storyData}
       />
     </main>

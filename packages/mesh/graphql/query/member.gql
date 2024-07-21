@@ -100,7 +100,9 @@ query GetMemberProfile($customId: String, $takes: Int!) {
       urlOriginal
     }
     intro
-    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
     followingCount
     followerCount
 
@@ -117,7 +119,6 @@ query GetMemberProfile($customId: String, $takes: Int!) {
         }
         title
         og_title
-        commentCount
         createdAt
         tag {
           id
@@ -220,7 +221,9 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
       urlOriginal
     }
     intro
-    pickCount(where: { kind: { equals: "read" }, is_active: { equals: true } })
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
     followingCount
     followerCount
 
@@ -237,7 +240,6 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
         }
         title
         og_title
-        commentCount
         createdAt
         tag {
           id
@@ -256,7 +258,10 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
         paywall
         full_screen_ad
         published_date
-        comment(orderBy: { createdAt: desc }) {
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+        ) {
           id
           content
           createdAt

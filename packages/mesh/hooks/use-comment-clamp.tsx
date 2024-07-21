@@ -1,20 +1,12 @@
-import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-type Redirect = {
-  cond: boolean
-  route: string
-}
-
-export const useCommentLogic = (
+export const useCommentClamp = (
   clampLineCount: number,
-  canToggle: boolean = false,
-  shouldRedirect?: Redirect
+  canToggle: boolean = false
 ) => {
   const [isTooLong, setIsTooLong] = useState(false)
   const [isOpened, setIsOpened] = useState(false)
   const commentRef = useRef<HTMLParagraphElement>(null)
-  const router = useRouter()
 
   const needClamp = !isOpened && isTooLong
   const defaultLineClamp = clampLineCount
@@ -30,12 +22,7 @@ export const useCommentLogic = (
   }, [clampLineCount])
 
   const handleToggleClamp = useCallback(() => {
-    if (!commentRef.current) return
-    if (shouldRedirect && shouldRedirect.cond) {
-      router.push(shouldRedirect.route)
-      return
-    }
-    if (!isTooLong) return
+    if (!commentRef.current || !isTooLong) return
     if (isOpened) {
       if (!canToggle) return
       commentRef.current.style.setProperty(
@@ -47,15 +34,7 @@ export const useCommentLogic = (
       commentRef.current.style.setProperty('-webkit-line-clamp', 'inherit')
       setIsOpened(true)
     }
-  }, [
-    commentRef,
-    shouldRedirect,
-    isTooLong,
-    isOpened,
-    router,
-    canToggle,
-    clampLineCount,
-  ])
+  }, [commentRef, isTooLong, isOpened, canToggle, clampLineCount])
 
   return {
     isTooLong,

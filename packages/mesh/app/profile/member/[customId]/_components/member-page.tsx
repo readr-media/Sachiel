@@ -1,28 +1,30 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { type GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-import { TabCategory, TabKey } from '@/types/tab'
-
-import ArticleCardList from './article-card-list'
-import ProfileButtonList from './profile-button-list'
-import Tab from './tab'
-import UserProfile from './user-profile'
-import UserStatusList from './user-status-list'
-
-export type userType = 'member' | 'visitor'
+import ArticleCardList from '@/app/profile/_components/article-card-list'
+import ProfileButtonList from '@/app/profile/_components/profile-button-list'
+import Tab from '@/app/profile/_components/tab'
+import UserProfile from '@/app/profile/_components/user-profile'
+import UserStatusList from '@/app/profile/_components/user-status-list'
+import {
+  type Bookmarks,
+  type PickList,
+  type UserType,
+  TabCategory,
+  TabKey,
+} from '@/types/profile'
 
 type MemberPageProps = {
   name: string
   avatar: string
   intro: string
-  pickCount: number | null
-  followingCount: number | null
-  followerCount: number
-  userType: userType
-  picksData: NonNullable<GetMemberProfileQuery['member']>['picks']
-  bookmarkData: NonNullable<GetMemberProfileQuery['member']>['books']
-  visitID: string
+  pickCount: number
+  followingCount: string
+  followerCount: string
+  userType: UserType
+  picksData: PickList
+  bookmarks: Bookmarks
+  memberId: string
 }
 
 const MemberPage: React.FC<MemberPageProps> = ({
@@ -34,37 +36,48 @@ const MemberPage: React.FC<MemberPageProps> = ({
   followingCount,
   followerCount,
   picksData,
-  bookmarkData,
-  visitID,
+  bookmarks,
+  memberId,
 }) => {
-  const [showData, setShowData] = useState(picksData)
+  const [picksOrBookmarks, setPicksOrBookmarks] = useState<
+    PickList | Bookmarks
+  >(picksData)
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
-    { key: TabKey.PICK, value: pickCount },
-    { key: TabKey.FOLLOWER, value: followerCount },
-    { key: TabKey.FOLLOWING, value: followingCount },
+    { tabName: TabKey.PICK, count: pickCount },
+    { tabName: TabKey.FOLLOWER, count: followerCount },
+    { tabName: TabKey.FOLLOWING, count: followingCount },
   ]
 
   const buttonList = [{ text: '編輯個人檔案' }]
 
+  const getMessage = (category: TabCategory): string => {
+    const messages: { [key: string]: string } = {
+      PICKS: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
+      BOOKMARKS: '沒有已儲存的書籤',
+    }
+    return messages[category] || ''
+  }
+
+  const shouldShowComment = category !== TabCategory.BOOKMARKS
   useEffect(() => {
     switch (category) {
       case TabCategory.PICK:
-        return setShowData(picksData)
+        return setPicksOrBookmarks(picksData)
       case TabCategory.BOOKMARKS:
-        return setShowData(bookmarkData)
+        return setPicksOrBookmarks(bookmarks)
       default:
-        return setShowData(picksData)
+        return setPicksOrBookmarks(picksData)
     }
-  }, [bookmarkData, category, picksData])
+  }, [bookmarks, category, picksData])
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center px-5 pb-8 pt-6 sm:max-h-full">
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
         <UserProfile
           name={name}
-          pickCount={pickCount || 0}
+          pickCount={pickCount}
           avatar={avatar}
           userType={userType}
           intro={intro}
@@ -73,13 +86,17 @@ const MemberPage: React.FC<MemberPageProps> = ({
         <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab category={category} setCategory={setCategory} userType={userType} />
-      <ArticleCardList
-        showData={showData}
-        id={visitID}
-        avatar={avatar}
+      <Tab
+        tabCategory={category}
+        setCategory={setCategory}
         userType={userType}
-        category={category}
+      />
+      <ArticleCardList
+        items={picksOrBookmarks || []}
+        shouldShowComment={shouldShowComment}
+        emptyMessage={getMessage(category)}
+        memberId={memberId}
+        avatar={avatar}
         name={name}
       />
     </>
