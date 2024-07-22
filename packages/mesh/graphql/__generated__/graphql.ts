@@ -111,7 +111,6 @@ export type Category = {
   createdBy?: Maybe<User>
   id: Scalars['ID']['output']
   priority?: Maybe<Scalars['Int']['output']>
-  priority?: Maybe<Scalars['Int']['output']>
   slug?: Maybe<Scalars['String']['output']>
   summary?: Maybe<Scalars['String']['output']>
   title?: Maybe<Scalars['String']['output']>
@@ -192,7 +191,6 @@ export type CategoryWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
   id?: InputMaybe<IdFilter>
-  priority?: InputMaybe<IntFilter>
   priority?: InputMaybe<IntFilter>
   slug?: InputMaybe<StringFilter>
   summary?: InputMaybe<StringFilter>
@@ -814,17 +812,6 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']['input']>>
 }
 
-export type IntFilter = {
-  equals?: InputMaybe<Scalars['Int']['input']>
-  gt?: InputMaybe<Scalars['Int']['input']>
-  gte?: InputMaybe<Scalars['Int']['input']>
-  in?: InputMaybe<Array<Scalars['Int']['input']>>
-  lt?: InputMaybe<Scalars['Int']['input']>
-  lte?: InputMaybe<Scalars['Int']['input']>
-  not?: InputMaybe<IntFilter>
-  notIn?: InputMaybe<Array<Scalars['Int']['input']>>
-}
-
 export type IntNullableFilter = {
   equals?: InputMaybe<Scalars['Int']['input']>
   gt?: InputMaybe<Scalars['Int']['input']>
@@ -1082,9 +1069,12 @@ export type Member = {
   nickname?: Maybe<Scalars['String']['output']>
   pick?: Maybe<Array<Pick>>
   pickCount?: Maybe<Scalars['Int']['output']>
+  sponsor?: Maybe<Array<Sponsorship>>
+  sponsorCount?: Maybe<Scalars['Int']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
   updatedBy?: Maybe<User>
   verified?: Maybe<Scalars['Boolean']['output']>
+  wallet?: Maybe<Scalars['String']['output']>
 }
 
 export type MemberBlockArgs = {
@@ -1230,6 +1220,17 @@ export type MemberPickCountArgs = {
   where?: PickWhereInput
 }
 
+export type MemberSponsorArgs = {
+  orderBy?: Array<SponsorshipOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: SponsorshipWhereInput
+}
+
+export type MemberSponsorCountArgs = {
+  where?: SponsorshipWhereInput
+}
+
 export type MemberCreateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
@@ -1256,9 +1257,11 @@ export type MemberCreateInput = {
   name?: InputMaybe<Scalars['String']['input']>
   nickname?: InputMaybe<Scalars['String']['input']>
   pick?: InputMaybe<PickRelateToManyForCreateInput>
+  sponsor?: InputMaybe<SponsorshipRelateToManyForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
+  wallet?: InputMaybe<Scalars['String']['input']>
 }
 
 export type MemberManyRelationFilter = {
@@ -1280,6 +1283,7 @@ export type MemberOrderByInput = {
   nickname?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
   verified?: InputMaybe<OrderDirection>
+  wallet?: InputMaybe<OrderDirection>
 }
 
 export type MemberRelateToManyForCreateInput = {
@@ -1336,9 +1340,11 @@ export type MemberUpdateInput = {
   name?: InputMaybe<Scalars['String']['input']>
   nickname?: InputMaybe<Scalars['String']['input']>
   pick?: InputMaybe<PickRelateToManyForUpdateInput>
+  sponsor?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
+  wallet?: InputMaybe<Scalars['String']['input']>
 }
 
 export type MemberWhereInput = {
@@ -1371,9 +1377,11 @@ export type MemberWhereInput = {
   name?: InputMaybe<StringFilter>
   nickname?: InputMaybe<StringFilter>
   pick?: InputMaybe<PickManyRelationFilter>
+  sponsor?: InputMaybe<SponsorshipManyRelationFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
   updatedBy?: InputMaybe<UserWhereInput>
   verified?: InputMaybe<BooleanFilter>
+  wallet?: InputMaybe<StringFilter>
 }
 
 export type MemberWhereUniqueInput = {
@@ -1413,6 +1421,8 @@ export type Mutation = {
   createPolicy?: Maybe<Policy>
   createPublisher?: Maybe<Publisher>
   createPublishers?: Maybe<Array<Maybe<Publisher>>>
+  createSponsorship?: Maybe<Sponsorship>
+  createSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   createStories?: Maybe<Array<Maybe<Story>>>
   createStory?: Maybe<Story>
   createTag?: Maybe<Tag>
@@ -1447,6 +1457,8 @@ export type Mutation = {
   deletePolicy?: Maybe<Policy>
   deletePublisher?: Maybe<Publisher>
   deletePublishers?: Maybe<Array<Maybe<Publisher>>>
+  deleteSponsorship?: Maybe<Sponsorship>
+  deleteSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   deleteStories?: Maybe<Array<Maybe<Story>>>
   deleteStory?: Maybe<Story>
   deleteTag?: Maybe<Tag>
@@ -1482,6 +1494,8 @@ export type Mutation = {
   updatePolicy?: Maybe<Policy>
   updatePublisher?: Maybe<Publisher>
   updatePublishers?: Maybe<Array<Maybe<Publisher>>>
+  updateSponsorship?: Maybe<Sponsorship>
+  updateSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   updateStories?: Maybe<Array<Maybe<Story>>>
   updateStory?: Maybe<Story>
   updateTag?: Maybe<Tag>
@@ -1603,6 +1617,14 @@ export type MutationCreatePublisherArgs = {
 
 export type MutationCreatePublishersArgs = {
   data: Array<PublisherCreateInput>
+}
+
+export type MutationCreateSponsorshipArgs = {
+  data: SponsorshipCreateInput
+}
+
+export type MutationCreateSponsorshipsArgs = {
+  data: Array<SponsorshipCreateInput>
 }
 
 export type MutationCreateStoriesArgs = {
@@ -1739,6 +1761,14 @@ export type MutationDeletePublisherArgs = {
 
 export type MutationDeletePublishersArgs = {
   where: Array<PublisherWhereUniqueInput>
+}
+
+export type MutationDeleteSponsorshipArgs = {
+  where: SponsorshipWhereUniqueInput
+}
+
+export type MutationDeleteSponsorshipsArgs = {
+  where: Array<SponsorshipWhereUniqueInput>
 }
 
 export type MutationDeleteStoriesArgs = {
@@ -1888,6 +1918,15 @@ export type MutationUpdatePublisherArgs = {
 
 export type MutationUpdatePublishersArgs = {
   data: Array<PublisherUpdateArgs>
+}
+
+export type MutationUpdateSponsorshipArgs = {
+  data: SponsorshipUpdateInput
+  where: SponsorshipWhereUniqueInput
+}
+
+export type MutationUpdateSponsorshipsArgs = {
+  data: Array<SponsorshipUpdateArgs>
 }
 
 export type MutationUpdateStoriesArgs = {
@@ -2373,6 +2412,8 @@ export type Publisher = {
   paywall?: Maybe<Scalars['Boolean']['output']>
   rss?: Maybe<Scalars['String']['output']>
   source_type?: Maybe<Scalars['String']['output']>
+  sponsored?: Maybe<Array<Sponsorship>>
+  sponsoredCount?: Maybe<Scalars['Int']['output']>
   summary?: Maybe<Scalars['String']['output']>
   title?: Maybe<Scalars['String']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -2391,6 +2432,17 @@ export type PublisherFollowerCountArgs = {
   where?: MemberWhereInput
 }
 
+export type PublisherSponsoredArgs = {
+  orderBy?: Array<SponsorshipOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: SponsorshipWhereInput
+}
+
+export type PublisherSponsoredCountArgs = {
+  where?: SponsorshipWhereInput
+}
+
 export type PublisherCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
@@ -2405,6 +2457,7 @@ export type PublisherCreateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
+  sponsored?: InputMaybe<SponsorshipRelateToManyForCreateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2479,6 +2532,7 @@ export type PublisherUpdateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
+  sponsored?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2504,6 +2558,7 @@ export type PublisherWhereInput = {
   paywall?: InputMaybe<BooleanFilter>
   rss?: InputMaybe<StringFilter>
   source_type?: InputMaybe<StringNullableFilter>
+  sponsored?: InputMaybe<SponsorshipManyRelationFilter>
   summary?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -2558,6 +2613,9 @@ export type Query = {
   publisher?: Maybe<Publisher>
   publishers?: Maybe<Array<Publisher>>
   publishersCount?: Maybe<Scalars['Int']['output']>
+  sponsorship?: Maybe<Sponsorship>
+  sponsorships?: Maybe<Array<Sponsorship>>
+  sponsorshipsCount?: Maybe<Scalars['Int']['output']>
   stories?: Maybe<Array<Story>>
   storiesCount?: Maybe<Scalars['Int']['output']>
   story?: Maybe<Story>
@@ -2767,6 +2825,21 @@ export type QueryPublishersCountArgs = {
   where?: PublisherWhereInput
 }
 
+export type QuerySponsorshipArgs = {
+  where: SponsorshipWhereUniqueInput
+}
+
+export type QuerySponsorshipsArgs = {
+  orderBy?: Array<SponsorshipOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: SponsorshipWhereInput
+}
+
+export type QuerySponsorshipsCountArgs = {
+  where?: SponsorshipWhereInput
+}
+
 export type QueryStoriesArgs = {
   orderBy?: Array<StoryOrderByInput>
   skip?: Scalars['Int']['input']
@@ -2840,6 +2913,113 @@ export type ResizedImages = {
   w1200?: Maybe<Scalars['String']['output']>
   w1600?: Maybe<Scalars['String']['output']>
   w2400?: Maybe<Scalars['String']['output']>
+}
+
+export type Sponsorship = {
+  __typename?: 'Sponsorship'
+  complement?: Maybe<Scalars['String']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  fee?: Maybe<Scalars['Float']['output']>
+  id: Scalars['ID']['output']
+  publisher?: Maybe<Publisher>
+  sponsor?: Maybe<Member>
+  status?: Maybe<SponsorshipStatusType>
+  tid?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type SponsorshipCreateInput = {
+  complement?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  fee?: InputMaybe<Scalars['Float']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForCreateInput>
+  sponsor?: InputMaybe<MemberRelateToOneForCreateInput>
+  status?: InputMaybe<SponsorshipStatusType>
+  tid?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type SponsorshipManyRelationFilter = {
+  every?: InputMaybe<SponsorshipWhereInput>
+  none?: InputMaybe<SponsorshipWhereInput>
+  some?: InputMaybe<SponsorshipWhereInput>
+}
+
+export type SponsorshipOrderByInput = {
+  complement?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  fee?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  status?: InputMaybe<OrderDirection>
+  tid?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type SponsorshipRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<SponsorshipWhereUniqueInput>>
+  create?: InputMaybe<Array<SponsorshipCreateInput>>
+}
+
+export type SponsorshipRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<SponsorshipWhereUniqueInput>>
+  create?: InputMaybe<Array<SponsorshipCreateInput>>
+  disconnect?: InputMaybe<Array<SponsorshipWhereUniqueInput>>
+  set?: InputMaybe<Array<SponsorshipWhereUniqueInput>>
+}
+
+export enum SponsorshipStatusType {
+  Failed = 'Failed',
+  Success = 'Success',
+}
+
+export type SponsorshipStatusTypeNullableFilter = {
+  equals?: InputMaybe<SponsorshipStatusType>
+  in?: InputMaybe<Array<SponsorshipStatusType>>
+  not?: InputMaybe<SponsorshipStatusTypeNullableFilter>
+  notIn?: InputMaybe<Array<SponsorshipStatusType>>
+}
+
+export type SponsorshipUpdateArgs = {
+  data: SponsorshipUpdateInput
+  where: SponsorshipWhereUniqueInput
+}
+
+export type SponsorshipUpdateInput = {
+  complement?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  fee?: InputMaybe<Scalars['Float']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  sponsor?: InputMaybe<MemberRelateToOneForUpdateInput>
+  status?: InputMaybe<SponsorshipStatusType>
+  tid?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type SponsorshipWhereInput = {
+  AND?: InputMaybe<Array<SponsorshipWhereInput>>
+  NOT?: InputMaybe<Array<SponsorshipWhereInput>>
+  OR?: InputMaybe<Array<SponsorshipWhereInput>>
+  complement?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  fee?: InputMaybe<FloatNullableFilter>
+  id?: InputMaybe<IdFilter>
+  publisher?: InputMaybe<PublisherWhereInput>
+  sponsor?: InputMaybe<MemberWhereInput>
+  status?: InputMaybe<SponsorshipStatusTypeNullableFilter>
+  tid?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type SponsorshipWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
 }
 
 export type Story = {
