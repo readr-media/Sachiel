@@ -4140,6 +4140,26 @@ export type LatestStoriesQuery = {
   }> | null
 }
 
+export type GetStoryQueryVariables = Exact<{
+  storyId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type GetStoryQuery = {
+  __typename?: 'Query'
+  story?: {
+    __typename?: 'Story'
+    title?: string | null
+    content?: string | null
+    apiData?: any | null
+    source?: {
+      __typename?: 'Publisher'
+      id: string
+      title?: string | null
+      customId?: string | null
+    } | null
+  } | null
+}
+
 export const UserActionStoryFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -7000,3 +7020,74 @@ export const LatestStoriesDocument = {
     },
   ],
 } as unknown as DocumentNode<LatestStoriesQuery, LatestStoriesQueryVariables>
+export const GetStoryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetStory' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'storyId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'story' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'storyId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'content' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'source' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetStoryQuery, GetStoryQueryVariables>

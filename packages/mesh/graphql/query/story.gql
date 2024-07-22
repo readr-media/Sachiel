@@ -41,3 +41,16 @@ query LatestStories($date: DateTime) {
     full_screen_ad
   }
 }
+
+query GetStory($storyId: ID) {
+  story(where: { id: $storyId }) {
+    title
+    content
+    apiData
+    source {
+      id
+      title
+      customId
+    }
+  }
+}
