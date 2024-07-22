@@ -35,7 +35,12 @@ export default async function page({ params }: { params: { id: string } }) {
     const sourceCustomId = story?.source?.customId ?? ''
     const isApiData = inHousePublisherCustomIds.includes(sourceCustomId)
     if (isApiData) {
-      return <ApiDataRenderer apiData={story?.apiData as ApiData} />
+      return (
+        <ApiDataRenderer
+          apiData={story?.apiData as ApiData}
+          sourceCustomId={sourceCustomId}
+        />
+      )
     } else {
       return <div dangerouslySetInnerHTML={{ __html: story?.content ?? '' }} />
     }
