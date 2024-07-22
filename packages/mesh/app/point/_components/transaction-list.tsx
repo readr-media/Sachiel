@@ -24,6 +24,8 @@ export default function TransactionList({
   initialList: NextTransactionList[]
   fetchMoreTransaction: () => Promise<NextTransactionList[]>
 }) {
+  // TODO: Update load more parameters with new UI and API specs
+
   return (
     <InfiniteScrollList
       initialList={initialList}
