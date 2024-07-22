@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 
-import { BG_WHITE_PAGE_PATHS } from '@/constants/page-style'
+import { BG_GRAY_PAGE_PATHS } from '@/constants/page-style'
 
 export default function Content({
   children,
@@ -10,7 +10,7 @@ export default function Content({
   children: React.ReactNode
 }>) {
   const pathname = usePathname()
-  const isBgWhite = !!BG_WHITE_PAGE_PATHS.find((path) =>
+  const isBgWhite = !!BG_GRAY_PAGE_PATHS.find((path) =>
     pathname.startsWith(path)
   )
 
