@@ -1,7 +1,7 @@
 'use client'
 import '@/styles/global.css'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
@@ -17,21 +17,15 @@ export default function ProfileLayout({
   children: React.ReactNode
 }>) {
   const pathName = usePathname()
+  const searchParams = useSearchParams()
   const pathNameList = pathName.split('/')
+  const { width } = useWindowDimensions()
   // TODO: publisher now using items id will be number
   const userId = pathNameList.pop()
-  const { width } = useWindowDimensions()
+  const isSelf = userId === searchParams.get('user')
   const router = useRouter()
   const backToPreviousPage = () => {
     router.back()
-  }
-  const hasNav = (pathName: string, width: number): boolean => {
-    const hasTargetPath = FOLLOW_LIST_PATHS.some((path) =>
-      pathName.endsWith(path)
-    )
-    const isMobileWidth = width < 768
-
-    return !hasTargetPath || !isMobileWidth
   }
 
   const hasHeader = (pathName: string): boolean => {
@@ -41,18 +35,45 @@ export default function ProfileLayout({
     )
     return !hasTargetPath
   }
+
+  const hasNav = (pathName: string, width: number): boolean => {
+    const hasTargetPath = FOLLOW_LIST_PATHS.some((path) =>
+      pathName.endsWith(path)
+    )
+    const isMobileWidth = width < 768
+
+    return !hasTargetPath || !isMobileWidth
+  }
   return (
     <div className="flex grow flex-col">
+      <header className="absolute left-0 right-0 top-0 z-header h-[60px] border-b bg-white sm:hidden">
+        {/* NOTE: add 24px to make sure custom id is in the middle */}
+        <div
+          className={`flex h-full w-full items-center justify-start p-[18px] ${
+            !isSelf && 'pl-[42px]'
+          }`}
+        >
+          {isSelf && (
+            <Icon
+              size={{ width: 24, height: 24 }}
+              iconName="icon-setting-lg-on"
+              // TODO: profile setting
+            />
+          )}
+          <p className="list-title flex flex-1 justify-center">{userId}</p>
+          <Icon size={{ width: 24, height: 24 }} iconName="icon-more-horiz" />
+        </div>
+      </header>
       <div className="hidden sm:block">
         <Header />
       </div>
       <div className="primary-container py-0 sm:pt-[68px]">
         {hasHeader(pathName) && (
           <div className="flex h-[theme(height.header.default)] sm:h-[theme(height.header.sm)]">
-            <div className="grid grow grid-cols-3 items-center">
+            <div className="flex max-w-[680px] grow items-center justify-between px-5">
               <button
                 type="button"
-                className="ml-2 p-3"
+                className="ml-2 p-3 sm:hidden"
                 onClick={backToPreviousPage}
               >
                 <Icon
@@ -60,10 +81,24 @@ export default function ProfileLayout({
                   size={{ width: 20, height: 20 }}
                 />
               </button>
-              <p className="list-title place-self-center">{userId}</p>
+              <div className="flex items-center gap-5">
+                {!isSelf && (
+                  <button
+                    type="button"
+                    className="ml-2 p-3"
+                    onClick={backToPreviousPage}
+                  >
+                    <Icon
+                      iconName="icon-chevron-left"
+                      size={{ width: 20, height: 20 }}
+                    />
+                  </button>
+                )}
+                <p className="list-title place-self-center">{userId}</p>
+              </div>
               <button
                 type="button"
-                className="mr-3 place-self-end self-center p-3"
+                className="place-self-end self-center p-3"
                 onClick={backToPreviousPage}
               >
                 <Icon
