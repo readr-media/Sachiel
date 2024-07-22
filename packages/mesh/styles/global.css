@@ -82,7 +82,7 @@
   .quote {
     @apply text-xl font-bold leading-normal;
   }
-  .primary-container{
+  .primary-container {
     @apply flex min-h-screen flex-col pb-[theme(height.nav.default)] pt-[theme(height.header.default)];
     @apply sm:pb-0 sm:pl-[theme(width.nav.sm)] sm:pt-[theme(height.header.sm)];
     @apply md:pl-[theme(width.nav.md)];

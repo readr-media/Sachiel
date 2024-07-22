@@ -84,6 +84,7 @@ export type IconName =
   | 'icon-dynamicxyz'
   | 'icon-check-circle-gray'
   | 'icon-check-circle-blue'
+  | 'icon-heart'
   | 'icon-navigate-next'
   | 'icon-navigate-next-hover'
   | 'icon-navigate-previous'
