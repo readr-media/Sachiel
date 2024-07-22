@@ -1,18 +1,9 @@
-import {
-  browserLocalPersistence,
-  getRedirectResult,
-  isSignInWithEmailLink,
-  setPersistence,
-  signInWithEmailLink,
-  UserCredential,
-} from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect } from 'react'
 
-import { getCurrentUser, validateIdToken } from '@/app/actions/auth'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
-import { auth } from '@/firebase/client'
 import useAuthState from '@/hooks/use-auth-state'
+import useHandleSignIn from '@/hooks/use-handle-sign-in'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -34,73 +25,21 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 }
 
 export default function LoginSteps() {
-  const { step, setStep } = useLogin()
   const router = useRouter()
+  const { step } = useLogin()
   const { isLogin } = useAuthState()
+  const { handleSignIn } = useHandleSignIn()
 
   useEffect(() => {
-    const handleEmailLinkSignIn = async () => {
-      let email = window.localStorage.getItem('emailForSignIn')
-      if (!email) {
-        router.push('/login')
-        return
-      }
-      try {
-        await setPersistence(auth, browserLocalPersistence)
-        const res = await signInWithEmailLink(auth, email, window.location.href)
-        const idToken = await res.user.getIdToken()
-
-        window.localStorage.removeItem('emailForSignIn')
-        await handleAfterSignInRedirect(idToken)
-      } catch (error) {
-        console.error('EmailLinkSignIn Error:', error)
-        router.push('/login')
-      }
-    }
-
-    const handleOAuthSignIn = async (result: UserCredential) => {
-      const idToken = await result.user.getIdToken()
-      try {
-        if (idToken) {
-          await handleAfterSignInRedirect(idToken)
-        }
-      } catch (error) {
-        console.error('OAuthSignIn Error:', error)
-        router.push('/login')
-      }
-    }
-
-    const handleAfterSignInRedirect = async (idToken: string) => {
-      const { status } = await handleToken(idToken)
-      if (status !== 'verified') {
-        router.push('/login')
-        return
-      }
-
-      const user = await getCurrentUser()
-      if (user?.memberId) {
-        router.push('/media')
-      } else {
-        setStep('set-name')
-      }
-    }
-
-    const handleSignIn = async () => {
+    const init = async () => {
       if (isLogin) {
         router.push('/media')
-        return
-      }
-
-      const redirectResult = await getRedirectResult(auth)
-
-      if (redirectResult) {
-        await handleOAuthSignIn(redirectResult)
-      } else if (isSignInWithEmailLink(auth, window.location.href)) {
-        await handleEmailLinkSignIn()
+      } else {
+        await handleSignIn()
       }
     }
-    handleSignIn()
-  }, [isLogin, router, setStep])
+    init()
+  }, [handleSignIn, isLogin, router])
 
   return (
     <>
@@ -119,39 +58,4 @@ export default function LoginSteps() {
       </div>
     </>
   )
-}
-
-async function handleToken(
-  token: string
-): Promise<ReturnType<typeof validateIdToken>> {
-  const response = await validateIdToken(token)
-  switch (response.status) {
-    case 'verified':
-      return response
-    case 'expired': {
-      const newToken = await refreshIdToken()
-      if (newToken) {
-        return await validateIdToken(newToken)
-      } else {
-        return { status: 'error' }
-      }
-    }
-    case 'error':
-    default:
-      return response
-  }
-}
-
-async function refreshIdToken() {
-  const user = auth.currentUser
-  if (user) {
-    try {
-      const newToken = await user.getIdToken(true)
-      return newToken
-    } catch (error) {
-      console.error('Error refreshing token:', error)
-      return null
-    }
-  }
-  return null
 }
