@@ -37,7 +37,7 @@ const actionCodeSettings = {
   handleCodeInApp: true,
 }
 
-export function useAuthProvider() {
+export function authProvider() {
   const handleLoginMethod = async (method: LoginMethod) => {
     if (method === 'email') return method
 

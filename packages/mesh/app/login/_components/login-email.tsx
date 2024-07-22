@@ -1,7 +1,7 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useLogin } from '@/context/login'
-import { sendEmailLink } from '@/hooks/use-auth-provider'
+import { sendEmailLink } from '@/utils/auth-provider'
 import { debounce } from '@/utils/performance'
 
 export default function LoginEmail() {

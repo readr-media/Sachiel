@@ -2,11 +2,11 @@ import Link from 'next/link'
 
 import Button from '@/components/button'
 import { useLogin } from '@/context/login'
-import { type LoginMethod, useAuthProvider } from '@/hooks/use-auth-provider'
+import { type LoginMethod, authProvider } from '@/utils/auth-provider'
 
 export default function LoginEntry() {
   const { setStep } = useLogin()
-  const { loginOptions, handleLoginMethod } = useAuthProvider()
+  const { loginOptions, handleLoginMethod } = authProvider()
 
   const onLoginMethodClick = async (method: LoginMethod) => {
     const result = await handleLoginMethod(method)
