@@ -102,7 +102,7 @@ export async function signUpMember(formData: UserFormData) {
 
     const registrationData: MemberCreateInput = {
       firebaseId: decodedToken.uid,
-      name: decodedToken.name,
+      name: decodedToken.name || formData.name,
       nickname: formData.name,
       email: decodedToken.email,
       customId: decodedToken.email?.split('@')[0],
