@@ -111,7 +111,7 @@ const ArticleCard = ({
             />
           </div>
           <div className="place-self-end">
-            <StoryPickButton isStoryPicked={false} storyId={storyData?.id} />
+            <StoryPickButton isStoryPicked={true} storyId={storyData?.id} />
           </div>
         </section>
         {shouldShowComment && (
