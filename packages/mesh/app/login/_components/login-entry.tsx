@@ -1,50 +1,16 @@
-import {
-  browserLocalPersistence,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  OAuthProvider,
-  setPersistence,
-  signInWithRedirect,
-} from 'firebase/auth'
 import Link from 'next/link'
 
 import Button from '@/components/button'
 import { useLogin } from '@/context/login'
-import { auth } from '@/firebase/client'
-const loginOptions = [
-  {
-    method: 'apple',
-    iconName: 'icon-apple',
-  },
-  {
-    method: 'facebook',
-    iconName: 'icon-facebook-square',
-  },
-  {
-    method: 'google',
-    iconName: 'icon-google',
-  },
-  {
-    method: 'email',
-    iconName: 'icon-email',
-  },
-] as const
-type LoginMethod = typeof loginOptions[number]['method']
+import { type LoginMethod, useAuthProvider } from '@/hooks/use-auth-provider'
 
 export default function LoginEntry() {
   const { setStep } = useLogin()
+  const { loginOptions, handleLoginMethod } = useAuthProvider()
 
-  const handleLoginMethod = async (method: LoginMethod) => {
-    if (method === 'email') {
-      setStep('email')
-      return
-    }
-
-    const provider = createAuthProvider(method)
-    if (provider) {
-      await setPersistence(auth, browserLocalPersistence)
-      await signInWithRedirect(auth, provider)
-    }
+  const onLoginMethodClick = async (method: LoginMethod) => {
+    const result = await handleLoginMethod(method)
+    if (result === 'email') setStep('email')
   }
 
   return (
@@ -66,7 +32,7 @@ export default function LoginEntry() {
               color="white"
               text={transformedBtnText(option.method)}
               icon={{ iconName: option.iconName, size: 'm' }}
-              onClick={() => handleLoginMethod(option.method)}
+              onClick={() => onLoginMethodClick(option.method)}
             />
           </div>
         ))}
@@ -95,23 +61,4 @@ function transformedBtnText(text: string) {
   if (!text) return ''
   const capitalizeFirstLetter = text.charAt(0).toUpperCase() + text.slice(1)
   return `以 ${capitalizeFirstLetter} 帳號繼續`
-}
-
-function createAuthProvider(method: LoginMethod) {
-  let provider = null
-  switch (method) {
-    case 'apple':
-      provider = new OAuthProvider('apple.com')
-      break
-    case 'facebook':
-      provider = new FacebookAuthProvider()
-      break
-    case 'google':
-      provider = new GoogleAuthProvider()
-      break
-    default:
-      return null
-  }
-  provider.addScope('email')
-  return provider
 }

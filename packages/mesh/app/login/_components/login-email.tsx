@@ -1,8 +1,8 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useLogin } from '@/context/login'
+import { sendEmailLink } from '@/hooks/use-auth-provider'
 import { debounce } from '@/utils/performance'
-import { sendEmailLink } from '@/utils/send-sign-in-email'
 
 export default function LoginEmail() {
   const { formData, setFormData, setStep, lastUsedEmail, setLastUsedEmail } =

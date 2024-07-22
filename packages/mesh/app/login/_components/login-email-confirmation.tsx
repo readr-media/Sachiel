@@ -1,6 +1,6 @@
 import { useLogin } from '@/context/login'
+import { sendEmailLink } from '@/hooks/use-auth-provider'
 import useCountdown from '@/hooks/use-countdown'
-import { sendEmailLink } from '@/utils/send-sign-in-email'
 
 export default function LoginEmailConfirmation() {
   const { formData, setStep } = useLogin()
