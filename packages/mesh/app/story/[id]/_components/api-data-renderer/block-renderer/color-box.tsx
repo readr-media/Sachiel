@@ -11,3 +11,16 @@ export interface ApiDataColorBox extends ApiDataBlockBase {
   content: [ContentColorbox]
   alignment: 'center'
 }
+
+export default function ColorBoxBlock({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataColorBox
+}) {
+  const { body } = apiDataBlock.content[0]
+  return (
+    <div className="color-box">
+      <div className="body" dangerouslySetInnerHTML={{ __html: body }}></div>
+    </div>
+  )
+}

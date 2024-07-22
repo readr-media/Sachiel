@@ -11,3 +11,19 @@ export interface ApiDataHeader3 extends ApiDataBlockBase {
   content: [string]
   alignment: 'center'
 }
+
+export function Header2Block({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataHeader2
+}) {
+  return <h2>{apiDataBlock.content[0]}</h2>
+}
+
+export function Header3Block({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataHeader3
+}) {
+  return <h3>{apiDataBlock.content[0]}</h3>
+}

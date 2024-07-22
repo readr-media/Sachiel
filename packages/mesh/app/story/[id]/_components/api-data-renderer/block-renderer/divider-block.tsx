@@ -5,3 +5,7 @@ export interface ApiDataDivider extends ApiDataBlockBase {
   content: ['<hr>']
   alignment: 'center'
 }
+
+export default function DividerBlock() {
+  return <hr />
+}

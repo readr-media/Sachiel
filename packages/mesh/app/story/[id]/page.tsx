@@ -1,3 +1,5 @@
+import './_style/article.css'
+
 import { notFound } from 'next/navigation'
 
 import {
@@ -7,7 +9,9 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-import ApiDataRenderer from './_components/api-data-renderer/renderer'
+import ApiDataRenderer, {
+  type ApiData,
+} from './_components/api-data-renderer/renderer'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -31,7 +35,7 @@ export default async function page({ params }: { params: { id: string } }) {
     const sourceCustomId = story?.source?.customId ?? ''
     const isApiData = inHousePublisherCustomIds.includes(sourceCustomId)
     if (isApiData) {
-      return <ApiDataRenderer />
+      return <ApiDataRenderer apiData={story?.apiData as ApiData} />
     } else {
       return <div dangerouslySetInnerHTML={{ __html: story?.content ?? '' }} />
     }

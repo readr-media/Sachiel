@@ -5,3 +5,18 @@ export interface ApiDataBlockquote extends ApiDataBlockBase {
   content: [string]
   alignment: 'center'
 }
+
+export default function BlockquoteBlock({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataBlockquote
+}) {
+  return (
+    <div className="blockquote-block">
+      <div
+        className="body"
+        dangerouslySetInnerHTML={{ __html: apiDataBlock.content[0] }}
+      />
+    </div>
+  )
+}

@@ -5,3 +5,11 @@ export interface ApiDataUnstyled extends ApiDataBlockBase {
   content: [string]
   alignment: 'center'
 }
+
+export default function UnstyledBlock({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataUnstyled
+}) {
+  return <div dangerouslySetInnerHTML={{ __html: apiDataBlock.content }} />
+}

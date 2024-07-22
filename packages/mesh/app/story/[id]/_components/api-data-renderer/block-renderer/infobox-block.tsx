@@ -10,3 +10,17 @@ export interface ApiDataInfobox extends ApiDataBlockBase {
   content: [ContentInfobox]
   alignment: 'center'
 }
+
+export default function InfoboxBlock({
+  apiDataBlock,
+}: {
+  apiDataBlock: ApiDataInfobox
+}) {
+  const { body, title } = apiDataBlock.content[0]
+  return (
+    <div className="info-box">
+      <div className="title">{title}</div>
+      <div className="body" dangerouslySetInnerHTML={{ __html: body }}></div>
+    </div>
+  )
+}
