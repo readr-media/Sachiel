@@ -52,8 +52,8 @@ query GetPublisherProfile($publisherId: String, $takes: Int!) {
   }
 }
 
-query GetPublisherFollowerList($publisherId: ID!, $takes: Int!) {
-  publisher(where: { id: $publisherId }) {
+query GetPublisherFollowerList($publisherId: String, $takes: Int!) {
+  publishers(where: { customId: { equals: $publisherId } }) {
     id
     title
     logo
