@@ -1,9 +1,16 @@
+import { redirect } from 'next/navigation'
+
 import Icon from '@/components/icon'
 
+import { getCurrentUser } from '../actions/auth'
 import MeshPointHelper from './_components/mesh-point-helper'
 import TransactionList from './_components/transaction-list'
 
 export default async function Page() {
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
+  if (!memberId) redirect('/login')
+
   //TODO: update mock data to sync with server
   const transactionData = [
     {
