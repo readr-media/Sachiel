@@ -23,7 +23,7 @@ const FollowingList = ({
   }
   const hasResult = !!followingList?.length
   return (
-    <div className="w-full bg-white px-5 pb-3 pt-4">
+    <div className="w-full rounded-xl bg-white px-5 pb-3 pt-4">
       <section
         className={`flex ${hasResult && 'cursor-pointer'} items-center`}
         onClick={toggleResult}

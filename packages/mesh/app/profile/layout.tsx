@@ -28,7 +28,7 @@ export default function ProfileLayout({
     router.back()
   }
 
-  const hasHeader = (pathName: string): boolean => {
+  const hasUniqueHeader = (pathName: string): boolean => {
     // NOTE: in some path do not show the header
     const hasTargetPath = FOLLOW_LIST_PATHS.some((path) =>
       pathName.endsWith(path)
@@ -46,29 +46,31 @@ export default function ProfileLayout({
   }
   return (
     <div className="flex grow flex-col">
-      <header className="absolute left-0 right-0 top-0 z-header h-[60px] border-b bg-white sm:hidden">
-        {/* NOTE: add 24px to make sure custom id is in the middle */}
-        <div
-          className={`flex h-full w-full items-center justify-start p-[18px] ${
-            !isSelf && 'pl-[42px]'
-          }`}
-        >
-          {isSelf && (
-            <Icon
-              size={{ width: 24, height: 24 }}
-              iconName="icon-setting-lg-on"
-              // TODO: profile setting
-            />
-          )}
-          <p className="list-title flex flex-1 justify-center">{userId}</p>
-          <Icon size={{ width: 24, height: 24 }} iconName="icon-more-horiz" />
-        </div>
-      </header>
+      {hasUniqueHeader(pathName) && (
+        <header className="absolute left-0 right-0 top-0 z-header h-[60px] border-b bg-white sm:hidden">
+          {/* NOTE: add 24px to make sure custom id is in the middle */}
+          <div
+            className={`flex h-full w-full items-center justify-start p-[18px] ${
+              !isSelf && 'pl-[42px]'
+            }`}
+          >
+            {isSelf && (
+              <Icon
+                size={{ width: 24, height: 24 }}
+                iconName="icon-setting-lg-on"
+                // TODO: profile setting
+              />
+            )}
+            <p className="list-title flex flex-1 justify-center">{userId}</p>
+            <Icon size={{ width: 24, height: 24 }} iconName="icon-more-horiz" />
+          </div>
+        </header>
+      )}
       <div className="hidden sm:block">
         <Header />
       </div>
       <div className="primary-container py-0 sm:pt-[68px]">
-        {hasHeader(pathName) && (
+        {hasUniqueHeader(pathName) && (
           <div className="flex h-[theme(height.header.default)] sm:h-[theme(height.header.sm)]">
             <div className="flex max-w-[680px] grow items-center justify-between px-5">
               <button
