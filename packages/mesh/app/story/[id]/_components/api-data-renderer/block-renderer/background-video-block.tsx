@@ -1,11 +1,6 @@
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
-
 import type {
   ApiDataBlockBase,
   ApiDataBlockType,
-  Organization,
   TextBlockAlign,
   Video_Readr,
 } from '../types'

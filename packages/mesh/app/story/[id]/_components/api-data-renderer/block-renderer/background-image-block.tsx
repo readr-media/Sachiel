@@ -1,13 +1,7 @@
-'use client'
-
-import CustomImage from '@readr-media/react-image'
-import { useEffect, useRef, useState } from 'react'
-
 import type {
   ApiDataBlockBase,
   ApiDataBlockType,
   Image,
-  Organization,
   TextBlockAlign,
 } from '../types'
 

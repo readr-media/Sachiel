@@ -1,7 +1,3 @@
-'use client'
-
-import CustomImage from '@readr-media/react-image'
-
 import type {
   ApiDataBlockBase,
   ApiDataBlockType,
