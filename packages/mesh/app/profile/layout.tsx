@@ -46,26 +46,6 @@ export default function ProfileLayout({
   }
   return (
     <div className="flex grow flex-col">
-      {hasUniqueHeader(pathName) && (
-        <header className="absolute left-0 right-0 top-0 z-header h-[60px] border-b bg-white sm:hidden">
-          {/* NOTE: add 24px to make sure custom id is in the middle */}
-          <div
-            className={`flex h-full w-full items-center justify-start p-[18px] ${
-              !isSelf && 'pl-[42px]'
-            }`}
-          >
-            {isSelf && (
-              <Icon
-                size={{ width: 24, height: 24 }}
-                iconName="icon-setting-lg-on"
-                // TODO: profile setting
-              />
-            )}
-            <p className="list-title flex flex-1 justify-center">{userId}</p>
-            <Icon size={{ width: 24, height: 24 }} iconName="icon-more-horiz" />
-          </div>
-        </header>
-      )}
       <div className="hidden sm:block">
         <Header />
       </div>
@@ -73,16 +53,6 @@ export default function ProfileLayout({
         {hasUniqueHeader(pathName) && (
           <div className="flex h-[theme(height.header.default)] sm:h-[theme(height.header.sm)]">
             <div className="flex max-w-[680px] grow items-center justify-between px-5">
-              <button
-                type="button"
-                className="ml-2 p-3 sm:hidden"
-                onClick={backToPreviousPage}
-              >
-                <Icon
-                  iconName="icon-chevron-left"
-                  size={{ width: 20, height: 20 }}
-                />
-              </button>
               <div className="flex items-center gap-5">
                 {!isSelf && (
                   <button
@@ -96,8 +66,13 @@ export default function ProfileLayout({
                     />
                   </button>
                 )}
-                <p className="list-title place-self-center">{userId}</p>
+                <p className="list-title hidden place-self-center sm:block">
+                  {userId}
+                </p>
               </div>
+              <p className="list-title block place-self-center sm:hidden">
+                {userId}
+              </p>
               <button
                 type="button"
                 className="place-self-end self-center p-3"

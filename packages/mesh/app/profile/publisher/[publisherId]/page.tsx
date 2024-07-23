@@ -60,7 +60,7 @@ const page = async ({ params }: PageProps) => {
         name={userName}
         avatar={userLogo}
         intro={userIntro}
-        userId={publisherId}
+        publisherId={publisherId}
         userType={userType}
         storyData={storyData}
       />

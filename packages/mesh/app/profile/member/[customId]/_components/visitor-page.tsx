@@ -23,6 +23,7 @@ type VisitorPageProps = {
   userType: UserType
   picksData: PickList
   memberId: string
+  memberCustomId: string
 }
 
 const VisitorPage: React.FC<VisitorPageProps> = ({
@@ -35,13 +36,22 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   followerCount,
   picksData,
   memberId,
+  memberCustomId,
 }) => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },
-    { tabName: TabKey.FOLLOWER, count: followerCount },
-    { tabName: TabKey.FOLLOWING, count: followingCount },
+    {
+      tabName: TabKey.FOLLOWER,
+      count: followerCount,
+      redirectLink: `${memberCustomId}/follower`,
+    },
+    {
+      tabName: TabKey.FOLLOWING,
+      count: followingCount,
+      redirectLink: `${memberCustomId}/following`,
+    },
   ]
 
   const buttonList = [{ text: '追蹤' }]

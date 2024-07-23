@@ -79,6 +79,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           userType={userType}
           picksData={picksData}
           memberId={userData.id}
+          memberCustomId={customId}
         />
       ) : (
         <MemberPage
@@ -92,6 +93,7 @@ const page = async ({ params, searchParams }: PageProps) => {
           picksData={picksData}
           bookmarks={bookmarkData}
           memberId={userData.id}
+          memberCustomId={customId}
         />
       )}
     </main>

@@ -25,6 +25,7 @@ type MemberPageProps = {
   picksData: PickList
   bookmarks: Bookmarks
   memberId: string
+  memberCustomId: string
 }
 
 const MemberPage: React.FC<MemberPageProps> = ({
@@ -38,6 +39,7 @@ const MemberPage: React.FC<MemberPageProps> = ({
   picksData,
   bookmarks,
   memberId,
+  memberCustomId,
 }) => {
   const [picksOrBookmarks, setPicksOrBookmarks] = useState<
     PickList | Bookmarks
@@ -46,8 +48,16 @@ const MemberPage: React.FC<MemberPageProps> = ({
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },
-    { tabName: TabKey.FOLLOWER, count: followerCount },
-    { tabName: TabKey.FOLLOWING, count: followingCount },
+    {
+      tabName: TabKey.FOLLOWER,
+      count: followerCount,
+      redirectLink: `${memberCustomId}/follower?user=${memberCustomId}`,
+    },
+    {
+      tabName: TabKey.FOLLOWING,
+      count: followingCount,
+      redirectLink: `${memberCustomId}/following?user=${memberCustomId}`,
+    },
   ]
 
   const buttonList = [{ text: '編輯個人檔案' }]
