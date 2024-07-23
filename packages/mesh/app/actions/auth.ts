@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 
 import { DAY } from '@/constants/time-unit'
 import { type UserFormData } from '@/context/login'
+import { getAdminAuth } from '@/firebase/server'
 import {
   type MemberCreateInput,
   GetCurrentUserMemberIdDocument,
@@ -11,7 +12,6 @@ import {
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
-import admin from '../../firebase/server'
 import getAllPublishers from './get-all-publishers'
 
 export async function validateIdToken(
@@ -19,7 +19,7 @@ export async function validateIdToken(
 ): Promise<{ status: 'verified' | 'expired' | 'error' }> {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const decodedToken = await admin.auth().verifyIdToken(token)
+    const decodedToken = await getAdminAuth().verifyIdToken(token)
 
     if (decodedToken.exp * 1000 < Date.now()) {
       return { status: 'expired' }
@@ -60,7 +60,7 @@ export async function getCurrentUser() {
   if (!idToken) return undefined
 
   try {
-    const { uid } = await admin.auth().verifyIdToken(idToken)
+    const { uid } = await getAdminAuth().verifyIdToken(idToken)
     const data = await fetchGraphQL(
       GetCurrentUserMemberIdDocument,
       { uid },
@@ -95,7 +95,7 @@ export async function signUpMember(formData: UserFormData) {
   if (!idToken) return undefined
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken)
+    const decodedToken = await getAdminAuth().verifyIdToken(idToken)
 
     //TODO: sync with different environment JSON/Class
     const publishersData = (await getAllPublishers()) ?? []
