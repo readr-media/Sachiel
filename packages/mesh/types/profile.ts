@@ -1,6 +1,6 @@
 import {
-  GetMemberProfileQuery,
-  GetPublisherProfileQuery,
+  type GetMemberProfileQuery,
+  type GetPublisherProfileQuery,
 } from '@/graphql/__generated__/graphql'
 
 export enum TabKey {
