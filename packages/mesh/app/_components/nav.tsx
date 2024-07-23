@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import Icon, { IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
+import useAuthState from '@/hooks/use-auth-state'
 
 type IconInfo = {
   icon: {
@@ -196,10 +197,9 @@ const MobileNav = ({
 
 export default function Nav() {
   const path = usePathname()
-  // TODO: fetch user avatar, use centralize state manage system to store the avatar
-  // FIXME: need to add z-index because the avatar has higher z-index than fixed nav
-  const avatarUrl =
-    'https://lh3.googleusercontent.com/a/AATXAJyqlWWzuL-doLfL8JVibMqJq32PR9AO2FT9U4SW=s96-c'
+  const { currentUser } = useAuthState()
+
+  const avatarUrl = currentUser?.avatar ?? ''
 
   return (
     <>
