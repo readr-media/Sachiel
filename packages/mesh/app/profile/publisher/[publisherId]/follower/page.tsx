@@ -11,7 +11,8 @@ const FollowerPage = async ({ params }: PageProps) => {
     publisherId: params.publisherId,
     takes: takeCount,
   })
-  const followList = response?.publisher?.follower || []
+  const targetPublisher = response?.publishers && response?.publishers[0]
+  const followList = targetPublisher?.follower || []
   if (!followList.length) return <EmptyFollowingStatus />
   return (
     <div className="flex max-w-[1120px] grow flex-col items-center sm:gap-5  sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
@@ -23,6 +24,7 @@ const FollowerPage = async ({ params }: PageProps) => {
                 key={customId}
                 followerId={id}
                 followerCustomId={customId || ''}
+                // TODO: Avatar change to shared components
                 followerAvatar={avatar || ''}
                 followerName={name || ''}
               />
