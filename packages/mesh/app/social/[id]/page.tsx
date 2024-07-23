@@ -1,3 +1,6 @@
+import { redirect } from 'next/navigation'
+
+import { getCurrentUser } from '@/app/actions/auth'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
@@ -16,8 +19,12 @@ export const revalidate = 0
 
 export default async function Page({ params }: { params: { id: string } }) {
   const globalLogFields = getLogTraceObjectFromHeaders()
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
 
-  const userId = params.id
+  if (!memberId) redirect('/login')
+  if (params.id !== memberId) redirect(`/social/${memberId}`)
+
   const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
@@ -25,7 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const data = await fetchGraphQL(
     GetMemberFollowingDocument,
     {
-      memberId: userId,
+      memberId,
       takes: feedsNumber,
     },
     globalLogFields
@@ -67,7 +74,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const mostFollowedMembersByFollowings =
     processMostFollowedMembersByFollowings(
-      userId,
+      memberId,
       currentMemberFollowings,
       currentMemberFollowingMemberIds,
       suggestedFollowersNumber

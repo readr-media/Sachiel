@@ -1,3 +1,7 @@
+import * as tsImport from 'ts-import'
+
+const { FIREBASE_DOMAIN } = await tsImport.load('./constants/config.ts')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -15,6 +19,10 @@ const nextConfig = {
       {
         source: '/robots.txt',
         destination: '/api/robots',
+      },
+      {
+        source: '/__/auth/:path*',
+        destination: `https://${FIREBASE_DOMAIN}/__/auth/:path*`,
       },
     ]
   },

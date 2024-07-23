@@ -2,42 +2,17 @@ import Link from 'next/link'
 
 import Button from '@/components/button'
 import { useLogin } from '@/context/login'
-
-const loginOptions = [
-  {
-    method: 'apple',
-    iconName: 'icon-apple',
-  },
-  {
-    method: 'facebook',
-    iconName: 'icon-facebook-square',
-  },
-  {
-    method: 'google',
-    iconName: 'icon-google',
-  },
-  {
-    method: 'email',
-    iconName: 'icon-email',
-  },
-] as const
-type LoginMethod = typeof loginOptions[number]['method']
+import { type LoginMethod, authProvider } from '@/utils/auth-provider'
 
 export default function LoginEntry() {
   const { setStep } = useLogin()
+  const { loginOptions, handleLoginMethod } = authProvider()
 
-  const handleLoginMethod = (method: LoginMethod) => {
-    switch (method) {
-      case 'apple':
-        return console.log('AppleAuthProvider')
-      case 'facebook':
-        return console.log('FacebookAuthProvider')
-      case 'google':
-        return console.log('GoogleAuthProvider')
-      case 'email':
-        return setStep('email')
-    }
+  const onLoginMethodClick = async (method: LoginMethod) => {
+    const result = await handleLoginMethod(method)
+    if (result === 'email') setStep('email')
   }
+
   return (
     <div className="flex flex-col gap-6 p-10">
       <div className="flex flex-col items-center gap-2">
@@ -57,7 +32,7 @@ export default function LoginEntry() {
               color="white"
               text={transformedBtnText(option.method)}
               icon={{ iconName: option.iconName, size: 'm' }}
-              onClick={() => handleLoginMethod(option.method)}
+              onClick={() => onLoginMethodClick(option.method)}
             />
           </div>
         ))}

@@ -8,6 +8,7 @@ const avatarSizes = {
   m: 28,
   l: 44,
   xl: 64,
+  xxl: 80,
 } as const
 
 const avatarClasses = {
@@ -19,10 +20,12 @@ const avatarClasses = {
 export default function Avatar({
   src,
   size,
+  isRound = true,
   extra = '',
 }: {
   src: string
   size: Size
+  isRound?: boolean
   extra?: string
 }) {
   const sideLength = avatarSizes[size]
@@ -30,7 +33,9 @@ export default function Avatar({
 
   return src ? (
     <Image
-      className={`${avatarClass} inline-block rounded-full bg-white ring-2 ring-white ${extra}`}
+      className={`${avatarClass} inline-block ${
+        isRound && 'rounded-full'
+      } bg-white ring-2 ring-white ${extra}`}
       src={src}
       width={sideLength}
       height={sideLength}

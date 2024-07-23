@@ -1,13 +1,24 @@
 import { useLogin } from '@/context/login'
+import useCountdown from '@/hooks/use-countdown'
+import { sendEmailLink } from '@/utils/auth-provider'
 
 export default function LoginEmailConfirmation() {
-  const { setStep } = useLogin()
+  const { formData, setStep } = useLogin()
+  const { email } = formData
+  const { countdown, resetCountdown } = useCountdown(60)
+
+  const resendEmail = async () => {
+    if (countdown === 0) {
+      sendEmailLink(email)
+      resetCountdown()
+    }
+  }
 
   return (
     <div className="flex w-full justify-center p-10">
       <div className="w-[295px]">
         <p className="subtitle-1 pb-6 text-center text-primary-700">
-          我們已將登入連結寄到 readr@gmail.com，請點擊信件中的連結登入。
+          我們已將登入連結寄到 {email}，請點擊信件中的連結登入。
         </p>
         <p className="footnote text-center text-primary-400">
           沒收到信件？請檢查垃圾信件匣
@@ -16,9 +27,10 @@ export default function LoginEmailConfirmation() {
           或
           <button
             className="text-primary-700 underline underline-offset-2"
-            onClick={() => console.log('re-send confirmed email')}
+            onClick={resendEmail}
+            disabled={countdown > 0}
           >
-            重新發送信件(60s)
+            重新發送信件 {countdown === 0 ? '' : `(${countdown}s)`}
           </button>
         </p>
         <button
@@ -28,14 +40,6 @@ export default function LoginEmailConfirmation() {
           }}
         >
           嘗試其他登入方式
-        </button>
-        <button
-          className="body-3 w-full text-center text-primary-200"
-          onClick={() => {
-            setStep('set-name')
-          }}
-        >
-          temp-next,todo:redirect
         </button>
       </div>
     </div>

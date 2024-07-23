@@ -78,19 +78,9 @@ query GetMember($memberId: ID!) {
 
 query GetMemberByFollowingCategory($slugs: [String!]!) {
   members(
-    where: {
-      following_category: {
-        every: {
-          slug: {
-            in: $slugs
-          }
-        }
-      }
-    },
-    orderBy: [{
-      id: desc
-    }],
-    take: 20,
+    where: { following_category: { every: { slug: { in: $slugs } } } }
+    orderBy: [{ id: desc }]
+    take: 20
     skip: 0
   ) {
     id
@@ -98,5 +88,201 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
     name
     nickname
     avatar
+  }
+}
+
+query GetCurrentUserMemberId($uid: String!) {
+  member(where: { firebaseId: $uid }) {
+    id
+    name,
+    customId,
+    avatar,
+  }
+}
+
+query GetMemberProfile($customId: String, $takes: Int!) {
+  member(where: { customId: $customId }) {
+    id
+    name
+    avatar
+    avatar_image {
+      urlOriginal
+    }
+    intro
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    followingCount
+    followerCount
+
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $takes
+    ) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+          take: 1
+        ) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+
+    booksCount: pickCount(
+      where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+    )
+    books: pick(
+      where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+      take: $takes
+    ) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        commentCount
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+          take: 1
+        ) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
+  }
+}
+
+query GetVisitorProfile($customId: String, $takes: Int!) {
+  member(where: { customId: $customId }) {
+    id
+    name
+    avatar
+    avatar_image {
+      urlOriginal
+    }
+    intro
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    followingCount
+    followerCount
+
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $takes
+    ) {
+      story {
+        id
+        og_image
+        source {
+          title
+          official_site
+        }
+        title
+        og_title
+        createdAt
+        tag {
+          id
+          name
+        }
+        pick {
+          createdAt
+          member {
+            id
+            name
+            avatar
+          }
+        }
+        pickCount
+        commentCount
+        paywall
+        full_screen_ad
+        published_date
+        comment(
+          orderBy: { createdAt: desc }
+          where: { member: { customId: { equals: $customId } } }
+        ) {
+          id
+          content
+          createdAt
+          likeCount
+          member {
+            id
+            name
+            avatar
+          }
+        }
+      }
+      kind
+    }
   }
 }
