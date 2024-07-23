@@ -1,8 +1,9 @@
 'use client'
 import { useId } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import Icon from '@/components/icon'
+import useClickOutside from '@/hooks/use-click-outside'
 
 export default function TooltipButton({
   color,
@@ -18,25 +19,7 @@ export default function TooltipButton({
   const [isTooltipVisible, setIsTooltipVisible] = useState(false)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const tooltipId = useId()
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(event.target as Node)
-      ) {
-        setIsTooltipVisible(false)
-      }
-    }
-
-    if (isTooltipVisible) {
-      document.addEventListener('click', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [isTooltipVisible])
+  useClickOutside(tooltipRef, () => setIsTooltipVisible(false))
 
   const getTooltipPositionClass = () => {
     switch (direction) {
