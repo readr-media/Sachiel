@@ -3624,6 +3624,19 @@ export type UserActionStoryFragment = {
   }> | null
 }
 
+export type SignUpMemberMutationVariables = Exact<{
+  registrationData: MemberCreateInput
+}>
+
+export type SignUpMemberMutation = {
+  __typename?: 'Mutation'
+  createMember?: {
+    __typename?: 'Member'
+    id: string
+    firebaseId?: string | null
+  } | null
+}
+
 export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllCategoriesQuery = {
@@ -3812,6 +3825,21 @@ export type GetMemberByFollowingCategoryQuery = {
     nickname?: string | null
     avatar?: string | null
   }> | null
+}
+
+export type GetCurrentUserMemberIdQueryVariables = Exact<{
+  uid: Scalars['String']['input']
+}>
+
+export type GetCurrentUserMemberIdQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    id: string
+    name?: string | null
+    customId?: string | null
+    avatar?: string | null
+  } | null
 }
 
 export type GetMemberProfileQueryVariables = Exact<{
@@ -4285,6 +4313,61 @@ export const UserActionStoryFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<UserActionStoryFragment, unknown>
+export const SignUpMemberDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'SignUpMember' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'registrationData' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'MemberCreateInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'registrationData' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'firebaseId' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SignUpMemberMutation,
+  SignUpMemberMutationVariables
+>
 export const GetAllCategoriesDocument = {
   kind: 'Document',
   definitions: [
@@ -5113,6 +5196,69 @@ export const GetMemberByFollowingCategoryDocument = {
 } as unknown as DocumentNode<
   GetMemberByFollowingCategoryQuery,
   GetMemberByFollowingCategoryQueryVariables
+>
+export const GetCurrentUserMemberIdDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCurrentUserMemberId' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'uid' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'firebaseId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'uid' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCurrentUserMemberIdQuery,
+  GetCurrentUserMemberIdQueryVariables
 >
 export const GetMemberProfileDocument = {
   kind: 'Document',

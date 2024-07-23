@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { signUpMember } from '@/app/actions/auth'
 import getMemberByFollowingCategory from '@/app/actions/get-members-by-category'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -53,6 +54,13 @@ export default function LoginSetFollowing() {
         ...prev,
         followings: [...prev.followings, selectId],
       }))
+    }
+  }
+
+  const handleFinishSignUp = async () => {
+    const response = await signUpMember(formData)
+    if (response) {
+      setStep('set-wallet')
     }
   }
 
@@ -129,7 +137,7 @@ export default function LoginSetFollowing() {
           size="lg"
           color="primary"
           text="完成"
-          onClick={() => setStep('set-wallet')}
+          onClick={handleFinishSignUp}
         />
       </div>
     </>
