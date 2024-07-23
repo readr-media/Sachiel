@@ -1,8 +1,7 @@
 'use client'
-import Image from 'next/image'
 import { useState } from 'react'
 
-import Button from '@/components/button'
+import FollowListItem from '@/app/profile/_components/follow-list-item'
 import Icon from '@/components/icon'
 
 import { type FollowingListType } from '../page'
@@ -45,38 +44,13 @@ const FollowingList = ({
         <ul className="lg:grid lg:grid-cols-2 lg:gap-x-5">
           {followingList?.map((following) => {
             return (
-              <li
+              <FollowListItem
                 key={following.id}
-                className="flex items-center justify-between pb-5 pt-[12.5px] first-of-type:pt-[24.5px] lg:px-5"
-              >
-                <span className="flex items-center">
-                  <Image
-                    className=" mr-2 aspect-square rounded-full"
-                    src={
-                      following?.avatar || '/images/default-avatar-image.png'
-                    }
-                    alt={`${following.name}'s avatar`}
-                    width={44}
-                    height={44}
-                  />
-                  <div className="flex flex-col">
-                    <p className="subtitle-1">{following.name}</p>
-                    <p className="body-3 text-primary-500">
-                      {following.customId}
-                    </p>
-                  </div>
-                </span>
-                <Button
-                  color="white"
-                  onClick={() => {}}
-                  size="sm"
-                  text="追蹤"
-                  activeState={{
-                    isActive: true,
-                    activeText: '追蹤中',
-                  }}
-                />
-              </li>
+                followerId={following.id}
+                followerAvatar={following.avatar || ''}
+                followerName={following.name || ''}
+                followerCustomId={following.customId || ''}
+              />
             )
           })}
         </ul>

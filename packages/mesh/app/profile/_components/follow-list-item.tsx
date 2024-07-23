@@ -3,19 +3,19 @@
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
 
-type FollowerListItemProps = {
+type FollowListItemProps = {
   followerId: string
   followerAvatar: string
   followerName: string
   followerCustomId: string
 }
 
-const FollowerListItem = ({
+const FollowListItem = ({
   followerId,
   followerAvatar,
   followerName,
   followerCustomId,
-}: FollowerListItemProps) => {
+}: FollowListItemProps) => {
   const handleFollowOnClick = () => {
     // TODO: add function
     return
@@ -46,4 +46,4 @@ const FollowerListItem = ({
   )
 }
 
-export default FollowerListItem
+export default FollowListItem

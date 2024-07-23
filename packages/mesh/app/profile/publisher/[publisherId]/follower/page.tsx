@@ -1,5 +1,5 @@
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
-import FollowerListItem from '@/app/profile/_components/following-list-item'
+import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetPublisherFollowerListDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
@@ -20,7 +20,7 @@ const FollowerPage = async ({ params }: PageProps) => {
         <ul className="lg:grid lg:grid-cols-2 lg:gap-x-5">
           {followList?.map(({ id, customId, avatar, name }) => {
             return (
-              <FollowerListItem
+              <FollowListItem
                 key={customId}
                 followerId={id}
                 followerCustomId={customId || ''}
