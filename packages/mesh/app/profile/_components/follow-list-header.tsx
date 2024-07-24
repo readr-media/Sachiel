@@ -16,11 +16,11 @@ const FollowListHeader = ({
   }
   return (
     <div className="flex grow flex-col bg-multi-layer-light">
-      <header className="flex h-[60px] border-b bg-white">
+      <header className="flex h-[60px] border-b bg-white px-2 sm:px-5 md:px-[70px] lg:px-10">
         <div className="grid grow grid-cols-3 items-center sm:flex sm:justify-start">
           <button
             type="button"
-            className="ml-2 p-3"
+            className="p-3 pl-0"
             onClick={backToPreviousPage}
           >
             <Icon
