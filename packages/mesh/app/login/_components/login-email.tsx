@@ -1,10 +1,14 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useLogin } from '@/context/login'
+import { sendEmailLink } from '@/utils/auth-provider'
+import { debounce } from '@/utils/performance'
 
 export default function LoginEmail() {
-  const { formData, setFormData, setStep } = useLogin()
+  const { formData, setFormData, setStep, lastUsedEmail, setLastUsedEmail } =
+    useLogin()
   const { email } = formData
+  const isValid = isValidEmail(email)
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -12,13 +16,15 @@ export default function LoginEmail() {
     }
   }
 
-  const isValid = isValidEmail(email)
-
-  const handleSubmit = () => {
+  const handleSubmit = debounce(async () => {
     if (isValid) {
+      if (email !== lastUsedEmail) {
+        await sendEmailLink(email)
+        setLastUsedEmail(email)
+      }
       setStep('email-confirmation')
     }
-  }
+  })
 
   return (
     <div className="flex flex-col items-center gap-5 px-5 py-10 sm:gap-10 sm:px-10">
