@@ -1,0 +1,39 @@
+'use client'
+import { useRouter } from 'next/navigation'
+
+import Icon from '@/components/icon'
+
+const FollowListHeader = ({
+  children,
+  title,
+}: Readonly<{
+  children: React.ReactNode
+  title: string
+}>) => {
+  const router = useRouter()
+  const backToPreviousPage = () => {
+    router.back()
+  }
+  return (
+    <div className="flex grow flex-col bg-multi-layer-light">
+      <header className="flex h-[60px] border-b bg-white">
+        <div className="grid grow grid-cols-3 items-center sm:flex sm:justify-start">
+          <button
+            type="button"
+            className="ml-2 p-3"
+            onClick={backToPreviousPage}
+          >
+            <Icon
+              iconName="icon-chevron-left"
+              size={{ width: 20, height: 20 }}
+            />
+          </button>
+          <p className="list-title place-self-center">{title}</p>
+        </div>
+      </header>
+      {children}
+    </div>
+  )
+}
+
+export default FollowListHeader
