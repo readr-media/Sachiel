@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
+    "@dynamic-labs/ethereum": "^2.3.5",
+    "@dynamic-labs/sdk-react-core": "^2.3.5",
     "@readr-media/react-infinite-scroll-list": "^1.1.0",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
@@ -24,7 +26,8 @@
     "react-dom": "^18",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.3.0",
-    "ts-import": "^5.0.0-beta.0"
+    "ts-import": "^5.0.0-beta.0",
+    "viem": "^2.17.11"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
