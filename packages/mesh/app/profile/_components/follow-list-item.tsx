@@ -43,6 +43,7 @@ const FollowListItem = ({
             size="sm"
             text="追蹤"
             activeState={{
+              // TODO: Button 初始狀態更改為使用者資料
               isActive: true,
               activeText: '追蹤中',
             }}
