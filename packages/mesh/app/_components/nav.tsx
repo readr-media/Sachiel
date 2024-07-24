@@ -95,7 +95,7 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={path === iconInfo.href}
+                    isOn={path.startsWith(iconInfo.href)}
                     iconInfo={iconInfo}
                     avatarUrl={avatarUrl}
                   />
@@ -104,7 +104,7 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={path === iconInfo.href}
+                    isOn={path.startsWith(iconInfo.href)}
                     iconInfo={iconInfo}
                   />
                 )
@@ -182,14 +182,25 @@ const MobileNav = ({
   return (
     <nav className="fixed bottom-0 left-0 right-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
-        {MOBILE_NAV_ICONS.map((iconInfo) => (
-          <MobileNavIcon
-            key={iconInfo.icon.default}
-            isOn={path === iconInfo.href}
-            iconInfo={iconInfo}
-            avatarUrl={avatarUrl}
-          />
-        ))}
+        {MOBILE_NAV_ICONS.map((iconInfo) => {
+          if (iconInfo.href === '/')
+            return (
+              <MobileNavIcon
+                key={iconInfo.icon.default}
+                isOn={path === iconInfo.href}
+                iconInfo={iconInfo}
+                avatarUrl={avatarUrl}
+              />
+            )
+          return (
+            <MobileNavIcon
+              key={iconInfo.icon.default}
+              isOn={path.startsWith(iconInfo.href)}
+              iconInfo={iconInfo}
+              avatarUrl={avatarUrl}
+            />
+          )
+        })}
       </div>
     </nav>
   )
