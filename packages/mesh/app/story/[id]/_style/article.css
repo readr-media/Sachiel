@@ -110,7 +110,7 @@
       color: #575d71;
     }
 
-    & > div.code-block {
+    & > pre.code-block {
       padding: 12px 20px;
       background: #212944;
       color: #e5e6e9;
@@ -119,12 +119,12 @@
       line-height: 1.5;
     }
 
-    & > div.color-box {
+    & > section.color-box {
       padding: 24px 32px;
       background: #f2f2f4;
     }
 
-    & > div.info-box {
+    & > section.infobox-block {
       background: #f2f2f4;
       padding: 24px 0;
       & > .title {
@@ -237,7 +237,7 @@
         }
       }
 
-      & > div.code-block {
+      & > pre.code-block {
         padding: 12px 20px;
         background: #212944;
         color: #e5e6e9;

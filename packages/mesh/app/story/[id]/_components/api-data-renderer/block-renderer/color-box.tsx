@@ -19,8 +19,8 @@ export default function ColorBoxBlock({
 }) {
   const { body } = apiDataBlock.content[0]
   return (
-    <div className="color-box">
+    <section className="color-box">
       <div className="body" dangerouslySetInnerHTML={{ __html: body }}></div>
-    </div>
+    </section>
   )
 }

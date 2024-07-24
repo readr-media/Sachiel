@@ -18,9 +18,9 @@ export default function InfoboxBlock({
 }) {
   const { body, title } = apiDataBlock.content[0]
   return (
-    <div className="info-box">
+    <section className="infobox-block">
       <div className="title">{title}</div>
       <div className="body" dangerouslySetInnerHTML={{ __html: body }}></div>
-    </div>
+    </section>
   )
 }

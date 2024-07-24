@@ -13,7 +13,7 @@ export default function BlockquoteBlock({
 }) {
   return (
     <div className="blockquote-block">
-      <div
+      <blockquote
         className="body"
         dangerouslySetInnerHTML={{ __html: apiDataBlock.content[0] }}
       />
