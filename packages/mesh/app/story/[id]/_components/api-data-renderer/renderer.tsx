@@ -71,7 +71,7 @@ export default function ApiDataRenderer({ apiData }: { apiData: ApiData }) {
             )
 
           default:
-            console.error('unhandled apiData type', apiDataBlock.type)
+            console.error('unhandled apiData type', apiDataBlock?.type)
             return null
         }
       })}
