@@ -162,7 +162,10 @@ export default async function Page() {
             <div className="flex flex-row items-center justify-center gap-1">
               <Icon iconName="icon-mesh-point" size="m" className="h-6 w-6" />
               <p className="hero-title text-primary-700">
-                {formatBalance(balance)}
+                {balance.toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </p>
             </div>
             <MeshPointHelper />
@@ -202,21 +205,4 @@ export default async function Page() {
       </div>
     </main>
   )
-}
-
-function formatBalance(number: number) {
-  const [integerPart, decimalPart] = number.toString().split('.')
-  let formattedInteger = ''
-  let count = 0
-
-  for (let i = integerPart.length - 1; i >= 0; i--) {
-    formattedInteger = integerPart[i] + formattedInteger
-    count++
-
-    if (count % 3 === 0 && i !== 0) {
-      formattedInteger = ',' + formattedInteger
-    }
-  }
-
-  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger
 }
