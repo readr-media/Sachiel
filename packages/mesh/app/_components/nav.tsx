@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 
 import Icon, { IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
+import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import useAuthState from '@/hooks/use-auth-state'
 
@@ -31,13 +32,7 @@ const NonMobileNavIcon = ({
   const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex h-8 w-8 items-center justify-center">
-      <Image
-        src={avatarUrl}
-        width={26}
-        height={26}
-        alt="user avatar"
-        className="rounded-[50%]"
-      />
+      <Avatar src={avatarUrl} size="m" />
     </div>
   ) : isOn ? (
     <Icon size="xl" iconName={iconInfo.icon.on} />

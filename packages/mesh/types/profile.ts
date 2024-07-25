@@ -21,6 +21,13 @@ export enum TabCategory {
   PUBLISH = 'PUBLISH',
 }
 
+export type FormData = {
+  name: string
+  customId: string
+  intro: string
+  avatar: string
+}
+
 export type Member = GetMemberProfileQuery['member']
 export type PickList = NonNullable<Member>['picks']
 export type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']

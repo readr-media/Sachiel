@@ -1,3 +1,4 @@
+import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import {
   GetMemberFollowingListDocument,
@@ -16,13 +17,14 @@ export type FollowingPublisherListType = NonNullable<
   GetMemberFollowingListQuery['member']
 >['follow_publisher']
 
-const FollowingPage = async ({ params, searchParams }: PageProps) => {
+const FollowingPage = async ({ params }: PageProps) => {
   const takeCount = 20
+  const user = await getCurrentUser()
   const response = await fetchGraphQL(GetMemberFollowingListDocument, {
     customId: params.customId,
     take: takeCount,
   })
-  const isVisitor = params.customId !== searchParams.user
+  const isVisitor = params.customId !== user?.customId
   const followPublisherResponse = response?.member?.follow_publisher || []
   const followResponse = response?.member?.following || []
   const followPublisherData = followPublisherResponse.map((followItem) => {

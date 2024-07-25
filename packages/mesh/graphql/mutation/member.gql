@@ -4,3 +4,55 @@ mutation SignUpMember($registrationData: MemberCreateInput!) {
     firebaseId
   }
 }
+
+mutation UpdateMemberProfile(
+  $customId: String
+  $changedCustomId: String
+  $name: String
+  $intro: String
+) {
+  updateMember(
+    where: { customId: $customId }
+    data: { name: $name, customId: $changedCustomId, intro: $intro }
+  ) {
+    customId
+  }
+}
+
+mutation ConnectMemberAvatar(
+  $customId: String
+  $imageId: ID!
+  $imageOriginUrl: String
+) {
+  updateMember(
+    where: { customId: $customId }
+    data: {
+      avatar: $imageOriginUrl
+      avatar_image: { connect: { id: $imageId } }
+    }
+  ) {
+    customId
+  }
+}
+
+mutation CreatePhoto($image: Upload, $imageName: String) {
+  createPhoto(data: { name: $imageName, file: { upload: $image } }) {
+    resized {
+      original
+    }
+    id
+  }
+}
+
+# 刪除需要刪除照片，並且將avatar欄位清空
+mutation DeletePhoto($photoId: ID, $memberId: String) {
+  deletePhoto(where: { id: $photoId }) {
+    id
+  }
+  updateMember(
+    where: { customId: $memberId }
+    data: { avatar: "", avatar_image: { disconnect: true } }
+  ) {
+    customId
+  }
+}

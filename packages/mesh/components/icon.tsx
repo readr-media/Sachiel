@@ -98,6 +98,9 @@ export type IconName =
   | 'icon-mesh-point'
   | 'icon-question-mark-circle'
   | 'icon-publisher-readr'
+  | 'icon-close-with-background'
+  | 'icon-photo'
+  | 'icon-delete'
 
 export type IconProps = {
   size: Size

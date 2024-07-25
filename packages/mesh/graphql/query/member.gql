@@ -329,6 +329,12 @@ query GetMemberProfileEditData($customId: String) {
     customId
     name
     avatar
+    avatar_image {
+      id
+      resized {
+        original
+      }
+    }
     intro
   }
 }

@@ -1,11 +1,12 @@
 'use client'
 import '@/styles/global.css'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
+import useAuthState from '@/hooks/use-auth-state'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 import Footer from '../_components/footer'
@@ -17,12 +18,11 @@ export default function ProfileLayout({
   children: React.ReactNode
 }>) {
   const pathName = usePathname()
-  const searchParams = useSearchParams()
+  const { currentUser } = useAuthState()
   const pathNameList = pathName.split('/')
   const { width } = useWindowDimensions()
-  // TODO: publisher now using items id will be number
   const userId = pathNameList.pop()
-  const isSelf = userId === searchParams.get('user')
+  const isSelf = userId === currentUser?.customId
   const router = useRouter()
   const backToPreviousPage = () => {
     router.back()

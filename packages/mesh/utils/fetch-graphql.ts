@@ -32,3 +32,29 @@ export default async function fetchGraphQL<
     return null
   }
 }
+
+export async function uploadGraphQL<
+  TResult,
+  TVariables extends OperationVariables
+>(
+  mutation: TypedDocumentNode<TResult, TVariables>,
+  variables?: TVariables,
+  traceObject?: TraceObject,
+  errorMessage?: string
+): Promise<TResult | null> {
+  try {
+    const { data, errors: gqlErrors } = await getClient().mutate({
+      mutation,
+      variables,
+    })
+    if (gqlErrors && gqlErrors.length > 0) {
+      throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
+    }
+    return data || null
+  } catch (error) {
+    const fallbackErrorMessage =
+      'Upload GraphQL failed, info: ' + JSON.stringify({ mutation, variables })
+    logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
+    return null
+  }
+}
