@@ -94,9 +94,9 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name,
-    customId,
-    avatar,
+    name
+    customId
+    avatar
   }
 }
 
@@ -321,5 +321,14 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
       name
       avatar
     }
+  }
+}
+
+query GetMemberProfileEditData($customId: String) {
+  member(where: { customId: $customId }) {
+    customId
+    name
+    avatar
+    intro
   }
 }
