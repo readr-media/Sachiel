@@ -1,3 +1,4 @@
+import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetMemberFollowerListDocument } from '@/graphql/__generated__/graphql'
@@ -5,9 +6,10 @@ import fetchGraphQL from '@/utils/fetch-graphql'
 
 import { PageProps } from '../page'
 
-const FollowerPage = async ({ params, searchParams }: PageProps) => {
+const FollowerPage = async ({ params }: PageProps) => {
   const takeCount = 20
-  const isVisitor = params.customId !== searchParams.user
+  const user = await getCurrentUser()
+  const isVisitor = params.customId !== user?.customId
   const response = await fetchGraphQL(GetMemberFollowerListDocument, {
     customId: params.customId,
     take: takeCount,
