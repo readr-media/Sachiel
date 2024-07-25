@@ -57,7 +57,7 @@ export default function ProfileLayout({
                 {!isSelf && (
                   <button
                     type="button"
-                    className="ml-2 p-3"
+                    className="p-3 pl-0"
                     onClick={backToPreviousPage}
                   >
                     <Icon
