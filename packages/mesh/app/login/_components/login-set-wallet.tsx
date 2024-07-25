@@ -17,7 +17,7 @@ export default function LoginSetWallet() {
           color="white"
           icon={{ iconName: 'icon-dynamicxyz', size: 'm' }}
           text="以Dynamic繼續"
-          onClick={() => router.push('/wallet')}
+          onClick={() => router.push('/point')}
         />
       </div>
       <p className="footnote text-primary-400">

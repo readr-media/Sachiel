@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const protectRoutes = ['/media', '/social', '/profile']
+  const protectRoutes = ['/media', '/social', '/point', '/profile']
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = protectRoutes.includes(currentPath)
 
@@ -21,5 +21,6 @@ export const config = {
     '/media/:path*',
     '/social/:path*',
     '/profile/:path*',
+    '/point/:path*',
   ],
 }
