@@ -51,12 +51,12 @@ const MemberPage: React.FC<MemberPageProps> = ({
     {
       tabName: TabKey.FOLLOWER,
       count: followerCount,
-      redirectLink: `${memberCustomId}/follower?user=${memberCustomId}`,
+      redirectLink: `${memberCustomId}/follower`,
     },
     {
       tabName: TabKey.FOLLOWING,
       count: followingCount,
-      redirectLink: `${memberCustomId}/following?user=${memberCustomId}`,
+      redirectLink: `${memberCustomId}/following`,
     },
   ]
 

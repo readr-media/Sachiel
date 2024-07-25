@@ -1,3 +1,4 @@
+import { getCurrentUser } from '@/app/actions/auth'
 import {
   type GetMemberProfileQuery,
   type GetVisitorProfileQuery,
@@ -15,16 +16,15 @@ export type PageProps = {
     customId: string
     type: string
   }
-  searchParams: {
-    user: string
-  }
 }
 type FetchGraphQLByIdentify = (
   isVisitor: boolean
 ) => Promise<GetMemberProfileQuery> | Promise<GetVisitorProfileQuery>
-const page = async ({ params, searchParams }: PageProps) => {
+const page = async ({ params }: PageProps) => {
+  const user = await getCurrentUser()
   const customId = params.customId
-  const isVisitor = searchParams.user !== customId
+  // when custom id from OAuth is different from url, the user is visitor
+  const isVisitor = user?.customId !== customId
   const userType = isVisitor ? 'visitor' : 'member'
   const takesCount = 20
   const fetchGraphQLByIdentify: FetchGraphQLByIdentify = async (
