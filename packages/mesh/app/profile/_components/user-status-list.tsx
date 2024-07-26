@@ -15,15 +15,25 @@ const UserStatusList = ({ userStatusList }: UserStatusListProps) => (
         key={tabName}
         className="relative flex h-[38px] w-[84px] flex-col items-center justify-between after:absolute after:-right-3 after:top-[9px] after:h-5 after:w-[0.5px] after:bg-primary-200 last:after:hidden sm:w-fit sm:flex-row sm:gap-1 sm:after:hidden"
       >
-        <Link
-          href={redirectLink || ''}
-          className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center"
-        >
-          <p className="profile-title-2 text-primary-700">{count}</p>
-          <p className="profile-subtitle sm:body-2 text-primary-500">
-            {tabName}
-          </p>
-        </Link>
+        {/* 如果沒有redirectLink的話就使用<div/> */}
+        {redirectLink ? (
+          <Link
+            href={redirectLink}
+            className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center"
+          >
+            <p className="profile-title-2 text-primary-700">{count}</p>
+            <p className="profile-subtitle sm:body-2 text-primary-500">
+              {tabName}
+            </p>
+          </Link>
+        ) : (
+          <div className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center">
+            <p className="profile-title-2 text-primary-700">{count}</p>
+            <p className="profile-subtitle sm:body-2 text-primary-500">
+              {tabName}
+            </p>
+          </div>
+        )}
       </li>
     ))}
   </ul>
