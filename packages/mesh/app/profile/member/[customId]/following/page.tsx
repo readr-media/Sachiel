@@ -52,11 +52,13 @@ const FollowingPage = async ({ params }: PageProps) => {
         title="媒體"
         followingList={followPublisherData as FollowingListType}
         defaultToggle={false}
+        type="publisher"
       />
       <FollowingList
         title="人物"
         followingList={followResponse}
         defaultToggle={true}
+        type="member"
       />
     </div>
   )

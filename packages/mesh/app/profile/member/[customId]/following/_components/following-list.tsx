@@ -9,11 +9,13 @@ type FollowingListProps = {
   followingList: FollowingListType
   title: string
   defaultToggle: boolean
+  type: 'member' | 'publisher'
 }
 const FollowingList = ({
   followingList = [],
   title = '媒體',
   defaultToggle,
+  type,
 }: FollowingListProps) => {
   // TODO: default toggle set to props
   const [resultShowing, toggleResultShowing] = useState(defaultToggle)
@@ -50,6 +52,7 @@ const FollowingList = ({
                 followerAvatar={following.avatar || ''}
                 followerName={following.name || ''}
                 followerCustomId={following.customId || ''}
+                type={type}
               />
             )
           })}

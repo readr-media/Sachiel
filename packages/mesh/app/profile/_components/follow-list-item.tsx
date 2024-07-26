@@ -10,6 +10,7 @@ type FollowListItemProps = {
   followerAvatar: string
   followerName: string
   followerCustomId: string
+  type: 'member' | 'publisher'
 }
 
 const FollowListItem = ({
@@ -17,6 +18,7 @@ const FollowListItem = ({
   followerAvatar,
   followerName,
   followerCustomId,
+  type,
 }: FollowListItemProps) => {
   const handleFollowOnClick = () => {
     // TODO: add function
@@ -28,7 +30,7 @@ const FollowListItem = ({
       className="flex items-center justify-between pb-5 pt-[12.5px] first-of-type:pt-[24.5px] lg:px-5"
     >
       <Link
-        href={`/profile/member/${followerCustomId}`}
+        href={`/profile/${type}/${followerCustomId}`}
         className="flex w-full grow items-center"
       >
         <Avatar src={followerAvatar} size="l" extra="mr-2 shrink-0" />

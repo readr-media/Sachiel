@@ -17,7 +17,7 @@ const UserStatusList = ({ userStatusList }: UserStatusListProps) => (
       >
         <Link
           href={redirectLink || ''}
-          className="flex flex-col items-center sm:flex-row sm:items-center"
+          className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center"
         >
           <p className="profile-title-2 text-primary-700">{count}</p>
           <p className="profile-subtitle sm:body-2 text-primary-500">

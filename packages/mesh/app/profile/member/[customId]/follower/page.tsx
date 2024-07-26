@@ -33,6 +33,7 @@ const FollowerPage = async ({ params }: PageProps) => {
                 followerCustomId={customId || ''}
                 followerAvatar={avatar || ''}
                 followerName={name || ''}
+                type="member"
               />
             )
           })}
