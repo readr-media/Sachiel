@@ -110,8 +110,8 @@ const NON_MOBILE_NAV_ICONS = {
         hover: 'icon-wallet-lg-hover',
         on: 'icon-wallet-lg-on',
       },
-      href: '/wallet',
-      text: '錢包',
+      href: '/point',
+      text: '讀選點數',
     },
     {
       icon: {
@@ -171,8 +171,8 @@ const MOBILE_NAV_ICONS = [
       hover: 'icon-wallet-hover',
       on: 'icon-wallet-on',
     },
-    href: '/wallet',
-    text: '錢包',
+    href: '/point',
+    text: '讀選點數',
   },
   {
     icon: {

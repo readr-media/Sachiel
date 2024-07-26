@@ -29,13 +29,19 @@ export default function Button({
     'custom-blue':
       'bg-custom-blue text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
     primary:
-      'bg-primary-700 text-white hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+      'bg-primary-700 text-white border border-transparent hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+    'nav-button-add':
+      'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 hover:border-primary-700',
+    'nav-chip':
+      'bg-multi-layer-light text-primary-700 hover:bg-custom-gray-light',
+    lightbox:
+      'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   }
   const buttonStyles = {
-    xs: 'profile-subtitle h-[30px] px-4 py-2 rounded-[100px]',
+    xs: 'profile-subtitle h-[36px] px-4 py-2 rounded-[100px]', // Nav Chip, Nav Button-Add
     sm: 'button h-8 px-3 py-1 rounded', // all Button Mini
     md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
-    'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]',
+    'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]', // Lightbox Chip
     lg: 'button-large w-full h-[46px] px-6 py-3 rounded', // Primary Button, Second Button (wide)
   }
 
@@ -54,11 +60,12 @@ export default function Button({
       disabled={disabled}
     >
       <div
-        className={`${
-          icon && size !== 'lg'
-            ? 'flex translate-x-[-2px] items-center'
-            : 'flex items-center'
-        }`}
+        className={`
+          ${
+            icon && size !== 'lg'
+              ? 'flex translate-x-[-2px] items-center'
+              : 'flex items-center'
+          }`}
       >
         {icon && (
           <div
