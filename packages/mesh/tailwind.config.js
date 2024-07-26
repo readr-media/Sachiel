@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       zIndex: {
         header: 10,
+        modal: 100,
       },
       width: {
         maxContent: '1440px',

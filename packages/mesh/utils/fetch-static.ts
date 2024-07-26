@@ -10,7 +10,6 @@ export default async function fetchStatic<T>(
 ) {
   try {
     const response = await fetch(url, init)
-
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`)
     }

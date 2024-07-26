@@ -1,3 +1,6 @@
+import { redirect } from 'next/navigation'
+
+import { getCurrentUser } from '@/app/actions/auth'
 import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
@@ -16,8 +19,12 @@ export const revalidate = 0
 
 export default async function Page({ params }: { params: { id: string } }) {
   const globalLogFields = getLogTraceObjectFromHeaders()
+  const user = await getCurrentUser()
+  const memberId = user?.memberId
 
-  const userId = params.id
+  if (!memberId) redirect('/login')
+  if (params.id !== memberId) redirect(`/social/${memberId}`)
+
   const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
@@ -25,7 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const data = await fetchGraphQL(
     GetMemberFollowingDocument,
     {
-      memberId: userId,
+      memberId,
       takes: feedsNumber,
     },
     globalLogFields
@@ -67,7 +74,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const mostFollowedMembersByFollowings =
     processMostFollowedMembersByFollowings(
-      userId,
+      memberId,
       currentMemberFollowings,
       currentMemberFollowingMemberIds,
       suggestedFollowersNumber
@@ -79,8 +86,8 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <div className="flex justify-center gap-10 px-10 py-5">
-        <div className="flex flex-col gap-4">
+      <div className="flex justify-center gap-10 sm:px-5 sm:py-5 lg:px-10">
+        <div className="flex flex-col gap-2 sm:gap-4">
           {firstSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
               (pick) => pick.story?.id === item.story?.id

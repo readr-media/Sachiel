@@ -8,14 +8,21 @@ type Picks = UserActionStoryFragment['pick']
 export default function StoryPickInfo({
   displayPicks,
   pickCount,
+  maxCount = 4,
 }: {
   displayPicks: Picks
   pickCount: number
+  maxCount?: number
 }) {
+  const designedMaxCount = 4
+  if (!displayPicks?.length) return <></>
+  if (displayPicks?.length < designedMaxCount) {
+    maxCount = displayPicks?.length || 0
+  }
   return (
     <div className="footnote flex items-center gap-2 text-primary-500">
       <div className="flex -space-x-1 overflow-hidden">
-        {displayPicks?.map((data, index) => (
+        {displayPicks?.slice(0, maxCount).map((data, index) => (
           <div
             key={data.member?.id ?? ''}
             style={{ zIndex: socialPageAvatarLayer[index] }}
