@@ -12,6 +12,7 @@ import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import ApiDataRenderer, {
   type ApiData,
 } from './_components/api-data-renderer/renderer'
+import SideIndex from './_components/api-data-renderer/side-index'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -31,15 +32,24 @@ export default async function page({ params }: { params: { id: string } }) {
     notFound()
   }
 
+  const sourceCustomId = data.story?.source?.customId ?? ''
+  const useApiData = inHousePublisherCustomIds.includes(sourceCustomId)
+
   const getArtcileContent = (story: Story) => {
-    const sourceCustomId = story?.source?.customId ?? ''
-    const isApiData = inHousePublisherCustomIds.includes(sourceCustomId)
-    if (isApiData) {
+    if (useApiData) {
       return (
-        <ApiDataRenderer
-          apiData={story?.apiData as ApiData}
-          sourceCustomId={sourceCustomId}
-        />
+        <>
+          <div className="mt-8 flex justify-center lg:hidden">
+            <SideIndex
+              apiData={data.story?.apiData as ApiData}
+              sourceCustomId={sourceCustomId}
+            />
+          </div>
+          <ApiDataRenderer
+            apiData={story?.apiData as ApiData}
+            sourceCustomId={sourceCustomId}
+          />
+        </>
       )
     } else {
       return <div dangerouslySetInnerHTML={{ __html: story?.content ?? '' }} />
@@ -47,13 +57,19 @@ export default async function page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <main className="sm:flex sm:justify-center lg:gap-10 lg:px-10">
+    <main className="flex justify-center lg:gap-10 lg:px-10">
       <div className="max-w-[600px]">
         <div>Article meta...</div>
         {getArtcileContent(data.story)}
       </div>
-      <aside className="hidden lg:block lg:grow lg:bg-primary-200">
-        Related posts and sideindex
+      <aside className="hidden  lg:block lg:grow lg:px-5">
+        <div>Related posts</div>
+        <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block">
+          <SideIndex
+            apiData={data.story?.apiData as ApiData}
+            sourceCustomId={sourceCustomId}
+          />
+        </div>
       </aside>
     </main>
   )

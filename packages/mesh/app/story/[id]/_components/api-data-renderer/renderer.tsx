@@ -9,20 +9,17 @@ import { Header2Block, Header3Block } from './block-renderer/header-block'
 import ImageBlock from './block-renderer/image-block'
 import InfoboxBlock from './block-renderer/infobox-block'
 import { OrderListBlock, UnorderListBlock } from './block-renderer/list-block'
+import SideIndexBlock from './block-renderer/side-index-block'
 import SlideshowBlock from './block-renderer/slideshow-block'
 import TableBlock from './block-renderer/table-block'
-import type { ApiDataBlock } from './block-renderer/types'
+import type { ApiData } from './block-renderer/types'
 import UnstyledBlock from './block-renderer/unstyled-block'
 import VideoBlock from './block-renderer/video-block'
 import YoutubeBlock from './block-renderer/youtube-block'
-import { type Organization, ApiDataBlockType } from './types'
+import { ApiDataBlockType } from './types'
+import { getOrganizationFromSourceCustomId } from './utils'
 
-export type ApiData = ApiDataBlock[]
-
-const sourceCustomIdToOrganization: Record<string, Organization> = {
-  鏡週刊: 'mirror-media',
-  readr: 'readr-media',
-}
+export type { ApiData } from './block-renderer/types'
 
 export default function ApiDataRenderer({
   apiData,
@@ -31,7 +28,7 @@ export default function ApiDataRenderer({
   apiData: ApiData
   sourceCustomId: string
 }) {
-  const organization = sourceCustomIdToOrganization[sourceCustomId]
+  const organization = getOrganizationFromSourceCustomId(sourceCustomId)
 
   return (
     <article>
@@ -46,11 +43,19 @@ export default function ApiDataRenderer({
             )
           case ApiDataBlockType.HeaderTwo:
             return (
-              <Header2Block key={apiDataBlock.id} apiDataBlock={apiDataBlock} />
+              <Header2Block
+                key={apiDataBlock.id}
+                organization={organization}
+                apiDataBlock={apiDataBlock}
+              />
             )
           case ApiDataBlockType.HeaderThree:
             return (
-              <Header3Block key={apiDataBlock.id} apiDataBlock={apiDataBlock} />
+              <Header3Block
+                key={apiDataBlock.id}
+                organization={organization}
+                apiDataBlock={apiDataBlock}
+              />
             )
           case ApiDataBlockType.Blockquote:
             return (
@@ -143,7 +148,13 @@ export default function ApiDataRenderer({
           case ApiDataBlockType.RelatedPost:
             return
           case ApiDataBlockType.SideIndex:
-            return
+            return (
+              <SideIndexBlock
+                key={apiDataBlock.id}
+                organization={organization}
+                apiDataBlock={apiDataBlock}
+              />
+            )
           case ApiDataBlockType.Youtube:
             return (
               <YoutubeBlock
