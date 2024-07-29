@@ -30,6 +30,7 @@ export default function ImageBlock({
           alt={image.name}
         />
       </div>
+      {image.desc && <figcaption className="caption">{image.desc}</figcaption>}
     </figure>
   )
 }
