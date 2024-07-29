@@ -314,7 +314,7 @@
           overflow: hidden;
         }
       }
-      & figure {
+      & > figure {
         width: 100%;
         aspect-ratio: 1;
 
@@ -398,6 +398,8 @@
           }
         }
         & .image-block {
+          width: 480px;
+
           & .image {
             max-width: 480px;
             max-height: 480px;
@@ -477,9 +479,11 @@
             letter-spacing: 0.03em;
             color: #000928;
           }
-          &:hover .icon {
-            transition: all 0.2s ease;
-            transform: translateY(30%);
+          @media (hover: hover) {
+            &:hover .icon {
+              transition: all 0.2s ease;
+              transform: translateY(30%);
+            }
           }
         }
       }

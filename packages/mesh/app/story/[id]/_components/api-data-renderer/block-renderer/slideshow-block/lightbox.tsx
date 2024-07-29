@@ -46,7 +46,7 @@ export default function Lightbox({
         focusImageIndex={focusImageIndex}
         setFocusImageIndedx={setFocusImageIndedx}
       />
-      <div className="image-block">
+      <figure className="image-block">
         <div className="image">
           <CustomImage
             key={focusImage.id}
@@ -56,12 +56,12 @@ export default function Lightbox({
           />
         </div>
         <div className="meta">
-          <p className="desc">{focusImage.desc}</p>
+          <figcaption className="desc">{focusImage.desc}</figcaption>
           <p className="pagination">{`${focusImageIndex + 1} / ${
             images.length
           }`}</p>
         </div>
-      </div>
+      </figure>
       <div
         className="close"
         onClick={() => {

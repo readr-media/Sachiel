@@ -63,6 +63,14 @@ const Slideshow = ({ images }: { images: SlideshowImage[] }) => {
               images={image.resized}
               imagesWebP={image.resizedWebp}
               alt={image.name}
+              rwd={{
+                mobile: '500px',
+                tablet: '500px',
+                laptop: '500px',
+                desktop: '500px',
+                default: '500px',
+              }}
+              debugMode={true}
             />
             <figcaption>{image.desc}</figcaption>
           </figure>
