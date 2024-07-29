@@ -14,6 +14,7 @@ import TableBlock from './block-renderer/table-block'
 import type { ApiDataBlock } from './block-renderer/types'
 import UnstyledBlock from './block-renderer/unstyled-block'
 import VideoBlock from './block-renderer/video-block'
+import YoutubeBlock from './block-renderer/youtube-block'
 import { type Organization, ApiDataBlockType } from './types'
 
 export type ApiData = ApiDataBlock[]
@@ -144,7 +145,13 @@ export default function ApiDataRenderer({
           case ApiDataBlockType.SideIndex:
             return
           case ApiDataBlockType.Youtube:
-            return
+            return (
+              <YoutubeBlock
+                key={apiDataBlock.id}
+                organization={organization}
+                apiDataBlock={apiDataBlock}
+              />
+            )
           case ApiDataBlockType.EmbedCode:
             return
 
