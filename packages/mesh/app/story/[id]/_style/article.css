@@ -184,6 +184,26 @@
       }
     }
 
+    & > table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      & tr {
+      }
+      & th {
+        background-color: #f6f6fb;
+      }
+      & th,
+      & td {
+        border: 1px solid #e5e6e9;
+        padding: 4px 8px;
+        & .cell {
+          min-width: 100px;
+          min-height: 40px;
+        }
+      }
+    }
+
     & div.audio-block {
       margin: 0 auto;
       border: 1px solid rgba(0, 9, 40, 0.1);

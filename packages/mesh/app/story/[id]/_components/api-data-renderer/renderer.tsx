@@ -10,6 +10,7 @@ import ImageBlock from './block-renderer/image-block'
 import InfoboxBlock from './block-renderer/infobox-block'
 import { OrderListBlock, UnorderListBlock } from './block-renderer/list-block'
 import SlideshowBlock from './block-renderer/slideshow-block'
+import TableBlock from './block-renderer/table-block'
 import type { ApiDataBlock } from './block-renderer/types'
 import UnstyledBlock from './block-renderer/unstyled-block'
 import VideoBlock from './block-renderer/video-block'
@@ -112,7 +113,9 @@ export default function ApiDataRenderer({
               />
             )
           case ApiDataBlockType.Table:
-            return
+            return (
+              <TableBlock key={apiDataBlock.id} apiDataBlock={apiDataBlock} />
+            )
           case ApiDataBlockType.ColorBox:
             return (
               <ColorBoxBlock
