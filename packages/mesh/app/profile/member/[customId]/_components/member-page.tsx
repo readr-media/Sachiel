@@ -25,6 +25,7 @@ type MemberPageProps = {
   picksData: PickList
   bookmarks: Bookmarks
   memberId: string
+  memberCustomId: string
 }
 
 const MemberPage: React.FC<MemberPageProps> = ({
@@ -38,6 +39,7 @@ const MemberPage: React.FC<MemberPageProps> = ({
   picksData,
   bookmarks,
   memberId,
+  memberCustomId,
 }) => {
   const [picksOrBookmarks, setPicksOrBookmarks] = useState<
     PickList | Bookmarks
@@ -46,8 +48,16 @@ const MemberPage: React.FC<MemberPageProps> = ({
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },
-    { tabName: TabKey.FOLLOWER, count: followerCount },
-    { tabName: TabKey.FOLLOWING, count: followingCount },
+    {
+      tabName: TabKey.FOLLOWER,
+      count: followerCount,
+      redirectLink: `${memberCustomId}/follower`,
+    },
+    {
+      tabName: TabKey.FOLLOWING,
+      count: followingCount,
+      redirectLink: `${memberCustomId}/following`,
+    },
   ]
 
   const buttonList = [{ text: '編輯個人檔案' }]
@@ -75,15 +85,17 @@ const MemberPage: React.FC<MemberPageProps> = ({
   return (
     <>
       <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
-        <UserProfile
-          name={name}
-          pickCount={pickCount}
-          avatar={avatar}
-          userType={userType}
-          intro={intro}
-        />
-        <ProfileButtonList buttonList={buttonList} />
-        <UserStatusList userStatusList={userStatusList} />
+        <section className="flex flex-col items-center">
+          <UserProfile
+            name={name}
+            pickCount={pickCount}
+            avatar={avatar}
+            userType={userType}
+            intro={intro}
+          />
+          <ProfileButtonList buttonList={buttonList} />
+          <UserStatusList userStatusList={userStatusList} />
+        </section>
       </div>
 
       <Tab

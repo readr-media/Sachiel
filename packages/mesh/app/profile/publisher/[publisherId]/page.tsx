@@ -4,7 +4,7 @@ import { formatFollowCount } from '@/utils/format-follow-count'
 
 import PublisherPage from './_component/publisher-page'
 
-type PageProps = {
+export type PageProps = {
   params: {
     publisherId: string
   }
@@ -60,7 +60,7 @@ const page = async ({ params }: PageProps) => {
         name={userName}
         avatar={userLogo}
         intro={userIntro}
-        userId={publisherId}
+        publisherId={publisherId}
         userType={userType}
         storyData={storyData}
       />
