@@ -620,6 +620,7 @@
         }
         &.static {
           height: 100vh;
+          overflow: hidden;
           & .row-content {
             position: absolute;
             bottom: 20px;
@@ -729,6 +730,7 @@
         }
         &.static {
           height: 100vh;
+          overflow: hidden;
           & .row-content {
             position: absolute;
             bottom: 20px;
