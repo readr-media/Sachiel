@@ -22,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
   clampLineCount = 3,
   avatar,
   canToggle = false,
-  //TODO: 之後有文章在更改成slug或id傳入做跳轉功能。
+  //TODO: 之後有文章再更改成slug或id傳入做跳轉功能。
   storyId = '',
 }) => {
   const { width } = useWindowDimensions()

@@ -76,7 +76,7 @@ export default function ProfileLayout({
               <button
                 type="button"
                 className="place-self-end self-center p-3"
-                onClick={backToPreviousPage}
+                // TODO: more function
               >
                 <Icon
                   iconName="icon-more-horiz"
