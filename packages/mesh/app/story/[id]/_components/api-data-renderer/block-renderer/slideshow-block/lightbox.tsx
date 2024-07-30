@@ -21,13 +21,6 @@ export default function Lightbox({
   const focusImage = images[focusImageIndex]
 
   useEffect(() => {
-    document.body.classList.add('overflow-hidden')
-    return () => {
-      document.body.classList.remove('overflow-hidden')
-    }
-  }, [])
-
-  useEffect(() => {
     const onKeyDownHandler = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape') {
         setShowLightbox(false)

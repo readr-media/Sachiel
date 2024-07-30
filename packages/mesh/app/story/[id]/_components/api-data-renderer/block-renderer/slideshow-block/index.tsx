@@ -2,7 +2,9 @@
 
 import CustomImage from '@readr-media/react-image'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
 import {
   type ApiDataBlockBase,
@@ -45,6 +47,25 @@ const Slideshow = ({ images }: { images: SlideshowImage[] }) => {
   const expandSlideshow = () => {
     setFoldSlideshow(false)
   }
+  useEffect(() => {
+    if (showLightbox) {
+      document.body.classList.add('overflow-hidden')
+    } else {
+      document.body.classList.remove('overflow-hidden')
+    }
+  }, [showLightbox])
+
+  useEffect(() => {
+    const resizeHandler = () => {
+      if (window.innerWidth < getTailwindConfigBreakpointNumber('sm')) {
+        setShowLightbox(false)
+      }
+    }
+    document.addEventListener('resize', resizeHandler)
+    return () => {
+      document.removeEventListener('resize', resizeHandler)
+    }
+  }, [])
 
   return (
     <>
@@ -53,7 +74,9 @@ const Slideshow = ({ images }: { images: SlideshowImage[] }) => {
           <figure
             key={image.id}
             onClick={() => {
-              if (window.innerWidth >= 768) {
+              if (
+                window.innerWidth >= getTailwindConfigBreakpointNumber('sm')
+              ) {
                 setShowLightbox(true)
                 setFocusImageIndex(i)
               }
