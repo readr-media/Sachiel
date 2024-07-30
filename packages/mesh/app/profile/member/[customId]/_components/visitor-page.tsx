@@ -58,7 +58,7 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full sm:items-start">
         <section className="w-full max-w-[1180px]">
           <UserProfile
             name={name}
