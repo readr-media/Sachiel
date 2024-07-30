@@ -93,7 +93,6 @@ const Slideshow = ({ images }: { images: SlideshowImage[] }) => {
                 desktop: '500px',
                 default: '500px',
               }}
-              debugMode={true}
             />
             <figcaption>{image.desc}</figcaption>
           </figure>
