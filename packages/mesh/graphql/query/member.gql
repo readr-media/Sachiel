@@ -97,6 +97,7 @@ query GetCurrentUserMemberId($uid: String!) {
     name,
     customId,
     avatar,
+    wallet
   }
 }
 
