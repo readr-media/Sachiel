@@ -28,7 +28,7 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const router = useRouter()
   const { step } = useLogin()
-  const { isLogin } = useAuthState()
+  const { isLogin, isLoading: isAuthStateLoading } = useAuthState()
   const { handleSignIn } = useHandleSignIn()
   const [isSignInLoading, setIsSignInLoading] = useState(false)
 
@@ -45,7 +45,7 @@ export default function LoginSteps() {
     init()
   }, [handleSignIn, isLogin, router])
 
-  if (isSignInLoading) {
+  if (isSignInLoading || isAuthStateLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <Spinner />

@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 
-import Button from '@/components/button'
-import Icon from '@/components/icon'
 import { DynamicWidget } from '@/utils/dynamic'
 
 export default function CreateMeshPoint() {
@@ -12,17 +10,14 @@ export default function CreateMeshPoint() {
       <p className="subtitle-1 text-center text-primary-700">
         您尚未新增/連結錢包。點擊下方按鈕成功建立錢包，即可獲得 100 讀選點數！
       </p>
-      <div className="w-full max-w-[320px]">
+      <div className="flex w-full max-w-[320px] items-center justify-center">
         <DynamicWidget
           buttonClassName=""
           buttonContainerClassName=""
           innerButtonComponent={
-            <>
-              <div className="flex flex-row items-center">
-                <Icon iconName="icon-dynamicxyz" size="m" />
-                <span>以Dynamic繼續</span>
-              </div>
-            </>
+            <div className="flex flex-row items-center">
+              <span>以Dynamic繼續</span>
+            </div>
           }
         />
       </div>

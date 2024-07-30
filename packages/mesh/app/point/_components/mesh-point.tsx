@@ -1,7 +1,5 @@
 'use client'
 
-import Icon from '@/components/icon'
-
 import MeshPointInfo from './mesh-point-info'
 import TransactionList from './transaction-list'
 
@@ -192,13 +190,12 @@ export default function MeshPoint() {
           </section>
         </>
       ) : (
-        <div className="flex h-svh items-center justify-center">
+        <div className="flex h-[calc(100vh-123px)] items-center justify-center sm:h-[calc(100vh-424px)]">
           <DynamicWidget
             buttonClassName=""
             buttonContainerClassName=""
             innerButtonComponent={
               <div className="inline-flex flex-row">
-                <Icon iconName="icon-dynamicxyz" size="m" />
                 <p>以Dynamic繼續</p>
               </div>
             }
