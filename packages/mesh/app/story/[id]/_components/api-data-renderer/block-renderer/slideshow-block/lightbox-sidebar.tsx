@@ -14,7 +14,7 @@ export default function Sidebar({
   focusImageIndex,
   setFocusImageIndedx,
 }: SidebarProps) {
-  const imagesRef = useRef<(HTMLDivElement | null)[]>(
+  const imagesRef = useRef<(HTMLButtonElement | null)[]>(
     Array.from(Array(images.length))
   )
   const showUpArrow = focusImageIndex !== 0
@@ -37,7 +37,7 @@ export default function Sidebar({
 
   return (
     <div className="sidebar">
-      <div
+      <button
         className={`arrow ${showUpArrow ? '' : 'hide'} `}
         onClick={() => {
           updateFocusImageIndex(focusImageIndex - 1)
@@ -49,10 +49,10 @@ export default function Sidebar({
           width={64}
           height={64}
         />
-      </div>
+      </button>
       <div className="images">
         {images.map((image, i) => (
-          <div
+          <button
             key={image.id}
             className={`image ${focusImageIndex === i ? 'focus' : ''}`}
             onClick={() => {
@@ -67,10 +67,10 @@ export default function Sidebar({
               imagesWebP={image.resizedWebp}
               alt={image.name}
             />
-          </div>
+          </button>
         ))}
       </div>
-      <div
+      <button
         className={`arrow ${showDownArrow ? '' : 'hide'} `}
         onClick={() => {
           updateFocusImageIndex(focusImageIndex + 1)
@@ -82,7 +82,7 @@ export default function Sidebar({
           width={64}
           height={64}
         />
-      </div>
+      </button>
     </div>
   )
 }
