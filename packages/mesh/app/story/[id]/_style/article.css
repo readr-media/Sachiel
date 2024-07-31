@@ -763,8 +763,8 @@
 
     & > section.embed-code-block {
       position: relative;
-      /* TODO: replace with page setup */
-      z-index: 10000;
+      /* TODO: set the z-index to be on top of the header, fixed navbar */
+      z-index: 1000;
       & > div.embed {
         position: relative;
         white-space: normal;
