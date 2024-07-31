@@ -17,7 +17,6 @@ const FollowingList = ({
   defaultToggle,
   type,
 }: FollowingListProps) => {
-  // TODO: default toggle set to props
   const [resultShowing, toggleResultShowing] = useState(defaultToggle)
   const toggleResult = () => {
     toggleResultShowing((prev) => !prev)

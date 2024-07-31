@@ -5821,6 +5821,11 @@
   resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-2.2.1.tgz#137736c06b12e1107209ed2f23437cafd47be315"
   integrity sha512-qg5/jJ0QcVKaBXckh7n011jiAGAB2opw7Du9YZqYD23Iv7o7vz8UWGmY7lPCqPVgnFxMORlLbet0dUyHpgIl/g==
 
+"@readr-media/react-image@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-image/-/react-image-2.2.3.tgz#859e04d7c91d1d8a71aafbbd52e58b032cafbe52"
+  integrity sha512-cB0o4wtbngppLDnMRYyX7ZRGsNwneVbqFHJ9q4nw9p8ZFEhUuInaZpJLfdvZq4L74YvNk9iWCnY+nwwP406saA==
+
 "@readr-media/react-infinite-scroll-list@^1.1.0":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@readr-media/react-infinite-scroll-list/-/react-infinite-scroll-list-1.1.2.tgz#b501be22cd4fb95b20b55c47a111803f8bebb38d"

@@ -322,5 +322,13 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
       name
       avatar
     }
+    mutualFans: follower(
+      where: { following: { every: { customId: { equals: $customId } } } }
+      take: $take
+    ) {
+      id
+      customId
+      name
+    }
   }
 }

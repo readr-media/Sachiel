@@ -11,6 +11,7 @@ type FollowListItemProps = {
   followerName: string
   followerCustomId: string
   type: 'member' | 'publisher'
+  isMutualFans?: boolean
 }
 
 const FollowListItem = ({
@@ -19,6 +20,7 @@ const FollowListItem = ({
   followerName,
   followerCustomId,
   type,
+  isMutualFans = true,
 }: FollowListItemProps) => {
   const handleFollowOnClick = () => {
     // TODO: add function
@@ -45,8 +47,7 @@ const FollowListItem = ({
             size="sm"
             text="追蹤"
             activeState={{
-              // TODO: Button 初始狀態更改為使用者資料
-              isActive: true,
+              isActive: isMutualFans,
               activeText: '追蹤中',
             }}
           />
