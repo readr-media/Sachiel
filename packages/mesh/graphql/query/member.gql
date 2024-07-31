@@ -94,9 +94,9 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name,
-    customId,
-    avatar,
+    name
+    customId
+    avatar
   }
 }
 
@@ -283,6 +283,51 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
         }
       }
       kind
+    }
+  }
+}
+
+query GetMemberFollowingList($customId: String, $take: Int!) {
+  member(where: { customId: $customId }) {
+    id
+    name
+    avatar
+    followingCount
+    follow_publisherCount
+    following(take: $take) {
+      id
+      customId
+      name
+      avatar
+    }
+    follow_publisher(take: $take) {
+      id
+      customId
+      title
+      logo
+    }
+  }
+}
+
+query GetMemberFollowerList($customId: String, $take: Int!) {
+  member(where: { customId: $customId }) {
+    id
+    name
+    avatar
+    followingCount
+    follower(take: $take) {
+      id
+      customId
+      name
+      avatar
+    }
+    mutualFans: follower(
+      where: { following: { every: { customId: { equals: $customId } } } }
+      take: $take
+    ) {
+      id
+      customId
+      name
     }
   }
 }

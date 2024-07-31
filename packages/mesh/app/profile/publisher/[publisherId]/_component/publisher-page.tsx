@@ -16,7 +16,7 @@ type PublisherPageProps = {
   intro: string
   userType: UserType
   storyData: StoryData
-  userId: string
+  publisherId: string
   followerCount: string
   sponsoredCount: string
   pickedCount: number
@@ -31,10 +31,15 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   followerCount,
   sponsoredCount,
   pickedCount,
+  publisherId,
 }) => {
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
-    { tabName: TabKey.FOLLOWER, count: followerCount },
+    {
+      tabName: TabKey.FOLLOWER,
+      count: followerCount,
+      redirectLink: `${publisherId}/follower`,
+    },
   ]
 
   const buttonList = [
@@ -44,7 +49,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full sm:items-start">
         <UserProfile
           userType={userType}
           name={name}
