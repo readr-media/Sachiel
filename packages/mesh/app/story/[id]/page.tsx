@@ -2,29 +2,23 @@ import './_style/article.css'
 
 import { notFound } from 'next/navigation'
 
-import {
-  GetStoryDocument,
-  GetStoryQuery,
-} from '@/graphql/__generated__/graphql'
+import { GetStoryDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-import ApiDataRenderer, {
-  type ApiData,
-} from './_components/api-data-renderer/renderer'
+import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
+import Article from './_components/article'
 
-type Story = NonNullable<GetStoryQuery>['story']
-
-const inHousePublisherCustomIds = ['鏡週刊', 'readr']
-
+const picksTake = 5
+const commentsTake = 3
 export default async function page({ params }: { params: { id: string } }) {
   const storyId = params.id
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const data = await fetchGraphQL(
     GetStoryDocument,
-    { storyId },
+    { storyId, picksTake, commentsTake },
     globalLogFields
   )
 
@@ -33,38 +27,13 @@ export default async function page({ params }: { params: { id: string } }) {
   }
 
   const sourceCustomId = data.story?.source?.customId ?? ''
-  const useApiData = inHousePublisherCustomIds.includes(sourceCustomId)
-
-  const getArtcileContent = (story: Story) => {
-    if (useApiData) {
-      return (
-        <>
-          <div className="mt-8 flex justify-center lg:hidden">
-            <SideIndex
-              apiData={data.story?.apiData as ApiData}
-              sourceCustomId={sourceCustomId}
-            />
-          </div>
-          <ApiDataRenderer
-            apiData={story?.apiData as ApiData}
-            sourceCustomId={sourceCustomId}
-          />
-        </>
-      )
-    } else {
-      return <div dangerouslySetInnerHTML={{ __html: story?.content ?? '' }} />
-    }
-  }
 
   return (
     <>
       {/* a dummy div to make main tag horizontally aligned */}
       <div className="hidden lg:block lg:w-[260px]" />
       <main className="flex max-w-[600px] justify-center">
-        <div className="">
-          <div>Article meta...</div>
-          {getArtcileContent(data.story)}
-        </div>
+        <Article story={data.story} sourceCustomId={sourceCustomId} />
       </main>
       <aside className="hidden lg:block lg:w-[260px]">
         <div>Related posts</div>
