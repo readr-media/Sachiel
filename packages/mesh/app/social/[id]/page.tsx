@@ -52,7 +52,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    return <NoFollowings />
+    const mostFollowedMembers = await processMostFollowedMembers()
+    return <NoFollowings suggestedFollowers={mostFollowedMembers} />
   }
 
   const currentMemberFollowingMemberIds = new Set(

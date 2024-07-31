@@ -1,12 +1,14 @@
 import Icon from '@/components/icon'
-import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
+import { type SuggestedFollowers } from '../[id]/page'
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
-export default async function NoFollowings() {
-  const suggestedFollowers = await processMostFollowedMembers()
-
+export default function NoFollowings({
+  suggestedFollowers,
+}: {
+  suggestedFollowers: SuggestedFollowers[]
+}) {
   return (
     <main className="flex grow flex-col items-center justify-center gap-4 bg-white sm:bg-multi-layer-light sm:p-5 lg:flex-row lg:items-start lg:justify-start lg:gap-10">
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">

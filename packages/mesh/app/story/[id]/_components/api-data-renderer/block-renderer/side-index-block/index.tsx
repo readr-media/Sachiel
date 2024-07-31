@@ -63,7 +63,7 @@ export default function SideIndexBlock({
         `MM's sideindex is made from the collection of h2 and h3 blocks,
          if this behavior changes the renderer should be implemented`
       )
-      return
+      return null
     case 'readr-media':
       return <SideIndexInArticleHeader content={apiDataBlock.content[0]} />
     default:
