@@ -15,8 +15,7 @@ export default function MediaLayout({
       <div className="primary-container-article">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
         <div className="flex grow flex-col items-center bg-white">
-          {/* TODO: temp z-index to be on top of navbar, remove when update navbar style */}
-          <div className="relative z-10 flex w-full grow justify-around xl:max-w-[theme(width.maxContent)]">
+          <div className="relative flex w-full grow justify-around xl:max-w-[theme(width.maxContent)]">
             {children}
           </div>
         </div>
