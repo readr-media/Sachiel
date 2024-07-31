@@ -52,6 +52,7 @@
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
     "cssnano": "^5.1.13",
+    "eslint-config-next": "12.3.1",
     "postcss": "^8.4.17",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwind-clip-path": "^1.0.0",
