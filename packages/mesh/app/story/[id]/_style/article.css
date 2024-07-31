@@ -206,7 +206,7 @@
         height: 24px;
         display: inline-block;
         cursor: pointer;
-        margin-left: 4px;
+        margin: 0 4px;
         transition: transform 0.3s;
       }
     }

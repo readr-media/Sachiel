@@ -94,6 +94,10 @@ const SideIndex = ({ sideIndexList }: { sideIndexList: SideIndexItem[] }) => {
     }
   }, [sideIndexList])
 
+  if (!sideIndexList.length) {
+    return null
+  }
+
   return (
     <section className="side-index" ref={sideIndexWrapperRef}>
       <div className="header">
