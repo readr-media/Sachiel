@@ -587,7 +587,7 @@
       min-height: 100vh;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
-      /* TODO: replace the formula to fit the website */
+      /* FIXME: replace the formula to fit the website */
       left: calc(50% - 50vw);
       .background-image {
         position: absolute;
@@ -675,7 +675,7 @@
       min-height: 100vh;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
-      /* TODO: replace the formula to fit the website */
+      /* FIXME: replace the formula to fit the website */
       left: calc(50% - 50vw);
       .background-video {
         position: absolute;
@@ -763,7 +763,7 @@
 
     & > section.embed-code-block {
       position: relative;
-      /* TODO: set the z-index to be on top of the header, fixed navbar */
+      /* FIXME: apply z-index following project setup */
       z-index: 1000;
       & > div.embed {
         position: relative;
