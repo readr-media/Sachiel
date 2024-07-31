@@ -68,12 +68,11 @@ export default async function page({ params }: { params: { id: string } }) {
       </main>
       <aside className="hidden lg:block lg:w-[260px]">
         <div>Related posts</div>
-        <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block">
-          <SideIndex
-            apiData={data.story?.apiData as ApiData}
-            sourceCustomId={sourceCustomId}
-          />
-        </div>
+        <SideIndex
+          apiData={data.story?.apiData as ApiData}
+          sourceCustomId={sourceCustomId}
+          isInArticle={false}
+        />
       </aside>
     </>
   )
