@@ -107,7 +107,6 @@ const Audio = ({ audio }: AudioProps) => {
       const offsetX = evt.clientX - rect.left
       const totalWidth = rect.width
       const newProgress = (offsetX / totalWidth) * 100
-      console.log('audioRef.current', audioRef.current?.currentTime)
       if (
         audioRef.current?.currentTime !== undefined &&
         audioRef.current?.duration
