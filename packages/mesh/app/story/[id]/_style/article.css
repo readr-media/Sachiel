@@ -587,6 +587,8 @@
       position: relative;
       width: 100vw;
       min-height: 100vh;
+      /* TODO: set the z-index to be on top of the header, fixed navbar */
+      z-index: 1000;
       /* TODO: replace the formula to fit the website */
       left: calc(
         (100% + var(--navbar-width) - 100vw) / 2 - var(--navbar-width)
@@ -606,7 +608,6 @@
       }
       .background-image {
         position: absolute;
-        z-index: 1;
         top: 0;
         left: 0;
         width: 100%;
@@ -614,7 +615,6 @@
       }
       .content {
         position: relative;
-        z-index: 1;
         & .row-empty {
           height: 100vh;
         }
@@ -692,6 +692,8 @@
       position: relative;
       width: 100vw;
       min-height: 100vh;
+      /* TODO: set the z-index to be on top of the header, fixed navbar */
+      z-index: 1000;
       /* TODO: replace the formula to fit the website */
       left: calc(
         (100% + var(--navbar-width) - 100vw) / 2 - var(--navbar-width)
@@ -711,7 +713,6 @@
       }
       .background-video {
         position: absolute;
-        z-index: 1;
         top: 0;
         left: 0;
         width: 100%;
@@ -724,7 +725,6 @@
       }
       .content {
         position: relative;
-        z-index: 1;
         & .row-empty {
           height: 100vh;
         }
