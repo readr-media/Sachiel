@@ -4,11 +4,11 @@ import { SdkViewSectionType, SdkViewType } from '@dynamic-labs/sdk-api'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
+import { DYNAMIC_ENV_ID } from '@/constants/config'
 import {
   DynamicContextProvider,
   EthereumWalletConnectors,
 } from '@/utils/dynamic'
-
 export const metadata: Metadata = {
   title: 'Mesh',
 }
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className="min-h-screen">
         <DynamicContextProvider
           settings={{
-            environmentId: '51dfdb4d-d8ef-47e4-8a89-57ea9f1b3803',
+            environmentId: DYNAMIC_ENV_ID,
             walletConnectors: [EthereumWalletConnectors],
             overrides: {
               views: [
