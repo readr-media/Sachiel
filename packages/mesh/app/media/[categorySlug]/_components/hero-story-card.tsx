@@ -1,5 +1,7 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
@@ -17,33 +19,43 @@ export default function HeroStoryCard({
 }) {
   const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
+  console.log(story.source)
+
   return (
     <article className="col-span-2 border-b pb-5 pt-3">
       <div className="flex gap-10">
         {/* use padding-top to set aspect-ratio to prevent height growing when right block grows in too many lines of titles */}
+
         <div className="relative h-0 w-[calc((100%-40px)/2)] flex-1 pt-[calc((100%-40px)/4)]">
-          <Image
-            className="rounded-md object-cover"
-            src={story.og_image || '/images/default-story-image.webP'}
-            alt={story.title ?? ''}
-            fill
-          />
+          <Link href={`/story/${story.id}`} className="h-full w-full">
+            <Image
+              className="rounded-md object-cover"
+              src={story.og_image || '/images/default-story-image.webP'}
+              alt={story.title ?? ''}
+              fill
+            />
+          </Link>
         </div>
         <div className="flex flex-1 flex-col justify-between">
           {/* right top section */}
           <div>
             <div className="flex h-6 flex-row items-center justify-between">
+              {/* TODO: wait for api to add source.customId to redirect to /profile/publisher/{customId} */}
               <h4 className="body-3 h-5 text-primary-500 lg:h-auto">
                 {story.source?.title}
               </h4>
-              <button>...</button>
+              <button>
+                <Icon iconName="icon-more-horiz" size="l" />
+              </button>
             </div>
-            <div className="hero-title mt-1 text-primary-700">
-              {story.title ?? ''}
-            </div>
-            <div className="body-3 mt-3 line-clamp-1 text-primary-600">
-              {story.summary ?? ''}
-            </div>
+            <Link href={`/story/${story.id}`}>
+              <div className="hero-title mt-1 text-primary-700">
+                {story.title ?? ''}
+              </div>
+              <div className="body-3 mt-3 line-clamp-1 text-primary-600">
+                {story.summary ?? ''}
+              </div>
+            </Link>
             <div className="footnote mt-3">
               <StoryMeta
                 commentCount={story.commentCount ?? 0}

@@ -3595,6 +3595,7 @@ export type UserActionStoryFragment = {
   commentCount?: number | null
   source?: {
     __typename?: 'Publisher'
+    customId?: string | null
     title?: string | null
     createdAt?: any | null
   } | null
@@ -3664,11 +3665,13 @@ export type GetMemberFollowingQuery = {
     following?: Array<{
       __typename?: 'Member'
       id: string
+      customId?: string | null
       name?: string | null
       avatar?: string | null
       following?: Array<{
         __typename?: 'Member'
         id: string
+        customId?: string | null
         name?: string | null
         avatar?: string | null
         followerCount?: number | null
@@ -3691,6 +3694,7 @@ export type GetMemberFollowingQuery = {
           commentCount?: number | null
           source?: {
             __typename?: 'Publisher'
+            customId?: string | null
             title?: string | null
             createdAt?: any | null
           } | null
@@ -3738,6 +3742,7 @@ export type GetMemberFollowingQuery = {
           commentCount?: number | null
           source?: {
             __typename?: 'Publisher'
+            customId?: string | null
             title?: string | null
             createdAt?: any | null
           } | null
@@ -4302,6 +4307,7 @@ export const UserActionStoryFragmentDoc = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],
@@ -4544,6 +4550,10 @@ export const GetMemberFollowingDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
                       { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                       {
                         kind: 'Field',
@@ -4602,6 +4612,10 @@ export const GetMemberFollowingDocument = {
                             {
                               kind: 'Field',
                               name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'customId' },
                             },
                             {
                               kind: 'Field',
@@ -4915,6 +4929,7 @@ export const GetMemberFollowingDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],

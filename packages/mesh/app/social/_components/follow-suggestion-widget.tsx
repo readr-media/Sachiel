@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import Avatar from '@/components/story-card/avatar'
 
 import type { SuggestedFollowers } from '../[id]/page'
@@ -18,7 +20,9 @@ export default function FollowSuggestionWidget({
             <div className="flex w-full items-center justify-between">
               <div className="ml-3 flex-grow-0">
                 <p className="subtitle-2 mb-[2px] text-primary-700">
-                  {user.name}
+                  <Link href={`/profile/member/${user.customId}`}>
+                    {user.name}
+                  </Link>
                 </p>
                 <p className="caption-1 line-clamp-1 break-words text-primary-500">
                   {user.currentMemberFollowingMember !== '' ? (

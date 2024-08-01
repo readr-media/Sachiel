@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -47,23 +48,33 @@ export default function Feed({
       </div>
       {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
-          <Image
-            src={story.og_image}
-            alt={story.title ?? ''}
-            width={600}
-            height={300}
-            sizes="100vw"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
+          <Link href={`/story/${story.id}`} className="h-full w-full">
+            <Image
+              src={story.og_image}
+              alt={story.title ?? ''}
+              width={600}
+              height={300}
+              sizes="100vw"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </Link>
         </div>
       ) : null}
       <div className="px-8 pb-6 pt-3">
-        <h4 className="body-3 mb-1 text-primary-500">{story.source?.title}</h4>
-        <h2 className="title-1 mb-2 line-clamp-2 break-words">{story.title}</h2>
+        <Link href={`/publisher/${story.source?.customId}}`}>
+          <h4 className="body-3 mb-1 text-primary-500">
+            {story.source?.title}
+          </h4>
+        </Link>
+        <Link href={`/story/${story.id}`}>
+          <h2 className="title-1 mb-2 line-clamp-2 break-words">
+            {story.title}
+          </h2>
+        </Link>
         <div className="footnote mb-4">
           <StoryMeta
             commentCount={story.commentCount ?? 0}

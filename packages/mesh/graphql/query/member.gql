@@ -5,10 +5,12 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
     avatar
     following {
       id
+      customId
       name
       avatar
       following(where: { id: { gte: 0 } }, orderBy: { id: asc }, take: 10000) {
         id
+        customId
         name
         avatar
         followerCount

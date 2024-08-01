@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
@@ -30,18 +31,21 @@ export default function MostPickedStoryCard({
         </div>
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:h-[168px] sm:w-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
-            <Image
-              className="rounded-md"
-              src={story.og_image || '/images/default-story-image.webP'}
-              alt={story.title ?? ''}
-              fill
-              style={{ objectFit: 'cover' }}
-            />
+            <Link href={`/story/${story.id}`} className="h-full w-full">
+              <Image
+                className="rounded-md"
+                src={story.og_image || '/images/default-story-image.webP'}
+                alt={story.title ?? ''}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </Link>
           </div>
           <div className="sm:flex sm:flex-1 sm:flex-col sm:justify-between sm:py-2">
             {/* right top section */}
             <div>
               <div className="flex h-6 flex-row items-center justify-between">
+                {/* TODO: wait for api to add source.customId to redirect to /profile/publisher/{customId} */}
                 <h4
                   className={`${
                     isDesktop ? 'body-3' : 'footnote'
@@ -56,7 +60,7 @@ export default function MostPickedStoryCard({
                   isDesktop ? 'title-1' : 'title-2'
                 } mt-1 text-primary-700`}
               >
-                {story.title}
+                <Link href={`/story/${story.id}`}>{story.title}</Link>
               </div>
               <div className="footnote mt-2">
                 <StoryMeta
