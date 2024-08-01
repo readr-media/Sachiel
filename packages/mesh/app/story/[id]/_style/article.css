@@ -94,7 +94,7 @@
     }
   }
 
-  article {
+  article.story-renderer {
     max-width: 600px;
 
     & > * {

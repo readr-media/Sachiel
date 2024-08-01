@@ -44,7 +44,10 @@ export default function Article({
       )
     } else {
       return (
-        <article dangerouslySetInnerHTML={{ __html: story?.content ?? '' }} />
+        <article
+          className="story-renderer"
+          dangerouslySetInnerHTML={{ __html: story?.content ?? '' }}
+        />
       )
     }
   }
