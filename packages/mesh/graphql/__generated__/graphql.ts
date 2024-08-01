@@ -7787,6 +7787,35 @@ export const GetStoryDocument = {
                   kind: 'Field',
                   alias: { kind: 'Name', value: 'commentsCount' },
                   name: { kind: 'Name', value: 'commentCount' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'state' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'public',
+                                    block: false,
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
                 {
                   kind: 'Field',

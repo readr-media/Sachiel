@@ -86,8 +86,8 @@ export default function Article({
               pickCount={story?.picksCount ?? 0}
               commentCount={story?.commentsCount ?? 0}
             />
+            {/* TODO: update the states and actions according to the user state */}
             <div className="flex gap-1">
-              {/* TODO: update the states and actions according to the user state */}
               <PublisherDonateButton />
               <StoryPickButton
                 isStoryPicked={false}

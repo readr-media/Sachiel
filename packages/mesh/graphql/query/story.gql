@@ -71,7 +71,7 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
         avatar
       }
     }
-    commentsCount: commentCount
+    commentsCount: commentCount(where: { state: { equals: "public" } })
     comments: comment(
       where: { state: { equals: "public" } }
       orderBy: { createdAt: desc }
