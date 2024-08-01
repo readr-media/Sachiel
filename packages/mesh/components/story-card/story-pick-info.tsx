@@ -2,6 +2,8 @@ import { socialPageAvatarLayer } from '@/constants/z-index'
 import { type UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
 import Avatar from './avatar'
+import StoryCommentCount from './story-comment-count'
+import StoryPickCount from './story-pick-count'
 
 type Picks = UserActionStoryFragment['pick']
 
@@ -35,54 +37,14 @@ export default function StoryPickInfo({
           ))}
         </div>
       )}
-      <div className="flex items-center">{renderTotalPicks(pickCount)}</div>
+      <div className="flex items-center">
+        <StoryPickCount picksCount={pickCount} />
+      </div>
       {!!commentCount && (
         <div className="ml-[2px] flex items-center">
-          {renderTotalComments(commentCount)}
+          <StoryCommentCount commentsCount={commentCount} />
         </div>
       )}
     </div>
   )
-}
-
-const renderTotalPicks = (picksCount: number) => {
-  if (!picksCount) {
-    return <span>尚無人精選</span>
-  } else if (picksCount < 10000) {
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{picksCount}</span>
-        <span>人精選</span>
-      </>
-    )
-  } else {
-    const convertedPickCount = (Math.floor(picksCount / 1000) / 10).toFixed(1)
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{convertedPickCount}</span>
-        <span>萬人精選</span>
-      </>
-    )
-  }
-}
-
-const renderTotalComments = (commentsCount: number) => {
-  if (commentsCount < 10000) {
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{commentsCount}</span>
-        <span>則留言</span>
-      </>
-    )
-  } else {
-    const convertedCommentsCount = (
-      Math.floor(commentsCount / 1000) / 10
-    ).toFixed(1)
-    return (
-      <>
-        <span className="pr-1 text-primary-700">{convertedCommentsCount}</span>
-        <span>萬則留言</span>
-      </>
-    )
-  }
 }

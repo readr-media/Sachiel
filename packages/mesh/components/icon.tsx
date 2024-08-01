@@ -98,6 +98,8 @@ export type IconName =
   | 'icon-mesh-point'
   | 'icon-question-mark-circle'
   | 'icon-publisher-readr'
+  | 'icon-bookmark'
+  | 'icon-share'
 
 export type IconProps = {
   size: Size

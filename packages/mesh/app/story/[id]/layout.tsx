@@ -1,16 +1,40 @@
-import Footer from '@/app/_components/footer'
-import Header from '@/app/_components/header'
-import Nav from '@/app/_components/nav'
+import { notFound } from 'next/navigation'
 
-export default function MediaLayout({
+import Footer from '@/app/_components/footer'
+import { GetStoryDocument } from '@/graphql/__generated__/graphql'
+import fetchGraphQL from '@/utils/fetch-graphql'
+import { getLogTraceObjectFromHeaders } from '@/utils/log'
+
+import StoryHeader from './_components/story-header'
+import StoryNav from './_components/story-nav'
+
+const picksTake = 5
+const commentsTake = 3
+
+export default async function MediaLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: { id: string }
 }) {
+  const storyId = params.id
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const storyData = await fetchGraphQL(
+    GetStoryDocument,
+    { storyId, picksTake, commentsTake },
+    globalLogFields
+  )
+
+  if (!storyData) {
+    notFound()
+  }
+
   return (
     <>
       {/* fixed header */}
-      <Header />
+      <StoryHeader story={storyData.story} />
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container-article">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
@@ -23,7 +47,7 @@ export default function MediaLayout({
         <Footer />
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
-      <Nav />
+      <StoryNav story={storyData.story} />
     </>
   )
 }
