@@ -82,18 +82,20 @@ const Slideshow = ({ images }: { images: SlideshowImage[] }) => {
               }
             }}
           >
-            <CustomImage
-              images={image.resized}
-              imagesWebP={image.resizedWebp}
-              alt={image.name}
-              rwd={{
-                mobile: '500px',
-                tablet: '500px',
-                laptop: '500px',
-                desktop: '500px',
-                default: '500px',
-              }}
-            />
+            <div className="image">
+              <CustomImage
+                images={image.resized}
+                imagesWebP={image.resizedWebp}
+                alt={image.name}
+                rwd={{
+                  mobile: '500px',
+                  tablet: '500px',
+                  laptop: '500px',
+                  desktop: '500px',
+                  default: '500px',
+                }}
+              />
+            </div>
             <figcaption>{image.desc}</figcaption>
           </figure>
         ))}

@@ -104,6 +104,10 @@
       font-size: 18px;
       line-height: 2;
       color: #212944;
+      @media (max-width: 600px) {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
 
     /* setup inline style */
@@ -228,11 +232,13 @@
     }
 
     & > div.blockquote-block {
-      padding: 0 20px;
       font-weight: 400;
       font-size: 16px;
       line-height: 1.5;
       color: #575d71;
+      .body {
+        padding: 0 20px;
+      }
     }
 
     & > pre.code-block {
@@ -253,6 +259,8 @@
     & > section.infobox-block {
       background: #f2f2f4;
       padding: 24px 0;
+      margin-left: 0;
+      margin-right: 0;
       & > .title {
         padding: 0 32px;
         position: relative;
@@ -277,6 +285,9 @@
 
     & > table {
       width: 100%;
+      @media (max-width: 600px) {
+        width: calc(100% - 40px);
+      }
       border-collapse: collapse;
       text-align: center;
       & tr {
@@ -362,6 +373,8 @@
 
     & figure.image-block {
       width: 100%;
+      margin-left: 0;
+      margin-right: 0;
       & .image-wrapper {
         position: relative;
         height: 375px;
@@ -374,6 +387,8 @@
 
     & div.video-block {
       width: 100%;
+      margin-left: 0;
+      margin-right: 0;
       aspect-ratio: 100/56;
       display: flex;
       justify-content: center;
@@ -398,6 +413,8 @@
       gap: 12px;
       flex-wrap: wrap;
       position: relative;
+      margin-left: 0;
+      margin-right: 0;
 
       @media (min-width: 768px) {
         &.fold {
@@ -407,7 +424,10 @@
       }
       & > figure {
         width: 100%;
-        aspect-ratio: 1;
+
+        & .image {
+          aspect-ratio: 1;
+        }
 
         @media (min-width: 768px) {
           width: 294px;
@@ -416,7 +436,7 @@
         @media (hover: hover) {
           cursor: pointer;
 
-          &:hover {
+          &:hover .image {
             filter: brightness(15%);
             transition: 0.3s;
           }
@@ -585,6 +605,8 @@
       position: relative;
       width: 100vw;
       min-height: 100vh;
+      margin-left: 0;
+      margin-right: 0;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
       /* FIXME: replace the formula to fit the website */
@@ -673,6 +695,8 @@
       position: relative;
       width: 100vw;
       min-height: 100vh;
+      margin-left: 0;
+      margin-right: 0;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
       /* FIXME: replace the formula to fit the website */
@@ -763,6 +787,12 @@
 
     & > section.embed-code-block {
       position: relative;
+      margin-left: 0;
+      margin-right: 0;
+      @media (max-width: 767px) {
+        padding: 0;
+      }
+
       & > div.embed {
         position: relative;
         white-space: normal;
