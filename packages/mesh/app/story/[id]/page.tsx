@@ -57,12 +57,16 @@ export default async function page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <main className="flex justify-center lg:gap-10 lg:px-10">
-      <div className="max-w-[600px]">
-        <div>Article meta...</div>
-        {getArtcileContent(data.story)}
-      </div>
-      <aside className="hidden  lg:block lg:grow lg:px-5">
+    <>
+      {/* a dummy div to make main tag horizontally aligned */}
+      <div className="hidden lg:block lg:w-[260px]" />
+      <main className="flex max-w-[600px] justify-center">
+        <div className="">
+          <div>Article meta...</div>
+          {getArtcileContent(data.story)}
+        </div>
+      </main>
+      <aside className="hidden lg:block lg:w-[260px]">
         <div>Related posts</div>
         <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block">
           <SideIndex
@@ -71,6 +75,6 @@ export default async function page({ params }: { params: { id: string } }) {
           />
         </div>
       </aside>
-    </main>
+    </>
   )
 }

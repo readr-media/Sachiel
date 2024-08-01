@@ -581,31 +581,14 @@
     }
 
     & .background-image-block {
-      /* TODO: set the width to fit the project */
-      --navbar-width: 0;
       clear: both;
       position: relative;
       width: 100vw;
       min-height: 100vh;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
-      /* TODO: replace the formula to fit the website */
-      left: calc(
-        (100% + var(--navbar-width) - 100vw) / 2 - var(--navbar-width)
-      );
-      @media (min-width: 768px) {
-        --navbar-width: 128px;
-      }
-      @media (min-width: 960px) {
-        --navbar-width: 220px;
-      }
-      @media (min-width: 1200px) {
-        left: calc(-40px - var(--navbar-width));
-      }
-      @media (min-width: 1440px) {
-        --navbar-width: 320px;
-        left: calc(-40px - var(--navbar-width) - (100vw - 1440px) / 2);
-      }
+      /* FIXME: replace the formula to fit the website */
+      left: calc(50% - 50vw);
       .background-image {
         position: absolute;
         top: 0;
@@ -686,31 +669,14 @@
     }
 
     & .background-video-block {
-      /* TODO: set the width to fit the project */
-      --navbar-width: 0;
       clear: both;
       position: relative;
       width: 100vw;
       min-height: 100vh;
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
-      /* TODO: replace the formula to fit the website */
-      left: calc(
-        (100% + var(--navbar-width) - 100vw) / 2 - var(--navbar-width)
-      );
-      @media (min-width: 768px) {
-        --navbar-width: 128px;
-      }
-      @media (min-width: 960px) {
-        --navbar-width: 220px;
-      }
-      @media (min-width: 1200px) {
-        left: calc(-40px - var(--navbar-width));
-      }
-      @media (min-width: 1440px) {
-        --navbar-width: 320px;
-        left: calc(-40px - var(--navbar-width) - (100vw - 1440px) / 2);
-      }
+      /* FIXME: replace the formula to fit the website */
+      left: calc(50% - 50vw);
       .background-video {
         position: absolute;
         top: 0;
@@ -791,6 +757,68 @@
               }
             }
           }
+        }
+      }
+    }
+
+    & > section.embed-code-block {
+      position: relative;
+      & > div.embed {
+        position: relative;
+        white-space: normal;
+
+        &.top-layer {
+          /* FIXME: apply z-index following project setup */
+          z-index: 1000;
+        }
+        /* styles for image link */
+        img.img-responsive {
+          margin: 0 auto;
+          max-width: 100%;
+          height: auto;
+          display: block;
+        }
+      }
+      & > div.caption {
+        padding: 0 20px;
+        margin-top: 8px;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #7f8493;
+
+        @media (min-width: 768px) {
+          padding: 0;
+        }
+      }
+    }
+
+    & > section.youtube-block {
+      & .iframe-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        overflow: hidden;
+        & iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      & .caption {
+        padding: 0 20px;
+        margin-top: 8px;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #7f8493;
+
+        @media (min-width: 768px) {
+          padding: 0;
         }
       }
     }

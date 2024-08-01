@@ -5,6 +5,7 @@ import BlockquoteBlock from './block-renderer/blockquote-block'
 import CodeBlock from './block-renderer/code-block'
 import ColorBoxBlock from './block-renderer/color-box'
 import DividerBlock from './block-renderer/divider-block'
+import EmbedCodeBlock from './block-renderer/embed-code-block'
 import { Header2Block, Header3Block } from './block-renderer/header-block'
 import ImageBlock from './block-renderer/image-block'
 import InfoboxBlock from './block-renderer/infobox-block'
@@ -164,10 +165,16 @@ export default function ApiDataRenderer({
               />
             )
           case ApiDataBlockType.EmbedCode:
-            return
+            return (
+              <EmbedCodeBlock
+                key={apiDataBlock.id}
+                apiDataBlock={apiDataBlock}
+              />
+            )
 
           default:
-            console.error('unhandled apiData type', apiDataBlock)
+            const exhaustiveCheck: never = apiDataBlock
+            console.error('unhandled apiData type', exhaustiveCheck)
             return null
         }
       })}

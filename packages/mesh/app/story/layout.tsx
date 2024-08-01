@@ -12,10 +12,10 @@ export default function MediaLayout({
       {/* fixed header */}
       <Header />
       {/* block for non-fixed content, set padding for fixed blocks */}
-      <div className="primary-container">
+      <div className="primary-container-article">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
-        <div className="flex grow flex-col bg-white">
-          <div className="flex grow flex-col xl:max-w-[theme(width.maxMain)]">
+        <div className="flex grow flex-col items-center bg-white">
+          <div className="flex w-full grow justify-around xl:max-w-[theme(width.maxContent)]">
             {children}
           </div>
         </div>
