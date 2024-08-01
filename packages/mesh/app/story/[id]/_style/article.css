@@ -763,11 +763,14 @@
 
     & > section.embed-code-block {
       position: relative;
-      /* FIXME: apply z-index following project setup */
-      z-index: 1000;
       & > div.embed {
         position: relative;
         white-space: normal;
+
+        &.top-layer {
+          /* FIXME: apply z-index following project setup */
+          z-index: 1000;
+        }
         /* styles for image link */
         img.img-responsive {
           margin: 0 auto;
