@@ -1,7 +1,7 @@
 'use server'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchRestful from '@/utils/fetch-restful'
+import fetchRestful, { RestfulMethod } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export async function addPick({
@@ -20,11 +20,16 @@ export async function addPick({
   }
   const globalLogFields = getLogTraceObjectFromHeaders()
   return await fetchRestful(
-    RESTFUL_ENDPOINTS.pubsub,
-    payload,
-    { cache: 'no-cache' },
-    globalLogFields,
-    'Failed to add pick state via pub/sub'
+    {
+      url: RESTFUL_ENDPOINTS.pubsub,
+      body: payload,
+      init: { cache: 'no-cache' },
+      method: RestfulMethod.Post,
+    },
+    {
+      traceObject: globalLogFields,
+      errorMessage: 'Failed to add pick state via pub/sub',
+    }
   )
 }
 
@@ -44,10 +49,15 @@ export async function removePick({
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   return await fetchRestful(
-    RESTFUL_ENDPOINTS.pubsub,
-    payload,
-    { cache: 'no-cache' },
-    globalLogFields,
-    'Failed to remove pick state via pub/sub'
+    {
+      url: RESTFUL_ENDPOINTS.pubsub,
+      body: payload,
+      init: { cache: 'no-cache' },
+      method: RestfulMethod.Post,
+    },
+    {
+      traceObject: globalLogFields,
+      errorMessage: 'Failed to remove pick state via pub/sub',
+    }
   )
 }

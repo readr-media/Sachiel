@@ -1,7 +1,7 @@
 'use server'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchRestful from '@/utils/fetch-restful'
+import fetchRestful, { RestfulMethod } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export async function addCategory({
@@ -18,11 +18,16 @@ export async function addCategory({
   }
   const globalLogFields = getLogTraceObjectFromHeaders()
   return await fetchRestful(
-    RESTFUL_ENDPOINTS.pubsub,
-    payload,
-    { cache: 'no-cache' },
-    globalLogFields,
-    'Failed to add subscribed category via pub/sub'
+    {
+      url: RESTFUL_ENDPOINTS.pubsub,
+      body: payload,
+      init: { cache: 'no-cache' },
+      method: RestfulMethod.Post,
+    },
+    {
+      traceObject: globalLogFields,
+      errorMessage: 'Failed to add subscribed category via pub/sub',
+    }
   )
 }
 
@@ -41,10 +46,15 @@ export async function removeCategory({
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   return await fetchRestful(
-    RESTFUL_ENDPOINTS.pubsub,
-    payload,
-    { cache: 'no-cache' },
-    globalLogFields,
-    'Failed to remove subscribed category via pub/sub'
+    {
+      url: RESTFUL_ENDPOINTS.pubsub,
+      body: payload,
+      init: { cache: 'no-cache' },
+      method: RestfulMethod.Post,
+    },
+    {
+      traceObject: globalLogFields,
+      errorMessage: 'Failed to remove subscribed category via pub/sub',
+    }
   )
 }
