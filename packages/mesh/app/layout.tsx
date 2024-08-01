@@ -45,6 +45,7 @@ export default function RootLayout({
             cssOverrides:
               '.wallet-list-item__tile { background-color: lightblue; }',
             displaySiweStatement: true,
+            //TODO: update link
             privacyPolicyUrl: 'https://www.dynamic.xyz/privacy-policy',
             termsOfServiceUrl: 'https://www.dynamic.xyz/terms-of-service',
           }}

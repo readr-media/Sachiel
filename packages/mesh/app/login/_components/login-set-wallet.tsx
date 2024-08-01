@@ -3,13 +3,14 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect } from 'react'
 
 import { updateMemberWallet } from '@/app/actions/auth'
+import Button from '@/components/button'
 import { useLogin } from '@/context/login'
-import { DynamicWidget, useDynamicContext } from '@/utils/dynamic'
+import { useDynamicContext } from '@/utils/dynamic'
 
 export default function LoginSetWallet() {
   const router = useRouter()
   const { signedUpId } = useLogin()
-  const { user } = useDynamicContext()
+  const { user, setShowAuthFlow } = useDynamicContext()
 
   const updateWallet = useCallback(
     async (id: string, address: string) => {
@@ -34,14 +35,12 @@ export default function LoginSetWallet() {
         新增/連結錢包即可獲得 100 讀選點數。點擊下方按鈕立刻建立錢包！
       </p>
       <div className="flex w-full max-w-[320px] justify-center">
-        <DynamicWidget
-          buttonClassName=""
-          buttonContainerClassName=""
-          innerButtonComponent={
-            <div className="flex flex-row items-center">
-              <span>以Dynamic繼續</span>
-            </div>
-          }
+        <Button
+          size="lg"
+          color="white"
+          icon={{ iconName: 'icon-dynamicxyz', size: 'm' }}
+          text="以Dynamic繼續"
+          onClick={() => setShowAuthFlow(true)}
         />
       </div>
       <p className="footnote text-primary-400">

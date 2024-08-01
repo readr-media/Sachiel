@@ -1,5 +1,6 @@
 'use client'
 
+import DynamicPanel from './dynamic-panel'
 import MeshPointInfo from './mesh-point-info'
 import TransactionList from './transaction-list'
 
@@ -11,7 +12,7 @@ type Transaction = {
   //TODO: sync with api response data type
 }
 
-import { DynamicWidget, useIsLoggedIn } from '@/utils/dynamic'
+import { useIsLoggedIn } from '@/utils/dynamic'
 
 export default function MeshPoint() {
   const isLoggedInDynamic = useIsLoggedIn()
@@ -153,7 +154,7 @@ export default function MeshPoint() {
   return (
     <>
       {isLoggedInDynamic ? (
-        <>
+        <div className="bg-white sm:rounded-md sm:drop-shadow">
           <section className="flex h-[190px] flex-col justify-center border-b-[0.5px] border-primary-200 sm:h-[128px] sm:flex-row sm:justify-between sm:px-10 sm:py-8">
             <MeshPointInfo />
             <div className="flex flex-row items-center justify-center gap-4 pt-6 sm:gap-5 sm:self-end sm:pt-0">
@@ -188,19 +189,12 @@ export default function MeshPoint() {
               />
             )}
           </section>
-        </>
-      ) : (
-        <div className="flex h-[calc(100vh-123px)] items-center justify-center sm:h-[calc(100vh-424px)]">
-          <DynamicWidget
-            buttonClassName=""
-            buttonContainerClassName=""
-            innerButtonComponent={
-              <div className="inline-flex flex-row">
-                <p>以Dynamic繼續</p>
-              </div>
-            }
-          />
         </div>
+      ) : (
+        <DynamicPanel
+          description="為維護交易安全，請重新登入 Dynamic 以查看讀選點數交易紀錄。"
+          isHelperText={false}
+        />
       )}
     </>
   )

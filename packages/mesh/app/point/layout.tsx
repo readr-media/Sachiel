@@ -1,5 +1,3 @@
-'use client'
-
 import Footer from '@/app/_components/footer'
 import Header from '@/app/_components/header'
 import Nav from '@/app/_components/nav'
