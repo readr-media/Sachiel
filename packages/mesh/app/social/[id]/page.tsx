@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    return <NoFollowings />
+    return <NoFollowings currentUserId={currentMember.id} />
   }
 
   const currentMemberFollowingMemberIds = new Set(
@@ -104,6 +104,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
           <FollowSuggestionFeed
+            currentUserId={currentMember.id}
             suggestedFollowers={suggestedFollowers}
             isNoFollowings={false}
           />
@@ -123,7 +124,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
         </div>
-        <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
+        <FollowSuggestionWidget
+          currentUserId={currentMember.id}
+          suggestedFollowers={suggestedFollowers}
+        />
       </div>
     </main>
   )

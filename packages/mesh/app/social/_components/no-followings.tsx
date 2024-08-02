@@ -4,7 +4,11 @@ import { processMostFollowedMembers } from '@/utils/most-followed-member'
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
-export default async function NoFollowings() {
+export default async function NoFollowings({
+  currentUserId,
+}: {
+  currentUserId: string
+}) {
   const suggestedFollowers = await processMostFollowedMembers()
 
   return (
@@ -28,10 +32,14 @@ export default async function NoFollowings() {
         </div>
       </div>
       <FollowSuggestionFeed
+        currentUserId={currentUserId}
         suggestedFollowers={suggestedFollowers}
         isNoFollowings={true}
       />
-      <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
+      <FollowSuggestionWidget
+        currentUserId={currentUserId}
+        suggestedFollowers={suggestedFollowers}
+      />
     </main>
   )
 }
