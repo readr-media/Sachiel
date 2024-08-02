@@ -77,7 +77,7 @@ export default function RelatedStories({
   relatedStories: RelatedStory[]
 }) {
   return (
-    <div className="mt-9 px-5 sm:mt-10">
+    <div className="mt-9 px-5 sm:mt-10 lg:mt-0">
       <h2 className="list-title sm:title-1 text-primary-700">相關報導</h2>
       <div>
         {relatedStories.map((relatedStory) => (
