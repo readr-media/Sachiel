@@ -52,7 +52,13 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    return <NoFollowings currentUserId={currentMember.id} />
+    const mostFollowedMembers = await processMostFollowedMembers()
+    return (
+      <NoFollowings
+        currentUserId={currentMember.id}
+        suggestedFollowers={mostFollowedMembers}
+      />
+    )
   }
 
   const currentMemberFollowingMemberIds = new Set(

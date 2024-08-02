@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -3637,34 +3636,6 @@ export type SignUpMemberMutation = {
   } | null
 }
 
-export type AddFollowingMutationVariables = Exact<{
-  memberId?: InputMaybe<Scalars['ID']['input']>
-  followingId?: InputMaybe<Scalars['ID']['input']>
-}>
-
-export type AddFollowingMutation = {
-  __typename?: 'Mutation'
-  updateMember?: {
-    __typename?: 'Member'
-    id: string
-    following?: Array<{ __typename?: 'Member'; id: string }> | null
-  } | null
-}
-
-export type RemoveFollowingMutationVariables = Exact<{
-  memberId?: InputMaybe<Scalars['ID']['input']>
-  followingId?: InputMaybe<Scalars['ID']['input']>
-}>
-
-export type RemoveFollowingMutation = {
-  __typename?: 'Mutation'
-  updateMember?: {
-    __typename?: 'Member'
-    id: string
-    following?: Array<{ __typename?: 'Member'; id: string }> | null
-  } | null
-}
-
 export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllCategoriesQuery = {
@@ -3867,6 +3838,7 @@ export type GetCurrentUserMemberIdQuery = {
     name?: string | null
     customId?: string | null
     avatar?: string | null
+    wallet?: string | null
   } | null
 }
 
@@ -4422,29 +4394,35 @@ export const SignUpMemberDocument = {
   SignUpMemberMutation,
   SignUpMemberMutationVariables
 >
-export const AddFollowingDocument = {
+export const UpdateWalletAddressDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'mutation',
-      name: { kind: 'Name', value: 'AddFollowing' },
+      name: { kind: 'Name', value: 'UpdateWalletAddress' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
           },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
         },
         {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'followingId' },
+            name: { kind: 'Name', value: 'wallet' },
           },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -4465,7 +4443,7 @@ export const AddFollowingDocument = {
                       name: { kind: 'Name', value: 'id' },
                       value: {
                         kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
+                        name: { kind: 'Name', value: 'id' },
                       },
                     },
                   ],
@@ -4479,144 +4457,10 @@ export const AddFollowingDocument = {
                   fields: [
                     {
                       kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'following' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'connect' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'id' },
-                                  value: {
-                                    kind: 'Variable',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'followingId',
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'following' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  AddFollowingMutation,
-  AddFollowingMutationVariables
->
-export const RemoveFollowingDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'removeFollowing' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'followingId' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'updateMember' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
+                      name: { kind: 'Name', value: 'wallet' },
                       value: {
                         kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'data' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'following' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'disconnect' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'id' },
-                                  value: {
-                                    kind: 'Variable',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'followingId',
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
+                        name: { kind: 'Name', value: 'wallet' },
                       },
                     },
                   ],
@@ -4627,16 +4471,7 @@ export const RemoveFollowingDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'following' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                    ],
-                  },
-                },
+                { kind: 'Field', name: { kind: 'Name', value: 'wallet' } },
               ],
             },
           },
@@ -4645,8 +4480,8 @@ export const RemoveFollowingDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  RemoveFollowingMutation,
-  RemoveFollowingMutationVariables
+  UpdateWalletAddressMutation,
+  UpdateWalletAddressMutationVariables
 >
 export const GetAllCategoriesDocument = {
   kind: 'Document',
@@ -5529,6 +5364,7 @@ export const GetCurrentUserMemberIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'wallet' } },
               ],
             },
           },
