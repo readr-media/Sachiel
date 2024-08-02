@@ -22,7 +22,7 @@ export default function PageNavigator({ story }: { story: Story }) {
   }
 
   return (
-    <div className="flex h-full grow items-center justify-between px-2">
+    <div className="flex h-full grow items-center justify-between px-2 sm:px-0">
       <div className="flex">
         <button
           type="button"
