@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
@@ -45,15 +46,20 @@ export default function MostPickedStoryCard({
             {/* right top section */}
             <div>
               <div className="flex h-6 flex-row items-center justify-between">
-                {/* TODO: wait for api to add source.customId to redirect to /profile/publisher/{customId} */}
-                <h4
-                  className={`${
-                    isDesktop ? 'body-3' : 'footnote'
-                  } h-5 text-primary-500 lg:h-auto`}
+                <Link
+                  href={`/profile/publisher/${story.source?.customId ?? ''}`}
                 >
-                  {story.source?.title ?? ''}
-                </h4>
-                <button>...</button>
+                  <h4
+                    className={`${
+                      isDesktop ? 'body-3' : 'footnote'
+                    } h-5 text-primary-500 lg:h-auto`}
+                  >
+                    {story.source?.title ?? ''}
+                  </h4>
+                </Link>
+                <button>
+                  <Icon iconName="icon-more-horiz" size="l" />
+                </button>
               </div>
               <div
                 className={`${

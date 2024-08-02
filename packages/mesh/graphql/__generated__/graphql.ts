@@ -4214,6 +4214,7 @@ export type LatestStoriesQuery = {
       __typename?: 'Publisher'
       id: string
       title?: string | null
+      customId?: string | null
     } | null
     picks?: Array<{
       __typename?: 'Pick'
@@ -7411,6 +7412,10 @@ export const LatestStoriesDocument = {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
                     ],
                   },
                 },

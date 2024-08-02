@@ -40,10 +40,11 @@ export default function HeroStoryCard({
           {/* right top section */}
           <div>
             <div className="flex h-6 flex-row items-center justify-between">
-              {/* TODO: wait for api to add source.customId to redirect to /profile/publisher/{customId} */}
-              <h4 className="body-3 h-5 text-primary-500 lg:h-auto">
-                {story.source?.title}
-              </h4>
+              <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
+                <h4 className="body-3 h-5 text-primary-500 lg:h-auto">
+                  {story.source?.title ?? ''}
+                </h4>
+              </Link>
               <button>
                 <Icon iconName="icon-more-horiz" size="l" />
               </button>

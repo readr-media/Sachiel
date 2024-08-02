@@ -65,9 +65,9 @@ export default function Feed({
         </div>
       ) : null}
       <div className="px-8 pb-6 pt-3">
-        <Link href={`/publisher/${story.source?.customId}}`}>
+        <Link href={`/publisher/${story.source?.customId ?? ''}}`}>
           <h4 className="body-3 mb-1 text-primary-500">
-            {story.source?.title}
+            {story.source?.title ?? ''}
           </h4>
         </Link>
         <Link href={`/story/${story.id}`}>

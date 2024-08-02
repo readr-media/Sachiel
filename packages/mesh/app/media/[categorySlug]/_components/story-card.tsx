@@ -54,9 +54,11 @@ export default forwardRef(function StoryCard(
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
-          <h4 className="caption-1 line-clamp-1 text-primary-500">
-            {story.source?.title}
-          </h4>
+          <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
+            <h4 className="caption-1 line-clamp-1 text-primary-500">
+              {story.source?.title ?? ''}
+            </h4>
+          </Link>
           <button>
             <Icon iconName="icon-more-horiz" size="l" />
           </button>

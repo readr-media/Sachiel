@@ -14,6 +14,7 @@ query LatestStories($date: DateTime) {
     source {
       id
       title
+      customId
     }
     published_date
     summary
