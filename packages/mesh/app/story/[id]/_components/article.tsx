@@ -60,7 +60,7 @@ export default function Article({
     <div>
       <div>
         {story?.og_image && (
-          <div className="relative aspect-[2/1]">
+          <div className="relative mb-6 aspect-[2/1]">
             <Image
               src={story.og_image}
               alt="hero image"
@@ -71,7 +71,7 @@ export default function Article({
         )}
         <div className="px-5 sm:px-0">
           {/* article meta */}
-          <div className="mt-6">
+          <div>
             <div className="body-3 text-primary-500">
               {story?.source?.title ?? ''}
             </div>
