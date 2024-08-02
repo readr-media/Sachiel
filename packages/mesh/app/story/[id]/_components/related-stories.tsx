@@ -15,7 +15,7 @@ const MobileStoryCard = ({ story }: { story: RelatedStory }) => {
       <Link href={`/story/${story.id}`}>
         <div className="flex justify-between gap-3">
           <div className="subtitle-1 text-primary-700">{story.title}</div>
-          <div className="relative h-12 w-24 overflow-hidden rounded">
+          <div className="relative h-12 w-24 shrink-0 overflow-hidden rounded">
             <Image
               src={story.og_image || '/images/default-story-image.webP'}
               alt={story.title}

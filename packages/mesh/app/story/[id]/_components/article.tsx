@@ -69,46 +69,48 @@ export default function Article({
             />
           </div>
         )}
-        {/* article meta */}
-        <div className="mt-6 px-5 sm:px-0">
-          <div className="body-3 text-primary-500">
-            {story?.source?.title ?? ''}
+        <div className="px-5 sm:px-0">
+          {/* article meta */}
+          <div className="mt-6">
+            <div className="body-3 text-primary-500">
+              {story?.source?.title ?? ''}
+            </div>
+            <h1 className="hero-title mt-1 text-primary-700">
+              {story?.title ?? ''}
+            </h1>
+            {publishDateInFormat && (
+              <div className="footnote mt-3 text-primary-500">
+                更新時間：{publishDateInFormat}
+              </div>
+            )}
+            <div className="mt-5 flex justify-between">
+              <StoryPickInfo
+                displayPicks={displayPicks}
+                maxCount={4}
+                pickCount={story?.picksCount ?? 0}
+                commentCount={story?.commentsCount ?? 0}
+              />
+              {/* TODO: update the states and actions according to the user state */}
+              <div className="hidden gap-1 sm:flex">
+                <PublisherDonateButton />
+                <StoryPickButton
+                  isStoryPicked={false}
+                  storyId={story?.id ?? ''}
+                />
+                <button className="pl-2">
+                  <Icon iconName="icon-more-horiz" size="l" />
+                </button>
+              </div>
+            </div>
           </div>
-          <h1 className="hero-title mt-1 text-primary-700">
-            {story?.title ?? ''}
-          </h1>
-          {publishDateInFormat && (
-            <div className="footnote mt-3 text-primary-500">
-              更新時間：{publishDateInFormat}
+          {story?.summary && (
+            <div className="body-2 mt-6 border-y-[1px] px-6 py-5 text-primary-700">
+              {story?.summary}
             </div>
           )}
-          <div className="mt-5 flex justify-between">
-            <StoryPickInfo
-              displayPicks={displayPicks}
-              maxCount={4}
-              pickCount={story?.picksCount ?? 0}
-              commentCount={story?.commentsCount ?? 0}
-            />
-            {/* TODO: update the states and actions according to the user state */}
-            <div className="hidden gap-1 sm:flex">
-              <PublisherDonateButton />
-              <StoryPickButton
-                isStoryPicked={false}
-                storyId={story?.id ?? ''}
-              />
-              <button className="pl-2">
-                <Icon iconName="icon-more-horiz" size="l" />
-              </button>
-            </div>
-          </div>
-        </div>
-        {story?.summary && (
-          <div className="body-2 mt-6 border-y-[1px] px-6 py-5 text-primary-700">
-            {story?.summary}
-          </div>
-        )}
 
-        {getArtcileContent(story, sourceCustomId, shouldUseApiData)}
+          {getArtcileContent(story, sourceCustomId, shouldUseApiData)}
+        </div>
       </div>
     </div>
   )
