@@ -94,9 +94,10 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name
-    customId
-    avatar
+    name,
+    customId,
+    avatar,
+    wallet
   }
 }
 

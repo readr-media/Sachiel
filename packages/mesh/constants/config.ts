@@ -17,6 +17,7 @@ let FIREBASE_CONFIG = {
   MESSAGING_SENDER_ID: '',
   APP_ID: '',
 }
+let DYNAMIC_ENV_ID = ''
 
 switch (ENV) {
   case 'local':
@@ -31,6 +32,7 @@ switch (ENV) {
       MESSAGING_SENDER_ID: '611179505112',
       APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
     }
+    DYNAMIC_ENV_ID = '51dfdb4d-d8ef-47e4-8a89-57ea9f1b3803'
     break
   case 'dev':
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
@@ -44,6 +46,7 @@ switch (ENV) {
       MESSAGING_SENDER_ID: '611179505112',
       APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
     }
+    DYNAMIC_ENV_ID = '51dfdb4d-d8ef-47e4-8a89-57ea9f1b3803'
     break
 
   default:
@@ -64,6 +67,7 @@ const STATIC_FILE_ENDPOINTS = {
 }
 
 export {
+  DYNAMIC_ENV_ID,
   ENV,
   FIREBASE_CLIENT_EMAIL,
   FIREBASE_CONFIG,
