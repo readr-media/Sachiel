@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 import Icon from '@/components/icon'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
@@ -27,7 +27,7 @@ const chevronMap: Pick<
 
 export default function LoginStepsTitle() {
   const { step, setStep } = useLogin()
-  const router = useRouter()
+  // const router = useRouter()
 
   switch (step) {
     case LoginState.Entry:
@@ -58,15 +58,16 @@ export default function LoginStepsTitle() {
     case LoginState.SetWallet:
       return (
         <div className="flex w-full px-5">
-          <div className="w-9"></div>
+          {/* <div className="w-9"></div> */}
           <h2 className="list-title mx-auto">連結錢包</h2>
-          <button
+          {/* <button
+            // temporarily remove skip button
             className="list-title text-custom-blue"
             //TODO: update URL
             onClick={() => router.push('/media')}
           >
             略過
-          </button>
+          </button> */}
         </div>
       )
   }

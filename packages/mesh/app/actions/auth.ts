@@ -8,6 +8,7 @@ import {
   type MemberCreateInput,
   GetCurrentUserMemberIdDocument,
   SignUpMemberDocument,
+  UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
@@ -73,6 +74,7 @@ export async function getCurrentUser() {
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
         avatar: data.member.avatar ?? '',
+        wallet: data.member.wallet ?? '',
         idToken,
       }
     } else {
@@ -132,6 +134,25 @@ export async function signUpMember(formData: UserFormData) {
       'Failed to verify firebase token',
       globalLogFields
     )
+    return undefined
+  }
+}
+
+export async function updateMemberWallet(id: string, wallet: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const idToken = cookies().get('token')?.value
+
+  if (!idToken) return undefined
+  try {
+    const data = await fetchGraphQL(
+      UpdateWalletAddressDocument,
+      { id, wallet },
+      globalLogFields,
+      'Failed to sign up new member'
+    )
+    return data?.updateMember
+  } catch (error) {
+    logServerSideError(error, 'Failed to update member wallet', globalLogFields)
     return undefined
   }
 }
