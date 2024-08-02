@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import fetchRestful, { RestfulMethod } from '@/utils/fetch-restful'
+import { fetchRestfulGet } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
@@ -44,12 +44,8 @@ export default async function page({ params }: { params: { id: string } }) {
   let relatedStories: RelatedStory[] = []
   if (storyData.story?.title) {
     relatedStories =
-      (await fetchRestful(
-        {
-          url: RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title,
-          method: RestfulMethod.Get,
-        },
-        { traceObject: globalLogFields }
+      (await fetchRestfulGet<RelatedStory[]>(
+        RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title
       )) ?? []
   }
 
