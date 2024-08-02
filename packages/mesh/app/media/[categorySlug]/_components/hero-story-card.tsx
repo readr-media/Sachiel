@@ -19,8 +19,6 @@ export default function HeroStoryCard({
 }) {
   const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
 
-  console.log(story.source)
-
   return (
     <article className="col-span-2 border-b pb-5 pt-3">
       <div className="flex gap-10">

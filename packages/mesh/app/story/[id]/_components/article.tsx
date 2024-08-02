@@ -21,14 +21,14 @@ export default function Article({
   story: Story
   sourceCustomId: string
 }) {
-  const useApiData = inHousePublisherCustomIds.includes(sourceCustomId)
+  const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
 
   const getArtcileContent = (
     story: Story,
     sourceCustomId: string,
-    useApiData: boolean
+    shouldUseApiData: boolean
   ) => {
-    if (useApiData) {
+    if (shouldUseApiData) {
       return (
         <>
           <SideIndex
@@ -108,7 +108,7 @@ export default function Article({
           </div>
         )}
 
-        {getArtcileContent(story, sourceCustomId, useApiData)}
+        {getArtcileContent(story, sourceCustomId, shouldUseApiData)}
       </div>
     </div>
   )
