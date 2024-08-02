@@ -23,12 +23,12 @@ type GetRequestParam = {
   url: RequestUrl
 }
 
-export async function fetchRestfulGet<T>(
+export function fetchRestfulGet<T>(
   url: RequestUrl,
   init?: RequestInit,
   errorMessage?: string
 ) {
-  return await fetchRestful<T>({
+  return fetchRestful<T>({
     method: RestfulMethod.Get,
     url,
     init,
@@ -36,13 +36,13 @@ export async function fetchRestfulGet<T>(
   })
 }
 
-export async function fetchRestfulPost<T>(
+export function fetchRestfulPost<T>(
   url: RequestUrl,
   body: object,
   init?: RequestInit,
   errorMessage?: string
 ) {
-  return await fetchRestful<T>({
+  return fetchRestful<T>({
     method: RestfulMethod.Post,
     url,
     body,
@@ -84,6 +84,7 @@ async function fetchRestful<T>({
     return data
   } catch (error) {
     const traceObject = getLogTraceObjectFromHeaders()
+    // TODO: put body and intt objects inside logServerSideError and use debugPaylod to log them
     const fallbackErrorMessage =
       'Fetch Restful failed, info: ' + JSON.stringify({ url, body, init })
     logServerSideError(error, errorMessage || fallbackErrorMessage, traceObject)
