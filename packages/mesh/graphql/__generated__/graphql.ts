@@ -4257,6 +4257,7 @@ export type GetStoryQuery = {
     id: string
     title?: string | null
     summary?: string | null
+    url?: string | null
     og_image?: string | null
     published_date?: any | null
     content?: string | null
@@ -7763,6 +7764,7 @@ export const GetStoryDocument = {
                     ],
                   },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'url' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
                 {
                   kind: 'Field',

@@ -100,6 +100,7 @@ export type IconName =
   | 'icon-publisher-readr'
   | 'icon-bookmark'
   | 'icon-share'
+  | 'icon-open-new-tab'
 
 export type IconProps = {
   size: Size

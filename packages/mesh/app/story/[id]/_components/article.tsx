@@ -1,5 +1,9 @@
-import Image from 'next/image'
+'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
+
+import Button from '@/components/button'
 import Icon from '@/components/icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryPickButton from '@/components/story-card/story-pick-button'
@@ -43,6 +47,25 @@ export default function Article({
         </>
       )
     } else {
+      // redirect all external stories for now, TODO: sparate external and redirect stories
+      return (
+        <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
+          <div className="body-3 text-primary-500">本篇為外連文章</div>
+          <Link
+            href={story?.url ?? ''}
+            target="_blank"
+            className="block w-full max-w-[400px]"
+          >
+            <Button
+              size="lg"
+              color="primary"
+              text="閱讀原文"
+              icon={{ size: 'm', iconName: 'icon-open-new-tab' }}
+              onClick={() => {}}
+            />
+          </Link>
+        </div>
+      )
       return (
         <article
           className="story-renderer"
