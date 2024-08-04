@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -18,17 +19,19 @@ const PublisherStory = ({
 }) => {
   return (
     <article className="border-b py-3 last-of-type:border-b-0">
-      {showImage && story.og_image && (
-        <div className="relative mb-3 aspect-[2/1]">
-          <Image
-            className="object-cover"
-            src={story.og_image}
-            alt={story.title ?? ''}
-            fill
-          />
-        </div>
-      )}
-      <div className="subtitle-2">{story.title ?? ''}</div>
+      <Link href={`/story/${story.id}`}>
+        {showImage && story.og_image && (
+          <div className="relative mb-3 aspect-[2/1]">
+            <Image
+              className="object-cover"
+              src={story.og_image}
+              alt={story.title ?? ''}
+              fill
+            />
+          </div>
+        )}
+        <div className="subtitle-2">{story.title ?? ''}</div>
+      </Link>
       <div className="caption-1 mt-1">
         <StoryMeta
           commentCount={story.commentCount ?? 0}

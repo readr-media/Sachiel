@@ -8,7 +8,8 @@
     background: #f2f2f4;
     border: 1px solid #e5e6e9;
     border-radius: 2px;
-    width: 360px;
+    width: 100%;
+    max-width: 360px;
     padding-top: 16px;
     @media (min-width: 1200px) {
       width: 100%;
@@ -94,7 +95,7 @@
     }
   }
 
-  article {
+  article.story-renderer {
     max-width: 600px;
 
     & > * {
@@ -206,7 +207,7 @@
         height: 24px;
         display: inline-block;
         cursor: pointer;
-        margin-left: 4px;
+        margin: 0 4px;
         transition: transform 0.3s;
       }
     }
@@ -228,11 +229,13 @@
     }
 
     & > div.blockquote-block {
-      padding: 0 20px;
       font-weight: 400;
       font-size: 16px;
       line-height: 1.5;
       color: #575d71;
+      .body {
+        padding: 0 20px;
+      }
     }
 
     & > pre.code-block {
@@ -253,6 +256,11 @@
     & > section.infobox-block {
       background: #f2f2f4;
       padding: 24px 0;
+      @media (max-width: 767px) {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+      }
+
       & > .title {
         padding: 0 32px;
         position: relative;
@@ -277,6 +285,11 @@
 
     & > table {
       width: 100%;
+      table-layout: fixed;
+
+      /* @media (max-width: 767px) {
+        width: calc(100vw - 40px);
+      } */
       border-collapse: collapse;
       text-align: center;
       & tr {
@@ -362,12 +375,29 @@
 
     & figure.image-block {
       width: 100%;
+      @media (max-width: 767px) {
+        position: relative;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+      }
+
       & .image-wrapper {
         position: relative;
         height: 375px;
 
         @media (min-width: 768px) {
           height: 400px;
+        }
+      }
+      & figcaption {
+        margin-top: 8px;
+        color: rgba(127, 132, 147, 1);
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.5;
+        padding: 0 20px;
+        @media (min-width: 768px) {
+          padding: 0;
         }
       }
     }
@@ -378,6 +408,12 @@
       display: flex;
       justify-content: center;
       position: relative;
+
+      @media (max-width: 767px) {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+      }
+
       & video {
         height: 100%;
       }
@@ -399,6 +435,11 @@
       flex-wrap: wrap;
       position: relative;
 
+      @media (max-width: 767px) {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+      }
+
       @media (min-width: 768px) {
         &.fold {
           max-height: 906px;
@@ -407,7 +448,10 @@
       }
       & > figure {
         width: 100%;
-        aspect-ratio: 1;
+
+        & .image {
+          aspect-ratio: 1;
+        }
 
         @media (min-width: 768px) {
           width: 294px;
@@ -416,7 +460,7 @@
         @media (hover: hover) {
           cursor: pointer;
 
-          &:hover {
+          &:hover .image {
             filter: brightness(15%);
             transition: 0.3s;
           }
@@ -588,7 +632,7 @@
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
       /* FIXME: replace the formula to fit the website */
-      left: calc(50% - 50vw);
+      margin-left: calc(50% - 50vw);
       .background-image {
         position: absolute;
         top: 0;
@@ -676,7 +720,7 @@
       /* FIXME: apply z-index following project setup */
       z-index: 1000;
       /* FIXME: replace the formula to fit the website */
-      left: calc(50% - 50vw);
+      margin-left: calc(50% - 50vw);
       .background-video {
         position: absolute;
         top: 0;
@@ -763,6 +807,11 @@
 
     & > section.embed-code-block {
       position: relative;
+      @media (max-width: 767px) {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+      }
+
       & > div.embed {
         position: relative;
         white-space: normal;

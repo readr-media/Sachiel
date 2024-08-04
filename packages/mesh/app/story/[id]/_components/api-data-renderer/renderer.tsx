@@ -32,7 +32,7 @@ export default function ApiDataRenderer({
   const organization = getOrganizationFromSourceCustomId(sourceCustomId)
 
   return (
-    <article>
+    <article className="story-renderer">
       {apiData.map((apiDataBlock) => {
         switch (apiDataBlock.type) {
           case ApiDataBlockType.Unstyled:
