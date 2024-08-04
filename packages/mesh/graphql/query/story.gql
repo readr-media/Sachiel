@@ -53,6 +53,7 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
       title
       customId
     }
+    url
     og_image
     published_date
     picksCount: pickCount(
