@@ -60,7 +60,7 @@ export default function TransactionList({
                         : 'icon-avatar-default'
                     }
                     size="2xl"
-                    className="h-11 w-11"
+                    className="size-11"
                   />
                   <div className="flex w-full flex-col gap-1">
                     <div className="subtitle-2 flex justify-between gap-4">

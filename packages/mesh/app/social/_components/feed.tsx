@@ -48,7 +48,7 @@ export default function Feed({
       </div>
       {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
-          <Link href={`/story/${story.id}`} className="h-full w-full">
+          <Link href={`/story/${story.id}`} className="size-full">
             <Image
               src={story.og_image}
               alt={story.title ?? ''}

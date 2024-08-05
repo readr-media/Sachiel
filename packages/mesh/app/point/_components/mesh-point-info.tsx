@@ -25,7 +25,7 @@ export default function MeshPointInfo() {
     <>
       <div className="flex flex-col justify-center gap-2 sm:flex-col-reverse sm:self-end">
         <div className="flex flex-row items-center justify-center gap-1">
-          <Icon iconName="icon-mesh-point" size="m" className="h-6 w-6" />
+          <Icon iconName="icon-mesh-point" size="m" className="size-6" />
           <p className="hero-title text-primary-700">
             {balance?.toLocaleString('en-US', {
               minimumFractionDigits: 2,

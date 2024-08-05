@@ -42,7 +42,7 @@ export default function LoginStepsTitle() {
     case LoginState.Email:
     case LoginState.EmailConfirmation:
     case LoginState.SetCategory:
-    case LoginState.SetFollowing:
+    case LoginState.SetFollowing: {
       const { title, goToStep } = chevronMap[step]
       return (
         <>
@@ -50,9 +50,10 @@ export default function LoginStepsTitle() {
             <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
           </button>
           <h2 className="list-title mx-auto">{title}</h2>
-          <div className="h-5 w-5 px-5"></div>
+          <div className="size-5 px-5"></div>
         </>
       )
+    }
     case LoginState.SetName:
       return <h2 className="list-title mx-auto">姓名</h2>
     case LoginState.SetWallet:

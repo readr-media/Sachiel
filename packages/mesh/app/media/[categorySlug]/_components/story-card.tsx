@@ -75,7 +75,7 @@ export default forwardRef(function StoryCard(
               <StoryMetaWrapper story={story} className="hidden sm:block" />
             </div>
             {story.og_image && (
-              <div className="relative h-[48px] w-[96px] flex-shrink-0  sm:h-[80px] sm:w-[160px]">
+              <div className="relative h-[48px] w-[96px] shrink-0  sm:h-[80px] sm:w-[160px]">
                 <Image
                   className="rounded-[4px] object-cover "
                   src={story.og_image}

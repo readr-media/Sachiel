@@ -6,7 +6,7 @@ import type { ApiDataBlockBase, ApiDataBlockType } from '../types'
 
 type ContentEmbedCode = {
   caption: string
-  scripts: any[]
+  scripts: unknown[]
   embeddedCode: string
   embeddedCodeWithoutScript: string
 }

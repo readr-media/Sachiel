@@ -4,11 +4,11 @@ import { headers } from 'next/headers'
 
 import { GCP_PROJECT_ID } from '@/constants/config'
 
-export type TraceObject = Record<string, any>
+export type TraceObject = Record<string, unknown>
 
 function getLogTraceObjectFromHeaders() {
   const traceHeader = headers()?.get('x-cloud-trace-context')
-  let globalLogFields: TraceObject = {}
+  const globalLogFields: TraceObject = {}
   if (traceHeader && !Array.isArray(traceHeader)) {
     const [trace] = traceHeader.split('/')
     globalLogFields[

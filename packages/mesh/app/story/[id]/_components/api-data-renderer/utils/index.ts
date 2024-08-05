@@ -1,4 +1,4 @@
-import { Organization } from '../types'
+import type { Organization } from '../types'
 
 const sourceCustomIdToOrganization: Record<string, Organization> = {
   鏡週刊: 'mirror-media',

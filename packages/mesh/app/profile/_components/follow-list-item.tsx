@@ -36,7 +36,7 @@ const FollowListItem = ({
         className="flex w-full grow items-center"
       >
         <Avatar src={followerAvatar} size="l" extra="mr-2 shrink-0" />
-        <div className="mr-2 flex min-w-0 flex-grow flex-col">
+        <div className="mr-2 flex min-w-0 grow flex-col">
           <p className="subtitle-1 truncate">{followerName}</p>
           <p className="body-3 truncate text-primary-500">{followerCustomId}</p>
         </div>

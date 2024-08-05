@@ -172,10 +172,11 @@ export default function ApiDataRenderer({
               />
             )
 
-          default:
+          default: {
             const exhaustiveCheck: never = apiDataBlock
             console.error('unhandled apiData type', exhaustiveCheck)
             return null
+          }
         }
       })}
     </article>

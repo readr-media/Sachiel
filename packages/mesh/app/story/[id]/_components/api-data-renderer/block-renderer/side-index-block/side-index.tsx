@@ -11,7 +11,7 @@ import {
   genMMSideIndexHeaderId,
   genReadrSideIndexHeaderId,
 } from '../../utils/side-index'
-import { ApiDataHeader2, ApiDataHeader3 } from '../header-block'
+import type { ApiDataHeader2, ApiDataHeader3 } from '../header-block'
 import { type ApiDataSideIndex } from '.'
 
 const sideIndexActionInfos = {
@@ -168,43 +168,47 @@ export default function SideIndexContainer({
   const organization = getOrganizationFromSourceCustomId(sourceCustomId)
 
   switch (organization) {
-    case 'mirror-media': {
-      const sideIndexList = apiData
-        .filter(
-          (apiDataBlock) =>
-            apiDataBlock.type === ApiDataBlockType.HeaderTwo ||
-            apiDataBlock.type === ApiDataBlockType.HeaderThree
-        )
-        .map((apiDatalock) => {
-          const apiDataSideIndex = apiDatalock as
-            | ApiDataHeader2
-            | ApiDataHeader3
-          return {
-            title: apiDataSideIndex.content[0],
-            id: genMMSideIndexHeaderId(apiDataSideIndex.id),
-            url: null,
-          }
-        })
-      sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
-    }
-    case 'readr-media': {
-      const sideIndexList = apiData
-        .filter(
-          (apiDataBlock) => apiDataBlock.type === ApiDataBlockType.SideIndex
-        )
-        .map((apiDatalock) => {
-          const apiDataSideIndex = apiDatalock as ApiDataSideIndex
-          const { sideIndexText, h2Text, sideIndexUrl } =
-            apiDataSideIndex.content[0]
+    case 'mirror-media':
+      {
+        const sideIndexList = apiData
+          .filter(
+            (apiDataBlock) =>
+              apiDataBlock.type === ApiDataBlockType.HeaderTwo ||
+              apiDataBlock.type === ApiDataBlockType.HeaderThree
+          )
+          .map((apiDatalock) => {
+            const apiDataSideIndex = apiDatalock as
+              | ApiDataHeader2
+              | ApiDataHeader3
+            return {
+              title: apiDataSideIndex.content[0],
+              id: genMMSideIndexHeaderId(apiDataSideIndex.id),
+              url: null,
+            }
+          })
+        sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
+      }
+      break
+    case 'readr-media':
+      {
+        const sideIndexList = apiData
+          .filter(
+            (apiDataBlock) => apiDataBlock.type === ApiDataBlockType.SideIndex
+          )
+          .map((apiDatalock) => {
+            const apiDataSideIndex = apiDatalock as ApiDataSideIndex
+            const { sideIndexText, h2Text, sideIndexUrl } =
+              apiDataSideIndex.content[0]
 
-          return {
-            title: sideIndexText || h2Text,
-            id: genReadrSideIndexHeaderId(sideIndexText, h2Text),
-            url: sideIndexUrl || null,
-          }
-        })
-      sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
-    }
+            return {
+              title: sideIndexText || h2Text,
+              id: genReadrSideIndexHeaderId(sideIndexText, h2Text),
+              url: sideIndexUrl || null,
+            }
+          })
+        sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
+      }
+      break
     default:
       console.error(`organization: ${organization} is not supported`)
   }

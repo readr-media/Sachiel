@@ -25,7 +25,7 @@ export default function HeroStoryCard({
         {/* use padding-top to set aspect-ratio to prevent height growing when right block grows in too many lines of titles */}
 
         <div className="relative h-0 w-[calc((100%-40px)/2)] flex-1 pt-[calc((100%-40px)/4)]">
-          <Link href={`/story/${story.id}`} className="h-full w-full">
+          <Link href={`/story/${story.id}`} className="size-full">
             <Image
               className="rounded-md object-cover"
               src={story.og_image || '/images/default-story-image.webP'}

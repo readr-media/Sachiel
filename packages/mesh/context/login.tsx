@@ -1,10 +1,5 @@
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 export const LoginState = {
   Entry: 'entry',

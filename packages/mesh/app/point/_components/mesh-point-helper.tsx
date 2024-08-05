@@ -16,7 +16,7 @@ export default function MeshPointHelper() {
             <Icon
               iconName="icon-question-mark-circle"
               size="m"
-              className="h-6 w-6"
+              className="size-6"
             />
           </>
         }
