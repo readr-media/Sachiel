@@ -14,6 +14,9 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    dirs: ['../mesh'],
+  },
   async rewrites() {
     return [
       {
