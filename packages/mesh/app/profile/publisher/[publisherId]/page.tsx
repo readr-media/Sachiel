@@ -13,6 +13,7 @@ const page = async ({ params }: PageProps) => {
   const publisherId = params.publisherId
   const takesCount = 20
   const userType = 'publisher'
+
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
     publisherId,
     takes: takesCount,

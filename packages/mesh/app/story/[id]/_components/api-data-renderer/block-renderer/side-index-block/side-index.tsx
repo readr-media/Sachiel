@@ -94,6 +94,10 @@ const SideIndex = ({ sideIndexList }: { sideIndexList: SideIndexItem[] }) => {
     }
   }, [sideIndexList])
 
+  if (!sideIndexList.length) {
+    return null
+  }
+
   return (
     <section className="side-index" ref={sideIndexWrapperRef}>
       <div className="header">
@@ -154,10 +158,13 @@ const SideIndex = ({ sideIndexList }: { sideIndexList: SideIndexItem[] }) => {
 export default function SideIndexContainer({
   apiData,
   sourceCustomId,
+  isInArticle,
 }: {
   apiData: ApiData
   sourceCustomId: string
+  isInArticle: boolean
 }) {
+  let sideIndexJsx: JSX.Element | null = null
   const organization = getOrganizationFromSourceCustomId(sourceCustomId)
 
   switch (organization) {
@@ -178,7 +185,7 @@ export default function SideIndexContainer({
             url: null,
           }
         })
-      return <SideIndex sideIndexList={sideIndexList} />
+      sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
     }
     case 'readr-media': {
       const sideIndexList = apiData
@@ -196,9 +203,25 @@ export default function SideIndexContainer({
             url: sideIndexUrl || null,
           }
         })
-      return <SideIndex sideIndexList={sideIndexList} />
+      sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
     }
     default:
-      return null
+      console.error(`organization: ${organization} is not supported`)
   }
+
+  if (!sideIndexJsx) {
+    return null
+  }
+
+  return isInArticle ? (
+    // FIXME: update the sideindex style to fit the project
+    <div className="mt-8 flex justify-center sm:mt-6 lg:hidden">
+      {sideIndexJsx}
+    </div>
+  ) : (
+    // FIXME: update the sideindex style to fit the project
+    <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block lg:px-5">
+      {sideIndexJsx}
+    </div>
+  )
 }
