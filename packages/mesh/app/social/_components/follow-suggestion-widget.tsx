@@ -37,7 +37,7 @@ export default function FollowSuggestionWidget({
                     )}
                   </p>
                 </div>
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 lg:ml-4">
                   <FollowButton
                     currentUserId={currentUserId}
                     followingId={member.id}
