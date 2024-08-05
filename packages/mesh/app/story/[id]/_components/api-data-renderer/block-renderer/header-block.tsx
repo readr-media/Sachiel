@@ -1,4 +1,5 @@
-import type { ApiDataBlockBase, ApiDataBlockType } from '../types'
+import type { ApiDataBlockBase, ApiDataBlockType, Organization } from '../types'
+import { genMMSideIndexHeaderId } from '../utils/side-index'
 
 export interface ApiDataHeader2 extends ApiDataBlockBase {
   type: ApiDataBlockType.HeaderTwo
@@ -14,16 +15,42 @@ export interface ApiDataHeader3 extends ApiDataBlockBase {
 
 export function Header2Block({
   apiDataBlock,
+  organization,
 }: {
   apiDataBlock: ApiDataHeader2
+  organization: Organization
 }) {
-  return <h2>{apiDataBlock.content[0]}</h2>
+  switch (organization) {
+    case 'mirror-media':
+      return (
+        <h2 id={genMMSideIndexHeaderId(apiDataBlock.id)}>
+          {apiDataBlock.content[0]}
+        </h2>
+      )
+    case 'readr-media':
+      return <h2>{apiDataBlock.content[0]}</h2>
+    default:
+      return null
+  }
 }
 
 export function Header3Block({
   apiDataBlock,
+  organization,
 }: {
   apiDataBlock: ApiDataHeader3
+  organization: Organization
 }) {
-  return <h3>{apiDataBlock.content[0]}</h3>
+  switch (organization) {
+    case 'mirror-media':
+      return (
+        <h3 id={genMMSideIndexHeaderId(apiDataBlock.id)}>
+          {apiDataBlock.content[0]}
+        </h3>
+      )
+    case 'readr-media':
+      return <h3>{apiDataBlock.content[0]}</h3>
+    default:
+      return null
+  }
 }

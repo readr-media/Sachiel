@@ -10,7 +10,7 @@ import { useLogin } from '@/context/login'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
 
 export default function LoginSetFollowing() {
-  const { formData, setFormData, setStep } = useLogin()
+  const { formData, setFormData, setStep, setSignedUpId } = useLogin()
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
   const [isFollowAll, setIsFollowAll] = useState(false)
@@ -60,6 +60,7 @@ export default function LoginSetFollowing() {
   const handleFinishSignUp = async () => {
     const response = await signUpMember(formData)
     if (response) {
+      setSignedUpId(response.id)
       setStep('set-wallet')
     }
   }

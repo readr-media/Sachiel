@@ -4,3 +4,10 @@ mutation SignUpMember($registrationData: MemberCreateInput!) {
     firebaseId
   }
 }
+
+mutation UpdateWalletAddress($id: ID!, $wallet: String!) {
+  updateMember(where: { id: $id }, data: { wallet: $wallet }) {
+    id
+    wallet
+  }
+}

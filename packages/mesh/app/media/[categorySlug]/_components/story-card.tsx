@@ -1,7 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
@@ -52,32 +54,38 @@ export default forwardRef(function StoryCard(
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
-          <h4 className="caption-1 line-clamp-1 text-primary-500">
-            {story.source?.title}
-          </h4>
-          <button>...</button>
+          <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
+            <h4 className="caption-1 line-clamp-1 text-primary-500">
+              {story.source?.title ?? ''}
+            </h4>
+          </Link>
+          <button>
+            <Icon iconName="icon-more-horiz" size="l" />
+          </button>
         </div>
-        <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
-          <div>
-            <h2 className={`subtitle-1 text-primary-700 sm:hidden`}>
-              {story.title ?? ''}
-            </h2>
-            <h2 className={`title-2 hidden text-primary-700 sm:block`}>
-              {story.title ?? ''}
-            </h2>
-            <StoryMetaWrapper story={story} className="hidden sm:block" />
-          </div>
-          {story.og_image && (
-            <div className="relative h-[48px] w-[96px] flex-shrink-0  sm:h-[80px] sm:w-[160px]">
-              <Image
-                className="rounded-[4px] object-cover "
-                src={story.og_image}
-                alt={story.title ?? ''}
-                fill
-              />
+        <Link href={`/story/${story.id}`}>
+          <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
+            <div>
+              <h2 className={`subtitle-1 text-primary-700 sm:hidden`}>
+                {story.title ?? ''}
+              </h2>
+              <h2 className={`title-2 hidden text-primary-700 sm:block`}>
+                {story.title ?? ''}
+              </h2>
+              <StoryMetaWrapper story={story} className="hidden sm:block" />
             </div>
-          )}
-        </div>
+            {story.og_image && (
+              <div className="relative h-[48px] w-[96px] flex-shrink-0  sm:h-[80px] sm:w-[160px]">
+                <Image
+                  className="rounded-[4px] object-cover "
+                  src={story.og_image}
+                  alt={story.title ?? ''}
+                  fill
+                />
+              </div>
+            )}
+          </div>
+        </Link>
         <StoryMetaWrapper story={story} className="sm:hidden" />
       </div>
       <div className="mt-4 flex h-8 flex-row justify-between">

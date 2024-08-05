@@ -5,6 +5,7 @@ fragment UserActionStory on Story {
   og_image
   og_description
   source {
+    customId
     title
     createdAt
   }

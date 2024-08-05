@@ -133,6 +133,7 @@ export default function FeedLatestAction({
       </div>
     )
   }
+  return null
 }
 
 function truncateNameByBytes(text: string, maxByte: number) {
