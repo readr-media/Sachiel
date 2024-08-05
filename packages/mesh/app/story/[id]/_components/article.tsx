@@ -16,7 +16,7 @@ import SideIndex from './api-data-renderer/side-index'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
-const inHousePublisherCustomIds = ['鏡週刊', 'readr']
+const inHousePublisherCustomIds = ['mirrormedia', 'readr']
 
 export default function Article({
   story,
@@ -65,12 +65,6 @@ export default function Article({
             />
           </Link>
         </div>
-      )
-      return (
-        <article
-          className="story-renderer"
-          dangerouslySetInnerHTML={{ __html: story?.content ?? '' }}
-        />
       )
     }
   }
