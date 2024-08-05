@@ -64,7 +64,7 @@ export default function Feed({
           </Link>
         </div>
       ) : null}
-      <div className="px-8 pb-6 pt-3">
+      <div className="px-5 pb-4 pt-3 sm:px-8 sm:pb-6 sm:pt-4">
         <Link href={`/publisher/${story.source?.customId ?? ''}}`}>
           <h4 className="body-3 mb-1 text-primary-500">
             {story.source?.title ?? ''}
@@ -83,19 +83,21 @@ export default function Feed({
             fullScreenAd={story.full_screen_ad ?? ''}
           />
         </div>
-        <div className="mb-4 flex h-8 justify-between">
-          <StoryPickInfo
-            displayPicks={displayPicks}
-            pickCount={story.pickCount ?? 0}
-          />
-          <StoryPickButton
-            isStoryPicked={isStoryPickedByCurrentMember}
-            storyId={story.id}
-          />
+        <div className="flex flex-col gap-4">
+          <div className="mb-4 flex h-8 justify-between">
+            <StoryPickInfo
+              displayPicks={displayPicks}
+              pickCount={story.pickCount ?? 0}
+            />
+            <StoryPickButton
+              isStoryPicked={isStoryPickedByCurrentMember}
+              storyId={story.id}
+            />
+          </div>
+          {storyActions.commentsData ? (
+            <FeedComment comment={storyActions.commentsData[0]} />
+          ) : null}
         </div>
-        {storyActions.commentsData ? (
-          <FeedComment comment={storyActions.commentsData[0]} />
-        ) : null}
       </div>
     </div>
   )
