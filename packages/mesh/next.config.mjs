@@ -15,7 +15,15 @@ const nextConfig = {
     ],
   },
   eslint: {
-    dirs: ['../mesh'],
+    dirs: [
+      'apollo',
+      'constants',
+      'context',
+      'firebase',
+      'hooks',
+      'types',
+      'utils',
+    ],
   },
   async rewrites() {
     return [
