@@ -7,8 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
-import type { Icon } from '@/components/interactive-icon'
-import InteractiveIcon from '@/components/interactive-icon'
+import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
 import useInView from '@/hooks/use-in-view'
 import {
   getAddedCategoryIds,

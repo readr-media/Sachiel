@@ -1,5 +1,4 @@
-import type { IconName, Size } from './icon'
-import Icon from './icon'
+import Icon, { type IconName, type Size } from './icon'
 
 export type Icon = {
   default: IconName
