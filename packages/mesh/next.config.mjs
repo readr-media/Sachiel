@@ -16,6 +16,8 @@ const nextConfig = {
   },
   eslint: {
     dirs: [
+      'app',
+      'components',
       'apollo',
       'constants',
       'context',
