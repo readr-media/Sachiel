@@ -186,6 +186,7 @@ export default function SideIndexContainer({
           }
         })
       sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
+      break
     }
     case 'readr-media': {
       const sideIndexList = apiData
@@ -204,9 +205,12 @@ export default function SideIndexContainer({
           }
         })
       sideIndexJsx = <SideIndex sideIndexList={sideIndexList} />
+      break
     }
     default:
-      console.error(`organization: ${organization} is not supported`)
+      console.error(
+        `SideIndex for organization: ${organization} is not supported`
+      )
   }
 
   if (!sideIndexJsx) {

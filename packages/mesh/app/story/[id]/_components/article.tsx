@@ -81,7 +81,7 @@ export default function Article({
             <Image
               src={story.og_image}
               alt="hero image"
-              objectFit="cover"
+              style={{ objectFit: 'cover' }}
               fill
             />
           </div>
