@@ -1,12 +1,10 @@
-import Head from 'next/head'
-
 /**
  * Component for implement comScore script.
  */
 export default function ComScoreScript() {
   return (
     // use react script rather than next/Script to let the script show on the source of the html (view-source:)
-    <Head>
+    <>
       <script
         id="comScore"
         dangerouslySetInnerHTML={{
@@ -26,6 +24,6 @@ export default function ComScoreScript() {
           __html: `<img src="https://sb.scorecardresearch.com/p?c1=2&amp;c2=24318560&amp;cv=3.9.1&amp;cj=1">`,
         }}
       />
-    </Head>
+    </>
   )
 }
