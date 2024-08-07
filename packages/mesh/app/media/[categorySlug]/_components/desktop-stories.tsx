@@ -55,7 +55,7 @@ export default function DesktopStories({
         />
       )}
       <div className="flex gap-10 p-10 pb-15">
-        <section className="w-[600px] flex-shrink-0">
+        <section className="w-[600px] shrink-0">
           <DesktopInfiniteStories
             latestStoriesInfo={{
               ...latestStoriesInfo,

@@ -4,7 +4,7 @@ import { formatFollowCount } from '@/utils/format-follow-count'
 
 import PublisherPage from './_component/publisher-page'
 
-type PageProps = {
+export type PageProps = {
   params: {
     publisherId: string
   }
@@ -13,6 +13,7 @@ const page = async ({ params }: PageProps) => {
   const publisherId = params.publisherId
   const takesCount = 20
   const userType = 'publisher'
+
   const response = await fetchGraphQL(GetPublisherProfileDocument, {
     publisherId,
     takes: takesCount,
@@ -60,7 +61,7 @@ const page = async ({ params }: PageProps) => {
         name={userName}
         avatar={userLogo}
         intro={userIntro}
-        userId={publisherId}
+        publisherId={publisherId}
         userType={userType}
         storyData={storyData}
       />

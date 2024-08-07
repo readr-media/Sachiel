@@ -11,7 +11,7 @@ import type { ApiDataImage } from './image-block'
 import type { ApiDataInfobox } from './infobox-block'
 import type { ApiDataOrderList, ApiDataUnorderList } from './list-block'
 import type { ApiDataRelatedPost } from './related-post'
-import type { ApiDataSideIndex } from './side-index'
+import type { ApiDataSideIndex } from './side-index-block'
 import type { ApiDataSlideshow } from './slideshow-block'
 import type { ApiDataTable } from './table-block'
 import type { ApiDataUnstyled } from './unstyled-block'
@@ -40,3 +40,5 @@ export type ApiDataBlock =
   | ApiDataSideIndex
   | ApiDataYoutube
   | ApiDataEmbedCode
+
+export type ApiData = ApiDataBlock[]

@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const protectRoutes = ['/media', '/social', '/point']
+  const protectRoutes = ['/media', '/social', '/point', '/profile']
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = protectRoutes.includes(currentPath)
 
@@ -16,10 +16,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|icons).*)',
-    '/media/:path*',
-    '/social/:path*',
-    '/point/:path*',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|icons).*)'],
 }

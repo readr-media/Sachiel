@@ -41,7 +41,7 @@ export default function CategoryEditor({
         }}
       >
         <div className="flex h-15 items-center justify-between border-b px-2">
-          <div className="h-11 w-11"></div>
+          <div className="size-11"></div>
           <h2 className="list-title text-primary-800">編輯追蹤類別</h2>
           <div className="cursor-pointer" onClick={onClose}>
             <Icon size="2xl" iconName="icon-modal-close" />

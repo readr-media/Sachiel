@@ -1,8 +1,7 @@
 'use server'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchRestful from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 
 export async function addCategory({
   memberId,
@@ -16,12 +15,11 @@ export async function addCategory({
     memberId,
     categoryIds,
   }
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  return await fetchRestful(
+
+  return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
-    { cache: 'no-cache' },
-    globalLogFields,
+    undefined,
     'Failed to add subscribed category via pub/sub'
   )
 }
@@ -38,13 +36,11 @@ export async function removeCategory({
     memberId,
     categoryIds,
   }
-  const globalLogFields = getLogTraceObjectFromHeaders()
 
-  return await fetchRestful(
+  return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
-    { cache: 'no-cache' },
-    globalLogFields,
+    undefined,
     'Failed to remove subscribed category via pub/sub'
   )
 }

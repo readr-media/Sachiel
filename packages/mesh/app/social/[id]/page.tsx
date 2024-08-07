@@ -52,7 +52,13 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    return <NoFollowings />
+    const mostFollowedMembers = await processMostFollowedMembers()
+    return (
+      <NoFollowings
+        currentUserId={currentMember.id}
+        suggestedFollowers={mostFollowedMembers}
+      />
+    )
   }
 
   const currentMemberFollowingMemberIds = new Set(
@@ -86,7 +92,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main>
-      <div className="flex justify-center gap-10 sm:px-5 sm:py-5 lg:px-10">
+      <div className="flex justify-center gap-10 sm:p-5 lg:px-10">
         <div className="flex flex-col gap-2 sm:gap-4">
           {firstSectionStories.map((item) => {
             const isStoryPickedByCurrentMember = currentMember.pick?.some(
@@ -104,6 +110,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
           <FollowSuggestionFeed
+            currentUserId={currentMember.id}
             suggestedFollowers={suggestedFollowers}
             isNoFollowings={false}
           />
@@ -123,7 +130,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
         </div>
-        <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
+        <FollowSuggestionWidget
+          currentUserId={currentMember.id}
+          suggestedFollowers={suggestedFollowers}
+        />
       </div>
     </main>
   )

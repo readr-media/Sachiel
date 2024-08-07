@@ -1,8 +1,7 @@
 'use server'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import fetchRestful from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 
 export async function addPick({
   memberId,
@@ -18,12 +17,11 @@ export async function addPick({
     targetId: storyId,
     state: 'public',
   }
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  return await fetchRestful(
+
+  return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    globalLogFields,
     'Failed to add pick state via pub/sub'
   )
 }
@@ -41,13 +39,11 @@ export async function removePick({
     objective: 'story',
     targetId: storyId,
   }
-  const globalLogFields = getLogTraceObjectFromHeaders()
 
-  return await fetchRestful(
+  return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    globalLogFields,
-    'Failed to remove pick state via pub/sub'
+    'Failed to add pick state via pub/sub'
   )
 }

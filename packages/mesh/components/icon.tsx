@@ -93,9 +93,14 @@ export type IconName =
   | 'icon-modal-close'
   | 'icon-modal-close-white'
   | 'icon-no-story'
+  | 'icon-up-arrow'
+  | 'icon-down-arrow'
   | 'icon-mesh-point'
   | 'icon-question-mark-circle'
   | 'icon-publisher-readr'
+  | 'icon-bookmark'
+  | 'icon-share'
+  | 'icon-open-new-tab'
 
 export type IconProps = {
   size: Size

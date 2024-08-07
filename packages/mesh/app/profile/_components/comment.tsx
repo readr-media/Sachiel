@@ -22,7 +22,7 @@ const Comment: React.FC<CommentProps> = ({
   clampLineCount = 3,
   avatar,
   canToggle = false,
-  //TODO: 之後有文章在更改成slug或id傳入做跳轉功能。
+  //TODO: 之後有文章再更改成slug或id傳入做跳轉功能。
   storyId = '',
 }) => {
   const { width } = useWindowDimensions()
@@ -79,7 +79,7 @@ const Comment: React.FC<CommentProps> = ({
           extra="mr-2 hidden md:flex min-w-[28px] min-h-[28px]"
         />
         <p
-          className={`body-3 line-clamp-3 h-full w-full ${
+          className={`body-3 line-clamp-3 size-full ${
             data.content ? 'text-primary-600' : 'text-primary-400'
           } sm:line-clamp-1`}
           ref={commentRef}

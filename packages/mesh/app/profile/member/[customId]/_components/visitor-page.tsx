@@ -23,6 +23,7 @@ type VisitorPageProps = {
   userType: UserType
   picksData: PickList
   memberId: string
+  memberCustomId: string
 }
 
 const VisitorPage: React.FC<VisitorPageProps> = ({
@@ -35,29 +36,40 @@ const VisitorPage: React.FC<VisitorPageProps> = ({
   followerCount,
   picksData,
   memberId,
+  memberCustomId,
 }) => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },
-    { tabName: TabKey.FOLLOWER, count: followerCount },
-    { tabName: TabKey.FOLLOWING, count: followingCount },
+    {
+      tabName: TabKey.FOLLOWER,
+      count: followerCount,
+      redirectLink: `${memberCustomId}/follower`,
+    },
+    {
+      tabName: TabKey.FOLLOWING,
+      count: followingCount,
+      redirectLink: `${memberCustomId}/following`,
+    },
   ]
 
   const buttonList = [{ text: '追蹤' }]
 
   return (
     <>
-      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
-        <UserProfile
-          name={name}
-          pickCount={pickCount}
-          avatar={avatar}
-          userType={userType}
-          intro={intro}
-        />
-        <ProfileButtonList buttonList={buttonList} />
-        <UserStatusList userStatusList={userStatusList} />
+      <div className="flex max-h-[calc(100%_-_152px)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full sm:items-start">
+        <section className="w-full max-w-[1180px]">
+          <UserProfile
+            name={name}
+            pickCount={pickCount}
+            avatar={avatar}
+            userType={userType}
+            intro={intro}
+          />
+          <ProfileButtonList buttonList={buttonList} />
+          <UserStatusList userStatusList={userStatusList} />
+        </section>
       </div>
 
       <Tab
