@@ -89,10 +89,7 @@ export default function Feed({
               displayPicks={displayPicks}
               pickCount={story.pickCount ?? 0}
             />
-            <StoryPickButton
-              isStoryPicked={isStoryPickedByCurrentMember}
-              storyId={story.id}
-            />
+            <StoryPickButton storyId={story.id} />
           </div>
           {storyActions.commentsData ? (
             <FeedComment comment={storyActions.commentsData[0]} />

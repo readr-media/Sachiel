@@ -1,41 +1,62 @@
 'use client'
 
-import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { addPick, removePick } from '@/app/actions/pick'
 import Button from '@/components/button'
+import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
-export default function StoryPickButton({
-  isStoryPicked,
-  storyId,
-}: {
-  isStoryPicked: boolean
-  storyId: string
-}) {
-  const [isPicked, setIsPicked] = useState(isStoryPicked)
-  //TODO: replace with logged-in member's status
-  const params = useParams()
-  const { id } = params
-  const memberId = Array.isArray(id) ? id[0] : id
+export default function StoryPickButton({ storyId }: { storyId: string }) {
+  const router = useRouter()
+  const { user, setUser } = useUser()
+  const memberId = user?.memberId
+  const isStoryPicked =
+    user?.picks.findIndex((pickInfo) => pickInfo.story?.id === storyId) !== -1
 
   const handleClickPick = debounce(async () => {
-    if (isPicked) {
+    if (!memberId) {
+      router.push('/login')
+      return
+    }
+
+    if (isStoryPicked) {
+      // TODO: simplify the mutation
+      setUser((user) => {
+        return {
+          ...user,
+          picks: user.picks.filter((pick) => pick.story?.id !== storyId),
+        }
+      })
       const removePickResponse = await removePick({ memberId, storyId })
-      if (removePickResponse) {
-        setIsPicked(!isPicked)
-      } else {
-        //TODO: error toast
-        console.log('toast')
+      if (!removePickResponse) {
+        // TODO: error toast
+        // TODO: simplify the mutation
+        setUser((user) => {
+          return {
+            ...user,
+            picks: [...user.picks, { story: { id: storyId } }],
+          }
+        })
       }
     } else {
+      // TODO: simplify the mutation
+      setUser((user) => {
+        return {
+          ...user,
+          picks: [...user.picks, { story: { id: storyId } }],
+        }
+      })
       const addPickResponse = await addPick({ memberId, storyId })
-      if (addPickResponse) {
-        setIsPicked(!isPicked)
-      } else {
-        //TODO: error toast
-        console.log('toast')
+      if (!addPickResponse) {
+        // TODO: error toast
+        // TODO: simplify the mutation
+        setUser((user) => {
+          return {
+            ...user,
+            picks: user.picks.filter((pick) => pick.story?.id !== storyId),
+          }
+        })
       }
     }
   })
@@ -48,7 +69,7 @@ export default function StoryPickButton({
       icon={{ iconName: 'icon-star-primary', size: 's' }}
       onClick={handleClickPick}
       activeState={{
-        isActive: isPicked,
+        isActive: isStoryPicked,
         activeText: '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}

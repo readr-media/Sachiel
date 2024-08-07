@@ -152,7 +152,7 @@ const MobileNav = ({ story }: { story: Story }) => {
         {/* TODO: update the states and actions according to the user state */}
         <div className="flex gap-2">
           <PublisherDonateButton />
-          <StoryPickButton isStoryPicked={false} storyId={story?.id ?? ''} />
+          <StoryPickButton storyId={story?.id ?? ''} />
         </div>
       </div>
     </nav>
