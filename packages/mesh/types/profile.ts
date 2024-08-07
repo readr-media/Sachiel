@@ -1,6 +1,6 @@
 import {
-  GetMemberProfileQuery,
-  GetPublisherProfileQuery,
+  type GetMemberProfileQuery,
+  type GetPublisherProfileQuery,
 } from '@/graphql/__generated__/graphql'
 
 export enum TabKey {
@@ -13,6 +13,7 @@ export enum TabKey {
 export type TabItem = {
   tabName: TabKey
   count: number | string | null
+  redirectLink?: string
 }
 export enum TabCategory {
   PICK = 'PICKS',

@@ -11,5 +11,9 @@ export default function CodeBlock({
 }: {
   apiDataBlock: ApiDataCodeBlock
 }) {
-  return <pre className="code-block">{apiDataBlock.content[0]}</pre>
+  const content = apiDataBlock.content[0]
+
+  return content ? (
+    <pre className="code-block">{apiDataBlock.content[0]}</pre>
+  ) : null
 }

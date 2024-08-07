@@ -77,7 +77,7 @@ export default async function Page({
   const mediaCount = 5
   const latestStoryPageCount = 20
   let allCategories: Category[] = []
-  let mostPickedStory: Story | null | undefined
+  let mostPickedStory: Story | null | undefined = undefined
   let publishers: Publisher[] = []
   const getLatestStoriesfetchBody = {
     publishers: followingPublishers,

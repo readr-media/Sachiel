@@ -2,8 +2,7 @@ import 'server-only'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { type LatestStoriesQuery } from '@/graphql/__generated__/graphql'
-import fetchRestful from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 
 export type Story = NonNullable<LatestStoriesQuery['stories']>[number]
 export type LatestStoriesResponse = {
@@ -22,11 +21,9 @@ export type GetLatestStoriesBody = {
 export default async function getLatestStoriesInCategory(
   body: GetLatestStoriesBody
 ) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  return fetchRestful<LatestStoriesResponse>(
+  return fetchRestfulPost<LatestStoriesResponse>(
     RESTFUL_ENDPOINTS.latestStories,
     body,
-    { next: { revalidate: 10 } },
-    globalLogFields
+    { next: { revalidate: 10 } }
   )
 }
