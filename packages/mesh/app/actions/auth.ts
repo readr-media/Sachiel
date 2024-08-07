@@ -75,6 +75,10 @@ export async function getCurrentUser() {
         name: data.member.name ?? '',
         avatar: data.member.avatar ?? '',
         wallet: data.member.wallet ?? '',
+        followingMembers: data.member.followingMembers ?? [],
+        picks: data.member.picks ?? [],
+        followingCategories: data.member.followingCategories ?? [],
+        followingPublishers: data.member.followingPublishers ?? [],
         idToken,
       }
     } else {
