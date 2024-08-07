@@ -16,20 +16,18 @@ type Picks = NonNullable<Member['picks']>
 type FollowingCategories = NonNullable<Member['followingCategories']>
 type FollowingPublishers = NonNullable<Member['followingPublishers']>
 
-export type User =
-  | {
-      memberId: string
-      customId: string
-      name: string
-      avatar: string
-      wallet: string
-      followingMembers: FollowingMembers
-      picks: Picks
-      followingCategories: FollowingCategories
-      followingPublishers: FollowingPublishers
-      idToken: string
-    }
-  | undefined
+export type User = {
+  memberId: string
+  customId: string
+  name: string
+  avatar: string
+  wallet: string
+  followingMembers: FollowingMembers
+  picks: Picks
+  followingCategories: FollowingCategories
+  followingPublishers: FollowingPublishers
+  idToken: string
+}
 
 type UserContextType = {
   user: User
@@ -38,14 +36,27 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
+const guest: User = {
+  memberId: '',
+  customId: '',
+  name: '',
+  avatar: '',
+  wallet: '',
+  followingMembers: [],
+  picks: [],
+  followingCategories: [],
+  followingPublishers: [],
+  idToken: '',
+}
+
 export function UserProvider({
   user,
   children,
 }: {
-  user: User
+  user: User | undefined
   children: React.ReactNode
 }) {
-  const [currentUser, setCurrentUser] = useState<User>(user)
+  const [currentUser, setCurrentUser] = useState<User>(user ?? guest)
 
   return (
     <UserContext.Provider

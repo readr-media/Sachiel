@@ -104,8 +104,12 @@ query GetCurrentUserMemberId($uid: String!) {
       id
       name
     }
-    picks: pick {
-      id
+    picks: pick(
+      where: {
+        kind: { equals: "read" }
+        AND: [{ is_active: { equals: true } }]
+      }
+    ) {
       story {
         id
       }
