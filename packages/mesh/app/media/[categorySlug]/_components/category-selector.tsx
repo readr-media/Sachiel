@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import type { MouseEventHandler } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
-import InteractiveIcon, { Icon } from '@/components/interactive-icon'
+import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
 import useInView from '@/hooks/use-in-view'
 import {
   getAddedCategoryIds,
@@ -131,7 +132,7 @@ export default function CategorySelector({
             {displayCategories.map((category) => (
               <Link
                 key={category.id}
-                className="flex-shrink-0"
+                className="shrink-0"
                 href={category.slug ?? ''}
               >
                 <Button
@@ -145,7 +146,7 @@ export default function CategorySelector({
                 />
               </Link>
             ))}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <Button
                 size="xs"
                 color="nav-button-add"

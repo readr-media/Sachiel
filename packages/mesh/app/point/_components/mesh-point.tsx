@@ -5,10 +5,9 @@ import MeshPointInfo from './mesh-point-info'
 import TransactionList from './transaction-list'
 
 type Transaction = {
-  balance: number
   sponsoredCount: number
   subscribedArticleCount: number
-  transactionData: any[]
+  transactionData: never[]
   //TODO: sync with api response data type
 }
 
@@ -145,7 +144,6 @@ export default function MeshPoint() {
 */
 
   const {
-    balance = 0,
     sponsoredCount = 0,
     subscribedArticleCount = 0,
     transactionData = [],

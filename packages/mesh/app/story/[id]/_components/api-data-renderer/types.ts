@@ -30,7 +30,7 @@ enum ApiDataBlockType {
 interface ApiDataBlockBase {
   id: string
   type: ApiDataBlockType
-  content: any[] | string
+  content: unknown[] | string
   alignment: 'center' | 'left' | 'right'
   textAlign?: 'center' | 'left'
 }

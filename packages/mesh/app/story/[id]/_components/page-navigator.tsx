@@ -26,7 +26,7 @@ export default function PageNavigator({ story }: { story: Story }) {
       <div className="flex">
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center"
+          className="flex size-11 items-center justify-center"
           onClick={backToPreviousPage}
         >
           <Icon iconName="icon-chevron-left" size="m" />
@@ -39,14 +39,14 @@ export default function PageNavigator({ story }: { story: Story }) {
         {/* TODO: hide bookmark button if not login */}
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center"
+          className="flex size-11 items-center justify-center"
           onClick={addStoryAsBookmark}
         >
           <Icon iconName="icon-bookmark" size="l" />
         </button>
         <button
           type="button"
-          className="flex h-11 w-11 items-center justify-center"
+          className="flex size-11 items-center justify-center"
           onClick={shareStory}
         >
           <Icon iconName="icon-share" size="l" />

@@ -14,6 +14,19 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    dirs: [
+      'app',
+      'components',
+      'apollo',
+      'constants',
+      'context',
+      'firebase',
+      'hooks',
+      'types',
+      'utils',
+    ],
+  },
   async rewrites() {
     return [
       {

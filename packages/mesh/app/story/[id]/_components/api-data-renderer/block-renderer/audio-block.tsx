@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { type MouseEventHandler, useEffect, useRef, useState } from 'react'
 
 import type {
   ApiDataBlockBase,

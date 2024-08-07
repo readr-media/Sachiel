@@ -65,11 +65,11 @@ const ArticleCard = ({
           alt={`${storyData?.title}'s story cover image`}
           width={96}
           height={48}
-          className="h-full w-full object-cover"
+          className="size-full object-cover"
         />
       </section>
       <div
-        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-[1px] after:w-[calc(100%-40px)] after:bg-primary-200 md:line-clamp-3 md:pt-[12px] md:after:hidden ${
+        className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-px after:w-[calc(100%-40px)] after:bg-primary-200 md:line-clamp-3 md:pt-[12px] md:after:hidden ${
           isLast && 'after:hidden'
         }`}
       >
