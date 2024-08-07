@@ -11,8 +11,8 @@ import StoryCommentCount from '@/components/story-card/story-comment-count'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickCount from '@/components/story-card/story-pick-count'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
+import { useUser } from '@/context/user'
 import { GetStoryQuery } from '@/graphql/__generated__/graphql'
-import useAuthState from '@/hooks/use-auth-state'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -149,7 +149,6 @@ const MobileNav = ({ story }: { story: Story }) => {
           )}
           <StoryPickCount picksCount={picksCount} />
         </div>
-        {/* TODO: update the states and actions according to the user state */}
         <div className="flex gap-2">
           <PublisherDonateButton />
           <StoryPickButton storyId={story?.id ?? ''} />
@@ -161,9 +160,9 @@ const MobileNav = ({ story }: { story: Story }) => {
 
 export default function StoryNav({ story }: { story: Story }) {
   const path = usePathname()
-  const { currentUser } = useAuthState()
+  const { user } = useUser()
 
-  const avatarUrl = currentUser?.avatar ?? ''
+  const avatarUrl = user?.avatar ?? ''
 
   return (
     <>

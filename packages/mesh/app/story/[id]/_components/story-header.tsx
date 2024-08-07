@@ -8,8 +8,8 @@ import { twMerge } from 'tailwind-merge'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
+import { isUserLoggedIn, useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
-import useAuthState from '@/hooks/use-auth-state'
 import { logout } from '@/utils/logout'
 
 import PageNavigator from './page-navigator'
@@ -42,7 +42,8 @@ const NonMobileHeader = () => {
   const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
   const router = useRouter()
-  const { isLogin: isLoggedIn } = useAuthState()
+  const { user } = useUser()
+  const isLoggedIn = isUserLoggedIn(user)
   const newNotification = true
 
   return (

@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
-import useAuthState from '@/hooks/use-auth-state'
+import { isUserLoggedIn, useUser } from '@/context/user'
 import { logout } from '@/utils/logout'
 
 const HeaderIconWrapper = ({
@@ -37,7 +37,8 @@ export default function Header() {
   const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
   const router = useRouter()
-  const { isLogin: isLoggedIn } = useAuthState()
+  const { user } = useUser()
+  const isLoggedIn = isUserLoggedIn(user)
   const newNotification = true
 
   return (

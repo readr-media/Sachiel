@@ -74,3 +74,7 @@ export function useUser() {
   }
   return context
 }
+
+export function isUserLoggedIn(user: User) {
+  return !!user.memberId
+}
