@@ -3887,11 +3887,7 @@ export type GetCurrentUserMemberIdQuery = {
     customId?: string | null
     avatar?: string | null
     wallet?: string | null
-    followingMembers?: Array<{
-      __typename?: 'Member'
-      id: string
-      name?: string | null
-    }> | null
+    followingMembers?: Array<{ __typename?: 'Member'; id: string }> | null
     picks?: Array<{
       __typename?: 'Pick'
       story?: { __typename?: 'Story'; id: string } | null
@@ -5714,7 +5710,6 @@ export const GetCurrentUserMemberIdDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                     ],
                   },
                 },

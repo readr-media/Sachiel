@@ -102,7 +102,6 @@ query GetCurrentUserMemberId($uid: String!) {
     wallet
     followingMembers: following {
       id
-      name
     }
     picks: pick(
       where: {

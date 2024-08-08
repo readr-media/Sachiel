@@ -53,12 +53,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
     const mostFollowedMembers = await processMostFollowedMembers()
-    return (
-      <NoFollowings
-        currentUserId={currentMember.id}
-        suggestedFollowers={mostFollowedMembers}
-      />
-    )
+    return <NoFollowings suggestedFollowers={mostFollowedMembers} />
   }
 
   const currentMemberFollowingMemberIds = new Set(
@@ -110,7 +105,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
           <FollowSuggestionFeed
-            currentUserId={currentMember.id}
             suggestedFollowers={suggestedFollowers}
             isNoFollowings={false}
           />
@@ -130,10 +124,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             )
           })}
         </div>
-        <FollowSuggestionWidget
-          currentUserId={currentMember.id}
-          suggestedFollowers={suggestedFollowers}
-        />
+        <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
       </div>
     </main>
   )
