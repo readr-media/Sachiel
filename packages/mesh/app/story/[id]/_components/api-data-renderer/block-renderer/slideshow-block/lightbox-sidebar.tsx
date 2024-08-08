@@ -2,7 +2,7 @@ import CustomImage from '@readr-media/react-image'
 import Image from 'next/image'
 import { type Dispatch, type SetStateAction, useEffect, useRef } from 'react'
 
-import { SlideshowImage } from '.'
+import type { SlideshowImage } from '.'
 
 type SidebarProps = {
   images: SlideshowImage[]

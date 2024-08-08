@@ -86,7 +86,7 @@ const BackgroundVideo = ({ content }: { content: ContentBackgroundVideo }) => {
         intersectionObserver.disconnect()
       }
     }
-  }, [])
+  }, [isParallax])
 
   return (
     <div className="background-video-block" ref={bgRef}>

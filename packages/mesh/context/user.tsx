@@ -2,8 +2,8 @@
 
 import {
   type Dispatch,
+  type SetStateAction,
   createContext,
-  SetStateAction,
   useContext,
   useState,
 } from 'react'

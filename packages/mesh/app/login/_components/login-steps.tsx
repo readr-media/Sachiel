@@ -50,7 +50,7 @@ export default function LoginSteps() {
 
   if (!sdkHasLoaded || isSignInLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex size-full items-center justify-center">
         <Spinner />
       </div>
     )
@@ -61,7 +61,7 @@ export default function LoginSteps() {
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
         <LoginStepsTitle />
       </div>
-      <div className="flex h-full w-full justify-center overflow-auto sm:items-center">
+      <div className="flex size-full justify-center overflow-auto sm:items-center">
         <div className="sm:w-[480px] sm:rounded-md sm:bg-white sm:drop-shadow">
           {step !== 'entry' && (
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">

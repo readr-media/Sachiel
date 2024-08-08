@@ -15,7 +15,7 @@ export default function SearchBar({ className = '' }: { className?: string }) {
       </label>
       <input
         id="search"
-        className="button flex-grow bg-transparent"
+        className="button grow bg-transparent"
         placeholder="搜尋所有新聞..."
       />
     </div>

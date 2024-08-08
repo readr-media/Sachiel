@@ -19,7 +19,7 @@ export default function FollowSuggestionWidget({
             <div className="flex flex-row items-center py-3">
               <Avatar src={member.avatar ?? ''} size="l" />
               <div className="flex w-full items-center justify-between">
-                <div className="ml-3 flex-grow-0">
+                <div className="ml-3 grow-0">
                   <p className="subtitle-2 mb-[2px] text-primary-700">
                     <Link href={`/profile/member/${member.customId}`}>
                       {member.name}
@@ -39,7 +39,7 @@ export default function FollowSuggestionWidget({
                     )}
                   </p>
                 </div>
-                <div className="flex-shrink-0 lg:ml-4">
+                <div className="shrink-0 lg:ml-4">
                   <FollowButton followingId={member.id} />
                 </div>
               </div>

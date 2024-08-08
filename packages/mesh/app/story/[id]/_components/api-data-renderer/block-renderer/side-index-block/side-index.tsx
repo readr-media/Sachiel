@@ -11,7 +11,7 @@ import {
   genMMSideIndexHeaderId,
   genReadrSideIndexHeaderId,
 } from '../../utils/side-index'
-import { ApiDataHeader2, ApiDataHeader3 } from '../header-block'
+import type { ApiDataHeader2, ApiDataHeader3 } from '../header-block'
 import { type ApiDataSideIndex } from '.'
 
 const sideIndexActionInfos = {

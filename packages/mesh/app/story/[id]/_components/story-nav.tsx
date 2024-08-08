@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import Icon, { IconName } from '@/components/icon'
+import Icon, { type IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryCommentCount from '@/components/story-card/story-comment-count'
@@ -12,7 +12,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickCount from '@/components/story-card/story-pick-count'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
-import { GetStoryQuery } from '@/graphql/__generated__/graphql'
+import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -37,7 +37,7 @@ const NonMobileNavIcon = ({
 }) => {
   const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
-    <div className="flex h-8 w-8 items-center justify-center">
+    <div className="flex size-8 items-center justify-center">
       <Image
         src={avatarUrl}
         width={26}
@@ -138,7 +138,7 @@ const MobileNav = ({ story }: { story: Story }) => {
   const picksCount = story?.picksCount ?? 0
   const commentsCount = story?.commentsCount ?? 0
   return (
-    <nav className="fixed bottom-0 left-0 right-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
+    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
       <div className="footnote flex justify-between px-5 pt-4 text-primary-500 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]">
         <div className="flex items-center">
           {!!commentsCount && (

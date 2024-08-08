@@ -11,7 +11,7 @@ import { type RelatedStory } from '../page'
 
 const MobileStoryCard = ({ story }: { story: RelatedStory }) => {
   return (
-    <div className="border-b-[1px] pb-4 pt-5 last-of-type:border-b-0 sm:hidden">
+    <div className="border-b pb-4 pt-5 last-of-type:border-b-0 sm:hidden">
       <Link href={`/story/${story.id}`}>
         <div className="flex justify-between gap-3">
           <div className="subtitle-1 text-primary-700">{story.title}</div>
@@ -44,7 +44,7 @@ const MobileStoryCard = ({ story }: { story: RelatedStory }) => {
 
 const NonMobileStoryCard = ({ story }: { story: RelatedStory }) => {
   return (
-    <div className="hidden border-b-[1px] py-4 last-of-type:border-b-0 sm:block">
+    <div className="hidden border-b py-4 last-of-type:border-b-0 sm:block">
       <div className="flex items-center justify-between">
         <div className="caption-1 text-primary-500">{story.source}</div>
         <button>

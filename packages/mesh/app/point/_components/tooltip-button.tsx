@@ -80,7 +80,7 @@ export default function TooltipButton({
           ref={tooltipRef}
         >
           <span
-            className={`absolute h-2 w-2 border-l border-t ${getArrowPositionClass()} ${getArrowColorClass()}`}
+            className={`absolute size-2 border-l border-t ${getArrowPositionClass()} ${getArrowColorClass()}`}
           ></span>
           <div
             className={`absolute w-[280px] rounded p-3 ${getTooltipColorClass()} ${getTooltipPositionClass()}`}
@@ -90,7 +90,7 @@ export default function TooltipButton({
                 {tooltipContent}
               </div>
               <button
-                className="h-6 w-6"
+                className="size-6"
                 onClick={() => setIsTooltipVisible(false)}
               >
                 <Icon
