@@ -101,6 +101,9 @@ export type IconName =
   | 'icon-close-with-background'
   | 'icon-photo'
   | 'icon-delete'
+  | 'icon-bookmark'
+  | 'icon-share'
+  | 'icon-open-new-tab'
 
 export type IconProps = {
   size: Size

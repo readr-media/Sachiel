@@ -10,6 +10,8 @@ type FollowListItemProps = {
   followerAvatar: string
   followerName: string
   followerCustomId: string
+  type: 'member' | 'publisher'
+  isMutualFans?: boolean
 }
 
 const FollowListItem = ({
@@ -17,6 +19,8 @@ const FollowListItem = ({
   followerAvatar,
   followerName,
   followerCustomId,
+  type,
+  isMutualFans = true,
 }: FollowListItemProps) => {
   const handleFollowOnClick = () => {
     // TODO: add function
@@ -28,11 +32,11 @@ const FollowListItem = ({
       className="flex items-center justify-between pb-5 pt-[12.5px] first-of-type:pt-[24.5px] lg:px-5"
     >
       <Link
-        href={`/profile/member/${followerCustomId}`}
+        href={`/profile/${type}/${followerCustomId}`}
         className="flex w-full grow items-center"
       >
         <Avatar src={followerAvatar} size="l" extra="mr-2 shrink-0" />
-        <div className="mr-2 flex min-w-0 flex-grow flex-col">
+        <div className="mr-2 flex min-w-0 grow flex-col">
           <p className="subtitle-1 truncate">{followerName}</p>
           <p className="body-3 truncate text-primary-500">{followerCustomId}</p>
         </div>
@@ -43,8 +47,7 @@ const FollowListItem = ({
             size="sm"
             text="追蹤"
             activeState={{
-              // TODO: Button 初始狀態更改為使用者資料
-              isActive: true,
+              isActive: isMutualFans,
               activeText: '追蹤中',
             }}
           />

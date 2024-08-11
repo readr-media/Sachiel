@@ -14,6 +14,7 @@ query LatestStories($date: DateTime) {
     source {
       id
       title
+      customId
     }
     published_date
     summary
@@ -42,15 +43,54 @@ query LatestStories($date: DateTime) {
   }
 }
 
-query GetStory($storyId: ID) {
+query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
   story(where: { id: $storyId }) {
+    id
     title
-    content
-    apiData
+    summary
     source {
       id
       title
       customId
     }
+    url
+    og_image
+    published_date
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $picksTake
+    ) {
+      id
+      createdAt
+      kind
+      member {
+        id
+        customId
+        name
+        avatar
+      }
+    }
+    commentsCount: commentCount(where: { state: { equals: "public" } })
+    comments: comment(
+      where: { state: { equals: "public" } }
+      orderBy: { createdAt: desc }
+      take: $commentsTake
+    ) {
+      id
+      createdAt
+      member {
+        id
+        customId
+        name
+        avatar
+      }
+      content
+      state
+    }
+    content
+    apiData
   }
 }

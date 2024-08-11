@@ -1,9 +1,7 @@
 import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
-import {
-  GetMemberFollowingListDocument,
-  GetMemberFollowingListQuery,
-} from '@/graphql/__generated__/graphql'
+import type { GetMemberFollowingListQuery } from '@/graphql/__generated__/graphql'
+import { GetMemberFollowingListDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 
 import { type PageProps } from '../page'
@@ -52,11 +50,13 @@ const FollowingPage = async ({ params }: PageProps) => {
         title="媒體"
         followingList={followPublisherData as FollowingListType}
         defaultToggle={false}
+        type="publisher"
       />
       <FollowingList
         title="人物"
         followingList={followResponse}
         defaultToggle={true}
+        type="member"
       />
     </div>
   )

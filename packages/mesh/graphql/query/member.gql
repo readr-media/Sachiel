@@ -5,10 +5,12 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
     avatar
     following {
       id
+      customId
       name
       avatar
       following(where: { id: { gte: 0 } }, orderBy: { id: asc }, take: 10000) {
         id
+        customId
         name
         avatar
         followerCount
@@ -94,9 +96,10 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name
-    customId
-    avatar
+    name,
+    customId,
+    avatar,
+    wallet
   }
 }
 
@@ -320,6 +323,14 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
       customId
       name
       avatar
+    }
+    mutualFans: follower(
+      where: { following: { every: { customId: { equals: $customId } } } }
+      take: $take
+    ) {
+      id
+      customId
+      name
     }
   }
 }

@@ -1,10 +1,10 @@
+import type { UserCredential } from 'firebase/auth'
 import {
   browserLocalPersistence,
   getRedirectResult,
   isSignInWithEmailLink,
   setPersistence,
   signInWithEmailLink,
-  UserCredential,
 } from 'firebase/auth'
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
@@ -51,7 +51,7 @@ export default function useHandleSignIn() {
   )
 
   const handleEmailLinkSignIn = useCallback(async () => {
-    let email = window.localStorage.getItem('emailForSignIn')
+    const email = window.localStorage.getItem('emailForSignIn')
     if (!email) {
       router.push('/login')
       return

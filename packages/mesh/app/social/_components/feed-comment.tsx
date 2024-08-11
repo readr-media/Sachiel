@@ -23,7 +23,7 @@ export default function FeedComment({
   }
 
   return (
-    <div className="flex flex-row border-t py-4">
+    <div className="flex flex-row border-t pt-4">
       <Avatar src={comment.member?.avatar ?? ''} size="l" />
       <div className="ml-2">
         <span className="flex items-center">

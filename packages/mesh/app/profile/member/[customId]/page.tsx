@@ -14,7 +14,6 @@ import VisitorPage from './_components/visitor-page'
 export type PageProps = {
   params: {
     customId: string
-    type: string
   }
 }
 type FetchGraphQLByIdentify = (

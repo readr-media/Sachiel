@@ -1,10 +1,5 @@
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 export const LoginState = {
   Entry: 'entry',
@@ -32,6 +27,8 @@ type LoginContextType = {
   setFormData: Dispatch<SetStateAction<UserFormData>>
   lastUsedEmail: string
   setLastUsedEmail: Dispatch<SetStateAction<string>>
+  signedUpId: string
+  setSignedUpId: Dispatch<SetStateAction<string>>
 }
 
 export function LoginProvider({ children }: { children: React.ReactNode }) {
@@ -43,6 +40,7 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
     followings: [],
   })
   const [lastUsedEmail, setLastUsedEmail] = useState('')
+  const [signedUpId, setSignedUpId] = useState('')
 
   return (
     <LoginContext.Provider
@@ -53,6 +51,8 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
         setFormData,
         lastUsedEmail,
         setLastUsedEmail,
+        signedUpId,
+        setSignedUpId,
       }}
     >
       {children}

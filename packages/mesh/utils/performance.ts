@@ -1,4 +1,4 @@
-function debounce<T extends (...args: any[]) => void>(
+function debounce<T extends (...args: unknown[]) => void>(
   func: T,
   timeout = 300
 ): (...args: Parameters<T>) => void {

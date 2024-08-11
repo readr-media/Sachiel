@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import Icon, { IconName } from '@/components/icon'
+import type { IconName } from '@/components/icon'
+import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
@@ -133,7 +134,7 @@ const MobileNavIcon = ({
 }) => {
   const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
-    <div className="flex h-6 w-6 items-center justify-center">
+    <div className="flex size-6 items-center justify-center">
       <Image
         src={avatarUrl}
         width={20}
@@ -175,7 +176,7 @@ const MobileNav = ({
   avatarUrl: string
 }) => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
+    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
           if (iconInfo.href === '/')

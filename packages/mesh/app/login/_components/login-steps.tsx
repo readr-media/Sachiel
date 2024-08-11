@@ -1,9 +1,11 @@
 import { useRouter } from 'next/navigation'
-import { createElement, useEffect } from 'react'
+import { createElement, useEffect, useState } from 'react'
 
+import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import useAuthState from '@/hooks/use-auth-state'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
+import { useDynamicContext } from '@/utils/dynamic'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -29,24 +31,36 @@ export default function LoginSteps() {
   const { step } = useLogin()
   const { isLogin } = useAuthState()
   const { handleSignIn } = useHandleSignIn()
+  const [isSignInLoading, setIsSignInLoading] = useState(false)
+  const { sdkHasLoaded } = useDynamicContext()
 
   useEffect(() => {
     const init = async () => {
       if (isLogin) {
         router.push('/media')
       } else {
+        setIsSignInLoading(true)
         await handleSignIn()
+        setIsSignInLoading(false)
       }
     }
     init()
   }, [handleSignIn, isLogin, router])
+
+  if (!sdkHasLoaded || isSignInLoading) {
+    return (
+      <div className="flex size-full items-center justify-center">
+        <Spinner />
+      </div>
+    )
+  }
 
   return (
     <>
       <div className="flex h-15 w-full flex-row items-center border-b sm:hidden">
         <LoginStepsTitle />
       </div>
-      <div className="flex h-full w-full justify-center overflow-auto sm:items-center">
+      <div className="flex size-full justify-center overflow-auto sm:items-center">
         <div className="sm:w-[480px] sm:rounded-md sm:bg-white sm:drop-shadow">
           {step !== 'entry' && (
             <div className="hidden h-15 w-full flex-row items-center border-b sm:flex">

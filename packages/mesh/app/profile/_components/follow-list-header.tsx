@@ -17,7 +17,7 @@ const FollowListHeader = ({
   return (
     <div className="flex grow flex-col bg-multi-layer-light">
       <header className="flex h-[60px] border-b bg-white px-2 sm:px-5 md:px-[70px] lg:px-10">
-        <div className="grid grow grid-cols-3 items-center sm:flex sm:justify-start">
+        <div className="grid w-maxMain grid-cols-3 items-center sm:flex sm:justify-start">
           <button
             type="button"
             className="p-3 pl-0"

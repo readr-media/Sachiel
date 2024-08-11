@@ -61,7 +61,7 @@ export default function Footer() {
                 key={iconInfo.icon.default}
                 className="group"
               >
-                <div className="flex h-6 w-6 items-center justify-center">
+                <div className="flex size-6 items-center justify-center">
                   <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />
                 </div>
               </Link>

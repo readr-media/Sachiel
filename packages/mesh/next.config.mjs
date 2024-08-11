@@ -17,7 +17,19 @@ const nextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
-    },
+    }},
+  eslint: {
+    dirs: [
+      'app',
+      'components',
+      'apollo',
+      'constants',
+      'context',
+      'firebase',
+      'hooks',
+      'types',
+      'utils',
+    ],
   },
   async rewrites() {
     return [
