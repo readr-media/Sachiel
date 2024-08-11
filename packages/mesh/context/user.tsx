@@ -11,8 +11,6 @@ import {
 import { type GetCurrentUserMemberIdQuery } from '@/graphql/__generated__/graphql'
 
 type Member = NonNullable<NonNullable<GetCurrentUserMemberIdQuery>['member']>
-type FollowingMembers = NonNullable<Member['followingMembers']>
-type Picks = NonNullable<Member['picks']>
 type FollowingCategories = NonNullable<Member['followingCategories']>
 type FollowingPublishers = NonNullable<Member['followingPublishers']>
 
@@ -22,8 +20,8 @@ export type User = {
   name: string
   avatar: string
   wallet: string
-  followingMembers: FollowingMembers
-  picks: Picks
+  followingMemberIds: Set<string>
+  pickStoryIds: Set<string>
   followingCategories: FollowingCategories
   followingPublishers: FollowingPublishers
   idToken: string
@@ -42,8 +40,8 @@ const guest: User = {
   name: '',
   avatar: '',
   wallet: '',
-  followingMembers: [],
-  picks: [],
+  followingMemberIds: new Set(),
+  pickStoryIds: new Set(),
   followingCategories: [],
   followingPublishers: [],
   idToken: '',

@@ -10,9 +10,8 @@ import { debounce } from '@/utils/performance'
 export default function StoryPickButton({ storyId }: { storyId: string }) {
   const router = useRouter()
   const { user, setUser } = useUser()
-  const memberId = user?.memberId
-  const isStoryPicked =
-    user?.picks.findIndex((pickInfo) => pickInfo.story?.id === storyId) !== -1
+  const memberId = user.memberId
+  const isStoryPicked = user.pickStoryIds.has(storyId)
 
   const handleClickPick = debounce(async () => {
     if (!memberId) {
@@ -20,41 +19,46 @@ export default function StoryPickButton({ storyId }: { storyId: string }) {
       return
     }
 
+    const newPickStoryIds = new Set(user.pickStoryIds)
     if (isStoryPicked) {
       // TODO: simplify the mutation
+      newPickStoryIds.delete(storyId)
       setUser((user) => {
         return {
           ...user,
-          picks: user.picks.filter((pick) => pick.story?.id !== storyId),
+          pickStoryIds: newPickStoryIds,
         }
       })
       const removePickResponse = await removePick({ memberId, storyId })
       if (!removePickResponse) {
         // TODO: error toast
         // TODO: simplify the mutation
+        newPickStoryIds.add(storyId)
         setUser((user) => {
           return {
             ...user,
-            picks: [...user.picks, { story: { id: storyId } }],
+            pickStoryIds: newPickStoryIds,
           }
         })
       }
     } else {
       // TODO: simplify the mutation
+      newPickStoryIds.add(storyId)
       setUser((user) => {
         return {
           ...user,
-          picks: [...user.picks, { story: { id: storyId } }],
+          pickStoryIds: newPickStoryIds,
         }
       })
       const addPickResponse = await addPick({ memberId, storyId })
       if (!addPickResponse) {
         // TODO: error toast
         // TODO: simplify the mutation
+        newPickStoryIds.delete(storyId)
         setUser((user) => {
           return {
             ...user,
-            picks: user.picks.filter((pick) => pick.story?.id !== storyId),
+            pickStoryIds: newPickStoryIds,
           }
         })
       }

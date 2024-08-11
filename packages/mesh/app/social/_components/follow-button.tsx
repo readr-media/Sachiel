@@ -13,11 +13,8 @@ import { debounce } from '@/utils/performance'
 export default function FollowButton({ followingId }: { followingId: string }) {
   const router = useRouter()
   const { user, setUser } = useUser()
-  const memberId = user?.memberId
-  const isFollowing =
-    user?.followingMembers.findIndex(
-      (following) => following.id === followingId
-    ) !== -1
+  const memberId = user.memberId
+  const isFollowing = user.followingMemberIds.has(followingId)
 
   const handelClickFollow = debounce(async () => {
     if (!memberId) {
@@ -25,39 +22,40 @@ export default function FollowButton({ followingId }: { followingId: string }) {
       return
     }
 
+    const newFollowingMemberIds = new Set(user.followingMemberIds)
     if (!isFollowing) {
       // TODO: simplify the mutation
+      newFollowingMemberIds.add(followingId)
       setUser((user) => ({
         ...user,
-        followingMembers: [...user.followingMembers, { id: followingId }],
+        followingMemberIds: newFollowingMemberIds,
       }))
       const response = await addMemberFollowing(memberId, followingId)
       if (!response) {
         // TODO: error toast
         // TODO: simplify the mutation
+        newFollowingMemberIds.delete(followingId)
         setUser((user) => ({
           ...user,
-          followingMembers: user.followingMembers.filter(
-            (following) => following.id !== followingId
-          ),
+          followingMemberIds: newFollowingMemberIds,
         }))
       }
     } else {
       // TODO: simplify the mutation
+      newFollowingMemberIds.delete(followingId)
       setUser((user) => ({
         ...user,
-        followingMembers: user.followingMembers.filter(
-          (following) => following.id !== followingId
-        ),
+        followingMemberIds: newFollowingMemberIds,
       }))
 
       const response = await removeMemberFollowing(memberId, followingId)
       if (!response) {
         // TODO: error toast
         // TODO: simplify the mutation
+        newFollowingMemberIds.add(followingId)
         setUser((user) => ({
           ...user,
-          followingMembers: [...user.followingMembers, { id: followingId }],
+          followingMemberIds: newFollowingMemberIds,
         }))
       }
     }
