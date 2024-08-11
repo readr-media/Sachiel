@@ -54,6 +54,9 @@ mutation DeletePhoto($photoId: ID, $memberId: String) {
     data: { avatar: "", avatar_image: { disconnect: true } }
   ) {
     customId
+  }
+}
+
 mutation UpdateWalletAddress($id: ID!, $wallet: String!) {
   updateMember(where: { id: $id }, data: { wallet: $wallet }) {
     id
