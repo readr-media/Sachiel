@@ -96,9 +96,9 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name,
-    customId,
-    avatar,
+    name
+    customId
+    avatar
     wallet
   }
 }
@@ -331,6 +331,79 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
       id
       customId
       name
+    }
+  }
+}
+
+query GetMemberSponsorShips($memberId: ID!, $publisherId: ID!) {
+  member(where: { id: $memberId }) {
+    sponsorCount
+    sponsor(
+      where: {
+        publisher: { id: { equals: $publisherId } }
+        status: { equals: Success }
+      }
+    ) {
+      tid
+    }
+  }
+}
+
+query GetMemberTransactions($memberId: ID!, $take: Int) {
+  member(where: { id: $memberId }) {
+    sponsorCount
+    sponsor(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      publisher {
+        id
+        title
+        logo
+      }
+      fee
+      createdAt
+    }
+    transaction(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      createdAt
+      depositVolume
+      expireDate
+      unlockStory {
+        id
+        title
+        source {
+          id
+          title
+          logo
+        }
+      }
+      policy {
+        name
+        explanation
+        charge
+        unlockSingle
+      }
+    }
+  }
+  transactions(
+    where: {
+      member: { id: { equals: $memberId } }
+      status: { equals: Success }
+      unlockStory: { id: { gte: 0 } }
+    }
+    orderBy: { createdAt: desc }
+    take: 10000
+  ) {
+    tid
+    unlockStory {
+      id
     }
   }
 }

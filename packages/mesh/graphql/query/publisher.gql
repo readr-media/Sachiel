@@ -3,6 +3,7 @@ query Publishers {
   publishers {
     id
     title
+    logo
     rss
     official_site
     sponsorCount: followerCount
