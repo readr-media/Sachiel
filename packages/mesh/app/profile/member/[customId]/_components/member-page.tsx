@@ -14,34 +14,23 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+import { useEditProfile } from '@/context/edit-profile'
 
-type MemberPageProps = {
-  name: string
-  avatar: string
-  intro: string
-  pickCount: number
-  followingCount: string
-  followerCount: string
-  userType: UserType
-  picksData: PickList
-  bookmarks: Bookmarks
-  memberId: string
-  memberCustomId: string
-}
-
-const MemberPage: React.FC<MemberPageProps> = ({
-  userType,
-  name,
-  avatar,
-  intro,
-  pickCount,
-  followingCount,
-  followerCount,
-  picksData,
-  bookmarks,
-  memberId,
-  memberCustomId,
-}) => {
+const MemberPage: React.FC = () => {
+  const { profile } = useEditProfile()
+  const {
+    pickCount,
+    picksData,
+    name,
+    avatar,
+    followerCount,
+    followingCount,
+    memberCustomId,
+    intro,
+    bookmarks,
+    userType,
+    memberId,
+  } = profile
   const [picksOrBookmarks, setPicksOrBookmarks] = useState<
     PickList | Bookmarks
   >(picksData)

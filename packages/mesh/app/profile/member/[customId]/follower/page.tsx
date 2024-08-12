@@ -30,7 +30,6 @@ const FollowerPage = async ({ params }: PageProps) => {
             const isMutualFans = !!mutualFansList?.find(
               (member) => member.customId === customId
             )
-            console.log(customId, isMutualFans)
             return (
               <FollowListItem
                 key={customId}

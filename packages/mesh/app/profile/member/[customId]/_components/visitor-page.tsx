@@ -12,33 +12,24 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+import { useEditProfile } from '@/context/edit-profile'
 
-type VisitorPageProps = {
-  name: string
-  avatar: string
-  intro: string
-  pickCount: number
-  followingCount: string
-  followerCount: string
-  userType: UserType
-  picksData: PickList
-  memberId: string
-  memberCustomId: string
-}
-
-const VisitorPage: React.FC<VisitorPageProps> = ({
-  userType,
-  name,
-  avatar,
-  intro,
-  pickCount,
-  followingCount,
-  followerCount,
-  picksData,
-  memberId,
-  memberCustomId,
-}) => {
+const VisitorPage: React.FC = () => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
+  const { profile } = useEditProfile()
+  if (!profile) return <div>error</div>
+  const {
+    name,
+    avatar,
+    memberCustomId,
+    userType,
+    pickCount,
+    followerCount,
+    followingCount,
+    intro,
+    picksData,
+    memberId,
+  } = profile
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },

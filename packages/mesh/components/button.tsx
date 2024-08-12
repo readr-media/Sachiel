@@ -28,6 +28,8 @@ export default function Button({
       'bg-white text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
     'custom-blue':
       'bg-custom-blue text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+    'blue-500':
+      'bg-blue-500 text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
     primary:
       'bg-primary-700 text-white border border-transparent hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
     'nav-button-add':

@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 'use client'
 import { useRouter } from 'next/navigation'
 
@@ -15,7 +16,7 @@ const EditProfileHeader = ({
   const backToPreviousPage = () => {
     router.back()
   }
-  const { handleSubmit, canSubmit } = useEditProfile()
+  const { handleSubmit, isFormValid } = useEditProfile()
   return (
     <div className="flex grow flex-col bg-multi-layer-light">
       <header className="flex h-[60px] border-b bg-white px-5 sm:border-none sm:px-5 md:px-[70px] lg:px-10">
@@ -33,7 +34,7 @@ const EditProfileHeader = ({
           <button
             onClick={handleSubmit}
             className={`flex items-center justify-end sm:hidden ${
-              canSubmit ? 'text-custom-blue' : 'text-disable'
+              isFormValid ? 'text-custom-blue' : 'text-disable'
             }`}
           >
             儲存

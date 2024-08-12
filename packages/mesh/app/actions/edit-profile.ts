@@ -6,7 +6,7 @@ import {
   UpdateMemberProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import { type FormData } from '@/types/profile'
-import base64ToFile from '@/utils/base64toFile'
+import base64ToFile from '@/utils/base-sixty-four-to-file'
 import { uploadGraphQL } from '@/utils/fetch-graphql'
 
 export async function updateProfile(

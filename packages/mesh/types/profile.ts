@@ -28,6 +28,20 @@ export type FormData = {
   avatar: string
 }
 
+export type ProfileTypes = {
+  name: string
+  avatar: string
+  intro: string
+  pickCount: number
+  followingCount: string
+  followerCount: string
+  userType: UserType
+  picksData: PickList
+  bookmarks?: Bookmarks
+  memberId: string
+  memberCustomId: string
+}
+
 export type Member = GetMemberProfileQuery['member']
 export type PickList = NonNullable<Member>['picks']
 export type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']

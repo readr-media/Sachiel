@@ -16,6 +16,9 @@ mutation UpdateMemberProfile(
     data: { name: $name, customId: $changedCustomId, intro: $intro }
   ) {
     customId
+    avatar
+    name
+    intro
   }
 }
 

@@ -74,6 +74,7 @@ export async function getCurrentUser() {
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
         avatar: data.member.avatar ?? '',
+        intro: data.member.intro ?? '',
         wallet: data.member.wallet ?? '',
         idToken,
       }

@@ -17,6 +17,7 @@ export default async function Page() {
       name={memberData?.name}
       intro={memberData?.intro}
       customId={memberData?.customId}
+      avatar_image={memberData?.avatar_image}
     />
   )
 }
