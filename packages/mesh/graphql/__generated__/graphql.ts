@@ -1071,6 +1071,8 @@ export type Member = {
   pickCount?: Maybe<Scalars['Int']['output']>
   sponsor?: Maybe<Array<Sponsorship>>
   sponsorCount?: Maybe<Scalars['Int']['output']>
+  transaction?: Maybe<Array<Transaction>>
+  transactionCount?: Maybe<Scalars['Int']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
   updatedBy?: Maybe<User>
   verified?: Maybe<Scalars['Boolean']['output']>
@@ -1231,6 +1233,17 @@ export type MemberSponsorCountArgs = {
   where?: SponsorshipWhereInput
 }
 
+export type MemberTransactionArgs = {
+  orderBy?: Array<TransactionOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: TransactionWhereInput
+}
+
+export type MemberTransactionCountArgs = {
+  where?: TransactionWhereInput
+}
+
 export type MemberCreateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
@@ -1258,6 +1271,7 @@ export type MemberCreateInput = {
   nickname?: InputMaybe<Scalars['String']['input']>
   pick?: InputMaybe<PickRelateToManyForCreateInput>
   sponsor?: InputMaybe<SponsorshipRelateToManyForCreateInput>
+  transaction?: InputMaybe<TransactionRelateToManyForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
@@ -1341,6 +1355,7 @@ export type MemberUpdateInput = {
   nickname?: InputMaybe<Scalars['String']['input']>
   pick?: InputMaybe<PickRelateToManyForUpdateInput>
   sponsor?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
+  transaction?: InputMaybe<TransactionRelateToManyForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
@@ -1378,6 +1393,7 @@ export type MemberWhereInput = {
   nickname?: InputMaybe<StringFilter>
   pick?: InputMaybe<PickManyRelationFilter>
   sponsor?: InputMaybe<SponsorshipManyRelationFilter>
+  transaction?: InputMaybe<TransactionManyRelationFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
   updatedBy?: InputMaybe<UserWhereInput>
   verified?: InputMaybe<BooleanFilter>
@@ -3431,6 +3447,12 @@ export type TransactionCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
 }
 
+export type TransactionManyRelationFilter = {
+  every?: InputMaybe<TransactionWhereInput>
+  none?: InputMaybe<TransactionWhereInput>
+  some?: InputMaybe<TransactionWhereInput>
+}
+
 export type TransactionOrderByInput = {
   active?: InputMaybe<OrderDirection>
   complement?: InputMaybe<OrderDirection>
@@ -3441,6 +3463,18 @@ export type TransactionOrderByInput = {
   status?: InputMaybe<OrderDirection>
   tid?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type TransactionRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<TransactionWhereUniqueInput>>
+  create?: InputMaybe<Array<TransactionCreateInput>>
+}
+
+export type TransactionRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<TransactionWhereUniqueInput>>
+  create?: InputMaybe<Array<TransactionCreateInput>>
+  disconnect?: InputMaybe<Array<TransactionWhereUniqueInput>>
+  set?: InputMaybe<Array<TransactionWhereUniqueInput>>
 }
 
 export enum TransactionStatusType {

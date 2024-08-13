@@ -1,16 +1,16 @@
 import '@/styles/global.css'
 
-import { SdkViewSectionType, SdkViewType } from '@dynamic-labs/sdk-api'
+// import { SdkViewSectionType, SdkViewType } from '@dynamic-labs/sdk-api'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
-import { DYNAMIC_ENV_ID } from '@/constants/config'
+// import { DYNAMIC_ENV_ID } from '@/constants/config'
 import { UserProvider } from '@/context/user'
-import {
-  DynamicContextProvider,
-  EthereumWalletConnectors,
-} from '@/utils/dynamic'
 
+// import {
+//   DynamicContextProvider,
+//   EthereumWalletConnectors,
+// } from '@/utils/dynamic'
 import { getCurrentUser } from './actions/auth'
 export const metadata: Metadata = {
   title: 'Mesh',
@@ -31,7 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="zh-Hant" className={notoSans.className}>
       <body className="min-h-screen">
-        <DynamicContextProvider
+        {/* <DynamicContextProvider
           settings={{
             environmentId: DYNAMIC_ENV_ID,
             walletConnectors: [EthereumWalletConnectors],
@@ -72,9 +72,9 @@ export default async function RootLayout({
               },
             },
           }}
-        >
-          <UserProvider user={user}>{children}</UserProvider>
-        </DynamicContextProvider>
+        > */}
+        <UserProvider user={user}>{children}</UserProvider>
+        {/* </DynamicContextProvider> */}
       </body>
     </html>
   )

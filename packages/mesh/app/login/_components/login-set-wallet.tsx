@@ -1,33 +1,33 @@
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useCallback, useEffect } from 'react'
 
-import { updateMemberWallet } from '@/app/actions/auth'
+// import { useRouter } from 'next/navigation'
+// import { useCallback, useEffect } from 'react'
+// import { updateMemberWallet } from '@/app/actions/auth'
 import Button from '@/components/button'
-import { useLogin } from '@/context/login'
-import { useDynamicContext } from '@/utils/dynamic'
+// import { useLogin } from '@/context/login'
+// import { useDynamicContext } from '@/utils/dynamic'
 
 export default function LoginSetWallet() {
-  const router = useRouter()
-  const { signedUpId } = useLogin()
-  const { user, setShowAuthFlow } = useDynamicContext()
+  // const router = useRouter()
+  // const { signedUpId } = useLogin()
+  // const { user, setShowAuthFlow } = useDynamicContext()
 
-  const updateWallet = useCallback(
-    async (id: string, address: string) => {
-      const response = await updateMemberWallet(id, address)
-      if (response) {
-        router.push('/media')
-      }
-    },
-    [router]
-  )
+  // const updateWallet = useCallback(
+  //   async (id: string, address: string) => {
+  //     const response = await updateMemberWallet(id, address)
+  //     if (response) {
+  //       router.push('/media')
+  //     }
+  //   },
+  //   [router]
+  // )
 
-  useEffect(() => {
-    if (signedUpId && user) {
-      const dynamicAddress = user?.verifiedCredentials[0].address ?? ''
-      updateWallet(signedUpId, dynamicAddress)
-    }
-  }, [signedUpId, updateWallet, user])
+  // useEffect(() => {
+  //   if (signedUpId && user) {
+  //     const dynamicAddress = user?.verifiedCredentials[0].address ?? ''
+  //     updateWallet(signedUpId, dynamicAddress)
+  //   }
+  // }, [signedUpId, updateWallet, user])
 
   return (
     <div className="flex flex-col items-center gap-6 px-5 py-10 sm:px-10">
@@ -40,7 +40,7 @@ export default function LoginSetWallet() {
           color="white"
           icon={{ iconName: 'icon-dynamicxyz', size: 'm' }}
           text="以Dynamic繼續"
-          onClick={() => setShowAuthFlow(true)}
+          onClick={() => {}}
         />
       </div>
       <p className="footnote text-primary-400">
