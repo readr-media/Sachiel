@@ -36,11 +36,7 @@ const MobileStoryCard = ({ story }: { story: RelatedStory }) => {
       <div className="flex justify-between">
         {/* TODO wait for api to give pickCount and pick data */}
         <StoryPickInfo displayPicks={[]} pickCount={0} />
-        {/* TODO: update the states and actions according to the user state */}
-        <StoryPickButton
-          isStoryPicked={false}
-          storyId={story?.id ? story.id.toString() : ''}
-        />
+        <StoryPickButton storyId={story?.id ? story.id.toString() : ''} />
       </div>
     </div>
   )

@@ -4,11 +4,9 @@ import type { SuggestedFollowers } from '../[id]/page'
 import FollowButton from './follow-button'
 
 export default function FollowSuggestionFeed({
-  currentUserId,
   suggestedFollowers,
   isNoFollowings,
 }: {
-  currentUserId: string
   suggestedFollowers: SuggestedFollowers[]
   isNoFollowings: boolean
 }) {
@@ -58,10 +56,7 @@ export default function FollowSuggestionFeed({
                       )}
                     </p>
                   </div>
-                  <FollowButton
-                    currentUserId={currentUserId}
-                    followingId={member.id}
-                  />
+                  <FollowButton followingId={member.id} />
                 </div>
               </div>
               {index !== suggestedFollowers.length - 1 ? (

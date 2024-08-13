@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
-import useAuthState from '@/hooks/use-auth-state'
+import { useUser } from '@/context/user'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 import Footer from '../_components/footer'
@@ -18,7 +18,7 @@ export default function ProfileLayout({
   children: React.ReactNode
 }>) {
   const pathName = usePathname()
-  const { currentUser } = useAuthState()
+  const { user: currentUser } = useUser()
   const pathNameList = pathName.split('/')
   const { width } = useWindowDimensions()
   const userId = pathNameList.pop()

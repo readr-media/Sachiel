@@ -96,10 +96,32 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name,
-    customId,
-    avatar,
+    name
+    customId
+    avatar
     wallet
+    followingMembers: following {
+      id
+    }
+    picks: pick(
+      where: {
+        kind: { equals: "read" }
+        AND: [{ is_active: { equals: true } }]
+      }
+    ) {
+      story {
+        id
+      }
+    }
+    followingCategories: following_category(orderBy: { id: asc }) {
+      id
+      title
+      slug
+    }
+    followingPublishers: follow_publisher {
+      id
+      title
+    }
   }
 }
 
