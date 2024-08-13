@@ -9,7 +9,7 @@ import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
-import useAuthState from '@/hooks/use-auth-state'
+import { useUser } from '@/context/user'
 
 type IconInfo = {
   icon: {
@@ -204,9 +204,9 @@ const MobileNav = ({
 
 export default function Nav() {
   const path = usePathname()
-  const { currentUser } = useAuthState()
+  const { user } = useUser()
 
-  const avatarUrl = currentUser?.avatar ?? ''
+  const avatarUrl = user?.avatar ?? ''
 
   return (
     <>

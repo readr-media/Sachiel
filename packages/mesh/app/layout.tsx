@@ -5,10 +5,13 @@ import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
 import { DYNAMIC_ENV_ID } from '@/constants/config'
+import { UserProvider } from '@/context/user'
 import {
   DynamicContextProvider,
   EthereumWalletConnectors,
 } from '@/utils/dynamic'
+
+import { getCurrentUser } from './actions/auth'
 export const metadata: Metadata = {
   title: 'Mesh',
 }
@@ -18,11 +21,13 @@ const notoSans = Noto_Sans_TC({
   display: 'swap',
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const user = await getCurrentUser()
+
   return (
     <html lang="zh-Hant" className={notoSans.className}>
       <body className="min-h-screen">
@@ -68,7 +73,7 @@ export default function RootLayout({
             },
           }}
         >
-          {children}
+          <UserProvider user={user}>{children}</UserProvider>
         </DynamicContextProvider>
       </body>
     </html>
