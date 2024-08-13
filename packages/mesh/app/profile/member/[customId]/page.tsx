@@ -1,11 +1,6 @@
-'use client'
-import { useParams } from 'next/navigation'
-
-import useAuthState from '@/hooks/use-auth-state'
-import useProfileState from '@/hooks/use-profile-state'
-
 import MemberPage from './_components/member-page'
 import VisitorPage from './_components/visitor-page'
+import { getCurrentUser } from '@/app/actions/auth'
 
 export type PageProps = {
   params: {
@@ -13,9 +8,9 @@ export type PageProps = {
   }
 }
 
-const Page = () => {
-  const { currentUser } = useAuthState()
-  const params: PageProps['params'] = useParams()
+const Page = async (props: PageProps) => {
+  const currentUser = await getCurrentUser()
+  const params = props.params
   const customId = params.customId
   const isVisitor = currentUser?.customId !== customId
 
