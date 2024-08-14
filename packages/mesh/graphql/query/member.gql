@@ -100,6 +100,28 @@ query GetCurrentUserMemberId($uid: String!) {
     customId
     avatar
     wallet
+    followingMembers: following {
+      id
+    }
+    picks: pick(
+      where: {
+        kind: { equals: "read" }
+        AND: [{ is_active: { equals: true } }]
+      }
+    ) {
+      story {
+        id
+      }
+    }
+    followingCategories: following_category(orderBy: { id: asc }) {
+      id
+      title
+      slug
+    }
+    followingPublishers: follow_publisher {
+      id
+      title
+    }
   }
 }
 

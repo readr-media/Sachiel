@@ -6,10 +6,8 @@ import type { SuggestedFollowers } from '../[id]/page'
 import FollowButton from './follow-button'
 
 export default function FollowSuggestionWidget({
-  currentUserId,
   suggestedFollowers,
 }: {
-  currentUserId: string
   suggestedFollowers: SuggestedFollowers[]
 }) {
   return (
@@ -42,10 +40,7 @@ export default function FollowSuggestionWidget({
                   </p>
                 </div>
                 <div className="shrink-0 lg:ml-4">
-                  <FollowButton
-                    currentUserId={currentUserId}
-                    followingId={member.id}
-                  />
+                  <FollowButton followingId={member.id} />
                 </div>
               </div>
             </div>
