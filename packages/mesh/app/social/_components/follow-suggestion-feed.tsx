@@ -7,7 +7,8 @@ export default function FollowSuggestionFeed({
   suggestedFollowers,
   isNoFollowings,
 }: {
-  suggestedFollowers: SuggestedFollowers[]
+  currentUserId: string
+  suggestedFollowers: SuggestedFollowers
   isNoFollowings: boolean
 }) {
   return (
@@ -43,9 +44,9 @@ export default function FollowSuggestionFeed({
                   <div className="flex flex-col items-center gap-1 sm:items-start sm:gap-0.5">
                     <p className="subtitle-2 text-primary-700">{member.name}</p>
                     <p className="caption-1 h-9 w-[124px] text-center text-primary-500 sm:h-[18px] sm:w-full sm:text-left">
-                      {member.currentMemberFollowingMember !== '' ? (
+                      {member.followedBy?.name ? (
                         <>
-                          <span>{member.currentMemberFollowingMember}</span>
+                          <span>{member.followedBy.name}</span>
                           及其他<span> {member.followerCount} </span>
                           的追蹤對象
                         </>

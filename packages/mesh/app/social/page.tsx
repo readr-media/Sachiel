@@ -1,10 +1,12 @@
+'use client'
+
 import { redirect } from 'next/navigation'
 
-import { getCurrentUser } from '../actions/auth'
+import { useUser } from '@/context/user'
 
-export default async function Page() {
-  const user = await getCurrentUser()
-  const memberId = user?.memberId
+export default function Page() {
+  const { user } = useUser()
+  const memberId = user.memberId
 
   if (memberId) {
     redirect(`/social/${memberId}`)

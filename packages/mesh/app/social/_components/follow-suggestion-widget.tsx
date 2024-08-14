@@ -8,7 +8,8 @@ import FollowButton from './follow-button'
 export default function FollowSuggestionWidget({
   suggestedFollowers,
 }: {
-  suggestedFollowers: SuggestedFollowers[]
+  currentUserId: string
+  suggestedFollowers: SuggestedFollowers
 }) {
   return (
     <div className="hidden grow px-5 lg:block">
@@ -26,9 +27,9 @@ export default function FollowSuggestionWidget({
                     </Link>
                   </p>
                   <p className="caption-1 line-clamp-1 break-words text-primary-500">
-                    {member.currentMemberFollowingMember !== '' ? (
+                    {member.followedBy?.name ? (
                       <>
-                        <span>{member.currentMemberFollowingMember}</span>
+                        <span>{member.followedBy.name}</span>
                         及其他<span> {member.followerCount} </span>
                         的追蹤對象
                       </>

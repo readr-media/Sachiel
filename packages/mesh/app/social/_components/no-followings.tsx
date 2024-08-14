@@ -5,9 +5,11 @@ import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
 export default function NoFollowings({
+  currentUserId,
   suggestedFollowers,
 }: {
-  suggestedFollowers: SuggestedFollowers[]
+  currentUserId: string
+  suggestedFollowers: SuggestedFollowers
 }) {
   return (
     <main className="flex grow flex-col items-center justify-start gap-4 bg-white sm:bg-multi-layer-light sm:p-5 lg:flex-row lg:items-start lg:justify-start lg:gap-10 lg:px-10 lg:py-5">
@@ -30,10 +32,14 @@ export default function NoFollowings({
         </div>
       </div>
       <FollowSuggestionFeed
+        currentUserId={currentUserId}
         suggestedFollowers={suggestedFollowers}
         isNoFollowings={true}
       />
-      <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
+      <FollowSuggestionWidget
+        currentUserId={currentUserId}
+        suggestedFollowers={suggestedFollowers}
+      />
     </main>
   )
 }

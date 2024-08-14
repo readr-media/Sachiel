@@ -1,12 +1,11 @@
-import { redirect } from 'next/navigation'
+'use client'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-import { getCurrentUser } from '@/app/actions/auth'
-import {
-  type GetMemberFollowingQuery,
-  GetMemberFollowingDocument,
-} from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import getMemberFollowings from '@/app/actions/get-member-followings'
+import Spinner from '@/components/spinner'
+import { MINUTE } from '@/constants/time-unit'
+import { useUser } from '@/context/user'
 import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
 import Feed from '../_components/feed'
@@ -14,31 +13,96 @@ import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
 import FollowSuggestionWidget from '../_components/follow-suggestion-widget'
 import NoFollowings from '../_components/no-followings'
 
-export const revalidate = 0
-//TODO: cache setting
+export type SuggestedFollowers = Awaited<
+  ReturnType<typeof getMemberFollowings>
+>['suggestFollowing']
+type SocialData = Awaited<ReturnType<typeof getMemberFollowings>>
+type MostFollowedMembers = Awaited<
+  ReturnType<typeof processMostFollowedMembers>
+>
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const user = await getCurrentUser()
-  const memberId = user?.memberId
-
-  if (!memberId) redirect('/login')
-  if (params.id !== memberId) redirect(`/social/${memberId}`)
-
+export default function Page({ params }: { params: { id: string } }) {
+  //TODO: infiniteScroll
+  const { user } = useUser()
+  const router = useRouter()
   const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
+  const [socialData, setSocialData] = useState<SocialData | null>(null)
+  const [mostFollowedMembers, setMostFollowedMembers] =
+    useState<MostFollowedMembers>([])
 
-  const data = await fetchGraphQL(
-    GetMemberFollowingDocument,
-    {
-      memberId,
-      takes: feedsNumber,
-    },
-    globalLogFields
-  )
-  const currentMember = data?.member
-  const currentMemberFollowings = selectCurrentMemberFollowings(currentMember)
+  useEffect(() => {
+    if (!user) return
+
+    const { memberId } = user
+    if (params.id !== memberId) {
+      router.push(`/social/${memberId}`)
+      return
+    }
+
+    const cacheKey = `socialData_${memberId}_${feedsNumber}_${suggestedFollowersNumber}`
+    const cachedData = localStorage.getItem(cacheKey)
+
+    if (cachedData) {
+      const {
+        timestamp,
+        socialData: cachedSocialData,
+        mostFollowedMembers: cachedMostFollowedMembers,
+      } = JSON.parse(cachedData)
+
+      const cacheAge = new Date().getTime() - timestamp
+
+      if (cacheAge < MINUTE) {
+        const restoredSetObjectsData = {
+          ...cachedSocialData,
+          firstLayerFollowingIds: new Set(
+            cachedSocialData.firstLayerFollowingIds
+          ),
+        }
+        setSocialData(restoredSetObjectsData)
+        setMostFollowedMembers(cachedMostFollowedMembers)
+        return
+      }
+    }
+
+    const fetchData = async () => {
+      const response = await getMemberFollowings(
+        memberId,
+        feedsNumber,
+        suggestedFollowersNumber
+      )
+      setSocialData(response)
+
+      if (!response.hasFollowing) {
+        const mostFollowed = await processMostFollowedMembers()
+        setMostFollowedMembers(mostFollowed)
+      }
+
+      const convertSetObjectsData = {
+        ...response,
+        firstLayerFollowingIds: Array.from(response.firstLayerFollowingIds),
+      }
+
+      const dataToCache = {
+        timestamp: new Date().getTime(),
+        socialData: convertSetObjectsData,
+        mostFollowedMembers: mostFollowedMembers,
+      }
+      localStorage.setItem(cacheKey, JSON.stringify(dataToCache))
+    }
+    fetchData()
+  }, [user, params.id, router])
+
+  if (!socialData) return <Spinner />
+
+  const {
+    member: currentMember,
+    hasFollowing,
+    firstLayerFollowingIds,
+    suggestFollowing,
+    storiesFromFollowingMemberActions,
+  } = socialData
 
   if (!currentMember) {
     return (
@@ -51,20 +115,14 @@ export default async function Page({ params }: { params: { id: string } }) {
     )
   }
 
-  if (!currentMemberFollowings || currentMemberFollowings.length === 0) {
-    const mostFollowedMembers = await processMostFollowedMembers()
-    return <NoFollowings suggestedFollowers={mostFollowedMembers} />
-  }
-
-  const currentMemberFollowingMemberIds = new Set(
-    currentMemberFollowings.map((element) => element.id)
-  )
-
-  const storiesFromFollowingMemberActions =
-    processStoriesFromFollowingMemberActions(
-      currentMemberFollowings,
-      feedsNumber
+  if (!hasFollowing) {
+    return (
+      <NoFollowings
+        currentUserId={currentMember.id}
+        suggestedFollowers={mostFollowedMembers}
+      />
     )
+  }
 
   const firstSectionStories = storiesFromFollowingMemberActions.slice(
     0,
@@ -73,192 +131,39 @@ export default async function Page({ params }: { params: { id: string } }) {
   const secondSectionStories =
     storiesFromFollowingMemberActions.slice(firstSectionAmount)
 
-  const mostFollowedMembersByFollowings =
-    processMostFollowedMembersByFollowings(
-      memberId,
-      currentMemberFollowings,
-      currentMemberFollowingMemberIds,
-      suggestedFollowersNumber
-    )
-  const suggestedFollowers = await processSuggestedFollowers(
-    mostFollowedMembersByFollowings,
-    suggestedFollowersNumber
-  )
-
   return (
     <main>
       <div className="flex justify-center gap-10 sm:p-5 lg:px-10">
         <div className="flex flex-col gap-2 sm:gap-4">
-          {firstSectionStories.map((item) => (
-            <Feed
-              key={item.id}
-              story={item.story ?? { id: '' }}
-              followingMemberIds={currentMemberFollowingMemberIds}
-            />
-          ))}
+          {firstSectionStories.map((item) => {
+            return (
+              <Feed
+                key={item.id}
+                story={item.story ?? { id: '' }}
+                followingMemberIds={firstLayerFollowingIds}
+              />
+            )
+          })}
           <FollowSuggestionFeed
-            suggestedFollowers={suggestedFollowers}
+            currentUserId={currentMember.id}
+            suggestedFollowers={suggestFollowing}
             isNoFollowings={false}
           />
-          {secondSectionStories.map((item) => (
-            <Feed
-              key={item.id}
-              story={item.story ?? { id: '' }}
-              followingMemberIds={currentMemberFollowingMemberIds}
-            />
-          ))}
+          {secondSectionStories.map((item) => {
+            return (
+              <Feed
+                key={item.id}
+                story={item.story ?? { id: '' }}
+                followingMemberIds={firstLayerFollowingIds}
+              />
+            )
+          })}
         </div>
-        <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
+        <FollowSuggestionWidget
+          currentUserId={currentMember.id}
+          suggestedFollowers={suggestFollowing}
+        />
       </div>
     </main>
   )
-}
-
-const selectCurrentMemberFollowings = (
-  data: GetMemberFollowingQuery['member']
-) => data?.following ?? []
-
-type CurrentMemberFollowing = ReturnType<typeof selectCurrentMemberFollowings>
-
-const selectFollowedMembersByFollowings = (data: CurrentMemberFollowing) => {
-  return data[0].following ?? []
-}
-
-type FollowedMembersByFollowings = ReturnType<
-  typeof selectFollowedMembersByFollowings
->
-export type SuggestedFollowers = FollowedMembersByFollowings[number] & {
-  currentMemberFollowingMember: string
-  isFollow: boolean
-}
-
-function processStoriesFromFollowingMemberActions(
-  followingMember: CurrentMemberFollowing,
-  maxFeeds: number
-) {
-  const storiesFromFollowingMemberActions =
-    followingMember.flatMap((member) => {
-      const picks = member.pick ?? []
-      const comments = member.comment ?? []
-      return [...picks, ...comments]
-    }) ?? []
-
-  const uniqueStoriesFromFollowingMemberActions = new Map<
-    string,
-    typeof storiesFromFollowingMemberActions[number]
-  >()
-
-  storiesFromFollowingMemberActions.forEach((actions) => {
-    if (
-      actions.story &&
-      !uniqueStoriesFromFollowingMemberActions.has(actions.story.id)
-    ) {
-      uniqueStoriesFromFollowingMemberActions.set(actions.story.id, actions)
-    }
-  })
-
-  const uniqueStories = Array.from(
-    uniqueStoriesFromFollowingMemberActions.values()
-  )
-
-  const uniqueStoriesSortedByActionTime = uniqueStories.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  )
-
-  return uniqueStoriesSortedByActionTime.slice(0, maxFeeds)
-}
-
-function processMostFollowedMembersByFollowings(
-  currentMemberId: string,
-  currentMemberFollowing: CurrentMemberFollowing,
-  currentMemberFollowingMemberIds: Set<string>,
-  take: number
-) {
-  const mostFollowedMembersByFollowings: SuggestedFollowers[] = []
-  const followedMembersByFollowings = currentMemberFollowing.flatMap(
-    (member) =>
-      member.following?.filter(
-        (member) =>
-          !currentMemberFollowingMemberIds.has(member.id) &&
-          member.id !== currentMemberId
-      ) ?? []
-  )
-
-  type FollowedMembersByFollowingsMap =
-    typeof followedMembersByFollowings[number] & {
-      followCountByFollowings: number
-    }
-  const followedMembersByFollowingsMap = followedMembersByFollowings.reduce(
-    (map, member) => {
-      if (member) {
-        const existData = map.get(member.id)
-        if (existData) {
-          existData.followCountByFollowings += 1
-        } else {
-          map.set(member.id, { ...member, followCountByFollowings: 1 })
-        }
-      }
-      return map
-    },
-    new Map<string, FollowedMembersByFollowingsMap>()
-  )
-
-  const followedMembersByFollowingsSortByFollowCount = Array.from(
-    followedMembersByFollowingsMap.values()
-  ).sort((a, b) => b.followCountByFollowings - a.followCountByFollowings)
-
-  for (
-    let i = 0;
-    i < followedMembersByFollowingsSortByFollowCount.length &&
-    mostFollowedMembersByFollowings.length < take;
-    i++
-  ) {
-    const id = followedMembersByFollowingsSortByFollowCount[i].id
-    const memberData = followedMembersByFollowingsMap.get(id)
-
-    const followersFromMemberFollowing = currentMemberFollowing.reduce(
-      (acc: string[], member) => {
-        const matchIndex = member.following?.findIndex((item) => item.id === id)
-        if (matchIndex !== undefined && matchIndex !== -1) {
-          acc.push(member.name ?? '')
-        }
-        return acc
-      },
-      []
-    )
-
-    if (memberData && followersFromMemberFollowing) {
-      const randomIndex = Math.floor(
-        Math.random() * followersFromMemberFollowing.length
-      )
-      const randomMember = followersFromMemberFollowing[randomIndex]
-      mostFollowedMembersByFollowings.push({
-        ...memberData,
-        currentMemberFollowingMember: randomMember,
-        isFollow: false,
-      })
-    }
-  }
-
-  return mostFollowedMembersByFollowings
-}
-
-async function processSuggestedFollowers(
-  mostFollowedMembersByFollowings: SuggestedFollowers[],
-  take: number
-) {
-  if (mostFollowedMembersByFollowings.length < 5) {
-    const mostFollowedMembersByFollowingsIds = new Set(
-      mostFollowedMembersByFollowings.map((member) => member.id)
-    )
-    const mostFollowedMembers = await processMostFollowedMembers(
-      mostFollowedMembersByFollowingsIds
-    )
-    return [...mostFollowedMembersByFollowings, ...mostFollowedMembers].slice(
-      0,
-      take
-    )
-  } else {
-    return mostFollowedMembersByFollowings
-  }
 }
