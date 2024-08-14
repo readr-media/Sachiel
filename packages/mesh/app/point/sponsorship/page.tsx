@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Fragment } from 'react'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberSponsorRecord } from '@/app/actions/sponsorship'
@@ -35,7 +36,7 @@ export default async function Page() {
             {sponsorRecord.map((record, index) => {
               const isLastItem = index >= sponsorRecord.length - 2
               return (
-                <>
+                <Fragment key={record.publisherId}>
                   <div
                     key={record.publisherId}
                     className={`flex flex-row items-center ${
@@ -73,7 +74,7 @@ export default async function Page() {
                   {index === sponsorRecord.length - 2 ? (
                     <div className="border-b lg:hidden"></div>
                   ) : null}
-                </>
+                </Fragment>
               )
             })}
           </div>

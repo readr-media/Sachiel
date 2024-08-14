@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { getMemberTransactionRecord } from '@/app/actions/sponsorship'
 import Spinner from '@/components/spinner'
+import { useUser } from '@/context/user'
 import { useIsLoggedIn } from '@/utils/dynamic'
 
 import DynamicPanel from './dynamic-panel'
@@ -14,7 +15,7 @@ import TransactionList from './transaction-list'
 export type Transaction = Awaited<ReturnType<typeof getMemberTransactionRecord>>
 
 export default function MeshPoint() {
-  //TODO: get user data from context
+  const { user } = useUser()
   const isLoggedInDynamic = useIsLoggedIn()
   const [transactionData, setTransactionData] = useState<Transaction | null>(
     null
@@ -25,7 +26,7 @@ export default function MeshPoint() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await getMemberTransactionRecord(
-        '292',
+        user.memberId,
         transactionRecordTake
       )
 
@@ -35,7 +36,7 @@ export default function MeshPoint() {
     }
 
     fetchData()
-  }, [isLoggedInDynamic])
+  }, [isLoggedInDynamic, user.memberId])
 
   if (!transactionData) return <Spinner />
 
@@ -65,7 +66,7 @@ export default function MeshPoint() {
               </div>
             </div>
           </section>
-          <section className="px-5 py-4 sm:px-10">
+          <section className="p-5 sm:px-10">
             {transactionData?.combinedRecord.length === 0 ? (
               <section className="flex h-[calc(100vh-313px)] w-full items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-591px)] sm:rounded-md sm:bg-white">
                 <p className="body-3 text-primary-500">沒有交易紀錄</p>
