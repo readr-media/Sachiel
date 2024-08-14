@@ -5,10 +5,8 @@ import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
 export default function NoFollowings({
-  currentUserId,
   suggestedFollowers,
 }: {
-  currentUserId: string
   suggestedFollowers: SuggestedFollowers
 }) {
   return (
@@ -32,14 +30,10 @@ export default function NoFollowings({
         </div>
       </div>
       <FollowSuggestionFeed
-        currentUserId={currentUserId}
         suggestedFollowers={suggestedFollowers}
         isNoFollowings={true}
       />
-      <FollowSuggestionWidget
-        currentUserId={currentUserId}
-        suggestedFollowers={suggestedFollowers}
-      />
+      <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
     </main>
   )
 }

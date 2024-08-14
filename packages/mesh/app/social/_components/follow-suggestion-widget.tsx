@@ -8,7 +8,6 @@ import FollowButton from './follow-button'
 export default function FollowSuggestionWidget({
   suggestedFollowers,
 }: {
-  currentUserId: string
   suggestedFollowers: SuggestedFollowers
 }) {
   return (

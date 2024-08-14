@@ -7,7 +7,6 @@ export default function FollowSuggestionFeed({
   suggestedFollowers,
   isNoFollowings,
 }: {
-  currentUserId: string
   suggestedFollowers: SuggestedFollowers
   isNoFollowings: boolean
 }) {

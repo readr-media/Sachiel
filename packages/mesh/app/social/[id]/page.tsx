@@ -116,12 +116,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   if (!hasFollowing) {
-    return (
-      <NoFollowings
-        currentUserId={currentMember.id}
-        suggestedFollowers={mostFollowedMembers}
-      />
-    )
+    return <NoFollowings suggestedFollowers={mostFollowedMembers} />
   }
 
   const firstSectionStories = storiesFromFollowingMemberActions.slice(
@@ -145,7 +140,6 @@ export default function Page({ params }: { params: { id: string } }) {
             )
           })}
           <FollowSuggestionFeed
-            currentUserId={currentMember.id}
             suggestedFollowers={suggestFollowing}
             isNoFollowings={false}
           />
@@ -159,10 +153,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )
           })}
         </div>
-        <FollowSuggestionWidget
-          currentUserId={currentMember.id}
-          suggestedFollowers={suggestFollowing}
-        />
+        <FollowSuggestionWidget suggestedFollowers={suggestFollowing} />
       </div>
     </main>
   )
