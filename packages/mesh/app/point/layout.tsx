@@ -1,6 +1,6 @@
-import Footer from '@/app/_components/footer'
-import Header from '@/app/_components/header'
-import Nav from '@/app/_components/nav'
+import Footer from '@/components/layout-template/footer'
+import Header from '@/components/layout-template/header'
+import Nav from '@/components/layout-template/nav'
 
 export default function PointLayout({
   children,
@@ -10,7 +10,7 @@ export default function PointLayout({
   return (
     <>
       {/* fixed header */}
-      <Header />
+      <Header type="stateful" />
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container bg-white sm:bg-multi-layer-light">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
@@ -25,7 +25,7 @@ export default function PointLayout({
         </div>
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
-      <Nav />
+      <Nav type="default" />
     </>
   )
 }

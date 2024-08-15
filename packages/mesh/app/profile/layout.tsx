@@ -3,14 +3,13 @@ import '@/styles/global.css'
 
 import { usePathname, useRouter } from 'next/navigation'
 
-import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
+import Footer from '@/components/layout-template/footer'
+import Header from '@/components/layout-template/header'
+import Nav from '@/components/layout-template/nav'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
 import { useUser } from '@/context/user'
 import useWindowDimensions from '@/hooks/use-window-dimension'
-
-import Footer from '../_components/footer'
-import Header from '../_components/header'
 
 export default function ProfileLayout({
   children,
@@ -47,7 +46,7 @@ export default function ProfileLayout({
   return (
     <div className="flex grow flex-col">
       <div className="hidden sm:block">
-        <Header />
+        <Header type="stateful" />
       </div>
       <div className="primary-container py-0 sm:pt-[68px]">
         {hasUniqueHeader(pathName) && (
@@ -93,7 +92,7 @@ export default function ProfileLayout({
           <Footer />
         </div>
       </div>
-      {hasNav(pathName, width) && <Nav />}
+      {hasNav(pathName, width) && <Nav type="default" />}
     </div>
   )
 }

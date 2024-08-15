@@ -11,29 +11,7 @@ import SearchBar from '@/components/search-bar'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import { logout } from '@/utils/logout'
 
-const HeaderIconWrapper = ({
-  children,
-  className = '',
-  onClick,
-}: {
-  children: React.ReactNode
-  className?: string
-  onClick?: React.MouseEventHandler<HTMLDivElement>
-}) => {
-  return (
-    <div
-      className={twMerge(
-        'flex h-11 w-11 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
-        className
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  )
-}
-
-export default function Header() {
+export default function StatefulHeader() {
   const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
   const router = useRouter()
@@ -109,5 +87,27 @@ export default function Header() {
         </div>
       </div>
     </header>
+  )
+}
+
+const HeaderIconWrapper = ({
+  children,
+  className = '',
+  onClick,
+}: {
+  children: React.ReactNode
+  className?: string
+  onClick?: React.MouseEventHandler<HTMLDivElement>
+}) => {
+  return (
+    <div
+      className={twMerge(
+        'flex h-11 w-11 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
+        className
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { twMerge } from 'tailwind-merge'
 
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
@@ -10,9 +11,14 @@ import {
   LOGO_ICONS,
 } from '@/constants/layout'
 
-export default function Footer() {
+export default function Footer({ className = '' }: { className?: string }) {
   return (
-    <footer className="h-[theme(height.footer.default)] border-t bg-white sm:h-[theme(height.footer.sm)]">
+    <footer
+      className={twMerge(
+        'h-[theme(height.footer.default)] border-t bg-white sm:h-[theme(height.footer.sm)]',
+        className
+      )}
+    >
       {/* nested footer to maintain the max width for screen width larger than 1440 */}
       <div className="flex h-full max-w-[theme(width.maxMain)] flex-col gap-10 py-10  sm:gap-0 sm:p-10">
         {/* first row */}
