@@ -1,6 +1,5 @@
 'use client'
 
-import { twMerge } from 'tailwind-merge'
 import type { XOR } from 'ts-xor'
 
 import Footer from './footer'
@@ -12,14 +11,20 @@ import MobileNavigation, {
 
 type LayoutType = 'default' | 'stateless' | 'article'
 
+type CustomStyle = {
+  background?: string
+  restrictMainWidth?: boolean
+  nav?: string
+  footer?: string
+}
+
 type LayoutTemplateProps = {
   children: React.ReactNode
   type: LayoutType
-  backgroundClass?: string
+  customStyle?: CustomStyle
 } & XOR<
   {
     type: 'default' | 'article'
-    footerClassName?: string
     navigation?: MobileNavigationProps
   },
   {
@@ -30,26 +35,19 @@ type LayoutTemplateProps = {
 export default function LayoutTemplate({
   children,
   type,
-  footerClassName,
   navigation,
-  backgroundClass,
+  customStyle,
 }: LayoutTemplateProps) {
   switch (type) {
     case 'default':
       return (
-        <DefaultLayout
-          footerClassName={footerClassName}
-          navigation={navigation}
-          backgroundClass={backgroundClass}
-        >
+        <DefaultLayout navigation={navigation} customStyle={customStyle}>
           {children}
         </DefaultLayout>
       )
     case 'stateless':
       return (
-        <StatelessLayout backgroundClass={backgroundClass}>
-          {children}
-        </StatelessLayout>
+        <StatelessLayout customStyle={customStyle}>{children}</StatelessLayout>
       )
     case 'article':
       return null
@@ -60,33 +58,40 @@ export default function LayoutTemplate({
 }
 
 const DefaultLayout = ({
-  footerClassName,
   navigation,
-  backgroundClass = 'bg-white',
+  customStyle = {
+    background: 'bg-white',
+    restrictMainWidth: true,
+  },
   children,
 }: {
-  footerClassName?: string
   navigation?: MobileNavigationProps
-  backgroundClass?: string
+  customStyle?: CustomStyle
   children: React.ReactNode
 }) => {
   return (
-    <body className={twMerge('min-h-screen', backgroundClass)}>
+    <body className={`min-h-screen ${customStyle.background}`}>
       {/* fixed header */}
       <Header type="stateful" />
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
         <div className="flex grow flex-col">
-          <div className="flex grow flex-col xl:max-w-[theme(width.maxMain)]">
+          <div
+            className={`flex grow flex-col ${
+              customStyle.restrictMainWidth
+                ? 'xl:max-w-[theme(width.maxMain)]'
+                : ''
+            }`}
+          >
             {children}
           </div>
         </div>
         {/* footer after main content */}
-        <Footer className={footerClassName} />
+        <Footer className={customStyle.footer} />
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
-      <Nav type="default" />
+      <Nav type="default" className={customStyle.nav} />
       {navigation && <MobileNavigation {...navigation} />}
     </body>
   )
@@ -94,13 +99,15 @@ const DefaultLayout = ({
 
 const StatelessLayout = ({
   children,
-  backgroundClass,
+  customStyle = {
+    background: 'bg-white sm:bg-multi-layer-light',
+  },
 }: {
   children: React.ReactNode
-  backgroundClass?: string
+  customStyle?: CustomStyle
 }) => {
   return (
-    <body className={twMerge('min-h-screen', backgroundClass)}>
+    <body className={`min-h-screen ${customStyle?.background}`}>
       <div className="h-dvh">
         <Header type="stateless" />
         <div className="flex h-full flex-col items-center sm:pt-15">

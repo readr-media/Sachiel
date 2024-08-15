@@ -20,19 +20,19 @@ type IconInfo = {
   text: string
 }
 
-export default function DefaultNav() {
+export default function DefaultNav({ className = '' }: { className?: string }) {
   const path = usePathname()
   const { user } = useUser()
 
   const avatarUrl = user?.avatar ?? ''
 
   return (
-    <>
+    <div className={className}>
       {/* fixed left nav shown on tablet, desktop size */}
       <NonMobileNav path={path} avatarUrl={avatarUrl} />
       {/* fixed bottom nav bar shown on mobile only */}
       <MobileNav path={path} avatarUrl={avatarUrl} />
-    </>
+    </div>
   )
 }
 

@@ -6,12 +6,5 @@ export default function LoginLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <LayoutTemplate
-      type="stateless"
-      backgroundClass="bg-white sm:bg-multi-layer-light"
-    >
-      {children}
-    </LayoutTemplate>
-  )
+  return <LayoutTemplate type="stateless">{children}</LayoutTemplate>
 }
