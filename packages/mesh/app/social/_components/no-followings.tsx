@@ -1,6 +1,6 @@
 import Icon from '@/components/icon'
 
-import { type SuggestedFollowers } from '../[id]/page'
+import type { SuggestedFollowers } from '../page'
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 

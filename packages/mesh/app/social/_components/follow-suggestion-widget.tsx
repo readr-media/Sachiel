@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import Avatar from '@/components/story-card/avatar'
 
-import type { SuggestedFollowers } from '../[id]/page'
+import type { SuggestedFollowers } from '../page'
 import FollowButton from './follow-button'
 
 export default function FollowSuggestionWidget({
