@@ -17,7 +17,7 @@ export default function MobileNavigation({
   rightButtons,
 }: MobileNavigationProps) {
   return (
-    <header className="fixed inset-x-0 top-0 z-header flex h-[60px] border-b bg-white sm:hidden">
+    <header className="fixed inset-x-0 top-0 z-layout flex h-[60px] border-b bg-white sm:hidden">
       <div className="relative flex h-full grow items-center justify-between px-2">
         <div className="flex">
           {leftButtons.map((button, i) => (

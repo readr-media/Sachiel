@@ -44,7 +44,7 @@ const NonMobileNav = ({
   avatarUrl: string
 }) => {
   return (
-    <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
+    <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:z-layout sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
       {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
       <div className="flex grow flex-col justify-between border-r sm:px-12 md:px-10 xl:max-w-[theme(width.nav.xl)]">
         {/* top part */}
@@ -152,7 +152,7 @@ const MobileNav = ({
   avatarUrl: string
 }) => {
   return (
-    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white sm:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
           if (iconInfo.href === '/')
