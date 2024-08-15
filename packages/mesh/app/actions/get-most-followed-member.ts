@@ -1,6 +1,7 @@
-import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
+'use server'
 
-import fetchStatic from './fetch-static'
+import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
+import fetchStatic from '@/utils/fetch-static'
 
 type MostFollowedMembers = {
   id: number

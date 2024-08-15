@@ -3,7 +3,8 @@
 import { GetMemberFollowingDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
-import { processMostFollowedMembers } from '@/utils/most-followed-member'
+
+import { processMostFollowedMembers } from './get-most-followed-member'
 
 export default async function getMemberFollowings(
   memberId: string,

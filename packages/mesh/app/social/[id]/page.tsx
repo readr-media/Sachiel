@@ -3,10 +3,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import getMemberFollowings from '@/app/actions/get-member-followings'
+import { processMostFollowedMembers } from '@/app/actions/get-most-followed-member'
 import Spinner from '@/components/spinner'
 import { MINUTE } from '@/constants/time-unit'
 import { useUser } from '@/context/user'
-import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
 import Feed from '../_components/feed'
 import FollowSuggestionFeed from '../_components/follow-suggestion-feed'
