@@ -5,5 +5,12 @@ export default function SocialLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutTemplate type="default">{children}</LayoutTemplate>
+  return (
+    <LayoutTemplate
+      type="default"
+      backgroundClass="bg-gray-50 sm:bg-multi-layer-light"
+    >
+      {children}
+    </LayoutTemplate>
+  )
 }

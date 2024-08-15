@@ -30,8 +30,7 @@ export default async function RootLayout({
 
   return (
     <html lang="zh-Hant" className={notoSans.className}>
-      <body className="min-h-screen">
-        {/* <DynamicContextProvider
+      {/* <DynamicContextProvider
           settings={{
             environmentId: DYNAMIC_ENV_ID,
             walletConnectors: [EthereumWalletConnectors],
@@ -73,9 +72,8 @@ export default async function RootLayout({
             },
           }}
         > */}
-        <UserProvider user={user}>{children}</UserProvider>
-        {/* </DynamicContextProvider> */}
-      </body>
+      <UserProvider user={user}>{children}</UserProvider>
+      {/* </DynamicContextProvider> */}
     </html>
   )
 }

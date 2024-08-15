@@ -1,5 +1,6 @@
 'use client'
 
+import { twMerge } from 'tailwind-merge'
 import type { XOR } from 'ts-xor'
 
 import Footer from './footer'
@@ -14,6 +15,7 @@ type LayoutType = 'default' | 'stateless' | 'article'
 type LayoutTemplateProps = {
   children: React.ReactNode
   type: LayoutType
+  backgroundClass?: string
 } & XOR<
   {
     type: 'default' | 'article'
@@ -30,6 +32,7 @@ export default function LayoutTemplate({
   type,
   footerClassName,
   navigation,
+  backgroundClass,
 }: LayoutTemplateProps) {
   switch (type) {
     case 'default':
@@ -37,12 +40,17 @@ export default function LayoutTemplate({
         <DefaultLayout
           footerClassName={footerClassName}
           navigation={navigation}
+          backgroundClass={backgroundClass}
         >
           {children}
         </DefaultLayout>
       )
     case 'stateless':
-      return <StatelessLayout>{children}</StatelessLayout>
+      return (
+        <StatelessLayout backgroundClass={backgroundClass}>
+          {children}
+        </StatelessLayout>
+      )
     case 'article':
       return null
     default:
@@ -51,25 +59,25 @@ export default function LayoutTemplate({
   }
 }
 
-type DefaultLayoutProps = {
-  children: React.ReactNode
-  footerClassName?: string
-  navigation?: MobileNavigationProps
-}
-
 const DefaultLayout = ({
   footerClassName,
   navigation,
+  backgroundClass = 'bg-white',
   children,
-}: DefaultLayoutProps) => {
+}: {
+  footerClassName?: string
+  navigation?: MobileNavigationProps
+  backgroundClass?: string
+  children: React.ReactNode
+}) => {
   return (
-    <>
+    <body className={twMerge('min-h-screen', backgroundClass)}>
       {/* fixed header */}
       <Header type="stateful" />
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
-        <div className="flex grow flex-col bg-white">
+        <div className="flex grow flex-col">
           <div className="flex grow flex-col xl:max-w-[theme(width.maxMain)]">
             {children}
           </div>
@@ -80,17 +88,25 @@ const DefaultLayout = ({
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
       <Nav type="default" />
       {navigation && <MobileNavigation {...navigation} />}
-    </>
+    </body>
   )
 }
 
-const StatelessLayout = ({ children }: { children: React.ReactNode }) => {
+const StatelessLayout = ({
+  children,
+  backgroundClass,
+}: {
+  children: React.ReactNode
+  backgroundClass?: string
+}) => {
   return (
-    <div className="h-dvh">
-      <Header type="stateless" />
-      <div className="flex h-full flex-col items-center bg-white sm:bg-multi-layer-light sm:pt-15">
-        {children}
+    <body className={twMerge('min-h-screen', backgroundClass)}>
+      <div className="h-dvh">
+        <Header type="stateless" />
+        <div className="flex h-full flex-col items-center sm:pt-15">
+          {children}
+        </div>
       </div>
-    </div>
+    </body>
   )
 }
