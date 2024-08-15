@@ -18,24 +18,32 @@ export async function getMemberSponsorRecord(memberId: string) {
     'Failed to get all publishers'
   )
   const allPublishers = publishersData?.publishers ?? []
-  const sponsorshipData = await Promise.all(
-    allPublishers.map(async (publisher) => {
-      const data = await fetchGraphQL(
-        GetMemberSponsorShipsDocument,
-        { memberId, publisherId: publisher.id },
-        globalLogFields,
-        'Failed to get member transaction record'
-      )
-      return data?.member
-    })
+  const publisherIdList = allPublishers.map((publisher) => publisher.id) ?? []
+  const sponsorshipResponse = await fetchGraphQL(
+    GetMemberSponsorShipsDocument,
+    { memberId, publisherIdList },
+    globalLogFields,
+    'Failed to get member transaction record'
   )
 
-  const result = allPublishers.map((publisher, index) => ({
-    publisherId: publisher.id,
-    publisherTitle: publisher.title ?? '',
-    publisherLogo: publisher.logo ?? '',
-    sponsoredCount: sponsorshipData[index]?.sponsor?.length,
-  }))
+  const sponsorshipData = sponsorshipResponse?.member?.sponsor ?? []
+  const sponsorCountMap = sponsorshipData.reduce((acc, record) => {
+    const publisherId = record.publisher?.id ?? 'none'
+    if (publisherId !== 'none') {
+      acc[publisherId] = (acc[publisherId] || 0) + 1
+    }
+    return acc
+  }, {} as Record<string, number>)
+
+  const result = allPublishers.map((publisher) => {
+    return {
+      publisherId: publisher.id,
+      publisherTitle: publisher.title ?? '',
+      publisherLogo: publisher.logo ?? '',
+      sponsoredCount: sponsorCountMap[publisher.id] ?? 0,
+    }
+  })
+
   return result
 }
 

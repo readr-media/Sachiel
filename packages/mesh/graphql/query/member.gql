@@ -357,16 +357,20 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
   }
 }
 
-query GetMemberSponsorShips($memberId: ID!, $publisherId: ID!) {
+query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
   member(where: { id: $memberId }) {
     sponsorCount
     sponsor(
       where: {
-        publisher: { id: { equals: $publisherId } }
+        publisher: { id: { in: $publisherIdList } }
         status: { equals: Success }
       }
     ) {
       tid
+      publisher{
+        id
+        title
+      }
     }
   }
 }
@@ -418,10 +422,10 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
     where: {
       member: { id: { equals: $memberId } }
       status: { equals: Success }
+      active: { equals: true }
       unlockStory: { id: { gte: 0 } }
     }
     orderBy: { createdAt: desc }
-    take: 10000
   ) {
     tid
     unlockStory {

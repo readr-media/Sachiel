@@ -4193,7 +4193,9 @@ export type GetMemberFollowerListQuery = {
 
 export type GetMemberSponsorShipsQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
-  publisherId: Scalars['ID']['input']
+  publisherIdList?: InputMaybe<
+    Array<Scalars['ID']['input']> | Scalars['ID']['input']
+  >
 }>
 
 export type GetMemberSponsorShipsQuery = {
@@ -4201,7 +4203,15 @@ export type GetMemberSponsorShipsQuery = {
   member?: {
     __typename?: 'Member'
     sponsorCount?: number | null
-    sponsor?: Array<{ __typename?: 'Sponsorship'; tid?: string | null }> | null
+    sponsor?: Array<{
+      __typename?: 'Sponsorship'
+      tid?: string | null
+      publisher?: {
+        __typename?: 'Publisher'
+        id: string
+        title?: string | null
+      } | null
+    }> | null
   } | null
 }
 
@@ -7532,11 +7542,14 @@ export const GetMemberSponsorShipsDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'publisherId' },
+            name: { kind: 'Name', value: 'publisherIdList' },
           },
           type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+            },
           },
         },
       ],
@@ -7596,12 +7609,12 @@ export const GetMemberSponsorShipsDocument = {
                                     fields: [
                                       {
                                         kind: 'ObjectField',
-                                        name: { kind: 'Name', value: 'equals' },
+                                        name: { kind: 'Name', value: 'in' },
                                         value: {
                                           kind: 'Variable',
                                           name: {
                                             kind: 'Name',
-                                            value: 'publisherId',
+                                            value: 'publisherIdList',
                                           },
                                         },
                                       },
@@ -7636,6 +7649,23 @@ export const GetMemberSponsorShipsDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'tid' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'publisher' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'title' },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -7983,6 +8013,20 @@ export const GetMemberTransactionsDocument = {
                     },
                     {
                       kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'active' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'BooleanValue', value: true },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
                       name: { kind: 'Name', value: 'unlockStory' },
                       value: {
                         kind: 'ObjectValue',
@@ -8020,11 +8064,6 @@ export const GetMemberTransactionsDocument = {
                     },
                   ],
                 },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'take' },
-                value: { kind: 'IntValue', value: '10000' },
               },
             ],
             selectionSet: {
