@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import { useRef } from 'react'
 
 import Icon from '@/components/icon'

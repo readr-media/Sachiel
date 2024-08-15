@@ -1,7 +1,8 @@
 'use client'
-import { EditProfileProvider } from '@/context/edit-profile'
 import { useParams } from 'next/navigation'
 import React from 'react'
+
+import { EditProfileProvider } from '@/context/edit-profile'
 
 export default function ProfileLayout({
   children,
@@ -11,7 +12,7 @@ export default function ProfileLayout({
   const params = useParams()
 
   return (
-    <EditProfileProvider customId={(params['customId'] as string) || ''}>
+    <EditProfileProvider customId={String(params['customId']) || ''}>
       {children}
     </EditProfileProvider>
   )

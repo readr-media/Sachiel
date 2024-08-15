@@ -6,13 +6,8 @@ import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import {
-  type PickList,
-  type UserType,
-  TabCategory,
-  TabKey,
-} from '@/types/profile'
 import { useEditProfile } from '@/context/edit-profile'
+import { TabCategory, TabKey } from '@/types/profile'
 
 const VisitorPage: React.FC = () => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)

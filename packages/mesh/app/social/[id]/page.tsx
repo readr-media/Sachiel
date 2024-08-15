@@ -5,7 +5,7 @@ import {
   type GetMemberFollowingQuery,
   GetMemberFollowingDocument,
 } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import { processMostFollowedMembers } from '@/utils/most-followed-member'
 
@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
 
-  const data = await fetchGraphQL(
+  const data = await queryGraphQL(
     GetMemberFollowingDocument,
     {
       memberId,

@@ -2,9 +2,10 @@ import Image from 'next/image'
 
 import Icon from '@/components/icon'
 
-type Size = 'm' | 'l' | 'xl' | 'xxl'
+type Size = 's' | 'm' | 'l' | 'xl' | 'xxl'
 
 const avatarSizes = {
+  s: 26,
   m: 28,
   l: 44,
   xl: 64,
@@ -12,6 +13,7 @@ const avatarSizes = {
 } as const
 
 const avatarClasses = {
+  s: 'h-[26px] w-[26px]',
   m: 'h-[28px] w-[28px]',
   l: 'h-11 w-11',
   xl: 'h-16 w-16',

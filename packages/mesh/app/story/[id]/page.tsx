@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulGet } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
@@ -31,7 +31,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const storyId = params.id
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const storyData = await fetchGraphQL(
+  const storyData = await queryGraphQL(
     GetStoryDocument,
     { storyId, picksTake, commentsTake },
     globalLogFields

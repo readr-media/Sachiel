@@ -1,7 +1,7 @@
-export default async function base64ToFile(
+export default function base64ToFile(
   base64String: string,
   fileName: string
-): Promise<File> {
+): File {
   const mimeType = base64String.split(';')[0].split(':')[1]
   const byteCharacters = atob(base64String.split(',')[1])
   const byteNumbers = new Array(byteCharacters.length)

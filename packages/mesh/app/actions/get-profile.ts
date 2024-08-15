@@ -1,11 +1,11 @@
 'use server'
 
 import { GetMemberProfileDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 
 export async function getMemberProfile(memberId: string, takes: number) {
   try {
-    const result = await fetchGraphQL(GetMemberProfileDocument, {
+    const result = await queryGraphQL(GetMemberProfileDocument, {
       customId: memberId,
       takes,
     })
@@ -17,7 +17,7 @@ export async function getMemberProfile(memberId: string, takes: number) {
 
 export async function getVisitorProfile(visitorId: string, takes: number) {
   try {
-    const result = await fetchGraphQL(GetMemberProfileDocument, {
+    const result = await queryGraphQL(GetMemberProfileDocument, {
       customId: visitorId,
       takes,
     })

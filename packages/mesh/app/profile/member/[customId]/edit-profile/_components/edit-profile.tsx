@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
@@ -68,7 +67,7 @@ export default function EditProfile(
         onSubmit={handleSubmit}
         className="relative flex grow flex-col items-center bg-white p-5 sm:px-10"
       >
-        <div className="flex max-w-[600px] w-full grow flex-col">
+        <div className="flex w-full max-w-[600px] grow flex-col">
           <section className="body-2 flex flex-col items-center gap-3 border-b border-b-primary-200 pb-5 text-custom-blue sm:flex-row sm:border-none">
             <Avatar src={formData['avatar']} size="xl" extra="sm:hidden" />
             <Avatar
@@ -94,9 +93,7 @@ export default function EditProfile(
                 <AvatarEditMenu
                   avatarImageId={props.avatar_image?.id}
                   hideBottomMenu={hideBottomMenu}
-                  handleDeletePhoto={() =>
-                    handleDeletePhoto(props.avatar_image?.id)
-                  }
+                  handleDeletePhoto={handleDeletePhoto}
                 />
               )}
             </label>

@@ -32,8 +32,8 @@ const NonMobileNavIcon = ({
 }) => {
   const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
-    <div className="flex h-8 w-8 items-center justify-center">
-      <Avatar src={avatarUrl} size="m" />
+    <div className="flex size-8 items-center justify-center">
+      <Avatar src={avatarUrl} size="s" />
     </div>
   ) : isOn ? (
     <Icon size="xl" iconName={iconInfo.icon.on} />

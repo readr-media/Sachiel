@@ -3716,13 +3716,11 @@ export type CreatePhotoMutation = {
 }
 
 export type DeletePhotoMutationVariables = Exact<{
-  photoId?: InputMaybe<Scalars['ID']['input']>
   memberId?: InputMaybe<Scalars['String']['input']>
 }>
 
 export type DeletePhotoMutation = {
   __typename?: 'Mutation'
-  deletePhoto?: { __typename?: 'Photo'; id: string } | null
   updateMember?: { __typename?: 'Member'; customId?: string | null } | null
 }
 
@@ -4946,14 +4944,6 @@ export const DeletePhotoDocument = {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'photoId' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
             name: { kind: 'Name', value: 'memberId' },
           },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
@@ -4962,35 +4952,6 @@ export const DeletePhotoDocument = {
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'deletePhoto' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'photoId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-              ],
-            },
-          },
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'updateMember' },

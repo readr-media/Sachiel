@@ -7,7 +7,7 @@ import {
 } from '@/graphql/__generated__/graphql'
 import { type FormData } from '@/types/profile'
 import base64ToFile from '@/utils/base-sixty-four-to-file'
-import { uploadGraphQL } from '@/utils/fetch-graphql'
+import { mutateGraphQL } from '@/utils/fetch-graphql'
 
 export async function updateProfile(
   formData: FormData,
@@ -22,13 +22,13 @@ export async function updateProfile(
           formData.avatar,
           `${currentCustomId}'s avatar`
         )
-        const result = await uploadGraphQL(CreatePhotoDocument, {
+        const result = await mutateGraphQL(CreatePhotoDocument, {
           image: file,
           imageName: `${formData['name']}'s avatar`,
         })
         imageId = result?.createPhoto?.id || ''
         imageOriginUrl = result?.createPhoto?.resized?.original || ''
-        await uploadGraphQL(ConnectMemberAvatarDocument, {
+        await mutateGraphQL(ConnectMemberAvatarDocument, {
           customId: formData['customId'],
           imageId,
           imageOriginUrl,
@@ -37,7 +37,7 @@ export async function updateProfile(
         console.error('update avatar failed', error)
       }
     }
-    const result = await uploadGraphQL(UpdateMemberProfileDocument, {
+    const result = await mutateGraphQL(UpdateMemberProfileDocument, {
       changedCustomId: formData['customId'],
       name: formData['name'],
       customId: currentCustomId,
@@ -50,10 +50,9 @@ export async function updateProfile(
   }
 }
 
-export async function deletePhoto(photoId: string, memberId: string) {
+export async function deletePhoto(memberId: string) {
   try {
-    await uploadGraphQL(DeletePhotoDocument, {
-      photoId,
+    await mutateGraphQL(DeletePhotoDocument, {
       memberId,
     })
   } catch (error) {

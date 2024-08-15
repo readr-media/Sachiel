@@ -5,7 +5,7 @@ import { getClient } from '@/apollo'
 
 import { type TraceObject, logServerSideError } from './log'
 
-export default async function fetchGraphQL<
+export default async function queryGraphQL<
   TResult,
   TVariables extends OperationVariables
 >(
@@ -33,7 +33,7 @@ export default async function fetchGraphQL<
   }
 }
 
-export async function uploadGraphQL<
+export async function mutateGraphQL<
   TResult,
   TVariables extends OperationVariables
 >(

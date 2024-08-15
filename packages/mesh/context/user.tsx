@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import { type GetCurrentUserMemberIdQuery } from '@/graphql/__generated__/graphql'
+import type { ProfileTypes } from '@/types/profile'
 
 type Member = NonNullable<NonNullable<GetCurrentUserMemberIdQuery>['member']>
 type FollowingCategories = NonNullable<Member['followingCategories']>
@@ -25,6 +26,12 @@ export type User = {
   followingCategories: FollowingCategories
   followingPublishers: FollowingPublishers
   idToken: string
+  intro: string
+  pickCount: number
+  followerCount: number
+  followingCount: number
+  picksData: ProfileTypes['picksData']
+  bookmarks: ProfileTypes['bookmarks']
 }
 
 type UserContextType = {
@@ -34,8 +41,10 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
+//TODO: all the state about User needs to be placed here
 const guest: User = {
   memberId: '',
+  // member custom id
   customId: '',
   name: '',
   avatar: '',
@@ -45,6 +54,12 @@ const guest: User = {
   followingCategories: [],
   followingPublishers: [],
   idToken: '',
+  intro: '',
+  pickCount: 0,
+  followerCount: 0,
+  followingCount: 0,
+  picksData: [],
+  bookmarks: [],
 }
 
 export function UserProvider({

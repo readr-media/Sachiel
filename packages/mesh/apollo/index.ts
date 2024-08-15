@@ -1,12 +1,7 @@
 import 'server-only'
 
-import {
-  ApolloClient,
-  ApolloLink,
-  from,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client'
+import type { ApolloLink } from '@apollo/client'
+import { ApolloClient, from, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'

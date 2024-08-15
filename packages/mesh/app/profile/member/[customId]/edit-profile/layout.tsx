@@ -5,7 +5,12 @@ const EditProfileLayout = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
-  return <EditProfileHeader title="編輯個人檔案">{children}</EditProfileHeader>
+  return (
+    <>
+      <EditProfileHeader title="編輯個人檔案" />
+      {children}
+    </>
+  )
 }
 
 export default EditProfileLayout

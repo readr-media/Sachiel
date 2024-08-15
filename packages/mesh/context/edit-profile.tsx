@@ -1,6 +1,12 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import type { ChangeEvent, FormEvent, MouseEvent } from 'react'
+import type {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  MouseEvent,
+  SetStateAction,
+} from 'react'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
@@ -8,11 +14,14 @@ import { IMAGE_SIZE_LIMITATION, INTRO_LIMITATION } from '@/constants/profile'
 import useProfileState from '@/hooks/use-profile-state'
 import type { FormData, ProfileTypes } from '@/types/profile'
 
+import { useUser } from './user'
+
 type EditProfileContextType = {
   formData: FormData
   profile: ProfileTypes
   isFormValid: boolean
   errors: Partial<FormData>
+  setErrors: Dispatch<SetStateAction<Partial<FormData>>>
   updateFormField: (field: keyof FormData, value: string) => void
   handleSubmit: (e: FormEvent<HTMLFormElement> | MouseEvent) => Promise<void>
   initializeProfileData: () => void
@@ -44,6 +53,7 @@ export const EditProfileProvider: React.FC<{
     memberId: customId,
     takesCount: 20,
   })
+  const { setUser } = useUser()
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -65,7 +75,13 @@ export const EditProfileProvider: React.FC<{
     originalProfileData.current = initialData
   }
 
-  useEffect(initializeProfileData, [profile.memberCustomId])
+  // NOTE: only when custom ID changes, needs to initialize
+  useEffect(initializeProfileData, [
+    profile.avatar,
+    profile.intro,
+    profile.memberCustomId,
+    profile.name,
+  ])
 
   const validateForm = (): Partial<FormData> => {
     const newErrors: Partial<FormData> = {}
@@ -115,9 +131,8 @@ export const EditProfileProvider: React.FC<{
     }))
   }
 
-  const handleDeletePhoto = (avatarImageId?: string) => {
-    if (!avatarImageId) return
-    deletePhoto(avatarImageId || '', profile.memberCustomId || '')
+  const handleDeletePhoto = () => {
+    deletePhoto(profile.memberCustomId || '')
     setFormData((prev) => ({ ...prev, avatar: '' }))
   }
 
@@ -133,6 +148,15 @@ export const EditProfileProvider: React.FC<{
     try {
       if (!formData.customId) return
       await updateProfile(formData, profile.memberCustomId)
+
+      // update user data to stay consistency
+      setUser((prev) => ({
+        ...prev,
+        name: formData.name,
+        avatar: formData.avatar,
+        intro: formData.intro,
+        customId: formData.customId,
+      }))
       setProfile((prev) => ({
         ...prev,
         name: formData.name,
@@ -154,6 +178,7 @@ export const EditProfileProvider: React.FC<{
         errors,
         isFormValid,
         profile,
+        setErrors,
         updateFormField,
         handleSubmit,
         initializeProfileData,

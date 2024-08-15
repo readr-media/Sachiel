@@ -47,11 +47,8 @@ mutation CreatePhoto($image: Upload, $imageName: String) {
   }
 }
 
-# 刪除需要刪除照片，並且將avatar欄位清空
-mutation DeletePhoto($photoId: ID, $memberId: String) {
-  deletePhoto(where: { id: $photoId }) {
-    id
-  }
+# only disconnect the photo and member
+mutation DeletePhoto($memberId: String) {
   updateMember(
     where: { customId: $memberId }
     data: { avatar: "", avatar_image: { disconnect: true } }

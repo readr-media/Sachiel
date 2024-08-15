@@ -52,6 +52,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           followerCount: formatFollowCount(
             memberProfileData.followerCount || 0
           ),
+          // userType let outside decided
           userType: 'member',
           picksData: memberProfileData.picks,
           bookmarks: memberProfileData.books,
@@ -85,6 +86,6 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
       }
     }
     profileState()
-  }, [profile.memberCustomId])
+  }, [profile.memberCustomId, profileConfig.memberId, profileConfig.takesCount])
   return { profile, setProfile, isLoading }
 }

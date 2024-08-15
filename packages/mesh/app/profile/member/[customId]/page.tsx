@@ -1,6 +1,7 @@
+import { getCurrentUser } from '@/app/actions/auth'
+
 import MemberPage from './_components/member-page'
 import VisitorPage from './_components/visitor-page'
-import { getCurrentUser } from '@/app/actions/auth'
 
 export type PageProps = {
   params: {
