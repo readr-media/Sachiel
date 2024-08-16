@@ -1,12 +1,12 @@
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect, useState } from 'react'
 
-// import Spinner from '@/components/spinner'
+import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
+import { useDynamicContext } from '@/utils/dynamic'
 
-// import { useDynamicContext } from '@/utils/dynamic'
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
 import LoginEntry from './login-entry'
@@ -32,8 +32,8 @@ export default function LoginSteps() {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const { handleSignIn } = useHandleSignIn()
-  const [, setIsSignInLoading] = useState(false)
-  // const { sdkHasLoaded } = useDynamicContext()
+  const [isSignInLoading, setIsSignInLoading] = useState(false)
+  const { sdkHasLoaded } = useDynamicContext()
 
   useEffect(() => {
     const init = async () => {
@@ -48,13 +48,13 @@ export default function LoginSteps() {
     init()
   }, [handleSignIn, isLoggedIn, router])
 
-  // if (!sdkHasLoaded || isSignInLoading) {
-  //   return (
-  //     <div className="flex size-full items-center justify-center">
-  //       <Spinner />
-  //     </div>
-  //   )
-  // }
+  if (!sdkHasLoaded || isSignInLoading) {
+    return (
+      <div className="flex size-full items-center justify-center">
+        <Spinner />
+      </div>
+    )
+  }
 
   return (
     <>
