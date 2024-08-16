@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import getMemberFollowings from '@/app/actions/get-member-followings'
-import { processMostFollowedMembers } from '@/app/actions/get-most-followed-member'
 import Spinner from '@/components/spinner'
 import { MINUTE } from '@/constants/time-unit'
 import { useUser } from '@/context/user'
@@ -17,9 +16,6 @@ export type SuggestedFollowers = Awaited<
   ReturnType<typeof getMemberFollowings>
 >['suggestFollowing']
 type SocialData = Awaited<ReturnType<typeof getMemberFollowings>>
-type MostFollowedMembers = Awaited<
-  ReturnType<typeof processMostFollowedMembers>
->
 
 export default function Page() {
   //TODO: infiniteScroll
@@ -29,8 +25,6 @@ export default function Page() {
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
   const [socialData, setSocialData] = useState<SocialData | null>(null)
-  const [mostFollowedMembers, setMostFollowedMembers] =
-    useState<MostFollowedMembers>([])
 
   useEffect(() => {
     if (!user) return
@@ -41,11 +35,7 @@ export default function Page() {
     const cachedData = localStorage.getItem(cacheKey)
 
     if (cachedData) {
-      const {
-        timestamp,
-        socialData: cachedSocialData,
-        mostFollowedMembers: cachedMostFollowedMembers,
-      } = JSON.parse(cachedData)
+      const { timestamp, socialData: cachedSocialData } = JSON.parse(cachedData)
 
       const cacheAge = new Date().getTime() - timestamp
 
@@ -58,7 +48,6 @@ export default function Page() {
           ),
         }
         setSocialData(restoredSetObjectsData)
-        setMostFollowedMembers(cachedMostFollowedMembers)
         return
       }
     }
@@ -71,11 +60,6 @@ export default function Page() {
       )
       setSocialData(response)
 
-      if (!response.hasFollowing) {
-        const mostFollowed = await processMostFollowedMembers()
-        setMostFollowedMembers(mostFollowed)
-      }
-
       const convertSetObjectsData = {
         ...response,
         firstLayerFollowingIds: Array.from(response.firstLayerFollowingIds),
@@ -84,7 +68,6 @@ export default function Page() {
       const dataToCache = {
         timestamp: new Date().getTime(),
         socialData: convertSetObjectsData,
-        mostFollowedMembers: mostFollowedMembers,
       }
       localStorage.setItem(cacheKey, JSON.stringify(dataToCache))
     }
@@ -113,7 +96,7 @@ export default function Page() {
   }
 
   if (!hasFollowing) {
-    return <NoFollowings suggestedFollowers={mostFollowedMembers} />
+    return <NoFollowings />
   }
 
   const firstSectionStories = storiesFromFollowingMemberActions.slice(
