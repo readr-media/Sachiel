@@ -1,4 +1,3 @@
-// import Icon from '@/components/icon'
 import LayoutTemplate from '@/components/layout-template'
 
 export default function LoginLayout({
