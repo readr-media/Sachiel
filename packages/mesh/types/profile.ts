@@ -21,7 +21,7 @@ export enum TabCategory {
   PUBLISH = 'PUBLISH',
 }
 
-export type FormData = {
+export type EditProfileFormTypes = {
   name: string
   customId: string
   intro: string

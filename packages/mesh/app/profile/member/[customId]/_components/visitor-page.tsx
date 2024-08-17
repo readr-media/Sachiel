@@ -11,8 +11,8 @@ import { TabCategory, TabKey } from '@/types/profile'
 
 const VisitorPage: React.FC = () => {
   const [category, setCategory] = useState<TabCategory>(TabCategory.PICK)
-  const { profile } = useEditProfile()
-  if (!profile) return <div>error</div>
+  const { visitorProfile } = useEditProfile()
+  if (!visitorProfile) return <div>error</div>
   const {
     name,
     avatar,
@@ -24,7 +24,7 @@ const VisitorPage: React.FC = () => {
     intro,
     picksData,
     memberId,
-  } = profile
+  } = visitorProfile
 
   const userStatusList = [
     { tabName: TabKey.PICK, count: pickCount },

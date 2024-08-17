@@ -8,6 +8,7 @@ import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import { useEditProfile } from '@/context/edit-profile'
+import { useUser } from '@/context/user'
 import {
   type Bookmarks,
   type PickList,
@@ -16,7 +17,8 @@ import {
 } from '@/types/profile'
 
 const MemberPage: React.FC = () => {
-  const { profile } = useEditProfile()
+  const { user } = useUser()
+  const { isProfileLoading } = useEditProfile()
   const {
     pickCount,
     picksData,
@@ -24,12 +26,11 @@ const MemberPage: React.FC = () => {
     avatar,
     followerCount,
     followingCount,
-    memberCustomId,
+    customId,
     intro,
     bookmarks,
-    userType,
     memberId,
-  } = profile
+  } = user
   const [picksOrBookmarks, setPicksOrBookmarks] = useState<
     PickList | Bookmarks
   >(picksData)
@@ -43,12 +44,12 @@ const MemberPage: React.FC = () => {
     {
       tabName: TabKey.FOLLOWER,
       count: followerCount,
-      redirectLink: `${memberCustomId}/follower`,
+      redirectLink: `${customId}/follower`,
     },
     {
       tabName: TabKey.FOLLOWING,
       count: followingCount,
-      redirectLink: `${memberCustomId}/following`,
+      redirectLink: `${customId}/following`,
     },
   ]
 
@@ -78,7 +79,7 @@ const MemberPage: React.FC = () => {
         return setPicksOrBookmarks(picksData)
     }
   }, [bookmarks, category, picksData])
-
+  if (isProfileLoading) return <>loading...</>
   return (
     <>
       <div className="flex max-h-[calc(100%_-_152px)] max-w-[1120px] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
@@ -86,18 +87,14 @@ const MemberPage: React.FC = () => {
           name={name}
           pickCount={pickCount}
           avatar={avatar}
-          userType={userType}
+          userType="member"
           intro={intro}
         />
         <ProfileButtonList buttonList={buttonList} />
         <UserStatusList userStatusList={userStatusList} />
       </div>
 
-      <Tab
-        tabCategory={category}
-        setCategory={setCategory}
-        userType={userType}
-      />
+      <Tab tabCategory={category} setCategory={setCategory} userType="member" />
       <ArticleCardList
         items={picksOrBookmarks || []}
         shouldShowComment={shouldShowComment}

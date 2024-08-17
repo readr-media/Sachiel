@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberProfile, getVisitorProfile } from '@/app/actions/get-profile'
+import { useUser } from '@/context/user'
 import type { ProfileTypes } from '@/types/profile'
 import { formatFollowCount } from '@/utils/format-follow-count'
 
@@ -11,8 +11,7 @@ type ProfileConfigType = {
 }
 
 export default function useProfileState(profileConfig: ProfileConfigType) {
-  // states go here
-  const [profile, setProfile] = useState<ProfileTypes>({
+  const [visitorProfile, setVisitorProfile] = useState<ProfileTypes>({
     name: '',
     avatar: '',
     intro: '',
@@ -26,39 +25,21 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
     memberCustomId: '',
   })
   const [isLoading, setIsLoading] = useState(false)
-
+  const { user, setUser } = useUser()
+  const isMember = profileConfig.memberId === user.customId
   useEffect(() => {
     const profileState = async () => {
       setIsLoading(true)
-      const currentUser = await getCurrentUser()
-      if (profileConfig.memberId === currentUser?.customId) {
+      if (isMember) {
+        // if is member take visitorProfile data left (data useUser does not have.)
         const memberProfileResult = await getMemberProfile(
           profileConfig.memberId,
           profileConfig.takesCount
         )
-        const memberProfileData = memberProfileResult?.member
-        if (!memberProfileData) return
-        setProfile({
-          name: currentUser.name || '',
-          avatar: currentUser.avatar || '',
-          intro: currentUser.intro || '',
-          memberCustomId: currentUser.customId,
-          // above is from global shared states
-          memberId: memberProfileData.id,
-          pickCount: memberProfileData.picksCount || 0,
-          followingCount: formatFollowCount(
-            memberProfileData.followingCount || 0
-          ),
-          followerCount: formatFollowCount(
-            memberProfileData.followerCount || 0
-          ),
-          // userType let outside decided
-          userType: 'member',
-          picksData: memberProfileData.picks,
-          bookmarks: memberProfileData.books,
-        })
+        setUser((prev) => ({ ...prev, ...memberProfileResult }))
         setIsLoading(false)
       } else {
+        // is is visitor get all the data
         const visitorProfileResult = await getVisitorProfile(
           profileConfig.memberId,
           profileConfig.takesCount
@@ -66,7 +47,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
 
         const visitorProfileData = visitorProfileResult?.member
         if (!visitorProfileData) return
-        setProfile({
+        setVisitorProfile({
           name: visitorProfileData.name || '',
           avatar: visitorProfileData.avatar || '',
           intro: visitorProfileData.intro || '',
@@ -79,6 +60,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           followerCount: formatFollowCount(
             visitorProfileData.followerCount || 0
           ),
+          // TODO: check if is needed
           userType: 'visitor',
           picksData: visitorProfileData.picks,
         })
@@ -86,6 +68,12 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
       }
     }
     profileState()
-  }, [profile.memberCustomId, profileConfig.memberId, profileConfig.takesCount])
-  return { profile, setProfile, isLoading }
+  }, [
+    visitorProfile.memberCustomId,
+    profileConfig.memberId,
+    profileConfig.takesCount,
+    isMember,
+    setUser,
+  ])
+  return { visitorProfile, isLoading }
 }

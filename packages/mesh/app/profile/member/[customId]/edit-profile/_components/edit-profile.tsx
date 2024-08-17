@@ -14,9 +14,8 @@ export default function EditProfile(
   props: NonNullable<GetMemberProfileEditDataQuery['member']>
 ) {
   // put into context
-
   const {
-    formData,
+    editProfileForm,
     errors,
     isFormValid,
     handleDeletePhoto,
@@ -55,7 +54,7 @@ export default function EditProfile(
     return () => {
       window.removeEventListener('resize', adjustTextareaHeight)
     }
-  }, [formData.intro])
+  }, [editProfileForm.intro])
 
   useEffect(() => {
     initializeProfileData()
@@ -64,14 +63,18 @@ export default function EditProfile(
   return (
     <>
       <form
-        onSubmit={handleSubmit}
+        action={handleSubmit}
         className="relative flex grow flex-col items-center bg-white p-5 sm:px-10"
       >
         <div className="flex w-full max-w-[600px] grow flex-col">
           <section className="body-2 flex flex-col items-center gap-3 border-b border-b-primary-200 pb-5 text-custom-blue sm:flex-row sm:border-none">
-            <Avatar src={formData['avatar']} size="xl" extra="sm:hidden" />
             <Avatar
-              src={formData['avatar']}
+              src={editProfileForm['avatar']}
+              size="xl"
+              extra="sm:hidden"
+            />
+            <Avatar
+              src={editProfileForm['avatar']}
               size="xxl"
               extra="hidden sm:block"
             />
@@ -117,11 +120,11 @@ export default function EditProfile(
                   id="name"
                   name="name"
                   type="text"
-                  value={formData.name}
+                  value={editProfileForm.name}
                   onChange={handleInputChange}
                   className="body-2 w-full"
                 />
-                {formData.name && (
+                {editProfileForm.name && (
                   <button onClick={() => clearFormInput('name')}>
                     <Icon iconName="icon-close-with-background" size="l" />
                   </button>
@@ -149,11 +152,11 @@ export default function EditProfile(
                   id="customId"
                   name="customId"
                   type="text"
-                  value={formData.customId}
+                  value={editProfileForm.customId}
                   onChange={handleInputChange}
                   className="body-2 w-full"
                 />
-                {formData.customId && (
+                {editProfileForm.customId && (
                   <button onClick={() => clearFormInput('customId')}>
                     <Icon iconName="icon-close-with-background" size="l" />
                   </button>
@@ -177,13 +180,13 @@ export default function EditProfile(
                     errors.intro ? 'text-custom-red' : 'text-primary-500 '
                   }`}
                 >
-                  {formData.intro.length}/250字
+                  {editProfileForm.intro.length}/250字
                 </span>
               </section>
               <textarea
                 id="intro"
                 name="intro"
-                value={formData.intro}
+                value={editProfileForm.intro}
                 placeholder="向大家介紹一下自己吧..."
                 onChange={handleInputChange}
                 ref={textareaRef}
@@ -195,8 +198,8 @@ export default function EditProfile(
             <span className="hidden sm:flex sm:grow *:sm:w-full">
               <Button
                 text="儲存"
-                onClick={handleSubmit}
                 size="sm"
+                type="submit"
                 color="blue-500"
                 disabled={!isFormValid}
               />

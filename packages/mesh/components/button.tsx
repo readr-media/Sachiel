@@ -1,3 +1,5 @@
+import type { ButtonHTMLAttributes } from 'react'
+
 import Icon, { type IconProps } from './icon'
 
 export default function Button({
@@ -7,6 +9,7 @@ export default function Button({
   icon,
   activeState,
   disabled,
+  type,
   onClick,
 }: {
   size: keyof typeof buttonStyles
@@ -19,7 +22,8 @@ export default function Button({
     activeIcon?: IconProps
   }
   disabled?: boolean
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
 }) {
   const buttonColor = {
     transparent:
@@ -59,6 +63,7 @@ export default function Button({
         isActive ? buttonColor['primary'] : buttonColor[color]
       } `}
       onClick={onClick}
+      type={type ?? 'button'}
       disabled={disabled}
     >
       <div

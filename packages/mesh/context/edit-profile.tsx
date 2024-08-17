@@ -1,29 +1,29 @@
 'use client'
-import { useRouter } from 'next/navigation'
-import type {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  MouseEvent,
-  SetStateAction,
-} from 'react'
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import type { ChangeEvent } from 'react'
+import { createContext, useContext, useEffect, useRef } from 'react'
 
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
-import { IMAGE_SIZE_LIMITATION, INTRO_LIMITATION } from '@/constants/profile'
+import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
+import { useForm } from '@/hooks/use-form'
 import useProfileState from '@/hooks/use-profile-state'
-import type { FormData, ProfileTypes } from '@/types/profile'
+import type { EditProfileFormTypes, ProfileTypes } from '@/types/profile'
+import { profileFormValidation } from '@/utils/profile-form-validate'
 
 import { useUser } from './user'
 
 type EditProfileContextType = {
-  formData: FormData
-  profile: ProfileTypes
+  editProfileForm: EditProfileFormTypes
+  visitorProfile: ProfileTypes
   isFormValid: boolean
-  errors: Partial<FormData>
-  setErrors: Dispatch<SetStateAction<Partial<FormData>>>
-  updateFormField: (field: keyof FormData, value: string) => void
-  handleSubmit: (e: FormEvent<HTMLFormElement> | MouseEvent) => Promise<void>
+  errors: Partial<EditProfileFormTypes>
+  isProfileLoading: boolean
+  updateErrors: (
+    key: 'name' | 'customId' | 'intro' | 'avatar',
+    errorMessage: string
+  ) => void
+  updateField: (field: keyof EditProfileFormTypes, value: string) => void
+  handleSubmit: (formData: FormData) => Promise<void>
   initializeProfileData: () => void
   handleAvatarChange: (e: ChangeEvent<HTMLInputElement>) => void
   clearFormInput: (key: 'name' | 'customId' | 'intro') => void
@@ -37,149 +37,123 @@ const EditProfileContext = createContext<EditProfileContextType | undefined>(
   undefined
 )
 
-const errorMessages: Record<keyof FormData, string> = {
-  name: '名稱不能空白',
-  customId: '這個 ID 目前無法使用，請使用其他 ID',
-  intro: '自我介紹超過字數上限',
-  avatar: '', //TODO: Add an appropriate error message if needed
-}
-
 export const EditProfileProvider: React.FC<{
   children: React.ReactNode
-  customId: string
-}> = ({ children, customId }) => {
+}> = ({ children }) => {
   const router = useRouter()
-  const { profile, setProfile } = useProfileState({
+  const params = useParams()
+  const customId = String(params.customId)
+  const { user, setUser } = useUser()
+
+  const { visitorProfile, isLoading: isProfileLoading } = useProfileState({
     memberId: customId,
     takesCount: 20,
   })
-  const { setUser } = useUser()
 
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    customId: '',
-    intro: '',
-    avatar: '',
-  })
-  const [errors, setErrors] = useState<Partial<FormData>>({})
-  const originalProfileData = useRef<FormData>()
+  const initialData = {
+    name: user.name || '',
+    customId: user.customId || '',
+    intro: user.intro || '',
+    avatar: user.avatar || '',
+  }
+  const {
+    form: editProfileForm,
+    errors,
+    isFormValid,
+    validateForm,
+    updateField,
+    resetForm,
+    updateErrors,
+    isFormDataChanged,
+    resetErrors,
+  } = useForm(initialData, profileFormValidation)
+
+  const originalProfileData = useRef<EditProfileFormTypes>()
 
   const initializeProfileData = () => {
-    const initialData = {
-      name: profile.name || '',
-      customId: profile.memberCustomId || '',
-      intro: profile.intro || '',
-      avatar: profile.avatar || '',
-    }
-    setFormData(initialData)
+    resetForm()
+    resetErrors()
     originalProfileData.current = initialData
   }
 
-  // NOTE: only when custom ID changes, needs to initialize
-  useEffect(initializeProfileData, [
-    profile.avatar,
-    profile.intro,
-    profile.memberCustomId,
-    profile.name,
-  ])
-
-  const validateForm = (): Partial<FormData> => {
-    const newErrors: Partial<FormData> = {}
-    if (!formData.name.trim()) newErrors.name = errorMessages.name
-    if (!formData.customId.trim()) newErrors.customId = errorMessages.customId
-    if (formData.intro.length > INTRO_LIMITATION)
-      newErrors.intro = errorMessages.intro
-    return newErrors
-  }
-
-  const isFormValid =
-    Object.keys(errors).length === 0 && formData !== originalProfileData.current
-
-  const updateFormField = (field: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    setErrors((prev) => {
-      const newErrors = { ...prev }
-      delete newErrors[field]
-      return newErrors
-    })
-  }
-
+  // TODO: extract to custom hook
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > IMAGE_SIZE_LIMITATION) {
-      setErrors((prev) => ({ ...prev, avatar: '上傳的檔案大小須小於 10MB' }))
+      updateErrors('avatar', '上傳的檔案大小須小於 10MB')
     }
     const reader = new FileReader()
     reader.onloadend = () => {
-      setFormData((prev) => ({ ...prev, avatar: reader.result as string }))
+      updateField('avatar', String(reader.result))
     }
     reader.readAsDataURL(file)
   }
 
   const clearFormInput = (key: 'name' | 'customId' | 'intro') => {
-    setFormData((prev) => ({ ...prev, [key]: '' }))
+    updateField(key, '')
   }
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value.trim(),
-    }))
+    updateField(name as 'name' | 'customId' | 'intro', value.trim())
   }
 
   const handleDeletePhoto = () => {
-    deletePhoto(profile.memberCustomId || '')
-    setFormData((prev) => ({ ...prev, avatar: '' }))
+    deletePhoto(user.customId || '')
+    updateField('avatar', '')
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement> | MouseEvent) => {
-    if (e && 'preventDefault' in e) e.preventDefault()
+  const handleSubmit = async (formData: FormData) => {
+    if (!('get' in formData)) return
+    const avatarInput = document.getElementById('avatar') as HTMLInputElement
+    const avatarFile = avatarInput.files?.[0]
 
-    const newErrors = validateForm()
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
+    // NOTE: with FormData we can pass image from client to server
+    if (avatarFile) formData.append('avatar', avatarFile)
+
+    if (!validateForm() || !isFormDataChanged()) {
       return
     }
 
     try {
-      if (!formData.customId) return
-      await updateProfile(formData, profile.memberCustomId)
+      if (!formData.get('customId')) return
+      await updateProfile(formData, user.customId)
 
       // update user data to stay consistency
       setUser((prev) => ({
         ...prev,
-        name: formData.name,
-        avatar: formData.avatar,
-        intro: formData.intro,
-        customId: formData.customId,
+        name: String(formData.get('name')),
+        avatar: editProfileForm.avatar,
+        intro: String(formData.get('intro')),
+        customId: String(formData.get('customId')),
       }))
-      setProfile((prev) => ({
-        ...prev,
-        name: formData.name,
-        avatar: formData.avatar,
-        intro: formData.intro,
-        memberCustomId: formData.customId,
-      }))
-      router.push(`/profile/member/${formData.customId}`)
+      router.push(`/profile/member/${formData.get('customId')}`)
     } catch (error) {
-      router.push(`/profile/member/${profile.memberCustomId}`)
+      router.push(`/profile/member/${user.customId}`)
       console.error('Failed to update profile:', error)
     }
   }
 
+  useEffect(initializeProfileData, [
+    user.avatar,
+    user.intro,
+    user.customId,
+    user.name,
+  ])
+
   return (
     <EditProfileContext.Provider
       value={{
-        formData,
+        editProfileForm,
         errors,
         isFormValid,
-        profile,
-        setErrors,
-        updateFormField,
+        visitorProfile,
+        isProfileLoading,
+        updateErrors,
+        updateField,
         handleSubmit,
         initializeProfileData,
         handleAvatarChange,
