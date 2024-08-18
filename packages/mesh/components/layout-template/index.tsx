@@ -1,7 +1,10 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+import { Suspense } from 'react'
 import type { XOR } from 'ts-xor'
 
+import Spinner from '../spinner'
 import Footer from './footer'
 import Header from './header'
 import Nav from './nav'
@@ -38,16 +41,27 @@ export default function LayoutTemplate({
   navigation,
   customStyle,
 }: LayoutTemplateProps) {
+  const pathName = usePathname()
+
+  const childrenJsx = (
+    <Suspense key={pathName} fallback={<Spinner />}>
+      {/* set key for dynamic route to re-render fallback */}
+      {children}
+    </Suspense>
+  )
+
   switch (type) {
     case 'default':
       return (
         <DefaultLayout navigation={navigation} customStyle={customStyle}>
-          {children}
+          {childrenJsx}
         </DefaultLayout>
       )
     case 'stateless':
       return (
-        <StatelessLayout customStyle={customStyle}>{children}</StatelessLayout>
+        <StatelessLayout customStyle={customStyle}>
+          {childrenJsx}
+        </StatelessLayout>
       )
     case 'article':
       return null
