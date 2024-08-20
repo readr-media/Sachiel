@@ -30,7 +30,6 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
-// const httpLink = new HttpLink({ uri: GQL_ENDPOINT })
 const uploadLink = createUploadLink({
   uri: GQL_ENDPOINT,
   headers: {
