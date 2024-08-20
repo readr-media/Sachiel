@@ -27,11 +27,11 @@ export type User = {
   followingPublishers: FollowingPublishers
   idToken: string
   intro: string
-  pickCount: number
-  followerCount: number
-  followingCount: number
-  picksData: ProfileTypes['picksData']
-  bookmarks: ProfileTypes['bookmarks']
+  pickCount?: number
+  followerCount?: number
+  followingCount?: number
+  picksData?: ProfileTypes['picksData']
+  bookmarks?: ProfileTypes['bookmarks']
 }
 
 type UserContextType = {
@@ -44,7 +44,6 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 //TODO: all the state about User needs to be placed here
 const guest: User = {
   memberId: '',
-  // member custom id
   customId: '',
   name: '',
   avatar: '',

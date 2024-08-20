@@ -13,11 +13,11 @@ import UploadImageErrorModal from './upload-image-error-modal'
 export default function EditProfile(
   props: NonNullable<GetMemberProfileEditDataQuery['member']>
 ) {
-  // put into context
   const {
     editProfileForm,
     errors,
     isFormValid,
+    formRef,
     handleDeletePhoto,
     handleSubmit,
     handleAvatarChange,
@@ -63,7 +63,7 @@ export default function EditProfile(
   return (
     <>
       <form
-        action={handleSubmit}
+        ref={formRef}
         className="relative flex grow flex-col items-center bg-white p-5 sm:px-10"
       >
         <div className="flex w-full max-w-[600px] grow flex-col">
@@ -201,6 +201,7 @@ export default function EditProfile(
                 size="sm"
                 type="submit"
                 color="blue-500"
+                onClick={handleSubmit}
                 disabled={!isFormValid}
               />
             </span>

@@ -7,31 +7,13 @@ import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
 import { useForm } from '@/hooks/use-form'
 import useProfileState from '@/hooks/use-profile-state'
-import type { EditProfileFormTypes, ProfileTypes } from '@/types/profile'
+import type {
+  EditProfileContextType,
+  EditProfileFormTypes,
+} from '@/types/profile'
 import { profileFormValidation } from '@/utils/profile-form-validate'
 
 import { useUser } from './user'
-
-type EditProfileContextType = {
-  editProfileForm: EditProfileFormTypes
-  visitorProfile: ProfileTypes
-  isFormValid: boolean
-  errors: Partial<EditProfileFormTypes>
-  isProfileLoading: boolean
-  updateErrors: (
-    key: 'name' | 'customId' | 'intro' | 'avatar',
-    errorMessage: string
-  ) => void
-  updateField: (field: keyof EditProfileFormTypes, value: string) => void
-  handleSubmit: (formData: FormData) => Promise<void>
-  initializeProfileData: () => void
-  handleAvatarChange: (e: ChangeEvent<HTMLInputElement>) => void
-  clearFormInput: (key: 'name' | 'customId' | 'intro') => void
-  handleDeletePhoto: (avatarImageId?: string) => void
-  handleInputChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void
-}
 
 const EditProfileContext = createContext<EditProfileContextType | undefined>(
   undefined
@@ -42,8 +24,10 @@ export const EditProfileProvider: React.FC<{
 }> = ({ children }) => {
   const router = useRouter()
   const params = useParams()
-  const customId = String(params.customId)
   const { user, setUser } = useUser()
+  const formRef = useRef(null)
+  const customId = String(params.customId)
+  const formData = formRef.current ? new FormData(formRef.current) : null
 
   const { visitorProfile, isLoading: isProfileLoading } = useProfileState({
     memberId: customId,
@@ -56,6 +40,7 @@ export const EditProfileProvider: React.FC<{
     intro: user.intro || '',
     avatar: user.avatar || '',
   }
+
   const {
     form: editProfileForm,
     errors,
@@ -68,6 +53,9 @@ export const EditProfileProvider: React.FC<{
     resetErrors,
   } = useForm(initialData, profileFormValidation)
 
+  /**
+   * 記住初始的表單資料，如果沒有修改過表單應該要讓他不能送出
+   */
   const originalProfileData = useRef<EditProfileFormTypes>()
 
   const initializeProfileData = () => {
@@ -76,7 +64,6 @@ export const EditProfileProvider: React.FC<{
     originalProfileData.current = initialData
   }
 
-  // TODO: extract to custom hook
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -106,12 +93,11 @@ export const EditProfileProvider: React.FC<{
     updateField('avatar', '')
   }
 
-  const handleSubmit = async (formData: FormData) => {
-    if (!('get' in formData)) return
+  const handleSubmit = async () => {
+    if (!formData) return
     const avatarInput = document.getElementById('avatar') as HTMLInputElement
     const avatarFile = avatarInput.files?.[0]
 
-    // NOTE: with FormData we can pass image from client to server
     if (avatarFile) formData.append('avatar', avatarFile)
 
     if (!validateForm() || !isFormDataChanged()) {
@@ -122,7 +108,6 @@ export const EditProfileProvider: React.FC<{
       if (!formData.get('customId')) return
       await updateProfile(formData, user.customId)
 
-      // update user data to stay consistency
       setUser((prev) => ({
         ...prev,
         name: String(formData.get('name')),
@@ -152,6 +137,7 @@ export const EditProfileProvider: React.FC<{
         isFormValid,
         visitorProfile,
         isProfileLoading,
+        formRef,
         updateErrors,
         updateField,
         handleSubmit,

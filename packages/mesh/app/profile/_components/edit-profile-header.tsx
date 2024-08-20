@@ -14,6 +14,7 @@ const EditProfileHeader = ({
     router.back()
   }
   const { handleSubmit, isFormValid } = useEditProfile()
+
   return (
     <header className="flex h-[60px] border-b bg-white px-5 sm:border-none sm:px-5 md:px-[70px] lg:px-10">
       <div className="list-title grid grow grid-cols-3 items-center sm:flex sm:justify-start sm:gap-5">
@@ -32,6 +33,7 @@ const EditProfileHeader = ({
           className={`flex items-center justify-end sm:hidden ${
             isFormValid ? 'text-custom-blue' : 'text-disable'
           }`}
+          disabled={!isFormValid}
         >
           儲存
         </button>

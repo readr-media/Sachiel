@@ -18,11 +18,10 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
     pickCount: 0,
     followingCount: '',
     followerCount: '',
-    userType: 'member',
     picksData: [],
     bookmarks: [],
     memberId: '',
-    memberCustomId: '',
+    customId: '',
   })
   const [isLoading, setIsLoading] = useState(false)
   const { user, setUser } = useUser()
@@ -51,7 +50,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           name: visitorProfileData.name || '',
           avatar: visitorProfileData.avatar || '',
           intro: visitorProfileData.intro || '',
-          memberCustomId: visitorProfileData.customId || '',
+          customId: visitorProfileData.customId || '',
           memberId: visitorProfileData.id,
           pickCount: visitorProfileData.picksCount || 0,
           followingCount: formatFollowCount(
@@ -60,8 +59,6 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           followerCount: formatFollowCount(
             visitorProfileData.followerCount || 0
           ),
-          // TODO: check if is needed
-          userType: 'visitor',
           picksData: visitorProfileData.picks,
         })
         setIsLoading(false)
@@ -69,7 +66,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
     }
     profileState()
   }, [
-    visitorProfile.memberCustomId,
+    visitorProfile.customId,
     profileConfig.memberId,
     profileConfig.takesCount,
     isMember,
