@@ -14,7 +14,7 @@ export default async function Page() {
   const sponsorRecord = response.filter((data) => data.sponsoredCount !== 0)
 
   return (
-    <div className="pt-0 sm:pt-[68px]">
+    <div>
       {sponsorRecord.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">

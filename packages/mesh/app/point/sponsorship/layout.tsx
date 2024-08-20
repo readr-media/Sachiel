@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import Icon from '@/components/icon'
 import LayoutTemplate from '@/components/layout-template'
