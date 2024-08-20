@@ -9,7 +9,7 @@ import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
-import { createMatchMethod } from '@/utils/nav-button'
+import { matchPath } from '@/utils/nav-button'
 
 type IconInfo = {
   icon: {
@@ -55,10 +55,7 @@ const NonMobileNav = ({
             {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
-                isOn={createMatchMethod(iconInfo.matchPolicy)(
-                  path,
-                  iconInfo.href
-                )}
+                isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />
             ))}
@@ -69,10 +66,7 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={createMatchMethod(iconInfo.matchPolicy)(
-                      path,
-                      iconInfo.href
-                    )}
+                    isOn={matchPath(iconInfo.href, path)}
                     iconInfo={iconInfo}
                     avatarUrl={avatarUrl}
                   />
@@ -81,10 +75,7 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={createMatchMethod(iconInfo.matchPolicy)(
-                      path,
-                      iconInfo.href
-                    )}
+                    isOn={matchPath(iconInfo.href, path)}
                     iconInfo={iconInfo}
                   />
                 )
@@ -97,10 +88,7 @@ const NonMobileNav = ({
           {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
-              isOn={createMatchMethod(iconInfo.matchPolicy)(
-                path,
-                iconInfo.href
-              )}
+              isOn={matchPath(iconInfo.href, path)}
               iconInfo={iconInfo}
             />
           ))}
@@ -171,10 +159,7 @@ const MobileNav = ({
           return (
             <MobileNavIcon
               key={iconInfo.icon.default}
-              isOn={createMatchMethod(iconInfo.matchPolicy)(
-                path,
-                iconInfo.href
-              )}
+              isOn={matchPath(iconInfo.href, path)}
               iconInfo={iconInfo}
               avatarUrl={avatarUrl}
             />
