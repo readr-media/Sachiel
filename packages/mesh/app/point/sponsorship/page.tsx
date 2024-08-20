@@ -1,11 +1,9 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Fragment } from 'react'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberSponsorRecord } from '@/app/actions/sponsorship'
-import Icon from '@/components/icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 
 export default async function Page() {
@@ -16,14 +14,7 @@ export default async function Page() {
   const sponsorRecord = response.filter((data) => data.sponsoredCount !== 0)
 
   return (
-    <div className="pt-0 sm:pt-[68px]">
-      <div className="flex h-15 w-full flex-row items-center border-b bg-white">
-        <Link href={'/point'}>
-          <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
-        </Link>
-        <h2 className="list-title mx-auto sm:ml-6">已贊助媒體</h2>
-        <div className="size-5 px-5"></div>
-      </div>
+    <div>
       {sponsorRecord.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">

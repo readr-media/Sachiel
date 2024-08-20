@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import Footer from '@/app/_components/footer'
+import Footer from '@/components/layout-template/footer'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
