@@ -11,6 +11,7 @@ import {
   EthereumWalletConnectors,
 } from '@/utils/dynamic'
 
+import RootLayoutWrapper from './_component/root-layout-wrapper'
 import { getCurrentUser } from './actions/auth'
 export const metadata: Metadata = {
   title: 'Mesh',
@@ -72,7 +73,9 @@ export default async function RootLayout({
           },
         }}
       >
-        <UserProvider user={user}>{children}</UserProvider>
+        <UserProvider user={user}>
+          <RootLayoutWrapper>{children}</RootLayoutWrapper>
+        </UserProvider>
       </DynamicContextProvider>
     </html>
   )
