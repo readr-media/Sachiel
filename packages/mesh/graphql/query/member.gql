@@ -356,3 +356,84 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
     }
   }
 }
+
+query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
+  member(where: { id: $memberId }) {
+    sponsorCount
+    sponsor(
+      where: {
+        publisher: { id: { in: $publisherIdList } }
+        status: { equals: Success }
+      }
+    ) {
+      tid
+      publisher{
+        id
+        title
+      }
+    }
+  }
+}
+
+query GetMemberTransactions($memberId: ID!, $take: Int) {
+  member(where: { id: $memberId }) {
+    sponsorCount(where:  {
+       status:  {
+          equals: Success
+       }
+    })
+    sponsor(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      publisher {
+        id
+        title
+        logo
+      }
+      fee
+      createdAt
+    }
+    transaction(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      createdAt
+      depositVolume
+      expireDate
+      unlockStory {
+        id
+        title
+        source {
+          id
+          title
+          logo
+        }
+      }
+      policy {
+        name
+        explanation
+        charge
+        unlockSingle
+      }
+    }
+  }
+  transactions(
+    where: {
+      member: { id: { equals: $memberId } }
+      status: { equals: Success }
+      active: { equals: true }
+      unlockStory: { id: { gte: 0 } }
+    }
+    orderBy: { createdAt: desc }
+  ) {
+    tid
+    unlockStory {
+      id
+    }
+  }
+}

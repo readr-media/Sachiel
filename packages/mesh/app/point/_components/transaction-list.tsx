@@ -1,88 +1,120 @@
 'use client'
 
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
+import Image from 'next/image'
 
 import Icon from '@/components/icon'
+import { displayTime } from '@/utils/story-display'
 
 import LoadMoreTransaction from './load-more-transaction'
-
-type NextTransactionList = {
-  month: number
-  record: {
-    id: number
-    title: string
-    type: string
-    time: string
-    amount: number
-  }[]
-}
+import { type Transaction } from './mesh-point'
 
 export default function TransactionList({
   initialList,
+  pageSize,
+  amountOfElements,
+  hasMoreData,
   fetchMoreTransaction,
 }: {
-  initialList: NextTransactionList[]
-  fetchMoreTransaction: () => Promise<NextTransactionList[]>
+  initialList: Transaction['combinedRecord']
+  pageSize: number
+  amountOfElements: number
+  hasMoreData: boolean
+  fetchMoreTransaction: (
+    pageIndex: number
+  ) => Promise<Transaction['combinedRecord']>
 }) {
-  // TODO: Update load more parameters with new UI and API specs
-
   return (
     <InfiniteScrollList
       initialList={initialList}
-      pageSize={3}
-      amountOfElements={6}
+      pageSize={pageSize}
+      amountOfElements={amountOfElements}
       fetchListInPage={fetchMoreTransaction}
       isAutoFetch={false}
-      loader={<LoadMoreTransaction />}
+      loader={hasMoreData ? <LoadMoreTransaction /> : null}
     >
       {(renderList) =>
-        renderList.map((data) => (
-          <section key={data.month} className="px-5 py-4 sm:px-10">
-            <h4 className="list-title pb-3 text-primary-700">{data.month}月</h4>
-            {data.record.length === 0 ? (
-              <p className="body-3 text-primary-500">沒有交易紀錄</p>
-            ) : (
-              data.record.map((record, index) => (
-                <div
-                  key={`${data.month}-${record.id}`}
-                  className={`flex flex-row gap-2 ${
-                    index === 0 ? 'pb-5' : 'py-5'
-                  } ${
-                    index !== data.record.length - 1
-                      ? 'border-b-[0.5px] border-primary-200'
-                      : ''
-                  }`}
-                >
-                  <Icon
-                    iconName={
-                      record.type === 'sponsor'
-                        ? 'icon-publisher-readr'
-                        : 'icon-avatar-default'
+        renderList.map((data, index) => (
+          <div
+            key={data.tid}
+            className={`flex flex-row gap-2 ${index === 0 ? 'pb-5' : 'py-5'} ${
+              index !== renderList.length - 1
+                ? 'border-b-[0.5px] border-primary-200'
+                : ''
+            }`}
+          >
+            {data.__typename === 'Sponsorship' ? (
+              <>
+                <Image
+                  className="size-11"
+                  src={
+                    data.publisher?.logo || '/images/default-avatar-image.png'
+                  }
+                  width={44}
+                  height={44}
+                  alt={`${data.publisher?.title}-logo`}
+                  style={{
+                    borderRadius: '8px',
+                    backgroundColor: '#E0E0E0',
+                  }}
+                />
+                <div className="flex w-full flex-col gap-1">
+                  <div className="subtitle-2 flex justify-between gap-4">
+                    <p className="text-primary-700">{data.publisher?.title}</p>
+                    <p className="text-primary-700">-{data.fee}</p>
+                  </div>
+                  <p className="caption-1 text-primary-500">
+                    {displayTime(data.createdAt)}
+                  </p>
+                </div>
+              </>
+            ) : data.__typename === 'Transaction' ? (
+              <>
+                {data.policy?.unlockSingle ? (
+                  <Image
+                    className="size-11"
+                    src={
+                      data.unlockStory?.source?.logo ||
+                      '/images/default-avatar-image.png'
                     }
+                    width={44}
+                    height={44}
+                    alt={`${data.unlockStory?.title}-logo`}
+                    style={{
+                      borderRadius: '8px',
+                      backgroundColor: '#E0E0E0',
+                    }}
+                  />
+                ) : (
+                  <Icon
+                    iconName={'icon-avatar-default'}
                     size="2xl"
                     className="size-11"
                   />
-                  <div className="flex w-full flex-col gap-1">
-                    <div className="subtitle-2 flex justify-between gap-4">
-                      <p className=" text-primary-700">{record.title}</p>
-                      <p
-                        className={`${
-                          record.amount < 0
-                            ? 'text-primary-700'
-                            : 'text-custom-blue'
-                        }`}
-                      >
-                        {record.amount < 0
-                          ? record.amount
-                          : `+${record.amount}`}
+                )}
+                <div className="flex w-full flex-col gap-1">
+                  <div className="subtitle-2 flex justify-between gap-4">
+                    {data.policy?.unlockSingle ? (
+                      <p className="text-primary-700">
+                        單篇訂閱{data.unlockStory?.source?.title}
+                        {' - '}
+                        {data.unlockStory?.title}
                       </p>
-                    </div>
-                    <p className="caption-1 text-primary-500">{record.time}</p>
+                    ) : (
+                      <p className="text-primary-700">
+                        {data.policy?.explanation}
+                      </p>
+                    )}
+
+                    <p className="text-primary-700">-{data.policy?.charge}</p>
                   </div>
+                  <p className="caption-1 text-primary-500">
+                    {displayTime(data.createdAt)}
+                  </p>
                 </div>
-              ))
-            )}
-          </section>
+              </>
+            ) : null}
+          </div>
         ))
       }
     </InfiniteScrollList>
