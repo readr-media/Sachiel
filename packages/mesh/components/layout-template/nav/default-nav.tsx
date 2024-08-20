@@ -9,6 +9,7 @@ import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
+import { createMatchMethod } from '@/utils/nav-button'
 
 type IconInfo = {
   icon: {
@@ -54,7 +55,10 @@ const NonMobileNav = ({
             {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
-                isOn={path === iconInfo.href}
+                isOn={createMatchMethod(iconInfo.matchPolicy)(
+                  path,
+                  iconInfo.href
+                )}
                 iconInfo={iconInfo}
               />
             ))}
@@ -65,7 +69,10 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={path.startsWith(iconInfo.href)}
+                    isOn={createMatchMethod(iconInfo.matchPolicy)(
+                      path,
+                      iconInfo.href
+                    )}
                     iconInfo={iconInfo}
                     avatarUrl={avatarUrl}
                   />
@@ -74,7 +81,10 @@ const NonMobileNav = ({
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
-                    isOn={path.startsWith(iconInfo.href)}
+                    isOn={createMatchMethod(iconInfo.matchPolicy)(
+                      path,
+                      iconInfo.href
+                    )}
                     iconInfo={iconInfo}
                   />
                 )
@@ -87,7 +97,10 @@ const NonMobileNav = ({
           {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
-              isOn={path === iconInfo.href}
+              isOn={createMatchMethod(iconInfo.matchPolicy)(
+                path,
+                iconInfo.href
+              )}
               iconInfo={iconInfo}
             />
           ))}
@@ -155,19 +168,13 @@ const MobileNav = ({
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
-          if (iconInfo.href === '/')
-            return (
-              <MobileNavIcon
-                key={iconInfo.icon.default}
-                isOn={path === iconInfo.href}
-                iconInfo={iconInfo}
-                avatarUrl={avatarUrl}
-              />
-            )
           return (
             <MobileNavIcon
               key={iconInfo.icon.default}
-              isOn={path.startsWith(iconInfo.href)}
+              isOn={createMatchMethod(iconInfo.matchPolicy)(
+                path,
+                iconInfo.href
+              )}
               iconInfo={iconInfo}
               avatarUrl={avatarUrl}
             />

@@ -63,6 +63,11 @@ const FOOTER_COMPANY_INFOS = [
   'readr@readr.tw',
 ] as const
 
+export enum NavButtonMatchPolicy {
+  exact = 'exact',
+  startsWith = 'startsWith',
+}
+
 // TODO: update href according to SPEC
 const NON_MOBILE_NAV_ICONS = {
   first: [
@@ -74,6 +79,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/',
       text: '熱門',
+      matchPolicy: NavButtonMatchPolicy.exact,
     },
     {
       icon: {
@@ -83,6 +89,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/social',
       text: '社群',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
     {
       icon: {
@@ -92,6 +99,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/media',
       text: '最新',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
   ],
   second: [
@@ -103,6 +111,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/profile',
       text: '個人檔案',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
     {
       icon: {
@@ -112,6 +121,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/point',
       text: '讀選點數',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
     {
       icon: {
@@ -121,6 +131,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/bookmark',
       text: '書籤',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
   ],
   third: [
@@ -132,6 +143,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/setting',
       text: '設定',
+      matchPolicy: NavButtonMatchPolicy.startsWith,
     },
   ],
 } as const
@@ -146,6 +158,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/',
     text: '熱門',
+    matchPolicy: NavButtonMatchPolicy.exact,
   },
   {
     icon: {
@@ -155,6 +168,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/social',
     text: '社群',
+    matchPolicy: NavButtonMatchPolicy.startsWith,
   },
   {
     icon: {
@@ -164,6 +178,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/media',
     text: '最新',
+    matchPolicy: NavButtonMatchPolicy.startsWith,
   },
   {
     icon: {
@@ -173,6 +188,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/point',
     text: '讀選點數',
+    matchPolicy: NavButtonMatchPolicy.startsWith,
   },
   {
     icon: {
@@ -182,6 +198,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/profile',
     text: '個人檔案',
+    matchPolicy: NavButtonMatchPolicy.startsWith,
   },
 ] as const
 
