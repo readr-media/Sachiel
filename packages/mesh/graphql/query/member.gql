@@ -437,3 +437,26 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
     }
   }
 }
+
+query GetMemberUnlockStories($memberId: ID!, $take: Int) {
+  member(where: { id: $memberId }) {
+    transaction(
+      where: { status: { equals: Success }, active: { equals: true } }
+      orderBy: { createdAt: desc }
+      take: $take
+    ) {
+      tid
+      expireDate
+      unlockStory{
+        id
+        title
+        og_image
+        source{
+          id
+          title
+          logo
+        }
+      }
+    }
+  }
+}
