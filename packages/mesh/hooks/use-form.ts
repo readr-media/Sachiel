@@ -1,6 +1,6 @@
-import { useCallback, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-export const useForm = <T extends Record<string, V>, V>(
+export const useForm = <T extends Record<string, unknown>>(
   initialState: T,
   validateFormFn: (form: T) => Partial<T>
 ) => {
@@ -8,14 +8,14 @@ export const useForm = <T extends Record<string, V>, V>(
   const [form, setForm] = useState<T>(initialState)
   const [errors, setErrors] = useState<Partial<T>>({})
 
-  const updateField = useCallback((field: keyof T, value: T[keyof T]) => {
+  const updateField = (field: keyof T, value: T[keyof T]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
     setErrors((prev) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [field]: _, ...rest } = prev
       return rest as Partial<T>
     })
-  }, [])
+  }
 
   const resetForm = () => {
     setForm(initialState)
