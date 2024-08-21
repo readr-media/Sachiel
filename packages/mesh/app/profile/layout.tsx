@@ -1,99 +1,103 @@
 'use client'
 import '@/styles/global.css'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 
-import Nav from '@/app/_components/nav'
 import Icon from '@/components/icon'
+import LayoutTemplate from '@/components/layout-template'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
 import { useUser } from '@/context/user'
-import useWindowDimensions from '@/hooks/use-window-dimension'
 
-import Footer from '../_components/footer'
-import Header from '../_components/header'
+const hasNestedLayout = (pathName: string) => {
+  return FOLLOW_LIST_PATHS.some((path) => pathName.endsWith(path))
+}
 
 export default function ProfileLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   const pathName = usePathname()
-  const { user: currentUser } = useUser()
-  const pathNameList = pathName.split('/')
-  const { width } = useWindowDimensions()
-  const userId = pathNameList.pop()
-  const isSelf = userId === currentUser?.customId
   const router = useRouter()
+  const params = useParams<{ customId?: string; publisherId?: string }>()
+  const { user } = useUser()
+
+  const pageCustomId = (params.customId || params.publisherId) ?? ''
+  const isSelf = pageCustomId === user?.customId
+
+  const handleMoreButtonClicked = () => {
+    // TODO: deal with the feature
+  }
+
+  const goToSettingPage = () => {
+    // TODO: update the setting url
+  }
+
   const backToPreviousPage = () => {
     router.back()
   }
 
-  const hasUniqueHeader = (pathName: string): boolean => {
-    // NOTE: in some path do not show the header
-    const hasTargetPath = FOLLOW_LIST_PATHS.some((path) =>
-      pathName.endsWith(path)
-    )
-    return !hasTargetPath
-  }
-
-  const hasNav = (pathName: string, width: number): boolean => {
-    const hasTargetPath = FOLLOW_LIST_PATHS.some((path) =>
-      pathName.endsWith(path)
-    )
-    const isMobileWidth = width < 768
-
-    return !hasTargetPath || !isMobileWidth
+  if (hasNestedLayout(pathName)) {
+    return <>{children}</>
   }
   return (
-    <div className="flex grow flex-col">
-      <div className="hidden sm:block">
-        <Header />
-      </div>
-      <div className="primary-container py-0 sm:pt-[68px]">
-        {hasUniqueHeader(pathName) && (
-          <div className="flex h-[theme(height.header.default)] sm:h-[theme(height.header.sm)]">
-            <div className="flex max-w-[680px] grow items-center justify-between px-5">
-              <div className="flex items-center gap-5">
-                {!isSelf && (
-                  <button
-                    type="button"
-                    className="p-3 pl-0"
-                    onClick={backToPreviousPage}
-                  >
-                    <Icon
-                      iconName="icon-chevron-left"
-                      size={{ width: 20, height: 20 }}
-                    />
-                  </button>
-                )}
-                <p className="list-title hidden place-self-center sm:block">
-                  {userId}
-                </p>
-              </div>
-              <p className="list-title block place-self-center sm:hidden">
-                {userId}
-              </p>
+    <LayoutTemplate
+      type="default"
+      customStyle={{
+        background: 'bg-multi-layer-light',
+        restrictMainWidth: false,
+        footer: 'hidden sm:block',
+      }}
+      navigation={{
+        leftButtons: [
+          isSelf
+            ? { type: 'icon', icon: 'icon-setting', onClick: goToSettingPage }
+            : {
+                type: 'icon',
+                icon: 'icon-chevron-left',
+                onClick: backToPreviousPage,
+              },
+        ],
+        title: pageCustomId,
+        rightButtons: [
+          {
+            type: 'icon',
+            icon: 'icon-more-horiz',
+            onClick: handleMoreButtonClicked,
+          },
+        ],
+      }}
+    >
+      {/* TODO: use shared pc navigation component */}
+      <div className="hidden bg-white sm:block">
+        <div className="flex max-w-[680px] grow items-center justify-between px-5">
+          <div className="flex items-center gap-5">
+            {!isSelf && (
               <button
                 type="button"
-                className="place-self-end self-center p-3"
-                // TODO: more function
+                className="p-3 pl-0"
+                onClick={backToPreviousPage}
               >
                 <Icon
-                  iconName="icon-more-horiz"
-                  size={{ width: 24, height: 24 }}
+                  iconName="icon-chevron-left"
+                  size={{ width: 20, height: 20 }}
                 />
               </button>
-            </div>
+            )}
+            <p className="list-title hidden place-self-center sm:block">
+              {pageCustomId}
+            </p>
           </div>
-        )}
-        <div className="flex grow flex-col bg-multi-layer-light">
-          {children}
-        </div>
-        <div className="hidden sm:block">
-          <Footer />
+          <button
+            type="button"
+            className="place-self-end self-center p-3"
+            // TODO: more function
+          >
+            <Icon iconName="icon-more-horiz" size={{ width: 24, height: 24 }} />
+          </button>
         </div>
       </div>
-      {hasNav(pathName, width) && <Nav />}
-    </div>
+      {children}
+    </LayoutTemplate>
   )
 }

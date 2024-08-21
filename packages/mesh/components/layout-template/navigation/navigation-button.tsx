@@ -1,0 +1,88 @@
+import { type MouseEventHandler } from 'react'
+import { twMerge } from 'tailwind-merge'
+import { type XOR } from 'ts-xor'
+
+import Icon, { type IconName } from '@/components/icon'
+
+type TextColor = 'gray' | 'blue'
+
+type NavigationIcon =
+  | 'icon-chevron-left'
+  | 'icon-more-horiz'
+  | 'icon-share'
+  | 'icon-bookmark'
+  | 'icon-setting'
+
+export type NavigationButtonProps = {
+  onClick: MouseEventHandler<HTMLButtonElement>
+} & XOR<
+  {
+    type: 'icon'
+    icon: NavigationIcon
+  },
+  {
+    type: 'text'
+    text: string
+    color: TextColor
+  }
+>
+
+export default function NavigationButton({
+  type,
+  icon,
+  onClick,
+  text,
+  color,
+}: NavigationButtonProps) {
+  switch (type) {
+    case 'icon':
+      return <IconButton icon={icon} onClick={onClick} />
+
+    case 'text':
+      return <TextButton color={color} text={text} onClick={onClick} />
+    default:
+      return null
+  }
+}
+
+const IconButton = ({
+  onClick,
+  icon,
+}: {
+  onClick: MouseEventHandler<HTMLButtonElement>
+  icon: IconName
+}) => {
+  return (
+    <button
+      type="button"
+      className="flex size-11 items-center justify-center"
+      onClick={onClick}
+    >
+      <Icon iconName={icon} size="m" />
+    </button>
+  )
+}
+
+const colorMap = {
+  blue: 'custom-blue',
+  gray: 'primary-500',
+} as const
+
+const TextButton = ({
+  color,
+  text,
+  onClick,
+}: {
+  color: TextColor
+  text: string
+  onClick: MouseEventHandler<HTMLButtonElement>
+}) => {
+  return (
+    <button
+      className={twMerge('list-title mx-3', colorMap[color])}
+      onClick={onClick}
+    >
+      {text}
+    </button>
+  )
+}
