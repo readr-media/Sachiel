@@ -9,7 +9,8 @@ export default function PointLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const isNestedPage = pathname.split('/')[2] === 'sponsorship'
+  const subPath = pathname.split('/')[2]
+  const isNestedPage = ['sponsorship', 'subscribe-stories'].includes(subPath)
 
   if (isNestedPage) {
     return <>{children}</>
