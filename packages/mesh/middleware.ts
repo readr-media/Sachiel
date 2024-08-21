@@ -7,7 +7,6 @@ export async function middleware(request: NextRequest) {
     /^\/social(\/.*)?$/,
     /^\/point(\/.*)?$/,
     /^\/profile(\/.*)?$/,
-    /^\/profile\/member\/[^/]+\/edit-profile$/,
   ]
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = protectRoutesPattern.some((pattern) =>
