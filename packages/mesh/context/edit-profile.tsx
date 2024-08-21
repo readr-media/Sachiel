@@ -69,6 +69,8 @@ export const EditProfileProvider: React.FC<{
     if (!file) return
     if (file.size > IMAGE_SIZE_LIMITATION) {
       updateErrors('avatar', '上傳的檔案大小須小於 10MB')
+      // when file exceeds the limitation, will not show the image.
+      return
     }
     const reader = new FileReader()
     reader.onloadend = () => {
