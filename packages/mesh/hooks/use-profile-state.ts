@@ -38,7 +38,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
         setUser((prev) => ({ ...prev, ...memberProfileResult }))
         setIsLoading(false)
       } else {
-        // is is visitor get all the data
+        // if is visitor get all the data
         const visitorProfileResult = await getVisitorProfile(
           profileConfig.memberId,
           profileConfig.takesCount
