@@ -15,23 +15,27 @@ export async function updateProfile(
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    let imageId = ''
-    let imageOriginUrl = ''
-    try {
-      const result = await mutateGraphQL(CreatePhotoDocument, {
-        image: formData.get('avatar'),
-        imageName: `${formData.get('name')}'s avatar`,
-      })
-      imageId = result?.createPhoto?.id || ''
-      imageOriginUrl = result?.createPhoto?.resized?.original || ''
-      await mutateGraphQL(ConnectMemberAvatarDocument, {
-        customId: String(formData.get('customId')),
-        imageId,
-        imageOriginUrl,
-      })
-    } catch (error) {
-      logServerSideError(error, 'update avatar failed', globalLogFields)
+    // only when has avatar
+    if (formData.get('avatar')) {
+      let imageId = ''
+      let imageOriginUrl = ''
+      try {
+        const result = await mutateGraphQL(CreatePhotoDocument, {
+          image: formData.get('avatar'),
+          imageName: `${formData.get('name')}'s avatar`,
+        })
+        imageId = result?.createPhoto?.id || ''
+        imageOriginUrl = result?.createPhoto?.resized?.original || ''
+        await mutateGraphQL(ConnectMemberAvatarDocument, {
+          customId: String(formData.get('customId')),
+          imageId,
+          imageOriginUrl,
+        })
+      } catch (error) {
+        logServerSideError(error, 'update avatar failed', globalLogFields)
+      }
     }
+    // default action
     const result = await mutateGraphQL(UpdateMemberProfileDocument, {
       changedCustomId: String(formData.get('customId')),
       name: String(formData.get('name')),

@@ -99,6 +99,9 @@ query GetCurrentUserMemberId($uid: String!) {
     name
     customId
     avatar
+    avatar_image {
+      id
+    }
     intro
     wallet
     followingMembers: following {

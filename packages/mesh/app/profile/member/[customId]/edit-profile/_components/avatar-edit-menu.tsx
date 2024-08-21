@@ -1,19 +1,19 @@
 import { useRef } from 'react'
 
 import Icon from '@/components/icon'
+import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 
 type AvatarEditMenu = {
-  avatarImageId?: string
   handleDeletePhoto: () => void
   hideBottomMenu: () => void
 }
 
 export default function AvatarEditMenu({
-  avatarImageId,
   hideBottomMenu,
   handleDeletePhoto,
 }: AvatarEditMenu) {
+  const { user } = useUser()
   const menuRef = useRef(null)
   useClickOutside(menuRef, hideBottomMenu)
   return (
@@ -30,7 +30,7 @@ export default function AvatarEditMenu({
           選擇相片
         </label>
       </li>
-      {avatarImageId && (
+      {user.avatarImageId && (
         <li
           className="button-large flex gap-1 text-custom-red-text"
           onClick={handleDeletePhoto}

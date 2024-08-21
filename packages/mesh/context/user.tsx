@@ -20,6 +20,7 @@ export type User = {
   customId: string
   name: string
   avatar: string
+  avatarImageId: string
   wallet: string
   followingMemberIds: Set<string>
   pickStoryIds: Set<string>
@@ -41,9 +42,9 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
-//TODO: all the state about User needs to be placed here
 const guest: User = {
   memberId: '',
+  avatarImageId: '',
   customId: '',
   name: '',
   avatar: '',

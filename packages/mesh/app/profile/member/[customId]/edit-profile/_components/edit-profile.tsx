@@ -5,14 +5,11 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { useEditProfile } from '@/context/edit-profile'
-import { type GetMemberProfileEditDataQuery } from '@/graphql/__generated__/graphql'
 
 import AvatarEditMenu from './avatar-edit-menu'
 import UploadImageErrorModal from './upload-image-error-modal'
 
-export default function EditProfile(
-  props: NonNullable<GetMemberProfileEditDataQuery['member']>
-) {
+export default function EditProfile() {
   const {
     editProfileForm,
     errors,
@@ -94,7 +91,6 @@ export default function EditProfile(
               更換大頭貼照
               {showBottomMenu && (
                 <AvatarEditMenu
-                  avatarImageId={props.avatar_image?.id}
                   hideBottomMenu={hideBottomMenu}
                   handleDeletePhoto={handleDeletePhoto}
                 />
