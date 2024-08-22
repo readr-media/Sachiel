@@ -16,7 +16,7 @@ export default async function Page() {
 
   const pageSize = 12
   const amountOfElements = 200
-  const subscribeStories = await getMemberUnlockStories(memberId, pageSize)
+  const subscribeStories = await getMemberUnlockStories(memberId, pageSize, 0)
 
   return (
     <>

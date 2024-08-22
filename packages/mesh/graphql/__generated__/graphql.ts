@@ -4272,6 +4272,7 @@ export type GetMemberTransactionsQuery = {
 
 export type GetMemberUnlockStoriesQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
+  skip?: InputMaybe<Scalars['Int']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
 }>
 
@@ -8169,6 +8170,11 @@ export const GetMemberUnlockStoriesDocument = {
         },
         {
           kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
         },
@@ -8257,6 +8263,14 @@ export const GetMemberUnlockStoriesDocument = {
                             value: { kind: 'EnumValue', value: 'desc' },
                           },
                         ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'skip' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'skip' },
                       },
                     },
                     {

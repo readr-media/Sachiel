@@ -7,7 +7,7 @@ import { getLogTraceObjectFromHeaders } from '@/utils/log'
 export async function getMemberUnlockStories(
   memberId: string,
   take: number,
-  prev?: number
+  start: number
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
 
@@ -15,17 +15,16 @@ export async function getMemberUnlockStories(
     GetMemberUnlockStoriesDocument,
     {
       memberId,
+      skip: start,
       take,
     },
     globalLogFields,
     'Failed to get unlock stories'
   )
-  const unlockStoriesResponse = prev
-    ? response?.member?.transaction?.slice(prev) || []
-    : response?.member?.transaction || []
+  const unlockStoriesResponse = response?.member?.transaction || []
   const unlockStories =
     unlockStoriesResponse
-      ?.map((data) => {
+      .map((data) => {
         if (data.unlockStory && data.unlockStory.source) {
           return {
             ...data.unlockStory,

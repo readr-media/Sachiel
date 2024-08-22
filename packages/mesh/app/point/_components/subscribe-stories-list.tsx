@@ -27,7 +27,7 @@ export default function SubscribeStoriesList({
 
     const moreUnlockStories = await getMemberUnlockStories(
       memberId,
-      pageSize * pageIndex,
+      pageSize,
       pageSize * (pageIndex - 1)
     )
 

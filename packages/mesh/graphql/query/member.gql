@@ -367,7 +367,7 @@ query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
       }
     ) {
       tid
-      publisher{
+      publisher {
         id
         title
       }
@@ -377,11 +377,7 @@ query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
 
 query GetMemberTransactions($memberId: ID!, $take: Int) {
   member(where: { id: $memberId }) {
-    sponsorCount(where:  {
-       status:  {
-          equals: Success
-       }
-    })
+    sponsorCount(where: { status: { equals: Success } })
     sponsor(
       where: { status: { equals: Success } }
       take: $take
@@ -438,20 +434,21 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
   }
 }
 
-query GetMemberUnlockStories($memberId: ID!, $take: Int) {
+query GetMemberUnlockStories($memberId: ID!, $skip: Int, $take: Int) {
   member(where: { id: $memberId }) {
     transaction(
       where: { status: { equals: Success }, active: { equals: true } }
       orderBy: { createdAt: desc }
+      skip: $skip
       take: $take
     ) {
       tid
       expireDate
-      unlockStory{
+      unlockStory {
         id
         title
         og_image
-        source{
+        source {
           id
           title
           logo
