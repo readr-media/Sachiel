@@ -8752,6 +8752,7 @@ export const GetMemberUnlockStoriesDocument = {
           kind: 'VariableDefinition',
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          defaultValue: { kind: 'IntValue', value: '0' },
         },
         {
           kind: 'VariableDefinition',

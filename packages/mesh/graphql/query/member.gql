@@ -455,7 +455,7 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
   }
 }
 
-query GetMemberUnlockStories($memberId: ID!, $skip: Int, $take: Int) {
+query GetMemberUnlockStories($memberId: ID!, $skip: Int = 0, $take: Int) {
   member(where: { id: $memberId }) {
     transaction(
       where: { status: { equals: Success }, active: { equals: true } }
