@@ -64,8 +64,8 @@ const IconButton = ({
 }
 
 const colorMap = {
-  blue: 'custom-blue',
-  gray: 'primary-500',
+  blue: 'text-custom-blue',
+  gray: 'text-primary-500',
 } as const
 
 const TextButton = ({
