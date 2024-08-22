@@ -4,6 +4,7 @@ import Button from '@/components/button'
 type ProfileButton = {
   text: string
   primary?: boolean
+  clickFn?: () => void
 }
 type ProfileButtonListProps = {
   buttonList: ProfileButton[]
@@ -17,7 +18,7 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
       {buttonList.map((button, index) => (
         <div key={index} className="flex *:flex-1 sm:w-[180px]">
           <Button
-            onClick={() => {}}
+            onClick={button.clickFn ? button.clickFn : () => {}}
             text={button.text}
             size="md"
             color={button.primary ? 'custom-blue' : 'white'}

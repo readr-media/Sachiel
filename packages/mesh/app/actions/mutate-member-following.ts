@@ -4,7 +4,7 @@ import {
   AddFollowingDocument,
   RemoveFollowingDocument,
 } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export async function addMemberFollowing(
@@ -12,7 +12,7 @@ export async function addMemberFollowing(
   followingId: string
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await fetchGraphQL(
+  const data = await queryGraphQL(
     AddFollowingDocument,
     { memberId, followingId },
     globalLogFields,
@@ -26,7 +26,7 @@ export async function removeMemberFollowing(
   followingId: string
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await fetchGraphQL(
+  const data = await queryGraphQL(
     RemoveFollowingDocument,
     { memberId, followingId },
     globalLogFields,

@@ -2,10 +2,16 @@ import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const protectRoutes = ['/media', '/social', '/point', '/profile']
+  const protectRoutesPattern = [
+    /^\/media(\/.*)?$/,
+    /^\/social(\/.*)?$/,
+    /^\/point(\/.*)?$/,
+    /^\/profile(\/.*)?$/,
+  ]
   const currentPath = request.nextUrl.pathname
-  const isProtectedRoute = protectRoutes.includes(currentPath)
-
+  const isProtectedRoute = protectRoutesPattern.some((pattern) =>
+    pattern.test(currentPath)
+  )
   if (isProtectedRoute) {
     const cookie = cookies().get('token')?.value
     if (!cookie) {

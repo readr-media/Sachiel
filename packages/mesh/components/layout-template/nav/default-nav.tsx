@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
+import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
 import { matchPath } from '@/utils/nav-button'
@@ -110,13 +111,7 @@ const NonMobileNavIcon = ({
   const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
-      <Image
-        src={avatarUrl}
-        width={26}
-        height={26}
-        alt="user avatar"
-        className="rounded-[50%]"
-      />
+      <Avatar src={avatarUrl} size="s" />
     </div>
   ) : isOn ? (
     <Icon size="xl" iconName={iconInfo.icon.on} />
