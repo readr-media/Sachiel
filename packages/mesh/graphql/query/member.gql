@@ -99,6 +99,10 @@ query GetCurrentUserMemberId($uid: String!) {
     name
     customId
     avatar
+    avatar_image {
+      id
+    }
+    intro
     wallet
     followingMembers: following {
       id
@@ -130,6 +134,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
     id
     name
     avatar
+    customId
     avatar_image {
       urlOriginal
     }
@@ -248,6 +253,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
 
 query GetVisitorProfile($customId: String, $takes: Int!) {
   member(where: { customId: $customId }) {
+    # id, name, avatar use auth's context
     id
     name
     avatar
@@ -357,6 +363,21 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
   }
 }
 
+query GetMemberProfileEditData($customId: String) {
+  member(where: { customId: $customId }) {
+    customId
+    name
+    avatar
+    avatar_image {
+      id
+      resized {
+        original
+      }
+    }
+    intro
+  }
+}
+
 query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
   member(where: { id: $memberId }) {
     sponsorCount
@@ -367,7 +388,7 @@ query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
       }
     ) {
       tid
-      publisher{
+      publisher {
         id
         title
       }
@@ -377,11 +398,7 @@ query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
 
 query GetMemberTransactions($memberId: ID!, $take: Int) {
   member(where: { id: $memberId }) {
-    sponsorCount(where:  {
-       status:  {
-          equals: Success
-       }
-    })
+    sponsorCount(where: { status: { equals: Success } })
     sponsor(
       where: { status: { equals: Success } }
       take: $take

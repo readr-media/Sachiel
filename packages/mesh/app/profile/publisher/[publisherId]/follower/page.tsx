@@ -1,13 +1,13 @@
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetPublisherFollowerListDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 
 import { type PageProps } from '../page'
 
 const FollowerPage = async ({ params }: PageProps) => {
   const takeCount = 20
-  const response = await fetchGraphQL(GetPublisherFollowerListDocument, {
+  const response = await queryGraphQL(GetPublisherFollowerListDocument, {
     publisherId: params.publisherId,
     takes: takeCount,
   })

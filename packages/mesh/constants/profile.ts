@@ -1,0 +1,2 @@
+export const IMAGE_SIZE_LIMITATION = 10000000
+export const INTRO_LIMITATION = 250

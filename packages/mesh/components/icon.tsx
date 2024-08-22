@@ -98,6 +98,10 @@ export type IconName =
   | 'icon-mesh-point'
   | 'icon-question-mark-circle'
   | 'icon-publisher-readr'
+  | 'icon-close-with-background'
+  | 'icon-photo'
+  | 'icon-delete'
+  | 'icon-bookmark'
   | 'icon-share'
   | 'icon-open-new-tab'
 

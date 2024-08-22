@@ -8,7 +8,7 @@ import {
   GetAllCategoriesDocument,
   GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import fetchStatic from '@/utils/fetch-static'
 import getLatestStoriesInCategory, {
   type GetLatestStoriesBody,
@@ -48,7 +48,7 @@ export default async function Page({
 
   if (!memberId) redirect('/login')
 
-  const data = await fetchGraphQL(
+  const data = await queryGraphQL(
     GetMemberDocument,
     {
       memberId,
@@ -96,7 +96,7 @@ export default async function Page({
   try {
     responses = await Promise.all([
       // TODO: fetch json instead
-      fetchGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
+      queryGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
       fetchStatic<Story[]>(
         STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
           currentCategory?.slug

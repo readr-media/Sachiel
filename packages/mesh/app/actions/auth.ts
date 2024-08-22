@@ -10,7 +10,7 @@ import {
   SignUpMemberDocument,
   UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import getAllPublishers from './get-all-publishers'
@@ -62,7 +62,7 @@ export async function getCurrentUser() {
 
   try {
     const { uid } = await getAdminAuth().verifyIdToken(idToken)
-    const data = await fetchGraphQL(
+    const data = await queryGraphQL(
       GetCurrentUserMemberIdDocument,
       { uid },
       globalLogFields,
@@ -74,6 +74,8 @@ export async function getCurrentUser() {
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
         avatar: data.member.avatar ?? '',
+        avatarImageId: data.member.avatar_image?.id ?? '',
+        intro: data.member.intro ?? '',
         wallet: data.member.wallet ?? '',
         followingMemberIds: new Set(
           data.member.followingMembers?.map((member) => member.id) ?? []
@@ -128,7 +130,7 @@ export async function signUpMember(formData: UserFormData) {
       },
     }
 
-    const data = await fetchGraphQL(
+    const data = await queryGraphQL(
       SignUpMemberDocument,
       { registrationData },
       globalLogFields,
@@ -152,7 +154,7 @@ export async function updateMemberWallet(id: string, wallet: string) {
 
   if (!idToken) return undefined
   try {
-    const data = await fetchGraphQL(
+    const data = await queryGraphQL(
       UpdateWalletAddressDocument,
       { id, wallet },
       globalLogFields,
