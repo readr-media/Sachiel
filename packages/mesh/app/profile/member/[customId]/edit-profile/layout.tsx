@@ -20,7 +20,7 @@ const EditProfileLayout = ({
   }
   const isUser = params.customId === user.customId
   if (!isUser) router.push(`/profile/member/${params.customId}`)
-  const { handleSubmit, isFormValid } = useEditProfile()
+  const { handleSubmit, isFormValid, isSubmitting } = useEditProfile()
   return (
     <LayoutTemplate
       type="default"
@@ -43,7 +43,7 @@ const EditProfileLayout = ({
           {
             type: 'text',
             text: '儲存',
-            color: isFormValid ? 'blue' : 'gray',
+            color: isFormValid && !isSubmitting ? 'blue' : 'gray',
             onClick: handleSubmit,
           },
         ],

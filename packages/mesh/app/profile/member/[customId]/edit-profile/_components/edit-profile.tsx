@@ -21,6 +21,7 @@ export default function EditProfile() {
     initializeProfileData,
     handleInputChange,
     clearFormInput,
+    isSubmitting,
   } = useEditProfile()
   const [showBottomMenu, setShowBottomMenu] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -64,7 +65,7 @@ export default function EditProfile() {
         className="relative flex grow flex-col items-center bg-white p-5 sm:px-10"
       >
         <div className="flex w-full max-w-[600px] grow flex-col">
-          <section className="body-2 flex flex-col items-center gap-3 border-b border-b-primary-200 pb-5 text-custom-blue sm:flex-row sm:border-none">
+          <section className="body-2 flex flex-col items-center gap-3 border-b border-b-primary-200 pb-5 sm:flex-row sm:border-none">
             <Avatar
               src={editProfileForm['avatar']}
               size="xl"
@@ -86,7 +87,9 @@ export default function EditProfile() {
               onClick={() => {
                 setShowBottomMenu(true)
               }}
-              className="relative cursor-pointer"
+              className={`relative cursor-pointer ${
+                isSubmitting ? 'text-disable' : 'text-custom-blue'
+              } `}
             >
               更換大頭貼照
               {showBottomMenu && (
@@ -195,10 +198,9 @@ export default function EditProfile() {
               <Button
                 text="儲存"
                 size="sm"
-                type="submit"
                 color="blue-500"
                 onClick={handleSubmit}
-                disabled={!isFormValid}
+                disabled={!isFormValid || isSubmitting}
               />
             </span>
           </div>
