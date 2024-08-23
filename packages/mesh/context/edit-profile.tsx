@@ -1,7 +1,7 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
 import type { ChangeEvent } from 'react'
-import { createContext, useContext, useEffect, useRef } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
@@ -26,6 +26,7 @@ export const EditProfileProvider: React.FC<{
   const params = useParams()
   const { user, setUser } = useUser()
   const formRef = useRef(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const customId = String(params.customId)
   const formData = formRef.current ? new FormData(formRef.current) : null
 
@@ -108,6 +109,7 @@ export const EditProfileProvider: React.FC<{
 
     try {
       if (!formData.get('customId')) return
+      setIsSubmitting(true)
       await updateProfile(formData, user.customId)
 
       setUser((prev) => ({
@@ -140,6 +142,7 @@ export const EditProfileProvider: React.FC<{
         visitorProfile,
         isProfileLoading,
         formRef,
+        isSubmitting,
         updateErrors,
         updateField,
         handleSubmit,
