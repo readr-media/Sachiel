@@ -2,6 +2,7 @@
 
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import Icon from '@/components/icon'
 import { displayTime } from '@/utils/story-display'
@@ -35,7 +36,8 @@ export default function TransactionList({
     >
       {(renderList) =>
         renderList.map((data, index) => (
-          <div
+          <Link
+            href={`/point/record/${data.tid}`}
             key={data.tid}
             className={`flex flex-row gap-2 ${index === 0 ? 'pb-5' : 'py-5'} ${
               index !== renderList.length - 1
@@ -102,7 +104,7 @@ export default function TransactionList({
                       </p>
                     ) : (
                       <p className="text-primary-700">
-                        {data.policy?.explanation}
+                        訂閱{data.policy?.publisher?.title || ''}
                       </p>
                     )}
 
@@ -114,7 +116,7 @@ export default function TransactionList({
                 </div>
               </>
             ) : null}
-          </div>
+          </Link>
         ))
       }
     </InfiniteScrollList>

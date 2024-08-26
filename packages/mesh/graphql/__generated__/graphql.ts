@@ -4319,7 +4319,6 @@ export type GetMemberTransactionsQuery = {
       __typename?: 'Transaction'
       tid?: string | null
       createdAt?: any | null
-      depositVolume?: number | null
       expireDate?: any | null
       unlockStory?: {
         __typename?: 'Story'
@@ -4334,10 +4333,14 @@ export type GetMemberTransactionsQuery = {
       } | null
       policy?: {
         __typename?: 'Policy'
-        name?: string | null
-        explanation?: string | null
+        type?: PolicyTypeType | null
         charge?: number | null
         unlockSingle?: boolean | null
+        publisher?: {
+          __typename?: 'Publisher'
+          id: string
+          title?: string | null
+        } | null
       } | null
     }> | null
   } | null
@@ -4373,6 +4376,54 @@ export type GetMemberUnlockStoriesQuery = {
           title?: string | null
           logo?: string | null
         } | null
+      } | null
+    }> | null
+  } | null
+}
+
+export type GetMemberSingleTransactionQueryVariables = Exact<{
+  memberId: Scalars['ID']['input']
+  tid?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetMemberSingleTransactionQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    transaction?: Array<{
+      __typename?: 'Transaction'
+      tid?: string | null
+      createdAt?: any | null
+      unlockStory?: {
+        __typename?: 'Story'
+        id: string
+        title?: string | null
+        source?: {
+          __typename?: 'Publisher'
+          id: string
+          title?: string | null
+        } | null
+      } | null
+      policy?: {
+        __typename?: 'Policy'
+        type?: PolicyTypeType | null
+        charge?: number | null
+        unlockSingle?: boolean | null
+        publisher?: {
+          __typename?: 'Publisher'
+          id: string
+          title?: string | null
+        } | null
+      } | null
+    }> | null
+    sponsor?: Array<{
+      __typename?: 'Sponsorship'
+      fee?: number | null
+      createdAt?: any | null
+      publisher?: {
+        __typename?: 'Publisher'
+        id: string
+        title?: string | null
       } | null
     }> | null
   } | null
@@ -8524,10 +8575,6 @@ export const GetMemberTransactionsDocument = {
                       },
                       {
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'depositVolume' },
-                      },
-                      {
-                        kind: 'Field',
                         name: { kind: 'Name', value: 'expireDate' },
                       },
                       {
@@ -8576,11 +8623,7 @@ export const GetMemberTransactionsDocument = {
                           selections: [
                             {
                               kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'explanation' },
+                              name: { kind: 'Name', value: 'type' },
                             },
                             {
                               kind: 'Field',
@@ -8589,6 +8632,23 @@ export const GetMemberTransactionsDocument = {
                             {
                               kind: 'Field',
                               name: { kind: 'Name', value: 'unlockSingle' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'publisher' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'title' },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
@@ -8926,6 +8986,277 @@ export const GetMemberUnlockStoriesDocument = {
 } as unknown as DocumentNode<
   GetMemberUnlockStoriesQuery,
   GetMemberUnlockStoriesQueryVariables
+>
+export const GetMemberSingleTransactionDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMemberSingleTransaction' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'tid' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'transaction' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'tid' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'tid' },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'status' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'EnumValue',
+                                    value: 'Success',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'tid' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'unlockStory' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'title' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'source' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'title' },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'policy' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'type' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'charge' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'unlockSingle' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'publisher' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                  },
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'title' },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sponsor' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'tid' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'tid' },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'status' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'EnumValue',
+                                    value: 'Success',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'fee' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'publisher' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'title' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetMemberSingleTransactionQuery,
+  GetMemberSingleTransactionQueryVariables
 >
 export const PublishersDocument = {
   kind: 'Document',
