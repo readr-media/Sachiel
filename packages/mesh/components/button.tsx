@@ -13,6 +13,8 @@ const buttonColor = {
     'bg-blue-500 text-white disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
   primary:
     'bg-primary-700 text-white border border-transparent hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
+  'primary-outlined':
+    'text-primary-700 border border-primary-700 hover:bg-primary-800 disabled:bg-disable disabled:text-primary-400 disabled:cursor-not-allowed',
   'nav-button-add':
     'bg-white text-primary-700 border border-primary-200 hover:bg-primary-100 hover:border-primary-700',
   'nav-chip':
