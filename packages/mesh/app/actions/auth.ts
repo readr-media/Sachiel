@@ -69,9 +69,9 @@ export async function getAccessToken(idToken: string) {
 
   const accessToken = response?.token ?? ''
   const decodedAccessToken = jwt.decode(accessToken, { json: true })
-  let tokenAge = 0
+  let expiresDate = undefined
   if (decodedAccessToken?.exp) {
-    tokenAge = Math.floor(decodedAccessToken.exp - Date.now() / 1000)
+    expiresDate = new Date(decodedAccessToken.exp * 1000)
   }
 
   cookies().set('token', accessToken, {
@@ -79,7 +79,7 @@ export async function getAccessToken(idToken: string) {
     httpOnly: true,
     sameSite: 'lax',
     secure: true,
-    maxAge: tokenAge,
+    expires: expiresDate,
   })
 
   return response
