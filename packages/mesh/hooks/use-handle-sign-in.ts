@@ -9,7 +9,11 @@ import {
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
-import { getCurrentUser, validateIdToken } from '@/app/actions/auth'
+import {
+  getAccessToken,
+  getCurrentUser,
+  validateIdToken,
+} from '@/app/actions/auth'
 import { useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
 
@@ -19,7 +23,7 @@ export default function useHandleSignIn() {
 
   const handleAfterSignInRedirect = useCallback(
     async (idToken: string) => {
-      const { status } = await handleToken(idToken)
+      const { status } = await handleFirebaseToken(idToken)
       if (status !== 'verified') {
         router.push('/login')
         return
@@ -70,24 +74,32 @@ export default function useHandleSignIn() {
   }, [handleAfterSignInRedirect, router])
 
   const handleSignIn = useCallback(async () => {
-    const redirectResult = await getRedirectResult(auth)
-    if (redirectResult) {
-      await handleOAuthSignIn(redirectResult)
-    } else if (isSignInWithEmailLink(auth, window.location.href)) {
-      await handleEmailLinkSignIn()
+    if (auth.currentUser) {
+      const idToken = await auth.currentUser.getIdToken()
+      const { status } = await handleFirebaseToken(idToken)
+      if (status === 'verified') router.push('/media')
+    } else {
+      const redirectResult = await getRedirectResult(auth)
+      if (redirectResult) {
+        await handleOAuthSignIn(redirectResult)
+      } else if (isSignInWithEmailLink(auth, window.location.href)) {
+        await handleEmailLinkSignIn()
+      }
     }
-  }, [handleEmailLinkSignIn, handleOAuthSignIn])
+  }, [handleEmailLinkSignIn, handleOAuthSignIn, router])
 
   return { handleSignIn }
 }
 
-async function handleToken(
+async function handleFirebaseToken(
   token: string
 ): Promise<ReturnType<typeof validateIdToken>> {
   const response = await validateIdToken(token)
   if (response.status === 'expired') {
     const newToken = await refreshIdToken()
     return newToken ? await validateIdToken(newToken) : { status: 'error' }
+  } else if (response.status === 'verified') {
+    await getAccessToken(token)
   }
   return response
 }
