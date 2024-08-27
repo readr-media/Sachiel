@@ -42,7 +42,16 @@ export const useForm = <T extends Record<string, unknown>>(
     return false
   }
 
-  const isFormValid = Object.keys(errors).length === 0
+  const hasChange = () => {
+    for (const [formField, FormValue] of Object.entries(
+      originalState.current
+    )) {
+      if (FormValue !== form[formField]) return true
+    }
+    return false
+  }
+
+  const isFormValid = Object.keys(errors).length === 0 && hasChange()
 
   return {
     form,

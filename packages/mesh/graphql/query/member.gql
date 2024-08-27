@@ -147,6 +147,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
 
     picks: pick(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -200,6 +201,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
     )
     books: pick(
       where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -257,6 +259,7 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
     id
     name
     avatar
+    customId
     avatar_image {
       urlOriginal
     }
@@ -269,6 +272,7 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
 
     picks: pick(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -451,6 +455,30 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
     tid
     unlockStory {
       id
+    }
+  }
+}
+
+query GetMemberUnlockStories($memberId: ID!, $skip: Int = 0, $take: Int) {
+  member(where: { id: $memberId }) {
+    transaction(
+      where: { status: { equals: Success }, active: { equals: true } }
+      orderBy: { createdAt: desc }
+      skip: $skip
+      take: $take
+    ) {
+      tid
+      expireDate
+      unlockStory {
+        id
+        title
+        og_image
+        source {
+          id
+          title
+          logo
+        }
+      }
     }
   }
 }

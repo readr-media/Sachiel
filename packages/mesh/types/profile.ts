@@ -60,6 +60,7 @@ export type EditProfileContextType = {
   errors: Partial<EditProfileFormTypes>
   isProfileLoading: boolean
   formRef: null | RefObject<HTMLFormElement>
+  isSubmitting: boolean
   updateErrors: (
     key: 'name' | 'customId' | 'intro' | 'avatar',
     errorMessage: string

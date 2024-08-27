@@ -26,7 +26,6 @@ export type User = {
   pickStoryIds: Set<string>
   followingCategories: FollowingCategories
   followingPublishers: FollowingPublishers
-  idToken: string
   intro: string
   pickCount?: number
   followerCount?: number
@@ -53,7 +52,6 @@ const guest: User = {
   pickStoryIds: new Set(),
   followingCategories: [],
   followingPublishers: [],
-  idToken: '',
   intro: '',
   pickCount: 0,
   followerCount: 0,

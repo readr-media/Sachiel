@@ -1,6 +1,9 @@
 'use server'
 
-import { GetMemberProfileDocument } from '@/graphql/__generated__/graphql'
+import {
+  GetMemberProfileDocument,
+  GetVisitorProfileDocument,
+} from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
@@ -34,7 +37,7 @@ export async function getMemberProfile(memberId: string, takes: number) {
 export async function getVisitorProfile(visitorId: string, takes: number) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const result = await queryGraphQL(GetMemberProfileDocument, {
+    const result = await queryGraphQL(GetVisitorProfileDocument, {
       customId: visitorId,
       takes,
     })
