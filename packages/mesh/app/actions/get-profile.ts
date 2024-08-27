@@ -1,5 +1,7 @@
 'use server'
 
+import { notFound } from 'next/navigation'
+
 import { GetMemberProfileDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
@@ -12,7 +14,8 @@ export async function getMemberProfile(memberId: string, takes: number) {
       takes,
     })
     const memberData = result?.member
-    if (!memberData) throw new Error('something wrong with GetMemberProfile')
+    // if member data not found bubble this error to nextjs error handling
+    if (!memberData) notFound()
 
     return {
       intro: memberData.intro || '',
@@ -24,17 +27,23 @@ export async function getMemberProfile(memberId: string, takes: number) {
     }
   } catch (error) {
     logServerSideError(error, 'Failed to get member profile', globalLogFields)
+    throw error
   }
 }
 
 export async function getVisitorProfile(visitorId: string, takes: number) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const result = await queryGraphQL(GetMemberProfileDocument, {
       customId: visitorId,
       takes,
     })
+    // if visitor data not found bubble this error to nextjs error handling
+    if (!result?.member) notFound()
+
     return result
   } catch (error) {
-    console.error('get visitor profile data failed: ', error)
+    logServerSideError(error, 'Failed to get visitor profile', globalLogFields)
+    throw error
   }
 }

@@ -25,7 +25,7 @@ const errorInfo = {
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
   return (
-    <main className="flex grow flex-col items-center justify-center gap-5 p-4">
+    <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center justify-center gap-5 p-4">
       {errorInfo[statusCode].icon}
       <section className="mb-6 flex flex-col items-center">
         <p className="title-1 mb-2">{statusCode}</p>

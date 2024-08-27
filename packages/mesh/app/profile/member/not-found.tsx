@@ -1,14 +1,16 @@
 'use client'
+import '@/styles/global.css'
+
+import { useRouter } from 'next/navigation'
+
 import LayoutTemplate from '@/components/layout-template'
 import ErrorPage from '@/components/status/error-page'
 
-export default function Error({
-  error: _error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+export default function NotFound() {
+  const router = useRouter()
+  const handleRefresh = () => {
+    router.refresh()
+  }
   return (
     <LayoutTemplate
       type="default"
@@ -18,7 +20,7 @@ export default function Error({
         footer: 'hidden sm:block',
       }}
     >
-      <ErrorPage statusCode={500} reset={reset} />
+      <ErrorPage statusCode={404} reset={handleRefresh} />
     </LayoutTemplate>
   )
 }

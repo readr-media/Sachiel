@@ -2,16 +2,13 @@
 import LayoutTemplate from '@/components/layout-template'
 import ErrorPage from '@/components/status/error-page'
 
-// Error boundaries must be Client Components
-
 export default function Error({
-  error,
+  error: _error,
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  const statusCode = error.digest?.includes('NEXT_NOT_FOUND') ? 404 : 500
   return (
     <LayoutTemplate
       type="default"
@@ -21,7 +18,7 @@ export default function Error({
         footer: 'hidden sm:block',
       }}
     >
-      <ErrorPage statusCode={statusCode} reset={reset} />
+      <ErrorPage statusCode={500} reset={reset} />
     </LayoutTemplate>
   )
 }
