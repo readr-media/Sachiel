@@ -259,6 +259,7 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
     id
     name
     avatar
+    customId
     avatar_image {
       urlOriginal
     }

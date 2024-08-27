@@ -4128,6 +4128,7 @@ export type GetVisitorProfileQuery = {
     id: string
     name?: string | null
     avatar?: string | null
+    customId?: string | null
     intro?: string | null
     followingCount?: number | null
     followerCount?: number | null
@@ -6672,6 +6673,20 @@ export const GetMemberProfileDocument = {
                     },
                     {
                       kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'createdAt' },
+                            value: { kind: 'EnumValue', value: 'desc' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
                       name: { kind: 'Name', value: 'take' },
                       value: {
                         kind: 'Variable',
@@ -7025,6 +7040,20 @@ export const GetMemberProfileDocument = {
                     },
                     {
                       kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'createdAt' },
+                            value: { kind: 'EnumValue', value: 'desc' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
                       name: { kind: 'Name', value: 'take' },
                       value: {
                         kind: 'Variable',
@@ -7356,6 +7385,7 @@ export const GetVisitorProfileDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'avatar_image' },
@@ -7468,6 +7498,20 @@ export const GetVisitorProfileDocument = {
                                 },
                               ],
                             },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'createdAt' },
+                            value: { kind: 'EnumValue', value: 'desc' },
                           },
                         ],
                       },
