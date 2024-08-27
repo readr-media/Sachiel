@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { getMemberProfile, getVisitorProfile } from '@/app/actions/get-profile'
@@ -35,6 +36,8 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           profileConfig.memberId,
           profileConfig.takesCount
         )
+        if (!memberProfileResult) notFound()
+
         setUser((prev) => ({ ...prev, ...memberProfileResult }))
         setIsLoading(false)
       } else {
@@ -43,6 +46,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           profileConfig.memberId,
           profileConfig.takesCount
         )
+        if (!visitorProfileResult?.member) notFound()
 
         const visitorProfileData = visitorProfileResult?.member
         if (!visitorProfileData) return

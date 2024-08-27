@@ -5,7 +5,7 @@ import Icon from '../icon'
 
 type ErrorPageProps = {
   statusCode: 404 | 500
-  reset: () => void
+  reset?: () => void
 }
 
 const errorInfo = {
@@ -24,6 +24,9 @@ const errorInfo = {
 }
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
+  const handleRefresh = async () => {
+    window.location.reload()
+  }
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center justify-center gap-5 p-4">
       {errorInfo[statusCode].icon}
@@ -34,7 +37,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
         </p>
       </section>
       <Button
-        onClick={reset}
+        onClick={reset ?? handleRefresh}
         text="重新嘗試"
         size="md"
         color="primary-outlined"
