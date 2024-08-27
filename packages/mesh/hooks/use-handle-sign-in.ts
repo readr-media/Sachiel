@@ -15,11 +15,13 @@ import {
   validateIdToken,
 } from '@/app/actions/auth'
 import { useLogin } from '@/context/login'
+import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
 
 export default function useHandleSignIn() {
   const router = useRouter()
   const { setStep } = useLogin()
+  const { setUser } = useUser()
 
   const handleAfterSignInRedirect = useCallback(
     async (idToken: string) => {
@@ -31,12 +33,13 @@ export default function useHandleSignIn() {
 
       const user = await getCurrentUser()
       if (user?.memberId) {
+        setUser(user)
         router.push('/media')
       } else {
         setStep('set-name')
       }
     },
-    [router, setStep]
+    [router, setStep, setUser]
   )
 
   const handleOAuthSignIn = useCallback(
