@@ -4320,6 +4320,7 @@ export type GetMemberTransactionsQuery = {
       tid?: string | null
       createdAt?: any | null
       expireDate?: any | null
+      depositVolume?: number | null
       unlockStory?: {
         __typename?: 'Story'
         id: string
@@ -4394,6 +4395,7 @@ export type GetMemberSingleTransactionQuery = {
       __typename?: 'Transaction'
       tid?: string | null
       createdAt?: any | null
+      depositVolume?: number | null
       unlockStory?: {
         __typename?: 'Story'
         id: string
@@ -8579,6 +8581,10 @@ export const GetMemberTransactionsDocument = {
                       },
                       {
                         kind: 'Field',
+                        name: { kind: 'Name', value: 'depositVolume' },
+                      },
+                      {
+                        kind: 'Field',
                         name: { kind: 'Name', value: 'unlockStory' },
                         selectionSet: {
                           kind: 'SelectionSet',
@@ -9095,6 +9101,10 @@ export const GetMemberSingleTransactionDocument = {
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'depositVolume' },
                       },
                       {
                         kind: 'Field',

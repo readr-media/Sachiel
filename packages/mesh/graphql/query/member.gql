@@ -421,6 +421,7 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
       tid
       createdAt
       expireDate
+      depositVolume
       unlockStory {
         id
         title
@@ -486,6 +487,7 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
     transaction(where: { tid: { equals: $tid }, status: { equals: Success } }) {
       tid
       createdAt
+      depositVolume
       unlockStory {
         id
         title
