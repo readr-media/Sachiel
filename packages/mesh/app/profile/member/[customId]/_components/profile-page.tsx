@@ -7,6 +7,7 @@ import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
+import ErrorPage from '@/components/status/error-page'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
 import {
@@ -95,8 +96,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       setTabData(picksData)
     }
   }, [bookmarks, category, picksData, isMember])
-
-  if (!profileData) return <div>error</div>
+  // 如果使用者沒有customId 表示沒有這個使用者的資料
+  if (!profileData['customId']) return <ErrorPage statusCode={404} />
   return (
     <Suspense fallback={<p>loading...</p>}>
       <>
