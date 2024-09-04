@@ -6,6 +6,7 @@ import Link from 'next/link'
 
 import Icon from '@/components/icon'
 import { displayTime } from '@/utils/story-display'
+import { transformTransactionRecord } from '@/utils/transaction-records'
 
 import LoadMoreTransaction from './load-more-transaction'
 import { type Transaction } from './mesh-point'
@@ -36,41 +37,9 @@ export default function TransactionList({
     >
       {(renderList) =>
         renderList.map((data, index) => {
-          let transactionTitle = ''
-          let transactionAmount = 0
-
-          if (data.__typename === 'Transaction') {
-            switch (data.policy?.type) {
-              case 'deposit':
-                transactionTitle = '分潤'
-                transactionAmount = (data.depositVolume ?? 0) * 1
-                break
-              case 'unlock_one_publisher':
-                if (data.policy.unlockSingle) {
-                  transactionTitle = `單篇訂閱${
-                    data.unlockStory?.source?.title ?? ''
-                  } - ${data.unlockStory?.title ?? ''}`
-                  transactionAmount = (data.policy.charge ?? 0) * -1
-                } else {
-                  transactionTitle = `訂閱${
-                    data.policy?.publisher?.title ?? ''
-                  }`
-                  transactionAmount = (data.policy.charge ?? 0) * -1
-                }
-                break
-              case 'unlock_all_publishers':
-                transactionTitle = '訂閱所有媒體'
-                transactionAmount = (data.policy.charge ?? 0) * -1
-                break
-              default:
-                transactionTitle = ''
-                transactionAmount = 0
-                break
-            }
-          } else if (data.__typename === 'Sponsorship') {
-            transactionTitle = `贊助${data.publisher?.title}` ?? ''
-            transactionAmount = (data.fee ?? 0) * -1
-          }
+          const response = transformTransactionRecord(data)
+          const transactionTitle = response?.transactionTitle ?? ''
+          const transactionAmount = response?.transactionAmount ?? 0
 
           return (
             <Link
