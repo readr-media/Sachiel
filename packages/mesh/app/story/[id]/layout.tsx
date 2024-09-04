@@ -32,7 +32,7 @@ export default async function MediaLayout({
   }
 
   return (
-    <>
+    <body>
       {/* fixed header */}
       <StoryHeader story={storyData.story} />
       {/* block for non-fixed content, set padding for fixed blocks */}
@@ -48,6 +48,6 @@ export default async function MediaLayout({
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
       <StoryNav story={storyData.story} />
-    </>
+    </body>
   )
 }

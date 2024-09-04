@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -13,6 +13,7 @@ import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { logout } from '@/utils/logout'
 
 import PageNavigator from './page-navigator'
+import StoryCommentsNavigator from './stroy-comments-navigator'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -118,6 +119,16 @@ const NonMobileHeader = () => {
 }
 
 const MobileHeader = ({ story }: { story: Story }) => {
+  const path = usePathname()
+  const shouldShowStoryCommentsNavigator =
+    path.endsWith('comments') && path.startsWith('/story')
+
+  if (shouldShowStoryCommentsNavigator)
+    return (
+      <header className="fixed inset-x-0 top-0 z-layout flex h-[60px] border-b bg-white sm:hidden">
+        <StoryCommentsNavigator />
+      </header>
+    )
   return (
     <header className="fixed inset-x-0 top-0 z-layout flex h-[60px] border-b bg-white sm:hidden">
       <PageNavigator story={story} />
