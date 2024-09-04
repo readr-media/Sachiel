@@ -72,6 +72,7 @@ async function fetchRestful<T>({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${idToken}`,
+        ...init.headers,
       },
       body: method === 'POST' ? JSON.stringify(body) : undefined,
     })
