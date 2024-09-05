@@ -40,7 +40,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
         onClick={reset ?? handleRefresh}
         text="重新嘗試"
         size="md"
-        color="primary-outlined-without-hover"
+        color="primary-outlined"
       />
     </main>
   )
