@@ -1,7 +1,7 @@
 import React from 'react'
 
 const StoryCommentsNavigator = () => {
-  return <div>StoryCommentsNavigator</div>
+  return <div>test in ipad oasis</div>
 }
 
 export default StoryCommentsNavigator
