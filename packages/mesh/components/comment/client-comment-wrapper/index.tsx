@@ -1,15 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
+
+import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 import StoryCommentBlock from './story-comment-block'
 import StoryCommentHeader from './story-comment-header'
 import StoryCommentMeta from './story-comment-meta'
 
+type Story = NonNullable<GetStoryQuery>['story']
+
+// Create a context for the openCommentBlock function
+const CommentBlockContext = createContext<(() => void) | undefined>(undefined)
+
+// Custom hook to use the context
+export const useCommentBlock = () => {
+  const context = useContext(CommentBlockContext)
+  if (context === undefined) {
+    throw new Error(
+      'useCommentBlock must be used within a CommentBlockProvider'
+    )
+  }
+  return context
+}
+
 export default function ClientModalWrapper({
   children,
+  storyData,
 }: {
   children: Readonly<React.ReactNode>
+  storyData: Story
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const openCommentBlock = () => {
@@ -23,11 +43,8 @@ export default function ClientModalWrapper({
     document.body.style.overflow = ''
   }
   return (
-    <>
+    <CommentBlockContext.Provider value={openCommentBlock}>
       {children}
-      <button id="test" className="mb-7" onClick={openCommentBlock}>
-        toggle
-      </button>
       {isModalOpen && (
         <div
           onScroll={(e) => {
@@ -37,26 +54,25 @@ export default function ClientModalWrapper({
         >
           <StoryCommentHeader closeCommentBlock={closeCommentBlock} />
           <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4">
-            <StoryCommentMeta />
+            <StoryCommentMeta
+              title={storyData?.title || ''}
+              publisher={storyData?.source?.title || 'publisher'}
+              displayPicks={storyData?.picks}
+              pickCount={storyData?.picksCount || 0}
+            />
             <StoryCommentBlock
               title="熱門留言"
-              commentCount={1}
-              authorName="Author"
-              commentBody="1"
-              commentCreatedAt="2017-08-09"
-              likeCount={999}
+              type="popular"
+              comments={storyData?.comments}
             />
             <StoryCommentBlock
               title="所有留言"
-              commentCount={1}
-              authorName="Author"
-              commentBody="1"
-              commentCreatedAt="2017-08-09"
-              likeCount={999}
+              type="all"
+              comments={storyData?.comments}
             />
           </div>
         </div>
       )}
-    </>
+    </CommentBlockContext.Provider>
   )
 }

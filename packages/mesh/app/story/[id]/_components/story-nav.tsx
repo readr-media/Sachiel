@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { useCommentBlock } from '@/components/comment/client-comment-wrapper'
 import Icon, { type IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -134,29 +135,30 @@ const NonMobileNav = ({
   )
 }
 
-const MobileNav = ({ story, path }: { story: Story; path: string }) => {
+const MobileNav = ({ story }: { story: Story }) => {
   const picksCount = story?.picksCount ?? 0
   const commentsCount = story?.commentsCount ?? 0
+  const openCommentBlock = useCommentBlock()
   return (
-    <Link href={`${path}/comments`}>
-      <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
-        <div className="footnote flex justify-between px-5 pt-4 text-primary-500 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]">
-          <div className="flex items-center">
-            {!!commentsCount && (
-              <>
+    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
+      <div className="footnote flex justify-between px-5 pt-4 text-primary-500 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center">
+          {!!commentsCount && (
+            <>
+              <span onClick={openCommentBlock}>
                 <StoryCommentCount commentsCount={commentsCount} />
-                <Icon iconName="icon-dot" size="s" />
-              </>
-            )}
-            <StoryPickCount picksCount={picksCount} />
-          </div>
-          <div className="flex gap-2">
-            <PublisherDonateButton />
-            <StoryPickButton storyId={story?.id ?? ''} />
-          </div>
+              </span>
+              <Icon iconName="icon-dot" size="s" />
+            </>
+          )}
+          <StoryPickCount picksCount={picksCount} />
         </div>
-      </nav>
-    </Link>
+        <div className="flex gap-2">
+          <PublisherDonateButton />
+          <StoryPickButton storyId={story?.id ?? ''} />
+        </div>
+      </div>
+    </nav>
   )
 }
 
@@ -171,7 +173,7 @@ export default function StoryNav({ story }: { story: Story }) {
       {/* fixed left nav shown on tablet, desktop size */}
       <NonMobileNav path={path} avatarUrl={avatarUrl} />
       {/* fixed bottom nav bar shown on mobile only */}
-      <MobileNav path={path} story={story} />
+      <MobileNav story={story} />
     </>
   )
 }

@@ -34,7 +34,7 @@ export default async function MediaLayout({
 
   return (
     <body>
-      <ClientModalWrapper>
+      <ClientModalWrapper storyData={storyData.story}>
         {/* fixed header */}
         <StoryHeader story={storyData.story} />
         {/* block for non-fixed content, set padding for fixed blocks */}
