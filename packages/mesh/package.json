@@ -29,6 +29,7 @@
     "react": "^18",
     "react-dom": "^18",
     "server-only": "^0.0.1",
+    "swiper": "^11.1.4",
     "tailwind-merge": "^2.3.0",
     "ts-import": "^5.0.0-beta.0",
     "viem": "^2.17.11",
