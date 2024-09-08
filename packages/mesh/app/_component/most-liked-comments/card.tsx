@@ -1,3 +1,4 @@
+import FollowButton from '@/app/social/_components/follow-button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import type { Comment } from '@/types/homepage'
@@ -36,7 +37,8 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
             </div>
           </div>
-          <button>追蹤</button>
+          {/* TODO: modify styles and migrate */}
+          <FollowButton followingId={String(comment.id)} />
         </div>
 
         <article className="body-3 line-clamp-4 h-[84px] text-primary-600">
