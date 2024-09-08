@@ -137,6 +137,7 @@ module.exports = {
       boxShadow: {
         'bottom-sheet': '0 -8px 20px 0 rgba(0, 0, 0, 0.1)',
         modal: '0 2px 40px 0 rgba(0, 0, 0, 0.1)',
+        card: '0 2px 2px 0 rgba(0, 9, 40, 0.1), 0 0 4px 0 rgba(0, 9, 40, 0.1)',
       },
     },
   },
