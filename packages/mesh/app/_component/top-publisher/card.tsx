@@ -49,7 +49,11 @@ export default function TopPublisherCard({ publisher }: Props) {
           {/* TODO: render logo of publisher */}
           <div>LOGO</div>
           <div>
-            <p className="subtitle-2 text-primary-700">{publisher.title}</p>
+            <p className="subtitle-2 text-primary-700">
+              <NextLink href={`profile/member/${publisher.customId}`}>
+                {publisher.title}
+              </NextLink>
+            </p>
             <p className="footnote text-primary-500">
               已獲得
               <span className="text-custom-blue">
