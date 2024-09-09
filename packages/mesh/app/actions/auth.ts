@@ -61,7 +61,7 @@ export async function getAccessToken(idToken: string) {
     {
       cache: 'no-cache',
       headers: {
-        Authorization: idToken,
+        Authorization: `Bearer ${idToken}`,
       },
     },
     'fail message'
