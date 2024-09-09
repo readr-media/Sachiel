@@ -24,6 +24,7 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
     customId: '',
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
   const { user, setUser } = useUser()
   const isMember = profileConfig.memberId === user.customId
   useEffect(() => {
@@ -35,7 +36,10 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           profileConfig.memberId,
           profileConfig.takesCount
         )
-        if (!memberProfileResult) return null
+        if (!memberProfileResult) {
+          setIsError(true)
+          return null
+        }
         setUser((prev) => ({ ...prev, ...memberProfileResult }))
         setIsLoading(false)
       } else {
@@ -44,7 +48,10 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
           profileConfig.memberId,
           profileConfig.takesCount
         )
-        if (!visitorProfileResult?.member) return null
+        if (!visitorProfileResult?.member) {
+          setIsError(true)
+          return null
+        }
 
         const visitorProfileData = visitorProfileResult?.member
 
@@ -74,5 +81,5 @@ export default function useProfileState(profileConfig: ProfileConfigType) {
     isMember,
     setUser,
   ])
-  return { visitorProfile, isLoading }
+  return { visitorProfile, isLoading, isError }
 }
