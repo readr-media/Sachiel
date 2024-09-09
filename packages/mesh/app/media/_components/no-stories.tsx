@@ -7,12 +7,10 @@ export default function NoStories({
   allCategories,
   followingCategories,
   activeCategorySlug,
-  memberId,
 }: {
   allCategories: Category[]
   followingCategories: Category[]
   activeCategorySlug: string
-  memberId: string
 }) {
   return (
     <main className="flex grow flex-col">
@@ -20,7 +18,6 @@ export default function NoStories({
         allCategories={allCategories}
         followingCategories={followingCategories}
         activeCategorySlug={activeCategorySlug}
-        memberId={memberId}
       />
       <div className="flex flex-col items-center sm:grow sm:bg-multi-layer-light sm:py-10">
         <div className="flex w-full max-w-[600px] flex-col items-center bg-white p-5 pb-8 sm:rounded-md sm:px-10 sm:py-15">

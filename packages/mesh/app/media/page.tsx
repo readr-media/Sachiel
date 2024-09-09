@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
@@ -6,7 +6,6 @@ import {
   type GetAllCategoriesQuery,
   type PublishersQuery,
   GetAllCategoriesDocument,
-  GetMemberDocument,
 } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import fetchStatic from '@/utils/fetch-static'
@@ -35,40 +34,19 @@ export type LatestStoriesInfo = {
 }
 export { type Story } from '@/utils/get-latest-stories-in-categroy'
 
-export default async function Page({
-  params,
-}: {
-  params: { categorySlug: string }
-}) {
-  const currentCategorySlug = params.categorySlug
+export default async function Page() {
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const user = await getCurrentUser()
-  const memberId = user?.memberId
 
-  if (!memberId) redirect('/login')
+  if (!user) redirect('/login')
 
-  const data = await queryGraphQL(
-    GetMemberDocument,
-    {
-      memberId,
-    },
-    globalLogFields
+  const followingPublishers = user.followingPublishers.map(
+    (publisher) => publisher.id
   )
-
-  if (!data) {
-    notFound()
-  }
-
-  const followingPublishers =
-    data.member?.followPublishers?.map((publiser) => publiser.id) ?? []
-  const followingCategories = data.member?.followingCategories ?? []
-  const currentCategory = followingCategories.find(
-    (category) => category.slug === currentCategorySlug
-  )
-  const followingMemberIds = new Set(
-    data.member?.followingMembers?.map((member) => member.id ?? '')
-  )
+  const followingCategories = user.followingCategories
+  const currentCategory = followingCategories[0]
+  const followingMemberIds = user?.followingMemberIds
 
   if (!currentCategory || !currentCategory.id || !currentCategory.slug) {
     redirect(`${followingCategories[0].slug}`)
@@ -135,8 +113,7 @@ export default async function Page({
       <NoStories
         allCategories={allCategories}
         followingCategories={followingCategories}
-        activeCategorySlug={currentCategorySlug}
-        memberId={memberId}
+        activeCategorySlug={currentCategory.slug}
       />
     )
   }
@@ -171,8 +148,7 @@ export default async function Page({
       <CategorySelector
         allCategories={allCategories}
         followingCategories={followingCategories}
-        activeCategorySlug={currentCategorySlug}
-        memberId={memberId}
+        activeCategorySlug={currentCategory.slug}
       />
       <DesktopStories
         latestStoriesInfo={latestStoriesInfo}

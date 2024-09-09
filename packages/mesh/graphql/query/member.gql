@@ -51,33 +51,6 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
   }
 }
 
-query GetMember($memberId: ID!) {
-  member(where: { id: $memberId }) {
-    id
-    name
-    avatar
-    followingMembers: following {
-      id
-      name
-    }
-    picks: pick {
-      id
-      story {
-        id
-      }
-    }
-    followingCategories: following_category(orderBy: { id: asc }) {
-      id
-      title
-      slug
-    }
-    followPublishers: follow_publisher {
-      id
-      title
-    }
-  }
-}
-
 query GetMemberByFollowingCategory($slugs: [String!]!) {
   members(
     where: { following_category: { every: { slug: { in: $slugs } } } }
@@ -439,7 +412,7 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
         type
         charge
         unlockSingle
-        publisher{
+        publisher {
           id
           title
         }
@@ -504,7 +477,7 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
         type
         charge
         unlockSingle
-        publisher{
+        publisher {
           id
           title
         }
@@ -513,7 +486,7 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
     sponsor(where: { tid: { equals: $tid }, status: { equals: Success } }) {
       fee
       createdAt
-      publisher{
+      publisher {
         id
         title
       }

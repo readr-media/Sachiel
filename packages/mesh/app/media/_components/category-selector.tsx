@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
 import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
+import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import {
   getAddedCategoryIds,
@@ -39,18 +40,17 @@ export default function CategorySelector({
   allCategories,
   followingCategories,
   activeCategorySlug,
-  // TODO: get memberId from client side store
-  memberId,
 }: {
   allCategories: Category[]
   followingCategories: Category[]
   activeCategorySlug: string
-  memberId: string
 }) {
   const [displayCategories, setDisplayCategories] =
     useState(followingCategories)
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
   const router = useRouter()
+  const { user } = useUser()
+  const { memberId } = user
 
   const categoriesRef = useRef<HTMLDivElement>(null)
   const { targetRef: leadingRef, isIntersecting: isLeadingRefInView } =
