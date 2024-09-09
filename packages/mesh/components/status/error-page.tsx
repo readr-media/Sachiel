@@ -25,7 +25,8 @@ const errorInfo = {
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
   const handleRefresh = async () => {
-    window.location.reload()
+    if (reset) return reset()
+    return window.location.reload()
   }
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center justify-center gap-5 p-4">
@@ -37,7 +38,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
         </p>
       </section>
       <Button
-        onClick={reset ?? handleRefresh}
+        onClick={handleRefresh}
         text="重新嘗試"
         size="md"
         color="primary-outlined"
