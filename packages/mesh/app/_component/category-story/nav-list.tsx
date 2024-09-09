@@ -31,11 +31,16 @@ const NavigateButton = ({
 type Props = {
   followingMembers: Set<string>
   categories: GetAllCategoriesQuery['categories']
+  initialStories: CategoryStory[] | null
 }
 
-export default function NavList({ categories, followingMembers }: Props) {
+export default function NavList({
+  categories,
+  followingMembers,
+  initialStories,
+}: Props) {
   const [activeCategory, setActiveCategory] = useState(categories?.[0].slug)
-  const [data, setData] = useState<CategoryStory[] | null>(null)
+  const [data, setData] = useState<CategoryStory[] | null>(initialStories)
 
   useEffect(() => {
     const fetchData = async () => {

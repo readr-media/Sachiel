@@ -182,23 +182,26 @@ async function fetchAllCategory() {
 }
 
 async function fetchCategoryStory(
-  slug: string
+  slug: string | undefined | null
 ): Promise<CategoryStory[] | null> {
   const schema = z.array(rawCategoryStorySchema)
-  try {
-    const response = await fetchStatic<z.infer<typeof schema>>(
-      STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(slug)
-    )
-    const result = schema.parse(response)
-    return result.slice(0, 4)
-  } catch (err) {
-    logServerSideError(
-      err,
-      'Error occurs while fetching category story on the homepage',
-      globalLogFields
-    )
-    return null
-  }
+
+  if (slug) {
+    try {
+      const response = await fetchStatic<z.infer<typeof schema>>(
+        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(slug)
+      )
+      const result = schema.parse(response)
+      return result.slice(0, 4)
+    } catch (err) {
+      logServerSideError(
+        err,
+        'Error occurs while fetching category story on the homepage',
+        globalLogFields
+      )
+      return null
+    }
+  } else return null
 }
 
 export {
