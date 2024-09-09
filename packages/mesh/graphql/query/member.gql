@@ -424,8 +424,8 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
     ) {
       tid
       createdAt
-      depositVolume
       expireDate
+      depositVolume
       unlockStory {
         id
         title
@@ -436,10 +436,13 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
         }
       }
       policy {
-        name
-        explanation
+        type
         charge
         unlockSingle
+        publisher{
+          id
+          title
+        }
       }
     }
   }
@@ -478,6 +481,41 @@ query GetMemberUnlockStories($memberId: ID!, $skip: Int = 0, $take: Int) {
           title
           logo
         }
+      }
+    }
+  }
+}
+
+query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
+  member(where: { id: $memberId }) {
+    transaction(where: { tid: { equals: $tid }, status: { equals: Success } }) {
+      tid
+      createdAt
+      depositVolume
+      unlockStory {
+        id
+        title
+        source {
+          id
+          title
+        }
+      }
+      policy {
+        type
+        charge
+        unlockSingle
+        publisher{
+          id
+          title
+        }
+      }
+    }
+    sponsor(where: { tid: { equals: $tid }, status: { equals: Success } }) {
+      fee
+      createdAt
+      publisher{
+        id
+        title
       }
     }
   }
