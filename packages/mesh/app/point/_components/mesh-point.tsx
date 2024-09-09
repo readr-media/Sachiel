@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { getMemberTransactionRecord } from '@/app/actions/sponsorship'
+import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import { useUser } from '@/context/user'
 import { useIsLoggedIn } from '@/utils/dynamic'
 
 import DynamicPanel from './dynamic-panel'
+import MeshPointHelper from './mesh-point-helper'
 import MeshPointInfo from './mesh-point-info'
 import TransactionList from './transaction-list'
 
@@ -45,7 +47,15 @@ export default function MeshPoint() {
       {isLoggedInDynamic ? (
         <div className="bg-white sm:rounded-md sm:drop-shadow">
           <section className="flex h-[190px] flex-col justify-center border-b-[0.5px] border-primary-200 sm:h-[128px] sm:flex-row sm:justify-between sm:px-10 sm:py-8">
-            <MeshPointInfo />
+            <div className="flex flex-col justify-center gap-2 sm:flex-col-reverse sm:self-end">
+              <div className="flex flex-row items-center justify-center gap-1">
+                <Icon iconName="icon-mesh-point" size="m" className="size-6" />
+                <p className="hero-title text-primary-700">
+                  <MeshPointInfo />
+                </p>
+              </div>
+              <MeshPointHelper />
+            </div>
             <div className="flex flex-row items-center justify-center gap-4 pt-6 sm:gap-5 sm:self-end sm:pt-0">
               <Link href={'/point/sponsorship'}>
                 <div className="flex flex-col items-center gap-1 sm:flex-row">
