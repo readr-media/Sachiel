@@ -1,12 +1,13 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
+import Spinner from '@/components/spinner'
 import ErrorPage from '@/components/status/error-page'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
@@ -16,7 +17,6 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
-import Spinner from '@/components/spinner'
 
 interface ProfilePageProps {
   isMember: boolean
