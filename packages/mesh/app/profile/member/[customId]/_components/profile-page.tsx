@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
@@ -52,7 +52,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   }, [category, isMember, profileData])
 
   if (isProfileLoading) {
-    return <Spinner />
+    return (
+      <div className="flex max-w-[680px] grow items-center justify-center">
+        <Spinner />
+      </div>
+    )
   }
 
   if (isProfileError) {
@@ -106,36 +110,34 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   const shouldShowComment = category !== TabCategory.BOOKMARKS || !isMember
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <>
-        <section className="bg-white">
-          <div className="flex max-h-[calc(100%_-_152px)] max-w-[1120px] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
-            <UserProfile
-              name={name}
-              pickCount={pickCount}
-              avatar={avatar}
-              userType={isMember ? 'member' : 'visitor'}
-              intro={intro}
-            />
-            <ProfileButtonList buttonList={buttonList} />
-            <UserStatusList userStatusList={userStatusList} />
-          </div>
-        </section>
-        <Tab
-          tabCategory={category}
-          setCategory={setCategory}
-          userType={isMember ? 'member' : 'visitor'}
-        />
-        <ArticleCardList
-          items={tabData || []}
-          shouldShowComment={shouldShowComment}
-          emptyMessage={getMessage(category)}
-          memberId={memberId}
-          avatar={avatar}
-          name={name}
-        />
-      </>
-    </Suspense>
+    <>
+      <section className="bg-white">
+        <div className="flex max-h-[calc(100%_-_152px)] max-w-[1120px] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+          <UserProfile
+            name={name}
+            pickCount={pickCount}
+            avatar={avatar}
+            userType={isMember ? 'member' : 'visitor'}
+            intro={intro}
+          />
+          <ProfileButtonList buttonList={buttonList} />
+          <UserStatusList userStatusList={userStatusList} />
+        </div>
+      </section>
+      <Tab
+        tabCategory={category}
+        setCategory={setCategory}
+        userType={isMember ? 'member' : 'visitor'}
+      />
+      <ArticleCardList
+        items={tabData || []}
+        shouldShowComment={shouldShowComment}
+        emptyMessage={getMessage(category)}
+        memberId={memberId}
+        avatar={avatar}
+        name={name}
+      />
+    </>
   )
 }
 
