@@ -18,7 +18,9 @@ export default function StorySection({
   return (
     <div>
       <div className="group flex items-center pb-3 pt-2 lg:pb-4">
-        <h3 className="list-title text-primary-700">{activeTitle}</h3>
+        <h3 className="list-title lg:title-1 text-primary-700">
+          {activeTitle}
+        </h3>
         <InteractiveIcon
           size={{ width: 36, height: 36 }}
           icon={{
