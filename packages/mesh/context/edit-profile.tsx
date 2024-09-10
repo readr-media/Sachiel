@@ -30,7 +30,11 @@ export const EditProfileProvider: React.FC<{
   const customId = String(params.customId)
   const formData = formRef.current ? new FormData(formRef.current) : null
 
-  const { visitorProfile, isLoading: isProfileLoading } = useProfileState({
+  const {
+    visitorProfile,
+    isLoading: isProfileLoading,
+    isError: isProfileError,
+  } = useProfileState({
     memberId: customId,
     takesCount: 20,
   })
@@ -151,6 +155,7 @@ export const EditProfileProvider: React.FC<{
         clearFormInput,
         handleDeletePhoto,
         handleInputChange,
+        isProfileError,
       }}
     >
       {children}
