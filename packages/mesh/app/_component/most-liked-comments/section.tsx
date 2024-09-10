@@ -7,7 +7,7 @@ export default async function MostLikedCommentSection() {
   if (!data) return null
 
   return (
-    <section className="px-5 py-4 md:px-[70px] lg:px-10 lg:pb-10 lg:pt-8 xl:pt-[26px] xxl:pt-8">
+    <section className="px-5 py-4 md:px-[70px] lg:px-10 lg:pb-10 lg:pt-8">
       <h2 className="list-title lg:title-1 mb-3 text-primary-700 lg:mb-4 xl:mb-[22px] xxl:mb-4">
         獲得最多愛心的留言
       </h2>
