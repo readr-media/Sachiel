@@ -1,6 +1,9 @@
-import FollowButton from '@/app/social/_components/follow-button'
+'use client'
+
+import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { useFollow } from '@/hooks/use-follow'
 import type { Comment } from '@/types/homepage'
 import { displayTimeFromNow } from '@/utils/story-display'
 
@@ -10,6 +13,10 @@ type Props = {
 }
 
 export default function MostLikedCommentCard({ comment, rank }: Props) {
+  const { handelClickFollow, isFollowing } = useFollow(
+    String(comment.member.id)
+  )
+
   return (
     <div className="flex items-start gap-x-3">
       <span
@@ -37,8 +44,17 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
             </div>
           </div>
-          {/* TODO: modify styles and migrate */}
-          <FollowButton followingId={String(comment.member.id)} />
+
+          <Button
+            size="sm"
+            color="transparent"
+            text="追蹤"
+            activeState={{
+              isActive: isFollowing,
+              activeText: '追蹤中',
+            }}
+            onClick={handelClickFollow}
+          />
         </div>
 
         <article className="body-3 line-clamp-4 h-[84px] text-primary-600">

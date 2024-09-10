@@ -1,5 +1,8 @@
-import FollowButton from '@/app/social/_components/follow-button'
+'use client'
+
+import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
+import { useFollow } from '@/hooks/use-follow'
 import type { Collector } from '@/types/homepage'
 
 type Props = {
@@ -8,8 +11,10 @@ type Props = {
 }
 
 export default function TopCollectorCard({ person, rank }: Props) {
+  const { handelClickFollow, isFollowing } = useFollow(String(person.id))
+
   return (
-    <div className="mb-3 flex items-center gap-y-3 border-b-[0.5px] pb-3 last:border-0 lg:flex-col lg:rounded-md lg:bg-[#FFF] lg:px-3 lg:pb-4 lg:pt-3 lg:shadow-card ">
+    <div className="mb-3 flex items-center gap-y-3 border-b-[0.5px] pb-3 last:border-0 lg:w-[164px] lg:flex-col lg:rounded-md lg:bg-[#FFF] lg:px-3 lg:pb-4 lg:pt-3 lg:shadow-card xl:w-[192px]">
       <span
         className={`rounded-md ${
           rank === 1 ? 'bg-brand' : 'bg-[#DADCE3]'
@@ -38,8 +43,32 @@ export default function TopCollectorCard({ person, rank }: Props) {
           </p>
         </div>
       </div>
-      {/* TODO: modify styles and migrate */}
-      <FollowButton followingId={String(person.id)} />
+
+      <div className="lg:hidden">
+        <Button
+          size="sm"
+          color="transparent"
+          text="追蹤"
+          activeState={{
+            isActive: isFollowing,
+            activeText: '追蹤中',
+          }}
+          onClick={handelClickFollow}
+        />
+      </div>
+
+      <div className="hidden lg:block lg:w-full">
+        <Button
+          size="lg-small"
+          color="transparent"
+          text="追蹤"
+          activeState={{
+            isActive: isFollowing,
+            activeText: '追蹤中',
+          }}
+          onClick={handelClickFollow}
+        />
+      </div>
     </div>
   )
 }
