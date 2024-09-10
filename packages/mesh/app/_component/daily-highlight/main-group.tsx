@@ -21,7 +21,7 @@ export default function MainCard({ stories, followingMembers }: Props) {
   const displayPicks = getDisplayPicks(story.picks, followingMembers)
 
   return (
-    <article className="mb-5">
+    <article className="mb-6 sm:mb-10">
       <div className="mb-4 flex flex-col gap-y-3 sm:mb-5 lg:flex-row lg:gap-x-10">
         <NextLink href={`story/${story.id}`}>
           <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md lg:h-[250px] lg:w-[500px]">

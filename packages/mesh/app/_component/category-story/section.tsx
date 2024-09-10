@@ -19,7 +19,7 @@ export default async function CategoryStorySection({
   const categoryStories = await fetchCategoryStory(initialSlug)
 
   return (
-    <section className="px-5 pt-5 md:px-[70px] lg:px-10">
+    <section className="px-5 pt-5 md:px-[70px] lg:px-10 lg:pb-10">
       <NavList
         categories={categories}
         followingMembers={followingMembers}

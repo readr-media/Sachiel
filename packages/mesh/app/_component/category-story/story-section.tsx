@@ -10,12 +10,10 @@ type Props = {
 
 export default function StorySection({ stories, followingMembers }: Props) {
   return (
-    <section className="lg:flex lg:flex-row lg:gap-x-10">
-      <div>
-        <MainCard story={stories[0]} followingMembers={followingMembers} />
-      </div>
+    <section className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
+      <MainCard story={stories[0]} followingMembers={followingMembers} />
 
-      <div>
+      <div className="flex flex-col gap-y-5">
         {stories.slice(1, 4).map((story) => (
           <StoryCard
             followingMembers={followingMembers}

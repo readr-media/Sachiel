@@ -19,7 +19,7 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
   const displayPicks = getDisplayPicks(story.picks, followingMembers)
 
   return (
-    <div className="pb-4 pt-5 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)]">
+    <div className="pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none">
       <p className="caption-1 mb-1 text-primary-500">
         {/* TODO: customId */}
         <NextLink href={`/`}>{story.source.title}</NextLink>
