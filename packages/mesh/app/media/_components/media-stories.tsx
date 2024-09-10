@@ -45,8 +45,10 @@ export default function MediaStories({
 }) {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
-  const [currentCategory] = useState(user.followingCategories[0])
-  const [pageDataInCategory, setPageDataInCategory] = useState<PageData>(
+  const [currentCategory, setCurrentCategory] = useState(
+    user.followingCategories[0]
+  )
+  const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     allCategories.reduce((acc, curr) => {
       const categroySlug = curr.slug
       if (categroySlug) {
@@ -68,11 +70,12 @@ export default function MediaStories({
     [user.followingPublishers]
   )
   const { mostPickedStory, latestStoriesInfo, publishers } =
-    pageDataInCategory[currentCategory.slug ?? '']
+    pageDataInCategories[currentCategory.slug ?? '']
 
   useEffect(() => {
     const fetchPageData = async () => {
       try {
+        setIsLoading(true)
         const getLatestStoriesfetchBody = {
           publishers: followingPublisherIds,
           category: currentCategory?.id,
@@ -106,20 +109,23 @@ export default function MediaStories({
               stories: latestStoriesInfo.stories.slice(0, 3),
             })) ?? []
 
-        setPageDataInCategory({
+        setPageDataInCategories((oldPageData) => ({
+          ...oldPageData,
           [currentCategory.slug ?? '']: {
             mostPickedStory,
             latestStoriesInfo,
             publishers,
           },
-        })
+        }))
         setIsLoading(false)
       } catch (error) {
         console.error('fetchPageData error', error)
       }
     }
 
-    fetchPageData()
+    if (!mostPickedStory) {
+      fetchPageData()
+    }
   }, [currentCategory.id, currentCategory.slug, followingPublisherIds])
 
   let contentJsx: JSX.Element
@@ -149,7 +155,8 @@ export default function MediaStories({
     <main className="flex grow flex-col">
       <CategorySelector
         allCategories={allCategories}
-        activeCategorySlug={currentCategory.slug ?? ''}
+        currentCategory={currentCategory}
+        setCurrentCategory={setCurrentCategory}
       />
       {contentJsx}
     </main>
