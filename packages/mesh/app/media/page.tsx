@@ -1,21 +1,21 @@
 import { redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
-import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
+import getLatestStoriesInCategory, {
+  type GetLatestStoriesBody,
+  type LatestStoriesResponse,
+  type Story,
+} from '@/app/actions/get-latest-stories-in-categroy'
 import {
   type GetAllCategoriesQuery,
   type PublishersQuery,
   GetAllCategoriesDocument,
 } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
-import fetchStatic from '@/utils/fetch-static'
-import getLatestStoriesInCategory, {
-  type GetLatestStoriesBody,
-  type LatestStoriesResponse,
-  type Story,
-} from '@/utils/get-latest-stories-in-categroy'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
+import getMostPickedStoriesInCategory from '../actions/get-most-picked-stories-in-category'
+import getMostSponsorPublishers from '../actions/get-most-sponsor-publishers'
 import CategorySelector from './_components/category-selector'
 import DesktopStories from './_components/desktop-stories'
 import NoStories from './_components/no-stories'
@@ -32,7 +32,7 @@ export type LatestStoriesInfo = {
   fetchBody: GetLatestStoriesBody
   fetchListInPage: (pageIndex: number) => Promise<Story[]>
 }
-export { type Story } from '@/utils/get-latest-stories-in-categroy'
+export { type Story } from '@/app/actions/get-latest-stories-in-categroy'
 
 export default async function Page() {
   const globalLogFields = getLogTraceObjectFromHeaders()
@@ -75,23 +75,9 @@ export default async function Page() {
     responses = await Promise.all([
       // TODO: fetch json instead
       queryGraphQL(GetAllCategoriesDocument, undefined, globalLogFields),
-      fetchStatic<Story[]>(
-        STATIC_FILE_ENDPOINTS.mostPickStoriesInCategoryFn(
-          currentCategory?.slug
-        ),
-        {
-          next: { revalidate: 10 },
-        },
-        globalLogFields
-      ),
+      getMostPickedStoriesInCategory(currentCategory.slug),
       getLatestStoriesInCategory(getLatestStoriesfetchBody),
-      fetchStatic<Publisher[]>(
-        STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
-        {
-          next: { revalidate: 10 },
-        },
-        globalLogFields
-      ),
+      getMostSponsorPublishers(),
     ])
   } catch (error) {
     logServerSideError(error, 'Unhandled error in media page', globalLogFields)
