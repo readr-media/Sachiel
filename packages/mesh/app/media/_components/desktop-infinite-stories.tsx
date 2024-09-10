@@ -1,40 +1,25 @@
-'use client'
-import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
-
-import { type LatestStoriesInfo } from '../page'
+import { type LatestStoriesInfo } from './media-stories'
 import StoryCard from './story-card'
 
 export default function DesktopInfiniteStories({
   latestStoriesInfo,
-  followingMemberIds,
 }: {
   latestStoriesInfo: LatestStoriesInfo
-  followingMemberIds: Set<string>
 }) {
+  // TODO: 導數第五個 trigger infinite scroll
+  const { stories } = latestStoriesInfo
+
   return (
-    <InfiniteScrollList
-      initialList={latestStoriesInfo.stories}
-      pageSize={latestStoriesInfo.fetchBody.take}
-      amountOfElements={latestStoriesInfo.totalCount}
-      fetchListInPage={latestStoriesInfo.fetchListInPage}
-      hasCustomTrigger={true}
-    >
-      {(list, customTriggerRef) =>
-        list.map((story, i) => {
-          const shouldSetTriggerRef = i === list.length - 5
-          return (
-            <StoryCard
-              key={story.id}
-              className={`first-of-type:pt-0 ${
-                i === list.length - 1 ? 'last-of-type:border-b-0' : ''
-              }`}
-              story={story}
-              followingMemberIds={followingMemberIds}
-              ref={shouldSetTriggerRef ? customTriggerRef : undefined}
-            />
-          )
-        })
-      }
-    </InfiniteScrollList>
+    <>
+      {stories.map((story, i) => (
+        <StoryCard
+          key={story.id}
+          className={`first-of-type:pt-0 ${
+            i === stories.length - 1 ? 'last-of-type:border-b-0' : ''
+          }`}
+          story={story}
+        />
+      ))}
+    </>
   )
 }

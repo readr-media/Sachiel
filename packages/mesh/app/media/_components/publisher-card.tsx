@@ -4,11 +4,7 @@ import Link from 'next/link'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 
-import { type Publisher, type Story } from '../page'
-
-export type DisplayPublisher = Publisher & {
-  stories: Story[]
-}
+import { type DisplayPublisher, type Story } from './media-stories'
 
 const PublisherStory = ({
   story,

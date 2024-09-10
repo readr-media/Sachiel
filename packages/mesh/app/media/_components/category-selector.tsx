@@ -38,18 +38,17 @@ const NavigateButton = ({
 
 export default function CategorySelector({
   allCategories,
-  followingCategories,
   activeCategorySlug,
 }: {
   allCategories: Category[]
-  followingCategories: Category[]
   activeCategorySlug: string
 }) {
-  const [displayCategories, setDisplayCategories] =
-    useState(followingCategories)
+  const { user } = useUser()
+  const [displayCategories, setDisplayCategories] = useState(
+    user.followingCategories
+  )
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
   const router = useRouter()
-  const { user } = useUser()
   const { memberId } = user
 
   const categoriesRef = useRef<HTMLDivElement>(null)
