@@ -50,7 +50,7 @@ export default function TopPublisherCard({ publisher }: Props) {
           <div>LOGO</div>
           <div>
             <p className="subtitle-2 text-primary-700">
-              <NextLink href={`profile/member/${publisher.customId}`}>
+              <NextLink href={`profile/publisher/${publisher.customId}`}>
                 {publisher.title}
               </NextLink>
             </p>

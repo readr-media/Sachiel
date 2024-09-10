@@ -29,10 +29,7 @@ export type ReadrStory = Source & {
   stories: Story[]
 }
 
-export type DailyStory = Omit<
-  Story,
-  'isMember' | 'full_screen_ad' | 'summary'
-> & {
+export type DailyStory = Omit<Story, 'summary'> & {
   source: Source
   category?: {
     slug: string
@@ -72,5 +69,5 @@ export type CategoryStory = Omit<Story, 'isMember' | 'pickCount'> & {
     id: string
     slug: string
   }
-  source: Omit<Source, 'customId'>
+  source: Source
 }

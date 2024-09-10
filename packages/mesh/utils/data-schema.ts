@@ -70,9 +70,6 @@ export const rawCommentSchema = z.object({
 
 export const rawDailyHighlightSchema = storySchema
   .omit({
-    //TODO : need full_screen_ad
-    full_screen_ad: true,
-    isMember: true,
     summary: true,
   })
   .extend({ source: sourceSchema })

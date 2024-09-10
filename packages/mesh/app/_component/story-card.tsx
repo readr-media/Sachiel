@@ -20,22 +20,20 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
 
   return (
     <div className="pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none">
-      <p className="caption-1 mb-1 text-primary-500">
-        {/* TODO: customId */}
-        <NextLink href={`/`}>{story.source.title}</NextLink>
-      </p>
+      <NextLink href={`/profile/publisher/${story.source.customId}`}>
+        <p className="caption-1 mb-1 text-primary-500">{story.source.title}</p>
+      </NextLink>
       <div className="flex justify-between gap-x-3 sm:gap-x-10">
         <div>
           <p className="subtitle-1 sm:title-2 mb-2 line-clamp-2 grow text-primary-700 sm:mb-1">
             <NextLink href={`/story/${story.id}`}> {story.title}</NextLink>
           </p>
           <div className="caption-1">
-            {/* TODO: fullScreenAd */}
             <StoryMeta
               commentCount={story.commentCount}
               publishDate={story.published_date}
               paywall={story.paywall}
-              fullScreenAd=""
+              fullScreenAd={story.full_screen_ad}
             />
           </div>
         </div>

@@ -27,8 +27,10 @@ export default function MainCard({ story, followingMembers }: Props) {
       <div className="lg:flex lg:flex-col lg:justify-between">
         <div>
           <div className="mb-1 flex justify-between">
-            {/* TODO: CustomId */}
-            <p className="body-3 text-primary-500">{story.source.title}</p>
+            <NextLink href={`/profile/publisher/${story.source.customId}`}>
+              <p className="body-3 text-primary-500">{story.source.title}</p>
+            </NextLink>
+
             <Icon iconName="icon-more-horiz" size="l" />
           </div>
 
@@ -41,7 +43,6 @@ export default function MainCard({ story, followingMembers }: Props) {
             </p>
           </NextLink>
 
-          {/* TODO: full_screen_ad */}
           <div className="footnote">
             <StoryMeta
               commentCount={story.commentCount}
