@@ -5,6 +5,7 @@ import { createContext, useContext, useState } from 'react'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 import StoryCommentBlock from './story-comment-block'
+import StoryCommentFooter from './story-comment-footer'
 import StoryCommentHeader from './story-comment-header'
 import StoryCommentMeta from './story-comment-meta'
 
@@ -71,6 +72,7 @@ export default function ClientModalWrapper({
               comments={storyData?.comments}
             />
           </div>
+          <StoryCommentFooter />
         </div>
       )}
     </CommentBlockContext.Provider>

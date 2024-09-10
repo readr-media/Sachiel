@@ -140,12 +140,15 @@ const MobileNav = ({ story }: { story: Story }) => {
   const commentsCount = story?.commentsCount ?? 0
   const openCommentBlock = useCommentBlock()
   return (
-    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
+    <nav
+      onClick={openCommentBlock}
+      className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden"
+    >
       <div className="footnote flex justify-between px-5 pt-4 text-primary-500 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]">
         <div className="flex items-center">
           {!!commentsCount && (
             <>
-              <span onClick={openCommentBlock}>
+              <span>
                 <StoryCommentCount commentsCount={commentsCount} />
               </span>
               <Icon iconName="icon-dot" size="s" />
