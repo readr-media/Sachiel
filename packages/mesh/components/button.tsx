@@ -26,6 +26,7 @@ const buttonStyles = {
   md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
   'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]', // Lightbox Chip
   lg: 'button-large w-full h-[46px] px-6 py-3 rounded', // Primary Button, Second Button (wide)
+  'lg-small': 'button-large w-full h-10 py-3 rounded', // secondary Button
 }
 
 export default function Button({
