@@ -90,11 +90,10 @@ export const rawTopCollectorSchema = z.object({
 export const rawCategoryStorySchema = storySchema
   .extend({
     picksCount: z.number(),
-    content: z.string(),
     category: z.object({
       id: z.string(),
       slug: z.string(),
     }),
-    source: sourceSchema.omit({ customId: true }),
+    source: sourceSchema,
   })
   .omit({ isMember: true, pickCount: true })

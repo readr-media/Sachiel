@@ -68,7 +68,6 @@ export type Collector = {
 
 export type CategoryStory = Omit<Story, 'isMember' | 'pickCount'> & {
   picksCount: number
-  content: string
   category: {
     id: string
     slug: string
