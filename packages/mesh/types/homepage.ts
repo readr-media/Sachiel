@@ -28,13 +28,13 @@ export type MostPickedStory = Story & { source: Source }
 export type ReadrStory = Source & {
   stories: Story[]
 }
-//TODO: null member
+
 export type DailyStory = Omit<
   Story,
   'isMember' | 'full_screen_ad' | 'summary'
 > & {
   source: Source
-  category: {
+  category?: {
     slug: string
   }
 }

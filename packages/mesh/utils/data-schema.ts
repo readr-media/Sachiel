@@ -76,7 +76,7 @@ export const rawDailyHighlightSchema = storySchema
     summary: true,
   })
   .extend({ source: sourceSchema })
-  .extend({ category: categorySchema })
+  .extend({ category: categorySchema.optional() })
 
 export const rawTopCollectorSchema = z.object({
   id: z.number(),

@@ -117,14 +117,13 @@ async function fetchMostLikedComment(): Promise<Comment[] | null> {
 }
 
 async function fetchDailyHighlightGroup(): Promise<DailyStory[] | null> {
-  const schema = z.record(z.string(), z.array(rawDailyHighlightSchema))
+  const schema = z.array(rawDailyHighlightSchema)
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.dailyHighlightGroup
     )
     const result = schema.parse(response)
-    const { '1': stories } = result
-    return stories
+    return result
   } catch (err) {
     logServerSideError(
       err,
