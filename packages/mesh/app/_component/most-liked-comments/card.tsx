@@ -38,7 +38,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
             </div>
           </div>
           {/* TODO: modify styles and migrate */}
-          <FollowButton followingId={String(comment.id)} />
+          <FollowButton followingId={String(comment.member.id)} />
         </div>
 
         <article className="body-3 line-clamp-4 h-[84px] text-primary-600">
