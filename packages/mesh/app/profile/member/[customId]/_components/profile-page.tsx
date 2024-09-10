@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
@@ -34,9 +34,33 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
 
   const profileData = isMember ? user : visitorProfile
 
+  useEffect(() => {
+    if (isMember) {
+      switch (category) {
+        case TabCategory.PICK:
+          setTabData(profileData.picksData)
+          break
+        case TabCategory.BOOKMARKS:
+          setTabData(profileData.bookmarks)
+          break
+        default:
+          setTabData(profileData.picksData)
+      }
+    } else {
+      setTabData(profileData.picksData)
+    }
+  }, [category, isMember, profileData])
+
+  if (isProfileLoading) {
+    return <Spinner />
+  }
+
+  if (isProfileError) {
+    return <ErrorPage statusCode={404} />
+  }
+
   const {
     pickCount,
-    picksData,
     name,
     avatar,
     followerCount,
@@ -44,7 +68,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
     customId,
     memberId,
     intro,
-    bookmarks,
   } = profileData
 
   const userStatusList = [
@@ -68,8 +91,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
           clickFn: () => router.push(`${currentUrl}/edit-profile`),
         },
       ]
-    : // TODO: add click function
-      [{ text: '追蹤' }]
+    : [{ text: '追蹤' }]
 
   const getMessage = (category: TabCategory): string => {
     const messages: { [key: string]: string } = {
@@ -83,53 +105,37 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
 
   const shouldShowComment = category !== TabCategory.BOOKMARKS || !isMember
 
-  useEffect(() => {
-    if (isMember) {
-      switch (category) {
-        case TabCategory.PICK:
-          return setTabData(picksData)
-        case TabCategory.BOOKMARKS:
-          return setTabData(bookmarks)
-        default:
-          return setTabData(picksData)
-      }
-    } else {
-      setTabData(picksData)
-    }
-  }, [bookmarks, category, picksData, isMember])
-  // 如果使用者沒有customId 表示沒有這個使用者的資料
-  if (isProfileError) return <ErrorPage statusCode={404} />
-  if (isProfileLoading) return <Spinner />
-
   return (
-    <>
-      <section className="bg-white">
-        <div className="flex max-h-[calc(100%_-_152px)] max-w-[1120px] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
-          <UserProfile
-            name={name}
-            pickCount={pickCount}
-            avatar={avatar}
-            userType={isMember ? 'member' : 'visitor'}
-            intro={intro}
-          />
-          <ProfileButtonList buttonList={buttonList} />
-          <UserStatusList userStatusList={userStatusList} />
-        </div>
-      </section>
-      <Tab
-        tabCategory={category}
-        setCategory={setCategory}
-        userType={isMember ? 'member' : 'visitor'}
-      />
-      <ArticleCardList
-        items={tabData || []}
-        shouldShowComment={shouldShowComment}
-        emptyMessage={getMessage(category)}
-        memberId={memberId}
-        avatar={avatar}
-        name={name}
-      />
-    </>
+    <Suspense fallback={<Spinner />}>
+      <>
+        <section className="bg-white">
+          <div className="flex max-h-[calc(100%_-_152px)] max-w-[1120px] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+            <UserProfile
+              name={name}
+              pickCount={pickCount}
+              avatar={avatar}
+              userType={isMember ? 'member' : 'visitor'}
+              intro={intro}
+            />
+            <ProfileButtonList buttonList={buttonList} />
+            <UserStatusList userStatusList={userStatusList} />
+          </div>
+        </section>
+        <Tab
+          tabCategory={category}
+          setCategory={setCategory}
+          userType={isMember ? 'member' : 'visitor'}
+        />
+        <ArticleCardList
+          items={tabData || []}
+          shouldShowComment={shouldShowComment}
+          emptyMessage={getMessage(category)}
+          memberId={memberId}
+          avatar={avatar}
+          name={name}
+        />
+      </>
+    </Suspense>
   )
 }
 

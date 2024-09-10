@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { getMemberProfile, getVisitorProfile } from '@/app/actions/get-profile'
 import { useUser } from '@/context/user'
@@ -10,76 +10,79 @@ type ProfileConfigType = {
   takesCount: number
 }
 
-export default function useProfileState(profileConfig: ProfileConfigType) {
-  const [visitorProfile, setVisitorProfile] = useState<ProfileTypes>({
-    name: '',
-    avatar: '',
-    intro: '',
-    pickCount: 0,
-    followingCount: '',
-    followerCount: '',
-    picksData: [],
-    bookmarks: [],
-    memberId: '',
-    customId: '',
-  })
-  const [isLoading, setIsLoading] = useState(false)
+const initialProfileState: ProfileTypes = {
+  name: '',
+  avatar: '',
+  intro: '',
+  pickCount: 0,
+  followingCount: '',
+  followerCount: '',
+  picksData: [],
+  bookmarks: [],
+  memberId: '',
+  customId: '',
+}
+
+export default function useProfileState({
+  memberId,
+  takesCount,
+}: ProfileConfigType) {
+  const [visitorProfile, setVisitorProfile] =
+    useState<ProfileTypes>(initialProfileState)
+  const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const { user, setUser } = useUser()
-  const isMember = profileConfig.memberId === user.customId
+
+  const isMember = memberId === user.customId
+
+  const fetchMemberProfile = useCallback(async () => {
+    const memberProfileResult = await getMemberProfile(memberId, takesCount)
+    if (!memberProfileResult) {
+      throw new Error('Failed to fetch member profile')
+    }
+    setUser((prev) => ({ ...prev, ...memberProfileResult }))
+  }, [memberId, takesCount, setUser])
+
+  const fetchVisitorProfile = useCallback(async () => {
+    const visitorProfileResult = await getVisitorProfile(memberId, takesCount)
+    if (!visitorProfileResult?.member) {
+      throw new Error('Failed to fetch visitor profile')
+    }
+    const visitorProfileData = visitorProfileResult.member
+    setVisitorProfile({
+      name: visitorProfileData.name || '',
+      avatar: visitorProfileData.avatar || '',
+      intro: visitorProfileData.intro || '',
+      customId: visitorProfileData.customId || '',
+      memberId: visitorProfileData.id,
+      pickCount: visitorProfileData.picksCount || 0,
+      followingCount: formatFollowCount(visitorProfileData.followingCount || 0),
+      followerCount: formatFollowCount(visitorProfileData.followerCount || 0),
+      picksData: visitorProfileData.picks,
+      bookmarks: [], // Assuming visitor doesn't have access to bookmarks
+    })
+  }, [memberId, takesCount])
+
   useEffect(() => {
-    const profileState = async () => {
+    const fetchProfile = async () => {
       setIsLoading(true)
-      if (isMember) {
-        // if is member take visitorProfile data left (data useUser does not have.)
-        const memberProfileResult = await getMemberProfile(
-          profileConfig.memberId,
-          profileConfig.takesCount
-        )
-        if (!memberProfileResult) {
-          setIsError(true)
-          return null
+      setIsError(false)
+      try {
+        if (isMember) {
+          await fetchMemberProfile()
+        } else {
+          await fetchVisitorProfile()
         }
-        setUser((prev) => ({ ...prev, ...memberProfileResult }))
-        setIsLoading(false)
-      } else {
-        // if is visitor get all the data
-        const visitorProfileResult = await getVisitorProfile(
-          profileConfig.memberId,
-          profileConfig.takesCount
-        )
-        if (!visitorProfileResult?.member) {
-          setIsError(true)
-          return null
-        }
-
-        const visitorProfileData = visitorProfileResult?.member
-
-        setVisitorProfile({
-          name: visitorProfileData.name || '',
-          avatar: visitorProfileData.avatar || '',
-          intro: visitorProfileData.intro || '',
-          customId: visitorProfileData.customId || '',
-          memberId: visitorProfileData.id,
-          pickCount: visitorProfileData.picksCount || 0,
-          followingCount: formatFollowCount(
-            visitorProfileData.followingCount || 0
-          ),
-          followerCount: formatFollowCount(
-            visitorProfileData.followerCount || 0
-          ),
-          picksData: visitorProfileData.picks,
-        })
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+        setIsError(true)
+      } finally {
         setIsLoading(false)
       }
     }
-    profileState()
-  }, [
-    visitorProfile.customId,
-    profileConfig.memberId,
-    profileConfig.takesCount,
-    isMember,
-    setUser,
-  ])
+
+    fetchProfile()
+  }, [isMember, fetchMemberProfile, fetchVisitorProfile])
+
   return { visitorProfile, isLoading, isError }
 }
