@@ -47,13 +47,12 @@ export default function MainCard({ stories, followingMembers }: Props) {
               </p>
             </NextLink>
 
-            {/* TODO: full_screen_ad */}
             <div className="footnote">
               <StoryMeta
                 commentCount={story.commentCount}
                 publishDate={story.published_date}
                 paywall={story.paywall}
-                fullScreenAd=""
+                fullScreenAd={story.full_screen_ad}
               />
             </div>
           </div>

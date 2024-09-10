@@ -25,13 +25,13 @@ export default function SwiperComponent({ stories }: Props) {
             <h3 className="subtitle-2 mb-2 line-clamp-2 text-primary-700">
               <NextLink href={`story/${story.id}`}> {story.title}</NextLink>
             </h3>
-            {/* TODO: full screen ad */}
+
             <div className="caption-1">
               <StoryMeta
                 commentCount={story.commentCount}
                 publishDate={story.published_date}
                 paywall={story.paywall}
-                fullScreenAd=""
+                fullScreenAd={story.full_screen_ad}
               />
             </div>
           </div>
