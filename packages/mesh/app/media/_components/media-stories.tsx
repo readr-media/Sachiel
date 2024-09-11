@@ -73,17 +73,21 @@ export default function MediaStories({
   )
   const { mostPickedStory, latestStoriesInfo, publishers } =
     pageDataInCategories[currentCategory.slug ?? '']
-
-  const loadMoreLatestStories = useCallback(async () => {
-    const getLatestStoriesfetchBody = {
+  const getLatestStoriesfetchBody = useMemo(
+    () => ({
       publishers: followingPublisherIds,
       category: currentCategory.id,
-      index: latestStoriesInfo.stories.length,
+      index: 0,
       take: latestStoryPageCount,
-    }
-    const latestStoriesResponse = await getLatestStoriesInCategory(
-      getLatestStoriesfetchBody
-    )
+    }),
+    [currentCategory.id, followingPublisherIds]
+  )
+
+  const loadMoreLatestStories = useCallback(async () => {
+    const latestStoriesResponse = await getLatestStoriesInCategory({
+      ...getLatestStoriesfetchBody,
+      index: latestStoriesInfo.stories.length,
+    })
 
     // do nothing to error response
     if (!latestStoriesResponse) return
@@ -108,9 +112,8 @@ export default function MediaStories({
       }
     })
   }, [
-    currentCategory.id,
     currentCategory.slug,
-    followingPublisherIds,
+    getLatestStoriesfetchBody,
     latestStoriesInfo.stories,
     pageDataInCategories,
   ])
@@ -119,12 +122,6 @@ export default function MediaStories({
     const fetchPageData = async () => {
       try {
         setIsLoading(true)
-        const getLatestStoriesfetchBody = {
-          publishers: followingPublisherIds,
-          category: currentCategory.id,
-          index: 0,
-          take: latestStoryPageCount,
-        }
 
         const [
           mostPickedStoryResponse,
@@ -170,12 +167,7 @@ export default function MediaStories({
     if (!mostPickedStory) {
       fetchPageData()
     }
-  }, [
-    currentCategory.id,
-    currentCategory.slug,
-    followingPublisherIds,
-    mostPickedStory,
-  ])
+  }, [currentCategory.slug, getLatestStoriesfetchBody, mostPickedStory])
 
   let contentJsx: JSX.Element
 
