@@ -61,13 +61,14 @@ export async function getAccessToken(idToken: string) {
     {
       cache: 'no-cache',
       headers: {
-        Authorization: idToken,
+        Authorization: `Bearer ${idToken}`,
       },
     },
     'fail message'
   )) as { token: string }
 
-  const accessToken = response?.token ?? ''
+  if (!response) return undefined
+  const accessToken = response?.token
   const decodedAccessToken = jwt.decode(accessToken, { json: true })
   let expiresDate = undefined
   if (decodedAccessToken?.exp) {
@@ -82,7 +83,7 @@ export async function getAccessToken(idToken: string) {
     expires: expiresDate,
   })
 
-  return response
+  return accessToken
 }
 
 export async function getCurrentUser() {
@@ -109,6 +110,7 @@ export async function getCurrentUser() {
         memberId: data.member.id,
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
+        email: data.member.email ?? '',
         avatar: data.member.avatar ?? '',
         avatarImageId: data.member.avatar_image?.id ?? '',
         intro: data.member.intro ?? '',
@@ -183,7 +185,7 @@ export async function signUpMember(formData: UserFormData) {
   }
 }
 
-export async function updateMemberWallet(id: string, wallet: string) {
+export async function updateMemberWallet(id: string, wallet: `0x${string}`) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   const idToken = cookies().get('token')?.value
 
@@ -200,4 +202,54 @@ export async function updateMemberWallet(id: string, wallet: string) {
     logServerSideError(error, 'Failed to update member wallet', globalLogFields)
     return undefined
   }
+}
+
+export async function getStoryAccess(idToken: string, storyId: string) {
+  let isMatch = false
+  let attempt = 0
+
+  const fetch = async () => {
+    attempt += 1
+    return (await fetchRestfulPost(
+      RESTFUL_ENDPOINTS.accessToken,
+      {},
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+      'fail message'
+    )) as { token: string }
+  }
+
+  while (!isMatch && attempt < 5) {
+    const { token: accessToken } = await fetch()
+    const decodedAccessToken = jwt.decode(accessToken, { json: true })
+
+    if (!decodedAccessToken || !decodedAccessToken.story) return undefined
+
+    isMatch = decodedAccessToken.story.some(
+      (arr: [string, number]) => arr[0] === storyId
+    )
+
+    if (isMatch) {
+      const expiresDate = decodedAccessToken.exp
+        ? new Date(decodedAccessToken.exp * 1000)
+        : undefined
+
+      cookies().set('token', accessToken, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: true,
+        expires: expiresDate,
+      })
+
+      return accessToken
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
+
+  return undefined
 }

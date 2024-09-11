@@ -104,6 +104,9 @@ export type IconName =
   | 'icon-bookmark'
   | 'icon-share'
   | 'icon-open-new-tab'
+  | 'icon-unlock'
+  | 'icon-send-email'
+  | 'icon-check-email'
 
 export type IconProps = {
   size: Size
