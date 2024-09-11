@@ -10,7 +10,7 @@ import StoryHeader from './_components/story-header'
 import StoryNav from './_components/story-nav'
 
 const picksTake = 5
-const commentsTake = 3
+const commentsTake = 10
 
 export default async function MediaLayout({
   children,

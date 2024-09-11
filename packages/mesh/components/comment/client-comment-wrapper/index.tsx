@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState } from 'react'
 
+import { useUser } from '@/context/user'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 import StoryCommentBlock from './story-comment-block'
@@ -33,6 +34,7 @@ export default function ClientModalWrapper({
   storyData: Story
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { user } = useUser()
   const openCommentBlock = () => {
     setIsModalOpen(true)
     scrollTo({ top: 0 })
@@ -48,13 +50,13 @@ export default function ClientModalWrapper({
       {children}
       {isModalOpen && (
         <div
-          onScroll={(e) => {
-            e.stopPropagation()
-          }}
+          // onScroll={(e) => {
+          //   e.stopPropagation()
+          // }}
           className="absolute left-0 top-0 z-30 size-full bg-white"
         >
           <StoryCommentHeader closeCommentBlock={closeCommentBlock} />
-          <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4">
+          <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
             <StoryCommentMeta
               title={storyData?.title || ''}
               publisher={storyData?.source?.title || 'publisher'}
@@ -72,7 +74,7 @@ export default function ClientModalWrapper({
               comments={storyData?.comments}
             />
           </div>
-          <StoryCommentFooter />
+          <StoryCommentFooter user={user} storyId={storyData?.id} />
         </div>
       )}
     </CommentBlockContext.Provider>

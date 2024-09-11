@@ -22,7 +22,10 @@ const StoryCommentBlock = ({
           （{comments?.length}）
         </span>
       </p>
-      {comments?.map((comment) => {
+      {comments?.map((comment, index) => {
+        // popular only shows 3 comments
+        if (type === 'popular' && index > 2) return
+
         return (
           <li
             key={comment.id}
