@@ -13,10 +13,26 @@ export default function PointLayout({
   const router = useRouter()
   const pathname = usePathname()
   const subPath = pathname.split('/')[2]
-  const isNestedPage = ['sponsorship', 'subscribe-stories'].includes(subPath)
+  const isNestedPage = ['sponsorship', 'subscribe-stories', 'record'].includes(
+    subPath
+  )
+  let subtitle = ''
 
   if (isNestedPage) {
-    const subtitle = subPath === 'sponsorship' ? '已贊助媒體' : '訂閱中文章'
+    switch (subPath) {
+      case 'sponsorship':
+        subtitle = '已贊助媒體'
+        break
+      case 'subscribe-stories':
+        subtitle = '訂閱中文章'
+        break
+      case 'record':
+        subtitle = '點數紀錄'
+        break
+      default:
+        subtitle = ''
+    }
+
     return (
       <LayoutTemplate
         type="default"
