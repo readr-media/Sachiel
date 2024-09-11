@@ -37,7 +37,7 @@ export default function NonDesktopStories({
   }, [loadMoreLatestStories, shouldLoadmore, shouldStartLoadMore])
 
   return (
-    <div id="debug" className="flex flex-col sm:pb-10 lg:hidden">
+    <div className="flex flex-col sm:pb-10 lg:hidden">
       {stories.map((story, i) => {
         const insertSpecialBlock = (i + 1) % 5 === 0
         const specialBlock = specialBlocks[Math.floor((i + 1) / 5) - 1]

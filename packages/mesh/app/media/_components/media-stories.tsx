@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 import getLatestStoriesInCategory, {
   type Story,
-} from '@/app/actions/get-latest-stories-in-categroy'
+} from '@/app/actions/get-latest-stories-in-category'
 import getMostPickedStoriesInCategory from '@/app/actions/get-most-picked-stories-in-category'
 import getMostSponsorPublishers, {
   type Publisher,
@@ -19,7 +19,7 @@ import DesktopStories from './desktop-stories'
 import NoStories from './no-stories'
 import NonDesktopStories from './non-desktop-stories'
 
-export { type Story } from '@/app/actions/get-latest-stories-in-categroy'
+export { type Story } from '@/app/actions/get-latest-stories-in-category'
 export type DisplayPublisher = Publisher & {
   stories: Story[]
 }
@@ -37,7 +37,7 @@ type PageData = {
 }
 
 const latestStoryPageCount = 20
-const displayPubliserCount = 5
+const displayPublisherCount = 5
 
 export default function MediaStories({
   allCategories,
@@ -51,9 +51,9 @@ export default function MediaStories({
   )
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     allCategories.reduce((acc, curr) => {
-      const categroySlug = curr.slug
-      if (categroySlug) {
-        acc[categroySlug] = {
+      const categorySlug = curr.slug
+      if (categorySlug) {
+        acc[categorySlug] = {
           mostPickedStory: null,
           latestStoriesInfo: {
             stories: [],
@@ -146,7 +146,7 @@ export default function MediaStories({
 
         const publishers =
           publishersResponse
-            ?.slice(0, displayPubliserCount)
+            ?.slice(0, displayPublisherCount)
             .map((publisher) => ({
               ...publisher,
               // TODO: wait getMostSponsorPublishers api to append stories
