@@ -1,3 +1,5 @@
+import { type Hex } from 'viem'
+
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
@@ -59,6 +61,7 @@ const RESTFUL_ENDPOINTS = {
   pubsub: `${API_ORIGIN}/pubsub`,
   relatedStories: `${API_ORIGIN}/search/`,
   accessToken: `${API_ORIGIN}/accesstoken`,
+  paymentBalance: `https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app/balance/`,
 }
 
 const STATIC_FILE_ENDPOINTS = {
@@ -66,9 +69,21 @@ const STATIC_FILE_ENDPOINTS = {
   mostPickStoriesInCategoryFn: (categoryName: string) =>
     `${STATIC_FILE_ORIGIN}/data/most_read_stories_${categoryName}.json`,
   mostSponsorPublishers: `${STATIC_FILE_ORIGIN}/data/most_sponsor_publishers.json`,
+  contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
+}
+
+const ALCHEMY_ADDRESS: {
+  policyId: string
+  meshPoint: Hex
+  paymaster: Hex
+} = {
+  policyId: '12056106-f884-42d2-9d43-5a8b3aca7a4e',
+  meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
+  paymaster: '0xA75a88cdBa15725EcD1134A73d1Dda02186493De',
 }
 
 export {
+  ALCHEMY_ADDRESS,
   DYNAMIC_ENV_ID,
   ENV,
   FIREBASE_CLIENT_EMAIL,
