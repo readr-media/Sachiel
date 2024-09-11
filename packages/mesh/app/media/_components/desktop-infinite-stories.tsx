@@ -1,13 +1,27 @@
+import { useEffect } from 'react'
+
+import useInView from '@/hooks/use-in-view'
+
 import { type LatestStoriesInfo } from './media-stories'
 import StoryCard from './story-card'
 
 export default function DesktopInfiniteStories({
   latestStoriesInfo,
+  loadMoreLatestStories,
 }: {
   latestStoriesInfo: LatestStoriesInfo
+  loadMoreLatestStories: () => void
 }) {
-  // TODO: 導數第五個 trigger infinite scroll
-  const { stories } = latestStoriesInfo
+  const { stories, shouldLoadmore } = latestStoriesInfo
+
+  const { targetRef: triggerLoadmoreRef, isIntersecting: shouldStartLoadMore } =
+    useInView()
+
+  useEffect(() => {
+    if (shouldStartLoadMore && shouldLoadmore) {
+      loadMoreLatestStories()
+    }
+  }, [loadMoreLatestStories, shouldLoadmore, shouldStartLoadMore])
 
   return (
     <>
@@ -18,6 +32,7 @@ export default function DesktopInfiniteStories({
             i === stories.length - 1 ? 'last-of-type:border-b-0' : ''
           }`}
           story={story}
+          ref={i === stories.length - 5 ? triggerLoadmoreRef : undefined}
         />
       ))}
     </>

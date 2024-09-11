@@ -15,10 +15,12 @@ export default function DesktopStories({
   mostPickedStory,
   publishers,
   latestStoriesInfo,
+  loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
   publishers: DisplayPublisher[]
   latestStoriesInfo: LatestStoriesInfo
+  loadMoreLatestStories: () => void
 }) {
   const { stories } = latestStoriesInfo
   const firstSectionCount = 5
@@ -50,11 +52,13 @@ export default function DesktopStories({
       <div className="flex gap-10 p-10 pb-15">
         <section className="w-[600px] shrink-0">
           <DesktopInfiniteStories
+            key={latestStoriesInfo.stories.length}
             latestStoriesInfo={{
               ...latestStoriesInfo,
               stories: secondSectionStories,
               totalCount: latestStoriesInfo.totalCount - firstSectionCount,
             }}
+            loadMoreLatestStories={loadMoreLatestStories}
           />
         </section>
         <aside className="flex flex-col gap-3">

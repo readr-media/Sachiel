@@ -1,6 +1,6 @@
-'use client'
+import { Fragment, useEffect } from 'react'
 
-import { Fragment, useRef } from 'react'
+import useInView from '@/hooks/use-in-view'
 
 import type {
   DisplayPublisher,
@@ -15,19 +15,29 @@ export default function NonDesktopStories({
   mostPickedStory,
   publishers,
   latestStoriesInfo,
+  loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
   publishers: DisplayPublisher[]
   latestStoriesInfo: LatestStoriesInfo
+  loadMoreLatestStories: () => void
 }) {
-  const triggerRef = useRef(null)
-  const { stories } = latestStoriesInfo
+  const { stories, shouldLoadmore } = latestStoriesInfo
+  const { targetRef: triggerLoadmoreRef, isIntersecting: shouldStartLoadMore } =
+    useInView()
+
   const specialBlocks = mostPickedStory
     ? [mostPickedStory, ...publishers]
     : [...publishers]
 
+  useEffect(() => {
+    if (shouldStartLoadMore && shouldLoadmore) {
+      loadMoreLatestStories()
+    }
+  }, [loadMoreLatestStories, shouldLoadmore, shouldStartLoadMore])
+
   return (
-    <div className="flex flex-col sm:pb-10 lg:hidden">
+    <div id="debug" className="flex flex-col sm:pb-10 lg:hidden">
       {stories.map((story, i) => {
         const insertSpecialBlock = (i + 1) % 5 === 0
         const specialBlock = specialBlocks[Math.floor((i + 1) / 5) - 1]
@@ -45,10 +55,9 @@ export default function NonDesktopStories({
           return (
             <Fragment key={story.id}>
               <StoryCard
-                key={story.id}
                 className="mx-5 border-b-0 first-of-type:pt-0 md:mx-[70px]"
                 story={story}
-                ref={shouldSetTriggerRef ? triggerRef : undefined}
+                ref={shouldSetTriggerRef ? triggerLoadmoreRef : undefined}
               />
               {specialBlockJsx}
             </Fragment>
@@ -59,7 +68,7 @@ export default function NonDesktopStories({
               key={story.id}
               className="mx-5 first-of-type:pt-0 last-of-type:border-b-0 md:mx-[70px]"
               story={story}
-              ref={shouldSetTriggerRef ? triggerRef : undefined}
+              ref={shouldSetTriggerRef ? triggerLoadmoreRef : undefined}
             />
           )
         }

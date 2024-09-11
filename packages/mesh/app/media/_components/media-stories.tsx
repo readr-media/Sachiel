@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMemo } from 'react'
 
 import getLatestStoriesInCategory, {
@@ -26,6 +26,7 @@ export type DisplayPublisher = Publisher & {
 export type LatestStoriesInfo = {
   stories: Story[]
   totalCount: number
+  shouldLoadmore: boolean
 }
 type PageData = {
   [key: string]: {
@@ -57,6 +58,7 @@ export default function MediaStories({
           latestStoriesInfo: {
             stories: [],
             totalCount: 0,
+            shouldLoadmore: true,
           },
           publishers: [],
         }
@@ -72,13 +74,54 @@ export default function MediaStories({
   const { mostPickedStory, latestStoriesInfo, publishers } =
     pageDataInCategories[currentCategory.slug ?? '']
 
+  const loadMoreLatestStories = useCallback(async () => {
+    const getLatestStoriesfetchBody = {
+      publishers: followingPublisherIds,
+      category: currentCategory.id,
+      index: latestStoriesInfo.stories.length,
+      take: latestStoryPageCount,
+    }
+    const latestStoriesResponse = await getLatestStoriesInCategory(
+      getLatestStoriesfetchBody
+    )
+
+    // do nothing to error response
+    if (!latestStoriesResponse) return
+
+    const newLatestStoriesInfo: LatestStoriesInfo = {
+      stories: latestStoriesInfo.stories.concat(
+        latestStoriesResponse.stories ?? []
+      ),
+      totalCount: latestStoriesResponse.num_stories ?? 0,
+      // only stop infinite scroll when response return empty array
+      shouldLoadmore: latestStoriesResponse.stories.length !== 0 ? true : false,
+    }
+
+    const currentPageData = pageDataInCategories[currentCategory.slug ?? '']
+    setPageDataInCategories((oldPageData) => {
+      return {
+        ...oldPageData,
+        [currentCategory.slug ?? '']: {
+          ...currentPageData,
+          latestStoriesInfo: newLatestStoriesInfo,
+        },
+      }
+    })
+  }, [
+    currentCategory.id,
+    currentCategory.slug,
+    followingPublisherIds,
+    latestStoriesInfo.stories,
+    pageDataInCategories,
+  ])
+
   useEffect(() => {
     const fetchPageData = async () => {
       try {
         setIsLoading(true)
         const getLatestStoriesfetchBody = {
           publishers: followingPublisherIds,
-          category: currentCategory?.id,
+          category: currentCategory.id,
           index: 0,
           take: latestStoryPageCount,
         }
@@ -95,9 +138,10 @@ export default function MediaStories({
 
         // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
         const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
-        const latestStoriesInfo = {
+        const latestStoriesInfo: LatestStoriesInfo = {
           stories: latestStoriesResponse?.stories ?? [],
           totalCount: latestStoriesResponse?.num_stories ?? 0,
+          shouldLoadmore: true,
         }
 
         const publishers =
@@ -126,7 +170,12 @@ export default function MediaStories({
     if (!mostPickedStory) {
       fetchPageData()
     }
-  }, [currentCategory.id, currentCategory.slug, followingPublisherIds])
+  }, [
+    currentCategory.id,
+    currentCategory.slug,
+    followingPublisherIds,
+    mostPickedStory,
+  ])
 
   let contentJsx: JSX.Element
 
@@ -141,11 +190,14 @@ export default function MediaStories({
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishers={publishers}
+          loadMoreLatestStories={loadMoreLatestStories}
         />
         <NonDesktopStories
+          key={latestStoriesInfo.stories.length}
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishers={publishers}
+          loadMoreLatestStories={loadMoreLatestStories}
         />
       </>
     )
