@@ -6,7 +6,6 @@ import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 import StoryHeader from './_components/story-header'
-import StoryNav from './_components/story-nav'
 
 const picksTake = 5
 const commentsTake = 3
@@ -32,7 +31,7 @@ export default async function MediaLayout({
   }
 
   return (
-    <>
+    <body>
       {/* fixed header */}
       <StoryHeader story={storyData.story} />
       {/* block for non-fixed content, set padding for fixed blocks */}
@@ -47,7 +46,7 @@ export default async function MediaLayout({
         <Footer />
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
-      <StoryNav story={storyData.story} />
-    </>
+      {/* <StoryNav story={storyData.story} /> */}
+    </body>
   )
 }

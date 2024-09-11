@@ -11,8 +11,10 @@ import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { displayTime } from '@/utils/story-display'
 
+import { type PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
+import PaymentWall from './payment-wall'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -21,13 +23,21 @@ const inHousePublisherCustomIds = ['mirrormedia', 'readr']
 export default function Article({
   story,
   sourceCustomId,
+  renderData,
+  isMemberStory,
+  hasPayed,
+  policy,
 }: {
   story: Story
   sourceCustomId: string
+  renderData: ApiData
+  isMemberStory: boolean
+  hasPayed: boolean
+  policy: PublisherPolicy
 }) {
   const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
 
-  const getArtcileContent = (
+  const getArticleContent = (
     story: Story,
     sourceCustomId: string,
     shouldUseApiData: boolean
@@ -36,12 +46,12 @@ export default function Article({
       return (
         <>
           <SideIndex
-            apiData={story?.apiData as ApiData}
+            apiData={renderData}
             sourceCustomId={sourceCustomId}
             isInArticle={true}
           />
           <ApiDataRenderer
-            apiData={story?.apiData as ApiData}
+            apiData={renderData}
             sourceCustomId={sourceCustomId}
           />
         </>
@@ -122,8 +132,12 @@ export default function Article({
               {story?.summary}
             </div>
           )}
-
-          {getArtcileContent(story, sourceCustomId, shouldUseApiData)}
+          <div className="relative">
+            {getArticleContent(story, sourceCustomId, shouldUseApiData)}
+            {isMemberStory && !hasPayed ? (
+              <PaymentWall storyId={story?.id ?? ''} policy={policy} />
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

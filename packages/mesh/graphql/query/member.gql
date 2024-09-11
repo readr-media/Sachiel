@@ -98,6 +98,7 @@ query GetCurrentUserMemberId($uid: String!) {
     id
     name
     customId
+    email
     avatar
     avatar_image {
       id

@@ -2,11 +2,9 @@ import './_style/article.css'
 
 import { notFound } from 'next/navigation'
 
+import { getPublisherPolicy, getStory } from '@/app/actions/story'
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import { GetStoryDocument } from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulGet } from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
@@ -25,23 +23,22 @@ export type RelatedStory = {
   lastUpdated: string
 }
 
+export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
+
 const picksTake = 5
 const commentsTake = 3
+
 export default async function page({ params }: { params: { id: string } }) {
   const storyId = params.id
-  const globalLogFields = getLogTraceObjectFromHeaders()
-
-  const storyData = await queryGraphQL(
-    GetStoryDocument,
-    { storyId, picksTake, commentsTake },
-    globalLogFields
-  )
+  const storyData = await getStory({ storyId, picksTake, commentsTake })
+  let relatedStories: RelatedStory[] = []
+  let policy: PublisherPolicy = []
+  let hasPayed = false
 
   if (!storyData) {
     notFound()
   }
 
-  let relatedStories: RelatedStory[] = []
   if (storyData.story?.title) {
     relatedStories =
       (await fetchRestfulGet<RelatedStory[]>(
@@ -50,6 +47,14 @@ export default async function page({ params }: { params: { id: string } }) {
   }
 
   const sourceCustomId = storyData.story?.source?.customId ?? ''
+  const isMemberStory = storyData.story?.isMember ?? false
+  const renderData: ApiData =
+    storyData.story?.apiData ?? storyData.story?.trimApiData
+
+  if (isMemberStory && sourceCustomId) {
+    policy = await getPublisherPolicy(sourceCustomId)
+    hasPayed = !!storyData.story?.apiData
+  }
 
   return (
     <>
@@ -61,7 +66,14 @@ export default async function page({ params }: { params: { id: string } }) {
           <div className="sticky top-[68px] z-layout hidden h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:block">
             <PageNavigator story={storyData.story} />
           </div>
-          <Article story={storyData.story} sourceCustomId={sourceCustomId} />
+          <Article
+            story={storyData.story}
+            sourceCustomId={sourceCustomId}
+            renderData={renderData}
+            isMemberStory={isMemberStory}
+            hasPayed={hasPayed}
+            policy={policy}
+          />
           <div className="lg:hidden">
             <RelatedStories relatedStories={relatedStories} />
           </div>
@@ -69,11 +81,13 @@ export default async function page({ params }: { params: { id: string } }) {
       </main>
       <aside className="hidden pt-16 lg:block lg:w-[260px]">
         <RelatedStories relatedStories={relatedStories} />
-        <SideIndex
-          apiData={storyData.story?.apiData as ApiData}
-          sourceCustomId={sourceCustomId}
-          isInArticle={false}
-        />
+        {isMemberStory ? null : (
+          <SideIndex
+            apiData={storyData.story?.apiData as ApiData}
+            sourceCustomId={sourceCustomId}
+            isInArticle={false}
+          />
+        )}
       </aside>
     </>
   )

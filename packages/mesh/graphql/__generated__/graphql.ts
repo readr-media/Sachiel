@@ -3971,6 +3971,7 @@ export type GetCurrentUserMemberIdQuery = {
     id: string
     name?: string | null
     customId?: string | null
+    email?: string | null
     avatar?: string | null
     intro?: string | null
     wallet?: string | null
@@ -4379,6 +4380,20 @@ export type GetMemberUnlockStoriesQuery = {
   } | null
 }
 
+export type GetPublisherPolicyQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetPublisherPolicyQuery = {
+  __typename?: 'Query'
+  policies?: Array<{
+    __typename?: 'Policy'
+    id: string
+    charge?: number | null
+    duration?: number | null
+  }> | null
+}
+
 export type PublishersQueryVariables = Exact<{ [key: string]: never }>
 
 export type PublishersQuery = {
@@ -4529,6 +4544,8 @@ export type GetStoryQuery = {
     published_date?: any | null
     content?: string | null
     apiData?: any | null
+    trimApiData?: any | null
+    isMember?: boolean | null
     picksCount?: number | null
     commentsCount?: number | null
     source?: {
@@ -4564,6 +4581,23 @@ export type GetStoryQuery = {
         avatar?: string | null
       } | null
     }> | null
+  } | null
+}
+
+export type GetStorySourceQueryVariables = Exact<{
+  storyId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type GetStorySourceQuery = {
+  __typename?: 'Query'
+  story?: {
+    __typename?: 'Story'
+    source?: {
+      __typename?: 'Publisher'
+      id: string
+      customId?: string | null
+      title?: string | null
+    } | null
   } | null
 }
 
@@ -6330,6 +6364,7 @@ export const GetCurrentUserMemberIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'email' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
                 {
                   kind: 'Field',
@@ -8971,6 +9006,97 @@ export const GetMemberUnlockStoriesDocument = {
   GetMemberUnlockStoriesQuery,
   GetMemberUnlockStoriesQueryVariables
 >
+export const GetPublisherPolicyDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherPolicy' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'policies' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'customId' },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'unlockSingle' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'BooleanValue', value: true },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'charge' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherPolicyQuery,
+  GetPublisherPolicyQueryVariables
+>
 export const PublishersDocument = {
   kind: 'Document',
   definitions: [
@@ -10020,6 +10146,8 @@ export const GetStoryDocument = {
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'content' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'trimApiData' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'isMember' } },
               ],
             },
           },
@@ -10028,3 +10156,71 @@ export const GetStoryDocument = {
     },
   ],
 } as unknown as DocumentNode<GetStoryQuery, GetStoryQueryVariables>
+export const GetStorySourceDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetStorySource' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'storyId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'story' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'storyId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'source' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetStorySourceQuery, GetStorySourceQueryVariables>
