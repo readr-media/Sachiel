@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { addComment } from '@/app/actions/comment'
 import Avatar from '@/components/story-card/avatar'
@@ -7,11 +8,14 @@ import type { User } from '@/context/user'
 const StoryCommentFooter = ({
   user,
   storyId,
+  comment,
+  setComment,
 }: {
   user?: User
   storyId?: string
+  comment: string
+  setComment: Dispatch<SetStateAction<string>>
 }) => {
-  const [comment, setComment] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

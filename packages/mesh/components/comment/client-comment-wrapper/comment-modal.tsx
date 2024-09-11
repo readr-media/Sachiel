@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect } from 'react'
 
+import Button from '@/components/button'
+
 interface CommentModalProps {
   isOpen: boolean
   onClose: () => void
+  onLeave: () => void
   children: React.ReactNode
 }
 
 const CommentModal: React.FC<CommentModalProps> = ({
   isOpen,
   onClose,
+  onLeave,
   children,
 }) => {
   const handleEscape = useCallback(
@@ -35,19 +39,31 @@ const CommentModal: React.FC<CommentModalProps> = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex overflow-auto bg-black opacity-50">
-      <div className="relative m-auto flex w-full max-w-md flex-col rounded-lg bg-white p-8">
-        <div className="flex items-center justify-between pb-3">
-          <button
-            onClick={onClose}
-            className="modal-close z-50 cursor-pointer text-2xl"
-          >
-            &times;
-          </button>
+    <>
+      {/* Background overlay */}
+      <div className="fixed inset-0 z-20 bg-black opacity-30"></div>
+
+      {/* Modal content */}
+      <div className="fixed inset-0 z-30 flex items-center justify-center overflow-auto px-12">
+        <div className="flex w-screen max-w-md flex-col gap-5 rounded-lg bg-white px-5 py-4">
+          {children}
+          <div className="flex items-center justify-end gap-3">
+            <Button
+              onClick={onLeave}
+              size="sm"
+              color="transparent-no-border"
+              text="離開"
+            />
+            <Button
+              onClick={onClose}
+              size="sm"
+              color="custom-blue"
+              text="繼續輸入"
+            />
+          </div>
         </div>
-        {children}
       </div>
-    </div>
+    </>
   )
 }
 
