@@ -1,11 +1,11 @@
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect, useState } from 'react'
 
-import { getCurrentUser } from '@/app/actions/auth'
+import { getAccessToken, getCurrentUser } from '@/app/actions/auth'
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
+import { auth } from '@/firebase/client'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
-import { useDynamicContext } from '@/utils/dynamic'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -31,11 +31,16 @@ export default function LoginSteps() {
   const { step } = useLogin()
   const { handleSignIn } = useHandleSignIn()
   const [isSignInLoading, setIsSignInLoading] = useState(false)
-  const { sdkHasLoaded } = useDynamicContext()
 
   useEffect(() => {
     const init = async () => {
       setIsSignInLoading(true)
+      const unsubscribe = auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          const idToken = await user.getIdToken(true)
+          await getAccessToken(idToken)
+        }
+      })
       const user = await getCurrentUser()
       if (user) {
         router.push('/media')
@@ -43,11 +48,12 @@ export default function LoginSteps() {
         await handleSignIn()
       }
       setIsSignInLoading(false)
+      return () => unsubscribe()
     }
     init()
   }, [handleSignIn, router])
 
-  if (!sdkHasLoaded || isSignInLoading) {
+  if (isSignInLoading) {
     return (
       <div className="flex size-full items-center justify-center">
         <Spinner />

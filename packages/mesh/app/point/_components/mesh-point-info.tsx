@@ -2,25 +2,26 @@
 
 import { useEffect, useState } from 'react'
 
+import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import Icon from '@/components/icon'
-import { useDynamicContext } from '@/utils/dynamic'
+import { useUser } from '@/context/user'
 
 import MeshPointHelper from './mesh-point-helper'
 
 export default function MeshPointInfo() {
-  const { primaryWallet } = useDynamicContext()
-  const [balance, setBalance] = useState<number>(0)
+  const [balance, setBalance] = useState(0)
+  const { user } = useUser()
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      if (primaryWallet) {
-        const balance = await primaryWallet.connector.getBalance()
-        if (balance) setBalance(parseFloat(balance))
+    const fetchPoint = async () => {
+      const response = await getMeshPointBalance(user.wallet)
+      if (response?.balance) {
+        setBalance(response.balance)
       }
     }
+    fetchPoint()
+  }, [user.wallet])
 
-    fetchBalance()
-  }, [primaryWallet])
   return (
     <>
       <div className="flex flex-col justify-center gap-2 sm:flex-col-reverse sm:self-end">
