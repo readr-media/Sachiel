@@ -2,7 +2,7 @@ import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import type { GetMemberFollowingListQuery } from '@/graphql/__generated__/graphql'
 import { GetMemberFollowingListDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 
 import { type PageProps } from '../page'
 import FollowingList from './_components/following-list'
@@ -18,7 +18,7 @@ export type FollowingPublisherListType = NonNullable<
 const FollowingPage = async ({ params }: PageProps) => {
   const takeCount = 20
   const user = await getCurrentUser()
-  const response = await fetchGraphQL(GetMemberFollowingListDocument, {
+  const response = await queryGraphQL(GetMemberFollowingListDocument, {
     customId: params.customId,
     take: takeCount,
   })
@@ -45,7 +45,7 @@ const FollowingPage = async ({ params }: PageProps) => {
     )
   }
   return (
-    <div className="flex max-w-[1120px] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
+    <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
       <FollowingList
         title="媒體"
         followingList={followPublisherData as FollowingListType}
@@ -58,7 +58,7 @@ const FollowingPage = async ({ params }: PageProps) => {
         defaultToggle={true}
         type="member"
       />
-    </div>
+    </main>
   )
 }
 

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect, useState } from 'react'
 
+import { getCurrentUser } from '@/app/actions/auth'
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
-import useAuthState from '@/hooks/use-auth-state'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
 import { useDynamicContext } from '@/utils/dynamic'
 
@@ -29,23 +29,23 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const router = useRouter()
   const { step } = useLogin()
-  const { isLogin } = useAuthState()
   const { handleSignIn } = useHandleSignIn()
   const [isSignInLoading, setIsSignInLoading] = useState(false)
   const { sdkHasLoaded } = useDynamicContext()
 
   useEffect(() => {
     const init = async () => {
-      if (isLogin) {
+      setIsSignInLoading(true)
+      const user = await getCurrentUser()
+      if (user) {
         router.push('/media')
       } else {
-        setIsSignInLoading(true)
         await handleSignIn()
-        setIsSignInLoading(false)
       }
+      setIsSignInLoading(false)
     }
     init()
-  }, [handleSignIn, isLogin, router])
+  }, [handleSignIn, router])
 
   if (!sdkHasLoaded || isSignInLoading) {
     return (

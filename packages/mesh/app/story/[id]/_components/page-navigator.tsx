@@ -52,10 +52,9 @@ export default function PageNavigator({ story }: { story: Story }) {
           <Icon iconName="icon-share" size="l" />
         </button>
       </div>
-      {/* TODO: update the states and actions according to the user state */}
       <div className="hidden gap-1 sm:flex">
         <PublisherDonateButton />
-        <StoryPickButton isStoryPicked={false} storyId={story?.id ?? ''} />
+        <StoryPickButton storyId={story?.id ?? ''} />
         <button className="pl-2">
           <Icon iconName="icon-more-horiz" size="l" />
         </button>

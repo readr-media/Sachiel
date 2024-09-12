@@ -5,6 +5,58 @@ mutation SignUpMember($registrationData: MemberCreateInput!) {
   }
 }
 
+mutation UpdateMemberProfile(
+  $customId: String
+  $changedCustomId: String
+  $name: String
+  $intro: String
+) {
+  updateMember(
+    where: { customId: $customId }
+    data: { name: $name, customId: $changedCustomId, intro: $intro }
+  ) {
+    customId
+    avatar
+    name
+    intro
+  }
+}
+
+mutation ConnectMemberAvatar(
+  $customId: String
+  $imageId: ID!
+  $imageOriginUrl: String
+) {
+  updateMember(
+    where: { customId: $customId }
+    data: {
+      avatar: $imageOriginUrl
+      avatar_image: { connect: { id: $imageId } }
+    }
+  ) {
+    customId
+  }
+}
+
+mutation CreatePhoto($image: Upload, $imageName: String) {
+  createPhoto(data: { name: $imageName, file: { upload: $image } }) {
+    resized {
+      original
+    }
+    id
+  }
+}
+
+# only disconnect the photo and member
+mutation DeletePhoto($memberId: String) {
+  updateMember(
+    where: { customId: $memberId }
+    data: { avatar: "", avatar_image: { disconnect: true } }
+  ) {
+    customId
+  }
+}
+
 mutation UpdateWalletAddress($id: ID!, $wallet: String!) {
   updateMember(where: { id: $id }, data: { wallet: $wallet }) {
     id

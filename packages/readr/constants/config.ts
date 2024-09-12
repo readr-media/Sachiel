@@ -1,8 +1,8 @@
+const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+
 // 這裡管理的是在 runtime 時，可被設定的環境變數 (通常沒有 `NEXT_PUBLIC_` 作為開頭)
+const USE_MOCK_SERVER = (process.env.USE_MOCK_SERVER ?? 'false') === 'true'
 const MOCK_API_SERVER_PORT = Number(process.env.MOCK_API_SERVER_PORT ?? 4000)
-const API_ENDPOINT =
-  process.env.API_ENDPOINT ?? `http://localhost:${MOCK_API_SERVER_PORT}/`
-const EDITOOLS_API_ENDPOINT = process.env.EDITOOLS_API_ENDPOINT ?? ''
 
 // Google OAuth Client
 const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID ?? ''
@@ -14,6 +14,31 @@ try {
 } catch (err) {
   console.error(err)
 }
+
+let API_ENDPOINT = ''
+let EDITOOLS_API_ENDPOINT = ''
+
+switch (ENV) {
+  case 'prod':
+    API_ENDPOINT = 'https://readr-gql-prod-4g6paft7cq-de.a.run.app/api/graphql'
+    EDITOOLS_API_ENDPOINT =
+      'https://editools-gql-prod-4g6paft7cq-de.a.run.app/api/graphql'
+    break
+  case 'staging':
+    API_ENDPOINT =
+      'https://readr-gql-staging-4g6paft7cq-de.a.run.app/api/graphql'
+    EDITOOLS_API_ENDPOINT =
+      'https://editools-gql-prod-4g6paft7cq-de.a.run.app/api/graphql'
+    break
+  case 'dev':
+  default:
+    API_ENDPOINT = 'https://readr-gql-dev-4g6paft7cq-de.a.run.app/api/graphql'
+    EDITOOLS_API_ENDPOINT =
+      'https://editools-gql-prod-4g6paft7cq-de.a.run.app/api/graphql'
+    break
+}
+
+if (USE_MOCK_SERVER) API_ENDPOINT = `http://localhost:${MOCK_API_SERVER_PORT}/`
 
 export {
   API_ENDPOINT,

@@ -14,7 +14,7 @@ module.exports = {
     },
     extend: {
       zIndex: {
-        header: 10,
+        layout: 10,
         modal: 100,
       },
       width: {
@@ -133,6 +133,10 @@ module.exports = {
           dark: '#CBCBCB',
         },
         brand: '#EBF02C',
+      },
+      boxShadow: {
+        'bottom-sheet': '0 -8px 20px 0 rgba(0, 0, 0, 0.1)',
+        modal: '0 2px 40px 0 rgba(0, 0, 0, 0.1)',
       },
     },
   },

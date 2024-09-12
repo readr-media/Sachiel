@@ -1,16 +1,28 @@
+import { useEffect, useState } from 'react'
+
+import { processMostFollowedMembers } from '@/app/actions/get-most-followed-member'
 import Icon from '@/components/icon'
 
-import { type SuggestedFollowers } from '../[id]/page'
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
-export default function NoFollowings({
-  currentUserId,
-  suggestedFollowers,
-}: {
-  currentUserId: string
-  suggestedFollowers: SuggestedFollowers[]
-}) {
+type MostFollowedMembers = Awaited<
+  ReturnType<typeof processMostFollowedMembers>
+>
+
+export default function NoFollowings() {
+  const [suggestedFollowers, setSuggestedFollowers] =
+    useState<MostFollowedMembers>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const mostFollowedMembers = await processMostFollowedMembers()
+      setSuggestedFollowers(mostFollowedMembers)
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <main className="flex grow flex-col items-center justify-start gap-4 bg-white sm:bg-multi-layer-light sm:p-5 lg:flex-row lg:items-start lg:justify-start lg:gap-10 lg:px-10 lg:py-5">
       <div className="flex w-full justify-center bg-white sm:max-w-[600px] sm:rounded-md sm:px-10 sm:py-15 sm:drop-shadow">
@@ -32,14 +44,10 @@ export default function NoFollowings({
         </div>
       </div>
       <FollowSuggestionFeed
-        currentUserId={currentUserId}
         suggestedFollowers={suggestedFollowers}
         isNoFollowings={true}
       />
-      <FollowSuggestionWidget
-        currentUserId={currentUserId}
-        suggestedFollowers={suggestedFollowers}
-      />
+      <FollowSuggestionWidget suggestedFollowers={suggestedFollowers} />
     </main>
   )
 }

@@ -6,7 +6,7 @@ export default function LoadMoreTransaction() {
   const { width } = useWindowDimensions()
 
   return (
-    <section className="px-5 pb-10 pt-5 sm:px-10">
+    <section className="py-5 sm:px-10">
       <div className="flex justify-center">
         {width < 768 ? (
           <Button

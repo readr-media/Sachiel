@@ -2,15 +2,13 @@ import Link from 'next/link'
 
 import Avatar from '@/components/story-card/avatar'
 
-import type { SuggestedFollowers } from '../[id]/page'
+import type { SuggestedFollowers } from '../page'
 import FollowButton from './follow-button'
 
 export default function FollowSuggestionWidget({
-  currentUserId,
   suggestedFollowers,
 }: {
-  currentUserId: string
-  suggestedFollowers: SuggestedFollowers[]
+  suggestedFollowers: SuggestedFollowers
 }) {
   return (
     <div className="hidden grow px-5 lg:block">
@@ -28,9 +26,9 @@ export default function FollowSuggestionWidget({
                     </Link>
                   </p>
                   <p className="caption-1 line-clamp-1 break-words text-primary-500">
-                    {member.currentMemberFollowingMember !== '' ? (
+                    {member.followedBy?.name ? (
                       <>
-                        <span>{member.currentMemberFollowingMember}</span>
+                        <span>{member.followedBy.name}</span>
                         及其他<span> {member.followerCount} </span>
                         的追蹤對象
                       </>
@@ -42,10 +40,7 @@ export default function FollowSuggestionWidget({
                   </p>
                 </div>
                 <div className="shrink-0 lg:ml-4">
-                  <FollowButton
-                    currentUserId={currentUserId}
-                    followingId={member.id}
-                  />
+                  <FollowButton followingId={member.id} />
                 </div>
               </div>
             </div>

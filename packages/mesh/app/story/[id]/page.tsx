@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulGet } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
@@ -31,7 +31,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const storyId = params.id
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const storyData = await fetchGraphQL(
+  const storyData = await queryGraphQL(
     GetStoryDocument,
     { storyId, picksTake, commentsTake },
     globalLogFields
@@ -58,7 +58,7 @@ export default async function page({ params }: { params: { id: string } }) {
       <main className="flex max-w-[600px] justify-center sm:pb-10">
         <div>
           {/* backdrop-filter: blur(5px); background: linear-gradient(to right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.8) 3%, rgba(255, 255, 255, 0.8) 97%, rgb(255, 255, 255) 100%) */}
-          <div className="sticky top-[68px] z-header hidden h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:block">
+          <div className="sticky top-[68px] z-layout hidden h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:block">
             <PageNavigator story={storyData.story} />
           </div>
           <Article story={storyData.story} sourceCustomId={sourceCustomId} />

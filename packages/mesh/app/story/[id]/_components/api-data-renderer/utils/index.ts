@@ -1,7 +1,7 @@
 import type { Organization } from '../types'
 
 const sourceCustomIdToOrganization: Record<string, Organization> = {
-  鏡週刊: 'mirror-media',
+  mirrormedia: 'mirror-media',
   readr: 'readr-media',
 }
 
