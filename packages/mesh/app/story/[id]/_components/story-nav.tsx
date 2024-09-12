@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { useCommentBlock } from '@/components/comment/client-comment-wrapper'
 import Icon, { type IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -12,6 +11,7 @@ import StoryCommentCount from '@/components/story-card/story-comment-count'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickCount from '@/components/story-card/story-pick-count'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
+import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
@@ -138,7 +138,13 @@ const NonMobileNav = ({
 const MobileNav = ({ story }: { story: Story }) => {
   const picksCount = story?.picksCount ?? 0
   const commentsCount = story?.commentsCount ?? 0
-  const openCommentBlock = useCommentBlock()
+  const { dispatch } = useComment()
+  const openCommentBlock = () => {
+    dispatch({ type: 'OPEN_MODAL' })
+    scrollTo({ top: 0 })
+    document.body.classList.add('overflow-hidden')
+  }
+
   return (
     <nav
       onClick={openCommentBlock}

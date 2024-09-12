@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { useComment } from '@/context/comment-context'
 import { type Story } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
 
@@ -14,6 +15,18 @@ const StoryCommentBlock = ({
   comments?: Story['comment']
   type: 'popular' | 'all'
 }) => {
+  const { state, dispatch } = useComment()
+
+  useEffect(() => {
+    if (state.highlightedId) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: '' })
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [state.highlightedId])
+
   return (
     <ul className="flex grow flex-col">
       <p className="list-title px-5 py-4">
@@ -29,7 +42,9 @@ const StoryCommentBlock = ({
         return (
           <li
             key={comment.id}
-            className="mx-5 flex gap-2 border-b border-b-primary-200 py-5 first-of-type:pt-0 last-of-type:border-none"
+            className={`mx-5 flex gap-2 border-b border-b-primary-200 py-5 transition-colors duration-500 first-of-type:pt-0 last-of-type:border-none ${
+              comment.id === state.highlightedId && 'bg-highlight-red'
+            }`}
           >
             <Avatar src={comment.member?.avatar || ''} size="l" />
             <div className="flex grow flex-col">
@@ -54,7 +69,9 @@ const StoryCommentBlock = ({
                 </div>
               </section>
               {/* comment body */}
-              <p className="body-3 text-primary-600">{comment.content}</p>
+              <p className="body-3 whitespace-pre text-primary-600">
+                {comment.content}
+              </p>
             </div>
           </li>
         )

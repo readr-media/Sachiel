@@ -20,7 +20,6 @@ export async function addComment({
     state: 'public',
     content,
   }
-  console.log('payload', payload)
   return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,

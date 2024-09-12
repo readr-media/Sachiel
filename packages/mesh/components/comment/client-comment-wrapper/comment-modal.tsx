@@ -1,41 +1,23 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 
 import Button from '@/components/button'
+import { useComment } from '@/context/comment-context'
 
 interface CommentModalProps {
   isOpen: boolean
-  onClose: () => void
-  onLeave: () => void
   children: React.ReactNode
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({
-  isOpen,
-  onClose,
-  onLeave,
-  children,
-}) => {
-  const handleEscape = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    },
-    [onClose]
-  )
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, handleEscape])
-
+const CommentModal: React.FC<CommentModalProps> = ({ isOpen, children }) => {
+  const { dispatch } = useComment()
+  const onLeave = () => {
+    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
+    dispatch({ type: 'CLOSE_MODAL' })
+    document.body.classList.remove('overflow-hidden')
+  }
+  const onClose = () => {
+    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
+  }
   if (!isOpen) return null
 
   return (

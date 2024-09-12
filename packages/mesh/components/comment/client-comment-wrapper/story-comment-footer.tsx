@@ -1,25 +1,24 @@
-import type { Dispatch, SetStateAction } from 'react'
 import React, { useEffect, useRef } from 'react'
 
 import { addComment } from '@/app/actions/comment'
 import Avatar from '@/components/story-card/avatar'
+import { useComment } from '@/context/comment-context'
 import type { User } from '@/context/user'
 
 const StoryCommentFooter = ({
   user,
   storyId,
   comment,
-  setComment,
 }: {
   user?: User
   storyId?: string
   comment: string
-  setComment: Dispatch<SetStateAction<string>>
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
+  const { dispatch } = useComment()
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value)
+    dispatch({ type: 'SET_COMMENT', payload: e.target.value })
     adjustTextareaHeight()
   }
 
@@ -44,12 +43,34 @@ const StoryCommentFooter = ({
   const handlePublish = async () => {
     if (!user?.memberId) throw new Error('no user id')
     if (!storyId) throw new Error('no story id')
-    await addComment({
+    const dateTime = new Date().toString()
+    const addCommentResponse = await addComment({
       content: comment,
       storyId,
       memberId: user?.memberId,
     })
-    setComment('')
+
+    if (!addCommentResponse) {
+      // TODO: error toast
+      return
+    }
+    dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: dateTime })
+    dispatch({
+      type: 'ADD_COMMENT',
+      payload: {
+        // NOTE: temp use date for id for local state management
+        id: new Date().toString(),
+        content: comment,
+        createdAt: dateTime,
+        member: {
+          id: user.memberId,
+          customId: user.customId,
+          name: user.name,
+          avatar: user.avatar,
+        },
+      },
+    })
+    dispatch({ type: 'SET_COMMENT', payload: '' })
     adjustTextareaHeight()
   }
 
