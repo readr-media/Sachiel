@@ -102,17 +102,13 @@ const ArticleCard = ({
             />
           </div>
         </section>
-        <section className="mt-4 grid grid-cols-3">
-          <div className="col-span-2">
-            <StoryPickInfo
-              displayPicks={storyData?.pick}
-              pickCount={storyData?.pickCount || 0}
-              maxCount={4}
-            />
-          </div>
-          <div className="place-self-end">
-            <StoryPickButton isStoryPicked={true} storyId={storyData?.id} />
-          </div>
+        <section className="mt-4 flex justify-between">
+          <StoryPickInfo
+            displayPicks={storyData?.pick}
+            pickCount={storyData?.pickCount || 0}
+            maxCount={4}
+          />
+          <StoryPickButton storyId={storyData?.id} />
         </section>
         {shouldShowComment && (
           <Comment

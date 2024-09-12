@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 
 import { GetMemberDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 import { getCurrentUser } from '../actions/auth'
@@ -19,7 +19,7 @@ export default async function Page() {
 
   if (!memberId) redirect('/login')
 
-  const data = await fetchGraphQL(
+  const data = await queryGraphQL(
     GetMemberDocument,
     {
       memberId,

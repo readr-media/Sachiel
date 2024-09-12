@@ -1,7 +1,9 @@
 'use server'
+import type { FirebaseError } from 'firebase-admin/app'
+import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 
-import { DAY } from '@/constants/time-unit'
+import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { type UserFormData } from '@/context/login'
 import { getAdminAuth } from '@/firebase/server'
 import {
@@ -10,7 +12,8 @@ import {
   SignUpMemberDocument,
   UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 import getAllPublishers from './get-all-publishers'
@@ -21,26 +24,23 @@ export async function validateIdToken(
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const decodedToken = await getAdminAuth().verifyIdToken(token)
-
-    if (decodedToken.exp * 1000 < Date.now()) {
-      return { status: 'expired' }
+    if (decodedToken) {
+      return { status: 'verified' }
+    } else {
+      return { status: 'error' }
     }
-
-    cookies().set('token', token, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true,
-      maxAge: DAY,
-    })
-    return { status: 'verified' }
   } catch (error) {
+    const err = error as FirebaseError
     logServerSideError(
       error,
       'Failed to verify firebase token',
       globalLogFields
     )
-    return { status: 'error' }
+    if (err.code === 'auth/id-token-expired') {
+      return { status: 'expired' }
+    } else {
+      return { status: 'error' }
+    }
   }
 }
 
@@ -54,15 +54,51 @@ export async function clearTokenCookie() {
   })
 }
 
+export async function getAccessToken(idToken: string) {
+  const response = (await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.accessToken,
+    {},
+    {
+      cache: 'no-cache',
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    },
+    'fail message'
+  )) as { token: string }
+
+  const accessToken = response?.token ?? ''
+  const decodedAccessToken = jwt.decode(accessToken, { json: true })
+  let expiresDate = undefined
+  if (decodedAccessToken?.exp) {
+    expiresDate = new Date(decodedAccessToken.exp * 1000)
+  }
+
+  cookies().set('token', accessToken, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: true,
+    expires: expiresDate,
+  })
+
+  return response
+}
+
 export async function getCurrentUser() {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const idToken = cookies().get('token')?.value
+  const accessToken = cookies().get('token')?.value
 
-  if (!idToken) return undefined
+  if (!accessToken) return undefined
+
+  const decodedAccessToken = jwt.decode(accessToken, { json: true })
+  if (!decodedAccessToken?.exp || decodedAccessToken.exp < Date.now() / 1000) {
+    return undefined
+  }
 
   try {
-    const { uid } = await getAdminAuth().verifyIdToken(idToken)
-    const data = await fetchGraphQL(
+    const uid = decodedAccessToken.uid
+    const data = await queryGraphQL(
       GetCurrentUserMemberIdDocument,
       { uid },
       globalLogFields,
@@ -74,8 +110,17 @@ export async function getCurrentUser() {
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
         avatar: data.member.avatar ?? '',
+        avatarImageId: data.member.avatar_image?.id ?? '',
+        intro: data.member.intro ?? '',
         wallet: data.member.wallet ?? '',
-        idToken,
+        followingMemberIds: new Set(
+          data.member.followingMembers?.map((member) => member.id) ?? []
+        ),
+        pickStoryIds: new Set(
+          data.member.picks?.map((pick) => pick.story?.id ?? '') ?? []
+        ),
+        followingCategories: data.member.followingCategories ?? [],
+        followingPublishers: data.member.followingPublishers ?? [],
       }
     } else {
       return undefined
@@ -120,7 +165,7 @@ export async function signUpMember(formData: UserFormData) {
       },
     }
 
-    const data = await fetchGraphQL(
+    const data = await queryGraphQL(
       SignUpMemberDocument,
       { registrationData },
       globalLogFields,
@@ -144,7 +189,7 @@ export async function updateMemberWallet(id: string, wallet: string) {
 
   if (!idToken) return undefined
   try {
-    const data = await fetchGraphQL(
+    const data = await queryGraphQL(
       UpdateWalletAddressDocument,
       { id, wallet },
       globalLogFields,

@@ -58,6 +58,7 @@ const RESTFUL_ENDPOINTS = {
   latestStories: `${API_ORIGIN}/latest_stories`,
   pubsub: `${API_ORIGIN}/pubsub`,
   relatedStories: `${API_ORIGIN}/search/`,
+  accessToken: `${API_ORIGIN}/accesstoken`,
 }
 
 const STATIC_FILE_ENDPOINTS = {

@@ -8,40 +8,19 @@ import { twMerge } from 'tailwind-merge'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
-import useAuthState from '@/hooks/use-auth-state'
+import { isUserLoggedIn, useUser } from '@/context/user'
 import { logout } from '@/utils/logout'
 
-const HeaderIconWrapper = ({
-  children,
-  className = '',
-  onClick,
-}: {
-  children: React.ReactNode
-  className?: string
-  onClick?: React.MouseEventHandler<HTMLDivElement>
-}) => {
-  return (
-    <div
-      className={twMerge(
-        'flex h-11 w-11 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
-        className
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  )
-}
-
-export default function Header() {
+export default function StatefulHeader() {
   const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
   const router = useRouter()
-  const { isLogin: isLoggedIn } = useAuthState()
+  const { user } = useUser()
+  const isLoggedIn = isUserLoggedIn(user)
   const newNotification = true
 
   return (
-    <header className="fixed inset-x-0 top-0 z-header h-[theme(height.header.default)] border-b bg-white sm:h-[theme(height.header.sm)]">
+    <header className="fixed inset-x-0 top-0 z-layout h-[theme(height.header.default)] border-b bg-white sm:h-[theme(height.header.sm)]">
       {/* nested header to maintain the max width for screen width larger than 1440 */}
       <div className="mx-auto flex h-full max-w-[theme(width.maxContent)] justify-between p-2 sm:px-10 sm:py-3">
         {/* left side block */}
@@ -108,5 +87,27 @@ export default function Header() {
         </div>
       </div>
     </header>
+  )
+}
+
+const HeaderIconWrapper = ({
+  children,
+  className = '',
+  onClick,
+}: {
+  children: React.ReactNode
+  className?: string
+  onClick?: React.MouseEventHandler<HTMLDivElement>
+}) => {
+  return (
+    <div
+      className={twMerge(
+        'flex h-11 w-11 cursor-pointer items-center justify-center hover:rounded-[50%] hover:bg-primary-100 active:rounded-[50%] active:bg-primary-100',
+        className
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </div>
   )
 }

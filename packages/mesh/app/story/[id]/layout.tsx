@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import Footer from '@/app/_components/footer'
+import Footer from '@/components/layout-template/footer'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
+import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 import StoryHeader from './_components/story-header'
@@ -21,7 +21,7 @@ export default async function MediaLayout({
   const storyId = params.id
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const storyData = await fetchGraphQL(
+  const storyData = await queryGraphQL(
     GetStoryDocument,
     { storyId, picksTake, commentsTake },
     globalLogFields

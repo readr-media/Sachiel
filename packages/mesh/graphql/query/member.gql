@@ -96,10 +96,36 @@ query GetMemberByFollowingCategory($slugs: [String!]!) {
 query GetCurrentUserMemberId($uid: String!) {
   member(where: { firebaseId: $uid }) {
     id
-    name,
-    customId,
-    avatar,
+    name
+    customId
+    avatar
+    avatar_image {
+      id
+    }
+    intro
     wallet
+    followingMembers: following {
+      id
+    }
+    picks: pick(
+      where: {
+        kind: { equals: "read" }
+        AND: [{ is_active: { equals: true } }]
+      }
+    ) {
+      story {
+        id
+      }
+    }
+    followingCategories: following_category(orderBy: { id: asc }) {
+      id
+      title
+      slug
+    }
+    followingPublishers: follow_publisher {
+      id
+      title
+    }
   }
 }
 
@@ -108,6 +134,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
     id
     name
     avatar
+    customId
     avatar_image {
       urlOriginal
     }
@@ -120,6 +147,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
 
     picks: pick(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -173,6 +201,7 @@ query GetMemberProfile($customId: String, $takes: Int!) {
     )
     books: pick(
       where: { kind: { equals: "bookmark" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -226,9 +255,11 @@ query GetMemberProfile($customId: String, $takes: Int!) {
 
 query GetVisitorProfile($customId: String, $takes: Int!) {
   member(where: { customId: $customId }) {
+    # id, name, avatar use auth's context
     id
     name
     avatar
+    customId
     avatar_image {
       urlOriginal
     }
@@ -241,6 +272,7 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
 
     picks: pick(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
       take: $takes
     ) {
       story {
@@ -331,6 +363,160 @@ query GetMemberFollowerList($customId: String, $take: Int!) {
       id
       customId
       name
+    }
+  }
+}
+
+query GetMemberProfileEditData($customId: String) {
+  member(where: { customId: $customId }) {
+    customId
+    name
+    avatar
+    avatar_image {
+      id
+      resized {
+        original
+      }
+    }
+    intro
+  }
+}
+
+query GetMemberSponsorShips($memberId: ID!, $publisherIdList: [ID!]) {
+  member(where: { id: $memberId }) {
+    sponsorCount
+    sponsor(
+      where: {
+        publisher: { id: { in: $publisherIdList } }
+        status: { equals: Success }
+      }
+    ) {
+      tid
+      publisher {
+        id
+        title
+      }
+    }
+  }
+}
+
+query GetMemberTransactions($memberId: ID!, $take: Int) {
+  member(where: { id: $memberId }) {
+    sponsorCount(where: { status: { equals: Success } })
+    sponsor(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      publisher {
+        id
+        title
+        logo
+      }
+      fee
+      createdAt
+    }
+    transaction(
+      where: { status: { equals: Success } }
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
+      tid
+      createdAt
+      expireDate
+      depositVolume
+      unlockStory {
+        id
+        title
+        source {
+          id
+          title
+          logo
+        }
+      }
+      policy {
+        type
+        charge
+        unlockSingle
+        publisher{
+          id
+          title
+        }
+      }
+    }
+  }
+  transactions(
+    where: {
+      member: { id: { equals: $memberId } }
+      status: { equals: Success }
+      active: { equals: true }
+      unlockStory: { id: { gte: 0 } }
+    }
+    orderBy: { createdAt: desc }
+  ) {
+    tid
+    unlockStory {
+      id
+    }
+  }
+}
+
+query GetMemberUnlockStories($memberId: ID!, $skip: Int = 0, $take: Int) {
+  member(where: { id: $memberId }) {
+    transaction(
+      where: { status: { equals: Success }, active: { equals: true } }
+      orderBy: { createdAt: desc }
+      skip: $skip
+      take: $take
+    ) {
+      tid
+      expireDate
+      unlockStory {
+        id
+        title
+        og_image
+        source {
+          id
+          title
+          logo
+        }
+      }
+    }
+  }
+}
+
+query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
+  member(where: { id: $memberId }) {
+    transaction(where: { tid: { equals: $tid }, status: { equals: Success } }) {
+      tid
+      createdAt
+      depositVolume
+      unlockStory {
+        id
+        title
+        source {
+          id
+          title
+        }
+      }
+      policy {
+        type
+        charge
+        unlockSingle
+        publisher{
+          id
+          title
+        }
+      }
+    }
+    sponsor(where: { tid: { equals: $tid }, status: { equals: Success } }) {
+      fee
+      createdAt
+      publisher{
+        id
+        title
+      }
     }
   }
 }
