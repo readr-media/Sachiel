@@ -15,7 +15,10 @@ export async function getMemberProfile(memberId: string, takes: number) {
       takes,
     })
     const memberData = result?.member
-    if (!memberData) throw new Error('something wrong with GetMemberProfile')
+    // if member data not found bubble this error to nextjs error handling
+    if (!memberData) {
+      return null
+    }
 
     return {
       intro: memberData.intro || '',
@@ -27,17 +30,24 @@ export async function getMemberProfile(memberId: string, takes: number) {
     }
   } catch (error) {
     logServerSideError(error, 'Failed to get member profile', globalLogFields)
+    throw error
   }
 }
 
 export async function getVisitorProfile(visitorId: string, takes: number) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const result = await queryGraphQL(GetVisitorProfileDocument, {
       customId: visitorId,
       takes,
     })
+    // if visitor data not found bubble this error to nextjs error handling
+    if (!result?.member) {
+      return null
+    }
     return result
   } catch (error) {
-    console.error('get visitor profile data failed: ', error)
+    logServerSideError(error, 'Failed to get visitor profile', globalLogFields)
+    throw error
   }
 }
