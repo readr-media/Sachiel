@@ -6,7 +6,7 @@ type Props = {
   followingMembers: Set<string>
 }
 
-export default async function ReadrStory({ followingMembers }: Props) {
+export default async function MostPickedStory({ followingMembers }: Props) {
   const story = await fetchMostPickedStory()
   if (!story) return null
 
