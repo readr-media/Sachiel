@@ -146,13 +146,11 @@ export default function NavList({
         </div>
       </div>
 
-      {data && (
-        <StorySection
-          stories={data}
-          activeTitle={activeTitle}
-          followingMembers={followingMembers}
-        />
-      )}
+      <StorySection
+        stories={data}
+        activeTitle={activeTitle}
+        followingMembers={followingMembers}
+      />
     </>
   )
 }
