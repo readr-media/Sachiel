@@ -74,6 +74,7 @@ export type GenericAuthor = {
   special_number: string
   number_desc: string
   number_desc_en: string
+  postsCount: number
   posts: GenericPost[]
 }
 
