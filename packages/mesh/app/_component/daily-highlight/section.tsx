@@ -22,7 +22,7 @@ export default async function DailyHighlight({ followingMembers }: Props) {
   return (
     <section className="px-5 pt-4 sm:pt-5 md:px-[70px] lg:px-10 lg:pb-5">
       <div className="mb-3 flex items-center justify-between sm:mb-4">
-        <h2 className="list-title text-primary-700">今日焦點</h2>
+        <h2 className="list-title lg:title-1 text-primary-700">今日焦點</h2>
         <time className="button text-primary-500">
           {displayDateWithWeekday()}
         </time>
