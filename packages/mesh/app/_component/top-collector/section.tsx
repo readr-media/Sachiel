@@ -7,7 +7,7 @@ export default async function TopCollectorSection() {
   if (!data) return null
 
   return (
-    <section className="px-5 pt-8 md:px-[70px] lg:bg-[#F6F6F6] lg:px-10 lg:pb-10 xl:pb-8 xl:pt-[34px] xxl:pb-10 xxl:pt-8">
+    <section className="px-5 pt-8 md:px-[70px] lg:bg-multi-layer-light lg:px-10 lg:pb-10 xl:pb-8 xl:pt-[34px] xxl:pb-10 xxl:pt-8">
       <p className="list-title lg:title-1 mb-1 text-primary-700 lg:mb-4 lg:text-primary-500 xl:mb-[14px]">
         精選最多文章
       </p>
