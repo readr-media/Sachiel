@@ -35,7 +35,7 @@ function ArticleCardList({
   }
 
   return (
-    <ul className="max-w-[1120px] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
+    <ul className="max-w-[theme(width.maxMain)] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
       {items.map((item, index) => {
         const isLast = index === items.length - 1
         return (
