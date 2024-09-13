@@ -17,7 +17,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
     <div className="mb-3 flex items-center gap-y-3 border-b-[0.5px] pb-3 last:border-0 lg:w-[164px] lg:flex-col lg:rounded-md lg:bg-[#FFF] lg:px-3 lg:pb-4 lg:pt-3 lg:shadow-card xl:w-[192px]">
       <span
         className={`rounded-md ${
-          rank === 1 ? 'bg-brand' : 'bg-[#DADCE3]'
+          rank === 1 ? 'bg-brand' : 'bg-custom-gray-light'
         } mr-3 px-2 py-[3px] lg:mr-0`}
       >
         {rank}

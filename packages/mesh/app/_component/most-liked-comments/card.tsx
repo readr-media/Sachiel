@@ -21,7 +21,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
     <div className="flex items-start gap-x-3">
       <span
         className={`rounded-md ${
-          rank === 1 ? 'bg-brand' : 'bg-[#DADCE3]'
+          rank === 1 ? 'bg-brand' : 'bg-custom-gray-light'
         } px-2 py-[3px]`}
       >
         {rank}
