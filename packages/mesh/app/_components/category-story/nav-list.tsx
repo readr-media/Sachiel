@@ -39,13 +39,12 @@ export default function NavList({
   followingMembers,
   initialStories,
 }: Props) {
-  const [activeCategory, setActiveCategory] = useState(categories?.[0].slug)
+  const [activeCategory, setActiveCategory] = useState(categories?.[0])
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
-  const [activeTitle, setActiveTitle] = useState(categories?.[0].title ?? '')
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetchCategoryStory(activeCategory ?? '')
+      const result = await fetchCategoryStory(activeCategory?.slug ?? '')
       setData(result)
     }
 
@@ -83,11 +82,10 @@ export default function NavList({
                   color="nav-chip"
                   text={category.title ?? ''}
                   activeState={{
-                    isActive: category.slug === activeCategory,
+                    isActive: category === activeCategory,
                   }}
                   onClick={() => {
-                    setActiveCategory(category.slug)
-                    setActiveTitle(category.title ?? '')
+                    setActiveCategory(category)
                   }}
                 />
               </div>
@@ -148,7 +146,7 @@ export default function NavList({
 
       <StorySection
         stories={data}
-        activeTitle={activeTitle}
+        activeTitle={activeCategory?.title ?? ''}
         followingMembers={followingMembers}
       />
     </>
