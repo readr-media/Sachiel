@@ -16,8 +16,8 @@ export default async function DailyHighlight({ followingMembers }: Props) {
   const noGroupData = await fetchDailyHighlightNoGroup()
   if (!groupData || !noGroupData) return null
 
-  const groupStory = groupData.slice(0, 4)
-  const noGroupStory = noGroupData.slice(0, 6)
+  const groupStories = groupData.slice(0, 4)
+  const noGroupStories = noGroupData.slice(0, 6)
 
   return (
     <section className="px-5 pt-4 sm:pt-5 md:px-[70px] lg:px-10 lg:pb-5">
@@ -28,10 +28,10 @@ export default async function DailyHighlight({ followingMembers }: Props) {
         </time>
       </div>
 
-      <MainGroup stories={groupStory} followingMembers={followingMembers} />
+      <MainGroup stories={groupStories} followingMembers={followingMembers} />
 
       <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-4 lg:[&>*:nth-child(5)]:shadow-none">
-        {noGroupStory.map((story) => (
+        {noGroupStories.map((story) => (
           <StoryCard
             key={story.id}
             story={story}
