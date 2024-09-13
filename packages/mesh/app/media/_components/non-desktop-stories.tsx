@@ -39,11 +39,11 @@ export default function NonDesktopStories({
   return (
     <div className="flex flex-col sm:pb-10 lg:hidden">
       {stories.map((story, i) => {
-        const insertSpecialBlock = (i + 1) % 5 === 0
+        const shouldInsertSpecialBlock = (i + 1) % 5 === 0
         const specialBlock = specialBlocks[Math.floor((i + 1) / 5) - 1]
         const shouldSetTriggerRef = i === stories.length - 5
 
-        if (insertSpecialBlock && specialBlock) {
+        if (shouldInsertSpecialBlock && specialBlock) {
           const specialBlockJsx =
             'stories' in specialBlock ? (
               <div className="p-5 md:px-[70px]">

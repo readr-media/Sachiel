@@ -94,10 +94,10 @@ export default function CategorySelector({
       }
     }
 
-    const isCurrentCategoryDelted = !finalCategories.find(
+    const isCurrentCategoryDeleted = !finalCategories.find(
       (category) => category.slug === currentCategory.slug
     )
-    if (isCurrentCategoryDelted) {
+    if (isCurrentCategoryDeleted) {
       setCurrentCategory(finalCategories[0])
     }
 
