@@ -1,8 +1,8 @@
 import { cookieToInitialState } from '@alchemy/aa-alchemy/config'
 import { headers } from 'next/headers'
 
-import { alchemyConfig } from '@/alchemy'
 import { AlchemyProviders } from '@/context/alchemy'
+import { alchemyConfig } from '@/utils/alchemy'
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const initialState = cookieToInitialState(

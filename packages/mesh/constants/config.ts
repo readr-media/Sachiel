@@ -1,4 +1,5 @@
-import { type Hex } from 'viem'
+import { optimism, optimismSepolia } from '@alchemy/aa-core'
+import { type Chain, type Hex } from 'viem'
 
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
@@ -10,6 +11,8 @@ const FIREBASE_PRIVATE_KEY =
 
 let API_ORIGIN = ''
 let STATIC_FILE_ORIGIN = ''
+let PAYMENT_ORIGIN = ''
+let PAYMENT_CHAIN: Chain = optimismSepolia
 let FIREBASE_DOMAIN = ''
 let FIREBASE_CONFIG = {
   API_KEY: '',
@@ -19,12 +22,22 @@ let FIREBASE_CONFIG = {
   MESSAGING_SENDER_ID: '',
   APP_ID: '',
 }
-let DYNAMIC_ENV_ID = ''
+let ALCHEMY_ADDRESS: {
+  policyId: string
+  meshPoint: Hex
+  paymaster: Hex
+} = {
+  policyId: '',
+  meshPoint: '0x',
+  paymaster: '0x',
+}
 
 switch (ENV) {
   case 'local':
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
+    PAYMENT_CHAIN = optimismSepolia
     FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
@@ -34,11 +47,17 @@ switch (ENV) {
       MESSAGING_SENDER_ID: '611179505112',
       APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
     }
-    DYNAMIC_ENV_ID = '51dfdb4d-d8ef-47e4-8a89-57ea9f1b3803'
+    ALCHEMY_ADDRESS = {
+      policyId: '12056106-f884-42d2-9d43-5a8b3aca7a4e',
+      meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
+      paymaster: '0xA75a88cdBa15725EcD1134A73d1Dda02186493De',
+    }
     break
   case 'dev':
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
+    PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
+    PAYMENT_CHAIN = optimismSepolia
     FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
@@ -48,7 +67,15 @@ switch (ENV) {
       MESSAGING_SENDER_ID: '611179505112',
       APP_ID: '1:611179505112:web:91b52854e9136ad4a83ead',
     }
-    DYNAMIC_ENV_ID = '51dfdb4d-d8ef-47e4-8a89-57ea9f1b3803'
+    ALCHEMY_ADDRESS = {
+      policyId: '12056106-f884-42d2-9d43-5a8b3aca7a4e',
+      meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
+      paymaster: '0xA75a88cdBa15725EcD1134A73d1Dda02186493De',
+    }
+    break
+
+  case 'prod':
+    PAYMENT_CHAIN = optimism
     break
 
   default:
@@ -61,7 +88,7 @@ const RESTFUL_ENDPOINTS = {
   pubsub: `${API_ORIGIN}/pubsub`,
   relatedStories: `${API_ORIGIN}/search/`,
   accessToken: `${API_ORIGIN}/accesstoken`,
-  paymentBalance: `https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app/balance/`,
+  paymentBalance: `${PAYMENT_ORIGIN}/balance/`,
 }
 
 const STATIC_FILE_ENDPOINTS = {
@@ -72,19 +99,8 @@ const STATIC_FILE_ENDPOINTS = {
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
 }
 
-const ALCHEMY_ADDRESS: {
-  policyId: string
-  meshPoint: Hex
-  paymaster: Hex
-} = {
-  policyId: '12056106-f884-42d2-9d43-5a8b3aca7a4e',
-  meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
-  paymaster: '0xA75a88cdBa15725EcD1134A73d1Dda02186493De',
-}
-
 export {
   ALCHEMY_ADDRESS,
-  DYNAMIC_ENV_ID,
   ENV,
   FIREBASE_CLIENT_EMAIL,
   FIREBASE_CONFIG,
@@ -92,6 +108,7 @@ export {
   FIREBASE_PRIVATE_KEY,
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
+  PAYMENT_CHAIN,
   RESTFUL_ENDPOINTS,
   STATIC_FILE_ENDPOINTS,
 }

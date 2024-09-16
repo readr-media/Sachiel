@@ -2,10 +2,11 @@
 
 import { useAccount, useSignerStatus } from '@alchemy/aa-alchemy/react'
 import { type ReactNode, useEffect } from 'react'
+import { type Hex } from 'viem'
 
-import { accountType } from '@/alchemy'
 import { updateMemberWallet } from '@/app/actions/auth'
 import Spinner from '@/components/spinner'
+import { accountType } from '@/utils/alchemy'
 
 import { LogInCard } from './login-card'
 
@@ -25,7 +26,7 @@ export default function AlchemyAuth({
   const { address } = useAccount({ type: accountType })
 
   useEffect(() => {
-    const syncSmartAccount = async (id: string, address: `0x${string}`) => {
+    const syncSmartAccount = async (id: string, address: Hex) => {
       await updateMemberWallet(id, address)
     }
 

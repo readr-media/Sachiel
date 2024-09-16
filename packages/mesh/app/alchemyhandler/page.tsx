@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 
 import Spinner from '@/components/spinner'
 
+// handle redirects from alchemy email link to user interacting page
 export default function Page() {
   const router = useRouter()
 

@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { setTimeout } from 'timers'
 import { type Hex } from 'viem'
 
 import { getStoryAccess } from '@/app/actions/auth'

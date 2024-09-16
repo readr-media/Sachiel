@@ -2,8 +2,10 @@
 import type { FirebaseError } from 'firebase-admin/app'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
+import { type Hex } from 'viem'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
+import { SECOND } from '@/constants/time-unit'
 import { type UserFormData } from '@/context/login'
 import { getAdminAuth } from '@/firebase/server'
 import {
@@ -68,7 +70,7 @@ export async function getAccessToken(idToken: string) {
   )) as { token: string }
 
   if (!response) return undefined
-  const accessToken = response?.token
+  const accessToken = response.token
   const decodedAccessToken = jwt.decode(accessToken, { json: true })
   let expiresDate = undefined
   if (decodedAccessToken?.exp) {
@@ -185,7 +187,7 @@ export async function signUpMember(formData: UserFormData) {
   }
 }
 
-export async function updateMemberWallet(id: string, wallet: `0x${string}`) {
+export async function updateMemberWallet(id: string, wallet: Hex) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   const idToken = cookies().get('token')?.value
 
@@ -208,23 +210,10 @@ export async function getStoryAccess(idToken: string, storyId: string) {
   let isMatch = false
   let attempt = 0
 
-  const fetch = async () => {
-    attempt += 1
-    return (await fetchRestfulPost(
-      RESTFUL_ENDPOINTS.accessToken,
-      {},
-      {
-        cache: 'no-cache',
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      },
-      'fail message'
-    )) as { token: string }
-  }
-
   while (!isMatch && attempt < 5) {
-    const { token: accessToken } = await fetch()
+    const accessToken = await getAccessToken(idToken)
+    if (!accessToken) break
+
     const decodedAccessToken = jwt.decode(accessToken, { json: true })
 
     if (!decodedAccessToken || !decodedAccessToken.story) return undefined
@@ -235,7 +224,7 @@ export async function getStoryAccess(idToken: string, storyId: string) {
 
     if (isMatch) {
       const expiresDate = decodedAccessToken.exp
-        ? new Date(decodedAccessToken.exp * 1000)
+        ? new Date(decodedAccessToken.exp * SECOND)
         : undefined
 
       cookies().set('token', accessToken, {
@@ -248,7 +237,8 @@ export async function getStoryAccess(idToken: string, storyId: string) {
 
       return accessToken
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    attempt++
+    await new Promise((resolve) => setTimeout(resolve, SECOND))
   }
 
   return undefined

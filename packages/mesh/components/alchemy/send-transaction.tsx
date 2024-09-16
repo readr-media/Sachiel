@@ -1,3 +1,5 @@
+'use client'
+
 import {
   useSendUserOperation,
   useSmartAccountClient,
@@ -6,13 +8,13 @@ import { type Abi } from '@alchemy/aa-core'
 import { type FormEvent, useEffect, useState } from 'react'
 import { type Hex, encodeFunctionData } from 'viem'
 
+import { getMeshPointContract } from '@/app/actions/payment'
+import { ALCHEMY_ADDRESS } from '@/constants/config'
 import {
   accountClientOptions as opts,
   accountType,
   gasManagerConfig,
-} from '@/alchemy'
-import { getMeshPointContract } from '@/app/actions/payment'
-import { ALCHEMY_ADDRESS } from '@/constants/config'
+} from '@/utils/alchemy'
 
 import Button from '../button'
 import { OpStatus } from './op-status'

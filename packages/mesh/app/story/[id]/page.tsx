@@ -28,32 +28,32 @@ export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 const picksTake = 5
 const commentsTake = 3
 
-export default async function page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const storyId = params.id
   const storyData = await getStory({ storyId, picksTake, commentsTake })
   let relatedStories: RelatedStory[] = []
   let policy: PublisherPolicy = []
   let hasPayed = false
 
-  if (!storyData) {
+  if (!storyData || !storyData.story) {
     notFound()
   }
 
-  if (storyData.story?.title) {
+  if (storyData.story.title) {
     relatedStories =
       (await fetchRestfulGet<RelatedStory[]>(
-        RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title
+        RESTFUL_ENDPOINTS.relatedStories + storyData.story.title
       )) ?? []
   }
 
-  const sourceCustomId = storyData.story?.source?.customId ?? ''
-  const isMemberStory = storyData.story?.isMember ?? false
+  const sourceCustomId = storyData.story.source?.customId ?? ''
+  const isMemberStory = storyData.story.isMember ?? false
   const renderData: ApiData =
-    storyData.story?.apiData ?? storyData.story?.trimApiData
+    storyData.story.apiData ?? storyData.story.trimApiData
 
   if (isMemberStory && sourceCustomId) {
     policy = await getPublisherPolicy(sourceCustomId)
-    hasPayed = !!storyData.story?.apiData
+    hasPayed = !!storyData.story.apiData
   }
 
   return (
@@ -83,7 +83,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <RelatedStories relatedStories={relatedStories} />
         {isMemberStory ? null : (
           <SideIndex
-            apiData={storyData.story?.apiData as ApiData}
+            apiData={storyData.story.apiData as ApiData}
             sourceCustomId={sourceCustomId}
             isInArticle={false}
           />

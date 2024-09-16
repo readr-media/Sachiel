@@ -2,13 +2,13 @@ import type { AlchemyGasManagerConfig } from '@alchemy/aa-alchemy'
 import type { SupportedAccountTypes } from '@alchemy/aa-alchemy/config'
 import { cookieStorage, createConfig } from '@alchemy/aa-alchemy/config'
 import type { SmartAccountClientOptsSchema } from '@alchemy/aa-core'
-import { optimismSepolia } from '@alchemy/aa-core'
 import { QueryClient } from '@tanstack/react-query'
 import type { z } from 'zod'
 
+import { PAYMENT_CHAIN } from '@/constants/config'
 import { ALCHEMY_ADDRESS } from '@/constants/config'
 
-export const chain = optimismSepolia
+export const chain = PAYMENT_CHAIN
 export const alchemyConfig = createConfig({
   rpcUrl: '/api/rpc/chain/' + chain.id,
   signerConnection: {

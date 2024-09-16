@@ -1,7 +1,7 @@
 import { type useSendUserOperation } from '@alchemy/aa-alchemy/react'
 
-import { chain } from '@/alchemy'
 import Spinner from '@/components/spinner'
+import { chain } from '@/utils/alchemy'
 
 export const OpStatus = ({
   sendUserOperationResult,

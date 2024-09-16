@@ -6,7 +6,7 @@ import {
 } from '@alchemy/aa-alchemy/react'
 import { type PropsWithChildren } from 'react'
 
-import { alchemyConfig, queryClient } from '@/alchemy'
+import { alchemyConfig, queryClient } from '@/utils/alchemy'
 
 export const AlchemyProviders = ({
   initialState,
