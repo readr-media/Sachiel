@@ -1,13 +1,10 @@
-'use client'
-
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import type { MouseEventHandler } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import type { Dispatch, MouseEventHandler, SetStateAction } from 'react'
+import { useRef, useState } from 'react'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
 import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
+import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import {
   getAddedCategoryIds,
@@ -37,20 +34,18 @@ const NavigateButton = ({
 
 export default function CategorySelector({
   allCategories,
-  followingCategories,
-  activeCategorySlug,
-  // TODO: get memberId from client side store
-  memberId,
+  currentCategory,
+  setCurrentCategory,
 }: {
   allCategories: Category[]
-  followingCategories: Category[]
-  activeCategorySlug: string
-  memberId: string
+  currentCategory: Category
+  setCurrentCategory: Dispatch<SetStateAction<Category>>
 }) {
-  const [displayCategories, setDisplayCategories] =
-    useState(followingCategories)
+  const { user, setUser } = useUser()
+  const displayCategories = user.followingCategories
+
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
-  const router = useRouter()
+  const { memberId } = user
 
   const categoriesRef = useRef<HTMLDivElement>(null)
   const { targetRef: leadingRef, isIntersecting: isLeadingRefInView } =
@@ -99,23 +94,19 @@ export default function CategorySelector({
       }
     }
 
-    setDisplayCategories(finalCategories)
+    const isCurrentCategoryDeleted = !finalCategories.find(
+      (category) => category.slug === currentCategory.slug
+    )
+    if (isCurrentCategoryDeleted) {
+      setCurrentCategory(finalCategories[0])
+    }
+
+    setUser((user) => ({
+      ...user,
+      followingCategories: finalCategories,
+    }))
     setShowCategoryEditor(false)
   }
-
-  useEffect(() => {
-    const activeCategoryDeleted = !displayCategories.find(
-      (category) => category.slug === activeCategorySlug
-    )
-    if (activeCategoryDeleted) {
-      const timeout = setTimeout(() => {
-        // wait for followingCategories to update
-        router.replace(displayCategories[0].slug ?? '')
-      }, 500)
-
-      return () => clearTimeout(timeout)
-    }
-  }, [activeCategorySlug, displayCategories, router])
 
   return (
     <>
@@ -130,21 +121,19 @@ export default function CategorySelector({
               className="mr-[-8px]"
             />
             {displayCategories.map((category) => (
-              <Link
-                key={category.id}
-                className="shrink-0"
-                href={category.slug ?? ''}
-              >
+              <div key={category.id} className="shrink-0">
                 <Button
                   size="xs"
                   color="nav-chip"
                   text={category.title ?? ''}
                   activeState={{
-                    isActive: category.slug === activeCategorySlug,
+                    isActive: category.slug === currentCategory.slug,
                   }}
-                  onClick={() => {}}
+                  onClick={() => {
+                    setCurrentCategory(category)
+                  }}
                 />
-              </Link>
+              </div>
             ))}
             <div className="shrink-0">
               <Button

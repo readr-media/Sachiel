@@ -1,22 +1,26 @@
 import { useMemo } from 'react'
 
-import { type LatestStoriesInfo, type Story } from '../page'
 import DesktopInfiniteStories from './desktop-infinite-stories'
 import HeroStoryCard from './hero-story-card'
+import type {
+  DisplayPublisher,
+  LatestStoriesInfo,
+  Story,
+} from './media-stories'
 import MostPickedStoryCard from './most-picked-story-card'
-import PublisherCard, { type DisplayPublisher } from './publisher-card'
+import PublisherCard from './publisher-card'
 import StoryCard from './story-card'
 
 export default function DesktopStories({
   mostPickedStory,
-  displayPublishers,
-  followingMemberIds,
+  publishers,
   latestStoriesInfo,
+  loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
-  displayPublishers: DisplayPublisher[]
-  followingMemberIds: Set<string>
+  publishers: DisplayPublisher[]
   latestStoriesInfo: LatestStoriesInfo
+  loadMoreLatestStories: () => void
 }) {
   const { stories } = latestStoriesInfo
   const firstSectionCount = 5
@@ -32,41 +36,33 @@ export default function DesktopStories({
       <section className="grid gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) =>
           i === 0 ? (
-            <HeroStoryCard
-              key={story.id}
-              story={story}
-              followingMemberIds={followingMemberIds}
-            />
+            <HeroStoryCard key={story.id} story={story} />
           ) : (
             <StoryCard
               key={story.id}
               story={story}
               className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
-              followingMemberIds={followingMemberIds}
             />
           )
         )}
       </section>
       {mostPickedStory && (
-        <MostPickedStoryCard
-          story={mostPickedStory}
-          isDesktop={true}
-          followingMemberIds={followingMemberIds}
-        />
+        <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
       <div className="flex gap-10 p-10 pb-15">
         <section className="w-[600px] shrink-0">
           <DesktopInfiniteStories
+            key={latestStoriesInfo.stories.length}
             latestStoriesInfo={{
               ...latestStoriesInfo,
               stories: secondSectionStories,
               totalCount: latestStoriesInfo.totalCount - firstSectionCount,
             }}
-            followingMemberIds={followingMemberIds}
+            loadMoreLatestStories={loadMoreLatestStories}
           />
         </section>
         <aside className="flex flex-col gap-3">
-          {displayPublishers.map((displayPublisher) => (
+          {publishers.map((displayPublisher) => (
             <PublisherCard
               key={displayPublisher.id}
               publisher={displayPublisher}
