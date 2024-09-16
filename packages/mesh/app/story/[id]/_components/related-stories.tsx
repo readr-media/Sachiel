@@ -72,6 +72,7 @@ export default function RelatedStories({
 }: {
   relatedStories: RelatedStory[]
 }) {
+  if (!relatedStories || !relatedStories.length) return null
   return (
     <div className="mt-9 px-5 sm:mt-10 lg:mt-0">
       <h2 className="list-title sm:title-1 text-primary-700">相關報導</h2>
