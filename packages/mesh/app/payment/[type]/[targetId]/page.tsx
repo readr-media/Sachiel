@@ -11,6 +11,12 @@ const AlchemyAuth = dynamic(() => import('@/components/alchemy/alchemy-auth'), {
 })
 
 export type StoryUnlockPolicy = Awaited<ReturnType<typeof getStoryUnlockPolicy>>
+enum PaymentType {
+  SubscriptionStory = 'subscription-story',
+  SubscriptionPublisher = 'subscription-publisher',
+  Sponsor = 'sponsor',
+  Deposit = 'deposit',
+}
 
 export default async function Page({
   params,
@@ -21,23 +27,29 @@ export default async function Page({
   const user = await getCurrentUser()
   const memberId = user?.memberId ?? ''
   const hasAlchemyAccount = !!user?.wallet
-  const unlockPolicy = await getStoryUnlockPolicy(targetId)
 
-  if (!unlockPolicy.length) notFound()
+  switch (type) {
+    case PaymentType.SubscriptionStory: {
+      const unlockPolicy = await getStoryUnlockPolicy(targetId)
+      if (!unlockPolicy.length) notFound()
+      return (
+        <AlchemyAuth
+          memberId={memberId}
+          hasAlchemyAccount={hasAlchemyAccount}
+          renderComponent={
+            <PaymentInfo unlockPolicy={unlockPolicy} storyId={targetId} />
+          }
+        />
+      )
+    }
+    case PaymentType.Sponsor:
+      return <p>SponsorPayment Page to be implemented...</p>
 
-  if (type === 'subscription') {
-    return (
-      <AlchemyAuth
-        memberId={memberId}
-        hasAlchemyAccount={hasAlchemyAccount}
-        renderComponent={
-          <PaymentInfo unlockPolicy={unlockPolicy} storyId={targetId} />
-        }
-      />
-    )
-  } else if (type === 'sponsor') {
-    return <p>SponsorPayment Page</p>
-  } else {
-    return <p>Invalid payment type</p>
+    case PaymentType.SubscriptionPublisher:
+    case PaymentType.Deposit:
+      return <p>Payment Page to be implemented...</p>
+
+    default:
+      return <p>Invalid payment type</p>
   }
 }

@@ -13,7 +13,7 @@ export default function PaymentLayout({
   const router = useRouter()
   const pathname = usePathname()
   const subPath = pathname.split('/')[2]
-  const subtitle = subPath === 'subscription' ? '解鎖' : '贊助'
+  const subtitle = subPath.startsWith('subscription') ? '解鎖' : '贊助'
 
   return (
     <LayoutTemplate

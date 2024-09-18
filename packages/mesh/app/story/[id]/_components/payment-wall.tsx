@@ -42,7 +42,9 @@ export default function PaymentWall({
             size="lg"
             color="custom-blue"
             text="解鎖文章"
-            onClick={() => router.push(`/payment/subscription/${storyId}`)}
+            onClick={() =>
+              router.push(`/payment/subscription-story/${storyId}`)
+            }
           />
           {userId ? null : (
             <p className="footnote text-primary-400">
