@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import Comment from '@/app/profile/_components/comment'
 import Icon from '@/components/icon'
@@ -58,7 +59,7 @@ const ArticleCard = ({
           },
         }
   return (
-    <>
+    <Link href={`/story/${storyData.id}`}>
       <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
         <Image
           src={storyData?.og_image || '/images/default-story-image.webP'}
@@ -119,7 +120,7 @@ const ArticleCard = ({
           />
         )}
       </div>
-    </>
+    </Link>
   )
 }
 
