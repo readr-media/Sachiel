@@ -4545,6 +4545,7 @@ export type GetStoryQuery = {
     url?: string | null
     og_image?: string | null
     published_date?: any | null
+    full_content?: boolean | null
     content?: string | null
     apiData?: any | null
     picksCount?: number | null
@@ -9973,6 +9974,10 @@ export const GetStoryDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'published_date' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'full_content' },
                 },
                 {
                   kind: 'Field',

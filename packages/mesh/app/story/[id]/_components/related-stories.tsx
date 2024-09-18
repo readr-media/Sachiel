@@ -1,8 +1,9 @@
 import React from 'react'
 
 import StoryCard from '@/app/media/_components/story-card'
+import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
 
-import type { Story } from '../page'
+type Story = NonNullable<GetStoriesQuery['stories']>[number]
 
 export default function RelatedStories({
   relatedStories,

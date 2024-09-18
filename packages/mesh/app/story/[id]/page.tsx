@@ -3,7 +3,6 @@ import './_style/article.css'
 import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
 import {
   GetStoriesDocument,
   GetStoryDocument,
@@ -18,7 +17,6 @@ import Article from './_components/article'
 import DesktopPageNavigator from './_components/desktop-page-navigator'
 import RelatedStories from './_components/related-stories'
 
-export type Story = NonNullable<GetStoriesQuery['stories']>[number]
 export type RelatedStory = {
   title: string
   summary: string
