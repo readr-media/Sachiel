@@ -3,7 +3,11 @@ import './_style/article.css'
 import { notFound } from 'next/navigation'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
-import { GetStoryDocument } from '@/graphql/__generated__/graphql'
+import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
+import {
+  GetStoriesDocument,
+  GetStoryDocument,
+} from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulGet } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
@@ -14,6 +18,7 @@ import Article from './_components/article'
 import DesktopPageNavigator from './_components/desktop-page-navigator'
 import RelatedStories from './_components/related-stories'
 
+export type Story = NonNullable<GetStoriesQuery['stories']>[number]
 export type RelatedStory = {
   title: string
   summary: string
@@ -41,13 +46,26 @@ export default async function page({ params }: { params: { id: string } }) {
     notFound()
   }
 
-  let relatedStories: RelatedStory[] = []
-  if (storyData.story?.title) {
-    relatedStories =
-      (await fetchRestfulGet<RelatedStory[]>(
+  const relatedRawStories =
+    (
+      await fetchRestfulGet<RelatedStory[]>(
         RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title
-      )) ?? []
-  }
+      )
+    )?.slice(0, 4) ?? []
+
+  // TODO: use new api to get story pick list according to user.followingIds
+  const relatedStories =
+    (
+      await queryGraphQL(
+        GetStoriesDocument,
+        {
+          storyIds: relatedRawStories.map((story) => String(story.id)),
+          picksTake,
+          commentsTake,
+        },
+        globalLogFields
+      )
+    )?.stories ?? []
 
   const sourceCustomId = storyData.story?.source?.customId ?? ''
 
