@@ -3,10 +3,7 @@
 import { z } from 'zod'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
-import {
-  GetAllCategoriesDocument,
-  GetMemberDocument,
-} from '@/graphql/__generated__/graphql'
+import { GetAllCategoriesDocument } from '@/graphql/__generated__/graphql'
 import type {
   CategoryStory,
   Collector,
@@ -66,16 +63,6 @@ async function fetchRecentReadrStory(): Promise<ReadrStory | null> {
     )
     return null
   }
-}
-
-async function fetchMemberInfo(memberId: string) {
-  const memberData = await queryGraphQL(
-    GetMemberDocument,
-    { memberId },
-    globalLogFields
-  )
-
-  return memberData
 }
 
 async function fetchMostSponsoredPublisher(): Promise<SponsoredStory[] | null> {
@@ -208,7 +195,6 @@ export {
   fetchCategoryStory,
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
-  fetchMemberInfo,
   fetchMostLikedComment,
   fetchMostPickedStory,
   fetchMostSponsoredPublisher,
