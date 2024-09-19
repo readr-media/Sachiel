@@ -56,8 +56,6 @@ export default function NavList({ categories, initialStories }: Props) {
     isLeadingRefInView !== null && !isLeadingRefInView
   const showNavigateNext = isEndingRefInView !== null && !isEndingRefInView
 
-  if (!data) return null
-
   return (
     <>
       <div className="flex h-[68px] items-center sm:h-[76px]">

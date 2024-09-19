@@ -2,10 +2,11 @@ import InteractiveIcon from '@/components/interactive-icon'
 import type { CategoryStory } from '@/types/homepage'
 
 import StoryCard from '../story-card'
+import EmptyMessage from './empty-message'
 import MainCard from './main-card'
 
 type Props = {
-  stories: CategoryStory[]
+  stories: CategoryStory[] | null
   activeTitle: string
 }
 
@@ -27,15 +28,19 @@ export default function StorySection({ activeTitle, stories }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
-        <MainCard story={stories[0]} />
+      {stories ? (
+        <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
+          <MainCard story={stories[0]} />
 
-        <div className="flex flex-col gap-y-5">
-          {stories.slice(1, 4).map((story) => (
-            <StoryCard story={story} key={story.id} />
-          ))}
+          <div className="flex flex-col gap-y-5">
+            {stories.slice(1, 4).map((story) => (
+              <StoryCard story={story} key={story.id} />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <EmptyMessage />
+      )}
     </div>
   )
 }
