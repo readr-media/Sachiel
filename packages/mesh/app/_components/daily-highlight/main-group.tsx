@@ -6,19 +6,16 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { DailyStory } from '@/types/homepage'
-import { getDisplayPicks } from '@/utils/story-display'
 
 import SwiperComponent from './swiper-component'
 
 type Props = {
   stories: DailyStory[]
-  followingMembers: Set<string>
 }
 
-export default function MainCard({ stories, followingMembers }: Props) {
+export default function MainCard({ stories }: Props) {
   const story = stories[0]
   const restStories = stories.slice(1, 5)
-  const displayPicks = getDisplayPicks(story.picks, followingMembers)
 
   return (
     <article className="mb-6 sm:mb-10">
@@ -59,7 +56,7 @@ export default function MainCard({ stories, followingMembers }: Props) {
 
           <div className="mt-4 flex justify-between">
             <StoryPickInfo
-              displayPicks={displayPicks}
+              displayPicks={story.picks}
               pickCount={story.pickCount}
             />
             <StoryPickButton storyId={story.id} />

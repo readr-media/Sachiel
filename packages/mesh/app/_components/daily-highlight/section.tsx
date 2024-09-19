@@ -7,11 +7,7 @@ import { displayDateWithWeekday } from '@/utils/story-display'
 import StoryCard from '../story-card'
 import MainGroup from './main-group'
 
-type Props = {
-  followingMembers: Set<string>
-}
-
-export default async function DailyHighlight({ followingMembers }: Props) {
+export default async function DailyHighlight() {
   const groupData = await fetchDailyHighlightGroup()
   const noGroupData = await fetchDailyHighlightNoGroup()
 
@@ -27,18 +23,12 @@ export default async function DailyHighlight({ followingMembers }: Props) {
         </time>
       </div>
 
-      {groupStories && (
-        <MainGroup stories={groupStories} followingMembers={followingMembers} />
-      )}
+      {groupStories && <MainGroup stories={groupStories} />}
 
       <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-4 lg:[&>*:nth-child(5)]:shadow-none">
         {noGroupStories &&
           noGroupStories.map((story) => (
-            <StoryCard
-              key={story.id}
-              story={story}
-              followingMembers={followingMembers}
-            />
+            <StoryCard key={story.id} story={story} />
           ))}
       </div>
     </section>

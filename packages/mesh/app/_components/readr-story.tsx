@@ -2,11 +2,7 @@ import { fetchRecentReadrStory } from '@/app/actions/get-homepage'
 
 import FeaturedCard from './featured-card'
 
-type Props = {
-  followingMembers: Set<string>
-}
-
-export default async function ReadrStory({ followingMembers }: Props) {
+export default async function ReadrStory() {
   const data = await fetchRecentReadrStory()
   if (!data) return null
   const story = data.stories[0]
@@ -17,7 +13,6 @@ export default async function ReadrStory({ followingMembers }: Props) {
       isReadrStory={true}
       story={story}
       customId={customId}
-      followingMembers={followingMembers}
       publisher={story.title}
     />
   )

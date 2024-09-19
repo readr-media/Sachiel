@@ -5,13 +5,7 @@ import {
 
 import NavList from './nav-list'
 
-type Props = {
-  followingMembers: Set<string>
-}
-
-export default async function CategoryStorySection({
-  followingMembers,
-}: Props) {
+export default async function CategoryStorySection() {
   const data = await fetchAllCategory()
   const categories = data?.categories ?? []
 
@@ -20,11 +14,7 @@ export default async function CategoryStorySection({
 
   return (
     <section className="px-5 pt-5 md:px-[70px] lg:px-10 lg:pb-10">
-      <NavList
-        categories={categories}
-        followingMembers={followingMembers}
-        initialStories={categoryStories}
-      />
+      <NavList categories={categories} initialStories={categoryStories} />
     </section>
   )
 }

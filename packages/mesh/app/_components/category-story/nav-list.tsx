@@ -29,16 +29,11 @@ const NavigateButton = ({
 }
 
 type Props = {
-  followingMembers: Set<string>
   categories: GetAllCategoriesQuery['categories']
   initialStories: CategoryStory[] | null
 }
 
-export default function NavList({
-  categories,
-  followingMembers,
-  initialStories,
-}: Props) {
+export default function NavList({ categories, initialStories }: Props) {
   const [activeCategory, setActiveCategory] = useState(categories?.[0])
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
 
@@ -144,11 +139,7 @@ export default function NavList({
         </div>
       </div>
 
-      <StorySection
-        stories={data}
-        activeTitle={activeCategory?.title ?? ''}
-        followingMembers={followingMembers}
-      />
+      <StorySection stories={data} activeTitle={activeCategory?.title ?? ''} />
     </>
   )
 }

@@ -6,19 +6,14 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { CategoryStory, DailyStory } from '@/types/homepage'
-import { getDisplayPicks } from '@/utils/story-display'
 
 type Props<T> = {
   story: T
-  followingMembers: Set<string>
 }
 
 export default function StoryCard<T extends CategoryStory | DailyStory>({
   story,
-  followingMembers,
 }: Props<T>) {
-  const displayPicks = getDisplayPicks(story.picks, followingMembers)
-
   return (
     <div className="pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none">
       <div className="mb-1 flex justify-between">
@@ -52,7 +47,7 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
 
       <div className="mt-4 flex justify-between">
         <StoryPickInfo
-          displayPicks={displayPicks}
+          displayPicks={story.picks}
           pickCount={'pickCount' in story ? story.pickCount : story.picksCount}
         />
         <StoryPickButton storyId={story.id} />

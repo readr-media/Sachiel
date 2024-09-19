@@ -6,11 +6,9 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { Story } from '@/types/homepage'
-import { getDisplayPicks } from '@/utils/story-display'
 
 type Props = {
   isReadrStory?: boolean
-  followingMembers: Set<string>
   story: Story
   customId: string
   publisher: string
@@ -18,13 +16,10 @@ type Props = {
 
 export default function FeaturedCard({
   isReadrStory,
-  followingMembers,
   story,
   customId,
   publisher,
 }: Props) {
-  const displayPicks = getDisplayPicks(story.picks, followingMembers)
-
   return (
     <section className="bg-primary-100 p-5 md:px-[70px] lg:px-10 lg:py-8">
       <h2 className="list-title lg:title-1 mb-2 text-primary-500 lg:mb-3">
@@ -61,7 +56,7 @@ export default function FeaturedCard({
 
           <div className="flex justify-between">
             <StoryPickInfo
-              displayPicks={displayPicks}
+              displayPicks={story.picks}
               pickCount={story.pickCount}
             />
             <StoryPickButton storyId={story.id} color="transparent" />

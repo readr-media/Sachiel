@@ -5,16 +5,11 @@ import StoryCard from '../story-card'
 import MainCard from './main-card'
 
 type Props = {
-  followingMembers: Set<string>
   stories: CategoryStory[]
   activeTitle: string
 }
 
-export default function StorySection({
-  activeTitle,
-  stories,
-  followingMembers,
-}: Props) {
+export default function StorySection({ activeTitle, stories }: Props) {
   return (
     <div>
       <div className="group flex items-center pb-3 pt-2 lg:pb-4">
@@ -31,15 +26,11 @@ export default function StorySection({
       </div>
 
       <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
-        <MainCard story={stories[0]} followingMembers={followingMembers} />
+        <MainCard story={stories[0]} />
 
         <div className="flex flex-col gap-y-5">
           {stories.slice(1, 4).map((story) => (
-            <StoryCard
-              followingMembers={followingMembers}
-              story={story}
-              key={story.id}
-            />
+            <StoryCard story={story} key={story.id} />
           ))}
         </div>
       </div>
