@@ -59,7 +59,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
 
       <div className="hidden lg:block lg:w-full">
         <Button
-          size="lg-small"
+          size="md-large"
           color="transparent"
           text="追蹤"
           activeState={{
