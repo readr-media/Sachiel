@@ -45,7 +45,7 @@ const FollowingPage = async ({ params }: PageProps) => {
     )
   }
   return (
-    <main className="flex max-w-[1120px] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
+    <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
       <FollowingList
         title="媒體"
         followingList={followPublisherData as FollowingListType}

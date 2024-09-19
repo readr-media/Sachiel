@@ -74,4 +74,5 @@ export type EditProfileContextType = {
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
+  isProfileError: boolean
 }

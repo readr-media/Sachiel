@@ -552,7 +552,7 @@ export default function Members({
                   })}
                 </Number>
               </InfoWrapper>
-              {member.posts?.length === 0 ? (
+              {member.postsCount === 0 ? (
                 <Work
                   style={{
                     backgroundColor: '#E5E5E5',

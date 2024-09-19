@@ -104,6 +104,8 @@ export type IconName =
   | 'icon-bookmark'
   | 'icon-share'
   | 'icon-open-new-tab'
+  | 'icon-404'
+  | 'icon-500'
 
 export type IconProps = {
   size: Size
