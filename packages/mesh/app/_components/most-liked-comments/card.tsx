@@ -27,7 +27,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         {rank}
       </span>
       <section className="grow overflow-hidden rounded-md border-[0.5px] border-primary-200 bg-primary-100 p-4">
-        <div className="mb-3 flex justify-between">
+        <div className="flex justify-between">
           <div className="flex gap-x-4">
             <div className="relative size-11 shrink-0">
               <Avatar src={comment.member.avatar} size="l" />
@@ -57,13 +57,12 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
           />
         </div>
 
-        <article className="body-3 line-clamp-4 h-[84px] text-primary-600">
+        <article className="body-3 my-3 line-clamp-4 h-[84px] text-primary-600">
           {comment.content}
         </article>
-
-        <hr className="bg-rgba(0,9,40,0.1)] my-3 h-[0.5px]" />
+        {/* TODO: border color */}
         {comment.story && (
-          <div>
+          <div className="border-t-[0.5px] border-[rgba(0,9,40,0.1)]  pt-3">
             <h2 className="subtitle-2 mb-2 text-primary-700">
               {comment.story.title}
             </h2>
