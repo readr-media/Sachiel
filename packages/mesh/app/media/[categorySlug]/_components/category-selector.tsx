@@ -30,7 +30,7 @@ const NavigateButton = ({
 }) => {
   return (
     <button onClick={onClick} className="group">
-      <InteractiveIcon size={{ width: 36, height: 36 }} icon={icon} />
+      <InteractiveIcon size={{ width: 24, height: 24 }} icon={icon} />
     </button>
   )
 }
@@ -167,7 +167,7 @@ export default function CategorySelector({
           </nav>
           <div className="pointer-events-none absolute inset-[0_-8px_0_-8px] flex justify-between">
             <div
-              className={` bg-[linear-gradient(90deg,_#fff_60%,_rgba(255,255,255,0%)_100%)] pr-6 opacity-0 ${
+              className={`flex items-center bg-[linear-gradient(90deg,_#fff_60%,_rgba(255,255,255,0%)_100%)] pr-6 opacity-0 ${
                 showNavigatePrevious
                   ? 'pointer-events-auto opacity-100'
                   : undefined
@@ -190,7 +190,7 @@ export default function CategorySelector({
               />
             </div>
             <div
-              className={`bg-[linear-gradient(270deg,_#fff_60%,_rgba(255,255,255,0%)_100%)] pl-6 opacity-0 ${
+              className={`flex items-center bg-[linear-gradient(270deg,_#fff_60%,_rgba(255,255,255,0%)_100%)] pl-6 opacity-0 ${
                 showNavigateNext ? 'pointer-events-auto opacity-100' : undefined
               }`}
             >
