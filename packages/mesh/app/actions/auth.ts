@@ -139,10 +139,11 @@ export async function getCurrentUser() {
   }
 }
 
-export async function signUpMember(formData: UserFormData) {
+export async function signUpMember(
+  formData: UserFormData,
+  idToken: string | undefined
+) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const idToken = cookies().get('token')?.value
-
   if (!idToken) return undefined
 
   try {

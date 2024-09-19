@@ -7,6 +7,7 @@ import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
 import { useLogin } from '@/context/login'
+import { auth } from '@/firebase/client'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
 
 export default function LoginSetFollowing() {
@@ -58,7 +59,8 @@ export default function LoginSetFollowing() {
   }
 
   const handleFinishSignUp = async () => {
-    const response = await signUpMember(formData)
+    const idToken = await auth.currentUser?.getIdToken()
+    const response = await signUpMember(formData, idToken)
     if (response) {
       setSignedUpId(response.id)
       setStep('set-wallet')

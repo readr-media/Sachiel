@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect, useState } from 'react'
 
-import { getAccessToken, getCurrentUser } from '@/app/actions/auth'
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { auth } from '@/firebase/client'
@@ -28,32 +27,33 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 
 export default function LoginSteps() {
   const router = useRouter()
-  const { step } = useLogin()
-  const { handleSignIn } = useHandleSignIn()
-  const [isSignInLoading, setIsSignInLoading] = useState(false)
+  const { step, setStep } = useLogin()
+  const { handleSignIn, status: isSignInLoading } = useHandleSignIn()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAuthReady, setIsAuthReady] = useState(false)
 
   useEffect(() => {
     const init = async () => {
-      setIsSignInLoading(true)
+      await auth.authStateReady()
+      setIsAuthReady(true)
       const unsubscribe = auth.onAuthStateChanged(async (user) => {
         if (user) {
-          const idToken = await user.getIdToken(true)
-          await getAccessToken(idToken)
+          const response = await handleSignIn()
+          if (!response) return
+          if (response.result === 'sign-up') {
+            setStep('set-name')
+          } else if (response.result === 'logged-in') {
+            setIsLoggedIn(true)
+            router.push('/media')
+          }
         }
       })
-      const user = await getCurrentUser()
-      if (user) {
-        router.push('/media')
-      } else {
-        await handleSignIn()
-      }
-      setIsSignInLoading(false)
       return () => unsubscribe()
     }
     init()
-  }, [handleSignIn, router])
+  }, [handleSignIn, router, setStep])
 
-  if (isSignInLoading) {
+  if (isSignInLoading === 'loading' || isLoggedIn || !isAuthReady) {
     return (
       <div className="flex size-full items-center justify-center">
         <Spinner />
