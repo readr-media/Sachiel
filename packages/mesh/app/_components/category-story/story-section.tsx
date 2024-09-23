@@ -28,7 +28,7 @@ export default function StorySection({ activeTitle, stories }: Props) {
         </div>
       </div>
 
-      {stories ? (
+      {stories && stories.length > 0 ? (
         <div className="flex flex-col gap-y-5 lg:flex-row lg:gap-x-10">
           <MainCard story={stories[0]} />
 
