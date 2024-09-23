@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { addComment } from '@/app/actions/comment'
 import Avatar from '@/components/story-card/avatar'
 import { useComment } from '@/context/comment-context'
-import type { User } from '@/context/user'
+import { type User } from '@/context/user'
 
 const StoryCommentFooter = ({
   user,
@@ -16,7 +16,11 @@ const StoryCommentFooter = ({
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const { dispatch } = useComment()
+  const { state, dispatch } = useComment()
+  const latestCommentId =
+    state.commentList.find(
+      (comment) => comment.member?.customId === user?.customId
+    )?.id || ''
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch({ type: 'SET_COMMENT', payload: e.target.value })
     adjustTextareaHeight()
@@ -26,7 +30,7 @@ const StoryCommentFooter = ({
     const textarea = textareaRef.current
     if (textarea) {
       textarea.style.height = '24px'
-      const singleLineHeight = 24 // Adjust this value based on your font size and line height
+      const singleLineHeight = 24
       const maxHeight = singleLineHeight * 4
       const scrollHeight = textarea.scrollHeight
       textarea.style.height = `${Math.min(
@@ -44,22 +48,27 @@ const StoryCommentFooter = ({
     if (!user?.memberId) throw new Error('no user id')
     if (!storyId) throw new Error('no story id')
     const dateTime = new Date().toString()
-    const addCommentResponse = await addComment({
-      content: comment,
-      storyId,
-      memberId: user?.memberId,
-    })
-
-    if (!addCommentResponse) {
+    let addedCommentId
+    try {
+      addedCommentId = await addComment({
+        content: comment,
+        storyId,
+        memberId: user?.memberId,
+        latestCommentId,
+      })
+    } catch (error) {
+      console.error({ error })
+    }
+    if (!addedCommentId) {
       // TODO: error toast
       return
     }
-    dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: dateTime })
+    dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: addedCommentId })
     dispatch({
       type: 'ADD_COMMENT',
       payload: {
         // NOTE: temp use date for id for local state management
-        id: new Date().toString(),
+        id: addedCommentId,
         content: comment,
         createdAt: dateTime,
         member: {

@@ -89,6 +89,7 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
         name
         avatar
       }
+      is_edited
       content
       state
     }

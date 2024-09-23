@@ -103,6 +103,8 @@ export type IconName =
   | 'icon-delete'
   | 'icon-bookmark'
   | 'icon-share'
+  | 'icon-edit'
+  | 'icon-edited'
   | 'icon-open-new-tab'
 
 export type IconProps = {

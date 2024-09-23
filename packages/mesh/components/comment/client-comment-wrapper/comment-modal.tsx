@@ -1,29 +1,29 @@
 import React from 'react'
 
 import Button from '@/components/button'
-import { useComment } from '@/context/comment-context'
-
 interface CommentModalProps {
   isOpen: boolean
+  onLeaveText: string
+  onCloseText: string
+  onLeave: () => void
+  onClose: () => void
   children: React.ReactNode
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({ isOpen, children }) => {
-  const { dispatch } = useComment()
-  const onLeave = () => {
-    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
-    dispatch({ type: 'CLOSE_MODAL' })
-    document.body.classList.remove('overflow-hidden')
-  }
-  const onClose = () => {
-    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
-  }
+const CommentModal: React.FC<CommentModalProps> = ({
+  isOpen,
+  onLeave,
+  onClose,
+  onLeaveText,
+  onCloseText,
+  children,
+}) => {
   if (!isOpen) return null
 
   return (
     <>
       {/* Background overlay */}
-      <div className="fixed inset-0 z-20 bg-black opacity-30"></div>
+      <div className="fixed inset-0 z-20 bg-black opacity-30" />
 
       {/* Modal content */}
       <div className="fixed inset-0 z-30 flex items-center justify-center overflow-auto px-12">
@@ -34,13 +34,13 @@ const CommentModal: React.FC<CommentModalProps> = ({ isOpen, children }) => {
               onClick={onLeave}
               size="sm"
               color="transparent-no-border"
-              text="離開"
+              text={onLeaveText}
             />
             <Button
               onClick={onClose}
               size="sm"
               color="custom-blue"
-              text="繼續輸入"
+              text={onCloseText}
             />
           </div>
         </div>

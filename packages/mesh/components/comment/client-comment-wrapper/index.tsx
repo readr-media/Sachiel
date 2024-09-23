@@ -9,6 +9,7 @@ import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import CommentEditDrawer from './comment-edit-drawer'
 import CommentModal from './comment-modal'
 import StoryCommentBlock from './story-comment-block'
+import StoryCommentEditor from './story-comment-editor'
 import StoryCommentFooter from './story-comment-footer'
 import StoryCommentHeader from './story-comment-header'
 import StoryCommentMeta from './story-comment-meta'
@@ -16,10 +17,36 @@ import StoryCommentMeta from './story-comment-meta'
 type Story = NonNullable<GetStoryQuery>['story']
 
 function CommentBlockContent({ storyData }: { storyData: Story }) {
-  const { state } = useComment()
-  const { comment, commentList, confirmModalShow, isModalOpen } = state
+  const { state, dispatch } = useComment()
+  const {
+    comment,
+    commentList,
+    confirmModalShow,
+    isModalOpen,
+    confirmDeleteCommentModalShow,
+  } = state
   const { user } = useUser()
+  const handleAddCommentModalOnLeave = () => {
+    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
+    dispatch({ type: 'CLOSE_MODAL' })
+    document.body.classList.remove('overflow-hidden')
+  }
 
+  const handleAddCommentModalOnClose = () => {
+    dispatch({ type: 'HIDE_CONFIRM_MODAL' })
+  }
+
+  const handleDeleteCommentModalOnLeave = () => {
+    dispatch({ type: 'DELETE_COMMENT' })
+    dispatch({ type: 'HIDE_DELETE_COMMENT_MODAL' })
+    dispatch({ type: 'HIDE_EDIT_DRAWER' })
+    dispatch({ type: 'CLEAR_EDIT_DRAWER' })
+  }
+  const handleDeleteCommentModalOnClose = () => {
+    dispatch({ type: 'HIDE_EDIT_DRAWER' })
+    dispatch({ type: 'CLEAR_EDIT_DRAWER' })
+    dispatch({ type: 'HIDE_DELETE_COMMENT_MODAL' })
+  }
   return (
     <>
       {isModalOpen && (
@@ -48,13 +75,32 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
             storyId={storyData?.id}
             comment={comment}
           />
-          <CommentModal isOpen={confirmModalShow}>
+          <CommentModal
+            isOpen={confirmModalShow}
+            onLeaveText="離開"
+            onCloseText="繼續輸入"
+            onLeave={handleAddCommentModalOnLeave}
+            onClose={handleAddCommentModalOnClose}
+          >
             <section className="flex flex-col justify-start">
               <p className="title-2">離開留言區？</p>
               <p className="body-3">系統將不會儲存您剛剛輸入的內容</p>
             </section>
           </CommentModal>
+          <CommentModal
+            onLeaveText="刪除留言"
+            onCloseText="取消"
+            isOpen={confirmDeleteCommentModalShow}
+            onLeave={handleDeleteCommentModalOnLeave}
+            onClose={handleDeleteCommentModalOnClose}
+          >
+            <section className="flex flex-col justify-start">
+              <p className="title-2">確認要刪除留言？</p>
+              <p className="body-3">系統仍會保留您的精選記錄</p>
+            </section>
+          </CommentModal>
           <CommentEditDrawer />
+          <StoryCommentEditor />
         </div>
       )}
     </>
