@@ -2,7 +2,6 @@ import ArticleHeader from './article-header'
 import StatefulHeader from './stateful-header'
 import StatelessHeader from './stateless-header'
 
-// export type HeaderType = 'stateful' | 'stateless' | 'article'
 export enum HeaderType {
   Stateful = 'stateful',
   Stateless = 'stateless',
