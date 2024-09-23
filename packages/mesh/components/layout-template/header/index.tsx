@@ -1,14 +1,32 @@
+import ArticleHeader from './article-header'
 import StatefulHeader from './stateful-header'
 import StatelessHeader from './stateless-header'
 
-export type HeaderType = 'stateful' | 'stateless'
+export enum HeaderType {
+  Stateful = 'stateful',
+  Stateless = 'stateless',
+  Article = 'article',
+}
 
-export default function Header({ type }: { type: HeaderType }) {
-  switch (type) {
-    case 'stateful':
+type HeaderProps =
+  | {
+      type: HeaderType.Stateful
+    }
+  | {
+      type: HeaderType.Stateless
+    }
+  | {
+      type: HeaderType.Article
+      showNav: () => void
+    }
+export default function Header(props: HeaderProps) {
+  switch (props.type) {
+    case HeaderType.Stateful:
       return <StatefulHeader />
-    case 'stateless':
+    case HeaderType.Stateless:
       return <StatelessHeader />
+    case HeaderType.Article:
+      return <ArticleHeader showNav={props.showNav} />
     default:
       return null
   }

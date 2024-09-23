@@ -73,7 +73,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-popular-lg-on',
       },
       href: '/',
-      text: '熱門',
+      text: '首頁',
     },
     {
       icon: {
@@ -145,7 +145,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-popular-on',
     },
     href: '/',
-    text: '熱門',
+    text: '首頁',
   },
   {
     icon: {
