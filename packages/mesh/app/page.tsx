@@ -9,19 +9,12 @@ import TopPublisherSection from './_components/top-publisher/section'
 export default async function Home() {
   return (
     <main>
-      {/* @ts-expect-error Server Component */}
       <DailyHighlightSection />
-      {/* @ts-expect-error Server Component */}
       <MostPickedStorySection />
-      {/* @ts-expect-error Server Component */}
       <CategoryStorySection />
-      {/* @ts-expect-error Server Component */}
       <TopCollectorSection />
-      {/* @ts-expect-error Server Component */}
       <MostLikedCommentSection />
-      {/* @ts-expect-error Server Component */}
       <ReadrStorySection />
-      {/* @ts-expect-error Server Component */}
       <TopPublisherSection />
     </main>
   )
