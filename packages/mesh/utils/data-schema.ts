@@ -6,7 +6,7 @@ const memberSchema = z.object({
   avatar: z.string(),
 })
 
-const sourceSchema = z.object({
+export const sourceSchema = z.object({
   id: z.string(),
   title: z.string(),
   customId: z.string(),
@@ -16,7 +16,7 @@ const categorySchema = z.object({
   slug: z.string(),
 })
 
-const storySchema = z.object({
+export const storySchema = z.object({
   id: z.string(),
   url: z.string(),
   title: z.string(),
