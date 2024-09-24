@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { forwardRef } from 'react'
@@ -7,9 +9,10 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { useUser } from '@/context/user'
 import { getDisplayPicks } from '@/utils/story-display'
 
-import { type Story } from '../page'
+import { type Story } from './media-stories'
 
 const StoryMetaWrapper = ({
   story,
@@ -34,15 +37,14 @@ export default forwardRef(function StoryCard(
   {
     story,
     className = '',
-    followingMemberIds,
   }: {
     story: Story
     className?: string
-    followingMemberIds: Set<string>
   },
   ref
 ) {
-  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
+  const { user } = useUser()
+  const displayPicks = getDisplayPicks(story.picks, user.followingMemberIds)
 
   return (
     <article

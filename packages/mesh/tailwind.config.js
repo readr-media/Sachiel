@@ -25,6 +25,7 @@ module.exports = {
           md: '220px',
           xl: '320px',
         },
+        articleNav: '300px',
       },
       spacing: {
         15: '3.75rem',

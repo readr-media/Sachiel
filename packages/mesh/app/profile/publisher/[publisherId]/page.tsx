@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { formatFollowCount } from '@/utils/format-follow-count'
@@ -20,26 +22,12 @@ const page = async ({ params }: PageProps) => {
   })
 
   if (!response) {
-    return (
-      <main>
-        <div>
-          <h1>Error Page</h1>
-          <p>Sorry, something went wrong.</p>
-        </div>
-      </main>
-    )
+    notFound()
   }
   // 使用publishers因為query publisher的where沒有提供customId的篩選
   const userData = response.publishers && response.publishers[0]
   if (!userData) {
-    return (
-      <main>
-        <div>
-          <h1>Error Page</h1>
-          <p>Sorry, something went wrong.</p>
-        </div>
-      </main>
-    )
+    notFound()
   }
 
   const userName = userData.title || '使用者名稱'

@@ -5,20 +5,20 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { useUser } from '@/context/user'
 import { getDisplayPicks } from '@/utils/story-display'
 
-import { type Story } from '../page'
+import { type Story } from './media-stories'
 
 export default function MostPickedStoryCard({
   story,
   isDesktop,
-  followingMemberIds,
 }: {
   story: Story
   isDesktop: boolean
-  followingMemberIds: Set<string>
 }) {
-  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
+  const { user } = useUser()
+  const displayPicks = getDisplayPicks(story.picks, user.followingMemberIds)
 
   return (
     <section className="bg-primary-100">

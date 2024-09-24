@@ -5,19 +5,15 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { useUser } from '@/context/user'
 import { getDisplayPicks } from '@/utils/story-display'
 
-import { type Story } from '../page'
+import { type Story } from './media-stories'
 
 // only used in desktop width
-export default function HeroStoryCard({
-  story,
-  followingMemberIds,
-}: {
-  story: Story
-  followingMemberIds: Set<string>
-}) {
-  const displayPicks = getDisplayPicks(story.picks, followingMemberIds)
+export default function HeroStoryCard({ story }: { story: Story }) {
+  const { user } = useUser()
+  const displayPicks = getDisplayPicks(story.picks, user.followingMemberIds)
 
   return (
     <article className="col-span-2 border-b pb-5 pt-3">

@@ -35,13 +35,9 @@ export default function Article({
   hasPayed: boolean
   policy: PublisherPolicy
 }) {
-  const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
+  const getArticleContent = (story: Story, sourceCustomId: string) => {
+    const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
 
-  const getArticleContent = (
-    story: Story,
-    sourceCustomId: string,
-    shouldUseApiData: boolean
-  ) => {
     if (shouldUseApiData) {
       return (
         <>
@@ -57,7 +53,18 @@ export default function Article({
         </>
       )
     } else {
-      // redirect all external stories for now, TODO: sparate external and redirect stories
+      const isExternal = story?.full_content
+
+      if (isExternal) {
+        return (
+          <article
+            className="story-renderer"
+            dangerouslySetInnerHTML={{ __html: story.content ?? '' }}
+          />
+        )
+      }
+
+      // redirect article
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
           <div className="body-3 text-primary-500">本篇為外連文章</div>
@@ -133,7 +140,7 @@ export default function Article({
             </div>
           )}
           <div className="relative">
-            {getArticleContent(story, sourceCustomId, shouldUseApiData)}
+            {getArticleContent(story, sourceCustomId)}
             {isMemberStory && !hasPayed ? (
               <PaymentWall storyId={story?.id ?? ''} policy={policy} />
             ) : null}

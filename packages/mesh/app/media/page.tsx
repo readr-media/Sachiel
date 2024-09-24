@@ -1,42 +1,23 @@
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
-import { GetMemberDocument } from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { getCurrentUser } from '@/app/actions/auth'
+import { type GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
 
-import { getCurrentUser } from '../actions/auth'
-
-export { type Story } from '@/utils/get-latest-stories-in-categroy'
+import getAllCategories from '../actions/get-all-categories'
+import MediaStories from './_components/media-stories'
 
 //TODO: cache setting
 export const revalidate = 0
 
+export type Category = NonNullable<GetAllCategoriesQuery['categories']>[number]
+
 export default async function Page() {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-
   const user = await getCurrentUser()
-  const memberId = user?.memberId
 
-  if (!memberId) redirect('/login')
+  if (!user) redirect('/login')
 
-  const data = await queryGraphQL(
-    GetMemberDocument,
-    {
-      memberId,
-    },
-    globalLogFields
-  )
+  const allCategoriesResponse = await getAllCategories()
+  const allCategories = allCategoriesResponse?.categories ?? []
 
-  if (!data) {
-    notFound()
-  }
-
-  const firstCategory = data.member?.followingCategories?.[0]
-
-  if (!firstCategory || !firstCategory.id || !firstCategory.slug) {
-    // TODO: user has no category to render, show empty category UI
-    notFound()
-  }
-
-  redirect(`media/${firstCategory.slug}`)
+  return <MediaStories allCategories={allCategories} />
 }
