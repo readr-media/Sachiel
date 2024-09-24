@@ -15,12 +15,12 @@ export default function Footer({ className = '' }: { className?: string }) {
   return (
     <footer
       className={twMerge(
-        'h-[theme(height.footer.default)] border-t bg-white sm:h-[theme(height.footer.sm)]',
+        'flex h-[theme(height.footer.default)] justify-center border-t bg-white sm:h-[theme(height.footer.sm)]',
         className
       )}
     >
       {/* nested footer to maintain the max width for screen width larger than 1440 */}
-      <div className="flex h-full max-w-[theme(width.maxMain)] flex-col gap-10 py-10  sm:gap-0 sm:p-10">
+      <div className="flex size-full max-w-[theme(width.maxMain)] flex-col gap-10 py-10  sm:gap-0 sm:p-10">
         {/* first row */}
         <div className="flex flex-col gap-5 sm:h-[100px] sm:w-full sm:flex-row sm:justify-between sm:gap-0 sm:border-b">
           {/* first row left block  */}
