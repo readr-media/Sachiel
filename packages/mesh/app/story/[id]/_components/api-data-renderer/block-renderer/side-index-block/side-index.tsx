@@ -224,7 +224,7 @@ export default function SideIndexContainer({
     </div>
   ) : (
     // FIXME: update the sideindex style to fit the project
-    <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block lg:px-5">
+    <div className="hidden lg:sticky lg:top-[calc(theme(height.header.sm)+36px)] lg:mt-10 lg:block">
       {sideIndexJsx}
     </div>
   )

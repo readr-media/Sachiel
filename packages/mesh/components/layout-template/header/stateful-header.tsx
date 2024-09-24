@@ -12,8 +12,8 @@ import { isUserLoggedIn, useUser } from '@/context/user'
 import { logout } from '@/utils/logout'
 
 export default function StatefulHeader() {
-  const [showNotification, setShowNotification] = useState(false)
   // temporarily use hardcode value for state
+  const [showNotification, setShowNotification] = useState(false)
   const router = useRouter()
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)

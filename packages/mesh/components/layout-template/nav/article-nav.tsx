@@ -1,20 +1,11 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import Icon, { type IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
-import PublisherDonateButton from '@/components/publisher-card/donate-button'
-import StoryCommentCount from '@/components/story-card/story-comment-count'
-import StoryPickButton from '@/components/story-card/story-pick-button'
-import StoryPickCount from '@/components/story-card/story-pick-count'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
-import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
-
-type Story = NonNullable<GetStoryQuery>['story']
 
 type IconInfo = {
   icon: {
@@ -52,11 +43,9 @@ const NonMobileNavIcon = ({
     <InteractiveIcon size="xl" icon={iconInfo.icon} />
   )
   const textJsx = isOn ? (
-    <span className="title-1 hidden md:block md:text-primary-700">
-      {iconInfo.text}
-    </span>
+    <span className="title-1 block text-primary-700">{iconInfo.text}</span>
   ) : (
-    <span className="title-1 hidden group-hover:text-primary-700 md:block md:text-primary-600">
+    <span className="title-1 block text-primary-600 group-hover:text-primary-700">
       {iconInfo.text}
     </span>
   )
@@ -65,7 +54,7 @@ const NonMobileNavIcon = ({
     <Link
       key={iconInfo.text}
       href={iconInfo.href}
-      className="group flex rounded-md md:h-14 md:items-center md:gap-3 md:pl-2 md:hover:bg-primary-100"
+      className="group flex h-14 items-center gap-3 rounded-md pl-2 hover:bg-primary-100"
     >
       {iconJsx}
       {textJsx}
@@ -76,18 +65,32 @@ const NonMobileNavIcon = ({
 const NonMobileNav = ({
   path,
   avatarUrl,
+  closeNav,
+  shouldShowNav,
 }: {
   path: string
   avatarUrl: string
+  closeNav: () => void
+  shouldShowNav: boolean
 }) => {
   return (
-    <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))] ">
+    <nav
+      className={`z-layout hidden transition-transform sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:w-[theme(width.articleNav)] sm:justify-end sm:bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.articleNav))] ${
+        shouldShowNav ? '' : '-translate-x-full'
+      }`}
+    >
       {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
-      <div className="flex grow flex-col justify-between border-r sm:px-12 md:px-10 xl:max-w-[theme(width.nav.xl)]">
+      <div className="flex grow flex-col justify-between border-r pl-10 pr-5 xl:max-w-[theme(width.articleNav)]">
         {/* top part */}
-        <div className="py-10">
+        <div className="pt-3">
           {/* top first section */}
-          <div className="flex flex-col border-b sm:gap-8 sm:pb-8 md:gap-2 md:pb-5">
+          <div className="mb-5 flex justify-between">
+            <Icon size="2xl" iconName="icon-readr-logo-simple" />
+            <button onClick={closeNav}>
+              <Icon size="2xl" iconName="icon-modal-close" />
+            </button>
+          </div>
+          <div className="flex flex-col gap-2 border-b pb-5">
             {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
@@ -96,7 +99,7 @@ const NonMobileNav = ({
               />
             ))}
           </div>
-          <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
+          <div className="flex flex-col gap-2 pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
               if (iconInfo.text === '個人檔案' && avatarUrl) {
                 return (
@@ -134,31 +137,13 @@ const NonMobileNav = ({
   )
 }
 
-const MobileNav = ({ story }: { story: Story }) => {
-  const picksCount = story?.picksCount ?? 0
-  const commentsCount = story?.commentsCount ?? 0
-  return (
-    <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
-      <div className="footnote flex justify-between px-5 pt-4 text-primary-500 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]">
-        <div className="flex items-center">
-          {!!commentsCount && (
-            <>
-              <StoryCommentCount commentsCount={commentsCount} />
-              <Icon iconName="icon-dot" size="s" />
-            </>
-          )}
-          <StoryPickCount picksCount={picksCount} />
-        </div>
-        <div className="flex gap-2">
-          <PublisherDonateButton />
-          <StoryPickButton storyId={story?.id ?? ''} />
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-export default function StoryNav({ story }: { story: Story }) {
+export default function ArticleNav({
+  shouldShowNav,
+  closeNav,
+}: {
+  shouldShowNav: boolean
+  closeNav: () => void
+}) {
   const path = usePathname()
   const { user } = useUser()
 
@@ -166,10 +151,13 @@ export default function StoryNav({ story }: { story: Story }) {
 
   return (
     <>
-      {/* fixed left nav shown on tablet, desktop size */}
-      <NonMobileNav path={path} avatarUrl={avatarUrl} />
-      {/* fixed bottom nav bar shown on mobile only */}
-      <MobileNav story={story} />
+      {/* story nav  only has desktop nav */}
+      <NonMobileNav
+        path={path}
+        avatarUrl={avatarUrl}
+        shouldShowNav={shouldShowNav}
+        closeNav={closeNav}
+      />
     </>
   )
 }

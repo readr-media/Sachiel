@@ -13,6 +13,7 @@ export type IconName =
   | 'icon-search-bar'
   | 'icon-readr-logo'
   | 'icon-readr-logo-lg'
+  | 'icon-readr-logo-simple'
   | 'icon-readr-logoA-mobile'
   | 'icon-readr-logoA-desktop'
   | 'icon-google-play'
@@ -106,6 +107,7 @@ export type IconName =
   | 'icon-open-new-tab'
   | 'icon-404'
   | 'icon-500'
+  | 'icon-hamburger-menu'
 
 export type IconProps = {
   size: Size
