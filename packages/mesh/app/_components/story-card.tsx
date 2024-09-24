@@ -1,3 +1,5 @@
+'use client'
+
 import NextImage from 'next/image'
 import NextLink from 'next/link'
 
@@ -5,6 +7,7 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { useDisplayPicks } from '@/hooks/use-display-picks'
 import type { CategoryStory, DailyStory } from '@/types/homepage'
 
 type Props<T> = {
@@ -14,6 +17,8 @@ type Props<T> = {
 export default function StoryCard<T extends CategoryStory | DailyStory>({
   story,
 }: Props<T>) {
+  const { displayPicks, displayPicksCount } = useDisplayPicks(story)
+
   return (
     <div className="pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none">
       <div className="mb-1 flex justify-between">
@@ -47,8 +52,8 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
 
       <div className="mt-4 flex justify-between">
         <StoryPickInfo
-          displayPicks={story.picks}
-          pickCount={'pickCount' in story ? story.pickCount : story.picksCount}
+          displayPicks={displayPicks}
+          pickCount={displayPicksCount}
         />
         <StoryPickButton storyId={story.id} />
       </div>

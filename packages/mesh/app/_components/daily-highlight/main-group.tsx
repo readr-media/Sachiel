@@ -1,3 +1,5 @@
+'use client'
+
 import NextImage from 'next/image'
 import NextLink from 'next/link'
 
@@ -5,6 +7,7 @@ import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { useDisplayPicks } from '@/hooks/use-display-picks'
 import type { DailyStory } from '@/types/homepage'
 
 import SwiperComponent from './swiper-component'
@@ -16,6 +19,7 @@ type Props = {
 export default function MainCard({ stories }: Props) {
   const story = stories[0]
   const restStories = stories.slice(1, 5)
+  const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
   return (
     <article className="mb-6 sm:mb-10">
@@ -56,8 +60,8 @@ export default function MainCard({ stories }: Props) {
 
           <div className="mt-4 flex justify-between">
             <StoryPickInfo
-              displayPicks={story.picks}
-              pickCount={story.pickCount}
+              displayPicks={displayPicks}
+              pickCount={displayPicksCount}
             />
             <StoryPickButton storyId={story.id} />
           </div>
