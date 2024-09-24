@@ -2,32 +2,17 @@ import './_style/article.css'
 
 import { notFound } from 'next/navigation'
 
-import { getPublisherPolicy, getStory } from '@/app/actions/story'
-import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
-  GetStoriesDocument,
-  GetStoryDocument,
-} from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
-import { fetchRestfulGet } from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+  getPublisherPolicy,
+  getRelatedStories,
+  getStory,
+} from '@/app/actions/story'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
 import DesktopPageNavigator from './_components/desktop-page-navigator'
 import RelatedStories from './_components/related-stories'
-
-export type RelatedStory = {
-  title: string
-  summary: string
-  content: string
-  source: string
-  id: number
-  og_image: string
-  type: string
-  lastUpdated: string
-}
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
@@ -36,40 +21,18 @@ const commentsTake = 3
 
 export default async function Page({ params }: { params: { id: string } }) {
   const storyId = params.id
-  const globalLogFields = getLogTraceObjectFromHeaders()
+  const storyData = await getStory({ storyId, picksTake, commentsTake })
   let policy: PublisherPolicy = []
   let hasPayed = false
 
-  const storyData = await queryGraphQL(
-    GetStoryDocument,
-    { storyId, picksTake, commentsTake },
-    globalLogFields
-  )
-
-  if (!storyData || !storyData.story) {
+  if (!storyData || !storyData.story || !storyData.story.title) {
     notFound()
   }
-
-  const relatedRawStories =
-    (
-      await fetchRestfulGet<RelatedStory[]>(
-        RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title
-      )
-    )?.slice(0, 4) ?? []
-
-  // TODO: use new api to get story pick list according to user.followingIds
-  const relatedStories =
-    (
-      await queryGraphQL(
-        GetStoriesDocument,
-        {
-          storyIds: relatedRawStories.map((story) => String(story.id)),
-          picksTake,
-          commentsTake,
-        },
-        globalLogFields
-      )
-    )?.stories ?? []
+  const relatedStories = await getRelatedStories({
+    storyTitle: storyData.story.title,
+    picksTake,
+    commentsTake,
+  })
 
   const sourceCustomId = storyData.story.source?.customId ?? ''
   const isMemberStory = storyData.story.isMember ?? false
@@ -105,13 +68,13 @@ export default async function Page({ params }: { params: { id: string } }) {
       </main>
       <div className="hidden flex-1 lg:flex lg:justify-center">
         <aside className="lg:w-[220px] xl:w-[340px]">
-        {isMemberStory ? null : (
-          <SideIndex
-            apiData={storyData.story.apiData as ApiData}
-            sourceCustomId={sourceCustomId}
-            isInArticle={false}
-          />
-        )}
+          {isMemberStory ? null : (
+            <SideIndex
+              apiData={storyData.story.apiData as ApiData}
+              sourceCustomId={sourceCustomId}
+              isInArticle={false}
+            />
+          )}
         </aside>
       </div>
     </>
