@@ -2,7 +2,9 @@ import type { ButtonHTMLAttributes } from 'react'
 
 import Icon, { type IconProps } from './icon'
 
-export const buttonColor = {
+export type ButtonColor = keyof typeof buttonColor
+
+const buttonColor = {
   transparent:
     'bg-transparent text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   white:

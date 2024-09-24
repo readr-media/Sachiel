@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 import { addPick, removePick } from '@/app/actions/pick'
-import type { buttonColor } from '@/components/button'
+import type { ButtonColor } from '@/components/button'
 import Button from '@/components/button'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
@@ -13,7 +13,7 @@ export default function StoryPickButton({
   color = 'white',
 }: {
   storyId: string
-  color?: keyof typeof buttonColor
+  color?: ButtonColor
 }) {
   const router = useRouter()
   const { user, setUser } = useUser()
