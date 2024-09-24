@@ -11,7 +11,7 @@ import {
   EthereumWalletConnectors,
 } from '@/utils/dynamic'
 
-import RootLayoutWrapper from './_component/root-layout-wrapper'
+import RootLayoutWrapper from './_components/root-layout-wrapper'
 import { getCurrentUser } from './actions/auth'
 export const metadata: Metadata = {
   title: 'Mesh',

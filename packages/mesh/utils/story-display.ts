@@ -68,3 +68,16 @@ export const displayTime = (date: string) => {
 
   return `${year}/${month}/${day} ${hour}:${second}`
 }
+
+export const displayDateWithWeekday = () => {
+  const today = new Date()
+  const month = String(today.getMonth() + 1)
+  const date = String(today.getDate())
+  const day = today.getDay()
+  const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六']
+  const dayInChinese = daysOfWeek[day]
+
+  const currentTime = `${month}月${date}日(${dayInChinese})`
+
+  return currentTime
+}

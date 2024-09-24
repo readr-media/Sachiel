@@ -31,17 +31,18 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.3.0",
     "ts-import": "^5.0.0-beta.0",
-    "viem": "^2.17.11"
+    "viem": "^2.17.11",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@graphql-codegen/introspection": "^4.0.3",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@types/apollo-upload-client": "^18.0.0",
     "@types/node": "^20",
     "@types/react": "18.2.0",
     "@types/react-dom": "^18",
-    "@types/apollo-upload-client": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
     "autoprefixer": "^10.4.19",

@@ -66,6 +66,13 @@ const STATIC_FILE_ENDPOINTS = {
   mostPickStoriesInCategoryFn: (categoryName: string) =>
     `${STATIC_FILE_ORIGIN}/data/most_read_stories_${categoryName}.json`,
   mostSponsorPublishers: `${STATIC_FILE_ORIGIN}/data/most_sponsor_publishers.json`,
+  mostReadMembers: `${STATIC_FILE_ORIGIN}/data/most_read_members.json`,
+  recentReadrStory: `${STATIC_FILE_ORIGIN}/data/recent_readr_stories.json`,
+  mostPopularStory: `${STATIC_FILE_ORIGIN}/data/hotpage_most_popular_story.json`,
+  mostSponsorPublishersOnHomepage: `${STATIC_FILE_ORIGIN}/data/hotpage_most_sponsored_publisher.json`,
+  mostLikeComments: `${STATIC_FILE_ORIGIN}/data/hotpage_most_like_comments.json`,
+  dailyHighlightGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_group.json`,
+  dailyHighlightNoGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_no_group.json`,
 }
 
 export {
