@@ -36,16 +36,14 @@ export default function LoginSteps() {
     const init = async () => {
       await auth.authStateReady()
       setIsAuthReady(true)
-      const unsubscribe = auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const response = await handleSignIn()
-          if (!response) return
-          if (response.result === 'sign-up') {
-            setStep('set-name')
-          } else if (response.result === 'logged-in') {
-            setIsLoggedIn(true)
-            router.push('/media')
-          }
+      const unsubscribe = auth.onAuthStateChanged(async () => {
+        const response = await handleSignIn()
+        if (!response) return
+        if (response.result === 'sign-up') {
+          setStep('set-name')
+        } else if (response.result === 'logged-in') {
+          setIsLoggedIn(true)
+          router.push('/media')
         }
       })
       return () => unsubscribe()

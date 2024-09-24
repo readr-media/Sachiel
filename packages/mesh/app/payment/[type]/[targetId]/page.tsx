@@ -11,7 +11,7 @@ const AlchemyAuth = dynamic(() => import('@/components/alchemy/alchemy-auth'), {
 })
 
 export type StoryUnlockPolicy = Awaited<ReturnType<typeof getStoryUnlockPolicy>>
-enum PaymentType {
+export enum PaymentType {
   SubscriptionStory = 'subscription-story',
   SubscriptionPublisher = 'subscription-publisher',
   Sponsor = 'sponsor',

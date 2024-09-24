@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import { PaymentType } from '@/app/payment/[type]/[targetId]/page'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useUser } from '@/context/user'
@@ -43,7 +44,9 @@ export default function PaymentWall({
             color="custom-blue"
             text="解鎖文章"
             onClick={() =>
-              router.push(`/payment/subscription-story/${storyId}`)
+              router.push(
+                `/payment/${PaymentType.SubscriptionStory}/${storyId}`
+              )
             }
           />
           {userId ? null : (
