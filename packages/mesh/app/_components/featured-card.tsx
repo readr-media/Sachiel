@@ -64,7 +64,7 @@ export default function FeaturedCard({
               displayPicks={displayPicks}
               pickCount={displayPicksCount}
             />
-            <StoryPickButton storyId={story.id} />
+            <StoryPickButton storyId={story.id} color="transparent" />
           </div>
         </div>
       </article>
