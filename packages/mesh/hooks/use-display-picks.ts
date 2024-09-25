@@ -6,7 +6,9 @@ export function useDisplayPicks(story: CategoryStory | DailyStory | Story) {
   const { user } = useUser()
   const isStoryPicked = user.pickStoryIds.has(story.id)
 
-  let displayPicks = [...story.picks]
+  let displayPicks = story.picks.filter(
+    (pick) => pick.member?.id !== user.memberId
+  )
   let displayPicksCount = 0
 
   if ('picksCount' in story) {
