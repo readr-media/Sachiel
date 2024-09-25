@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import getMemberFollowings from '@/app/actions/get-member-followings'
-import Spinner from '@/components/spinner'
 import { MINUTE } from '@/constants/time-unit'
 import { useUser } from '@/context/user'
 
 import Feed from './_components/feed'
 import FollowSuggestionFeed from './_components/follow-suggestion-feed'
 import FollowSuggestionWidget from './_components/follow-suggestion-widget'
+import Loading from './_components/loading'
 import NoFollowings from './_components/no-followings'
 
 export type SuggestedFollowers = Awaited<
@@ -74,7 +74,7 @@ export default function Page() {
     fetchData()
   }, [user, router])
 
-  if (!socialData) return <Spinner />
+  if (!socialData) return <Loading />
 
   const {
     member: currentMember,
