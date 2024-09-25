@@ -26,9 +26,8 @@ import queryGraphQL from '@/utils/fetch-graphql'
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
-const globalLogFields = getLogTraceObjectFromHeaders()
-
 async function fetchMostPickedStory(): Promise<MostPickedStory | null> {
+  const globalLogFields = getLogTraceObjectFromHeaders()
   const schema = z.object({ story: rawFeaturedStorySchema })
 
   try {
@@ -49,6 +48,8 @@ async function fetchMostPickedStory(): Promise<MostPickedStory | null> {
 }
 
 async function fetchRecentReadrStory(): Promise<ReadrStory | null> {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   try {
     const response = await fetchStatic<z.infer<typeof rawReadrStorySchema>>(
       STATIC_FILE_ENDPOINTS.recentReadrStory
@@ -67,6 +68,7 @@ async function fetchRecentReadrStory(): Promise<ReadrStory | null> {
 
 async function fetchMostSponsoredPublisher(): Promise<SponsoredStory[] | null> {
   const schema = z.array(rawMostSponsoredPublisherStorySchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
 
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
@@ -87,6 +89,8 @@ async function fetchMostSponsoredPublisher(): Promise<SponsoredStory[] | null> {
 
 async function fetchMostLikedComment(): Promise<Comment[] | null> {
   const schema = z.array(rawCommentSchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.mostLikeComments
@@ -105,6 +109,8 @@ async function fetchMostLikedComment(): Promise<Comment[] | null> {
 
 async function fetchDailyHighlightGroup(): Promise<DailyStory[] | null> {
   const schema = z.array(rawDailyHighlightSchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.dailyHighlightGroup
@@ -123,6 +129,8 @@ async function fetchDailyHighlightGroup(): Promise<DailyStory[] | null> {
 
 async function fetchDailyHighlightNoGroup(): Promise<DailyStory[] | null> {
   const schema = z.array(rawDailyHighlightSchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.dailyHighlightNoGroup
@@ -141,6 +149,8 @@ async function fetchDailyHighlightNoGroup(): Promise<DailyStory[] | null> {
 
 async function fetchTopCollector(): Promise<Collector[] | null> {
   const schema = z.array(rawTopCollectorSchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.mostReadMembers
@@ -158,6 +168,8 @@ async function fetchTopCollector(): Promise<Collector[] | null> {
 }
 
 async function fetchAllCategory() {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
   const data = await queryGraphQL(
     GetAllCategoriesDocument,
     undefined,
@@ -171,6 +183,7 @@ async function fetchCategoryStory(
   slug: string | undefined | null
 ): Promise<CategoryStory[] | null> {
   const schema = z.array(rawCategoryStorySchema)
+  const globalLogFields = getLogTraceObjectFromHeaders()
 
   if (slug) {
     try {
