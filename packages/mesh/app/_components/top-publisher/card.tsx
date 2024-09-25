@@ -17,7 +17,12 @@ const StoryCard = ({
       <NextLink href={`/story/${story.id}`}>
         {showImage && story.og_image && (
           <div className="relative mb-3 aspect-[2/1] overflow-hidden rounded">
-            <NextImage alt={story.title} src={story.og_image} fill />
+            <NextImage
+              alt={story.title}
+              src={story.og_image}
+              fill
+              className="object-cover"
+            />
           </div>
         )}
 

@@ -33,7 +33,12 @@ export default function FeaturedCard({
       <article className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-5 lg:gap-x-10">
         <NextLink href={`/story/${story.id}`}>
           <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md sm:aspect-square sm:size-[168px] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
-            <NextImage src={story.og_image} fill alt={story.title} />
+            <NextImage
+              src={story.og_image}
+              fill
+              alt={story.title}
+              className="object-cover"
+            />
           </div>
         </NextLink>
 
