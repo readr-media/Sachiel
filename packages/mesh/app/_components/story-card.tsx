@@ -45,7 +45,12 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
 
         <NextLink href={`/story/${story.id}`}>
           <div className="relative h-[48px] w-[96px] shrink-0 overflow-hidden rounded sm:h-[80px] sm:w-[160px]">
-            <NextImage src={story.og_image} fill alt={story.title} />
+            <NextImage
+              src={story.og_image}
+              fill
+              alt={story.title}
+              className="object-cover"
+            />
           </div>
         </NextLink>
       </div>

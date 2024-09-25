@@ -26,7 +26,12 @@ export default function MainCard({ stories }: Props) {
       <div className="mb-4 flex flex-col gap-y-3 sm:mb-5 lg:flex-row lg:gap-x-10">
         <NextLink href={`story/${story.id}`}>
           <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md lg:h-[250px] lg:w-[500px]">
-            <NextImage src={story.og_image} alt={story.title} fill />
+            <NextImage
+              src={story.og_image}
+              alt={story.title}
+              fill
+              className="object-cover"
+            />
           </div>
         </NextLink>
 
