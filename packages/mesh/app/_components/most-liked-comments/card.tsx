@@ -46,7 +46,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
             </div>
           </div>
-          {user.name !== comment.member.name && (
+          {user.memberId !== comment.member.id && (
             <div className="shrink-0">
               <Button
                 size="sm"

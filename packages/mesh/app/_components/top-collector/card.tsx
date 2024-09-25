@@ -46,7 +46,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
         </div>
       </div>
 
-      {user.name !== person.name && (
+      {user.memberId !== String(person.id) && (
         <>
           <div className="shrink-0 lg:hidden">
             <Button
