@@ -27,6 +27,7 @@ type LayoutTemplateProps = {
   children: React.ReactNode
   type: LayoutType
   customStyle?: CustomStyle
+  suspenseFallback?: React.ReactNode
 } & XOR<
   {
     type: 'default' | 'article'
@@ -44,11 +45,12 @@ export default function LayoutTemplate({
   navigation,
   actionBar,
   customStyle,
+  suspenseFallback = <Spinner />,
 }: LayoutTemplateProps) {
   const pathName = usePathname()
 
   const childrenJsx = (
-    <Suspense key={pathName} fallback={<Spinner />}>
+    <Suspense key={pathName} fallback={suspenseFallback}>
       {/* set key for dynamic route to re-render fallback */}
       {children}
     </Suspense>

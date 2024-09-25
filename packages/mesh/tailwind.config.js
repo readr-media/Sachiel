@@ -129,6 +129,10 @@ module.exports = {
           DEFAULT: 'rgba(0, 0, 0, 0.3)',
           dark: 'rgba(0, 0, 0, 0.3)',
         },
+        loading: {
+          DEFAULT: 'rgba(0, 9, 40, 0.15)',
+          dark: 'rgba(0, 9, 40, 0.15)',
+        },
         disable: {
           DEFAULT: '#E0E0E0',
           dark: '#CBCBCB',
