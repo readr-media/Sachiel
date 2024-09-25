@@ -5,17 +5,18 @@ import type { CategoryStory, DailyStory, Story } from '@/types/homepage'
 export function useDisplayPicks(story: CategoryStory | DailyStory | Story) {
   const { user } = useUser()
   const isStoryPicked = user.pickStoryIds.has(story.id)
+  const isUserInPicks = story.picks.some(
+    (pick) => pick.member?.id === user.memberId
+  )
 
+  // If the user's data is in the JSON, filter it out first,
+  // so it can be added later based on the isStoryPicked flag
   let displayPicks = story.picks.filter(
     (pick) => pick.member?.id !== user.memberId
   )
-  let displayPicksCount = 0
-
-  if ('picksCount' in story) {
-    displayPicksCount = story.picksCount
-  } else if ('pickCount' in story) {
-    displayPicksCount = story.pickCount
-  }
+  let displayPicksCount =
+    ('picksCount' in story ? story.picksCount : story.pickCount) -
+    (isUserInPicks ? 1 : 0)
 
   if (isStoryPicked) {
     displayPicks = [

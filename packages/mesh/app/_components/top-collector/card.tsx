@@ -44,7 +44,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
         </div>
       </div>
 
-      <div className="lg:hidden">
+      <div className="shrink-0 lg:hidden">
         <Button
           size="sm"
           color="transparent"
