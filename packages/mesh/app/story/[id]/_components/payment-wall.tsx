@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { PaymentType } from '@/app/payment/[type]/[targetId]/page'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useUser } from '@/context/user'
+import { PaymentType } from '@/types/payment'
 
 import { type PublisherPolicy } from '../page'
 

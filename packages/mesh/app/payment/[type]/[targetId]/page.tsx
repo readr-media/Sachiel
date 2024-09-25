@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getStoryUnlockPolicy } from '@/app/actions/story'
+import { PaymentType } from '@/types/payment'
 
 import PaymentInfo from './_component/payment-info'
 
@@ -11,12 +12,6 @@ const AlchemyAuth = dynamic(() => import('@/components/alchemy/alchemy-auth'), {
 })
 
 export type StoryUnlockPolicy = Awaited<ReturnType<typeof getStoryUnlockPolicy>>
-export enum PaymentType {
-  SubscriptionStory = 'subscription-story',
-  SubscriptionPublisher = 'subscription-publisher',
-  Sponsor = 'sponsor',
-  Deposit = 'deposit',
-}
 
 export default async function Page({
   params,
