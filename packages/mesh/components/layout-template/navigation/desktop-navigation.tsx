@@ -9,14 +9,14 @@ import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
-export default function DesktopPageNavigator({ story }: { story: Story }) {
+export default function DesktopNavigation({ story }: { story: Story }) {
   const router = useRouter()
   const backToPreviousPage = () => {
     router.back()
   }
 
   return (
-    <div className="flex h-full grow items-center justify-between px-0">
+    <div className="flex grow items-center justify-between px-0">
       <div className="flex">
         <button
           type="button"

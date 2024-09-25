@@ -6,6 +6,8 @@ import LayoutTemplate from '@/components/layout-template'
 import { BottomActionBarType } from '@/components/layout-template/bottom-action-bar'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
+import Loading from './loading'
+
 type Story = NonNullable<GetStoryQuery>['story']
 
 export default function ClientLayout({
@@ -53,6 +55,7 @@ export default function ClientLayout({
         ],
       }}
       actionBar={{ type: BottomActionBarType.Article, story }}
+      suspenseFallback={<Loading />}
     >
       {children}
     </LayoutTemplate>

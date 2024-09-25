@@ -10,8 +10,13 @@ export enum BottomActionBarType {
   Empty = 'empty',
 }
 
+export type ArticleMobileBottomActionBarProps = {
+  type: BottomActionBarType.Article
+  story: Story
+}
+
 export type MobileBottomActionBarProps =
-  | { type: BottomActionBarType.Article; story: Story }
+  | ArticleMobileBottomActionBarProps
   | { type: BottomActionBarType.Empty }
 export default function MobileBottomActionBar(
   props: MobileBottomActionBarProps

@@ -26,6 +26,11 @@ module.exports = {
           xl: '320px',
         },
         articleNav: '300px',
+        articleMain: '600px',
+        articleAside: {
+          lg: '220px',
+          xl: '340px',
+        },
       },
       spacing: {
         15: '3.75rem',

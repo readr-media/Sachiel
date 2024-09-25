@@ -2,14 +2,17 @@
 
 import { usePathname } from 'next/navigation'
 import { Suspense, useState } from 'react'
-import type { XOR } from 'ts-xor'
 
 import Spinner from '../spinner'
-import type { MobileBottomActionBarProps } from './bottom-action-bar'
+import type {
+  ArticleMobileBottomActionBarProps,
+  MobileBottomActionBarProps,
+} from './bottom-action-bar'
 import MobileBottomActionBar from './bottom-action-bar'
 import Footer from './footer'
 import Header, { HeaderType } from './header'
 import Nav, { NavType } from './nav'
+import DesktopNavigation from './navigation/desktop-navigation'
 import MobileNavigation, {
   type MobileNavigationProps,
 } from './navigation/mobile-navigation'
@@ -28,25 +31,24 @@ type LayoutTemplateProps = {
   type: LayoutType
   customStyle?: CustomStyle
   suspenseFallback?: React.ReactNode
-} & XOR<
-  {
-    type: 'default' | 'article'
-    navigation?: MobileNavigationProps
-    actionBar?: MobileBottomActionBarProps
-  },
-  {
-    type: 'stateless'
-  }
->
+} & (
+  | {
+      type: 'default'
+      navigation?: MobileNavigationProps
+      actionBar?: MobileBottomActionBarProps
+    }
+  | {
+      type: 'article'
+      navigation: MobileNavigationProps
+      actionBar: ArticleMobileBottomActionBarProps
+    }
+  | {
+      type: 'stateless'
+    }
+)
 
-export default function LayoutTemplate({
-  children,
-  type,
-  navigation,
-  actionBar,
-  customStyle,
-  suspenseFallback = <Spinner />,
-}: LayoutTemplateProps) {
+export default function LayoutTemplate(props: LayoutTemplateProps) {
+  const { children, type, customStyle, suspenseFallback = <Spinner /> } = props
   const pathName = usePathname()
 
   const childrenJsx = (
@@ -59,7 +61,7 @@ export default function LayoutTemplate({
   switch (type) {
     case 'default':
       return (
-        <DefaultLayout navigation={navigation} customStyle={customStyle}>
+        <DefaultLayout navigation={props.navigation} customStyle={customStyle}>
           {childrenJsx}
         </DefaultLayout>
       )
@@ -71,7 +73,10 @@ export default function LayoutTemplate({
       )
     case 'article':
       return (
-        <ArticleLayout navigation={navigation} actionBar={actionBar}>
+        <ArticleLayout
+          navigation={props.navigation}
+          actionBar={props.actionBar}
+        >
           {childrenJsx}
         </ArticleLayout>
       )
@@ -148,8 +153,8 @@ const ArticleLayout = ({
   actionBar,
   children,
 }: {
-  navigation?: MobileNavigationProps
-  actionBar?: MobileBottomActionBarProps
+  navigation: MobileNavigationProps
+  actionBar: ArticleMobileBottomActionBarProps
   children: React.ReactNode
 }) => {
   const [shouldShowNav, setShouldShowNav] = useState(false)
@@ -166,8 +171,13 @@ const ArticleLayout = ({
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container-article">
         <div className="flex grow flex-col items-center bg-white">
-          <div className="flex w-full grow justify-around xl:max-w-[theme(width.maxContent)]">
-            {children}
+          <div className="flex w-full grow justify-center xl:max-w-[theme(width.maxContent)]">
+            <main className="flex w-full max-w-[theme(width.articleMain)] flex-col sm:pb-10">
+              <div className="sticky top-[68px] z-layout hidden size-full h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:flex">
+                <DesktopNavigation story={actionBar.story} />
+              </div>
+              {children}
+            </main>
           </div>
         </div>
         {/* footer after main content */}
@@ -178,9 +188,10 @@ const ArticleLayout = ({
         shouldShowNav={shouldShowNav}
         closeNav={closeNav}
       />
-      {/* cover on mobile header if navigation is setup */}
-      {navigation && <MobileNavigation {...navigation} />}
-      {actionBar && <MobileBottomActionBar {...actionBar} />}
+      {/* cover on mobile header */}
+      <MobileNavigation {...navigation} />
+      {/* cover on mobile bottom nav */}
+      <MobileBottomActionBar {...actionBar} />
     </body>
   )
 }
