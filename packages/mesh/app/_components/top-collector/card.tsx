@@ -2,6 +2,7 @@
 
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
+import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
 import type { Collector } from '@/types/homepage'
 
@@ -12,6 +13,7 @@ type Props = {
 
 export default function TopCollectorCard({ person, rank }: Props) {
   const { handelClickFollow, isFollowing } = useFollow(String(person.id))
+  const { user } = useUser()
 
   return (
     <div className="mb-3 flex items-center gap-y-3 border-b-[0.5px] pb-3 last:border-0 lg:w-[164px] lg:flex-col lg:rounded-md lg:bg-[#FFF] lg:px-3 lg:pb-4 lg:pt-3 lg:shadow-card xl:w-[192px]">
@@ -44,31 +46,34 @@ export default function TopCollectorCard({ person, rank }: Props) {
         </div>
       </div>
 
-      <div className="shrink-0 lg:hidden">
-        <Button
-          size="sm"
-          color="transparent"
-          text="追蹤"
-          activeState={{
-            isActive: isFollowing,
-            activeText: '追蹤中',
-          }}
-          onClick={handelClickFollow}
-        />
-      </div>
-
-      <div className="hidden lg:block lg:w-full">
-        <Button
-          size="md-large"
-          color="transparent"
-          text="追蹤"
-          activeState={{
-            isActive: isFollowing,
-            activeText: '追蹤中',
-          }}
-          onClick={handelClickFollow}
-        />
-      </div>
+      {user.name !== person.name && (
+        <>
+          <div className="shrink-0 lg:hidden">
+            <Button
+              size="sm"
+              color="transparent"
+              text="追蹤"
+              activeState={{
+                isActive: isFollowing,
+                activeText: '追蹤中',
+              }}
+              onClick={handelClickFollow}
+            />
+          </div>
+          <div className="hidden lg:block lg:w-full">
+            <Button
+              size="md-large"
+              color="transparent"
+              text="追蹤"
+              activeState={{
+                isActive: isFollowing,
+                activeText: '追蹤中',
+              }}
+              onClick={handelClickFollow}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

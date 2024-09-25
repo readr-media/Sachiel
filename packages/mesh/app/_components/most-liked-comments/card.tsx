@@ -3,6 +3,7 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
 import type { Comment } from '@/types/homepage'
 import { displayTimeFromNow } from '@/utils/story-display'
@@ -16,6 +17,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
   const { handelClickFollow, isFollowing } = useFollow(
     String(comment.member.id)
   )
+  const { user } = useUser()
 
   return (
     <div className="flex items-start gap-x-3">
@@ -44,19 +46,20 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
             </div>
           </div>
-
-          <div className="shrink-0">
-            <Button
-              size="sm"
-              color="transparent"
-              text="追蹤"
-              activeState={{
-                isActive: isFollowing,
-                activeText: '追蹤中',
-              }}
-              onClick={handelClickFollow}
-            />
-          </div>
+          {user.name !== comment.member.name && (
+            <div className="shrink-0">
+              <Button
+                size="sm"
+                color="transparent"
+                text="追蹤"
+                activeState={{
+                  isActive: isFollowing,
+                  activeText: '追蹤中',
+                }}
+                onClick={handelClickFollow}
+              />
+            </div>
+          )}
         </div>
 
         <article className="body-3 my-3 line-clamp-4 h-[84px] text-primary-600">
