@@ -45,16 +45,18 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
             </div>
           </div>
 
-          <Button
-            size="sm"
-            color="transparent"
-            text="追蹤"
-            activeState={{
-              isActive: isFollowing,
-              activeText: '追蹤中',
-            }}
-            onClick={handelClickFollow}
-          />
+          <div className="shrink-0">
+            <Button
+              size="sm"
+              color="transparent"
+              text="追蹤"
+              activeState={{
+                isActive: isFollowing,
+                activeText: '追蹤中',
+              }}
+              onClick={handelClickFollow}
+            />
+          </div>
         </div>
 
         <article className="body-3 my-3 line-clamp-4 h-[84px] text-primary-600">
