@@ -5,7 +5,7 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import { UserProvider } from '@/context/user'
 
-import RootLayoutWrapper from './_component/root-layout-wrapper'
+import RootLayoutWrapper from './_components/root-layout-wrapper'
 import { getCurrentUser } from './actions/auth'
 
 export const metadata: Metadata = {
