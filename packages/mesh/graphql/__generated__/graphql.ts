@@ -3669,6 +3669,7 @@ export type SignUpMemberMutation = {
     __typename?: 'Member'
     id: string
     firebaseId?: string | null
+    email?: string | null
   } | null
 }
 
@@ -4819,6 +4820,7 @@ export const SignUpMemberDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'firebaseId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'email' } },
               ],
             },
           },

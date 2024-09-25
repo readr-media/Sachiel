@@ -7,11 +7,13 @@ import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
 import { useLogin } from '@/context/login'
+import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
 
 export default function LoginSetFollowing() {
-  const { formData, setFormData, setStep, setSignedUpId } = useLogin()
+  const { formData, setFormData, setStep } = useLogin()
+  const { setUser } = useUser()
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
   const [isFollowAll, setIsFollowAll] = useState(false)
@@ -62,7 +64,10 @@ export default function LoginSetFollowing() {
     const idToken = await auth.currentUser?.getIdToken()
     const response = await signUpMember(formData, idToken)
     if (response) {
-      setSignedUpId(response.id)
+      setUser((prev) => ({
+        ...prev,
+        email: response.email || formData.email,
+      }))
       setStep('set-wallet')
     }
   }

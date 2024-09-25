@@ -23,9 +23,10 @@ export const LogInCard = ({
   const { status } = useSignerStatus()
   const pathname = usePathname()
   const isAwaitingEmail = status === 'AWAITING_EMAIL_AUTH'
-  const email = user.email ?? ''
+  const email = user.email
 
   const login = (evt: FormEvent<HTMLFormElement>) => {
+    if (!email) return
     evt.preventDefault()
     authenticate({ type: 'email', email })
     localStorage.setItem('alchemy-redirect', pathname)
