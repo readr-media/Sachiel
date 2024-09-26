@@ -17,10 +17,10 @@ export default function Loading({
             className="flex gap-3 p-5 sm:gap-10 sm:first-of-type:pt-0"
           >
             <div className="flex w-full flex-col justify-center gap-3">
-              <div className="h-5 w-full bg-loading" />
-              <div className="h-5 w-1/2 bg-loading" />
+              <div className="h-5 w-full rounded-sm bg-loading" />
+              <div className="h-5 w-1/2 rounded-sm bg-loading" />
             </div>
-            <div className="h-12 w-24 bg-loading sm:h-20 sm:w-40" />
+            <div className="h-12 w-24 rounded-sm bg-loading sm:h-20 sm:w-40" />
           </div>
         ))}
       </div>
@@ -28,19 +28,19 @@ export default function Loading({
         <div className="flex justify-between gap-10 border-b border-[rgba(0,9,40,0.1)] pb-5 pt-3">
           <div className="h-[250px] w-[500px] shrink-0 bg-loading " />
           <div className="flex w-full flex-col justify-center">
-            <div className="mb-5 h-5 w-20 bg-loading" />
-            <div className="mb-3 h-8 w-full bg-loading" />
-            <div className="h-8 w-1/2 bg-loading" />
+            <div className="mb-5 h-5 w-20 rounded-sm bg-loading" />
+            <div className="mb-3 h-8 w-full rounded-sm bg-loading" />
+            <div className="h-8 w-1/2 rounded-sm bg-loading" />
           </div>
         </div>
         <div className="flex flex-wrap gap-x-10">
           {Array.from(Array(4)).map((_, i) => (
             <div key={i} className="flex w-[500px] gap-10 py-5">
               <div className="flex flex-col justify-center gap-3">
-                <div className="h-5 w-articleNav bg-loading" />
-                <div className="h-5 w-[200px] bg-loading" />
+                <div className="h-5 w-articleNav rounded-sm bg-loading" />
+                <div className="h-5 w-[200px] rounded-sm bg-loading" />
               </div>
-              <div className="h-20 w-40 shrink-0 bg-loading" />
+              <div className="h-20 w-40 shrink-0 rounded-sm bg-loading" />
             </div>
           ))}
         </div>
