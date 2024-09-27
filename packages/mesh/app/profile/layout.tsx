@@ -44,7 +44,7 @@ export default function ProfileLayout({
     <LayoutTemplate
       type="default"
       customStyle={{
-        background: 'bg-multi-layer-light',
+        background: 'bg-white',
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}

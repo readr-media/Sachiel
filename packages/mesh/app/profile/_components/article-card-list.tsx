@@ -35,34 +35,36 @@ function ArticleCardList({
   }
 
   return (
-    <ul className="max-w-[theme(width.maxMain)] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1
-        return (
-          <li
-            key={index}
-            className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
-          >
-            {'story' in item ? (
-              <ArticleCard
-                storyData={item.story as NonNullable<PickListItem>}
-                isLast={isLast}
-                memberId={memberId}
-                avatar={avatar}
-                name={name}
-                shouldShowComment={shouldShowComment}
-              />
-            ) : (
-              <ArticleCard
-                storyData={item as StoryDataItem}
-                isLast={isLast}
-                shouldShowComment={shouldShowComment}
-              />
-            )}
-          </li>
-        )
-      })}
-    </ul>
+    <div className="bg-multi-layer-light">
+      <ul className="max-w-[theme(width.maxMain)] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 lg:grid-cols-3">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1
+          return (
+            <li
+              key={index}
+              className="relative w-full bg-white md:h-full md:rounded-md md:drop-shadow"
+            >
+              {'story' in item ? (
+                <ArticleCard
+                  storyData={item.story as NonNullable<PickListItem>}
+                  isLast={isLast}
+                  memberId={memberId}
+                  avatar={avatar}
+                  name={name}
+                  shouldShowComment={shouldShowComment}
+                />
+              ) : (
+                <ArticleCard
+                  storyData={item as StoryDataItem}
+                  isLast={isLast}
+                  shouldShowComment={shouldShowComment}
+                />
+              )}
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }
 

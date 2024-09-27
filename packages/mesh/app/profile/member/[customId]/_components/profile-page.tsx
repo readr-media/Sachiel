@@ -7,7 +7,6 @@ import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import Spinner from '@/components/spinner'
 import ErrorPage from '@/components/status/error-page'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
@@ -17,6 +16,8 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+
+import Loading from './loading'
 
 interface ProfilePageProps {
   isMember: boolean
@@ -52,11 +53,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   }, [category, isMember, profileData])
 
   if (isProfileLoading) {
-    return (
-      <div className="flex max-w-[theme(width.maxMain)] grow items-center justify-center">
-        <Spinner />
-      </div>
-    )
+    return <Loading />
   }
 
   if (isProfileError) {
