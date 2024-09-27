@@ -2,6 +2,7 @@ mutation SignUpMember($registrationData: MemberCreateInput!) {
   createMember(data: $registrationData) {
     id
     firebaseId
+    email
   }
 }
 

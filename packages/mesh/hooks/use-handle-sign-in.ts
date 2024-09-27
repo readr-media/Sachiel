@@ -6,8 +6,7 @@ import {
   setPersistence,
   signInWithEmailLink,
 } from 'firebase/auth'
-import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import {
   getAccessToken,
@@ -18,104 +17,100 @@ import { useLogin } from '@/context/login'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
 
+type Status = 'idle' | 'loading' | 'success' | 'error'
+
 export default function useHandleSignIn() {
-  const router = useRouter()
-  const { setStep } = useLogin()
+  const { setFormData } = useLogin()
   const { setUser } = useUser()
+  const [status, setStatus] = useState<Status>('idle')
 
-  const handleAfterSignInRedirect = useCallback(
-    async (idToken: string) => {
-      const { status } = await handleFirebaseToken(idToken)
-      if (status !== 'verified') {
-        router.push('/login')
-        return
-      }
-
+  const handleIdToken = useCallback(
+    async (
+      idToken: string,
+      userEmail: string | null
+    ): Promise<{
+      result: 'sign-up' | 'logged-in'
+    }> => {
+      await getAccessToken(idToken)
       const user = await getCurrentUser()
-      if (user?.memberId) {
-        setUser(user)
-        router.push('/media')
+
+      if (!user) {
+        setFormData((prev) => ({
+          ...prev,
+          email: userEmail ?? '',
+        }))
+        return { result: 'sign-up' }
       } else {
-        setStep('set-name')
+        setUser(user)
+        return { result: 'logged-in' }
       }
     },
-    [router, setStep, setUser]
+    [setFormData, setUser]
   )
 
   const handleOAuthSignIn = useCallback(
     async (result: UserCredential) => {
-      const idToken = await result.user.getIdToken()
       try {
-        if (idToken) {
-          await handleAfterSignInRedirect(idToken)
-        }
+        const idToken = await result.user.getIdToken()
+        const userEmail = await result.user.email
+        const { status } = await validateIdToken(idToken)
+        if (status !== 'verified') return
+        return await handleIdToken(idToken, userEmail)
       } catch (error) {
         console.error('OAuthSignIn Error:', error)
-        router.push('/login')
       }
     },
-    [handleAfterSignInRedirect, router]
+    [handleIdToken]
   )
 
   const handleEmailLinkSignIn = useCallback(async () => {
     const email = window.localStorage.getItem('emailForSignIn')
-    if (!email) {
-      router.push('/login')
-      return
-    }
+    if (!email) return
     try {
       await setPersistence(auth, browserLocalPersistence)
       const res = await signInWithEmailLink(auth, email, window.location.href)
       const idToken = await res.user.getIdToken()
-
+      const userEmail = await res.user.email
       window.localStorage.removeItem('emailForSignIn')
-      await handleAfterSignInRedirect(idToken)
+
+      const { status } = await validateIdToken(idToken)
+      if (status !== 'verified') return
+      return await handleIdToken(idToken, userEmail)
     } catch (error) {
       console.error('EmailLinkSignIn Error:', error)
-      router.push('/login')
     }
-  }, [handleAfterSignInRedirect, router])
+  }, [handleIdToken])
+
+  const handleLoggedInFirebase = useCallback(async () => {
+    if (!auth.currentUser) return
+    let idToken = ''
+    idToken = await auth.currentUser.getIdToken()
+    const { status } = await validateIdToken(idToken)
+    if (status === 'expired') {
+      idToken = await auth.currentUser.getIdToken(true)
+    }
+    const userEmail = await auth.currentUser.email
+    return await handleIdToken(idToken, userEmail)
+  }, [handleIdToken])
 
   const handleSignIn = useCallback(async () => {
-    if (auth.currentUser) {
-      const idToken = await auth.currentUser.getIdToken()
-      const { status } = await handleFirebaseToken(idToken)
-      if (status === 'verified') router.push('/media')
-    } else {
+    setStatus('loading')
+    try {
       const redirectResult = await getRedirectResult(auth)
       if (redirectResult) {
-        await handleOAuthSignIn(redirectResult)
+        return await handleOAuthSignIn(redirectResult)
       } else if (isSignInWithEmailLink(auth, window.location.href)) {
-        await handleEmailLinkSignIn()
+        return await handleEmailLinkSignIn()
+      } else {
+        return await handleLoggedInFirebase()
       }
-    }
-  }, [handleEmailLinkSignIn, handleOAuthSignIn, router])
-
-  return { handleSignIn }
-}
-
-async function handleFirebaseToken(
-  token: string
-): Promise<ReturnType<typeof validateIdToken>> {
-  const response = await validateIdToken(token)
-  if (response.status === 'expired') {
-    const newToken = await refreshIdToken()
-    return newToken ? await validateIdToken(newToken) : { status: 'error' }
-  } else if (response.status === 'verified') {
-    await getAccessToken(token)
-  }
-  return response
-}
-
-async function refreshIdToken() {
-  const user = auth.currentUser
-  if (user) {
-    try {
-      return await user.getIdToken(true)
     } catch (error) {
-      console.error('Error refreshing token:', error)
-      return null
+      setStatus('error')
+      console.error('SignIn Error:', error)
+    } finally {
+      setStatus('success')
     }
-  }
-  return null
+  }, [handleEmailLinkSignIn, handleLoggedInFirebase, handleOAuthSignIn])
+
+  return { handleSignIn, status }
 }

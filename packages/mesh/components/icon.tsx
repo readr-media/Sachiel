@@ -108,6 +108,9 @@ export type IconName =
   | 'icon-404'
   | 'icon-500'
   | 'icon-hamburger-menu'
+  | 'icon-unlock'
+  | 'icon-send-email'
+  | 'icon-check-email'
 
 export type IconProps = {
   size: Size
