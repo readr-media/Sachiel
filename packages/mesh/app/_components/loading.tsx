@@ -2,7 +2,7 @@ import { displayDateWithWeekday } from '@/utils/story-display'
 
 export default function Loading() {
   return (
-    <main className="max-w-[theme.width.maxMain] px-5 pt-4 sm:pt-5 lg:px-10">
+    <div className="px-5 pt-4 sm:pt-5 lg:px-10">
       <div className="flex justify-between">
         <h2 className="list-title lg:title-1 text-primary-700">今日焦點</h2>
         <time className="button text-primary-500">
@@ -43,6 +43,6 @@ export default function Loading() {
           </div>
         ))}
       </div>
-    </main>
+    </div>
   )
 }

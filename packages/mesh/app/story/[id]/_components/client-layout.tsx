@@ -4,6 +4,10 @@ import { useRouter } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import { BottomActionBarType } from '@/components/layout-template/bottom-action-bar'
+import GoBackButton from '@/components/navigation/go-back-button'
+import PublisherDonateButton from '@/components/publisher-card/donate-button'
+import MoreButton from '@/components/story-card/more-button'
+import StoryPickButton from '@/components/story-card/story-pick-button'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 import Loading from './loading'
@@ -32,7 +36,7 @@ export default function ClientLayout({
   return (
     <LayoutTemplate
       type="article"
-      navigation={{
+      mobileNavigation={{
         leftButtons: [
           {
             type: 'icon',
@@ -52,6 +56,15 @@ export default function ClientLayout({
             icon: 'icon-share',
             onClick: shareStory,
           },
+        ],
+      }}
+      nonMobileNavigation={{
+        leftButtons: [<GoBackButton key={0} />],
+        title: '新聞',
+        rightButtons: [
+          <PublisherDonateButton key={0} />,
+          <StoryPickButton storyId={story?.id ?? ''} key={1} />,
+          <MoreButton key={2} />,
         ],
       }}
       actionBar={{ type: BottomActionBarType.Article, story }}

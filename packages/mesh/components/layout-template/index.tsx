@@ -12,10 +12,16 @@ import MobileBottomActionBar from './bottom-action-bar'
 import Footer from './footer'
 import Header, { HeaderType } from './header'
 import Nav, { NavType } from './nav'
-import DesktopNavigation from './navigation/desktop-navigation'
 import MobileNavigation, {
   type MobileNavigationProps,
 } from './navigation/mobile-navigation'
+import type {
+  ArticleNavigationProps,
+  StatefulNavigationProps,
+} from './navigation/non-mobile-navigation'
+import NonMobileNavigation, {
+  NonMobileNavigationType,
+} from './navigation/non-mobile-navigation'
 
 type LayoutType = 'default' | 'stateless' | 'article'
 
@@ -24,6 +30,7 @@ type CustomStyle = {
   restrictMainWidth?: boolean
   nav?: string
   footer?: string
+  hideMobileBottomNav?: boolean
 }
 
 type LayoutTemplateProps = {
@@ -34,12 +41,14 @@ type LayoutTemplateProps = {
 } & (
   | {
       type: 'default'
-      navigation?: MobileNavigationProps
+      mobileNavigation?: MobileNavigationProps
+      nonMobileNavigation?: StatefulNavigationProps
       actionBar?: MobileBottomActionBarProps
     }
   | {
       type: 'article'
-      navigation: MobileNavigationProps
+      mobileNavigation: MobileNavigationProps
+      nonMobileNavigation: ArticleNavigationProps
       actionBar: ArticleMobileBottomActionBarProps
     }
   | {
@@ -61,7 +70,11 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
   switch (type) {
     case 'default':
       return (
-        <DefaultLayout navigation={props.navigation} customStyle={customStyle}>
+        <DefaultLayout
+          mobileNavigation={props.mobileNavigation}
+          nonMobileNavigation={props.nonMobileNavigation}
+          customStyle={customStyle}
+        >
           {childrenJsx}
         </DefaultLayout>
       )
@@ -74,7 +87,8 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
     case 'article':
       return (
         <ArticleLayout
-          navigation={props.navigation}
+          mobileNavigation={props.mobileNavigation}
+          nonMobileNavigation={props.nonMobileNavigation}
           actionBar={props.actionBar}
         >
           {childrenJsx}
@@ -87,23 +101,29 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
 }
 
 const DefaultLayout = ({
-  navigation,
+  mobileNavigation,
+  nonMobileNavigation,
   customStyle = {
     background: 'bg-white',
     restrictMainWidth: true,
   },
   children,
 }: {
-  navigation?: MobileNavigationProps
+  mobileNavigation?: MobileNavigationProps
+  nonMobileNavigation?: StatefulNavigationProps
   customStyle?: CustomStyle
   children: React.ReactNode
 }) => {
   return (
     <body className={`min-h-screen ${customStyle.background}`}>
       {/* fixed header */}
-      <Header type={HeaderType.Stateful} />
+      <Header type={HeaderType.Default} />
       {/* block for non-fixed content, set padding for fixed blocks */}
-      <div className="primary-container">
+      <div
+        className={`primary-container ${
+          customStyle.hideMobileBottomNav ? 'pb-0' : ''
+        }`}
+      >
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
         <div className="flex grow flex-col">
           <div
@@ -113,6 +133,12 @@ const DefaultLayout = ({
                 : ''
             }`}
           >
+            {nonMobileNavigation && (
+              <NonMobileNavigation
+                type={NonMobileNavigationType.Default}
+                {...nonMobileNavigation}
+              />
+            )}
             {children}
           </div>
         </div>
@@ -122,7 +148,7 @@ const DefaultLayout = ({
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
       <Nav type={NavType.Default} className={customStyle.nav} />
       {/* cover on mobile header if navigation is setup */}
-      {navigation && <MobileNavigation {...navigation} />}
+      {mobileNavigation && <MobileNavigation {...mobileNavigation} />}
     </body>
   )
 }
@@ -149,11 +175,13 @@ const StatelessLayout = ({
 }
 
 const ArticleLayout = ({
-  navigation,
+  mobileNavigation,
+  nonMobileNavigation,
   actionBar,
   children,
 }: {
-  navigation: MobileNavigationProps
+  mobileNavigation: MobileNavigationProps
+  nonMobileNavigation: ArticleNavigationProps
   actionBar: ArticleMobileBottomActionBarProps
   children: React.ReactNode
 }) => {
@@ -174,7 +202,10 @@ const ArticleLayout = ({
           <div className="flex w-full grow justify-center xl:max-w-[theme(width.maxContent)]">
             <main className="flex w-full max-w-[theme(width.articleMain)] flex-col sm:pb-10">
               <div className="sticky top-[68px] z-layout hidden size-full h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:flex">
-                <DesktopNavigation story={actionBar.story} />
+                <NonMobileNavigation
+                  type={NonMobileNavigationType.Article}
+                  {...nonMobileNavigation}
+                />
               </div>
               {children}
             </main>
@@ -189,7 +220,7 @@ const ArticleLayout = ({
         closeNav={closeNav}
       />
       {/* cover on mobile header */}
-      <MobileNavigation {...navigation} />
+      <MobileNavigation {...mobileNavigation} />
       {/* cover on mobile bottom nav */}
       <MobileBottomActionBar {...actionBar} />
     </body>

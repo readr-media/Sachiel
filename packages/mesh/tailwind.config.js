@@ -20,6 +20,7 @@ module.exports = {
       width: {
         maxContent: '1440px',
         maxMain: '1120px',
+        maxDesktonNavigation: '680px',
         nav: {
           sm: '128px',
           md: '220px',

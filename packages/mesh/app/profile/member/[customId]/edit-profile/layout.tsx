@@ -29,7 +29,7 @@ const EditProfileLayout = ({
         footer: 'hidden sm:block',
         nav: 'hidden sm:block',
       }}
-      navigation={{
+      mobileNavigation={{
         leftButtons: [
           {
             type: 'text',

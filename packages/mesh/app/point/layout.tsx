@@ -41,7 +41,7 @@ export default function PointLayout({
           restrictMainWidth: true,
           footer: 'hidden sm:block',
         }}
-        navigation={{
+        mobileNavigation={{
           leftButtons: [
             {
               type: 'icon',

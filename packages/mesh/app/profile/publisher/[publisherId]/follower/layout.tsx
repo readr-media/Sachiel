@@ -25,7 +25,7 @@ export default function FollowerLayout({
         footer: 'hidden sm:block',
         nav: 'hidden sm:block',
       }}
-      navigation={{
+      mobileNavigation={{
         leftButtons: [
           {
             type: 'icon',
