@@ -1,8 +1,8 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
 
-import EditProfileHeader from '@/app/profile/_components/edit-profile-header'
 import LayoutTemplate from '@/components/layout-template'
+import GoBackButton from '@/components/navigation/go-back-button'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
 
@@ -48,11 +48,12 @@ const EditProfileLayout = ({
           },
         ],
       }}
+      nonMobileNavigation={{
+        leftButtons: [<GoBackButton key={1} />],
+        title: '編輯個人檔案',
+        rightButtons: [],
+      }}
     >
-      <EditProfileHeader
-        title={title}
-        backToPreviousPage={backToPreviousPage}
-      />
       {children}
     </LayoutTemplate>
   )

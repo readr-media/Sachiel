@@ -2,7 +2,7 @@ export default function Loading() {
   return (
     <>
       <div className="flex grow animate-pulse flex-col bg-multi-layer-light">
-        <div className="flex max-w-[theme(width.maxMain)] grow flex-col sm:m-5 sm:grow-0 sm:overflow-hidden sm:rounded-xl sm:shadow-card">
+        <div className="flex max-w-[theme(width.maxMain)] grow flex-col sm:m-5 sm:grow-0 sm:overflow-hidden sm:rounded-xl sm:shadow-card md:mx-[70px] md:my-10 lg:m-10">
           <div className="grow bg-white sm:grow-0 lg:grid lg:grid-cols-2">
             {Array.from(Array(3)).map((_, i) => (
               <div key={i} className="group p-5 pb-0">

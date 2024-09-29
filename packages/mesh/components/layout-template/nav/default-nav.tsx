@@ -164,7 +164,6 @@ const MobileNav = ({
   return (
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
-        P
         {MOBILE_NAV_ICONS.map((iconInfo) => {
           if (iconInfo.text === '個人檔案') {
             return (

@@ -7,32 +7,26 @@ import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import MoreButton from '@/components/story-card/more-button'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
-import { EditProfileProvider } from '@/context/edit-profile'
-import { useUser } from '@/context/user'
+
+import Loading from './_component/loading'
 
 const hasNestedLayout = (pathName: string) => {
   return FOLLOW_LIST_PATHS.some((path) => pathName.endsWith(path))
 }
 
-export default function ProfileMemberLayout({
+export default function ProfileLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const pathName = usePathname()
   const router = useRouter()
-  const params = useParams<{ customId?: string }>()
-  const { user } = useUser()
+  const params = useParams<{ publisherId?: string }>()
 
-  const pageCustomId = params.customId ?? ''
-  const isSelf = pageCustomId === user?.customId
+  const pageCustomId = params.publisherId ?? ''
 
   const handleMoreButtonClicked = () => {
     // TODO: deal with the feature
-  }
-
-  const goToSettingPage = () => {
-    // TODO: update the setting url
   }
 
   const backToPreviousPage = () => {
@@ -40,7 +34,7 @@ export default function ProfileMemberLayout({
   }
 
   if (hasNestedLayout(pathName)) {
-    return <EditProfileProvider>{children}</EditProfileProvider>
+    return <>{children}</>
   }
 
   return (
@@ -53,13 +47,11 @@ export default function ProfileMemberLayout({
       }}
       mobileNavigation={{
         leftButtons: [
-          isSelf
-            ? { type: 'icon', icon: 'icon-setting', onClick: goToSettingPage }
-            : {
-                type: 'icon',
-                icon: 'icon-chevron-left',
-                onClick: backToPreviousPage,
-              },
+          {
+            type: 'icon',
+            icon: 'icon-chevron-left',
+            onClick: backToPreviousPage,
+          },
         ],
         title: pageCustomId,
         rightButtons: [
@@ -71,12 +63,13 @@ export default function ProfileMemberLayout({
         ],
       }}
       nonMobileNavigation={{
-        leftButtons: isSelf ? [] : [<GoBackButton key={0} />],
+        leftButtons: [<GoBackButton key={0} />],
         title: pageCustomId,
         rightButtons: [<MoreButton key={0} />],
       }}
+      suspenseFallback={<Loading />}
     >
-      <EditProfileProvider>{children}</EditProfileProvider>
+      {children}
     </LayoutTemplate>
   )
 }
