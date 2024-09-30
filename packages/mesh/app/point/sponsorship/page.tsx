@@ -59,7 +59,7 @@ export default async function Page() {
                       </p>
                     </div>
                     <div className="ml-auto">
-                      <PublisherDonateButton />
+                      <PublisherDonateButton publisherId={record.publisherId} />
                     </div>
                   </div>
                   {index === sponsorRecord.length - 2 ? (

@@ -30,7 +30,7 @@ export default function DesktopPageNavigator({ story }: { story: Story }) {
         </p>
       </div>
       <div className="flex gap-1">
-        <PublisherDonateButton />
+        <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
         <StoryPickButton storyId={story?.id ?? ''} />
         <button className="pl-2">
           <Icon iconName="icon-more-horiz" size="l" />

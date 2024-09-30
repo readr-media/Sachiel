@@ -38,7 +38,6 @@ export default function SendTransaction({
     gasManagerConfig,
     opts,
   })
-  const hasClient = !!client
 
   useEffect(() => {
     const fetch = async () => {
@@ -72,7 +71,8 @@ export default function SendTransaction({
 
   const send = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-    if (!contractInterface || !client) return
+    //TODO: check user balance
+    if (!contractInterface || !client || !amount) return
     const target = ALCHEMY_ADDRESS.meshPoint
     const value = BigInt(amount)
     const encodedData = encodeFunctionData({
@@ -91,13 +91,13 @@ export default function SendTransaction({
     <div className="flex shrink-0 grow flex-col items-center gap-1">
       {isSendingUserOperation ? null : (
         <form className="flex w-full justify-center" onSubmit={send}>
-          <div className="max-w-[335px] shrink-0 grow">
+          <div className="shrink-0 grow sm:max-w-[335px]">
             <Button
               type="submit"
               size="lg"
               color="primary"
               text="完成付款"
-              disabled={disabled || !hasClient}
+              disabled={disabled || !client}
             />
           </div>
         </form>

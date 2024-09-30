@@ -2,10 +2,12 @@ import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
+import getAllPublishers from '@/app/actions/get-all-publishers'
 import { getStoryUnlockPolicy } from '@/app/actions/story'
 import { PaymentType } from '@/types/payment'
 
 import PaymentInfo from './_component/payment-info'
+import SponsorshipInfo from './_component/sponsorship-info'
 
 const AlchemyAuth = dynamic(() => import('@/components/alchemy/alchemy-auth'), {
   ssr: false,
@@ -21,6 +23,7 @@ export default async function Page({
   const { type, targetId } = params
   const user = await getCurrentUser()
   const memberId = user?.memberId ?? ''
+  if (!memberId) notFound()
   const hasAlchemyAccount = !!user?.wallet
 
   switch (type) {
@@ -29,7 +32,6 @@ export default async function Page({
       if (!unlockPolicy.length) notFound()
       return (
         <AlchemyAuth
-          memberId={memberId}
           hasAlchemyAccount={hasAlchemyAccount}
           renderComponent={
             <PaymentInfo unlockPolicy={unlockPolicy} storyId={targetId} />
@@ -37,9 +39,20 @@ export default async function Page({
         />
       )
     }
-    case PaymentType.Sponsor:
-      return <p>SponsorPayment Page to be implemented...</p>
-
+    case PaymentType.Sponsor: {
+      const allPublishers = await getAllPublishers()
+      const publisher = allPublishers?.filter(
+        (publisher) => publisher.id === targetId
+      )
+      if (!publisher?.length) notFound()
+      //TODO: add AlchemyAuth
+      return (
+        <AlchemyAuth
+          hasAlchemyAccount={hasAlchemyAccount}
+          renderComponent={<SponsorshipInfo publisher={publisher[0]} />}
+        />
+      )
+    }
     case PaymentType.SubscriptionPublisher:
     case PaymentType.Deposit:
       return <p>Payment Page to be implemented...</p>
