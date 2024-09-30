@@ -2,6 +2,7 @@ mutation SignUpMember($registrationData: MemberCreateInput!) {
   createMember(data: $registrationData) {
     id
     firebaseId
+    email
   }
 }
 
@@ -61,28 +62,5 @@ mutation UpdateWalletAddress($id: ID!, $wallet: String!) {
   updateMember(where: { id: $id }, data: { wallet: $wallet }) {
     id
     wallet
-  }
-}
-mutation AddFollowing($memberId: ID, $followingId: ID) {
-  updateMember(
-    where: { id: $memberId }
-    data: { following: { connect: { id: $followingId } } }
-  ) {
-    id
-    following {
-      id
-    }
-  }
-}
-
-mutation removeFollowing($memberId: ID, $followingId: ID) {
-  updateMember(
-    where: { id: $memberId }
-    data: { following: { disconnect: { id: $followingId } } }
-  ) {
-    id
-    following {
-      id
-    }
   }
 }

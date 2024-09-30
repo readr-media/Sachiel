@@ -1,0 +1,12 @@
+query GetPublisherPolicy($customId: String) {
+  policies(
+    where: {
+      publisher: { customId: { equals: $customId } }
+      unlockSingle: { equals: true }
+    }
+  ) {
+    id
+    charge
+    duration
+  }
+}

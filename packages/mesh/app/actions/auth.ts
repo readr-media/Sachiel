@@ -2,8 +2,10 @@
 import type { FirebaseError } from 'firebase-admin/app'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
+import { type Hex } from 'viem'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
+import { SECOND } from '@/constants/time-unit'
 import { type UserFormData } from '@/context/login'
 import { getAdminAuth } from '@/firebase/server'
 import {
@@ -67,7 +69,8 @@ export async function getAccessToken(idToken: string) {
     'fail message'
   )) as { token: string }
 
-  const accessToken = response?.token ?? ''
+  if (!response) return undefined
+  const accessToken = response.token
   const decodedAccessToken = jwt.decode(accessToken, { json: true })
   let expiresDate = undefined
   if (decodedAccessToken?.exp) {
@@ -82,7 +85,7 @@ export async function getAccessToken(idToken: string) {
     expires: expiresDate,
   })
 
-  return response
+  return accessToken
 }
 
 export async function getCurrentUser() {
@@ -109,6 +112,7 @@ export async function getCurrentUser() {
         memberId: data.member.id,
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
+        email: data.member.email ?? '',
         avatar: data.member.avatar ?? '',
         avatarImageId: data.member.avatar_image?.id ?? '',
         intro: data.member.intro ?? '',
@@ -135,10 +139,11 @@ export async function getCurrentUser() {
   }
 }
 
-export async function signUpMember(formData: UserFormData) {
+export async function signUpMember(
+  formData: UserFormData,
+  idToken: string | undefined
+) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const idToken = cookies().get('token')?.value
-
   if (!idToken) return undefined
 
   try {
@@ -183,7 +188,7 @@ export async function signUpMember(formData: UserFormData) {
   }
 }
 
-export async function updateMemberWallet(id: string, wallet: string) {
+export async function updateMemberWallet(id: string, wallet: Hex) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   const idToken = cookies().get('token')?.value
 
@@ -200,4 +205,42 @@ export async function updateMemberWallet(id: string, wallet: string) {
     logServerSideError(error, 'Failed to update member wallet', globalLogFields)
     return undefined
   }
+}
+
+export async function getStoryAccess(idToken: string, storyId: string) {
+  let isMatch = false
+  let attempt = 0
+
+  while (!isMatch && attempt < 5) {
+    const accessToken = await getAccessToken(idToken)
+    if (!accessToken) break
+
+    const decodedAccessToken = jwt.decode(accessToken, { json: true })
+
+    if (!decodedAccessToken || !decodedAccessToken.story) return undefined
+
+    isMatch = decodedAccessToken.story.some(
+      (arr: [string, number]) => arr[0] === storyId
+    )
+
+    if (isMatch) {
+      const expiresDate = decodedAccessToken.exp
+        ? new Date(decodedAccessToken.exp * SECOND)
+        : undefined
+
+      cookies().set('token', accessToken, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: true,
+        expires: expiresDate,
+      })
+
+      return accessToken
+    }
+    attempt++
+    await new Promise((resolve) => setTimeout(resolve, SECOND))
+  }
+
+  return undefined
 }

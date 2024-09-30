@@ -93,6 +93,8 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     }
     content
     apiData
+    trimApiData
+    isMember
   }
 }
 
@@ -145,5 +147,17 @@ query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int) {
     }
     content
     apiData
+    trimApiData
+    isMember
+  }
+}
+
+query GetStorySource($storyId: ID) {
+  story(where: { id: $storyId }) {
+    source {
+      id
+      customId
+      title
+    }
   }
 }

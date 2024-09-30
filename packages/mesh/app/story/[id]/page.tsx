@@ -2,80 +2,66 @@ import './_style/article.css'
 
 import { notFound } from 'next/navigation'
 
-import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
-  GetStoriesDocument,
-  GetStoryDocument,
-} from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
-import { fetchRestfulGet } from '@/utils/fetch-restful'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+  getPublisherPolicy,
+  getRelatedStories,
+  getStory,
+} from '@/app/actions/story'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
 import RelatedStories from './_components/related-stories'
 
-export type RelatedStory = {
-  title: string
-  summary: string
-  content: string
-  source: string
-  id: number
-  og_image: string
-  type: string
-  lastUpdated: string
-}
+export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
 const picksTake = 5
 const commentsTake = 3
-export default async function page({ params }: { params: { id: string } }) {
+
+export default async function Page({ params }: { params: { id: string } }) {
   const storyId = params.id
-  const globalLogFields = getLogTraceObjectFromHeaders()
+  const storyData = await getStory({ storyId, picksTake, commentsTake })
+  let policy: PublisherPolicy = []
+  let hasPayed = false
 
-  const storyData = await queryGraphQL(
-    GetStoryDocument,
-    { storyId, picksTake, commentsTake },
-    globalLogFields
-  )
-
-  if (!storyData) {
+  if (!storyData || !storyData.story || !storyData.story.title) {
     notFound()
   }
+  const relatedStories = await getRelatedStories({
+    storyTitle: storyData.story.title,
+    picksTake,
+    commentsTake,
+  })
 
-  const relatedRawStories =
-    (
-      await fetchRestfulGet<RelatedStory[]>(
-        RESTFUL_ENDPOINTS.relatedStories + storyData.story?.title
-      )
-    )?.slice(0, 4) ?? []
+  const sourceCustomId = storyData.story.source?.customId ?? ''
+  const isMemberStory = storyData.story.isMember ?? false
+  const renderData: ApiData =
+    storyData.story.apiData ?? storyData.story.trimApiData
 
-  // TODO: use new api to get story pick list according to user.followingIds
-  const relatedStories =
-    (
-      await queryGraphQL(
-        GetStoriesDocument,
-        {
-          storyIds: relatedRawStories.map((story) => String(story.id)),
-          picksTake,
-          commentsTake,
-        },
-        globalLogFields
-      )
-    )?.stories ?? []
-
-  const sourceCustomId = storyData.story?.source?.customId ?? ''
+  if (isMemberStory && sourceCustomId) {
+    policy = await getPublisherPolicy(sourceCustomId)
+    hasPayed = !!storyData.story.apiData
+  }
 
   return (
     <>
-      <Article story={storyData.story} sourceCustomId={sourceCustomId} />
+      <Article
+        story={storyData.story}
+        sourceCustomId={sourceCustomId}
+        renderData={renderData}
+        isMemberStory={isMemberStory}
+        hasPayed={hasPayed}
+        policy={policy}
+      />
       <RelatedStories relatedStories={relatedStories} />
       <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
-        <SideIndex
-          apiData={storyData.story?.apiData as ApiData}
-          sourceCustomId={sourceCustomId}
-          isInArticle={false}
-        />
+        {!isMemberStory && (
+          <SideIndex
+            apiData={storyData.story?.apiData as ApiData}
+            sourceCustomId={sourceCustomId}
+            isInArticle={false}
+          />
+        )}
       </aside>
     </>
   )
