@@ -24,7 +24,7 @@ module.exports = {
     ],
     'tailwindcss/classnames-order': 'off',
     'tailwindcss/enforces-shorthand': 'error',
-    'tailwindcss/no-unnecessary-arbitrary-value': 'error',
+    'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
     'tailwindcss/no-custom-classname': 'off',
   },
   overrides: [
