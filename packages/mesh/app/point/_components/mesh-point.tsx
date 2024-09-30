@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { getMemberTransactionRecord } from '@/app/actions/sponsorship'
-import Spinner from '@/components/spinner'
 import { useUser } from '@/context/user'
 
+import Loading from './loading'
 import MeshPointInfo from './mesh-point-info'
 import TransactionList from './transaction-list'
 
@@ -35,7 +35,7 @@ export default function MeshPoint() {
     fetchData()
   }, [user.memberId])
 
-  if (!transactionData) return <Spinner />
+  if (!transactionData) return <Loading />
 
   return (
     <div className="bg-white sm:rounded-md sm:drop-shadow">

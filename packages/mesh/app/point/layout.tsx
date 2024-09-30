@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import Icon from '@/components/icon'
 import LayoutTemplate from '@/components/layout-template'
 
+import Loading from './_components/loading'
+
 export default function PointLayout({
   children,
 }: {
@@ -76,6 +78,7 @@ export default function PointLayout({
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}
+      suspenseFallback={<Loading />}
     >
       {children}
     </LayoutTemplate>
