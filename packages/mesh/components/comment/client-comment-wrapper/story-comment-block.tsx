@@ -15,11 +15,12 @@ const StoryCommentBlock = ({
   type: 'popular' | 'all'
 }) => {
   const { state, dispatch } = useComment()
+  const backgroundColorFadeTime = 5000
   useEffect(() => {
     if (state.highlightedId) {
       const timer = setTimeout(() => {
-        dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: '' })
-      }, 5000)
+        dispatch({ type: 'UPDATE_HIGHLIGHTED_COMMENT', payload: '' })
+      }, backgroundColorFadeTime)
 
       return () => clearTimeout(timer)
     }
@@ -29,17 +30,25 @@ const StoryCommentBlock = ({
     <ul className="flex grow flex-col">
       <p className="list-title px-5 py-4">
         {title}
-        <span className={`${type === 'popular' && 'hidden'}`}>
+        <span className={`${type === 'popular' ? 'hidden' : ''}`}>
           （{comments?.length}）
         </span>
       </p>
-      {comments?.map((comment, index) => {
-        // popular only shows 3 comments
-        // TODO: add popular gql
-        if (type === 'popular' && index > 2) return
-
-        return <StoryCommentBlockItem comment={comment} key={comment.id} />
-      })}
+      {comments?.length ? (
+        comments?.map((comment) => {
+          return (
+            <StoryCommentBlockItem
+              displayMode={type}
+              comment={comment}
+              key={comment.id}
+            />
+          )
+        })
+      ) : (
+        <p className="body-3 mx-5 text-primary-600">
+          還沒有人留言，快來搶頭香！
+        </p>
+      )}
     </ul>
   )
 }

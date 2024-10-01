@@ -5,8 +5,8 @@ interface CommentModalProps {
   isOpen: boolean
   onLeaveText: string
   onCloseText: string
-  onLeave: () => void
-  onClose: () => void
+  onLeave?: () => void
+  onClose?: () => void
   children: React.ReactNode
 }
 
@@ -30,18 +30,22 @@ const CommentModal: React.FC<CommentModalProps> = ({
         <div className="flex w-screen max-w-md flex-col gap-5 rounded-lg bg-white px-5 py-4">
           {children}
           <div className="flex items-center justify-end gap-3">
-            <Button
-              onClick={onLeave}
-              size="sm"
-              color="transparent-no-border"
-              text={onLeaveText}
-            />
-            <Button
-              onClick={onClose}
-              size="sm"
-              color="custom-blue"
-              text={onCloseText}
-            />
+            {onLeaveText && (
+              <Button
+                onClick={onLeave}
+                size="sm"
+                color="transparent-no-border"
+                text={onLeaveText}
+              />
+            )}
+            {onCloseText && (
+              <Button
+                onClick={onClose}
+                size="sm"
+                color="custom-blue"
+                text={onCloseText}
+              />
+            )}
           </div>
         </div>
       </div>

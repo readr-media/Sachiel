@@ -6,10 +6,10 @@ const StoryCommentHeader = () => {
   const { comment } = state
   const closeCommentBlock = () => {
     if (comment) {
-      dispatch({ type: 'SHOW_CONFIRM_MODAL' })
+      dispatch({ type: 'TOGGLE_CONFIRM_MODAL', payload: { isVisible: true } })
       return
     }
-    dispatch({ type: 'CLOSE_MODAL' })
+    dispatch({ type: 'TOGGLE_COMMENT_MODAL', payload: { isOpen: false } })
     document.body.classList.remove('overflow-hidden')
   }
   return (

@@ -8,37 +8,68 @@ import useClickOutside from '@/hooks/use-click-outside'
 
 const CommentEditDrawer = () => {
   const { state, dispatch } = useComment()
-  const { editDrawerShow } = state
+  const { commentEditState } = state
   const { user } = useUser()
   const editDrawerRef = useRef(null)
 
   useClickOutside(editDrawerRef, () => {
-    dispatch({ type: 'HIDE_EDIT_DRAWER' })
-    dispatch({ type: 'CLEAR_EDIT_DRAWER' })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+    dispatch({ type: 'RESET_EDIT_DRAWER' })
   })
 
   const handleDeleteComment = () => {
+    if (!state.commentEditState.commentId) {
+      console.warn('no id')
+      dispatch({
+        type: 'UPDATE_EDIT_DRAWER',
+        payload: { ...state.commentEditState, isVisible: false },
+      })
+      return
+    }
     deleteComment({
       memberId: user.memberId,
-      commentId: state.editDrawerShow.commentId,
+      commentId: state.commentEditState.commentId,
     })
-    dispatch({ type: 'SHOW_DELETE_COMMENT_MODAL' })
-    dispatch({ type: 'HIDE_EDIT_DRAWER' })
+    dispatch({
+      type: 'TOGGLE_DELETE_COMMENT_MODAL',
+      payload: { isVisible: true },
+    })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
   }
   const handleEditComment = () => {
-    dispatch({ type: 'OPEN_COMMENT_EDITOR' })
-    dispatch({ type: 'HIDE_EDIT_DRAWER' })
+    dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: true } })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
   }
-  if (!editDrawerShow.show) return null
+  const handleReport = () => {
+    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: true } })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+  }
+
+  if (!commentEditState.isVisible) return null
   return (
     <ul
       ref={editDrawerRef}
       className="fixed bottom-0 z-30 flex min-h-16 w-screen flex-col gap-6 bg-white p-5 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]"
     >
-      {editDrawerShow.type === 'other' ? (
-        <li className="button-large flex items-center gap-[6px]">
-          <Icon iconName="icon-delete" size="l" />
-          檢舉
+      {commentEditState.mode === 'other' ? (
+        <li
+          onClick={handleReport}
+          className="button-large flex items-center gap-[6px]"
+        >
+          <Icon iconName="icon-flag" size="l" />
+          檢舉留言
         </li>
       ) : (
         <>

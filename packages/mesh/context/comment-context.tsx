@@ -1,22 +1,29 @@
 import type { ReactNode } from 'react'
-import React, { createContext, useContext, useReducer } from 'react'
+import { createContext, useContext, useReducer } from 'react'
 
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
+// Types
 type Story = NonNullable<NonNullable<GetStoryQuery>['story']>
 type Comment = NonNullable<Story['comments']>[number]
 
-type editDrawerShowType = '' | 'self' | 'other'
+type EditDrawerShowType = '' | 'self' | 'other'
+type EditDrawerBlockType = '' | 'popular' | 'all'
 
-type State = {
+interface commentEditStateType {
+  isVisible: boolean
+  mode: EditDrawerShowType
+  displayMode: EditDrawerBlockType
+  content: string
+  originalContent: string
+  commentId: string
+}
+
+interface State {
   isModalOpen: boolean
-  editDrawerShow: {
-    show: boolean
-    type: editDrawerShowType
-    comment: string
-    commentId: string
-  }
+  commentEditState: commentEditStateType
   isEditingComment: boolean
+  isReporting: boolean
   confirmModalShow: boolean
   comment: string
   commentList: Comment[]
@@ -25,37 +32,39 @@ type State = {
 }
 
 type Action =
-  | { type: 'OPEN_MODAL' }
-  | { type: 'CLOSE_MODAL' }
-  | { type: 'OPEN_COMMENT_EDITOR' }
-  | { type: 'CLOSE_COMMENT_EDITOR' }
-  | { type: 'SET_COMMENT_EDITOR'; payload: string }
-  | { type: 'SHOW_CONFIRM_MODAL' }
-  | { type: 'HIDE_CONFIRM_MODAL' }
+  | { type: 'TOGGLE_COMMENT_MODAL'; payload: { isOpen: boolean } }
+  | { type: 'TOGGLE_COMMENT_EDITOR'; payload: { isEditing: boolean } }
+  | { type: 'UPDATE_COMMENT_DRAFT'; payload: string }
+  | { type: 'TOGGLE_CONFIRM_MODAL'; payload: { isVisible: boolean } }
+  | { type: 'TOGGLE_REPORTING_MODAL'; payload: { isVisible: boolean } }
   | {
-      type: 'SHOW_EDIT_DRAWER'
-      payload: {
-        type: editDrawerShowType
-        comment: string
-        commentId: string
-      }
+      type: 'UPDATE_EDIT_DRAWER'
+      payload: Omit<commentEditStateType, 'originalComment'>
     }
   | { type: 'EDIT_COMMENT' }
   | { type: 'HIDE_EDIT_DRAWER' }
-  | { type: 'CLEAR_EDIT_DRAWER' }
-  | { type: 'DELETE_COMMENT' }
-  | { type: 'SET_COMMENT'; payload: string }
-  | { type: 'ADD_COMMENT'; payload: Comment }
-  | { type: 'SET_HIGHLIGHTED_ID'; payload: string }
-  | { type: 'CLEAR_HIGHLIGHTED_ID' }
-  | { type: 'SHOW_DELETE_COMMENT_MODAL' }
-  | { type: 'HIDE_DELETE_COMMENT_MODAL' }
+  | { type: 'RESET_EDIT_DRAWER' }
+  | { type: 'REMOVE_COMMENT' }
+  | { type: 'UPDATE_COMMENT_TEXT'; payload: string }
+  | { type: 'INSERT_COMMENT'; payload: Comment }
+  | { type: 'UPDATE_HIGHLIGHTED_COMMENT'; payload: string }
+  | { type: 'TOGGLE_DELETE_COMMENT_MODAL'; payload: { isVisible: boolean } }
+  | { type: 'SHOW_REPORTING_MODAL' }
+  | { type: 'HIDE_REPORTING_MODAL' }
 
 const initialState: State = {
   isModalOpen: false,
   confirmModalShow: false,
   isEditingComment: false,
-  editDrawerShow: { show: false, type: '', commentId: '', comment: '' },
+  isReporting: false,
+  commentEditState: {
+    isVisible: false,
+    mode: '',
+    displayMode: '',
+    commentId: '',
+    content: '',
+    originalContent: '',
+  },
   comment: '',
   commentList: [],
   highlightedId: '',
@@ -64,86 +73,67 @@ const initialState: State = {
 
 function commentReducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'OPEN_MODAL':
-      return { ...state, isModalOpen: true }
-    case 'CLOSE_MODAL':
-      return { ...state, isModalOpen: false, comment: '' }
-    case 'OPEN_COMMENT_EDITOR':
-      return { ...state, isEditingComment: true }
-    case 'CLOSE_COMMENT_EDITOR':
-      return { ...state, isEditingComment: false }
-    case 'SET_COMMENT_EDITOR':
+    case 'TOGGLE_COMMENT_MODAL':
       return {
         ...state,
-        editDrawerShow: {
-          ...state.editDrawerShow,
-          comment: action.payload,
+        isModalOpen: action.payload.isOpen,
+        comment: !action.payload.isOpen ? state.comment : '',
+      }
+    case 'TOGGLE_COMMENT_EDITOR':
+      return { ...state, isEditingComment: action.payload.isEditing }
+    case 'TOGGLE_CONFIRM_MODAL':
+      return { ...state, confirmModalShow: action.payload.isVisible }
+    case 'TOGGLE_DELETE_COMMENT_MODAL':
+      return {
+        ...state,
+        confirmDeleteCommentModalShow: action.payload.isVisible,
+      }
+    case 'TOGGLE_REPORTING_MODAL':
+      return { ...state, isReporting: action.payload.isVisible }
+    case 'UPDATE_COMMENT_DRAFT':
+      return {
+        ...state,
+        commentEditState: {
+          ...state.commentEditState,
+          content: action.payload,
         },
       }
+
     case 'EDIT_COMMENT':
       return {
         ...state,
-        commentList: state.commentList.map((comment) => {
-          if (comment.id === state.editDrawerShow.commentId) {
-            comment.content = state.editDrawerShow.comment
-          }
-          return comment
-        }),
+        commentList: state.commentList.map((comment) =>
+          comment.id === state.commentEditState.commentId
+            ? { ...comment, content: state.commentEditState.content }
+            : comment
+        ),
       }
-    case 'SHOW_CONFIRM_MODAL':
-      return { ...state, confirmModalShow: true }
-    case 'HIDE_CONFIRM_MODAL':
-      return { ...state, confirmModalShow: false }
-    case 'SHOW_EDIT_DRAWER':
+    case 'UPDATE_EDIT_DRAWER':
       return {
         ...state,
-        editDrawerShow: {
-          show: true,
-          type: action.payload.type,
-          comment: action.payload.comment,
-          commentId: action.payload.commentId,
+        commentEditState: {
+          ...action.payload,
+          originalContent: action.payload.content,
         },
       }
-    case 'HIDE_EDIT_DRAWER':
+    case 'RESET_EDIT_DRAWER':
       return {
         ...state,
-        editDrawerShow: { ...state.editDrawerShow, show: false },
+        commentEditState: { ...initialState.commentEditState },
       }
-    case 'CLEAR_EDIT_DRAWER':
-      return {
-        ...state,
-        editDrawerShow: {
-          ...state.editDrawerShow,
-          type: '',
-          commentId: '',
-          comment: '',
-        },
-      }
-    case 'DELETE_COMMENT':
+    case 'REMOVE_COMMENT':
       return {
         ...state,
         commentList: state.commentList.filter(
-          (comment) => comment.id !== state.editDrawerShow.commentId
+          (comment) => comment.id !== state.commentEditState.commentId
         ),
       }
-    case 'SHOW_DELETE_COMMENT_MODAL':
-      return {
-        ...state,
-        confirmDeleteCommentModalShow: true,
-      }
-    case 'HIDE_DELETE_COMMENT_MODAL':
-      return {
-        ...state,
-        confirmDeleteCommentModalShow: false,
-      }
-    case 'SET_COMMENT':
+    case 'UPDATE_COMMENT_TEXT':
       return { ...state, comment: action.payload }
-    case 'ADD_COMMENT':
+    case 'INSERT_COMMENT':
       return { ...state, commentList: [action.payload, ...state.commentList] }
-    case 'SET_HIGHLIGHTED_ID':
+    case 'UPDATE_HIGHLIGHTED_COMMENT':
       return { ...state, highlightedId: action.payload }
-    case 'CLEAR_HIGHLIGHTED_ID':
-      return { ...state, highlightedId: '' }
     default:
       return state
   }

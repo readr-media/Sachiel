@@ -4617,6 +4617,7 @@ export type GetStoryQuery = {
       __typename?: 'Comment'
       id: string
       createdAt?: any | null
+      likeCount?: number | null
       is_edited?: boolean | null
       content?: string | null
       state?: string | null
@@ -10512,6 +10513,10 @@ export const GetStoryDocument = {
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'likeCount' },
                       },
                       {
                         kind: 'Field',

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { addComment } from '@/app/actions/comment'
+import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
 import { useComment } from '@/context/comment-context'
 import { type User } from '@/context/user'
+import { sleep } from '@/utils/sleep'
 
 const StoryCommentFooter = ({
   user,
@@ -15,6 +17,7 @@ const StoryCommentFooter = ({
   comment: string
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [isAddingComment, setIsAddingComment] = useState(false)
 
   const { state, dispatch } = useComment()
   const latestCommentId =
@@ -22,7 +25,7 @@ const StoryCommentFooter = ({
       (comment) => comment.member?.customId === user?.customId
     )?.id || ''
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch({ type: 'SET_COMMENT', payload: e.target.value })
+    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: e.target.value })
     adjustTextareaHeight()
   }
 
@@ -47,7 +50,9 @@ const StoryCommentFooter = ({
   const handlePublish = async () => {
     if (!user?.memberId) throw new Error('no user id')
     if (!storyId) throw new Error('no story id')
+    setIsAddingComment(true)
     const dateTime = new Date().toString()
+    const sleepTime = 3000
     let addedCommentId
     try {
       addedCommentId = await addComment({
@@ -57,17 +62,19 @@ const StoryCommentFooter = ({
         latestCommentId,
       })
     } catch (error) {
+      setIsAddingComment(false)
       console.error({ error })
     }
     if (!addedCommentId) {
       // TODO: error toast
+      setIsAddingComment(false)
       return
     }
-    dispatch({ type: 'SET_HIGHLIGHTED_ID', payload: addedCommentId })
+    await sleep(sleepTime)
+    dispatch({ type: 'UPDATE_HIGHLIGHTED_COMMENT', payload: addedCommentId })
     dispatch({
-      type: 'ADD_COMMENT',
+      type: 'INSERT_COMMENT',
       payload: {
-        // NOTE: temp use date for id for local state management
         id: addedCommentId,
         content: comment,
         createdAt: dateTime,
@@ -79,8 +86,9 @@ const StoryCommentFooter = ({
         },
       },
     })
-    dispatch({ type: 'SET_COMMENT', payload: '' })
+    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: '' })
     adjustTextareaHeight()
+    setIsAddingComment(false)
   }
 
   return (
@@ -91,7 +99,7 @@ const StoryCommentFooter = ({
           ref={textareaRef}
           className="body-2 grow resize-none pl-2 pr-3 text-primary-700 focus:outline-none"
           rows={4}
-          placeholder="我有一些話想說..."
+          placeholder="在這裡輸入留言..."
           value={comment}
           onChange={handleTextChange}
           style={{
@@ -104,7 +112,7 @@ const StoryCommentFooter = ({
             className="body-2 text-custom-blue transition-colors hover:bg-blue-600"
             onClick={handlePublish}
           >
-            發布
+            {isAddingComment ? <Dots /> : '發布'}
           </button>
         </div>
       </div>

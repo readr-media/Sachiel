@@ -5,7 +5,8 @@ import { GetLatestAddedCommentDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+import { sleep } from '@/utils/sleep'
+
 const getLatestAddComment = async ({
   memberId,
   storyId,
@@ -39,8 +40,8 @@ export async function addComment({
   content: string
   latestCommentId: string
 }): Promise<string | null> {
-  const sleepTime = 200
-  const retryTimes = 4
+  const sleepTime = 500
+  const retryTimes = 3
 
   const payload = {
     action: 'add_comment',
@@ -51,16 +52,24 @@ export async function addComment({
     content,
   }
 
-  await fetchRestfulPost(
-    RESTFUL_ENDPOINTS.pubsub,
-    payload,
-    { cache: 'no-cache' },
-    'Failed to add comment state via pub/sub'
-  )
+  try {
+    await fetchRestfulPost(
+      RESTFUL_ENDPOINTS.pubsub,
+      payload,
+      { cache: 'no-cache' },
+      'Failed to add comment state via pub/sub'
+    )
+  } catch (error) {
+    console.error('Error in fetchRestfulPost:', error)
+    return null
+  }
+
+  await sleep(sleepTime)
 
   // 嘗試獲取新評論ID，最多重試3次
   for (let i = 0; i < retryTimes; i++) {
     const newCommentId = await getLatestAddComment({ memberId, storyId })
+
     if (newCommentId && latestCommentId !== newCommentId) {
       return newCommentId
     }
@@ -68,7 +77,7 @@ export async function addComment({
     await sleep(sleepTime)
   }
 
-  console.error('Failed to retrieve new comment ID')
+  console.error('Failed to retrieve new comment ID after all attempts')
   return null
 }
 

@@ -106,6 +106,7 @@ export type IconName =
   | 'icon-edit'
   | 'icon-edited'
   | 'icon-open-new-tab'
+  | 'icon-flag'
 
 export type IconProps = {
   size: Size

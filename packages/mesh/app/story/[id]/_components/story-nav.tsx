@@ -140,7 +140,7 @@ const MobileNav = ({ story }: { story: Story }) => {
   const commentsCount = story?.commentsCount ?? 0
   const { dispatch } = useComment()
   const openCommentBlock = () => {
-    dispatch({ type: 'OPEN_MODAL' })
+    dispatch({ type: 'TOGGLE_COMMENT_MODAL', payload: { isOpen: true } })
     scrollTo({ top: 0 })
     document.body.classList.add('overflow-hidden')
   }

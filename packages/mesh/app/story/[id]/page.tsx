@@ -11,6 +11,7 @@ import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
+import Comment from './_components/comment'
 import PageNavigator from './_components/page-navigator'
 import RelatedStories from './_components/related-stories'
 
@@ -64,6 +65,9 @@ export default async function page({ params }: { params: { id: string } }) {
           <Article story={storyData.story} sourceCustomId={sourceCustomId} />
           <div className="lg:hidden">
             <RelatedStories relatedStories={relatedStories} />
+          </div>
+          <div className="mt-10 hidden md:flex">
+            <Comment storyId={storyData.story?.id} />
           </div>
         </div>
       </main>
