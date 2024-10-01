@@ -1,11 +1,12 @@
 'use client'
-import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-import Icon from '@/components/icon'
 import LayoutTemplate from '@/components/layout-template'
+import GoBackButton from '@/components/navigation/go-back-button'
+import Spinner from '@/components/spinner'
 
-import Loading from './_components/loading'
+import LoadingSponsorship from './sponsorship/_components/loading'
+import LoadingSubscribeStories from './subscribe-stories/_components/loading'
 
 export default function PointLayout({
   children,
@@ -19,14 +20,17 @@ export default function PointLayout({
     subPath
   )
   let subtitle = ''
+  let loadingJsx = <Spinner />
 
   if (isNestedPage) {
     switch (subPath) {
       case 'sponsorship':
         subtitle = '已贊助媒體'
+        loadingJsx = <LoadingSponsorship />
         break
       case 'subscribe-stories':
         subtitle = '訂閱中文章'
+        loadingJsx = <LoadingSubscribeStories />
         break
       case 'record':
         subtitle = '點數紀錄'
@@ -56,15 +60,13 @@ export default function PointLayout({
           title: subtitle,
           rightButtons: [],
         }}
+        nonMobileNavigation={{
+          leftButtons: [<GoBackButton key={0} />],
+          title: subtitle,
+          rightButtons: [],
+        }}
+        suspenseFallback={loadingJsx}
       >
-        {/* TODO: use shared pc navigation component */}
-        <div className="hidden h-15 w-full flex-row items-center border-b bg-white sm:flex">
-          <Link href={'/point'}>
-            <Icon iconName="icon-chevron-left" size="m" className="ml-5" />
-          </Link>
-          <h2 className="list-title mx-auto sm:ml-6">{subtitle}</h2>
-          <div className="size-5 px-5"></div>
-        </div>
         {children}
       </LayoutTemplate>
     )
@@ -78,7 +80,6 @@ export default function PointLayout({
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}
-      suspenseFallback={<Loading />}
     >
       {children}
     </LayoutTemplate>
