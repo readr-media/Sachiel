@@ -214,7 +214,7 @@ export function CommentProvider({
     if (!storyId) throw new Error('no story id')
     dispatch({ type: 'TOGGLE_IS_ADDING_COMMENT', payload: { isAdding: true } })
     const dateTime = new Date().toString()
-    const sleepTime = 3000
+    const sleepTime = 1500
     const latestCommentId =
       state.commentList.find(
         (comment) => comment.member?.customId === user?.customId
