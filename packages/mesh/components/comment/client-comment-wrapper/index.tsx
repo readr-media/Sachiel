@@ -116,7 +116,7 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
   }
 
   return (
-    <>
+    <div>
       {isModalOpen && (
         <div className="absolute left-0 top-0 z-30 size-full bg-white">
           <StoryCommentHeader />
@@ -184,7 +184,7 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
           <StoryCommentEditor />
         </div>
       )}
-    </>
+    </div>
   )
 }
 
