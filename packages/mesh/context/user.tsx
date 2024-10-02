@@ -19,6 +19,7 @@ export type User = {
   memberId: string
   customId: string
   name: string
+  email: string
   avatar: string
   avatarImageId: string
   wallet: string
@@ -46,6 +47,7 @@ const guest: User = {
   avatarImageId: '',
   customId: '',
   name: '',
+  email: '',
   avatar: '',
   wallet: '',
   followingMemberIds: new Set(),

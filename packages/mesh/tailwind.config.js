@@ -25,6 +25,7 @@ module.exports = {
           md: '220px',
           xl: '320px',
         },
+        articleNav: '300px',
       },
       spacing: {
         15: '3.75rem',
@@ -137,6 +138,7 @@ module.exports = {
       boxShadow: {
         'bottom-sheet': '0 -8px 20px 0 rgba(0, 0, 0, 0.1)',
         modal: '0 2px 40px 0 rgba(0, 0, 0, 0.1)',
+        card: '0 2px 2px 0 rgba(0, 9, 40, 0.1), 0 0 4px 0 rgba(0, 9, 40, 0.1)',
       },
     },
   },

@@ -1,11 +1,10 @@
 import { useRouter } from 'next/navigation'
 import { createElement, useEffect, useState } from 'react'
 
-import { getCurrentUser } from '@/app/actions/auth'
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
+import { auth } from '@/firebase/client'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
-import { useDynamicContext } from '@/utils/dynamic'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -28,26 +27,31 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 
 export default function LoginSteps() {
   const router = useRouter()
-  const { step } = useLogin()
-  const { handleSignIn } = useHandleSignIn()
-  const [isSignInLoading, setIsSignInLoading] = useState(false)
-  const { sdkHasLoaded } = useDynamicContext()
+  const { step, setStep } = useLogin()
+  const { handleSignIn, status: isSignInLoading } = useHandleSignIn()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAuthReady, setIsAuthReady] = useState(false)
 
   useEffect(() => {
     const init = async () => {
-      setIsSignInLoading(true)
-      const user = await getCurrentUser()
-      if (user) {
-        router.push('/media')
-      } else {
-        await handleSignIn()
-      }
-      setIsSignInLoading(false)
+      await auth.authStateReady()
+      setIsAuthReady(true)
+      const unsubscribe = auth.onAuthStateChanged(async () => {
+        const response = await handleSignIn()
+        if (!response) return
+        if (response.result === 'sign-up') {
+          setStep('set-name')
+        } else if (response.result === 'logged-in') {
+          setIsLoggedIn(true)
+          router.push('/media')
+        }
+      })
+      return () => unsubscribe()
     }
     init()
-  }, [handleSignIn, router])
+  }, [handleSignIn, router, setStep])
 
-  if (!sdkHasLoaded || isSignInLoading) {
+  if (isSignInLoading === 'loading' || isLoggedIn || !isAuthReady) {
     return (
       <div className="flex size-full items-center justify-center">
         <Spinner />

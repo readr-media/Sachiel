@@ -1,13 +1,15 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import type { XOR } from 'ts-xor'
 
 import Spinner from '../spinner'
+import type { MobileBottomActionBarProps } from './bottom-action-bar'
+import MobileBottomActionBar from './bottom-action-bar'
 import Footer from './footer'
-import Header from './header'
-import Nav from './nav'
+import Header, { HeaderType } from './header'
+import Nav, { NavType } from './nav'
 import MobileNavigation, {
   type MobileNavigationProps,
 } from './navigation/mobile-navigation'
@@ -29,6 +31,7 @@ type LayoutTemplateProps = {
   {
     type: 'default' | 'article'
     navigation?: MobileNavigationProps
+    actionBar?: MobileBottomActionBarProps
   },
   {
     type: 'stateless'
@@ -39,6 +42,7 @@ export default function LayoutTemplate({
   children,
   type,
   navigation,
+  actionBar,
   customStyle,
 }: LayoutTemplateProps) {
   const pathName = usePathname()
@@ -64,7 +68,11 @@ export default function LayoutTemplate({
         </StatelessLayout>
       )
     case 'article':
-      return null
+      return (
+        <ArticleLayout navigation={navigation} actionBar={actionBar}>
+          {childrenJsx}
+        </ArticleLayout>
+      )
     default:
       console.error('LayoutTemplate with unhandleType', type)
       return null
@@ -86,7 +94,7 @@ const DefaultLayout = ({
   return (
     <body className={`min-h-screen ${customStyle.background}`}>
       {/* fixed header */}
-      <Header type="stateful" />
+      <Header type={HeaderType.Stateful} />
       {/* block for non-fixed content, set padding for fixed blocks */}
       <div className="primary-container">
         {/* block for main and aside content to maintain the max width for screen width larger than 1440 */}
@@ -105,7 +113,8 @@ const DefaultLayout = ({
         <Footer className={customStyle.footer} />
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}
-      <Nav type="default" className={customStyle.nav} />
+      <Nav type={NavType.Default} className={customStyle.nav} />
+      {/* cover on mobile header if navigation is setup */}
       {navigation && <MobileNavigation {...navigation} />}
     </body>
   )
@@ -123,11 +132,53 @@ const StatelessLayout = ({
   return (
     <body className={`min-h-screen ${customStyle?.background}`}>
       <div className="h-dvh">
-        <Header type="stateless" />
+        <Header type={HeaderType.Stateless} />
         <div className="flex h-full flex-col items-center sm:pt-15">
           {children}
         </div>
       </div>
+    </body>
+  )
+}
+
+const ArticleLayout = ({
+  navigation,
+  actionBar,
+  children,
+}: {
+  navigation?: MobileNavigationProps
+  actionBar?: MobileBottomActionBarProps
+  children: React.ReactNode
+}) => {
+  const [shouldShowNav, setShouldShowNav] = useState(false)
+  const showNav = () => {
+    setShouldShowNav(true)
+  }
+  const closeNav = () => {
+    setShouldShowNav(false)
+  }
+  return (
+    <body className="min-h-screen bg-white">
+      {/* fixed header */}
+      <Header type={HeaderType.Article} showNav={showNav} />
+      {/* block for non-fixed content, set padding for fixed blocks */}
+      <div className="primary-container-article">
+        <div className="flex grow flex-col items-center bg-white">
+          <div className="flex w-full grow justify-around xl:max-w-[theme(width.maxContent)]">
+            {children}
+          </div>
+        </div>
+        {/* footer after main content */}
+        <Footer />
+      </div>
+      <Nav
+        type={NavType.Article}
+        shouldShowNav={shouldShowNav}
+        closeNav={closeNav}
+      />
+      {/* cover on mobile header if navigation is setup */}
+      {navigation && <MobileNavigation {...navigation} />}
+      {actionBar && <MobileBottomActionBar {...actionBar} />}
     </body>
   )
 }

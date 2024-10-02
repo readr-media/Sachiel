@@ -3,7 +3,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     id: Build Image
     env:
-    - 'NEXT_PUBLIC_ENV=$_ENV'
+      - 'NEXT_PUBLIC_ENV=${BRANCH_NAME}'
     entrypoint: 'bash'
     args:
       - '-c'

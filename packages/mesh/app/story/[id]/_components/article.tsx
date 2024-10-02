@@ -11,8 +11,10 @@ import StoryPickInfo from '@/components/story-card/story-pick-info'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { displayTime } from '@/utils/story-display'
 
+import { type PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
+import PaymentWall from './payment-wall'
 
 type Story = NonNullable<GetStoryQuery>['story']
 
@@ -21,33 +23,48 @@ const inHousePublisherCustomIds = ['mirrormedia', 'readr']
 export default function Article({
   story,
   sourceCustomId,
+  renderData,
+  isMemberStory,
+  hasPayed,
+  policy,
 }: {
   story: Story
   sourceCustomId: string
+  renderData: ApiData
+  isMemberStory: boolean
+  hasPayed: boolean
+  policy: PublisherPolicy
 }) {
-  const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
+  const getArticleContent = (story: Story, sourceCustomId: string) => {
+    const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
 
-  const getArtcileContent = (
-    story: Story,
-    sourceCustomId: string,
-    shouldUseApiData: boolean
-  ) => {
     if (shouldUseApiData) {
       return (
         <>
           <SideIndex
-            apiData={story?.apiData as ApiData}
+            apiData={renderData}
             sourceCustomId={sourceCustomId}
             isInArticle={true}
           />
           <ApiDataRenderer
-            apiData={story?.apiData as ApiData}
+            apiData={renderData}
             sourceCustomId={sourceCustomId}
           />
         </>
       )
     } else {
-      // redirect all external stories for now, TODO: sparate external and redirect stories
+      const isExternal = story?.full_content
+
+      if (isExternal) {
+        return (
+          <article
+            className="story-renderer"
+            dangerouslySetInnerHTML={{ __html: story.content ?? '' }}
+          />
+        )
+      }
+
+      // redirect article
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
           <div className="body-3 text-primary-500">本篇為外連文章</div>
@@ -122,8 +139,12 @@ export default function Article({
               {story?.summary}
             </div>
           )}
-
-          {getArtcileContent(story, sourceCustomId, shouldUseApiData)}
+          <div className="relative">
+            {getArticleContent(story, sourceCustomId)}
+            {isMemberStory && !hasPayed ? (
+              <PaymentWall storyId={story?.id ?? ''} policy={policy} />
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

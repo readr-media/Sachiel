@@ -3,11 +3,18 @@
 import { useRouter } from 'next/navigation'
 
 import { addPick, removePick } from '@/app/actions/pick'
+import type { ButtonColor } from '@/components/button'
 import Button from '@/components/button'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
-export default function StoryPickButton({ storyId }: { storyId: string }) {
+export default function StoryPickButton({
+  storyId,
+  color = 'white',
+}: {
+  storyId: string
+  color?: ButtonColor
+}) {
   const router = useRouter()
   const { user, setUser } = useUser()
   const memberId = user.memberId
@@ -68,7 +75,7 @@ export default function StoryPickButton({ storyId }: { storyId: string }) {
   return (
     <Button
       size="sm"
-      color="white"
+      color={color}
       text="精選"
       icon={{ iconName: 'icon-star-primary', size: 's' }}
       onClick={handleClickPick}

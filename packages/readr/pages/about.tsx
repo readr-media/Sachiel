@@ -1,6 +1,6 @@
 import type { ApolloQueryResult } from '@apollo/client/core'
 import errors from '@twreporter/errors'
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps } from 'next'
 import { ReactElement, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
@@ -22,7 +22,6 @@ import { pageVariablesByPage } from '~/graphql/query/page-variable'
 import type { QaList } from '~/graphql/query/qa'
 import { qALists as qAListsGql } from '~/graphql/query/qa'
 import type { Language, RenderedAward } from '~/types/about'
-import { setCacheControl } from '~/utils/common'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -193,11 +192,9 @@ const About: NextPageWithLayout<PageProps> = ({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({
-  res,
-}) => {
-  setCacheControl(res)
-
+// cache a week
+const pageRevalidate = 7 * 24 * 60 * 60
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
   const client = getGqlClient()
   let awardsData: Award[] = []
   let moreReportData: PageVariable[] = []
@@ -288,6 +285,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       membersData,
       qAListsData,
     },
+    revalidate: pageRevalidate,
   }
 }
 

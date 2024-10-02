@@ -1,5 +1,5 @@
 'use client'
-
+// @ts-expect-error: The module missing TypeScript declarations.
 import CustomImage from '@readr-media/react-image'
 
 import type {
