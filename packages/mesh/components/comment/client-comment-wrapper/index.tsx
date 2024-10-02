@@ -4,8 +4,8 @@ import React from 'react'
 
 import { CommentProvider, useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
-import type { Comment } from '@/graphql/__generated__/graphql'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
+import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
 import CommentEditDrawer from './comment-edit-drawer'
 import CommentModal from './comment-modal'
@@ -17,7 +17,13 @@ import StoryCommentMeta from './story-comment-meta'
 type Story = NonNullable<GetStoryQuery>['story']
 
 function CommentBlockContent({ storyData }: { storyData: Story }) {
-  const { state, dispatch } = useComment()
+  const {
+    state,
+    dispatch,
+    handleDeleteCommentModalOnLeave,
+    handleDeleteCommentModalOnClose,
+    handleReportOnClose,
+  } = useComment()
   const {
     comment,
     commentList,
@@ -35,84 +41,6 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
 
   const handleAddCommentModalOnClose = () => {
     dispatch({ type: 'TOGGLE_CONFIRM_MODAL', payload: { isVisible: false } })
-  }
-
-  const handleDeleteCommentModalOnLeave = () => {
-    dispatch({ type: 'REMOVE_COMMENT' })
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: false },
-    })
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-    dispatch({ type: 'RESET_EDIT_DRAWER' })
-  }
-  const handleDeleteCommentModalOnClose = () => {
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-    dispatch({ type: 'RESET_EDIT_DRAWER' })
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: false },
-    })
-  }
-  const handleReportOnClose = () => {
-    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: false } })
-  }
-
-  function sortAndFilterComments(comments: Comment[]): Comment[] {
-    const validComments = comments.filter((comment) => !!comment.likeCount)
-
-    // 如果沒有有效的 likeCount，返回空陣列
-    if (validComments.length === 0) {
-      return []
-    }
-
-    // 按 likeCount 從大到小排序
-    const sortedComments = validComments.sort(
-      (a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0)
-    )
-
-    // 只取前三個元素
-    const topThreeComments = sortedComments.slice(0, 3)
-
-    // 如果所有 likeCount 都是 0，返回空陣列
-    if (topThreeComments.every((comment) => comment.likeCount === 0)) {
-      return []
-    }
-
-    return topThreeComments
-  }
-
-  const sortAuthorComments = (comments: Comment[]) => {
-    const authorComments = comments.filter(
-      (comment) => comment.member?.customId === user.customId
-    )
-    const otherComments = comments.filter(
-      (comment) => comment.member?.customId !== user.customId
-    )
-
-    const getLatestDate = (comment: Comment) => {
-      const createdDate = comment.createdAt
-        ? new Date(comment.createdAt).getTime()
-        : 0
-      const editedDate = comment.updatedAt
-        ? new Date(comment.updatedAt).getTime()
-        : 0
-      return Math.max(createdDate, editedDate)
-    }
-
-    // 對 authorComments 按最新活動日期（createdAt 或 editedAt 中較晚的）從新到舊排序
-    const sortedAuthorComments = authorComments.sort((a, b) => {
-      return getLatestDate(b) - getLatestDate(a)
-    })
-
-    // 將排序後的 authorComments 和 otherComments 合併
-    return [...sortedAuthorComments, ...otherComments]
   }
 
   return (
@@ -137,14 +65,10 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
             <StoryCommentBlock
               title="所有留言"
               type="all"
-              comments={sortAuthorComments(commentList)}
+              comments={sortAuthorComments(commentList, user)}
             />
           </div>
-          <StoryCommentFooter
-            user={user}
-            storyId={storyData?.id}
-            comment={comment}
-          />
+          <StoryCommentFooter storyId={storyData?.id} comment={comment} />
           <CommentModal
             isOpen={confirmModalShow}
             onLeaveText="離開"

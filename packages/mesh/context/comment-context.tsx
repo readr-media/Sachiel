@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
 import { createContext, useContext, useReducer } from 'react'
 
+import { addComment, editComment } from '@/app/actions/comment'
+import type { User } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
-
+import { sleep } from '@/utils/sleep'
 // Types
 type Story = NonNullable<NonNullable<GetStoryQuery>['story']>
 type Comment = NonNullable<Story['comments']>[number]
@@ -24,6 +26,7 @@ interface State {
   commentEditState: commentEditStateType
   isEditingComment: boolean
   isReporting: boolean
+  isAddingComment: boolean
   confirmModalShow: boolean
   comment: string
   commentList: Comment[]
@@ -37,6 +40,7 @@ type Action =
   | { type: 'UPDATE_COMMENT_DRAFT'; payload: string }
   | { type: 'TOGGLE_CONFIRM_MODAL'; payload: { isVisible: boolean } }
   | { type: 'TOGGLE_REPORTING_MODAL'; payload: { isVisible: boolean } }
+  | { type: 'TOGGLE_IS_ADDING_COMMENT'; payload: { isAdding: boolean } }
   | {
       type: 'UPDATE_EDIT_DRAWER'
       payload: Omit<commentEditStateType, 'originalComment'>
@@ -57,6 +61,7 @@ const initialState: State = {
   confirmModalShow: false,
   isEditingComment: false,
   isReporting: false,
+  isAddingComment: false,
   commentEditState: {
     isVisible: false,
     mode: '',
@@ -87,6 +92,11 @@ function commentReducer(state: State, action: Action): State {
       return {
         ...state,
         confirmDeleteCommentModalShow: action.payload.isVisible,
+      }
+    case 'TOGGLE_IS_ADDING_COMMENT':
+      return {
+        ...state,
+        isAddingComment: action.payload.isAdding,
       }
     case 'TOGGLE_REPORTING_MODAL':
       return { ...state, isReporting: action.payload.isVisible }
@@ -143,6 +153,18 @@ const CommentContext = createContext<
   | {
       state: State
       dispatch: React.Dispatch<Action>
+      handleDeleteCommentModalOnLeave: () => void
+      handleDeleteCommentModalOnClose: () => void
+      handleTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+      handleReportOnClose: () => void
+      handleCommentEdit: (user: User) => void
+      handleCommentPublish: ({
+        user,
+        storyId,
+      }: {
+        user: User
+        storyId: string
+      }) => Promise<void>
     }
   | undefined
 >(undefined)
@@ -158,9 +180,124 @@ export function CommentProvider({
     ...initialState,
     commentList: initialComments,
   })
+  const handleDeleteCommentModalOnLeave = () => {
+    dispatch({ type: 'REMOVE_COMMENT' })
+    dispatch({
+      type: 'TOGGLE_DELETE_COMMENT_MODAL',
+      payload: { isVisible: false },
+    })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+    dispatch({ type: 'RESET_EDIT_DRAWER' })
+  }
+  const handleDeleteCommentModalOnClose = () => {
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+    dispatch({ type: 'RESET_EDIT_DRAWER' })
+    dispatch({
+      type: 'TOGGLE_DELETE_COMMENT_MODAL',
+      payload: { isVisible: false },
+    })
+  }
+  const handleCommentPublish = async ({
+    user,
+    storyId,
+  }: {
+    user: User
+    storyId: string
+  }) => {
+    if (!user?.memberId) throw new Error('no user id')
+    if (!storyId) throw new Error('no story id')
+    dispatch({ type: 'TOGGLE_IS_ADDING_COMMENT', payload: { isAdding: true } })
+    const dateTime = new Date().toString()
+    const sleepTime = 3000
+    const latestCommentId =
+      state.commentList.find(
+        (comment) => comment.member?.customId === user?.customId
+      )?.id || ''
+    let addedCommentId
+    try {
+      addedCommentId = await addComment({
+        content: state.comment,
+        storyId,
+        memberId: user?.memberId,
+        latestCommentId,
+      })
+    } catch (error) {
+      dispatch({
+        type: 'TOGGLE_IS_ADDING_COMMENT',
+        payload: { isAdding: false },
+      })
+      console.error({ error })
+    }
+    if (!addedCommentId) {
+      // TODO: error toast
+      dispatch({
+        type: 'TOGGLE_IS_ADDING_COMMENT',
+        payload: { isAdding: false },
+      })
+      console.warn('please retry')
+      return
+    }
+    await sleep(sleepTime)
+    dispatch({ type: 'UPDATE_HIGHLIGHTED_COMMENT', payload: addedCommentId })
+    dispatch({
+      type: 'INSERT_COMMENT',
+      payload: {
+        id: addedCommentId,
+        content: state.comment,
+        createdAt: dateTime,
+        member: {
+          id: user.memberId,
+          customId: user.customId,
+          name: user.name,
+          avatar: user.avatar,
+        },
+      },
+    })
+    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: '' })
+    dispatch({ type: 'TOGGLE_IS_ADDING_COMMENT', payload: { isAdding: false } })
+  }
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: e.target.value })
+  }
 
+  const handleReportOnClose = () => {
+    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: false } })
+  }
+
+  const handleCommentEdit = (user: User) => {
+    if (!state.commentEditState.content.trim()) {
+      dispatch({ type: 'RESET_EDIT_DRAWER' })
+      dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: false } })
+      return
+    }
+    dispatch({ type: 'EDIT_COMMENT' })
+    dispatch({ type: 'RESET_EDIT_DRAWER' })
+    dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: false } })
+    editComment({
+      memberId: user.memberId,
+      commentId: state.commentEditState.commentId,
+      content: state.commentEditState.content,
+    })
+  }
   return (
-    <CommentContext.Provider value={{ state, dispatch }}>
+    <CommentContext.Provider
+      value={{
+        state,
+        dispatch,
+        handleDeleteCommentModalOnLeave,
+        handleDeleteCommentModalOnClose,
+        handleCommentPublish,
+        handleTextChange,
+        handleReportOnClose,
+        handleCommentEdit,
+      }}
+    >
       {children}
     </CommentContext.Provider>
   )

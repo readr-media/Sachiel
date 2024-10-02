@@ -1,7 +1,6 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 
-import { addComment, deleteComment } from '@/app/actions/comment'
 import Button from '@/components/button'
 import CommentModal from '@/components/comment/client-comment-wrapper/comment-modal'
 import StoryCommentBlock from '@/components/comment/client-comment-wrapper/story-comment-block'
@@ -9,154 +8,25 @@ import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
 import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
-import type { Comment as CommentType } from '@/graphql/__generated__/graphql'
-import { sleep } from '@/utils/sleep'
+import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
-const Comment = ({ storyId }: { storyId?: string }) => {
-  const [isAddingComment, setIsAddingComment] = useState(false)
+const Comment = ({ storyId = '' }: { storyId?: string }) => {
   const { user } = useUser()
-  const { state, dispatch } = useComment()
+  const {
+    state,
+    handleDeleteCommentModalOnClose,
+    handleDeleteCommentModalOnLeave,
+    handleCommentPublish,
+    handleTextChange,
+    handleReportOnClose,
+  } = useComment()
   const {
     commentList,
     comment,
     confirmDeleteCommentModalShow,
-    commentEditState,
+    isAddingComment,
   } = state
-  const latestCommentId =
-    state.commentList.find(
-      (comment) => comment.member?.customId === user?.customId
-    )?.id || ''
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: e.target.value })
-  }
-  function sortAndFilterComments(comments: CommentType[]): CommentType[] {
-    const validComments = comments.filter((comment) => !!comment.likeCount)
-
-    // 如果沒有有效的 likeCount，返回空陣列
-    if (validComments.length === 0) {
-      return []
-    }
-
-    // 按 likeCount 從大到小排序
-    const sortedComments = validComments.sort(
-      (a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0)
-    )
-
-    // 只取前三個元素
-    const topThreeComments = sortedComments.slice(0, 3)
-
-    // 如果所有 likeCount 都是 0，返回空陣列
-    if (topThreeComments.every((comment) => comment.likeCount === 0)) {
-      return []
-    }
-
-    return topThreeComments
-  }
-
-  const sortAuthorComments = (comments: CommentType[]) => {
-    const authorComments = comments.filter(
-      (comment) => comment.member?.customId === user.customId
-    )
-    const otherComments = comments.filter(
-      (comment) => comment.member?.customId !== user.customId
-    )
-
-    const getLatestDate = (comment: CommentType) => {
-      const createdDate = comment.createdAt
-        ? new Date(comment.createdAt).getTime()
-        : 0
-      const editedDate = comment.updatedAt
-        ? new Date(comment.updatedAt).getTime()
-        : 0
-      return Math.max(createdDate, editedDate)
-    }
-
-    // 對 authorComments 按最新活動日期（createdAt 或 editedAt 中較晚的）從新到舊排序
-    const sortedAuthorComments = authorComments.sort((a, b) => {
-      return getLatestDate(b) - getLatestDate(a)
-    })
-
-    // 將排序後的 authorComments 和 otherComments 合併
-    return [...sortedAuthorComments, ...otherComments]
-  }
-
-  const handlePublish = async () => {
-    if (!user?.memberId) throw new Error('no user id')
-    if (!storyId) throw new Error('no story id')
-    setIsAddingComment(true)
-    const dateTime = new Date().toString()
-    const sleepTime = 3000
-    let addedCommentId
-    try {
-      addedCommentId = await addComment({
-        content: comment,
-        storyId,
-        memberId: user?.memberId,
-        latestCommentId,
-      })
-    } catch (error) {
-      setIsAddingComment(false)
-      console.error({ error })
-    }
-    if (!addedCommentId) {
-      // TODO: error toast
-      setIsAddingComment(false)
-      console.warn('please retry')
-      return
-    }
-    await sleep(sleepTime)
-    dispatch({ type: 'UPDATE_HIGHLIGHTED_COMMENT', payload: addedCommentId })
-    dispatch({
-      type: 'INSERT_COMMENT',
-      payload: {
-        id: addedCommentId,
-        content: comment,
-        createdAt: dateTime,
-        member: {
-          id: user.memberId,
-          customId: user.customId,
-          name: user.name,
-          avatar: user.avatar,
-        },
-      },
-    })
-    dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: '' })
-    setIsAddingComment(false)
-  }
-
-  const handleDeleteCommentModalOnLeave = () => {
-    deleteComment({
-      memberId: user.memberId,
-      commentId: commentEditState.commentId,
-    })
-    dispatch({ type: 'REMOVE_COMMENT' })
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: false },
-    })
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-    dispatch({ type: 'RESET_EDIT_DRAWER' })
-  }
-  const handleDeleteCommentModalOnClose = () => {
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-    dispatch({ type: 'RESET_EDIT_DRAWER' })
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: false },
-    })
-  }
-
-  const handleReportOnClose = () => {
-    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: false } })
-  }
-  // TODO: UI part
   return (
     <div className="flex grow flex-col">
       <p className="list-title mb-5 text-primary-700">留言區</p>
@@ -180,7 +50,7 @@ const Comment = ({ storyId }: { storyId?: string }) => {
             </div>
           ) : (
             <Button
-              onClick={handlePublish}
+              onClick={() => handleCommentPublish({ user, storyId })}
               size="md"
               color="primary"
               text="發布"
@@ -199,7 +69,7 @@ const Comment = ({ storyId }: { storyId?: string }) => {
       <StoryCommentBlock
         title="所有留言"
         type="all"
-        comments={sortAuthorComments(commentList)}
+        comments={sortAuthorComments(commentList, user)}
       />
       <CommentModal
         onLeaveText="刪除留言"
