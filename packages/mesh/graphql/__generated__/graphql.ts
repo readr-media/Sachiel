@@ -4573,8 +4573,6 @@ export type GetStoryQuery = {
       __typename?: 'Comment'
       id: string
       createdAt?: any | null
-      likeCount?: number | null
-      is_edited?: boolean | null
       content?: string | null
       state?: string | null
       member?: {
@@ -10184,20 +10182,6 @@ export const GetStoryDocument = {
                               ],
                             },
                           },
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'is_active' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: { kind: 'BooleanValue', value: true },
-                                },
-                              ],
-                            },
-                          },
                         ],
                       },
                     },
@@ -10228,20 +10212,6 @@ export const GetStoryDocument = {
                                     value: 'public',
                                     block: false,
                                   },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'is_active' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: { kind: 'BooleanValue', value: true },
                                 },
                               ],
                             },
@@ -10282,10 +10252,6 @@ export const GetStoryDocument = {
                       },
                       {
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'likeCount' },
-                      },
-                      {
-                        kind: 'Field',
                         name: { kind: 'Name', value: 'member' },
                         selectionSet: {
                           kind: 'SelectionSet',
@@ -10308,10 +10274,6 @@ export const GetStoryDocument = {
                             },
                           ],
                         },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'is_edited' },
                       },
                       {
                         kind: 'Field',

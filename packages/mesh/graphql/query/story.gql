@@ -74,24 +74,20 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
         avatar
       }
     }
-    commentsCount: commentCount(
-      where: { state: { equals: "public" }, is_active: { equals: true } }
-    )
+    commentsCount: commentCount(where: { state: { equals: "public" } })
     comments: comment(
-      where: { state: { equals: "public" }, is_active: { equals: true } }
+      where: { state: { equals: "public" } }
       orderBy: { createdAt: desc }
       take: $commentsTake
     ) {
       id
       createdAt
-      likeCount
       member {
         id
         customId
         name
         avatar
       }
-      is_edited
       content
       state
     }
