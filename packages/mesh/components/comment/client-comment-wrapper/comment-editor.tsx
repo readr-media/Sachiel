@@ -11,7 +11,6 @@ const CommentEditor = () => {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     dispatch({ type: 'UPDATE_COMMENT_DRAFT', payload: e.target.value })
   }
-
   const handleAddCommentModalOnLeave = () => {
     dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: false } })
   }
