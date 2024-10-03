@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import getAllPublishers from '@/app/actions/get-all-publishers'
+import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import { getStoryUnlockPolicy } from '@/app/actions/story'
 import { PaymentType } from '@/types/payment'
 
@@ -25,6 +26,12 @@ export default async function Page({
   const memberId = user?.memberId ?? ''
   if (!memberId) notFound()
   const hasAlchemyAccount = !!user?.wallet
+  let balance = undefined
+
+  if (hasAlchemyAccount) {
+    const response = await getMeshPointBalance(user.wallet)
+    balance = response?.balance
+  }
 
   switch (type) {
     case PaymentType.SubscriptionStory: {
@@ -48,7 +55,9 @@ export default async function Page({
       return (
         <AlchemyAuth
           hasAlchemyAccount={hasAlchemyAccount}
-          renderComponent={<SponsorshipInfo publisher={publisher} />}
+          renderComponent={
+            <SponsorshipInfo publisher={publisher} balance={balance} />
+          }
         />
       )
     }

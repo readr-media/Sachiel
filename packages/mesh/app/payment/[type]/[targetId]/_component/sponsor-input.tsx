@@ -1,33 +1,15 @@
-import { type FormEvent, useEffect, useState } from 'react'
-
-import { getMeshPointBalance } from '@/app/actions/mesh-point'
-import Spinner from '@/components/spinner'
-import { useUser } from '@/context/user'
+import { type FormEvent } from 'react'
 
 export default function SponsorInput({
+  balance,
   sponsorValue,
   setSponsorValue,
 }: {
+  balance: number | undefined
   sponsorValue: string
   setSponsorValue: (value: string) => void
 }) {
-  const { user } = useUser()
-  const [balance, setBalance] = useState(1000)
-  const [isLoading, setIsLoading] = useState(false)
   const isMax = `${sponsorValue}` === `${balance}`
-
-  useEffect(() => {
-    const fetchPoint = async () => {
-      setIsLoading(true)
-      const response = await getMeshPointBalance(user.wallet)
-      if (response?.balance) {
-        setBalance(response.balance)
-      }
-      setIsLoading(false)
-    }
-    fetchPoint()
-  }, [user.wallet])
-
   const handleMaxClick = () => {
     if (!balance) return
     setSponsorValue(`${balance}`)
@@ -44,11 +26,7 @@ export default function SponsorInput({
     setSponsorValue(value ? `${Math.min(parseInt(value), balance)}` : '')
   }
 
-  return isLoading ? (
-    <div className="flex h-[calc(100vh-130px)] grow sm:h-[144px] sm:max-w-[600px] sm:grow-0">
-      <Spinner />
-    </div>
-  ) : (
+  return (
     <div className="w-full max-w-[600px] px-5 pt-10 sm:px-0 sm:pb-10 sm:pt-4 lg:px-10">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 border-b border-primary-200 pb-2">

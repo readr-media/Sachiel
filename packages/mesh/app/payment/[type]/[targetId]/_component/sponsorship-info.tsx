@@ -17,8 +17,10 @@ import SponsorOption from './sponsor-option'
 
 export default function SponsorshipInfo({
   publisher,
+  balance,
 }: {
   publisher: PublisherData
+  balance: number | undefined
 }) {
   const { user } = useUser()
   const router = useRouter()
@@ -48,6 +50,8 @@ export default function SponsorshipInfo({
   }
 
   const onClickOption = (option: number, value: number | undefined) => {
+    //TODO: insufficient balance ux
+    if (value && balance && value > balance) return
     setSelectedOption(option)
     setSponsorValue(`${value ?? ''}`)
   }
@@ -79,6 +83,7 @@ export default function SponsorshipInfo({
         </div>
       ) : isInputMode ? (
         <SponsorInput
+          balance={balance}
           sponsorValue={sponsorValue}
           setSponsorValue={setSponsorValue}
         />
