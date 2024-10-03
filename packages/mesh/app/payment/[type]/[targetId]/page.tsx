@@ -41,15 +41,14 @@ export default async function Page({
     }
     case PaymentType.Sponsor: {
       const allPublishers = await getAllPublishers()
-      const publisher = allPublishers?.filter(
+      const publisher = allPublishers?.find(
         (publisher) => publisher.id === targetId
       )
-      if (!publisher?.length) notFound()
-      //TODO: add AlchemyAuth
+      if (!publisher) notFound()
       return (
         <AlchemyAuth
           hasAlchemyAccount={hasAlchemyAccount}
-          renderComponent={<SponsorshipInfo publisher={publisher[0]} />}
+          renderComponent={<SponsorshipInfo publisher={publisher} />}
         />
       )
     }

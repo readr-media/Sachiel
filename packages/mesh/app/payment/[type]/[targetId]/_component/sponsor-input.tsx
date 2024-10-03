@@ -49,8 +49,8 @@ export default function SponsorInput({
       <Spinner />
     </div>
   ) : (
-    <div className="flex max-w-[600px] grow flex-col p-5 sm:grow-0">
-      <div className="flex flex-col gap-3 pb-5">
+    <div className="w-full max-w-[600px] px-5 pt-10 sm:px-0 sm:pb-10 sm:pt-4 lg:px-10">
+      <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 border-b border-primary-200 pb-2">
           <input
             className="flex-1 appearance-none border-none outline-none"
