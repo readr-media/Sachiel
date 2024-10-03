@@ -37,7 +37,7 @@ const StatefulNavigation = ({
 }: StatefulNavigationProps) => {
   return (
     <div className="hidden h-16 items-center bg-white sm:flex">
-      <div className="flex max-w-[theme(width.maxDesktonNavigation)] grow items-center justify-between px-5 md:px-[70px] lg:px-10 ">
+      <div className="flex max-w-[theme(width.maxDesktopNavigation)] grow items-center justify-between px-5 md:px-[70px] lg:px-10 ">
         <div className="flex items-center gap-5">
           {leftButtons.map((button) => button)}
           <p className="list-title hidden place-self-center sm:block">

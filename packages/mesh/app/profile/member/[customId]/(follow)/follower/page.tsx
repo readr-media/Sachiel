@@ -2,7 +2,6 @@ import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetMemberFollowerListDocument } from '@/graphql/__generated__/graphql'
-import { delay } from '@/utils/delay'
 import queryGraphQL from '@/utils/fetch-graphql'
 
 import type { PageProps } from '../../page'
@@ -18,7 +17,6 @@ const FollowerPage = async ({ params }: PageProps) => {
   const followList = response?.member?.follower
   const mutualFansList = response?.member?.mutualFans
 
-  await delay(3000)
   if (!followList || !followList.length)
     return (
       <EmptyFollowStatus
