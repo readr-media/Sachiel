@@ -13,6 +13,7 @@ import Spinner from '@/components/spinner'
 import { useUser } from '@/context/user'
 
 import SponsorInput from './sponsor-input'
+import { type SponsorshipPoints } from './sponsor-option'
 import SponsorOption from './sponsor-option'
 
 export default function SponsorshipInfo({
@@ -25,7 +26,9 @@ export default function SponsorshipInfo({
   const { user } = useUser()
   const router = useRouter()
   const [isInputMode, setIsInputMode] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+  const [selectedOption, setSelectedOption] = useState<
+    SponsorshipPoints | undefined | null
+  >(null)
   const [sponsorValue, setSponsorValue] = useState('')
   const amount = parseInt(sponsorValue)
   const isReady = amount > 0
@@ -49,10 +52,10 @@ export default function SponsorshipInfo({
     setIsSyncing(false)
   }
 
-  const onClickOption = (option: number, value: number | undefined) => {
+  const onClickOption = (value: SponsorshipPoints | undefined) => {
     //TODO: insufficient balance ux
     if (value && balance && value > balance) return
-    setSelectedOption(option)
+    setSelectedOption(value)
     setSponsorValue(`${value ?? ''}`)
   }
 
@@ -117,7 +120,7 @@ export default function SponsorshipInfo({
                   size="lg"
                   text={isInputMode ? '上一步' : '下一步'}
                   color="primary"
-                  disabled={selectedOption !== 3}
+                  disabled={selectedOption !== undefined}
                   onClick={() => setIsInputMode(!isInputMode)}
                 />
               </div>

@@ -1,13 +1,31 @@
 import Icon, { type IconName } from '@/components/icon'
 
+export enum SponsorshipPoints {
+  SPONSOR_100 = 100,
+  SPONSOR_300 = 300,
+  SPONSOR_500 = 500,
+}
+
 const sponsorshipOptions: {
   iconName: IconName
-  points: number | undefined
+  points: SponsorshipPoints | undefined
   label: string
 }[] = [
-  { iconName: 'icon-sponsor-100', points: 100, label: '讀選點數' },
-  { iconName: 'icon-sponsor-300', points: 300, label: '讀選點數' },
-  { iconName: 'icon-sponsor-500', points: 500, label: '讀選點數' },
+  {
+    iconName: 'icon-sponsor-100',
+    points: SponsorshipPoints.SPONSOR_100,
+    label: '讀選點數',
+  },
+  {
+    iconName: 'icon-sponsor-300',
+    points: SponsorshipPoints.SPONSOR_300,
+    label: '讀選點數',
+  },
+  {
+    iconName: 'icon-sponsor-500',
+    points: SponsorshipPoints.SPONSOR_500,
+    label: '讀選點數',
+  },
   { iconName: 'icon-sponsor-input', points: undefined, label: '讀選點數' },
 ]
 
@@ -17,8 +35,8 @@ export default function SponsorOption({
   onClick,
 }: {
   publisherTitle: string
-  selectedOption: number | null
-  onClick: (option: number, value: number | undefined) => void
+  selectedOption: SponsorshipPoints | undefined | null
+  onClick: (value: SponsorshipPoints | undefined) => void
 }) {
   return (
     <div className="px-5 pt-5 sm:pb-10 sm:pt-4 lg:px-10">
@@ -35,16 +53,14 @@ export default function SponsorOption({
         <div className="grid grid-cols-2 gap-3 pb-5 pt-3 sm:grid-cols-4">
           {sponsorshipOptions.map((option, index) => {
             const { iconName, points, label } = option
-            const isSelected = index === selectedOption
+            const isSelected = points === selectedOption
             return (
               <div key={index}>
                 <div
                   className={`relative flex h-36 items-center justify-center rounded-md border ${
                     isSelected ? 'border-custom-blue' : 'border-primary-200'
                   }`}
-                  onClick={() =>
-                    onClick(index, sponsorshipOptions[index].points)
-                  }
+                  onClick={() => onClick(sponsorshipOptions[index].points)}
                 >
                   <div className="flex flex-col items-center">
                     <Icon
