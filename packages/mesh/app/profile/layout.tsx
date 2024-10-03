@@ -70,7 +70,7 @@ export default function ProfileLayout({
     >
       {/* TODO: use shared pc navigation component */}
       <div className="hidden bg-white sm:block">
-        <div className="flex max-w-[680px] grow items-center justify-between px-5">
+        <div className="flex max-w-[680px] grow items-center justify-between px-5 md:px-10">
           <div className="flex items-center gap-5">
             {!isSelf && (
               <button

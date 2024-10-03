@@ -112,7 +112,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   return (
     <>
       <section className="bg-white">
-        <div className="flex max-h-[calc(100%_-_152px)] max-w-[theme(width.maxMain)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full">
+        <div className="flex max-h-[calc(100%_-_152px)] max-w-[theme(width.maxMain)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full md:px-10">
           <UserProfile
             name={name}
             pickCount={pickCount}
