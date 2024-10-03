@@ -1,7 +1,7 @@
 'use client'
 import '@/styles/global.css'
 
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -20,21 +20,18 @@ export default function ProfileLayout({
   children: React.ReactNode
 }) {
   const pathName = usePathname()
-  const router = useRouter()
   const params = useParams<{ publisherId?: string }>()
 
   const pageCustomId = params.publisherId ?? ''
 
-  const handleMoreButtonClicked = () => {
-    // TODO: deal with the feature
-  }
-
-  const backToPreviousPage = () => {
-    router.back()
-  }
-
   if (hasNestedLayout(pathName)) {
     return <>{children}</>
+  }
+
+  const navigationData = {
+    leftButtons: [<GoBackButton key={0} />],
+    title: pageCustomId,
+    rightButtons: [<MoreButton key={0} />],
   }
 
   return (
@@ -45,28 +42,8 @@ export default function ProfileLayout({
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}
-      mobileNavigation={{
-        leftButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-chevron-left',
-            onClick: backToPreviousPage,
-          },
-        ],
-        title: pageCustomId,
-        rightButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-more-horiz',
-            onClick: handleMoreButtonClicked,
-          },
-        ],
-      }}
-      nonMobileNavigation={{
-        leftButtons: [<GoBackButton key={0} />],
-        title: pageCustomId,
-        rightButtons: [<MoreButton key={0} />],
-      }}
+      mobileNavigation={navigationData}
+      nonMobileNavigation={navigationData}
       suspenseFallback={<Loading />}
     >
       {children}

@@ -1,5 +1,5 @@
 'use client'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -13,7 +13,6 @@ export default function PointLayout({
 }: {
   children: React.ReactNode
 }) {
-  const router = useRouter()
   const pathname = usePathname()
   const subPath = pathname.split('/')[2]
   const isNestedPage = ['sponsorship', 'subscribe-stories', 'record'].includes(
@@ -39,6 +38,12 @@ export default function PointLayout({
         subtitle = ''
     }
 
+    const navigationData = {
+      leftButtons: [<GoBackButton key={0} />],
+      title: subtitle,
+      rightButtons: [],
+    }
+
     return (
       <LayoutTemplate
         type="default"
@@ -47,24 +52,8 @@ export default function PointLayout({
           restrictMainWidth: true,
           footer: 'hidden sm:block',
         }}
-        mobileNavigation={{
-          leftButtons: [
-            {
-              type: 'icon',
-              icon: 'icon-chevron-left',
-              onClick: () => {
-                router.back()
-              },
-            },
-          ],
-          title: subtitle,
-          rightButtons: [],
-        }}
-        nonMobileNavigation={{
-          leftButtons: [<GoBackButton key={0} />],
-          title: subtitle,
-          rightButtons: [],
-        }}
+        mobileNavigation={navigationData}
+        nonMobileNavigation={navigationData}
         suspenseFallback={loadingJsx}
       >
         {children}

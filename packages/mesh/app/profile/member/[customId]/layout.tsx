@@ -4,6 +4,7 @@ import '@/styles/global.css'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
+import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import GoBackButton from '@/components/navigation/go-back-button'
 import MoreButton from '@/components/story-card/more-button'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
@@ -53,21 +54,21 @@ export default function ProfileMemberLayout({
       }}
       mobileNavigation={{
         leftButtons: [
-          isSelf
-            ? { type: 'icon', icon: 'icon-setting', onClick: goToSettingPage }
-            : {
-                type: 'icon',
-                icon: 'icon-chevron-left',
-                onClick: backToPreviousPage,
-              },
+          <MobileNavigationButton
+            key={0}
+            type="icon"
+            icon="icon-setting"
+            onClick={isSelf ? goToSettingPage : backToPreviousPage}
+          />,
         ],
         title: pageCustomId,
         rightButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-more-horiz',
-            onClick: handleMoreButtonClicked,
-          },
+          <MobileNavigationButton
+            key={0}
+            type="icon"
+            icon="icon-more-horiz"
+            onClick={handleMoreButtonClicked}
+          />,
         ],
       }}
       nonMobileNavigation={{

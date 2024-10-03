@@ -1,5 +1,5 @@
 'use client'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -11,17 +11,19 @@ export default function FollowingLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const router = useRouter()
   const pathname = usePathname()
-  const backToPreviousPage = () => {
-    router.back()
-  }
 
   let title = ''
   if (pathname.endsWith('follower')) {
     title = '粉絲'
   } else if (pathname.endsWith('following')) {
     title = '追蹤中'
+  }
+
+  const navigationData = {
+    leftButtons: [<GoBackButton key={0} />],
+    title,
+    rightButtons: [],
   }
 
   return (
@@ -33,22 +35,8 @@ export default function FollowingLayout({
         nav: 'hidden sm:block',
         hideMobileBottomNav: true,
       }}
-      mobileNavigation={{
-        leftButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-chevron-left',
-            onClick: backToPreviousPage,
-          },
-        ],
-        title,
-        rightButtons: [],
-      }}
-      nonMobileNavigation={{
-        leftButtons: [<GoBackButton key={0} />],
-        title,
-        rightButtons: [],
-      }}
+      mobileNavigation={navigationData}
+      nonMobileNavigation={navigationData}
       suspenseFallback={<Loading />}
     >
       {children}

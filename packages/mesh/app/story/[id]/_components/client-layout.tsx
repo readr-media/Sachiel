@@ -1,9 +1,8 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import LayoutTemplate from '@/components/layout-template'
 import { BottomActionBarType } from '@/components/layout-template/bottom-action-bar'
+import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import GoBackButton from '@/components/navigation/go-back-button'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import MoreButton from '@/components/story-card/more-button'
@@ -21,11 +20,6 @@ export default function ClientLayout({
   story: Story
   children: React.ReactNode
 }) {
-  const router = useRouter()
-
-  const backToPreviousPage = () => {
-    router.back()
-  }
   const addStoryAsBookmark = () => {
     // TODO: pick story
   }
@@ -37,25 +31,21 @@ export default function ClientLayout({
     <LayoutTemplate
       type="article"
       mobileNavigation={{
-        leftButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-chevron-left',
-            onClick: backToPreviousPage,
-          },
-        ],
+        leftButtons: [<GoBackButton key={0} />],
         title: '新聞',
         rightButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-bookmark',
-            onClick: addStoryAsBookmark,
-          },
-          {
-            type: 'icon',
-            icon: 'icon-share',
-            onClick: shareStory,
-          },
+          <MobileNavigationButton
+            key={0}
+            type="icon"
+            icon="icon-bookmark"
+            onClick={addStoryAsBookmark}
+          />,
+          <MobileNavigationButton
+            key={1}
+            type="icon"
+            icon="icon-share"
+            onClick={shareStory}
+          />,
         ],
       }}
       nonMobileNavigation={{
@@ -64,7 +54,7 @@ export default function ClientLayout({
         rightButtons: [
           <PublisherDonateButton key={0} />,
           <StoryPickButton storyId={story?.id ?? ''} key={1} />,
-          <MoreButton key={2} />,
+          <MoreButton key={2} className="pl-2" />,
         ],
       }}
       actionBar={{ type: BottomActionBarType.Article, story }}
