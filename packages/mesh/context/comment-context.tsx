@@ -141,10 +141,6 @@ function commentReducer(state: State, action: Action): State {
       return { ...state, commentList: [action.payload, ...state.commentList] }
     case 'UPDATE_HIGHLIGHTED_COMMENT':
       return { ...state, highlightedId: action.payload }
-    case 'SHOW_REPORTING_MODAL':
-      return { ...state, isReporting: true }
-    case 'HIDE_REPORTING_MODAL':
-      return { ...state, isReporting: false }
     default:
       return state
   }
