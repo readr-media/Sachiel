@@ -26,7 +26,7 @@ export const CommentModal: React.FC<CommentModalProps> = ({
       <div className="fixed inset-0 z-20 bg-black opacity-30" />
 
       {/* Modal content */}
-      <div className="fixed inset-0 z-30 flex items-center justify-center overflow-auto px-12">
+      <div className="fixed inset-0 z-30 flex items-center justify-center overflow-auto px-12 shadow-[0_0_24px_0_rgba(0,9,40,0.1),0_2px_40px_0_rgba(0,9,40,0.1)]">
         <div className="flex w-screen max-w-md flex-col gap-5 rounded-lg bg-white px-5 py-4">
           {children}
           <div className="flex items-center justify-end gap-3">
