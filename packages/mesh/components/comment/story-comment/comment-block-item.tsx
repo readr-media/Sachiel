@@ -6,7 +6,6 @@ import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
-import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import { CommentEditor } from './comment-editor'
@@ -21,12 +20,12 @@ export const CommentBlockItem = ({
 }) => {
   const { state, dispatch } = useComment()
   const { user } = useUser()
-  const { width } = useWindowDimensions()
-  const notMobileWidth = width >= 768
   const sameBlockComment = displayMode === state.commentEditState.displayMode
   const targetComment = state.commentEditState.commentId === comment.id
   const clampLineCount = 2
   const canToggle = true
+  const shouldShowDropdownMenu =
+    state.commentEditState.isVisible && targetComment && sameBlockComment
   const { needClamp, commentRef, handleToggleClamp } = useCommentClamp(
     clampLineCount,
     canToggle
@@ -111,10 +110,7 @@ export const CommentBlockItem = ({
                     }}
                   >
                     <Icon iconName="icon-more-horiz" size="m" />
-                    {state.commentEditState.isVisible &&
-                      targetComment &&
-                      sameBlockComment &&
-                      notMobileWidth && <DropdownMenu />}
+                    {shouldShowDropdownMenu && <DropdownMenu />}
                   </button>
                 </div>
               </div>

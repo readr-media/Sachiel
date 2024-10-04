@@ -3,12 +3,16 @@ import React, { useRef } from 'react'
 import Icon from '@/components/icon'
 import { useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
+import useWindowDimensions from '@/hooks/use-window-dimension'
 
 export const DropdownMenu = () => {
+  const { width } = useWindowDimensions()
+  const isMobileWidth = width < 768
   const { dispatch, state } = useComment()
   const editDrawerRef = useRef<null | HTMLUListElement>(null)
 
   useClickOutside(editDrawerRef, () => {
+    if (isMobileWidth) return
     dispatch({
       type: 'UPDATE_EDIT_DRAWER',
       payload: { ...state.commentEditState, isVisible: false },
@@ -55,7 +59,7 @@ export const DropdownMenu = () => {
   return (
     <ul
       ref={editDrawerRef}
-      className="absolute left-0 top-0 z-10 flex w-[180px] flex-col bg-white py-2 shadow-[0px_0px_24px_0px_rgba(0,9,40,0.10),0px_2px_40px_0px_rgba(0,9,40,0.10)]"
+      className="absolute left-0 top-0 z-10 hidden w-[180px] flex-col bg-white py-2 shadow-[0px_0px_24px_0px_rgba(0,9,40,0.10),0px_2px_40px_0px_rgba(0,9,40,0.10)] md:flex"
     >
       {state.commentEditState.mode === 'other' ? (
         <li
