@@ -6,7 +6,7 @@ export enum NonMobileNavigationType {
 type NonMobileNavigationProps =
   | ({
       type: NonMobileNavigationType.Default
-    } & StatefulNavigationProps)
+    } & DefaultNavigationProps)
   | ({
       type: NonMobileNavigationType.Article
     } & ArticleNavigationProps)
@@ -14,7 +14,7 @@ type NonMobileNavigationProps =
 export default function NonMobileNavigation(props: NonMobileNavigationProps) {
   switch (props.type) {
     case NonMobileNavigationType.Default:
-      return <StatefulNavigation {...props} />
+      return <DefaultNavigation {...props} />
 
     case NonMobileNavigationType.Article:
       return <ArticleNavigation {...props} />
@@ -24,17 +24,17 @@ export default function NonMobileNavigation(props: NonMobileNavigationProps) {
   }
 }
 
-export type StatefulNavigationProps = {
+export type DefaultNavigationProps = {
   leftButtons: React.ReactNode[]
   title: string
   rightButtons: React.ReactNode[]
 }
 
-const StatefulNavigation = ({
+const DefaultNavigation = ({
   leftButtons,
   title,
   rightButtons,
-}: StatefulNavigationProps) => {
+}: DefaultNavigationProps) => {
   return (
     <div className="hidden h-16 items-center bg-white sm:flex">
       <div className="flex max-w-[theme(width.maxDesktopNavigation)] grow items-center justify-between px-5 md:px-[70px] lg:px-10 ">

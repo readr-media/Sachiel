@@ -17,7 +17,7 @@ import MobileNavigation, {
 } from './navigation/mobile-navigation'
 import type {
   ArticleNavigationProps,
-  StatefulNavigationProps,
+  DefaultNavigationProps,
 } from './navigation/non-mobile-navigation'
 import NonMobileNavigation, {
   NonMobileNavigationType,
@@ -42,7 +42,7 @@ type LayoutTemplateProps = {
   | {
       type: 'default'
       mobileNavigation?: MobileNavigationProps
-      nonMobileNavigation?: StatefulNavigationProps
+      nonMobileNavigation?: DefaultNavigationProps
       actionBar?: MobileBottomActionBarProps
     }
   | {
@@ -110,7 +110,7 @@ const DefaultLayout = ({
   children,
 }: {
   mobileNavigation?: MobileNavigationProps
-  nonMobileNavigation?: StatefulNavigationProps
+  nonMobileNavigation?: DefaultNavigationProps
   customStyle?: CustomStyle
   children: React.ReactNode
 }) => {
