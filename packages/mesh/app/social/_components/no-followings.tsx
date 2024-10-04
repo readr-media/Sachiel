@@ -1,27 +1,30 @@
 import { useEffect, useState } from 'react'
 
-import { processMostFollowedMembers } from '@/app/actions/get-most-followed-member'
+import {
+  type MostFollowersMember,
+  getMostFollowersData,
+} from '@/app/actions/get-member-followings'
 import Icon from '@/components/icon'
+import Spinner from '@/components/spinner'
 
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
-type MostFollowedMembers = Awaited<
-  ReturnType<typeof processMostFollowedMembers>
->
-
 export default function NoFollowings() {
-  const [suggestedFollowers, setSuggestedFollowers] =
-    useState<MostFollowedMembers>([])
+  const [suggestedFollowers, setSuggestedFollowers] = useState<
+    MostFollowersMember[] | null
+  >(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      const mostFollowedMembers = await processMostFollowedMembers()
-      setSuggestedFollowers(mostFollowedMembers)
+      const mostFollowersData = await getMostFollowersData()
+      setSuggestedFollowers(mostFollowersData)
     }
 
     fetchData()
   }, [])
+
+  if (!suggestedFollowers) return <Spinner />
 
   return (
     <main className="flex grow flex-col items-center justify-start gap-4 bg-white sm:bg-multi-layer-light sm:p-5 lg:flex-row lg:items-start lg:justify-start lg:gap-10 lg:px-10 lg:py-5">

@@ -1,128 +1,101 @@
 'use server'
 
-import { GetMemberFollowingDocument } from '@/graphql/__generated__/graphql'
-import fetchGraphQL from '@/utils/fetch-graphql'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { z } from 'zod'
 
-import { processMostFollowedMembers } from './get-most-followed-member'
+import { RESTFUL_ENDPOINTS, STATIC_FILE_ENDPOINTS } from '@/constants/config'
+import { fetchRestfulGet } from '@/utils/fetch-restful'
+import fetchStatic from '@/utils/fetch-static'
 
-export default async function getMemberFollowings(
-  memberId: string,
-  feeds: number,
-  suggest: number
-) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await fetchGraphQL(
-    GetMemberFollowingDocument,
-    {
-      memberId,
-      takes: feeds,
-    },
-    globalLogFields,
-    'Failed to get members followings'
-  )
-  const member = data?.member
-  const firstLayerFollowing = data?.member?.following ?? []
-  const hasFollowing = firstLayerFollowing.length > 0
-
-  const storiesByActions =
-    firstLayerFollowing.flatMap((member) => {
-      const picks = member.pick ?? []
-      const comments = member.comment ?? []
-      return [...picks, ...comments]
-    }) ?? []
-  const uniqueStoriesMap = new Map<string, typeof storiesByActions[number]>()
-  storiesByActions.forEach((actions) => {
-    if (actions.story && !uniqueStoriesMap.has(actions.story.id)) {
-      uniqueStoriesMap.set(actions.story.id, actions)
-    }
-  })
-
-  // TODO: load more
-  const uniqueStoriesSortByActionTime = Array.from(
-    uniqueStoriesMap.values()
-  ).sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  )
-
-  const selectNestedFollowing = (data: typeof firstLayerFollowing) => {
-    return data[0].following ?? []
-  }
-  type NestedFollowing = ReturnType<typeof selectNestedFollowing>
-  const firstLayerFollowingIds = new Set<string>()
-  firstLayerFollowing.forEach((member) => {
-    if (!firstLayerFollowingIds.has(member.id)) {
-      firstLayerFollowingIds.add(member.id)
-    }
-  })
-  const uniqueNestedFollowMembersMap = new Map<
-    string,
-    NestedFollowing[number]
-  >()
-
-  type NestedToFirstLayer = {
-    id: string
-    customId: string
-    name: string
-    avatar: string
-  } | null
-  const nestedToFirstLayerMap = new Map<string, NestedToFirstLayer>()
-
-  firstLayerFollowing.forEach((member) => {
-    member.following?.forEach((nestedMember) => {
-      if (
-        !firstLayerFollowingIds.has(nestedMember.id) &&
-        !uniqueNestedFollowMembersMap.has(nestedMember.id)
-      ) {
-        uniqueNestedFollowMembersMap.set(nestedMember.id, nestedMember)
-        nestedToFirstLayerMap.set(nestedMember.id, {
-          id: member.id,
-          customId: member.customId ?? '',
-          name: member.name ?? '',
-          avatar: member.avatar ?? '',
-        })
-      }
+const MongoDBResponseSchema = z.object({
+  members: z.array(
+    z.object({
+      id: z.string(),
+      followerCount: z.number(),
+      name: z.string(),
+      nickname: z.string(),
+      customId: z.string(),
+      avatar: z.string(),
+      from: z.object({
+        id: z.string(),
+        name: z.string(),
+        nickname: z.string(),
+      }),
     })
-  })
+  ),
+  stories: z.array(
+    z.object({
+      id: z.string(),
+      url: z.string(),
+      publisher: z.object({
+        id: z.string(),
+        customId: z.string(),
+        title: z.string(),
+      }),
+      published_date: z.string(),
+      og_title: z.string(),
+      og_image: z.string(),
+      full_screen_ad: z.enum(['none', 'all', 'mobile', 'desktop']),
+      isMember: z.boolean(),
+      readCount: z.number(),
+      commentCount: z.number(),
+      following_actions: z.array(
+        z.object({
+          kind: z.enum(['read', 'comment']),
+          member: z.object({
+            id: z.string(),
+            name: z.string(),
+            nickname: z.string(),
+            customId: z.string(),
+            avatar: z.string(),
+          }),
+          createdAt: z.string().datetime(),
+          content: z.string().optional(),
+        })
+      ),
+    })
+  ),
+})
 
-  type SuggestFollowing = NestedFollowing[number] & {
-    followedBy: NestedToFirstLayer
-  }
-  let suggestFollowing: SuggestFollowing[] = []
+export type MongoDBResponse = z.infer<typeof MongoDBResponseSchema>
 
-  const nestedFollowedMember = Array.from(
-    uniqueNestedFollowMembersMap.values()
-  ).map((member) => {
-    const followedBy = nestedToFirstLayerMap.get(member.id) || null
-    return {
-      ...member,
-      followedBy,
-    }
-  })
-
-  if (uniqueNestedFollowMembersMap.size < suggest) {
-    const filterIds = new Set([
-      ...Array.from(firstLayerFollowingIds),
-      ...Array.from(uniqueNestedFollowMembersMap.keys()),
-    ])
-
-    const mostFollowedMembers = await processMostFollowedMembers(filterIds)
-    suggestFollowing = [...nestedFollowedMember, ...mostFollowedMembers].slice(
-      0,
-      suggest
-    )
+export async function getSocialPageData(memberId: string) {
+  const url = RESTFUL_ENDPOINTS.socialPage + memberId
+  const data = await fetchRestfulGet<MongoDBResponse>(url)
+  const parseResult = MongoDBResponseSchema.safeParse(data)
+  if (parseResult.success) {
+    return parseResult.data
   } else {
-    suggestFollowing = nestedFollowedMember
+    console.error('Validation error:', parseResult.error.errors)
+    return null
   }
+}
 
-  return {
-    member,
-    hasFollowing,
-    firstLayerFollowingIds,
-    storiesFromFollowingMemberActions: uniqueStoriesSortByActionTime.slice(
-      0,
-      feeds
-    ),
-    suggestFollowing,
+const mostFollowersMemberSchema = z.array(
+  z.object({
+    id: z.number().transform((id) => `${id}`),
+    followerCount: z.number(),
+    name: z.string(),
+    nickname: z.string(),
+    customId: z.string(),
+    avatar: z.string().url().or(z.literal('')),
+  })
+)
+export type MostFollowersMember = z.infer<
+  typeof mostFollowersMemberSchema
+>[number]
+
+export async function getMostFollowersData() {
+  const data = await fetchStatic<MostFollowersMember[]>(
+    STATIC_FILE_ENDPOINTS.mostFollowers,
+    {
+      next: { revalidate: 10 },
+    }
+  )
+  const parseResult = mostFollowersMemberSchema.safeParse(data)
+  if (parseResult.success) {
+    return parseResult.data
+  } else {
+    console.error('Validation error:', parseResult.error.errors)
+    return null
   }
 }

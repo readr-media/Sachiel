@@ -1,9 +1,11 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import getMemberFollowings from '@/app/actions/get-member-followings'
-import { MINUTE } from '@/constants/time-unit'
+import {
+  type MongoDBResponse,
+  getSocialPageData,
+} from '@/app/actions/get-member-followings'
 import { useUser } from '@/context/user'
 
 import Feed from './_components/feed'
@@ -12,135 +14,55 @@ import FollowSuggestionWidget from './_components/follow-suggestion-widget'
 import Loading from './_components/loading'
 import NoFollowings from './_components/no-followings'
 
-export type SuggestedFollowers = Awaited<
-  ReturnType<typeof getMemberFollowings>
->['suggestFollowing']
-type SocialData = Awaited<ReturnType<typeof getMemberFollowings>>
-
 export default function Page() {
   //TODO: infiniteScroll
   const { user } = useUser()
-  const router = useRouter()
-  const feedsNumber = 20
+  // const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
-  const [socialData, setSocialData] = useState<SocialData | null>(null)
+  const memberId = user.memberId
+  const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (!user) return
-
-    const { memberId } = user
-
-    const cacheKey = `socialData_${memberId}_${feedsNumber}_${suggestedFollowersNumber}`
-    const cachedData = localStorage.getItem(cacheKey)
-
-    if (cachedData) {
-      const { timestamp, socialData: cachedSocialData } = JSON.parse(cachedData)
-
-      const cacheAge = new Date().getTime() - timestamp
-
-      //TODO: confirm the initial data cache duration with HC
-      if (cacheAge < MINUTE) {
-        const restoredSetObjectsData = {
-          ...cachedSocialData,
-          firstLayerFollowingIds: new Set(
-            cachedSocialData.firstLayerFollowingIds
-          ),
-        }
-        setSocialData(restoredSetObjectsData)
-        return
-      }
-    }
-
-    const fetchData = async () => {
-      const response = await getMemberFollowings(
-        memberId,
-        feedsNumber,
-        suggestedFollowersNumber
-      )
+    const fetchSocialData = async () => {
+      setIsLoading(true)
+      const response = await getSocialPageData(memberId)
+      if (!response) return notFound()
       setSocialData(response)
-
-      const convertSetObjectsData = {
-        ...response,
-        firstLayerFollowingIds: Array.from(response.firstLayerFollowingIds),
-      }
-
-      const dataToCache = {
-        timestamp: new Date().getTime(),
-        socialData: convertSetObjectsData,
-      }
-      localStorage.setItem(cacheKey, JSON.stringify(dataToCache))
+      setIsLoading(false)
     }
-    fetchData()
-  }, [user, router])
+    fetchSocialData()
+  }, [memberId])
 
-  if (!socialData) return <Loading />
+  if (isLoading || !socialData) return <Loading />
 
-  const {
-    member: currentMember,
-    hasFollowing,
-    firstLayerFollowingIds,
-    suggestFollowing,
-    storiesFromFollowingMemberActions,
-  } = socialData
+  const { stories, members } = socialData
 
-  if (!currentMember) {
-    return (
-      <main>
-        <div>
-          <h1>Error Page</h1>
-          <p>Sorry, something went wrong.</p>
-        </div>
-      </main>
-    )
-  }
-
-  if (!hasFollowing) {
+  if (!members.length && !stories.length) {
     return <NoFollowings />
   }
 
-  const firstSectionStories = storiesFromFollowingMemberActions.slice(
-    0,
-    firstSectionAmount
-  )
-  const secondSectionStories =
-    storiesFromFollowingMemberActions.slice(firstSectionAmount)
+  const firstSectionStories = stories.slice(0, firstSectionAmount)
+  const secondSectionStories = stories.slice(firstSectionAmount)
 
   return (
     <main>
       <div className="flex justify-center gap-10 sm:p-5 lg:px-10">
         <div className="flex flex-col gap-2 sm:gap-4">
-          {firstSectionStories.map((item) => {
-            return (
-              <Feed
-                key={item.id}
-                story={item.story ?? { id: '' }}
-                followingMemberIds={firstLayerFollowingIds}
-              />
-            )
+          {firstSectionStories.map((story) => {
+            return <Feed key={story.id} story={story} />
           })}
           <FollowSuggestionFeed
-            suggestedFollowers={suggestFollowing.slice(
-              0,
-              suggestedFollowersNumber
-            )}
+            suggestedFollowers={members.slice(0, suggestedFollowersNumber)}
             isNoFollowings={false}
           />
-          {secondSectionStories.map((item) => {
-            return (
-              <Feed
-                key={item.id}
-                story={item.story ?? { id: '' }}
-                followingMemberIds={firstLayerFollowingIds}
-              />
-            )
+          {secondSectionStories.map((story) => {
+            return <Feed key={story.id} story={story} />
           })}
         </div>
         <FollowSuggestionWidget
-          suggestedFollowers={suggestFollowing.slice(
-            0,
-            suggestedFollowersNumber
-          )}
+          suggestedFollowers={members.slice(0, suggestedFollowersNumber)}
         />
       </div>
     </main>

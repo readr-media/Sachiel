@@ -4,13 +4,14 @@ import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import type { Comment } from '@/graphql/__generated__/graphql'
 import { displayTimeFromNow } from '@/utils/story-display'
+
+import { type LatestAction } from './feed'
 
 export default function FeedComment({
   comment,
 }: {
-  comment: Pick<Comment, 'member' | 'createdAt' | 'content'>
+  comment: LatestAction['commentsData'][number]
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
@@ -24,15 +25,15 @@ export default function FeedComment({
 
   return (
     <div className="flex flex-row border-t pt-4">
-      <Avatar src={comment.member?.avatar ?? ''} size="l" />
+      <Avatar src={comment.member.avatar} size="l" />
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">
-            {comment?.member?.name}
+            {comment.member.name}
           </div>
           <Icon iconName="icon-dot" size="s" />
           <div className="caption-1 text-primary-500">
-            <span>{displayTimeFromNow(comment?.createdAt)}</span>
+            <span>{displayTimeFromNow(comment.createdAt)}</span>
           </div>
         </span>
         <p className="body-3 text-primary-600">
