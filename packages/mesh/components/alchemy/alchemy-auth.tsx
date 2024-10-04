@@ -5,9 +5,9 @@ import { type ReactNode, useEffect } from 'react'
 import { type Hex } from 'viem'
 
 import { updateMemberWallet } from '@/app/actions/auth'
-import Spinner from '@/components/spinner'
 import { accountType } from '@/utils/alchemy'
 
+import Spinner from '../spinner'
 import { LogInCard } from './login-card'
 
 export default function AlchemyAuth({
@@ -46,7 +46,9 @@ export default function AlchemyAuth({
   return (
     <>
       {isLoading ? (
-        <Spinner />
+        <div className="flex grow items-center justify-center">
+          <Spinner />
+        </div>
       ) : isConnected ? (
         renderComponent
       ) : (

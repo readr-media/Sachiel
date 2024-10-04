@@ -4,7 +4,7 @@ import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetMemberFollowerListDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 
-import type { PageProps } from '../page'
+import type { PageProps } from '../../page'
 
 const FollowerPage = async ({ params }: PageProps) => {
   const takeCount = 20
@@ -16,6 +16,7 @@ const FollowerPage = async ({ params }: PageProps) => {
   })
   const followList = response?.member?.follower
   const mutualFansList = response?.member?.mutualFans
+
   if (!followList || !followList.length)
     return (
       <EmptyFollowStatus

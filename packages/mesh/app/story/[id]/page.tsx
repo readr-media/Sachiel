@@ -11,8 +11,6 @@ import {
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
-import Comment from './_components/comment'
-import DesktopPageNavigator from './_components/desktop-page-navigator'
 import RelatedStories from './_components/related-stories'
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
@@ -47,40 +45,24 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="hidden flex-1 lg:block"></div>
-      <main className="flex max-w-[600px] justify-center sm:pb-10">
-        <div>
-          {/* backdrop-filter: blur(5px); background: linear-gradient(to right, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.8) 3%, rgba(255, 255, 255, 0.8) 97%, rgb(255, 255, 255) 100%) */}
-          <div className="sticky top-[68px] z-layout hidden h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:block">
-            <DesktopPageNavigator story={storyData.story} />
-          </div>
-          <Article
-            story={storyData.story}
+      <Article
+        story={storyData.story}
+        sourceCustomId={sourceCustomId}
+        renderData={renderData}
+        isMemberStory={isMemberStory}
+        hasPayed={hasPayed}
+        policy={policy}
+      />
+      <RelatedStories relatedStories={relatedStories} />
+      <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
+        {!isMemberStory && (
+          <SideIndex
+            apiData={storyData.story?.apiData as ApiData}
             sourceCustomId={sourceCustomId}
-            renderData={renderData}
-            isMemberStory={isMemberStory}
-            hasPayed={hasPayed}
-            policy={policy}
+            isInArticle={false}
           />
-          <div className="lg:hidden">
-            <RelatedStories relatedStories={relatedStories} />
-          </div>
-          <div className="mt-10 hidden md:flex">
-            <Comment storyId={storyData.story?.id} />
-          </div>
-        </div>
-      </main>
-      <div className="hidden flex-1 lg:flex lg:justify-center">
-        <aside className="lg:w-[220px] xl:w-[340px]">
-          {isMemberStory ? null : (
-            <SideIndex
-              apiData={storyData.story.apiData as ApiData}
-              sourceCustomId={sourceCustomId}
-              isInArticle={false}
-            />
-          )}
-        </aside>
-      </div>
+        )}
+      </aside>
     </>
   )
 }

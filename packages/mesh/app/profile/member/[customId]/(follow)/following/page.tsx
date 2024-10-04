@@ -4,7 +4,7 @@ import type { GetMemberFollowingListQuery } from '@/graphql/__generated__/graphq
 import { GetMemberFollowingListDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 
-import { type PageProps } from '../page'
+import type { PageProps } from '../../page'
 import FollowingList from './_components/following-list'
 
 export type FollowingListType = NonNullable<
@@ -45,7 +45,7 @@ const FollowingPage = async ({ params }: PageProps) => {
     )
   }
   return (
-    <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 xl:w-maxMain">
+    <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 lg:px-10 xl:w-maxMain">
       <FollowingList
         title="媒體"
         followingList={followPublisherData as FollowingListType}

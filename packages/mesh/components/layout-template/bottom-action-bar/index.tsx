@@ -8,12 +8,15 @@ import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 export enum BottomActionBarType {
   Article = 'article',
-  Empty = 'empty',
 }
 
-export type MobileBottomActionBarProps =
-  | { type: BottomActionBarType.Article; story: Story }
-  | { type: BottomActionBarType.Empty }
+export type ArticleMobileBottomActionBarProps = {
+  type: BottomActionBarType.Article
+  story: Story
+}
+
+export type MobileBottomActionBarProps = ArticleMobileBottomActionBarProps
+
 export default function MobileBottomActionBar(
   props: MobileBottomActionBarProps
 ) {
@@ -21,7 +24,6 @@ export default function MobileBottomActionBar(
     case BottomActionBarType.Article:
       return <ArticleBottomActionBar story={props.story} />
 
-    case BottomActionBarType.Empty:
     default:
       return null
   }
