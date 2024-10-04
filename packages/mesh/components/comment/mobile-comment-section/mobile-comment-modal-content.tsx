@@ -45,7 +45,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
   return (
     <div>
       {isMobileCommentModalOpen && (
-        <div className="absolute left-0 top-0 z-30 size-full bg-white">
+        <div className="fixed left-0 top-0 z-30 size-full bg-white">
           <MobileStoryCommentHeader />
           <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
             <MobileStoryCommentMeta

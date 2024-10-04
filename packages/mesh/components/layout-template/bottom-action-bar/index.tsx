@@ -34,7 +34,6 @@ const ArticleBottomActionBar = ({ story }: { story: Story }) => {
   const { dispatch } = useComment()
   const openCommentBlock = () => {
     dispatch({ type: 'TOGGLE_MOBILE_COMMENT_MODAL', payload: { isOpen: true } })
-    scrollTo({ top: 0 })
     document.body.classList.add('overflow-hidden')
   }
   return (
