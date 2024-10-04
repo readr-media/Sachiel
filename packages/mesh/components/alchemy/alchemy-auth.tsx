@@ -32,7 +32,9 @@ export default function AlchemyAuth({
   return (
     <>
       {isLoading ? (
-        <Spinner />
+        <div className="flex grow items-center justify-center">
+          <Spinner />
+        </div>
       ) : isConnected ? (
         renderComponent
       ) : (

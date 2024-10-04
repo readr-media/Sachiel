@@ -1,15 +1,24 @@
 'use client'
+import { usePathname } from 'next/navigation'
 
-import Loading from '@/app/profile/member/[customId]/(follow)/_components/loading'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 
-export default function FollowerLayout({
+import Loading from './_components/loading'
+
+export default function FollowingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const title = '粉絲'
+  const pathname = usePathname()
+
+  let title = ''
+  if (pathname.endsWith('follower')) {
+    title = '粉絲'
+  } else if (pathname.endsWith('following')) {
+    title = '追蹤中'
+  }
 
   const navigationData = {
     leftButtons: [<GoBackButton key={0} />],
@@ -24,6 +33,7 @@ export default function FollowerLayout({
         background: 'bg-multi-layer-light',
         footer: 'hidden sm:block',
         nav: 'hidden sm:block',
+        hideMobileBottomNav: true,
       }}
       mobileNavigation={navigationData}
       nonMobileNavigation={navigationData}

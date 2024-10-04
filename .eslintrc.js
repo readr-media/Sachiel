@@ -5,7 +5,7 @@ module.exports = {
       rootDir: 'packages/*/',
     },
   },
-  extends: ['next/core-web-vitals', 'plugin:prettier/recommended'],
+  extends: ['plugin:prettier/recommended'],
   plugins: ['prettier', 'simple-import-sort'],
   rules: {
     'prettier/prettier': 'error',
