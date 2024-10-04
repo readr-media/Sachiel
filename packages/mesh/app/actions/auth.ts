@@ -123,6 +123,10 @@ export async function getCurrentUser() {
         pickStoryIds: new Set(
           data.member.picks?.map((pick) => pick.story?.id ?? '') ?? []
         ),
+        bookmarkStoryIds: new Set(
+          data.member.bookmarks?.map((bookmark) => bookmark.story?.id ?? '') ??
+            []
+        ),
         followingCategories: data.member.followingCategories ?? [],
         followingPublishers: data.member.followingPublishers ?? [],
       }

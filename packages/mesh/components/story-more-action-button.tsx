@@ -4,6 +4,8 @@ import type { ForwardedRef, MouseEventHandler } from 'react'
 import { forwardRef, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
+import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 
 import Icon from './icon'
@@ -87,7 +89,13 @@ enum ActionType {
 
 const actions = [
   { type: ActionType.Sponsor, text: '贊助', icon: 'icon-wallet' },
-  { type: ActionType.AddBookMark, text: '加入書籤', icon: 'icon-bookmark' },
+  {
+    type: ActionType.AddBookMark,
+    text: '加入書籤',
+    icon: 'icon-bookmark',
+    offText: '移除書籤',
+    offIcon: 'icon-bookmark-off',
+  },
   {
     type: ActionType.UnFollow,
     text: '取消追蹤',
@@ -105,14 +113,51 @@ const ActionSheet = forwardRef(function ActionSheet(
   }: { storyId: string; openShareSheet: () => void; onClose: () => void },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const onAction = (type: ActionType) => {
+  const { user, setUser } = useUser()
+  const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
+
+  const onAction = async (type: ActionType) => {
     switch (type) {
-      case ActionType.Sponsor:
+      case ActionType.Sponsor: {
         break
-      case ActionType.AddBookMark:
+      }
+      case ActionType.AddBookMark: {
+        if (isStoryAddedBookmark) {
+          const removeBookmarkResponse = await removeBookmark({
+            memberId: user.memberId,
+            storyId,
+          })
+          if (removeBookmarkResponse) {
+            setUser((oldUser) => ({
+              ...oldUser,
+              bookmarkStoryIds: new Set(
+                [...oldUser.bookmarkStoryIds].filter(
+                  (bookmarkStoryId) => bookmarkStoryId !== storyId
+                )
+              ),
+            }))
+          }
+          // TODO: show error toase?
+          onClose()
+        } else {
+          const addBookmarkResponse = await addBookmark({
+            memberId: user.memberId,
+            storyId,
+          })
+          if (addBookmarkResponse) {
+            setUser((oldUser) => ({
+              ...oldUser,
+              bookmarkStoryIds: new Set([...oldUser.bookmarkStoryIds, storyId]),
+            }))
+          }
+          // TODO: show error toase?
+          onClose()
+        }
         break
-      case ActionType.UnFollow:
+      }
+      case ActionType.UnFollow: {
         break
+      }
       case ActionType.CopyLink: {
         const storyUrl = getStoryUrl(storyId)
         navigator.clipboard
@@ -140,18 +185,37 @@ const ActionSheet = forwardRef(function ActionSheet(
       className="fixed bottom-0 left-0 z-modal flex w-full flex-col bg-white py-2 shadow-[0px_0px_8px_0px_rgba(0,0,0,0.1),0px_-8px_20px_0px_rgba(0,0,0,0.1)] sm:absolute sm:bottom-[unset] sm:left-[unset] sm:right-0 sm:top-0 sm:w-[unset] sm:min-w-[180px] sm:rounded-md sm:px-0
 sm:shadow-light-box"
     >
-      {actions.map((action) => (
-        <button
-          key={action.type}
-          className="flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px]"
-          onClick={onAction.bind(null, action.type)}
-        >
-          <Icon iconName={action.icon} size="l" />
-          <span className="button-large shrink-0 text-primary-700">
-            {action.text}
-          </span>
-        </button>
-      ))}
+      {actions.map((action) => {
+        if (action.type === ActionType.AddBookMark) {
+          return (
+            <button
+              key={action.type}
+              className="flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px]"
+              onClick={onAction.bind(null, action.type)}
+            >
+              <Icon
+                iconName={isStoryAddedBookmark ? action.offIcon : action.icon}
+                size="l"
+              />
+              <span className="button-large shrink-0 text-primary-700">
+                {isStoryAddedBookmark ? action.offText : action.text}
+              </span>
+            </button>
+          )
+        }
+        return (
+          <button
+            key={action.type}
+            className="flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px]"
+            onClick={onAction.bind(null, action.type)}
+          >
+            <Icon iconName={action.icon} size="l" />
+            <span className="button-large shrink-0 text-primary-700">
+              {action.text}
+            </span>
+          </button>
+        )
+      })}
     </div>
   )
 })

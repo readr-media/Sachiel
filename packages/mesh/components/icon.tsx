@@ -62,6 +62,7 @@ export type IconName =
   | 'icon-bookmark-lg'
   | 'icon-bookmark-lg-hover'
   | 'icon-bookmark-lg-on'
+  | 'icon-bookmark-off'
   | 'icon-setting'
   | 'icon-setting-hover'
   | 'icon-setting-on'
