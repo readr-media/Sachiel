@@ -71,10 +71,10 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
         comments={sortAuthorComments(commentList, user)}
       />
       <CommentModal
-        onLeaveText="刪除留言"
+        onConfirmText="刪除留言"
         onCloseText="取消"
         isOpen={confirmDeleteCommentModalShow}
-        onLeave={handleDeleteCommentModalOnLeave}
+        onConfirm={handleDeleteCommentModalOnLeave}
         onClose={handleDeleteCommentModalOnClose}
       >
         <section className="flex flex-col justify-start">
@@ -83,7 +83,7 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
         </section>
       </CommentModal>
       <CommentModal
-        onLeaveText=""
+        onConfirmText=""
         onCloseText="返回留言"
         isOpen={state.isReporting}
         onClose={handleReportOnClose}

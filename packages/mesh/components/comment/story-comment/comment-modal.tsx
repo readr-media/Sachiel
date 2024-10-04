@@ -3,18 +3,18 @@ import React from 'react'
 import Button from '@/components/button'
 interface CommentModalProps {
   isOpen: boolean
-  onLeaveText: string
+  onConfirmText: string
   onCloseText: string
-  onLeave?: () => void
+  onConfirm?: () => void
   onClose?: () => void
   children: React.ReactNode
 }
 
 export const CommentModal: React.FC<CommentModalProps> = ({
   isOpen,
-  onLeave,
+  onConfirm,
   onClose,
-  onLeaveText,
+  onConfirmText,
   onCloseText,
   children,
 }) => {
@@ -30,12 +30,12 @@ export const CommentModal: React.FC<CommentModalProps> = ({
         <div className="flex w-screen max-w-md flex-col gap-5 rounded-lg bg-white px-5 py-4">
           {children}
           <div className="flex items-center justify-end gap-3">
-            {onLeaveText && (
+            {onConfirmText && (
               <Button
-                onClick={onLeave}
+                onClick={onConfirm}
                 size="sm"
                 color="transparent-no-border"
-                text={onLeaveText}
+                text={onConfirmText}
               />
             )}
             {onCloseText && (

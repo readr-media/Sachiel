@@ -67,9 +67,9 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
           <MobileStoryCommentFooter storyId={storyData?.id} comment={comment} />
           <CommentModal
             isOpen={confirmModalShow}
-            onLeaveText="離開"
+            onConfirmText="離開"
             onCloseText="繼續輸入"
-            onLeave={handleAddCommentModalOnLeave}
+            onConfirm={handleAddCommentModalOnLeave}
             onClose={handleAddCommentModalOnClose}
           >
             <section className="flex flex-col justify-start">
@@ -78,10 +78,10 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
             </section>
           </CommentModal>
           <CommentModal
-            onLeaveText="刪除留言"
+            onConfirmText="刪除留言"
             onCloseText="取消"
             isOpen={confirmDeleteCommentModalShow}
-            onLeave={handleDeleteCommentModalOnLeave}
+            onConfirm={handleDeleteCommentModalOnLeave}
             onClose={handleDeleteCommentModalOnClose}
           >
             <section className="flex flex-col justify-start">
@@ -90,7 +90,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
             </section>
           </CommentModal>
           <CommentModal
-            onLeaveText=""
+            onConfirmText=""
             onCloseText="返回留言"
             isOpen={isReporting}
             onClose={handleReportOnClose}
