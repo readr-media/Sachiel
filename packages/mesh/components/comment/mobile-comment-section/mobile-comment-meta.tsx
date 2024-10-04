@@ -5,7 +5,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 type Picks = UserActionStoryFragment['pick']
-const StoryCommentMeta = ({
+export const MobileStoryCommentMeta = ({
   title,
   publisher,
   displayPicks,
@@ -31,5 +31,3 @@ const StoryCommentMeta = ({
     </section>
   )
 }
-
-export default StoryCommentMeta

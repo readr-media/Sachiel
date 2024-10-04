@@ -3,9 +3,9 @@ import React, { useEffect } from 'react'
 import { useComment } from '@/context/comment-context'
 import { type Story } from '@/graphql/__generated__/graphql'
 
-import StoryCommentBlockItem from './story-comment-block-item'
+import { CommentBlockItem } from './comment-block-item'
 
-const StoryCommentBlock = ({
+export const CommentBlock = ({
   title,
   type,
   comments = [],
@@ -37,7 +37,7 @@ const StoryCommentBlock = ({
       {comments?.length ? (
         comments?.map((comment) => {
           return (
-            <StoryCommentBlockItem
+            <CommentBlockItem
               displayMode={type}
               comment={comment}
               key={comment.id}
@@ -52,5 +52,3 @@ const StoryCommentBlock = ({
     </ul>
   )
 }
-
-export default StoryCommentBlock

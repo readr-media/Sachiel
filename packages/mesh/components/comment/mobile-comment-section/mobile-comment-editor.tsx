@@ -5,7 +5,7 @@ import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 
-const StoryCommentEditor = () => {
+export const MobileStoryCommentEditor = () => {
   const { state, dispatch, handleCommentEdit } = useComment()
   const { isEditingComment } = state
   const { user } = useUser()
@@ -45,5 +45,3 @@ const StoryCommentEditor = () => {
     </div>
   )
 }
-
-export default StoryCommentEditor

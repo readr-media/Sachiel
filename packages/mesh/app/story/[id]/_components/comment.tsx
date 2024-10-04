@@ -2,8 +2,7 @@
 import React from 'react'
 
 import Button from '@/components/button'
-import CommentModal from '@/components/comment/client-comment-wrapper/comment-modal'
-import StoryCommentBlock from '@/components/comment/client-comment-wrapper/story-comment-block'
+import { CommentBlock, CommentModal } from '@/components/comment/story-comment'
 import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
 import { useComment } from '@/context/comment-context'
@@ -60,13 +59,13 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
         </div>
       </div>
       {!!sortAndFilterComments(commentList).length && (
-        <StoryCommentBlock
+        <CommentBlock
           title="熱門留言"
           type="popular"
           comments={sortAndFilterComments(commentList)}
         />
       )}
-      <StoryCommentBlock
+      <CommentBlock
         title="所有留言"
         type="all"
         comments={sortAuthorComments(commentList, user)}

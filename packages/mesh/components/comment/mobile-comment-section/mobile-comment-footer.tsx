@@ -6,7 +6,7 @@ import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import { createAdjustTextareaHeight } from '@/utils/adjust-textarea-height'
 
-const StoryCommentFooter = ({
+export const MobileStoryCommentFooter = ({
   storyId = '',
   comment,
 }: {
@@ -56,5 +56,3 @@ const StoryCommentFooter = ({
     </footer>
   )
 }
-
-export default StoryCommentFooter

@@ -1,7 +1,7 @@
 import Icon from '@/components/icon'
 import { useComment } from '@/context/comment-context'
 
-const StoryCommentHeader = () => {
+export const MobileStoryCommentHeader = () => {
   const { state, dispatch } = useComment()
   const { comment } = state
   const closeCommentBlock = () => {
@@ -25,5 +25,3 @@ const StoryCommentHeader = () => {
     </div>
   )
 }
-
-export default StoryCommentHeader

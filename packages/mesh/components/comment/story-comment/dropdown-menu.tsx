@@ -4,7 +4,7 @@ import Icon from '@/components/icon'
 import { useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 
-const DropdownMenu = () => {
+export const DropdownMenu = () => {
   const { dispatch, state } = useComment()
   const editDrawerRef = useRef<null | HTMLUListElement>(null)
 
@@ -88,5 +88,3 @@ const DropdownMenu = () => {
     </ul>
   )
 }
-
-export default DropdownMenu

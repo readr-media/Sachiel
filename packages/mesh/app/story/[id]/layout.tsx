@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import ClientModalWrapper from '@/components/comment/client-comment-wrapper'
+import MobileCommentModalWrapper from '@/components/comment/comment-wrapper'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
@@ -32,9 +32,9 @@ export default async function MediaLayout({
 
   return (
     <body>
-      <ClientModalWrapper storyData={storyData.story}>
+      <MobileCommentModalWrapper storyData={storyData.story}>
         <ClientLayout story={storyData.story}>{children}</ClientLayout>
-      </ClientModalWrapper>
+      </MobileCommentModalWrapper>
     </body>
   )
 }

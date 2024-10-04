@@ -6,7 +6,7 @@ import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 
-const CommentEditDrawer = () => {
+export const MobileCommentEditDrawer = () => {
   const { state, dispatch } = useComment()
   const { commentEditState } = state
   const { user } = useUser()
@@ -93,5 +93,3 @@ const CommentEditDrawer = () => {
     </ul>
   )
 }
-
-export default CommentEditDrawer

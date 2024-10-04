@@ -7,13 +7,14 @@ import { useUser } from '@/context/user'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
-import CommentEditDrawer from './comment-edit-drawer'
-import CommentModal from './comment-modal'
-import StoryCommentBlock from './story-comment-block'
-import StoryCommentEditor from './story-comment-editor'
-import StoryCommentFooter from './story-comment-footer'
-import StoryCommentHeader from './story-comment-header'
-import StoryCommentMeta from './story-comment-meta'
+import {
+  MobileCommentEditDrawer,
+  MobileStoryCommentEditor,
+  MobileStoryCommentFooter,
+  MobileStoryCommentHeader,
+  MobileStoryCommentMeta,
+} from '../mobile-comment-section'
+import { CommentBlock, CommentModal } from '../story-comment'
 type Story = NonNullable<GetStoryQuery>['story']
 
 function CommentBlockContent({ storyData }: { storyData: Story }) {
@@ -47,28 +48,28 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
     <div>
       {isModalOpen && (
         <div className="absolute left-0 top-0 z-30 size-full bg-white">
-          <StoryCommentHeader />
+          <MobileStoryCommentHeader />
           <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
-            <StoryCommentMeta
+            <MobileStoryCommentMeta
               title={storyData?.title || ''}
               publisher={storyData?.source?.title || 'publisher'}
               displayPicks={storyData?.picks}
               pickCount={storyData?.picksCount || 0}
             />
             {!!sortAndFilterComments(commentList).length && (
-              <StoryCommentBlock
+              <CommentBlock
                 title="熱門留言"
                 type="popular"
                 comments={sortAndFilterComments(commentList)}
               />
             )}
-            <StoryCommentBlock
+            <CommentBlock
               title="所有留言"
               type="all"
               comments={sortAuthorComments(commentList, user)}
             />
           </div>
-          <StoryCommentFooter storyId={storyData?.id} comment={comment} />
+          <MobileStoryCommentFooter storyId={storyData?.id} comment={comment} />
           <CommentModal
             isOpen={confirmModalShow}
             onLeaveText="離開"
@@ -104,15 +105,15 @@ function CommentBlockContent({ storyData }: { storyData: Story }) {
               <p className="body-3">我們已收到您的檢舉，感謝提供資訊</p>
             </section>
           </CommentModal>
-          <CommentEditDrawer />
-          <StoryCommentEditor />
+          <MobileCommentEditDrawer />
+          <MobileStoryCommentEditor />
         </div>
       )}
     </div>
   )
 }
 
-export default function ClientModalWrapper({
+export default function MobileCommentModalWrapper({
   children,
   storyData,
 }: {

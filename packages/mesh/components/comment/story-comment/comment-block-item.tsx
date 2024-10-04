@@ -9,10 +9,10 @@ import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import CommentEditor from './comment-editor'
-import DropdownMenu from './dropdown-menu'
+import { CommentEditor } from './comment-editor'
+import { DropdownMenu } from './dropdown-menu'
 
-const StoryCommentBlockItem = ({
+export const CommentBlockItem = ({
   comment,
   displayMode,
 }: {
@@ -148,5 +148,3 @@ const StoryCommentBlockItem = ({
     </li>
   )
 }
-
-export default StoryCommentBlockItem
