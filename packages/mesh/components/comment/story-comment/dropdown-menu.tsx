@@ -59,7 +59,7 @@ export const DropdownMenu = () => {
   return (
     <ul
       ref={editDrawerRef}
-      className="absolute left-0 top-0 z-10 hidden w-[180px] flex-col bg-white py-2 shadow-[0px_0px_24px_0px_rgba(0,9,40,0.10),0px_2px_40px_0px_rgba(0,9,40,0.10)] md:flex"
+      className="absolute left-0 top-0 z-10 hidden w-[180px] flex-col bg-white py-2 shadow-[0px_0px_24px_0px_rgba(0,9,40,0.10),0px_2px_40px_0px_rgba(0,9,40,0.10)] sm:flex"
     >
       {state.commentEditState.mode === 'other' ? (
         <li
