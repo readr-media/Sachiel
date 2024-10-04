@@ -28,7 +28,7 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
   } = state
 
   return (
-    <div className="flex grow flex-col">
+    <div className="hidden grow flex-col sm:flex">
       <p className="list-title mb-5 text-primary-700">留言區</p>
       <div className="flex grow flex-col gap-3 rounded-md bg-multi-layer-light p-5">
         <div className="flex grow gap-2">
