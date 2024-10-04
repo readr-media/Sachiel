@@ -1,21 +1,21 @@
-import { type FormEvent } from 'react'
+import { type FormEvent, useState } from 'react'
 
 export default function SponsorInput({
   balance,
-  sponsorValue,
-  setSponsorValue,
+  onChangeAmount,
 }: {
   balance: number | undefined
-  sponsorValue: string
-  setSponsorValue: (value: string) => void
+  onChangeAmount: (value: number) => void
 }) {
-  const isMax = `${sponsorValue}` === `${balance}`
+  const [userInput, setUserInput] = useState('')
+  const isMax = `${userInput}` === `${balance}`
+
   const handleMaxClick = () => {
     if (!balance) return
-    setSponsorValue(`${balance}`)
+    setUserInput(`${balance}`)
   }
 
-  const handleInput = (e: FormEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
     if (!balance) return
     const value = e.currentTarget.value
 
@@ -23,7 +23,8 @@ export default function SponsorInput({
       return
     }
 
-    setSponsorValue(value ? `${Math.min(parseInt(value), balance)}` : '')
+    setUserInput(value ? `${Math.min(parseInt(value), balance)}` : '')
+    onChangeAmount(Math.min(parseInt(value), balance) || 0)
   }
 
   return (
@@ -32,8 +33,8 @@ export default function SponsorInput({
         <div className="flex items-center gap-2 border-b border-primary-200 pb-2">
           <input
             className="flex-1 appearance-none border-none outline-none"
-            value={sponsorValue}
-            onChange={handleInput}
+            value={userInput}
+            onChange={handleOnChange}
             max={balance}
             min={0}
             inputMode="numeric"

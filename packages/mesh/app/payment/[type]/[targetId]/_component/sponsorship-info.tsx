@@ -29,9 +29,7 @@ export default function SponsorshipInfo({
   const [selectedOption, setSelectedOption] = useState<
     SponsorshipPoints | undefined | null
   >(null)
-  const [sponsorValue, setSponsorValue] = useState('')
-  const amount = parseInt(sponsorValue)
-  const isReady = amount > 0
+  const [amount, setAmount] = useState(0)
   const [isSyncing, setIsSyncing] = useState(false)
   const [isSponsored, setIsSponsored] = useState(false)
   //TODO: replace with media sca
@@ -56,7 +54,7 @@ export default function SponsorshipInfo({
     //TODO: insufficient balance ux
     if (value && balance && value > balance) return
     setSelectedOption(value)
-    setSponsorValue(`${value ?? ''}`)
+    setAmount(value ?? 0)
   }
 
   return (
@@ -87,8 +85,7 @@ export default function SponsorshipInfo({
       ) : isInputMode ? (
         <SponsorInput
           balance={balance}
-          sponsorValue={sponsorValue}
-          setSponsorValue={setSponsorValue}
+          onChangeAmount={(value: number) => setAmount(value)}
         />
       ) : (
         <SponsorOption
@@ -100,7 +97,7 @@ export default function SponsorshipInfo({
 
       {isSponsored ? null : (
         <div className="fixed bottom-0 left-0 w-full max-w-[600px] border-t border-primary-200 bg-white px-5 py-3 sm:static sm:border-0 sm:py-0">
-          {isReady ? (
+          {amount > 0 ? (
             isSyncing ? (
               <div className="flex h-[46px] justify-center">
                 <Spinner />
