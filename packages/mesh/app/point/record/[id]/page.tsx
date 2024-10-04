@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberSingleTransaction } from '@/app/actions/transaction'
@@ -11,7 +11,7 @@ import MeshPointInfo from '../../_components/mesh-point-info'
 export default async function Page({ params }: { params: { id: string } }) {
   const user = await getCurrentUser()
   const memberId = user?.memberId
-  if (!memberId) notFound()
+  if (!memberId) redirect('/login')
 
   const data = await getMemberSingleTransaction(memberId, params.id)
   if (!data) notFound()

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import getAllPublishers from '@/app/actions/get-all-publishers'
@@ -24,7 +24,7 @@ export default async function Page({
   const { type, targetId } = params
   const user = await getCurrentUser()
   const memberId = user?.memberId ?? ''
-  if (!memberId) notFound()
+  if (!memberId) redirect('/login')
   const hasAlchemyAccount = !!user?.wallet
   let balance = undefined
 
