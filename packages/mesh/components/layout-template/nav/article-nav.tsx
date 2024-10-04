@@ -67,11 +67,13 @@ const NonMobileNav = ({
   avatarUrl,
   closeNav,
   shouldShowNav,
+  userCustomId,
 }: {
   path: string
   avatarUrl: string
   closeNav: () => void
   shouldShowNav: boolean
+  userCustomId: string
 }) => {
   return (
     <nav
@@ -101,12 +103,15 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col gap-2 pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案' && avatarUrl) {
+              if (iconInfo.text === '個人檔案') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
                     isOn={path.startsWith(iconInfo.href)}
-                    iconInfo={iconInfo}
+                    iconInfo={{
+                      ...iconInfo,
+                      href: iconInfo.href + `/member/${userCustomId}`,
+                    }}
                     avatarUrl={avatarUrl}
                   />
                 )
@@ -148,15 +153,17 @@ export default function ArticleNav({
   const { user } = useUser()
 
   const avatarUrl = user?.avatar ?? ''
+  const userCustomId = user.customId
 
   return (
     <>
-      {/* story nav  only has desktop nav */}
+      {/* story nav only has desktop nav */}
       <NonMobileNav
         path={path}
         avatarUrl={avatarUrl}
         shouldShowNav={shouldShowNav}
         closeNav={closeNav}
+        userCustomId={userCustomId}
       />
     </>
   )

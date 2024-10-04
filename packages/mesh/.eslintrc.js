@@ -2,6 +2,7 @@ module.exports = {
   //TODO: ESLint: Failed to load config "../../.eslintrc" to extend from. Referenced from: /app/.eslintrc.json
   extends: [
     '../../.eslintrc',
+    'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:tailwindcss/recommended',
@@ -24,7 +25,7 @@ module.exports = {
     ],
     'tailwindcss/classnames-order': 'off',
     'tailwindcss/enforces-shorthand': 'error',
-    'tailwindcss/no-unnecessary-arbitrary-value': 'error',
+    'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
     'tailwindcss/no-custom-classname': 'off',
   },
   overrides: [

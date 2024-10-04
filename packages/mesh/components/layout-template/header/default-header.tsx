@@ -11,7 +11,7 @@ import SearchBar from '@/components/search-bar'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import { logout } from '@/utils/logout'
 
-export default function StatefulHeader() {
+export default function DefaultHeader() {
   // temporarily use hardcode value for state
   const [showNotification, setShowNotification] = useState(false)
   const router = useRouter()

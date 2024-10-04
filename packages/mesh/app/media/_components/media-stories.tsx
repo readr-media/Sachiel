@@ -10,12 +10,12 @@ import getMostPickedStoriesInCategory from '@/app/actions/get-most-picked-storie
 import getMostSponsorPublishers, {
   type Publisher,
 } from '@/app/actions/get-most-sponsor-publishers'
-import Spinner from '@/components/spinner'
 import { useUser } from '@/context/user'
 
 import type { Category } from '../page'
 import CategorySelector from './category-selector'
 import DesktopStories from './desktop-stories'
+import Loading from './loading'
 import NoStories from './no-stories'
 import NonDesktopStories from './non-desktop-stories'
 
@@ -172,7 +172,7 @@ export default function MediaStories({
   let contentJsx: JSX.Element
 
   if (isLoading) {
-    contentJsx = <Spinner />
+    contentJsx = <Loading withCategory={false} />
   } else if (!latestStoriesInfo?.stories.length) {
     contentJsx = <NoStories />
   } else {
