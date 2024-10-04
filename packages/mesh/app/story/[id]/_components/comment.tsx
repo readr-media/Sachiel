@@ -24,6 +24,7 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
     comment,
     confirmDeleteCommentModalShow,
     isAddingComment,
+    isReporting,
   } = state
 
   return (
@@ -85,7 +86,7 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
       <CommentModal
         onConfirmText=""
         onCloseText="返回留言"
-        isOpen={state.isReporting}
+        isOpen={isReporting}
         onClose={handleReportOnClose}
       >
         <section className="flex flex-col justify-start">
