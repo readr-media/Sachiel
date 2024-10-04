@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useUser } from '@/context/user'
 import { getDisplayPicks } from '@/utils/story-display'
 
@@ -39,9 +39,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
                   {story.source?.title ?? ''}
                 </h4>
               </Link>
-              <button>
-                <Icon iconName="icon-more-horiz" size="l" />
-              </button>
+              <StoryMoreActionButton storyId={story.id} />
             </div>
             <Link href={`/story/${story.id}`}>
               <div className="hero-title mt-1 text-primary-700">

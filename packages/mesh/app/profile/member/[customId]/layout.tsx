@@ -63,6 +63,7 @@ export default function ProfileMemberLayout({
         ],
         title: pageCustomId,
         rightButtons: [
+          // replace with ProfileMoreActionButton
           <MobileNavigationButton
             key={0}
             type="icon"

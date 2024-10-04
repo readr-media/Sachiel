@@ -2,10 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import Comment from '@/app/profile/_components/comment'
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import {
   type CommentType,
   type PickListItem,
@@ -78,7 +78,7 @@ const ArticleCard = ({
           <p className="caption-1 text-primary-500">
             {(storyData?.source && storyData?.source.title) ?? '預設媒體'}
           </p>
-          <Icon iconName="icon-more-horiz" size="l" />
+          <StoryMoreActionButton storyId={storyData.id} />
         </section>
         <section className="mb-2 flex items-start justify-between sm:gap-10">
           <div className="flex h-full flex-col justify-between">

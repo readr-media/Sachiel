@@ -1,7 +1,7 @@
 import NextLink from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import type { DailyStory } from '@/types/homepage'
 
 type Props = {
@@ -24,7 +24,7 @@ export default function SwiperComponent({ stories }: Props) {
                 </p>
               </NextLink>
 
-              <Icon iconName="icon-more-horiz" size="l" />
+              <StoryMoreActionButton storyId={story.id} />
             </div>
 
             <h3 className="subtitle-2 mb-2 line-clamp-2 text-primary-700">

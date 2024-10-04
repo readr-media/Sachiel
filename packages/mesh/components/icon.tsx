@@ -111,6 +111,13 @@ export type IconName =
   | 'icon-unlock'
   | 'icon-send-email'
   | 'icon-check-email'
+  | 'icon-copy'
+  | 'icon-unfollow'
+  | 'icon-close'
+  | 'icon-share-facebook'
+  | 'icon-share-line'
+  | 'icon-share-threads'
+  | 'icon-share-x'
 
 export type IconProps = {
   size: Size
