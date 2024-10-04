@@ -76,7 +76,7 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     }
     commentsCount: commentCount(where: { state: { equals: "public" } })
     comments: comment(
-      where: { state: { equals: "public" } }
+      where: { state: { equals: "public" }, is_active: { equals: true } }
       orderBy: { createdAt: desc }
       take: $commentsTake
     ) {
@@ -130,7 +130,7 @@ query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int) {
     }
     commentsCount: commentCount(where: { state: { equals: "public" } })
     comments: comment(
-      where: { state: { equals: "public" } }
+      where: { state: { equals: "public" }, is_active: { equals: true } }
       orderBy: { createdAt: desc }
       take: $commentsTake
     ) {
