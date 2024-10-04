@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useReducer } from 'react'
 
-import { addComment, editComment } from '@/app/actions/comment'
-import type { User } from '@/context/user'
+import { addComment, deleteComment, editComment } from '@/app/actions/comment'
+import { type User } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { sleep } from '@/utils/sleep'
 
@@ -147,8 +147,8 @@ function commentReducer(state: State, action: Action): State {
 interface CommentContextType {
   state: State
   dispatch: React.Dispatch<Action>
-  handleDeleteCommentModalOnLeave: () => void
-  handleDeleteCommentModalOnClose: () => void
+  handleDeleteCommentModalOnConfirm: (user: User) => Promise<void>
+  handleDeleteCommentModalOnCancel: () => void
   handleTextChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   handleReportOnClose: () => void
   handleCommentEdit: (user: User) => void
@@ -172,20 +172,27 @@ export function CommentProvider({
     commentList: initialComments,
   })
 
-  const handleDeleteCommentModalOnLeave = useCallback(() => {
-    dispatch({ type: 'REMOVE_COMMENT' })
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: false },
-    })
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-    dispatch({ type: 'RESET_EDIT_DRAWER' })
-  }, [state.commentEditState])
+  const handleDeleteCommentModalOnConfirm = useCallback(
+    async (user: User) => {
+      await deleteComment({
+        memberId: user.memberId,
+        commentId: state.commentEditState.commentId,
+      })
+      dispatch({ type: 'REMOVE_COMMENT' })
+      dispatch({
+        type: 'TOGGLE_DELETE_COMMENT_MODAL',
+        payload: { isVisible: false },
+      })
+      dispatch({
+        type: 'UPDATE_EDIT_DRAWER',
+        payload: { ...state.commentEditState, isVisible: false },
+      })
+      dispatch({ type: 'RESET_EDIT_DRAWER' })
+    },
+    [state.commentEditState]
+  )
 
-  const handleDeleteCommentModalOnClose = useCallback(() => {
+  const handleDeleteCommentModalOnCancel = useCallback(() => {
     dispatch({
       type: 'UPDATE_EDIT_DRAWER',
       payload: { ...state.commentEditState, isVisible: false },
@@ -295,8 +302,8 @@ export function CommentProvider({
   const contextValue = {
     state,
     dispatch,
-    handleDeleteCommentModalOnLeave,
-    handleDeleteCommentModalOnClose,
+    handleDeleteCommentModalOnConfirm,
+    handleDeleteCommentModalOnCancel,
     handleCommentPublish,
     handleTextChange,
     handleReportOnClose,

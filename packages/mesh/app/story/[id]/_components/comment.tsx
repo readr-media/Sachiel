@@ -13,8 +13,8 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
   const { user } = useUser()
   const {
     state,
-    handleDeleteCommentModalOnClose,
-    handleDeleteCommentModalOnLeave,
+    handleDeleteCommentModalOnCancel,
+    handleDeleteCommentModalOnConfirm,
     handleCommentPublish,
     handleTextChange,
     handleReportOnClose,
@@ -75,8 +75,8 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
         onConfirmText="刪除留言"
         onCloseText="取消"
         isOpen={isConfirmDeleteCommentModalOpen}
-        onConfirm={handleDeleteCommentModalOnLeave}
-        onClose={handleDeleteCommentModalOnClose}
+        onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
+        onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
           <p className="title-2">確認要刪除留言？</p>

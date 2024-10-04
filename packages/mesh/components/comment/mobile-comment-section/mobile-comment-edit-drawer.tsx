@@ -1,15 +1,12 @@
 import React, { useRef } from 'react'
 
-import { deleteComment } from '@/app/actions/comment'
 import Icon from '@/components/icon'
 import { useComment } from '@/context/comment-context'
-import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 
 export const MobileCommentEditDrawer = () => {
   const { state, dispatch } = useComment()
   const { commentEditState } = state
-  const { user } = useUser()
   const editDrawerRef = useRef(null)
 
   useClickOutside(editDrawerRef, () => {
@@ -29,10 +26,6 @@ export const MobileCommentEditDrawer = () => {
       })
       return
     }
-    deleteComment({
-      memberId: user.memberId,
-      commentId: state.commentEditState.commentId,
-    })
     dispatch({
       type: 'TOGGLE_DELETE_COMMENT_MODAL',
       payload: { isVisible: true },

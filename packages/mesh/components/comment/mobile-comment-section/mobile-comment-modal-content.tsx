@@ -16,8 +16,8 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
   const {
     state,
     dispatch,
-    handleDeleteCommentModalOnLeave,
-    handleDeleteCommentModalOnClose,
+    handleDeleteCommentModalOnConfirm,
+    handleDeleteCommentModalOnCancel,
     handleReportOnClose,
   } = useComment()
   const {
@@ -84,8 +84,8 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
             onConfirmText="刪除留言"
             onCloseText="取消"
             isOpen={isConfirmDeleteCommentModalOpen}
-            onConfirm={handleDeleteCommentModalOnLeave}
-            onClose={handleDeleteCommentModalOnClose}
+            onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
+            onClose={handleDeleteCommentModalOnCancel}
           >
             <section className="flex flex-col justify-start">
               <p className="title-2">確認要刪除留言？</p>
