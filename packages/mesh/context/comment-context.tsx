@@ -26,20 +26,20 @@ interface CommentEditState {
 }
 
 interface State {
-  isModalOpen: boolean
-  commentEditState: CommentEditState
+  isMobileCommentModalOpen: boolean
+  isConfirmLeavingModalOpen: boolean
   isEditingComment: boolean
-  isReporting: boolean
+  isConfirmReportingModalOpen: boolean
   isAddingComment: boolean
-  confirmModalShow: boolean
+  commentEditState: CommentEditState
   comment: string
   commentList: Comment[]
   highlightedId: string
-  confirmDeleteCommentModalShow: boolean
+  isConfirmDeleteCommentModalOpen: boolean
 }
 
 type Action =
-  | { type: 'TOGGLE_COMMENT_MODAL'; payload: { isOpen: boolean } }
+  | { type: 'TOGGLE_MOBILE_COMMENT_MODAL'; payload: { isOpen: boolean } }
   | { type: 'TOGGLE_COMMENT_EDITOR'; payload: { isEditing: boolean } }
   | { type: 'UPDATE_COMMENT_DRAFT'; payload: string }
   | { type: 'TOGGLE_CONFIRM_MODAL'; payload: { isVisible: boolean } }
@@ -57,15 +57,14 @@ type Action =
   | { type: 'INSERT_COMMENT'; payload: Comment }
   | { type: 'UPDATE_HIGHLIGHTED_COMMENT'; payload: string }
   | { type: 'TOGGLE_DELETE_COMMENT_MODAL'; payload: { isVisible: boolean } }
-  | { type: 'SHOW_REPORTING_MODAL' }
-  | { type: 'HIDE_REPORTING_MODAL' }
 
 const initialState: State = {
-  isModalOpen: false,
-  confirmModalShow: false,
+  isMobileCommentModalOpen: false,
   isEditingComment: false,
-  isReporting: false,
   isAddingComment: false,
+  isConfirmLeavingModalOpen: false,
+  isConfirmReportingModalOpen: false,
+  isConfirmDeleteCommentModalOpen: false,
   commentEditState: {
     isVisible: false,
     mode: '',
@@ -77,30 +76,29 @@ const initialState: State = {
   comment: '',
   commentList: [],
   highlightedId: '',
-  confirmDeleteCommentModalShow: false,
 }
 
 function commentReducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'TOGGLE_COMMENT_MODAL':
+    case 'TOGGLE_MOBILE_COMMENT_MODAL':
       return {
         ...state,
-        isModalOpen: action.payload.isOpen,
+        isMobileCommentModalOpen: action.payload.isOpen,
         comment: action.payload.isOpen ? '' : state.comment,
       }
     case 'TOGGLE_COMMENT_EDITOR':
       return { ...state, isEditingComment: action.payload.isEditing }
     case 'TOGGLE_CONFIRM_MODAL':
-      return { ...state, confirmModalShow: action.payload.isVisible }
+      return { ...state, isConfirmLeavingModalOpen: action.payload.isVisible }
     case 'TOGGLE_DELETE_COMMENT_MODAL':
       return {
         ...state,
-        confirmDeleteCommentModalShow: action.payload.isVisible,
+        isConfirmDeleteCommentModalOpen: action.payload.isVisible,
       }
     case 'TOGGLE_IS_ADDING_COMMENT':
       return { ...state, isAddingComment: action.payload.isAdding }
     case 'TOGGLE_REPORTING_MODAL':
-      return { ...state, isReporting: action.payload.isVisible }
+      return { ...state, isConfirmReportingModalOpen: action.payload.isVisible }
     case 'UPDATE_COMMENT_DRAFT':
       return {
         ...state,

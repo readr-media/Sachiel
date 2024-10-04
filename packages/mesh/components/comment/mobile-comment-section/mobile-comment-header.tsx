@@ -9,7 +9,10 @@ export const MobileStoryCommentHeader = () => {
       dispatch({ type: 'TOGGLE_CONFIRM_MODAL', payload: { isVisible: true } })
       return
     }
-    dispatch({ type: 'TOGGLE_COMMENT_MODAL', payload: { isOpen: false } })
+    dispatch({
+      type: 'TOGGLE_MOBILE_COMMENT_MODAL',
+      payload: { isOpen: false },
+    })
     document.body.classList.remove('overflow-hidden')
   }
   return (

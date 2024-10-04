@@ -23,15 +23,18 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
   const {
     comment,
     commentList,
-    confirmModalShow,
-    isModalOpen,
-    isReporting,
-    confirmDeleteCommentModalShow,
+    isConfirmLeavingModalOpen,
+    isMobileCommentModalOpen,
+    isConfirmReportingModalOpen,
+    isConfirmDeleteCommentModalOpen,
   } = state
   const { user } = useUser()
   const handleAddCommentModalOnLeave = () => {
     dispatch({ type: 'TOGGLE_CONFIRM_MODAL', payload: { isVisible: false } })
-    dispatch({ type: 'TOGGLE_COMMENT_MODAL', payload: { isOpen: false } })
+    dispatch({
+      type: 'TOGGLE_MOBILE_COMMENT_MODAL',
+      payload: { isOpen: false },
+    })
     document.body.classList.remove('overflow-hidden')
   }
 
@@ -41,7 +44,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
 
   return (
     <div>
-      {isModalOpen && (
+      {isMobileCommentModalOpen && (
         <div className="absolute left-0 top-0 z-30 size-full bg-white">
           <MobileStoryCommentHeader />
           <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
@@ -66,7 +69,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
           </div>
           <MobileStoryCommentFooter storyId={storyData?.id} comment={comment} />
           <CommentModal
-            isOpen={confirmModalShow}
+            isOpen={isConfirmLeavingModalOpen}
             onConfirmText="離開"
             onCloseText="繼續輸入"
             onConfirm={handleAddCommentModalOnLeave}
@@ -80,7 +83,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
           <CommentModal
             onConfirmText="刪除留言"
             onCloseText="取消"
-            isOpen={confirmDeleteCommentModalShow}
+            isOpen={isConfirmDeleteCommentModalOpen}
             onConfirm={handleDeleteCommentModalOnLeave}
             onClose={handleDeleteCommentModalOnClose}
           >
@@ -92,7 +95,7 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
           <CommentModal
             onConfirmText=""
             onCloseText="返回留言"
-            isOpen={isReporting}
+            isOpen={isConfirmReportingModalOpen}
             onClose={handleReportOnClose}
           >
             <section className="flex flex-col justify-start">
