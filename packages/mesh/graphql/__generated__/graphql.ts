@@ -4407,7 +4407,6 @@ export type GetPublisherProfileQueryVariables = Exact<{
 
 export type GetPublisherProfileQuery = {
   __typename?: 'Query'
-  storiesCount?: number | null
   publishers?: Array<{
     __typename?: 'Publisher'
     id: string
@@ -9186,50 +9185,6 @@ export const GetPublisherProfileDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'description' } },
               ],
             },
-          },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'storiesCount' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'source' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'customId' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'Variable',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'publisherId',
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
           },
           {
             kind: 'Field',

@@ -19,7 +19,6 @@ query GetPublisherProfile($publisherId: String, $takes: Int!) {
     followerCount
     description
   }
-  storiesCount(where: { source: { customId: { equals: $publisherId } } })
   stories(
     where: { source: { customId: { equals: $publisherId } } }
     take: $takes

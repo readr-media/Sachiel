@@ -104,6 +104,8 @@ const STATIC_FILE_ENDPOINTS = {
   dailyHighlightGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_group.json`,
   dailyHighlightNoGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_no_group.json`,
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
+  getPublisherStories: (publisherCustomId: string) =>
+    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_stories.json`,
 }
 
 export {
