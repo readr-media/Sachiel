@@ -177,7 +177,22 @@ export async function signUpMember(
       'Failed to sign up new member'
     )
 
-    return data?.createMember
+    if (!data?.createMember) return undefined
+
+    const { createMember } = data
+    const pubSubResponse = await fetchRestfulPost(
+      RESTFUL_ENDPOINTS.pubsub,
+      {
+        action: 'update_member',
+        memberId: createMember.id,
+      },
+      { cache: 'no-cache' },
+      'Failed to update_member via pub/sub'
+    )
+
+    if (!pubSubResponse) throw new Error('PubSub update member failed')
+
+    return createMember
   } catch (error) {
     logServerSideError(
       error,
