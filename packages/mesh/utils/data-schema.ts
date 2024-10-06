@@ -94,3 +94,22 @@ export const rawCategoryStorySchema = storySchema
     source: sourceSchema,
   })
   .omit({ isMember: true, pickCount: true })
+// TODO: add paywall
+export const rawMostSponsoredPublisherStoryByCategorySchema = z.object({
+  publisher: z.object({
+    id: z.string(),
+    title: z.string(),
+    customId: z.string(),
+    official_site: z.string(),
+    sponsoredCount: z.number(),
+  }),
+  stories: z.array(
+    storySchema.omit({
+      summary: true,
+      paywall: true,
+      isMember: true,
+      picks: true,
+      pickCount: true,
+    })
+  ),
+})
