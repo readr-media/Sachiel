@@ -3,7 +3,10 @@
 import { z } from 'zod'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
-import { GetAllCategoriesDocument } from '@/graphql/__generated__/graphql'
+import {
+  GetAllCategoriesDocument,
+  GetCategoryInformationDocument,
+} from '@/graphql/__generated__/graphql'
 import type {
   CategoryStory,
   Collector,
@@ -180,6 +183,18 @@ async function fetchAllCategory() {
   return data
 }
 
+async function fetchCategoryInformation(slug: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const data = await queryGraphQL(
+    GetCategoryInformationDocument,
+    { slug },
+    globalLogFields
+  )
+
+  return data
+}
+
 async function fetchCategoryStory(
   slug: string | undefined | null
 ): Promise<CategoryStory[] | null> {
@@ -251,6 +266,7 @@ export default async function fetchMostSponsoredPublishersByCategory(
 
 export {
   fetchAllCategory,
+  fetchCategoryInformation,
   fetchCategoryStory,
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
