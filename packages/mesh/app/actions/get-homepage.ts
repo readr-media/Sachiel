@@ -18,6 +18,7 @@ import {
   rawCommentSchema,
   rawDailyHighlightSchema,
   rawFeaturedStorySchema,
+  rawMostSponsoredPublisherStoryByCategorySchema,
   rawMostSponsoredPublisherStorySchema,
   rawReadrStorySchema,
   rawTopCollectorSchema,
@@ -203,14 +204,61 @@ async function fetchCategoryStory(
   } else return null
 }
 
+async function fetchGroupAndOtherStories(slug: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const schema = z.object({
+    group: z.array(rawDailyHighlightSchema).optional(),
+    others: z.array(rawDailyHighlightSchema),
+  })
+
+  try {
+    const response = await fetchStatic<z.infer<typeof schema>>(
+      STATIC_FILE_ENDPOINTS.groupAndOtherStoriesInCategeoryfn(slug)
+    )
+    const result = schema.parse(response)
+    return result
+  } catch (err) {
+    logServerSideError(
+      err,
+      `Error occurs while fetching category ${slug} stories on the homepage-related subpage`,
+      globalLogFields
+    )
+    return null
+  }
+}
+
+export default async function fetchMostSponsoredPublishersByCategory(
+  slug: string
+) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const schema = z.array(rawMostSponsoredPublisherStoryByCategorySchema)
+
+  try {
+    const response = await fetchStatic(
+      STATIC_FILE_ENDPOINTS.categoryMostSponsoredPublishersfn(slug)
+    )
+    const result = schema.parse(response)
+    return result
+  } catch (err) {
+    logServerSideError(
+      err,
+      `Error occurs while fetching most sponsored publishers for the ${slug} category on the homepage-related subpage`,
+      globalLogFields
+    )
+    return null
+  }
+}
+
 export {
   fetchAllCategory,
   fetchCategoryStory,
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
+  fetchGroupAndOtherStories,
   fetchMostLikedComment,
   fetchMostPickedStory,
   fetchMostSponsoredPublisher,
+  fetchMostSponsoredPublishersByCategory,
   fetchRecentReadrStory,
   fetchTopCollector,
 }
