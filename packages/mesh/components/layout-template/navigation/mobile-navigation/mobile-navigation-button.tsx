@@ -28,7 +28,7 @@ export type NavigationButtonProps = {
   }
 >
 
-export default function NavigationButton({
+export default function MobileNavigationButton({
   type,
   icon,
   onClick,

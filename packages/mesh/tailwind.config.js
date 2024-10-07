@@ -20,12 +20,18 @@ module.exports = {
       width: {
         maxContent: '1440px',
         maxMain: '1120px',
+        maxDesktopNavigation: '680px',
         nav: {
           sm: '128px',
           md: '220px',
           xl: '320px',
         },
         articleNav: '300px',
+        articleMain: '600px',
+        articleAside: {
+          lg: '220px',
+          xl: '340px',
+        },
       },
       spacing: {
         15: '3.75rem',
@@ -128,6 +134,10 @@ module.exports = {
         'lightbox-dark': {
           DEFAULT: 'rgba(0, 0, 0, 0.3)',
           dark: 'rgba(0, 0, 0, 0.3)',
+        },
+        loading: {
+          DEFAULT: 'rgba(0, 9, 40, 0.15)',
+          dark: 'rgba(0, 9, 40, 0.15)',
         },
         disable: {
           DEFAULT: '#E0E0E0',

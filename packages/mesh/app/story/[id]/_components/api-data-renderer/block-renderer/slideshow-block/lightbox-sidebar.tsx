@@ -1,3 +1,4 @@
+// @ts-expect-error: The module missing TypeScript declarations.
 import CustomImage from '@readr-media/react-image'
 import Image from 'next/image'
 import { type Dispatch, type SetStateAction, useEffect, useRef } from 'react'

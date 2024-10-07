@@ -4,6 +4,7 @@ import { notFound, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import LayoutTemplate from '@/components/layout-template'
+import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
 
@@ -41,14 +42,15 @@ export default function MediaLayout({
   return (
     <LayoutTemplate
       type="default"
-      navigation={{
+      mobileNavigation={{
         title: title,
         leftButtons: [
-          {
-            type: 'icon',
-            icon: 'icon-navigate-previous',
-            onClick: backToPreviousPage,
-          },
+          <MobileNavigationButton
+            key={0}
+            type="icon"
+            icon="icon-navigate-previous"
+            onClick={backToPreviousPage}
+          />,
         ],
         rightButtons: [],
       }}
