@@ -188,6 +188,10 @@ const ActionSheet = forwardRef(function ActionSheet(
         break
       }
       case ActionType.AddBookMark: {
+        if (!user.memberId) {
+          router.push('/login')
+          return
+        }
         if (isStoryAddedBookmark) {
           const removeBookmarkResponse = await removeBookmark({
             memberId: user.memberId,
