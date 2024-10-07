@@ -61,10 +61,12 @@ export default function DesktopStories({
   return (
     <section className="hidden lg:block lg:px-10 lg:pb-15 lg:pt-10 xxl:pb-10">
       <div className="lg:flex lg:gap-x-10">
-        <div>
-          <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">最新報導</h2>
-          <div className="flex flex-col gap-y-5">{getStoriesContent()}</div>
-        </div>
+        {otherStories.length !== 0 && (
+          <div>
+            <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">最新報導</h2>
+            <div className="flex flex-col gap-y-5">{getStoriesContent()}</div>
+          </div>
+        )}
 
         <div className="lg:flex lg:flex-col lg:gap-y-3">
           {publishersAndStories &&
