@@ -1,6 +1,6 @@
 'use client'
 
-import { notFound, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import LayoutTemplate from '@/components/layout-template'
@@ -21,14 +21,9 @@ export default function MediaLayout({
   useEffect(() => {
     const fetchSlugInfo = async () => {
       const result = await fetchCategoryInformation(slug)
-      const categories = result?.categories
-      if (!categories) {
-        return notFound()
-      }
-      if (categories[0].slug !== slug) {
-        return notFound()
-      }
-      setTitle(`${categories[0].title}熱門` ?? '')
+      if (!result) return null
+
+      setTitle(`${result.title}熱門` ?? '')
     }
     fetchSlugInfo()
   }, [slug])

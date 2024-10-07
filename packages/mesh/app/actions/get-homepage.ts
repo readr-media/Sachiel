@@ -192,7 +192,14 @@ async function fetchCategoryInformation(slug: string) {
     globalLogFields
   )
 
-  return data
+  if (!data || !data.categories || data.categories.length === 0) {
+    return null
+  }
+  const { categories } = data
+  const slugName = categories[0].slug ?? ''
+  const title = categories[0].title ?? ''
+
+  return { slugName, title }
 }
 
 async function fetchCategoryStory(

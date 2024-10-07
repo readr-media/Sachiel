@@ -16,11 +16,7 @@ import TopStoriesSection from './_components/top-stories-section'
 export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug
   const slugInfo = await fetchCategoryInformation(slug)
-  const categories = slugInfo?.categories
-  if (!categories) {
-    return notFound()
-  }
-  if (categories[0].slug !== slug) return notFound()
+  if (!slugInfo) notFound()
 
   const [storiesResult, publishersAndStoriesResult] = await Promise.allSettled([
     fetchGroupAndOtherStories(slug),
@@ -47,7 +43,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             }}
           />
         </NextLink>
-        <h2>{`${categories[0].title}熱門`}</h2>
+        <h2>{`${slugInfo.title}熱門`}</h2>
       </div>
       <div className="sm:pt-15">
         <TopStoriesSection stories={stories} />
