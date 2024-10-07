@@ -3975,6 +3975,7 @@ export type GetMemberProfileQuery = {
           __typename?: 'Publisher'
           title?: string | null
           official_site?: string | null
+          id: string
         } | null
         tag?: Array<{
           __typename?: 'Tag'
@@ -4096,6 +4097,7 @@ export type GetVisitorProfileQuery = {
           __typename?: 'Publisher'
           title?: string | null
           official_site?: string | null
+          id: string
         } | null
         tag?: Array<{
           __typename?: 'Tag'
@@ -4436,6 +4438,7 @@ export type GetPublisherProfileQuery = {
       __typename?: 'Publisher'
       title?: string | null
       official_site?: string | null
+      id: string
     } | null
     tag?: Array<{ __typename?: 'Tag'; id: string; name?: string | null }> | null
     pick?: Array<{
@@ -6770,6 +6773,19 @@ export const GetMemberProfileDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'source' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -7592,6 +7608,19 @@ export const GetVisitorProfileDocument = {
                                         },
                                       ],
                                     },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'source' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'id' },
                                   },
                                 ],
                               },
@@ -9471,6 +9500,16 @@ export const GetPublisherProfileDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'published_date' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'source' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
                 },
               ],
             },

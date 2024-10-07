@@ -48,7 +48,10 @@ export default function FeaturedCard({
               <p className="footnote lg:body-3 text-primary-500">{publisher}</p>
             </NextLink>
 
-            <StoryMoreActionButton storyId={story.id} />
+            <StoryMoreActionButton
+              storyId={story.id}
+              publisherId={story.source.id}
+            />
           </div>
 
           <h3 className="title-2 lg:title-1 mb-2 text-primary-700 lg:mb-3">

@@ -128,7 +128,10 @@ export default function Article({
               <div className="hidden gap-1 sm:flex">
                 <PublisherDonateButton />
                 <StoryPickButton storyId={story?.id ?? ''} />
-                <StoryMoreActionButton storyId={story?.id ?? ''} />
+                <StoryMoreActionButton
+                  storyId={story?.id ?? ''}
+                  publisherId={story?.source?.id ?? ''}
+                />
               </div>
             </div>
           </div>

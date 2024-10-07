@@ -1,4 +1,6 @@
 import NextLink from 'next/link'
+import type { RefObject } from 'react'
+import { useRef } from 'react'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
@@ -9,9 +11,14 @@ type Props = {
 }
 
 export default function SwiperComponent({ stories }: Props) {
+  const scrollContainerRef = useRef<HTMLElement>(null)
+
   return (
     <div className="overflow-hidden">
-      <div className="no-scrollbar flex gap-x-2 overflow-x-auto lg:grid lg:grid-cols-3">
+      <div
+        ref={scrollContainerRef as RefObject<HTMLDivElement>}
+        className="no-scrollbar flex gap-x-2 overflow-x-auto lg:grid lg:grid-cols-3"
+      >
         {stories.map((story) => (
           <div
             key={story.id}
@@ -24,7 +31,12 @@ export default function SwiperComponent({ stories }: Props) {
                 </p>
               </NextLink>
 
-              <StoryMoreActionButton storyId={story.id} />
+              <StoryMoreActionButton
+                storyId={story.id}
+                publisherId={story.source.id}
+                showOnRestrictArea={true}
+                nestedScrollContainerRef={scrollContainerRef}
+              />
             </div>
 
             <h3 className="subtitle-2 mb-2 line-clamp-2 text-primary-700">

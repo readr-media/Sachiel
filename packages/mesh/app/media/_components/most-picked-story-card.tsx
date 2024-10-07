@@ -57,7 +57,11 @@ export default function MostPickedStoryCard({
                     {story.source?.title ?? ''}
                   </h4>
                 </Link>
-                <StoryMoreActionButton storyId={story.id} />
+                <StoryMoreActionButton
+                  storyId={story.id}
+                  publisherId={story.source?.id ?? ''}
+                  canUnFollowPublisher={true}
+                />
               </div>
               <div
                 className={`${

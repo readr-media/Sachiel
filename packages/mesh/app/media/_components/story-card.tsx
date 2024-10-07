@@ -61,7 +61,11 @@ export default forwardRef(function StoryCard(
               {story.source?.title ?? ''}
             </h4>
           </Link>
-          <StoryMoreActionButton storyId={story.id} />
+          <StoryMoreActionButton
+            storyId={story.id}
+            publisherId={story.source?.id ?? ''}
+            canUnFollowPublisher={true}
+          />
         </div>
         <Link href={`/story/${story.id}`}>
           <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">

@@ -56,6 +56,7 @@ export default function ClientLayout({
           <StoryPickButton storyId={story?.id ?? ''} key={1} />,
           <StoryMoreActionButton
             storyId={story?.id ?? ''}
+            publisherId={story?.source?.id ?? ''}
             key={2}
             className="pl-2"
           />,

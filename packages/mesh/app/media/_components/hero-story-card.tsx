@@ -39,7 +39,11 @@ export default function HeroStoryCard({ story }: { story: Story }) {
                   {story.source?.title ?? ''}
                 </h4>
               </Link>
-              <StoryMoreActionButton storyId={story.id} />
+              <StoryMoreActionButton
+                storyId={story.id}
+                publisherId={story.source?.id ?? ''}
+                canUnFollowPublisher={true}
+              />
             </div>
             <Link href={`/story/${story.id}`}>
               <div className="hero-title mt-1 text-primary-700">

@@ -41,7 +41,10 @@ export default function MainCard({ stories }: Props) {
               <NextLink href={`profile/member/${story.source.customId}`}>
                 <p className="body-3 text-primary-500">{story.source.title}</p>
               </NextLink>
-              <StoryMoreActionButton storyId={story.id} />
+              <StoryMoreActionButton
+                storyId={story.id}
+                publisherId={story.source.id}
+              />
             </div>
 
             <NextLink href={`story/${story.id}`}>

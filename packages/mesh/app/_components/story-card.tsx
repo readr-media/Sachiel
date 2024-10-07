@@ -25,7 +25,10 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
         <NextLink href={`/profile/publisher/${story.source.customId}`}>
           <p className="caption-1 text-primary-500">{story.source.title}</p>
         </NextLink>
-        <StoryMoreActionButton storyId={story.id} />
+        <StoryMoreActionButton
+          storyId={story.id}
+          publisherId={story.source.id}
+        />
       </div>
 
       <div className="flex justify-between gap-x-3 sm:gap-x-10">
