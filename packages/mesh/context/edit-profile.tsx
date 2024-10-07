@@ -114,7 +114,7 @@ export const EditProfileProvider: React.FC<{
     try {
       if (!formData.get('customId')) return
       setIsSubmitting(true)
-      await updateProfile(formData, user.customId)
+      await updateProfile(formData, user.customId, user.memberId)
 
       setUser((prev) => ({
         ...prev,

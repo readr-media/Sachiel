@@ -1,4 +1,5 @@
 'use server'
+import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
   ConnectMemberAvatarDocument,
   CreatePhotoDocument,
@@ -7,13 +8,16 @@ import {
   UpdateMemberProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import queryGraphQL, { mutateGraphQL } from '@/utils/fetch-graphql'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 export async function updateProfile(
   formData: FormData,
-  currentCustomId: string
+  currentCustomId: string,
+  memberId: string
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
+  const payload = { action: 'update_member', memberId }
   try {
     // only when has avatar
     if (formData.get('avatar')) {
@@ -42,6 +46,13 @@ export async function updateProfile(
       customId: currentCustomId,
       intro: String(formData.get('intro')),
     })
+    // add pub/sub update member
+    fetchRestfulPost(
+      RESTFUL_ENDPOINTS.pubsub,
+      payload,
+      { cache: 'no-cache' },
+      'Failed to add pick state via pub/sub'
+    )
     return result
   } catch (error) {
     logServerSideError(error, 'updateProfile failed:', globalLogFields)
