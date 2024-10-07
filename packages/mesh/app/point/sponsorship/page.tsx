@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { notFound } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
 import { getCurrentUser } from '@/app/actions/auth'
@@ -9,7 +9,7 @@ import PublisherDonateButton from '@/components/publisher-card/donate-button'
 export default async function Page() {
   const user = await getCurrentUser()
   const memberId = user?.memberId
-  if (!memberId) notFound()
+  if (!memberId) redirect('/login')
   const response = await getMemberSponsorRecord(memberId)
   const sponsorRecord = response.filter((data) => data.sponsoredCount !== 0)
 
@@ -59,7 +59,7 @@ export default async function Page() {
                       </p>
                     </div>
                     <div className="ml-auto">
-                      <PublisherDonateButton />
+                      <PublisherDonateButton publisherId={record.publisherId} />
                     </div>
                   </div>
                   {index === sponsorRecord.length - 2 ? (

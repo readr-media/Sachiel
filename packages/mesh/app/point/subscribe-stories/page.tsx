@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
@@ -12,7 +12,7 @@ export type SubscribeStories = Awaited<
 export default async function Page() {
   const user = await getCurrentUser()
   const memberId = user?.memberId
-  if (!memberId) notFound()
+  if (!memberId) redirect('/login')
 
   const pageSize = 12
   const amountOfElements = 200
