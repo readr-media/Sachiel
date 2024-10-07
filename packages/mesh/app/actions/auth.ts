@@ -14,6 +14,7 @@ import {
   SignUpMemberDocument,
   UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
+import { mutateGraphQL } from '@/utils/fetch-graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
@@ -170,7 +171,7 @@ export async function signUpMember(
       },
     }
 
-    const data = await queryGraphQL(
+    const data = await mutateGraphQL(
       SignUpMemberDocument,
       { registrationData },
       globalLogFields,
@@ -180,6 +181,7 @@ export async function signUpMember(
     if (!data?.createMember) return undefined
 
     const { createMember } = data
+    // 更新 backend db 用戶資訊
     const pubSubResponse = await fetchRestfulPost(
       RESTFUL_ENDPOINTS.pubsub,
       {

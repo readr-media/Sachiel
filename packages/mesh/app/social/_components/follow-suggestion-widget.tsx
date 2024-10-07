@@ -23,11 +23,12 @@ export default function FollowSuggestionWidget({
               <Avatar src={member.avatar} size="l" />
               <div className="flex w-full items-center justify-between">
                 <div className="ml-3 grow-0">
-                  <p className="subtitle-2 mb-[2px] text-primary-700">
-                    <Link href={`/profile/member/${member.customId}`}>
-                      {member.name}
-                    </Link>
-                  </p>
+                  <Link
+                    href={`/profile/member/${member.customId}`}
+                    className="subtitle-2 mb-[2px] text-primary-700"
+                  >
+                    {member.name}
+                  </Link>
                   <p className="caption-1 line-clamp-1 break-words text-primary-500">
                     {'from' in member && member.from.name ? (
                       <>

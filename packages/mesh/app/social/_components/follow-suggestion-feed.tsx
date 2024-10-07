@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import {
   type MongoDBResponse,
   type MostFollowersMember,
@@ -39,7 +41,12 @@ export default function FollowSuggestionFeed({
                 <Avatar src={member.avatar} size="l" extra="hidden sm:block" />
                 <div className="flex flex-col justify-center gap-3 sm:w-full sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex flex-col items-center gap-1 sm:items-start sm:gap-0.5">
-                    <p className="subtitle-2 text-primary-700">{member.name}</p>
+                    <Link
+                      href={`/profile/member/${member.customId}`}
+                      className="subtitle-2 text-primary-700"
+                    >
+                      {member.name}
+                    </Link>
                     <p className="caption-1 h-9 w-[124px] text-center text-primary-500 sm:h-[18px] sm:w-full sm:text-left">
                       {'from' in member && member.from.name ? (
                         <>

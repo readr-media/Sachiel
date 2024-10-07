@@ -16,7 +16,7 @@ export type StoryActions =
 export default function Feed({
   story,
 }: {
-  story: MongoDBResponse['stories'][number] | null
+  story: MongoDBResponse['stories'][number]
 }) {
   if (!story) {
     return null

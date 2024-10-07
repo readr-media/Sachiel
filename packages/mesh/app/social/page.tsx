@@ -1,11 +1,12 @@
 'use client'
-import { notFound } from 'next/navigation'
+
 import { useEffect, useState } from 'react'
 
 import {
   type MongoDBResponse,
   getSocialPageData,
 } from '@/app/actions/get-member-followings'
+import ErrorPage from '@/components/status/error-page'
 import { useUser } from '@/context/user'
 
 import Feed from './_components/feed'
@@ -23,19 +24,25 @@ export default function Page() {
   const memberId = user.memberId
   const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isNotFound, setIsNotFound] = useState(false)
 
   useEffect(() => {
     const fetchSocialData = async () => {
       setIsLoading(true)
       const response = await getSocialPageData(memberId)
-      if (!response) return notFound()
-      setSocialData(response)
+      if (!response) {
+        setIsNotFound(true)
+      } else {
+        setSocialData(response)
+      }
       setIsLoading(false)
     }
     fetchSocialData()
   }, [memberId])
 
-  if (isLoading || !socialData) return <Loading />
+  if (isLoading) return <Loading />
+  if (isNotFound) return <ErrorPage statusCode={404} />
+  if (!socialData) return <Loading />
 
   const { stories, members } = socialData
 
