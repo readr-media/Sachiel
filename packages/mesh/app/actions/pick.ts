@@ -92,7 +92,7 @@ export async function getPickComment({
     'Failed to get pick comment'
   )
 
-  const pickCommentId = data?.members?.[0].pick?.[0].pick_comment?.[0].id ?? ''
+  const pickCommentId = data?.members?.[0].pick?.[0].pick_comment?.[0]?.id ?? ''
 
   return pickCommentId
 }
