@@ -3,7 +3,10 @@
 import { usePathname } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
+import { usePickModal } from '@/context/pick-modal'
+
 import Spinner from '../spinner'
+import StoryPickModal from '../story-card/story-pick-modal'
 import type {
   ArticleMobileBottomActionBarProps,
   MobileBottomActionBarProps,
@@ -114,6 +117,8 @@ const DefaultLayout = ({
   customStyle?: CustomStyle
   children: React.ReactNode
 }) => {
+  const { isModalOpen } = usePickModal()
+
   return (
     <body className={`min-h-screen ${customStyle.background}`}>
       {/* fixed header */}
@@ -143,6 +148,7 @@ const DefaultLayout = ({
           </div>
         </div>
         {/* footer after main content */}
+        {isModalOpen ? <StoryPickModal /> : null}
         <Footer className={customStyle.footer} />
       </div>
       {/* fixed nav, mobile on the bottom, otherwise on the left side */}

@@ -494,3 +494,20 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
     }
   }
 }
+
+query GetMemberPickComment($memberId: ID, $storyId: ID) {
+  members(where: { id: { equals: $memberId } }) {
+    pick(
+      where: {
+        story: { id: { equals: $storyId } }
+        is_active: { equals: true }
+      }
+    ) {
+      id
+      pick_comment(where: { is_active: { equals: true } }) {
+        id
+        content
+      }
+    }
+  }
+}
