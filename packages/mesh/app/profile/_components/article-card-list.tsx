@@ -27,7 +27,7 @@ function ArticleCardList({
   if (!items?.length) {
     return (
       <div className="flex grow flex-col">
-        <section className="flex h-full grow items-center justify-center whitespace-pre bg-primary-700-dark text-center text-base text-primary-400 sm:min-h-full">
+        <section className="flex h-full max-w-[theme(width.maxMain)] grow items-center justify-center whitespace-pre bg-primary-700-dark text-center text-base text-primary-400 sm:min-h-full">
           <p className="my-10 w-full">{emptyMessage}</p>
         </section>
       </div>
