@@ -3750,6 +3750,20 @@ export type GetAllCategoriesQuery = {
   }> | null
 }
 
+export type GetCategoryInformationQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetCategoryInformationQuery = {
+  __typename?: 'Query'
+  categories?: Array<{
+    __typename?: 'Category'
+    id: string
+    slug?: string | null
+    title?: string | null
+  }> | null
+}
+
 export type GetMemberFollowingQueryVariables = Exact<{
   memberId: Scalars['ID']['input']
   takes: Scalars['Int']['input']
@@ -5307,6 +5321,71 @@ export const GetAllCategoriesDocument = {
 } as unknown as DocumentNode<
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables
+>
+export const GetCategoryInformationDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetCategoryInformation' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'categories' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'slug' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'slug' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'slug' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetCategoryInformationQuery,
+  GetCategoryInformationQueryVariables
 >
 export const GetMemberFollowingDocument = {
   kind: 'Document',
