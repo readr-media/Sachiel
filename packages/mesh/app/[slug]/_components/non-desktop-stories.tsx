@@ -55,9 +55,9 @@ export default function NonDesktopStories({
           story={story}
           ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
           className={`${
-            (index + 1) % 5 === 0 &&
-            publishersAndStories &&
-            publisherIndex < publishersAndStories.length
+            (index + 1) % 5 === 0 ||
+            (publishersAndStories &&
+              publisherIndex < publishersAndStories.length)
               ? 'shadow-none'
               : ''
           }`}
