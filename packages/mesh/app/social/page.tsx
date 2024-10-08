@@ -1,49 +1,25 @@
-'use client'
+import { notFound, redirect } from 'next/navigation'
 
-import { useEffect, useState } from 'react'
+import { getSocialPageData } from '@/app/actions/get-member-followings'
 
-import {
-  type MongoDBResponse,
-  getSocialPageData,
-} from '@/app/actions/get-member-followings'
-import ErrorPage from '@/components/status/error-page'
-import { useUser } from '@/context/user'
-
+import { getCurrentUser } from '../actions/auth'
 import Feed from './_components/feed'
 import FollowSuggestionFeed from './_components/follow-suggestion-feed'
 import FollowSuggestionWidget from './_components/follow-suggestion-widget'
-import Loading from './_components/loading'
 import NoFollowings from './_components/no-followings'
 
-export default function Page() {
+export default async function Page() {
   //TODO: infiniteScroll
-  const { user } = useUser()
   // const feedsNumber = 20
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
+  const user = await getCurrentUser()
+
+  if (!user) redirect('/login')
   const memberId = user.memberId
-  const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isNotFound, setIsNotFound] = useState(false)
 
-  useEffect(() => {
-    const fetchSocialData = async () => {
-      setIsLoading(true)
-      const response = await getSocialPageData(memberId)
-      if (!response) {
-        setIsNotFound(true)
-      } else {
-        setSocialData(response)
-      }
-      setIsLoading(false)
-    }
-    fetchSocialData()
-  }, [memberId])
-
-  if (isLoading) return <Loading />
-  if (isNotFound) return <ErrorPage statusCode={404} />
-  if (!socialData) return <Loading />
-
+  const socialData = await getSocialPageData(memberId)
+  if (!socialData) notFound()
   const { stories, members } = socialData
 
   if (!members.length && !stories.length) {
