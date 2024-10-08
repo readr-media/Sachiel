@@ -31,18 +31,16 @@ export const DropdownMenu = () => {
 
   const handleDeleteComment = (e: React.MouseEvent<HTMLLIElement>) => {
     e.stopPropagation()
-    if (!state.commentEditState.commentId) {
-      console.warn('no id')
-      dispatch({
-        type: 'UPDATE_EDIT_DRAWER',
-        payload: { ...state.commentEditState, isVisible: false },
-      })
-      return
-    }
     dispatch({
       type: 'UPDATE_EDIT_DRAWER',
       payload: { ...state.commentEditState, isVisible: false },
     })
+
+    if (!state.commentEditState.commentId) {
+      console.warn('no id')
+      return
+    }
+
     dispatch({
       type: 'TOGGLE_DELETE_COMMENT_MODAL',
       payload: { isVisible: true },
