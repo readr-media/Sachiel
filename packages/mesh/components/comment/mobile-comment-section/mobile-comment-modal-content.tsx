@@ -1,3 +1,6 @@
+'use client'
+import { useMemo } from 'react'
+
 import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
@@ -41,7 +44,14 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
   const handleAddCommentModalOnClose = () => {
     dispatch({ type: 'TOGGLE_CONFIRM_MODAL', payload: { isVisible: false } })
   }
-
+  const popularComments = useMemo(
+    () => sortAndFilterComments(commentList),
+    [commentList]
+  )
+  const sortedAuthorComments = useMemo(
+    () => sortAuthorComments(commentList, user),
+    [commentList, user.customId]
+  )
   return (
     <div>
       {isMobileCommentModalOpen && (
@@ -54,17 +64,17 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
               displayPicks={storyData?.picks}
               pickCount={storyData?.picksCount || 0}
             />
-            {!!sortAndFilterComments(commentList).length && (
+            {!!popularComments.length && (
               <CommentBlock
                 title="熱門留言"
                 type="popular"
-                comments={sortAndFilterComments(commentList)}
+                comments={popularComments}
               />
             )}
             <CommentBlock
               title="所有留言"
               type="all"
-              comments={sortAuthorComments(commentList, user)}
+              comments={sortedAuthorComments}
             />
           </div>
           <MobileStoryCommentFooter storyId={storyData?.id} comment={comment} />

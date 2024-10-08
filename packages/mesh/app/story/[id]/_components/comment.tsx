@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import Button from '@/components/button'
 import { CommentBlock, CommentModal } from '@/components/comment/story-comment'
@@ -9,7 +9,7 @@ import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
-const Comment = ({ storyId = '' }: { storyId?: string }) => {
+const Comment = ({ storyId = '' }: { storyId: string }) => {
   const { user } = useUser()
   const {
     state,
@@ -26,6 +26,14 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
     isAddingComment,
     isConfirmReportingModalOpen,
   } = state
+  const popularComments = useMemo(
+    () => sortAndFilterComments(commentList),
+    [commentList]
+  )
+  const sortedAuthorComments = useMemo(
+    () => sortAuthorComments(commentList, user),
+    [commentList, user.customId]
+  )
 
   return (
     <div className="hidden grow flex-col sm:flex">
@@ -59,17 +67,17 @@ const Comment = ({ storyId = '' }: { storyId?: string }) => {
           )}
         </div>
       </div>
-      {!!sortAndFilterComments(commentList).length && (
+      {!!popularComments.length && (
         <CommentBlock
           title="熱門留言"
           type="popular"
-          comments={sortAndFilterComments(commentList)}
+          comments={popularComments}
         />
       )}
       <CommentBlock
         title="所有留言"
         type="all"
-        comments={sortAuthorComments(commentList, user)}
+        comments={sortedAuthorComments}
       />
       <CommentModal
         onConfirmText="刪除留言"

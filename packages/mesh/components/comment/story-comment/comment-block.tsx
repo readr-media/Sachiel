@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect } from 'react'
 
 import { useComment } from '@/context/comment-context'

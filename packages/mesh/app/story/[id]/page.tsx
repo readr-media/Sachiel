@@ -55,7 +55,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         policy={policy}
       />
       <RelatedStories relatedStories={relatedStories} />
-      <Comment />
+      <Comment storyId={storyId} />
       <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
         {!isMemberStory && (
           <SideIndex
