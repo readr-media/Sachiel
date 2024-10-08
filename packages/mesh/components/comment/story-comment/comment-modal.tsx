@@ -10,7 +10,7 @@ interface CommentModalProps {
   children: React.ReactNode
 }
 
-export const CommentModal: React.FC<CommentModalProps> = ({
+const CommentModal: React.FC<CommentModalProps> = ({
   isOpen,
   onConfirm,
   onClose,
@@ -52,3 +52,5 @@ export const CommentModal: React.FC<CommentModalProps> = ({
     </>
   )
 }
+
+export default CommentModal

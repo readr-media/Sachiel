@@ -9,10 +9,10 @@ import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import { CommentEditor } from './comment-editor'
-import { DropdownMenu } from './dropdown-menu'
+import CommentEditor from './comment-editor'
+import DropdownMenu from './dropdown-menu'
 
-export const CommentBlockItem = ({
+const CommentBlockItem = ({
   comment,
   displayMode,
 }: {
@@ -146,3 +146,4 @@ export const CommentBlockItem = ({
     </li>
   )
 }
+export default CommentBlockItem

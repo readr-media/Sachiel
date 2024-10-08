@@ -5,7 +5,7 @@ import Icon from '@/components/icon'
 import { EditDrawerShowType, useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 
-export const MobileCommentEditDrawer = () => {
+const MobileCommentEditDrawer = () => {
   const {
     state,
     dispatch,
@@ -60,3 +60,5 @@ export const MobileCommentEditDrawer = () => {
     </ul>
   )
 }
+
+export default MobileCommentEditDrawer

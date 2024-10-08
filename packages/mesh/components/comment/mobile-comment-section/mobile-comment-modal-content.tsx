@@ -6,12 +6,13 @@ import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
-import { CommentBlock, CommentModal } from '../story-comment'
-import { MobileCommentEditDrawer } from './mobile-comment-edit-drawer'
-import { MobileStoryCommentEditor } from './mobile-comment-editor'
-import { MobileStoryCommentFooter } from './mobile-comment-footer'
-import { MobileStoryCommentHeader } from './mobile-comment-header'
-import { MobileStoryCommentMeta } from './mobile-comment-meta'
+import CommentBlock from '../story-comment/comment-block'
+import CommentModal from '../story-comment/comment-modal'
+import MobileCommentEditDrawer from './mobile-comment-edit-drawer'
+import MobileStoryCommentEditor from './mobile-comment-editor'
+import MobileStoryCommentFooter from './mobile-comment-footer'
+import MobileStoryCommentHeader from './mobile-comment-header'
+import MobileStoryCommentMeta from './mobile-comment-meta'
 
 type Story = NonNullable<GetStoryQuery>['story']
 

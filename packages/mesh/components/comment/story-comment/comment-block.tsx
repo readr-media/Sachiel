@@ -4,11 +4,11 @@ import React, { useEffect } from 'react'
 import { EditDrawerBlockType, useComment } from '@/context/comment-context'
 import { type Story } from '@/graphql/__generated__/graphql'
 
-import { CommentBlockItem } from './comment-block-item'
+import CommentBlockItem from './comment-block-item'
 
 const BACKGROUND_COLOR_FADE_TIME = 5000
 
-export const CommentBlock = ({
+const CommentBlock = ({
   title,
   type,
   comments = [],
@@ -57,3 +57,4 @@ export const CommentBlock = ({
     </ul>
   )
 }
+export default CommentBlock

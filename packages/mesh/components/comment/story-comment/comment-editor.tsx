@@ -4,7 +4,7 @@ import Button from '@/components/button'
 import { useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 
-export const CommentEditor = () => {
+const CommentEditor = () => {
   const { state, dispatch, handleCommentEdit } = useComment()
   const { user } = useUser()
 
@@ -43,3 +43,5 @@ export const CommentEditor = () => {
     </div>
   )
 }
+
+export default CommentEditor

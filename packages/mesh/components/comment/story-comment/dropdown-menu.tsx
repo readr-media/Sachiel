@@ -6,7 +6,7 @@ import { EditDrawerShowType, useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
-export const DropdownMenu = () => {
+const DropdownMenu = () => {
   const { width } = useWindowDimensions()
   const isMobileWidth = width < 768
   const {
@@ -63,3 +63,5 @@ export const DropdownMenu = () => {
     </ul>
   )
 }
+
+export default DropdownMenu
