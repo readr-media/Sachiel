@@ -6,7 +6,7 @@ import GoBackButton from '@/components/navigation/go-back-button'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
 
-export default function MediaLayout({
+export default function SubpageLayout({
   children,
   params,
 }: {
