@@ -15,15 +15,15 @@ import NonDesktopStories from './_components/non-desktop-stories'
 import TopStoriesSection from './_components/top-stories-section'
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const slug = params.slug
-  const slugInfo = await fetchCategoryInformation(slug)
+  const categorySlug = params.slug
+  const slugInfo = await fetchCategoryInformation(categorySlug)
   if (!slugInfo) notFound()
 
   const [storiesResult, publishersAndStoriesResult, mostPickedStoriesResult] =
     await Promise.allSettled([
-      fetchGroupAndOtherStories(slug),
-      fetchMostSponsoredPublishersByCategory(slug),
-      fetchCategoryStory(slug),
+      fetchGroupAndOtherStories(categorySlug),
+      fetchMostSponsoredPublishersByCategory(categorySlug),
+      fetchCategoryStory(categorySlug),
     ])
 
   const stories =

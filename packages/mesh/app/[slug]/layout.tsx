@@ -15,18 +15,18 @@ export default function MediaLayout({
   children: React.ReactNode
   params: { slug: string }
 }) {
-  const slug = params.slug
+  const categorySlug = params.slug
   const [title, setTitle] = useState('')
 
   useEffect(() => {
     const fetchSlugInfo = async () => {
-      const result = await fetchCategoryInformation(slug)
+      const result = await fetchCategoryInformation(categorySlug)
       if (!result) return null
 
       setTitle(`${result.title}熱門` ?? '')
     }
     fetchSlugInfo()
-  }, [slug])
+  }, [categorySlug])
 
   const router = useRouter()
 
