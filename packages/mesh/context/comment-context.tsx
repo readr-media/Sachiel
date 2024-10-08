@@ -60,7 +60,6 @@ type Action =
       payload: CommentEditState
     }
   | { type: 'EDIT_COMMENT' }
-  | { type: 'HIDE_EDIT_DRAWER' }
   | { type: 'RESET_EDIT_DRAWER' }
   | { type: 'REMOVE_COMMENT' }
   | { type: 'UPDATE_COMMENT_TEXT'; payload: string }
