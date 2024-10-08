@@ -74,7 +74,9 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
         avatar
       }
     }
-    commentsCount: commentCount(where: { state: { equals: "public" } })
+    commentsCount: commentCount(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+    )
     comments: comment(
       where: { state: { equals: "public" }, is_active: { equals: true } }
       orderBy: { createdAt: desc }
@@ -128,7 +130,9 @@ query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int) {
         avatar
       }
     }
-    commentsCount: commentCount(where: { state: { equals: "public" } })
+    commentsCount: commentCount(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+    )
     comments: comment(
       where: { state: { equals: "public" }, is_active: { equals: true } }
       orderBy: { createdAt: desc }
