@@ -45,14 +45,9 @@ export default function StoryMoreActionButton({
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
   const [position, setPosition] = useState<Position>({ top: NaN, left: NaN })
   const actionSheetRef = useRef<HTMLDivElement>(null)
-  const shareSheetRef = useRef<HTMLDivElement>(null)
 
   useClickOutside(actionSheetRef, () => {
     closeActionSheet()
-  })
-
-  useClickOutside(shareSheetRef, () => {
-    closeShareSheet()
   })
 
   const openActionSheet: MouseEventHandler<HTMLButtonElement> = (evt) => {
@@ -122,11 +117,7 @@ export default function StoryMoreActionButton({
         />
       )}
       {shouldShowShareSheet && (
-        <ShareSheet
-          ref={shareSheetRef}
-          onClose={closeShareSheet}
-          storyId={storyId}
-        />
+        <ShareSheet onClose={closeShareSheet} storyId={storyId} />
       )}
     </div>
   )
@@ -362,32 +353,33 @@ const shareMedia = [
   },
 ] as const
 
-const ShareSheet = forwardRef(function ShareSheet(
-  {
-    storyId,
-    onClose,
-  }: {
-    storyId: string
-    onClose: () => void
-  },
-  ref: ForwardedRef<HTMLDivElement>
-) {
+const ShareSheet = ({
+  storyId,
+  onClose,
+}: {
+  storyId: string
+  onClose: () => void
+}) => {
   const getShareUrl = (template: string) => {
     const storyUrl = getStoryUrl(storyId)
     return template.replace('${storyUrl}', encodeURIComponent(storyUrl))
   }
 
+  const onBackgroundClicked = () => {
+    onClose()
+  }
+
   return (
     <div
       className="fixed inset-0 z-modal flex  items-center justify-center  bg-lightbox-light"
-      ref={ref}
+      onClick={onBackgroundClicked}
     >
       <div className="w-[335px] rounded-xl bg-white shadow-light-box sm:w-[480px]">
         <div className="flex h-15 items-center justify-between border-b border-[rgba(0,9,40,0.1)] px-2">
           <div />
           <div className="list-title text-primary-800">分享</div>
           <button
-            className="size11 flex items-center justify-center"
+            className="flex size-11 items-center justify-center"
             onClick={onClose}
           >
             <Icon iconName="icon-close" size="l" />
@@ -414,4 +406,4 @@ const ShareSheet = forwardRef(function ShareSheet(
       </div>
     </div>
   )
-})
+}
