@@ -6,7 +6,13 @@ import { useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 
 export const MobileCommentEditDrawer = () => {
-  const { state, dispatch } = useComment()
+  const {
+    state,
+    dispatch,
+    handleDeleteComment,
+    handleEditComment,
+    handleReport,
+  } = useComment()
   const { commentEditState } = state
   const editDrawerRef = useRef(null)
 
@@ -17,37 +23,6 @@ export const MobileCommentEditDrawer = () => {
     })
     dispatch({ type: 'RESET_EDIT_DRAWER' })
   })
-
-  const handleDeleteComment = () => {
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-
-    if (!state.commentEditState.commentId) {
-      console.warn('無評論 ID')
-      return
-    }
-
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: true },
-    })
-  }
-  const handleEditComment = () => {
-    dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: true } })
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-  }
-  const handleReport = () => {
-    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: true } })
-    dispatch({
-      type: 'UPDATE_EDIT_DRAWER',
-      payload: { ...state.commentEditState, isVisible: false },
-    })
-  }
 
   if (!commentEditState.isVisible) return null
   return (

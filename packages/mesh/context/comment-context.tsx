@@ -157,6 +157,9 @@ interface CommentContextType {
     user: User
     storyId: string
   }) => Promise<void>
+  handleDeleteComment: (e: React.MouseEvent<HTMLLIElement>) => void
+  handleEditComment: (e: React.MouseEvent<HTMLLIElement>) => void
+  handleReport: (e: React.MouseEvent<HTMLLIElement>) => void
 }
 
 const CommentContext = createContext<CommentContextType | undefined>(undefined)
@@ -299,6 +302,40 @@ export function CommentProvider({
     },
     [state.commentEditState]
   )
+  const handleDeleteComment = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.stopPropagation()
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+
+    if (!state.commentEditState.commentId) {
+      console.warn('無評論 ID')
+      return
+    }
+
+    dispatch({
+      type: 'TOGGLE_DELETE_COMMENT_MODAL',
+      payload: { isVisible: true },
+    })
+  }
+  const handleEditComment = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.stopPropagation()
+    dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: true } })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+  }
+
+  const handleReport = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.stopPropagation()
+    dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: true } })
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: { ...state.commentEditState, isVisible: false },
+    })
+  }
 
   const contextValue = {
     state,
@@ -309,6 +346,9 @@ export function CommentProvider({
     handleTextChange,
     handleReportOnClose,
     handleCommentEdit,
+    handleDeleteComment,
+    handleEditComment,
+    handleReport,
   }
 
   return (

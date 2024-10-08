@@ -49,7 +49,7 @@ export const CommentBlockItem = ({
     })
   }
 
-  const handleEditComment = ({
+  const handleDropdownOnClick = ({
     commentAuthor,
     commentId,
     commentContent,
@@ -100,7 +100,7 @@ export const CommentBlockItem = ({
                   <button
                     className="relative"
                     onClick={() => {
-                      handleEditComment({
+                      handleDropdownOnClick({
                         commentAuthor: comment?.member?.name || '',
                         commentId: comment.id,
                         commentContent: comment.content || '',
