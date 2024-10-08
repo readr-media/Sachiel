@@ -12,9 +12,6 @@ export default function TopStoriesSection({
   otherStories,
   groupStories,
 }: Props) {
-  // const groupStories = stories?.group
-  // const otherStories = stories?.others
-
   return (
     <section className="flex flex-col gap-y-6 px-5 sm:gap-y-10 md:px-[70px] lg:px-10 lg:pb-5">
       {groupStories && (
