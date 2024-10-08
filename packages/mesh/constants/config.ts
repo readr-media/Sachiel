@@ -104,6 +104,10 @@ const STATIC_FILE_ENDPOINTS = {
   mostLikeComments: `${STATIC_FILE_ORIGIN}/data/hotpage_most_like_comments.json`,
   dailyHighlightGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_group.json`,
   dailyHighlightNoGroup: `${STATIC_FILE_ORIGIN}/data/hotpage_no_group.json`,
+  groupAndOtherStoriesInCategeoryfn: (categoryName: string) =>
+    `${STATIC_FILE_ORIGIN}/data/group_${categoryName}.json`,
+  categoryMostSponsoredPublishersfn: (categoryName: string) =>
+    `${STATIC_FILE_ORIGIN}/data/${categoryName}_recommend_sponsors.json`,
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
 }
 
