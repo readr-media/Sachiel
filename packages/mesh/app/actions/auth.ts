@@ -14,6 +14,7 @@ import {
   SignUpMemberDocument,
   UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
+import { mutateGraphQL } from '@/utils/fetch-graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
@@ -170,14 +171,30 @@ export async function signUpMember(
       },
     }
 
-    const data = await queryGraphQL(
+    const data = await mutateGraphQL(
       SignUpMemberDocument,
       { registrationData },
       globalLogFields,
       'Failed to sign up new member'
     )
 
-    return data?.createMember
+    if (!data?.createMember) return undefined
+
+    const { createMember } = data
+    // 更新 backend db 用戶資訊
+    const pubSubResponse = await fetchRestfulPost(
+      RESTFUL_ENDPOINTS.pubsub,
+      {
+        action: 'update_member',
+        memberId: createMember.id,
+      },
+      { cache: 'no-cache' },
+      'Failed to update_member via pub/sub'
+    )
+
+    if (!pubSubResponse) throw new Error('PubSub update member failed')
+
+    return createMember
   } catch (error) {
     logServerSideError(
       error,
