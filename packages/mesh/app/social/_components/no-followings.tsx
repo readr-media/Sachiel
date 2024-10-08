@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react'
 
-import {
-  type MostFollowersMember,
-  getMostFollowersData,
-} from '@/app/actions/get-member-followings'
+import { getMostFollowersData } from '@/app/actions/get-member-followings'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
+import { type MostFollowersMember } from '@/utils/data-schema'
 
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'

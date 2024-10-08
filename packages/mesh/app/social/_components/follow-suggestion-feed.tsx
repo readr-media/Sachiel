@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
+import Avatar from '@/components/story-card/avatar'
 import {
   type MongoDBResponse,
   type MostFollowersMember,
-} from '@/app/actions/get-member-followings'
-import Avatar from '@/components/story-card/avatar'
+} from '@/utils/data-schema'
 
 import FollowButton from './follow-button'
 export default function FollowSuggestionFeed({

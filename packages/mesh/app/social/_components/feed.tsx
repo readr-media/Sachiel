@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { type MongoDBResponse } from '@/app/actions/get-member-followings'
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import { type MongoDBResponse } from '@/utils/data-schema'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
