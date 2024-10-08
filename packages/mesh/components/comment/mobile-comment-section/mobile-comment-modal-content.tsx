@@ -1,7 +1,7 @@
 'use client'
 import { useMemo } from 'react'
 
-import { useComment } from '@/context/comment-context'
+import { EditDrawerBlockType, useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
@@ -67,13 +67,13 @@ export function MobileCommentModalContent({ storyData }: { storyData: Story }) {
             {!!popularComments.length && (
               <CommentBlock
                 title="熱門留言"
-                type="popular"
+                type={EditDrawerBlockType.Popular}
                 comments={popularComments}
               />
             )}
             <CommentBlock
               title="所有留言"
-              type="all"
+              type={EditDrawerBlockType.All}
               comments={sortedAuthorComments}
             />
           </div>

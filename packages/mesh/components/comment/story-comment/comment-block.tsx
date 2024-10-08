@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react'
 
-import { useComment } from '@/context/comment-context'
+import { EditDrawerBlockType, useComment } from '@/context/comment-context'
 import { type Story } from '@/graphql/__generated__/graphql'
 
 import { CommentBlockItem } from './comment-block-item'
@@ -15,7 +15,7 @@ export const CommentBlock = ({
 }: {
   title: string
   comments?: Story['comment']
-  type: 'popular' | 'all'
+  type: EditDrawerBlockType
 }) => {
   const { state, dispatch } = useComment()
 
@@ -33,7 +33,9 @@ export const CommentBlock = ({
     <ul className="flex grow flex-col">
       <p className="list-title px-5 py-4">
         {title}
-        <span className={`${type === 'popular' ? 'hidden' : ''}`}>
+        <span
+          className={`${type === EditDrawerBlockType.Popular ? 'hidden' : ''}`}
+        >
           （{comments?.length}）
         </span>
       </p>

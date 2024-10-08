@@ -5,7 +5,7 @@ import Button from '@/components/button'
 import { CommentBlock, CommentModal } from '@/components/comment/story-comment'
 import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
-import { useComment } from '@/context/comment-context'
+import { EditDrawerBlockType, useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
@@ -70,13 +70,13 @@ const Comment = ({ storyId = '' }: { storyId: string }) => {
       {!!popularComments.length && (
         <CommentBlock
           title="熱門留言"
-          type="popular"
+          type={EditDrawerBlockType.Popular}
           comments={popularComments}
         />
       )}
       <CommentBlock
         title="所有留言"
-        type="all"
+        type={EditDrawerBlockType.All}
         comments={sortedAuthorComments}
       />
       <CommentModal

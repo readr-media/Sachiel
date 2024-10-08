@@ -2,7 +2,8 @@ import React from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import { useComment } from '@/context/comment-context'
+import type { EditDrawerBlockType } from '@/context/comment-context'
+import { EditDrawerShowType, useComment } from '@/context/comment-context'
 import { useUser } from '@/context/user'
 import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
@@ -16,7 +17,7 @@ export const CommentBlockItem = ({
   displayMode,
 }: {
   comment: Comment
-  displayMode: 'popular' | 'all'
+  displayMode: EditDrawerBlockType
 }) => {
   const { state, dispatch } = useComment()
   const { user } = useUser()
@@ -32,7 +33,7 @@ export const CommentBlockItem = ({
   )
 
   const initializeEditCommentDrawer = (
-    mode: 'self' | 'other',
+    mode: EditDrawerShowType,
     commentId: string,
     commentContent: string
   ) => {
@@ -59,7 +60,10 @@ export const CommentBlockItem = ({
     commentContent: string
   }) => {
     // 根據評論使用者來決定編輯模式
-    const editMode = commentAuthor === user.name ? 'self' : 'other'
+    const editMode =
+      commentAuthor === user.name
+        ? EditDrawerShowType.Self
+        : EditDrawerShowType.Other
     initializeEditCommentDrawer(editMode, commentId, commentContent)
   }
 

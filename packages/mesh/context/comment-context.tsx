@@ -14,8 +14,17 @@ const SLEEP_TIME = 1500
 type Story = NonNullable<NonNullable<GetStoryQuery>['story']>
 type Comment = NonNullable<Story['comments']>[number]
 
-type EditDrawerShowType = '' | 'self' | 'other'
-type EditDrawerBlockType = '' | 'popular' | 'all'
+export enum EditDrawerShowType {
+  Empty = '',
+  Self = 'self',
+  Other = 'other',
+}
+
+export enum EditDrawerBlockType {
+  Empty = '',
+  Popular = 'popular',
+  All = 'all',
+}
 
 interface CommentEditState {
   isVisible: boolean
@@ -68,8 +77,8 @@ const initialState: State = {
   isConfirmDeleteCommentModalOpen: false,
   commentEditState: {
     isVisible: false,
-    mode: '',
-    displayMode: '',
+    mode: EditDrawerShowType.Empty,
+    displayMode: EditDrawerBlockType.Empty,
     commentId: '',
     content: '',
     originalContent: '',

@@ -2,7 +2,7 @@
 import React, { useRef } from 'react'
 
 import Icon from '@/components/icon'
-import { useComment } from '@/context/comment-context'
+import { EditDrawerShowType, useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 
 export const MobileCommentEditDrawer = () => {
@@ -30,7 +30,7 @@ export const MobileCommentEditDrawer = () => {
       ref={editDrawerRef}
       className="fixed bottom-0 z-30 flex min-h-16 w-screen flex-col gap-6 bg-white p-5 shadow-[0_-8px_20px_0px_rgba(0,0,0,0.1)]"
     >
-      {commentEditState.mode === 'other' ? (
+      {commentEditState.mode === EditDrawerShowType.Other ? (
         <li
           onClick={handleReport}
           className="button-large flex items-center gap-[6px]"

@@ -2,7 +2,7 @@
 import React, { useRef } from 'react'
 
 import Icon from '@/components/icon'
-import { useComment } from '@/context/comment-context'
+import { EditDrawerShowType, useComment } from '@/context/comment-context'
 import useClickOutside from '@/hooks/use-click-outside'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
@@ -32,7 +32,7 @@ export const DropdownMenu = () => {
       ref={editDrawerRef}
       className="absolute left-0 top-0 z-10 hidden w-[180px] flex-col bg-white py-2 shadow-[0px_0px_24px_0px_rgba(0,9,40,0.10),0px_2px_40px_0px_rgba(0,9,40,0.10)] sm:flex"
     >
-      {state.commentEditState.mode === 'other' ? (
+      {state.commentEditState.mode === EditDrawerShowType.Other ? (
         <li
           onClick={handleReport}
           className="button-large flex items-center gap-1 px-5 py-2 hover:bg-primary-100"
