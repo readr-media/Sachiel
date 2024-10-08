@@ -1,5 +1,7 @@
 'use client'
 
+import NextLink from 'next/link'
+
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
@@ -36,7 +38,9 @@ export default function TopCollectorCard({ person, rank }: Props) {
 
         <div className="flex flex-col gap-y-[2px] py-[3px] lg:items-center lg:gap-y-1 lg:py-0">
           <p className="subtitle-2 line-clamp-1 text-primary-700 hover-or-active:underline">
-            {person.name}
+            <NextLink href={`/profile/member/${person.customId}`}>
+              {person.name}
+            </NextLink>
           </p>
           <p className="caption-1 text-primary-500">
             本週已精選

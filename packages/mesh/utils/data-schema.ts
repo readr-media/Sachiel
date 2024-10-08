@@ -4,6 +4,7 @@ const memberSchema = z.object({
   id: z.string(),
   name: z.string(),
   avatar: z.string(),
+  customId: z.string().optional(),
 })
 
 export const sourceSchema = z.object({
@@ -82,6 +83,7 @@ export const rawTopCollectorSchema = z.object({
   email: z.string(),
   nickname: z.string(),
   pickCount: z.number(),
+  customId: z.string(),
 })
 
 export const rawCategoryStorySchema = storySchema

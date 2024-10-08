@@ -1,5 +1,7 @@
 'use client'
 
+import NextLink from 'next/link'
+
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
@@ -37,8 +39,9 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
 
             <div>
               <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700 hover-or-active:underline">
-                {/* TODO: add profile link */}
-                {comment.member.name}
+                <NextLink href={`profile/member/${comment.member.customId}`}>
+                  {comment.member.name}
+                </NextLink>
               </p>
               <p className="footnote text-primary-500">
                 留言獲得{' '}
