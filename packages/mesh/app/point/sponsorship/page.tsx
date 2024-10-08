@@ -23,7 +23,7 @@ export default async function Page() {
         </div>
       ) : (
         <div className="flex justify-center sm:p-5">
-          <div className="grid w-[600px] grid-cols-1 rounded-md bg-white sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] lg:grid-cols-2 lg:gap-x-5 xl:w-[1040px]">
+          <div className="grid w-articleMain grid-cols-1 rounded-md bg-white sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] lg:grid-cols-2 lg:gap-x-5 xl:w-[1040px]">
             {sponsorRecord.map((record, index) => {
               const isLastItem = index >= sponsorRecord.length - 2
               return (

@@ -1,14 +1,17 @@
 import Link from 'next/link'
 
 import Avatar from '@/components/story-card/avatar'
+import {
+  type MongoDBResponse,
+  type MostFollowersMember,
+} from '@/utils/data-schema'
 
-import type { SuggestedFollowers } from '../page'
 import FollowButton from './follow-button'
 
 export default function FollowSuggestionWidget({
   suggestedFollowers,
 }: {
-  suggestedFollowers: SuggestedFollowers
+  suggestedFollowers: MongoDBResponse['members'] | MostFollowersMember[]
 }) {
   return (
     <div className="hidden grow px-5 lg:block">
@@ -17,18 +20,19 @@ export default function FollowSuggestionWidget({
         {suggestedFollowers?.map((member, index) => (
           <div key={member.id}>
             <div className="flex flex-row items-center py-3">
-              <Avatar src={member.avatar ?? ''} size="l" />
+              <Avatar src={member.avatar} size="l" />
               <div className="flex w-full items-center justify-between">
                 <div className="ml-3 grow-0">
-                  <p className="subtitle-2 mb-[2px] text-primary-700">
-                    <Link href={`/profile/member/${member.customId}`}>
-                      {member.name}
-                    </Link>
-                  </p>
+                  <Link
+                    href={`/profile/member/${member.customId}`}
+                    className="subtitle-2 mb-[2px] text-primary-700"
+                  >
+                    {member.name}
+                  </Link>
                   <p className="caption-1 line-clamp-1 break-words text-primary-500">
-                    {member.followedBy?.name ? (
+                    {'from' in member && member.from.name ? (
                       <>
-                        <span>{member.followedBy.name}</span>
+                        <span>{member.from.name}</span>
                         及其他<span> {member.followerCount} </span>
                         的追蹤對象
                       </>

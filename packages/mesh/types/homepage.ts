@@ -5,6 +5,7 @@ import type {
   rawCommentSchema,
   rawDailyHighlightSchema,
   rawFeaturedStorySchema,
+  rawMostSponsoredPublisherStoryByCategorySchema,
   rawMostSponsoredPublisherStorySchema,
   rawReadrStorySchema,
   rawTopCollectorSchema,
@@ -29,3 +30,7 @@ export type Comment = z.infer<typeof rawCommentSchema>
 export type Collector = z.infer<typeof rawTopCollectorSchema>
 
 export type CategoryStory = z.infer<typeof rawCategoryStorySchema>
+
+export type SponsoredStoryByCategory = z.infer<
+  typeof rawMostSponsoredPublisherStoryByCategorySchema
+>

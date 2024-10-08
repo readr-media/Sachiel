@@ -2,6 +2,8 @@
 
 import NextImage from 'next/image'
 import NextLink from 'next/link'
+import type { ForwardedRef } from 'react'
+import { forwardRef } from 'react'
 
 import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -12,15 +14,19 @@ import type { CategoryStory, DailyStory } from '@/types/homepage'
 
 type Props<T> = {
   story: T
+  className?: string
 }
 
-export default function StoryCard<T extends CategoryStory | DailyStory>({
-  story,
-}: Props<T>) {
+export default forwardRef(function StoryCard<
+  T extends CategoryStory | DailyStory
+>({ story, className }: Props<T>, ref: ForwardedRef<unknown>) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
   return (
-    <div className="pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none">
+    <article
+      className={`pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] last:shadow-none ${className}`}
+      ref={ref as React.RefObject<HTMLElement>}
+    >
       <div className="mb-1 flex justify-between">
         <NextLink href={`/profile/publisher/${story.source.customId}`}>
           <p className="caption-1 text-primary-500 hover-or-active:text-primary-700">
@@ -64,6 +70,6 @@ export default function StoryCard<T extends CategoryStory | DailyStory>({
         />
         <StoryPickButton storyId={story.id} />
       </div>
-    </div>
+    </article>
   )
-}
+})

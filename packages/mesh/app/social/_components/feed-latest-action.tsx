@@ -13,22 +13,19 @@ export default function FeedLatestAction({
   if (picksNum === 0) {
     if (commentsNum === 0) {
       return null
-    } else if (commentsNum === 1 && commentsData) {
+    } else if (commentsNum === 1 && commentsData.length) {
       return (
         <div className="flex items-center gap-2">
-          <Avatar src={commentsData[0].member?.avatar ?? ''} size="m" />
+          <Avatar src={commentsData[0]?.member?.avatar} size="m" />
           <div className="body-3 text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(
-                commentsData[0].member?.name ?? '',
-                maxNameBytes
-              )}
+              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
             </span>
             在這篇文章留言
           </div>
         </div>
       )
-    } else if (commentsNum === 2 && commentsData) {
+    } else if (commentsNum === 2 && commentsData.length) {
       return (
         <div className="flex items-center gap-2">
           <div className="flex -space-x-1 overflow-hidden">
@@ -37,40 +34,31 @@ export default function FeedLatestAction({
                 key={data.member?.id}
                 style={{ zIndex: socialPageAvatarLayer[index] }}
               >
-                <Avatar src={data.member?.avatar ?? ''} size="m" />
+                <Avatar src={data.member?.avatar} size="m" />
               </div>
             ))}
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(
-                commentsData[0].member?.name ?? '',
-                maxNameBytes
-              )}
+              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
             </span>
             及
             <span className="text-primary-700">
-              {truncateNameByBytes(
-                commentsData[1].member?.name ?? '',
-                maxNameBytes
-              )}
+              {truncateNameByBytes(commentsData[1]?.member?.name, maxNameBytes)}
             </span>
             在這篇文章留言
           </div>
         </div>
       )
-    } else if (commentsNum > 2 && commentsData) {
+    } else if (commentsNum > 2 && commentsData.length) {
       return (
         <div className="flex items-center gap-2">
           <div className="flex -space-x-1 overflow-hidden">
-            <Avatar src={commentsData[0].member?.avatar ?? ''} size="m" />
+            <Avatar src={commentsData[0]?.member?.avatar} size="m" />
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(
-                commentsData[0].member?.name ?? '',
-                maxNameBytes
-              )}
+              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
             </span>
             及其他
             <span className="px-1 text-primary-700">{commentsNum - 1}</span>
@@ -79,19 +67,19 @@ export default function FeedLatestAction({
         </div>
       )
     }
-  } else if (picksNum === 1) {
+  } else if (picksNum === 1 && picksData.length) {
     return (
       <div className="flex items-center gap-2">
-        <Avatar src={picksData[0].member?.avatar ?? ''} size="m" />
+        <Avatar src={picksData[0]?.member?.avatar} size="m" />
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0].member?.name ?? '', maxNameBytes)}
+            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
           </span>
           精選了這篇
         </div>
       </div>
     )
-  } else if (picksNum === 2) {
+  } else if (picksNum === 2 && picksData.length) {
     return (
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
@@ -100,31 +88,31 @@ export default function FeedLatestAction({
               key={data.member?.id}
               style={{ zIndex: socialPageAvatarLayer[index] }}
             >
-              <Avatar src={data.member?.avatar ?? ''} size="m" />
+              <Avatar src={data.member?.avatar} size="m" />
             </div>
           ))}
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0].member?.name ?? '', maxNameBytes)}
+            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
           </span>
           及
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[1].member?.name ?? '', maxNameBytes)}
+            {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
           </span>
           精選了這篇文章
         </div>
       </div>
     )
-  } else if (picksNum > 2) {
+  } else if (picksNum > 2 && picksData.length) {
     return (
       <div className="flex items-center gap-2">
         <div className="flex -space-x-1 overflow-hidden">
-          <Avatar src={picksData[0].member?.avatar ?? ''} size="m" />
+          <Avatar src={picksData[0]?.member?.avatar} size="m" />
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0].member?.name ?? '', maxNameBytes)}
+            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
           </span>
           及其他
           <span className="px-1 text-primary-700">{picksNum - 1}</span>
