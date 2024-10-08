@@ -52,7 +52,10 @@ export default function ClientLayout({
         leftButtons: [<GoBackButton key={0} />],
         title: '新聞',
         rightButtons: [
-          <PublisherDonateButton key={0} />,
+          <PublisherDonateButton
+            key={0}
+            publisherId={story?.source?.id ?? ''}
+          />,
           <StoryPickButton storyId={story?.id ?? ''} key={1} />,
           <StoryMoreActionButton
             storyId={story?.id ?? ''}

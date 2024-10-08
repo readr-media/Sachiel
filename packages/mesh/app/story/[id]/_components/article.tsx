@@ -126,7 +126,7 @@ export default function Article({
               />
               {/* TODO: update the states and actions according to the user state */}
               <div className="hidden gap-1 sm:flex">
-                <PublisherDonateButton />
+                <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
                 <StoryPickButton storyId={story?.id ?? ''} />
                 <StoryMoreActionButton
                   storyId={story?.id ?? ''}

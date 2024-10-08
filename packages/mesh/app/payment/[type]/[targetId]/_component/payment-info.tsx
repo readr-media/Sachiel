@@ -28,12 +28,12 @@ export default function PaymentInfo({
   const [email, setEmail] = useState(user.email)
   const [isChecked, setIsChecked] = useState(false)
   const isValid = isValidEmail(email)
-  const [isLoading, setIsloading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   //TODO: replace with media sca
   const recipientAddress = '0xABD79306a5bD03B667F24a7013Af63238288a0aE'
 
   const handleUserOperationSuccess = async (hash: Hex) => {
-    setIsloading(true)
+    setIsLoading(true)
     const txr = {
       memberId: user.memberId,
       policyId: unlockPolicy[0].id,
@@ -52,7 +52,7 @@ export default function PaymentInfo({
         }, 300)
       }
     }
-    setIsloading(false)
+    setIsLoading(false)
   }
 
   return (

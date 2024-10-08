@@ -84,6 +84,7 @@ export type IconName =
   | 'icon-login-step-2'
   | 'icon-login-step-3'
   | 'icon-dynamicxyz'
+  | 'icon-check-circle-empty'
   | 'icon-check-circle-gray'
   | 'icon-check-circle-blue'
   | 'icon-heart'
@@ -119,6 +120,11 @@ export type IconName =
   | 'icon-share-line'
   | 'icon-share-threads'
   | 'icon-share-x'
+  | 'icon-sponsor-100'
+  | 'icon-sponsor-300'
+  | 'icon-sponsor-500'
+  | 'icon-sponsor-input'
+  | 'icon-check-circle-lg'
 
 export type IconProps = {
   size: Size
