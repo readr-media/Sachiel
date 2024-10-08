@@ -62,18 +62,18 @@ export default function DesktopStories({
     <section className="hidden lg:block lg:px-10 lg:pb-15 lg:pt-10 xxl:pb-10">
       <div className="lg:flex lg:gap-x-10">
         {otherStories.length !== 0 && (
-          <div>
+          <div className="w-articleMain shrink-0">
             <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">最新報導</h2>
             <div className="flex flex-col gap-y-5">{getStoriesContent()}</div>
           </div>
         )}
 
-        <div className="lg:flex lg:flex-col lg:gap-y-3">
+        <aside className="lg:flex lg:flex-col lg:gap-y-3 ">
           {publishersAndStories &&
             publishersAndStories.map((data) => (
               <PublisherCard key={data.publisher.id} data={data} />
             ))}
-        </div>
+        </aside>
       </div>
       {isLoading && (
         <div className="flex justify-center py-4">

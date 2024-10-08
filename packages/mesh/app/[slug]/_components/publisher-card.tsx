@@ -13,7 +13,7 @@ const StoryCard = ({
   story: SponsoredStoryByCategory['stories'][number]
 }) => {
   return (
-    <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0">
+    <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0 ">
       <NextLink href={`/story/${story.id}`}>
         {showImage && story.og_image && (
           <div className="relative mb-3 aspect-[2/1] overflow-hidden rounded">
@@ -49,7 +49,7 @@ type Props = {
 
 export default function PublisherCard({ data }: Props) {
   return (
-    <div className="flex flex-col rounded-lg border-[0.5px] border-primary-200 bg-primary-100 px-5 pb-2 pt-5 lg:self-start lg:pb-3 lg:pt-6 xl:px-8">
+    <div className="flex w-full flex-col rounded-lg border-[0.5px] border-primary-200 bg-primary-100 px-5 pb-2 pt-5 lg:self-start lg:pb-3 lg:pt-6 xl:px-8">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex gap-x-3">
           {/* TODO: render logo of publisher */}
