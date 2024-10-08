@@ -5,6 +5,8 @@ import { type Story } from '@/graphql/__generated__/graphql'
 
 import { CommentBlockItem } from './comment-block-item'
 
+const BACKGROUND_COLOR_FADE_TIME = 5000
+
 export const CommentBlock = ({
   title,
   type,
@@ -15,12 +17,12 @@ export const CommentBlock = ({
   type: 'popular' | 'all'
 }) => {
   const { state, dispatch } = useComment()
-  const backgroundColorFadeTime = 5000
+
   useEffect(() => {
     if (state.highlightedId) {
       const timer = setTimeout(() => {
         dispatch({ type: 'UPDATE_HIGHLIGHTED_COMMENT', payload: '' })
-      }, backgroundColorFadeTime)
+      }, BACKGROUND_COLOR_FADE_TIME)
 
       return () => clearTimeout(timer)
     }
