@@ -19,21 +19,19 @@ export const MobileCommentEditDrawer = () => {
   })
 
   const handleDeleteComment = () => {
-    if (!state.commentEditState.commentId) {
-      console.warn('no id')
-      dispatch({
-        type: 'UPDATE_EDIT_DRAWER',
-        payload: { ...state.commentEditState, isVisible: false },
-      })
-      return
-    }
-    dispatch({
-      type: 'TOGGLE_DELETE_COMMENT_MODAL',
-      payload: { isVisible: true },
-    })
     dispatch({
       type: 'UPDATE_EDIT_DRAWER',
       payload: { ...state.commentEditState, isVisible: false },
+    })
+
+    if (!state.commentEditState.commentId) {
+      console.warn('無評論 ID')
+      return
+    }
+
+    dispatch({
+      type: 'TOGGLE_DELETE_COMMENT_MODAL',
+      payload: { isVisible: true },
     })
   }
   const handleEditComment = () => {
