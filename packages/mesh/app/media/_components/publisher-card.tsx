@@ -65,7 +65,7 @@ export default function PublisherCard({
             </div>
           </div>
         </div>
-        <PublisherDonateButton />
+        <PublisherDonateButton publisherId={publisher.id} />
       </div>
       {publisher.stories.map((story, i) => (
         <PublisherStory key={story.id} story={story} showImage={i === 0} />

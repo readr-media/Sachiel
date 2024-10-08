@@ -1,21 +1,17 @@
 'use client'
 
 import { useAccount, useSignerStatus } from '@alchemy/aa-alchemy/react'
-import { type ReactNode, useEffect } from 'react'
-import { type Hex } from 'viem'
+import { type ReactNode } from 'react'
 
-import { updateMemberWallet } from '@/app/actions/auth'
+import Spinner from '@/components/spinner'
 import { accountType } from '@/utils/alchemy'
 
-import Spinner from '../spinner'
 import { LogInCard } from './login-card'
 
 export default function AlchemyAuth({
-  memberId,
   hasAlchemyAccount,
   renderComponent,
 }: {
-  memberId: string
   hasAlchemyAccount: boolean
   renderComponent: ReactNode
 }) {
@@ -24,16 +20,6 @@ export default function AlchemyAuth({
   const isLoading =
     isInitializing || (isAuthenticating && status !== 'AWAITING_EMAIL_AUTH')
   const { address } = useAccount({ type: accountType })
-
-  useEffect(() => {
-    const syncSmartAccount = async (id: string, address: Hex) => {
-      await updateMemberWallet(id, address)
-    }
-
-    if (!hasAlchemyAccount && address) {
-      syncSmartAccount(memberId, address)
-    }
-  }, [address, hasAlchemyAccount, memberId])
 
   if (!hasAlchemyAccount && !address)
     return (

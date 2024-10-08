@@ -69,7 +69,7 @@ export default function PublisherCard({ data }: Props) {
             </p>
           </div>
         </div>
-        <PublisherDonateButton />
+        <PublisherDonateButton publisherId={data.publisher.id} />
       </div>
       {data.stories.map((story, index) => (
         <StoryCard showImage={index === 0} story={story} key={story.id} />

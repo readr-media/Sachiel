@@ -45,7 +45,7 @@ const ArticleBottomActionBar = ({ story }: { story: Story }) => {
           <StoryPickCount picksCount={picksCount} />
         </div>
         <div className="flex gap-2">
-          <PublisherDonateButton />
+          <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
           <StoryPickButton storyId={story?.id ?? ''} />
         </div>
       </div>

@@ -18,7 +18,6 @@ export default async function Page() {
   return (
     <main className="flex grow flex-col sm:p-5 md:px-[70px] md:py-10 lg:p-10">
       <AlchemyAuth
-        memberId={memberId}
         hasAlchemyAccount={hasAlchemyAccount}
         renderComponent={<MeshPoint />}
       />
