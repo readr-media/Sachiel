@@ -4,15 +4,16 @@ import StoryCard from '@/app/_components/story-card'
 import type { DailyStory } from '@/types/homepage'
 
 type Props = {
-  stories: {
-    group?: DailyStory[]
-    others: DailyStory[]
-  } | null
+  otherStories: DailyStory[] | undefined
+  groupStories: DailyStory[] | undefined
 }
 
-export default function TopStoriesSection({ stories }: Props) {
-  const groupStories = stories?.group
-  const otherStories = stories?.others
+export default function TopStoriesSection({
+  otherStories,
+  groupStories,
+}: Props) {
+  // const groupStories = stories?.group
+  // const otherStories = stories?.others
 
   return (
     <section className="flex flex-col gap-y-6 px-5 sm:gap-y-10 md:px-[70px] lg:px-10 lg:pb-5">

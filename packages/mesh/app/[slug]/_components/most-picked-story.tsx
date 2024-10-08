@@ -1,13 +1,11 @@
 import FeaturedCard from '@/app/_components/featured-card'
-import { fetchCategoryStory } from '@/app/actions/get-homepage'
+import type { CategoryStory } from '@/types/homepage'
 
 type Props = {
-  slug: string
+  story: CategoryStory | undefined
 }
 
-export default async function MostPickedStory({ slug }: Props) {
-  const mostPickedStories = await fetchCategoryStory(slug)
-  const story = mostPickedStories?.[0]
+export default function MostPickedStory({ story }: Props) {
   if (!story) return null
 
   return (

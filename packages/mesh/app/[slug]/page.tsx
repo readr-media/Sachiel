@@ -5,6 +5,7 @@ import InteractiveIcon from '@/components/interactive-icon'
 
 import {
   fetchCategoryInformation,
+  fetchCategoryStory,
   fetchGroupAndOtherStories,
   fetchMostSponsoredPublishersByCategory,
 } from '../actions/get-homepage'
@@ -18,10 +19,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const slugInfo = await fetchCategoryInformation(slug)
   if (!slugInfo) notFound()
 
-  const [storiesResult, publishersAndStoriesResult] = await Promise.allSettled([
-    fetchGroupAndOtherStories(slug),
-    fetchMostSponsoredPublishersByCategory(slug),
-  ])
+  const [storiesResult, publishersAndStoriesResult, mostPickedStoriesResult] =
+    await Promise.allSettled([
+      fetchGroupAndOtherStories(slug),
+      fetchMostSponsoredPublishersByCategory(slug),
+      fetchCategoryStory(slug),
+    ])
 
   const stories =
     storiesResult.status === 'fulfilled' ? storiesResult.value : null
@@ -30,6 +33,22 @@ export default async function Page({ params }: { params: { slug: string } }) {
     publishersAndStoriesResult.status === 'fulfilled'
       ? publishersAndStoriesResult.value
       : null
+
+  const mostPickedStories =
+    mostPickedStoriesResult.status === 'fulfilled'
+      ? mostPickedStoriesResult.value
+      : null
+  const mostPickedStory = mostPickedStories?.[0]
+
+  const filteredOtherStories =
+    stories && mostPickedStory
+      ? stories.others.filter((story) => story.id !== mostPickedStory.id)
+      : stories?.others
+
+  const filteredGroupStories =
+    stories && mostPickedStory
+      ? stories.group?.filter((story) => story.id !== mostPickedStory.id)
+      : stories?.group
 
   return (
     <main>
@@ -46,15 +65,17 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <h2>{`${slugInfo.title}熱門`}</h2>
       </div>
       <div className="sm:pt-15">
-        <TopStoriesSection stories={stories} />
-        {/* @ts-expect-error Async Server Component */}
-        <MostPickedStory slug={slug} />
+        <TopStoriesSection
+          otherStories={filteredOtherStories}
+          groupStories={filteredGroupStories}
+        />
+        <MostPickedStory story={mostPickedStory} />
         <NonDesktopStories
-          stories={stories}
+          stories={filteredOtherStories}
           publishersAndStories={publishersAndStories}
         />
         <DesktopStories
-          stories={stories}
+          stories={filteredOtherStories}
           publishersAndStories={publishersAndStories}
         />
       </div>

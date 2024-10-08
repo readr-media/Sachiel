@@ -11,10 +11,7 @@ import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
 import PublisherCard from './publisher-card'
 
 type Props = {
-  stories: {
-    group?: DailyStory[]
-    others: DailyStory[]
-  } | null
+  stories: DailyStory[] | undefined
   publishersAndStories: SponsoredStoryByCategory[] | null
 }
 
@@ -28,17 +25,17 @@ export default function DesktopStories({
     useInView()
 
   useEffect(() => {
-    if (shouldStartLoadMore && visibleCount < (stories?.others.length || 0)) {
+    if (shouldStartLoadMore && visibleCount < (stories?.length || 0)) {
       setIsLoading(true)
       setTimeout(() => {
         setVisibleCount((prevCount) => prevCount + 10)
         setIsLoading(false)
       }, 500)
     }
-  }, [shouldStartLoadMore, visibleCount, stories?.others.length])
+  }, [shouldStartLoadMore, visibleCount, stories?.length])
 
   if (!stories) return null
-  const otherStories = stories.others.slice(6)
+  const otherStories = stories.slice(6)
 
   const getStoriesContent = () => {
     const elements: ReactNode[] = []
