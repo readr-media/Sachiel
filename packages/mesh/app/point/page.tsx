@@ -16,9 +16,8 @@ export default async function Page() {
   const hasAlchemyAccount = !!user.wallet
 
   return (
-    <main className="sm:p-5 md:px-[70px] md:py-10 lg:p-10">
+    <main className="flex grow flex-col sm:p-5 md:px-[70px] md:py-10 lg:p-10">
       <AlchemyAuth
-        memberId={memberId}
         hasAlchemyAccount={hasAlchemyAccount}
         renderComponent={<MeshPoint />}
       />

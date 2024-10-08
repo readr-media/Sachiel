@@ -1,5 +1,3 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -26,14 +24,23 @@ export default function DefaultNav({ className = '' }: { className?: string }) {
   const path = usePathname()
   const { user } = useUser()
 
-  const avatarUrl = user?.avatar ?? ''
+  const avatarUrl = user.avatar
+  const userCustomId = user.customId
 
   return (
     <div className={className}>
       {/* fixed left nav shown on tablet, desktop size */}
-      <NonMobileNav path={path} avatarUrl={avatarUrl} />
+      <NonMobileNav
+        path={path}
+        avatarUrl={avatarUrl}
+        userCustomId={userCustomId}
+      />
       {/* fixed bottom nav bar shown on mobile only */}
-      <MobileNav path={path} avatarUrl={avatarUrl} />
+      <MobileNav
+        path={path}
+        avatarUrl={avatarUrl}
+        userCustomId={userCustomId}
+      />
     </div>
   )
 }
@@ -41,9 +48,11 @@ export default function DefaultNav({ className = '' }: { className?: string }) {
 const NonMobileNav = ({
   path,
   avatarUrl,
+  userCustomId,
 }: {
   path: string
   avatarUrl: string
+  userCustomId: string
 }) => {
   return (
     <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:z-layout sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
@@ -63,12 +72,15 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案' && avatarUrl) {
+              if (iconInfo.text === '個人檔案') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
                     isOn={matchPath(iconInfo.href, path)}
-                    iconInfo={iconInfo}
+                    iconInfo={{
+                      ...iconInfo,
+                      href: iconInfo.href + `/member/${userCustomId}`,
+                    }}
                     avatarUrl={avatarUrl}
                   />
                 )
@@ -143,22 +155,37 @@ const NonMobileNavIcon = ({
 const MobileNav = ({
   path,
   avatarUrl,
+  userCustomId,
 }: {
   path: string
   avatarUrl: string
+  userCustomId: string
 }) => {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
-          return (
-            <MobileNavIcon
-              key={iconInfo.icon.default}
-              isOn={matchPath(iconInfo.href, path)}
-              iconInfo={iconInfo}
-              avatarUrl={avatarUrl}
-            />
-          )
+          if (iconInfo.text === '個人檔案') {
+            return (
+              <MobileNavIcon
+                key={iconInfo.icon.default}
+                isOn={matchPath(iconInfo.href, path)}
+                iconInfo={{
+                  ...iconInfo,
+                  href: iconInfo.href + `/member/${userCustomId}`,
+                }}
+                avatarUrl={avatarUrl}
+              />
+            )
+          } else {
+            return (
+              <MobileNavIcon
+                key={iconInfo.icon.default}
+                isOn={matchPath(iconInfo.href, path)}
+                iconInfo={iconInfo}
+              />
+            )
+          }
         })}
       </div>
     </nav>

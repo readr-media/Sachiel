@@ -1,8 +1,9 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
 
-import EditProfileHeader from '@/app/profile/_components/edit-profile-header'
 import LayoutTemplate from '@/components/layout-template'
+import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
+import GoBackButton from '@/components/navigation/go-back-button'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
 
@@ -21,6 +22,7 @@ const EditProfileLayout = ({
   const isUser = params.customId === user.customId
   if (!isUser) router.push(`/profile/member/${params.customId}`)
   const { handleSubmit, isFormValid, isSubmitting } = useEditProfile()
+
   return (
     <LayoutTemplate
       type="default"
@@ -29,30 +31,33 @@ const EditProfileLayout = ({
         footer: 'hidden sm:block',
         nav: 'hidden sm:block',
       }}
-      navigation={{
+      mobileNavigation={{
         leftButtons: [
-          {
-            type: 'text',
-            text: '取消',
-            color: 'gray',
-            onClick: backToPreviousPage,
-          },
+          <MobileNavigationButton
+            key={0}
+            type="text"
+            text="取消"
+            color="gray"
+            onClick={backToPreviousPage}
+          />,
         ],
         title,
         rightButtons: [
-          {
-            type: 'text',
-            text: '儲存',
-            color: isFormValid && !isSubmitting ? 'blue' : 'gray',
-            onClick: handleSubmit,
-          },
+          <MobileNavigationButton
+            key={0}
+            type="text"
+            text="儲存"
+            color={isFormValid && !isSubmitting ? 'blue' : 'gray'}
+            onClick={handleSubmit}
+          />,
         ],
       }}
+      nonMobileNavigation={{
+        leftButtons: [<GoBackButton key={0} />],
+        title: '編輯個人檔案',
+        rightButtons: [],
+      }}
     >
-      <EditProfileHeader
-        title={title}
-        backToPreviousPage={backToPreviousPage}
-      />
       {children}
     </LayoutTemplate>
   )

@@ -12,6 +12,7 @@ type NavigationIcon =
   | 'icon-share'
   | 'icon-bookmark'
   | 'icon-setting'
+  | 'icon-navigate-previous'
 
 export type NavigationButtonProps = {
   onClick: MouseEventHandler<HTMLButtonElement>
@@ -27,7 +28,7 @@ export type NavigationButtonProps = {
   }
 >
 
-export default function NavigationButton({
+export default function MobileNavigationButton({
   type,
   icon,
   onClick,

@@ -7,7 +7,6 @@ import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
-import Spinner from '@/components/spinner'
 import ErrorPage from '@/components/status/error-page'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
@@ -17,6 +16,8 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+
+import Loading from './loading'
 
 interface ProfilePageProps {
   isMember: boolean
@@ -52,11 +53,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   }, [category, isMember, profileData])
 
   if (isProfileLoading) {
-    return (
-      <div className="flex max-w-[theme(width.maxMain)] grow items-center justify-center">
-        <Spinner />
-      </div>
-    )
+    return <Loading />
   }
 
   if (isProfileError) {
@@ -112,7 +109,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   return (
     <>
       <section className="bg-white">
-        <div className="flex max-h-[calc(100%_-_152px)] max-w-[theme(width.maxMain)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full md:px-10">
+        <div className="flex max-h-[calc(100%_-_152px)] max-w-[theme(width.maxMain)] flex-col items-center bg-white px-5 pb-8 pt-6 sm:max-h-full sm:pt-0 md:px-[70px] lg:px-10">
           <UserProfile
             name={name}
             pickCount={pickCount}
