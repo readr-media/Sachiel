@@ -1,10 +1,8 @@
 'use client'
-
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import LayoutTemplate from '@/components/layout-template'
-import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
+import GoBackButton from '@/components/navigation/go-back-button'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
 
@@ -28,27 +26,17 @@ export default function MediaLayout({
     fetchSlugInfo()
   }, [categorySlug])
 
-  const router = useRouter()
-
-  const backToPreviousPage = () => {
-    router.back()
+  const navigationData = {
+    title,
+    leftButtons: [<GoBackButton key={0} />],
+    rightButtons: [],
   }
 
   return (
     <LayoutTemplate
       type="default"
-      mobileNavigation={{
-        title: title,
-        leftButtons: [
-          <MobileNavigationButton
-            key={0}
-            type="icon"
-            icon="icon-navigate-previous"
-            onClick={backToPreviousPage}
-          />,
-        ],
-        rightButtons: [],
-      }}
+      mobileNavigation={navigationData}
+      nonMobileNavigation={navigationData}
     >
       {children}
     </LayoutTemplate>
