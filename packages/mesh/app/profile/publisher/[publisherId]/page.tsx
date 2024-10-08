@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 
+import { getPublisherStories } from '@/app/actions/get-publisher-profile'
 import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { formatFollowCount } from '@/utils/format-follow-count'
@@ -11,50 +12,53 @@ export type PageProps = {
     publisherId: string
   }
 }
-const page = async ({ params }: PageProps) => {
-  const publisherId = params.publisherId
-  const takesCount = 20
+
+const Page = async ({ params }: PageProps) => {
+  const { publisherId } = params
   const userType = 'publisher'
 
-  const response = await queryGraphQL(GetPublisherProfileDocument, {
-    publisherId,
-    takes: takesCount,
-  })
+  try {
+    const storiesResponse = await getPublisherStories(publisherId)
+    const response = await queryGraphQL(GetPublisherProfileDocument, {
+      publisherId: storiesResponse?.source.id ?? '',
+    })
 
-  if (!response) {
+    if (!response || !response.publisher) {
+      notFound()
+    }
+
+    const userData = response.publisher
+    const userName = userData.title || '使用者名稱'
+    const userLogo = userData.logo || ''
+    const userIntro = userData.description || '使用者介紹'
+    const storyData = storiesResponse?.stories ?? []
+    const followerCount = userData.followerCount || 0
+    const convertedFollowerCount = formatFollowCount(followerCount)
+
+    // TODO: 等待 API 實現
+    const convertedSponsoredCount = formatFollowCount(999999)
+    // TODO: 等待 API 實現
+    const pickedCount = 100
+
+    return (
+      <main className="flex grow flex-col">
+        <PublisherPage
+          pickedCount={pickedCount}
+          sponsoredCount={convertedSponsoredCount}
+          followerCount={convertedFollowerCount}
+          name={userName}
+          avatar={userLogo}
+          intro={userIntro}
+          publisherId={publisherId}
+          userType={userType}
+          storyData={storyData}
+        />
+      </main>
+    )
+  } catch (error) {
+    console.error('Error fetching publisher data:', error)
     notFound()
   }
-  // 使用publishers因為query publisher的where沒有提供customId的篩選
-  const userData = response.publishers && response.publishers[0]
-  if (!userData) {
-    notFound()
-  }
-
-  const userName = userData.title || '使用者名稱'
-  const userLogo = userData.logo || ''
-  const userIntro = userData.description || '使用者介紹'
-  const storyData = response.stories || []
-  const followerCount = userData.followerCount || 0
-  const convertedFollowerCount = formatFollowCount(followerCount)
-  // TODO: wait for api
-  const convertedSponsoredCount = formatFollowCount(999999)
-  // TODO: wait for api
-  const pickedCount = 100
-  return (
-    <main className="flex grow flex-col">
-      <PublisherPage
-        pickedCount={pickedCount}
-        sponsoredCount={convertedSponsoredCount}
-        followerCount={convertedFollowerCount}
-        name={userName}
-        avatar={userLogo}
-        intro={userIntro}
-        publisherId={publisherId}
-        userType={userType}
-        storyData={storyData}
-      />
-    </main>
-  )
 }
 
-export default page
+export default Page

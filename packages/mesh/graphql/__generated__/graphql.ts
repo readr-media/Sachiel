@@ -4401,49 +4401,19 @@ export type PublishersQuery = {
 }
 
 export type GetPublisherProfileQueryVariables = Exact<{
-  publisherId?: InputMaybe<Scalars['String']['input']>
-  takes: Scalars['Int']['input']
+  publisherId: Scalars['ID']['input']
 }>
 
 export type GetPublisherProfileQuery = {
   __typename?: 'Query'
-  publishers?: Array<{
+  publisher?: {
     __typename?: 'Publisher'
     id: string
     title?: string | null
     logo?: string | null
     followerCount?: number | null
     description?: string | null
-  }> | null
-  stories?: Array<{
-    __typename?: 'Story'
-    title?: string | null
-    id: string
-    og_image?: string | null
-    og_title?: string | null
-    commentCount?: number | null
-    createdAt?: any | null
-    pickCount?: number | null
-    paywall?: boolean | null
-    full_screen_ad?: string | null
-    published_date?: any | null
-    source?: {
-      __typename?: 'Publisher'
-      title?: string | null
-      official_site?: string | null
-    } | null
-    tag?: Array<{ __typename?: 'Tag'; id: string; name?: string | null }> | null
-    pick?: Array<{
-      __typename?: 'Pick'
-      createdAt?: any | null
-      member?: {
-        __typename?: 'Member'
-        id: string
-        name?: string | null
-        avatar?: string | null
-      } | null
-    }> | null
-  }> | null
+  } | null
 }
 
 export type GetPublisherFollowerListQueryVariables = Exact<{
@@ -9124,17 +9094,9 @@ export const GetPublisherProfileDocument = {
             kind: 'Variable',
             name: { kind: 'Name', value: 'publisherId' },
           },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'takes' },
-          },
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
           },
         },
       ],
@@ -9143,7 +9105,7 @@ export const GetPublisherProfileDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'publishers' },
+            name: { kind: 'Name', value: 'publisher' },
             arguments: [
               {
                 kind: 'Argument',
@@ -9153,19 +9115,10 @@ export const GetPublisherProfileDocument = {
                   fields: [
                     {
                       kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'customId' },
+                      name: { kind: 'Name', value: 'id' },
                       value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'equals' },
-                            value: {
-                              kind: 'Variable',
-                              name: { kind: 'Name', value: 'publisherId' },
-                            },
-                          },
-                        ],
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'publisherId' },
                       },
                     },
                   ],
@@ -9183,141 +9136,6 @@ export const GetPublisherProfileDocument = {
                   name: { kind: 'Name', value: 'followerCount' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'description' } },
-              ],
-            },
-          },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'stories' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'source' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'customId' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'Variable',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'publisherId',
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'take' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'takes' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'source' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'official_site' },
-                      },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'og_title' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'commentCount' },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'tag' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'pick' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'member' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'avatar' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'full_screen_ad' },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'published_date' },
-                },
               ],
             },
           },
