@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useState } from 'react'
 
 import { getMostFollowersData } from '@/app/actions/get-member-followings'
