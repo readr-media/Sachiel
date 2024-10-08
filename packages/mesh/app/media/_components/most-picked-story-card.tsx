@@ -52,7 +52,7 @@ export default function MostPickedStoryCard({
                   <h4
                     className={`${
                       isDesktop ? 'body-3' : 'footnote'
-                    } h-5 text-primary-500 lg:h-auto`}
+                    } h-5 text-primary-500 hover-or-active:text-primary-700 lg:h-auto`}
                   >
                     {story.source?.title ?? ''}
                   </h4>
@@ -64,7 +64,7 @@ export default function MostPickedStoryCard({
               <div
                 className={`${
                   isDesktop ? 'title-1' : 'title-2'
-                } mt-1 text-primary-700`}
+                } mt-1 text-primary-700 hover-or-active:underline`}
               >
                 <Link href={`/story/${story.id}`}>{story.title}</Link>
               </div>
