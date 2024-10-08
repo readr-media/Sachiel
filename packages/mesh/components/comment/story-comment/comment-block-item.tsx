@@ -30,41 +30,39 @@ export const CommentBlockItem = ({
     clampLineCount,
     canToggle
   )
+
+  const initializeEditCommentDrawer = (
+    mode: 'self' | 'other',
+    commentId: string,
+    commentContent: string
+  ) => {
+    dispatch({
+      type: 'UPDATE_EDIT_DRAWER',
+      payload: {
+        mode,
+        isVisible: true,
+        commentId,
+        content: commentContent,
+        originalContent: commentContent,
+        displayMode,
+      },
+    })
+  }
+
   const handleEditComment = ({
     commentAuthor,
     commentId,
-    comment,
+    commentContent,
   }: {
     commentAuthor: string
     commentId: string
-    comment: string
+    commentContent: string
   }) => {
-    if (commentAuthor === user.name) {
-      dispatch({
-        type: 'UPDATE_EDIT_DRAWER',
-        payload: {
-          mode: 'self',
-          isVisible: true,
-          commentId,
-          content: comment,
-          originalContent: comment,
-          displayMode,
-        },
-      })
-    } else {
-      dispatch({
-        type: 'UPDATE_EDIT_DRAWER',
-        payload: {
-          mode: 'other',
-          isVisible: true,
-          commentId,
-          content: comment,
-          originalContent: comment,
-          displayMode,
-        },
-      })
-    }
+    // 根據評論使用者來決定編輯模式
+    const editMode = commentAuthor === user.name ? 'self' : 'other'
+    initializeEditCommentDrawer(editMode, commentId, commentContent)
   }
+
   return (
     <li
       key={comment.id}
@@ -105,7 +103,7 @@ export const CommentBlockItem = ({
                       handleEditComment({
                         commentAuthor: comment?.member?.name || '',
                         commentId: comment.id,
-                        comment: comment.content || '',
+                        commentContent: comment.content || '',
                       })
                     }}
                   >
