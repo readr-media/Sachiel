@@ -35,7 +35,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
         </div>
 
         <div className="flex flex-col gap-y-[2px] py-[3px] lg:items-center lg:gap-y-1 lg:py-0">
-          <p className="subtitle-2 line-clamp-1 text-primary-700">
+          <p className="subtitle-2 line-clamp-1 text-primary-700 hover-or-active:underline">
             {person.name}
           </p>
           <p className="caption-1 text-primary-500">

@@ -36,7 +36,8 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
             </div>
 
             <div>
-              <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700">
+              <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700 hover-or-active:underline">
+                {/* TODO: add profile link */}
                 {comment.member.name}
               </p>
               <p className="footnote text-primary-500">
@@ -68,12 +69,12 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         {/* TODO: border color */}
         {comment.story && (
           <div className="border-t-[0.5px] border-[rgba(0,9,40,0.1)]  pt-3">
-            <h2 className="subtitle-2 mb-2 text-primary-700">
+            <h2 className="subtitle-2 mb-2 text-primary-700 hover-or-active:underline">
               {comment.story.title}
             </h2>
 
             <div className="flex items-center">
-              <p className="caption-1 text-primary-500">
+              <p className="caption-1 text-primary-500 hover-or-active:text-primary-700">
                 {comment.story.source.title}
               </p>
               <Icon iconName="icon-dot" size="s" />
