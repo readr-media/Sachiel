@@ -11,15 +11,16 @@
     "type": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.18.0"
   },
   "dependencies": {
+    "@alchemy/aa-accounts": "^3.19.0",
+    "@alchemy/aa-alchemy": "^3.19.0",
+    "@alchemy/aa-core": "^3.19.0",
     "@apollo/client": "^3.10.4",
-    "@dynamic-labs/ethereum": "^2.3.5",
-    "@dynamic-labs/sdk-api": "^0.0.498",
-    "@dynamic-labs/sdk-react-core": "^2.3.5",
     "@readr-media/react-image": "^2.2.3",
     "@readr-media/react-infinite-scroll-list": "^1.1.0",
+    "@tanstack/react-query": "^5.52.2",
     "apollo-upload-client": "^18.0.1",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
@@ -31,17 +32,17 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.3.0",
     "ts-import": "^5.0.0-beta.0",
-    "viem": "^2.17.11"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@graphql-codegen/introspection": "^4.0.3",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@types/apollo-upload-client": "^18.0.0",
     "@types/node": "^20",
     "@types/react": "18.2.0",
     "@types/react-dom": "^18",
-    "@types/apollo-upload-client": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "7.2.0",
     "@typescript-eslint/parser": "7.2.0",
     "autoprefixer": "^10.4.19",
@@ -56,6 +57,6 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.4.4",
     "ts-xor": "^1.3.0",
-    "typescript": "^5"
+    "typescript": "5.4.5"
   }
 }

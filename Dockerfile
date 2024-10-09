@@ -1,8 +1,12 @@
-ARG NODE_VERSION=18.17.0
+ARG NODE_VERSION=18.18.0
 
 # Install dependencies only when needed
-FROM node:${NODE_VERSION} AS deps
+FROM node:${NODE_VERSION}-alpine AS deps
 WORKDIR /app
+
+# https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine 
+RUN apk add --no-cache python3 make g++ \
+    && yarn global add node-gyp
 
 # Install dependencies based on the preferred package manager
 COPY ["package.json", "yarn.lock", "./"]

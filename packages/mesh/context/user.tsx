@@ -19,11 +19,13 @@ export type User = {
   memberId: string
   customId: string
   name: string
+  email: string
   avatar: string
   avatarImageId: string
   wallet: string
   followingMemberIds: Set<string>
   pickStoryIds: Set<string>
+  bookmarkStoryIds: Set<string>
   followingCategories: FollowingCategories
   followingPublishers: FollowingPublishers
   intro: string
@@ -46,10 +48,12 @@ const guest: User = {
   avatarImageId: '',
   customId: '',
   name: '',
+  email: '',
   avatar: '',
   wallet: '',
   followingMemberIds: new Set(),
   pickStoryIds: new Set(),
+  bookmarkStoryIds: new Set(),
   followingCategories: [],
   followingPublishers: [],
   intro: '',

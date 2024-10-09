@@ -1,36 +1,46 @@
 'use server'
 
-import {
-  AddFollowingDocument,
-  RemoveFollowingDocument,
-} from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { RESTFUL_ENDPOINTS } from '@/constants/config'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 
 export async function addMemberFollowing(
   memberId: string,
   followingId: string
 ) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await queryGraphQL(
-    AddFollowingDocument,
-    { memberId, followingId },
-    globalLogFields,
-    'Failed to add members following'
+  const payload = {
+    action: 'add_follow',
+    memberId,
+    objective: 'member',
+    targetId: followingId,
+  }
+
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.pubsub,
+    payload,
+    {
+      cache: 'no-cache',
+    },
+    'Failed to add following via pub/sub'
   )
-  return data?.updateMember
 }
 
 export async function removeMemberFollowing(
   memberId: string,
   followingId: string
 ) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const data = await queryGraphQL(
-    RemoveFollowingDocument,
-    { memberId, followingId },
-    globalLogFields,
-    'Failed to remove members following'
+  const payload = {
+    action: 'remove_follow',
+    memberId,
+    objective: 'member',
+    targetId: followingId,
+  }
+
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.pubsub,
+    payload,
+    {
+      cache: 'no-cache',
+    },
+    'Failed to remove following via pub/sub'
   )
-  return data?.updateMember
 }

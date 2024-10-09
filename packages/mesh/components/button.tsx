@@ -2,6 +2,8 @@ import type { ButtonHTMLAttributes } from 'react'
 
 import Icon, { type IconProps } from './icon'
 
+export type ButtonColor = keyof typeof buttonColor
+
 const buttonColor = {
   transparent:
     'bg-transparent text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
@@ -27,6 +29,7 @@ const buttonStyles = {
   sm: 'button h-8 px-3 py-1 rounded', // all Button Mini
   md: 'button-large h-[38px] px-5 py-2 rounded', // Secondary Button
   'md-100': 'button-large h-[38px] px-4 py-2 rounded-[100px]', // Lightbox Chip
+  'md-large': 'button-large w-full h-10 px-5 py-2 rounded', // secondary Button
   lg: 'button-large w-full h-[46px] px-6 py-3 rounded', // Primary Button, Second Button (wide)
 }
 

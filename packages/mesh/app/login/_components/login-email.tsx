@@ -3,6 +3,7 @@ import Icon from '@/components/icon'
 import { useLogin } from '@/context/login'
 import { sendEmailLink } from '@/utils/auth-provider'
 import { debounce } from '@/utils/performance'
+import { isValidEmail } from '@/utils/validate-email'
 
 export default function LoginEmail() {
   const { formData, setFormData, setStep, lastUsedEmail, setLastUsedEmail } =
@@ -71,11 +72,4 @@ export default function LoginEmail() {
       </div>
     </div>
   )
-}
-
-function isValidEmail(email: string) {
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-
-  return emailRegex.test(email)
 }

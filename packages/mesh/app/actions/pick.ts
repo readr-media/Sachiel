@@ -44,6 +44,6 @@ export async function removePick({
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    'Failed to add pick state via pub/sub'
+    'Failed to remove pick state via pub/sub'
   )
 }

@@ -38,7 +38,7 @@ export default function Avatar({
     <Image
       className={`${avatarClass} inline-block ${
         isRound && 'rounded-full'
-      } bg-white ring-2 ring-white ${extra}`}
+      } bg-white ring-2 ring-white ${extra} object-cover`}
       src={src}
       width={sideLength}
       height={sideLength}

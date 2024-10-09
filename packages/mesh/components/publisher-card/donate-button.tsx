@@ -1,10 +1,19 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
+import { PaymentType } from '@/types/payment'
+
 import Button from '../button'
 
-export default function PublisherDonateButton() {
+export default function PublisherDonateButton({
+  publisherId,
+}: {
+  publisherId: string
+}) {
+  const router = useRouter()
   const handleClickDonate = () => {
-    // TODO: handle donate publisher
+    router.push(`/payment/${PaymentType.Sponsor}/${publisherId}`)
   }
 
   return (
