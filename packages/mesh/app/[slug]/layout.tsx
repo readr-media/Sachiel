@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+
 import { fetchCategoryInformation } from '../actions/get-homepage'
 
 export default function SubpageLayout({

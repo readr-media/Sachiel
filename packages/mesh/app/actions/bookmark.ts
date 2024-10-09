@@ -3,7 +3,7 @@
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 
-export async function addPick({
+export async function addBookmark({
   memberId,
   storyId,
 }: {
@@ -11,22 +11,20 @@ export async function addPick({
   storyId: string
 }) {
   const payload = {
-    action: 'add_pick',
+    action: 'add_bookmark',
     memberId,
-    objective: 'story',
-    targetId: storyId,
-    state: 'public',
+    storyId,
   }
 
   return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    'Failed to add pick state via pub/sub'
+    'Failed to add bookmark state via pub/sub'
   )
 }
 
-export async function removePick({
+export async function removeBookmark({
   memberId,
   storyId,
 }: {
@@ -34,16 +32,15 @@ export async function removePick({
   storyId: string
 }) {
   const payload = {
-    action: 'remove_pick',
+    action: 'remove_bookmark',
     memberId,
-    objective: 'story',
-    targetId: storyId,
+    storyId,
   }
 
   return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    'Failed to remove pick state via pub/sub'
+    'Failed to remove bookmark state via pub/sub'
   )
 }

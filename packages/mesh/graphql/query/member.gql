@@ -83,8 +83,16 @@ query GetCurrentUserMemberId($uid: String!) {
     }
     picks: pick(
       where: {
-        kind: { equals: "read" }
-        AND: [{ is_active: { equals: true } }]
+        AND: [{ kind: { equals: "read" } }, { is_active: { equals: true } }]
+      }
+    ) {
+      story {
+        id
+      }
+    }
+    bookmarks: pick(
+      where: {
+        AND: [{ kind: { equals: "bookmark" } }, { is_active: { equals: true } }]
       }
     ) {
       story {
@@ -165,6 +173,9 @@ query GetMemberProfile($customId: String, $takes: Int!) {
             name
             avatar
           }
+        }
+        source {
+          id
         }
       }
       kind
@@ -289,6 +300,9 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
             name
             avatar
           }
+        }
+        source {
+          id
         }
       }
       kind

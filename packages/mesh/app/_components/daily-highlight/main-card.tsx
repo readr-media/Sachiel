@@ -3,10 +3,10 @@
 import NextImage from 'next/image'
 import NextLink from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import type { DailyStory } from '@/types/homepage'
 
@@ -36,7 +36,10 @@ export default function MainCard({ story }: Props) {
             <NextLink href={`profile/member/${story.source.customId}`}>
               <p className="body-3 text-primary-500">{story.source.title}</p>
             </NextLink>
-            <Icon iconName="icon-more-horiz" size="l" />
+            <StoryMoreActionButton
+              storyId={story.id}
+              publisherId={story.source.id}
+            />
           </div>
 
           <NextLink href={`story/${story.id}`}>
