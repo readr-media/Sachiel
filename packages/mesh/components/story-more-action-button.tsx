@@ -176,6 +176,10 @@ const ActionSheet = forwardRef(function ActionSheet(
   const hasPosition = isPositionValid(position)
 
   const onAction = async (type: ActionType) => {
+    if (!storyId || !publisherId) {
+      // TODO: show toast to hint error
+      return
+    }
     switch (type) {
       case ActionType.Sponsor: {
         router.push(`/payment/${PaymentType.Sponsor}/${publisherId}`)
