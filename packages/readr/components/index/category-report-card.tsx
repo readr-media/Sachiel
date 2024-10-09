@@ -160,6 +160,7 @@ export default function CategoryReportCard({
   report,
 }: CategoryReportCardProps): JSX.Element {
   const {
+    id: reportId = '',
     href = '/',
     title = '',
     images = {},
@@ -178,6 +179,7 @@ export default function CategoryReportCard({
     >
       <picture>
         <SharedImage
+          key={reportId}
           images={images}
           defaultImage={DEFAULT_POST_IMAGE_PATH}
           alt={title}
