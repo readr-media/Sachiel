@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 
+import { PickModalProvider } from '@/context/pick-modal'
 import { UserProvider } from '@/context/user'
 
 import RootLayoutWrapper from './_components/root-layout-wrapper'
@@ -27,7 +28,9 @@ export default async function RootLayout({
   return (
     <html lang="zh-Hant" className={notoSans.className}>
       <UserProvider user={user}>
-        <RootLayoutWrapper>{children}</RootLayoutWrapper>
+        <PickModalProvider>
+          <RootLayoutWrapper>{children}</RootLayoutWrapper>
+        </PickModalProvider>
       </UserProvider>
     </html>
   )
