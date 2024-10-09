@@ -7,6 +7,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import { removeFollowPublisher } from '@/app/actions/follow-publisher'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 import { PaymentType } from '@/types/payment'
@@ -183,6 +184,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const { user, setUser } = useUser()
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
+  const { addToast } = useToast()
 
   const onAction = async (type: ActionType) => {
     if (!storyId || !publisherId) {
@@ -253,7 +255,14 @@ const ActionSheet = forwardRef(function ActionSheet(
         navigator.clipboard
           .writeText(storyUrl)
           .then(() => {
-            // TODO: show toast for url copied successfully
+            addToast({
+              status: 'fail',
+              text: '已複製連結',
+            })
+            addToast({
+              status: 'success',
+              text: '今天天氣是晴時多雲',
+            })
             onClose()
           })
           .catch((error) => {

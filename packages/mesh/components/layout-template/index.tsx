@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
 import { usePickModal } from '@/context/pick-modal'
+import { ToastProvider } from '@/context/toast'
 
 import Spinner from '../spinner'
 import StoryPickModal from '../story-card/story-pick-modal'
@@ -64,9 +65,9 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
   const pathName = usePathname()
 
   const childrenJsx = (
+    // set key for dynamic route to re-render fallback
     <Suspense key={pathName} fallback={suspenseFallback}>
-      {/* set key for dynamic route to re-render fallback */}
-      {children}
+      <ToastProvider>{children}</ToastProvider>
     </Suspense>
   )
 
