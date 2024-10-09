@@ -3,10 +3,10 @@
 import NextImage from 'next/image'
 import NextLink from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import type { CategoryStory, Story } from '@/types/homepage'
 
@@ -50,7 +50,10 @@ export default function FeaturedCard({
               </p>
             </NextLink>
 
-            <Icon iconName="icon-more-horiz" size="l" />
+            <StoryMoreActionButton
+              storyId={story.id}
+              publisherId={story.source.id}
+            />
           </div>
 
           <h3 className="title-2 lg:title-1 mb-2 text-primary-700 hover-or-active:underline lg:mb-3">

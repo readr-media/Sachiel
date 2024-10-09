@@ -68,7 +68,9 @@ const ArticleNavigation = ({
           {title}
         </p>
       </div>
-      <div className="flex gap-1">{rightButtons.map((button) => button)}</div>
+      <div className="flex items-center gap-1">
+        {rightButtons.map((button) => button)}
+      </div>
     </div>
   )
 }
