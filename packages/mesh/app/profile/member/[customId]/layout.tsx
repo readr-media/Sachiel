@@ -28,10 +28,6 @@ export default function ProfileMemberLayout({
   const pageCustomId = params.customId ?? ''
   const isSelf = pageCustomId === user?.customId
 
-  const handleMoreButtonClicked = () => {
-    // TODO: deal with the feature
-  }
-
   const goToSettingPage = () => {
     // TODO: update the setting url
   }
@@ -63,13 +59,8 @@ export default function ProfileMemberLayout({
         ],
         title: pageCustomId,
         rightButtons: [
-          // replace with ProfileMoreActionButton
-          <MobileNavigationButton
-            key={0}
-            type="icon"
-            icon="icon-more-horiz"
-            onClick={handleMoreButtonClicked}
-          />,
+          // TODO: replace with ProfileMoreActionButton
+          <MoreButton key={0} />,
         ],
       }}
       nonMobileNavigation={{

@@ -8,11 +8,11 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
-import type { Story } from '@/types/homepage'
+import type { CategoryStory, Story } from '@/types/homepage'
 
 type Props = {
   isReadrStory?: boolean
-  story: Story
+  story: Story | CategoryStory
   customId: string
   publisher: string
 }

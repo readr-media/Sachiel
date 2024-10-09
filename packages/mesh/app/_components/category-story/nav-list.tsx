@@ -137,7 +137,11 @@ export default function NavList({ categories, initialStories }: Props) {
         </div>
       </div>
 
-      <StorySection stories={data} activeTitle={activeCategory?.title ?? ''} />
+      <StorySection
+        stories={data}
+        activeTitle={activeCategory?.title ?? ''}
+        slug={activeCategory?.slug ?? ''}
+      />
     </>
   )
 }

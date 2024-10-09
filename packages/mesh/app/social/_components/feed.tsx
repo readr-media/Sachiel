@@ -1,55 +1,53 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
-import type { UserActionStoryFragment } from '@/graphql/__generated__/graphql'
-import { getDisplayPicks } from '@/utils/story-display'
+import StoryMoreActionButton from '@/components/story-more-action-button'
+import { type MongoDBResponse } from '@/utils/data-schema'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
 
+export type StoryActions =
+  MongoDBResponse['stories'][number]['following_actions']
+
 export default function Feed({
   story,
-  followingMemberIds,
 }: {
-  story: UserActionStoryFragment
-  followingMemberIds: Set<string>
+  story: MongoDBResponse['stories'][number]
 }) {
   if (!story) {
     return null
   }
-  const picksFromFollowingMember = story.pick?.filter((pick) =>
-    followingMemberIds.has(pick.member?.id ?? '')
-  )
-
-  const commentsFromFollowingMember = story.comment?.filter((comment) =>
-    followingMemberIds.has(comment.member?.id ?? '')
-  )
-
-  const storyActions = processStoryActions(
-    picksFromFollowingMember,
-    commentsFromFollowingMember
-  )
-
-  const displayPicks = getDisplayPicks(story.pick, followingMemberIds)
+  const { following_actions } = story
+  const storyActions = processStoryActions(following_actions)
+  const displayPicks = story.following_actions
+    .filter((action) => action.kind === 'read')
+    .map((pick) => ({
+      member: {
+        id: pick.member.id,
+        name: pick.member.name,
+        avatar: pick.member.avatar,
+      },
+    }))
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
         <FeedLatestAction actions={storyActions} />
-        <button>
-          <Icon iconName="icon-more-horiz" size="l" />
-        </button>
+        <StoryMoreActionButton
+          storyId={story.id}
+          publisherId={story.publisher.id}
+        />
       </div>
       {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
           <Link href={`/story/${story.id}`} className="size-full">
             <Image
               src={story.og_image}
-              alt={story.title ?? ''}
+              alt={story.og_title}
               width={600}
               height={300}
               sizes="100vw"
@@ -63,33 +61,33 @@ export default function Feed({
         </div>
       ) : null}
       <div className="px-5 pb-4 pt-3 sm:px-8 sm:pb-6 sm:pt-4">
-        <Link href={`/publisher/${story.source?.customId ?? ''}}`}>
+        <Link href={`/publisher/${story.publisher.customId}}`}>
           <h4 className="body-3 mb-1 text-primary-500">
-            {story.source?.title ?? ''}
+            {story.publisher.title}
           </h4>
         </Link>
         <Link href={`/story/${story.id}`}>
           <h2 className="title-1 mb-2 line-clamp-2 break-words">
-            {story.title}
+            {story.og_title}
           </h2>
         </Link>
         <div className="footnote mb-4">
           <StoryMeta
-            commentCount={story.commentCount ?? 0}
+            commentCount={story.commentCount}
             publishDate={story.published_date}
-            paywall={story.paywall ?? false}
-            fullScreenAd={story.full_screen_ad ?? ''}
+            paywall={story.isMember}
+            fullScreenAd={story.full_screen_ad}
           />
         </div>
         <div className="flex flex-col gap-4">
           <div className="mb-4 flex h-8 justify-between">
             <StoryPickInfo
               displayPicks={displayPicks}
-              pickCount={story.pickCount ?? 0}
+              pickCount={story.readCount}
             />
             <StoryPickButton storyId={story.id} />
           </div>
-          {storyActions.commentsData ? (
+          {storyActions.commentsData.length ? (
             <FeedComment comment={storyActions.commentsData[0]} />
           ) : null}
         </div>
@@ -100,68 +98,39 @@ export default function Feed({
 
 export type LatestAction = ReturnType<typeof processStoryActions>
 
-function processStoryActions(
-  picks: UserActionStoryFragment['pick'],
-  comments: UserActionStoryFragment['comment']
-) {
-  if (!picks || !comments)
-    return {
-      picksNum: 0,
-      commentsNum: 0,
-      picksData: [],
-      commentsData: null,
-    }
-  const picksNum = picks.length
-  const commentsNum = comments.length
-  let slicedPicks = picks.slice(0, 4)
-  const slicedComments = comments.slice(0, 2)
+function processStoryActions(storyAction: StoryActions) {
+  const latestAction = storyAction[0]
+  const latestActionType = storyAction[0].kind
+  const picksNum = storyAction.filter((action) => action.kind === 'read').length
+  const commentsNum = storyAction.filter(
+    (action) => action.kind === 'comment'
+  ).length
+  let picksData: StoryActions = []
+  let commentsData: StoryActions = []
 
-  if (picksNum > 0 && commentsNum > 0) {
-    const latestPick = new Date(picks[0].createdAt).getTime()
-    const latestComment = new Date(comments[0].createdAt).getTime()
-    if (latestPick > latestComment) {
-      const commentFromLatestPickMember = comments.find(
-        (item) => item.member?.id === picks[0].member?.id
-      )
-      return {
-        picksNum,
-        commentsNum,
-        picksData: slicedPicks,
-        commentsData: commentFromLatestPickMember
-          ? [commentFromLatestPickMember, ...slicedComments]
-          : null,
-      }
-    } else {
-      const matchingPickIndex = picks.findIndex(
-        (item) => item.member?.id === comments[0].member?.id
-      )
-      if (matchingPickIndex !== -1) {
-        const notMatchPicks = picks.filter(
-          (item) => item.member?.id !== comments[0].member?.id
-        )
-        slicedPicks = [picks[matchingPickIndex], ...notMatchPicks.slice(0, 3)]
-      }
+  const isPickAndComment =
+    storyAction.filter((action) => action.member.id === latestAction.member.id)
+      .length > 1
 
-      return {
-        picksNum,
-        commentsNum,
-        picksData: slicedPicks,
-        commentsData: matchingPickIndex !== -1 ? slicedComments : null,
-      }
-    }
-  } else if (commentsNum > 0) {
-    return {
-      picksNum,
-      commentsNum,
-      picksData: slicedPicks,
-      commentsData: slicedComments,
-    }
+  const filterActions = (kind: 'read' | 'comment', sortByMember = false) =>
+    storyAction
+      .filter((action) => action.kind === kind)
+      .sort((a, _b) =>
+        sortByMember && a.member.id === latestAction.member.id ? -1 : 1
+      )
+
+  if (latestActionType === 'comment') {
+    picksData = isPickAndComment ? filterActions('read', isPickAndComment) : []
+    commentsData = filterActions('comment')
   } else {
-    return {
-      picksNum,
-      commentsNum,
-      picksData: slicedPicks,
-      commentsData: null,
-    }
+    picksData = filterActions('read')
+    commentsData = isPickAndComment ? filterActions('comment') : []
+  }
+
+  return {
+    picksNum,
+    commentsNum,
+    picksData,
+    commentsData,
   }
 }

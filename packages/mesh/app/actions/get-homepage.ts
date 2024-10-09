@@ -3,7 +3,10 @@
 import { z } from 'zod'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
-import { GetAllCategoriesDocument } from '@/graphql/__generated__/graphql'
+import {
+  GetAllCategoriesDocument,
+  GetCategoryInformationDocument,
+} from '@/graphql/__generated__/graphql'
 import type {
   CategoryStory,
   Collector,
@@ -18,6 +21,7 @@ import {
   rawCommentSchema,
   rawDailyHighlightSchema,
   rawFeaturedStorySchema,
+  rawMostSponsoredPublisherStoryByCategorySchema,
   rawMostSponsoredPublisherStorySchema,
   rawReadrStorySchema,
   rawTopCollectorSchema,
@@ -179,6 +183,25 @@ async function fetchAllCategory() {
   return data
 }
 
+async function fetchCategoryInformation(slug: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const data = await queryGraphQL(
+    GetCategoryInformationDocument,
+    { slug },
+    globalLogFields
+  )
+
+  if (!data || !data.categories || data.categories.length === 0) {
+    return null
+  }
+  const { categories } = data
+  const slugName = categories[0].slug ?? ''
+  const title = categories[0].title ?? ''
+
+  return { slugName, title }
+}
+
 async function fetchCategoryStory(
   slug: string | undefined | null
 ): Promise<CategoryStory[] | null> {
@@ -203,14 +226,62 @@ async function fetchCategoryStory(
   } else return null
 }
 
+async function fetchGroupAndOtherStories(slug: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const schema = z.object({
+    group: z.array(rawDailyHighlightSchema).optional(),
+    others: z.array(rawDailyHighlightSchema),
+  })
+
+  try {
+    const response = await fetchStatic<z.infer<typeof schema>>(
+      STATIC_FILE_ENDPOINTS.groupAndOtherStoriesInCategeoryfn(slug)
+    )
+    const result = schema.parse(response)
+    return result
+  } catch (err) {
+    logServerSideError(
+      err,
+      `Error occurs while fetching category ${slug} stories on the homepage-related subpage`,
+      globalLogFields
+    )
+    return null
+  }
+}
+
+export default async function fetchMostSponsoredPublishersByCategory(
+  slug: string
+) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const schema = z.array(rawMostSponsoredPublisherStoryByCategorySchema)
+
+  try {
+    const response = await fetchStatic(
+      STATIC_FILE_ENDPOINTS.categoryMostSponsoredPublishersfn(slug)
+    )
+    const result = schema.parse(response)
+    return result
+  } catch (err) {
+    logServerSideError(
+      err,
+      `Error occurs while fetching most sponsored publishers for the ${slug} category on the homepage-related subpage`,
+      globalLogFields
+    )
+    return null
+  }
+}
+
 export {
   fetchAllCategory,
+  fetchCategoryInformation,
   fetchCategoryStory,
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
+  fetchGroupAndOtherStories,
   fetchMostLikedComment,
   fetchMostPickedStory,
   fetchMostSponsoredPublisher,
+  fetchMostSponsoredPublishersByCategory,
   fetchRecentReadrStory,
   fetchTopCollector,
 }
