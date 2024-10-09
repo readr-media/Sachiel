@@ -8,6 +8,7 @@ import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
+import { logout } from '@/utils/logout'
 import { matchPath } from '@/utils/nav-button'
 
 type IconInfo = {
@@ -98,13 +99,17 @@ const NonMobileNav = ({
         </div>
         {/* bottom (third) part */}
         <div className="flex flex-col border-t py-6">
-          {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+          {/* TODO: uncomment after setting page is implemented */}
+          {/* {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
               isOn={matchPath(iconInfo.href, path)}
               iconInfo={iconInfo}
             />
-          ))}
+          ))} */}
+          <button className="button text-primary-500" onClick={logout}>
+            登出
+          </button>
         </div>
       </div>
     </nav>

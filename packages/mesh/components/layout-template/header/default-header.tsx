@@ -9,10 +9,9 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
 import { isUserLoggedIn, useUser } from '@/context/user'
-import { logout } from '@/utils/logout'
 
 export default function DefaultHeader() {
-  // temporarily use hardcode value for state
+  // TODO: implement notification system
   const [showNotification, setShowNotification] = useState(false)
   const router = useRouter()
   const { user } = useUser()
@@ -44,19 +43,20 @@ export default function DefaultHeader() {
           {isLoggedIn ? (
             newNotification ? (
               // TODO: replace with correct path
-              <HeaderIconWrapper
-                onClick={async () => {
-                  // TODO: show notification panel
-                  // Temporary Logout button
-                  await logout()
-                  setShowNotification(!showNotification)
-                }}
-                className={
-                  showNotification ? 'rounded-[50%] bg-primary-100' : ''
-                }
-              >
-                <Icon size="2xl" iconName="icon-notifications-new" />
-              </HeaderIconWrapper>
+              <div>
+                {/* TODO: uncomment the code after notification has been implemented  */}
+                {/* <HeaderIconWrapper
+                  onClick={async () => {
+                    // TODO: show notification panel
+                    setShowNotification(!showNotification)
+                  }}
+                  className={
+                    showNotification ? 'rounded-[50%] bg-primary-100' : ''
+                  }
+                >
+                  <Icon size="2xl" iconName="icon-notifications-new" />
+                </HeaderIconWrapper> */}
+              </div>
             ) : (
               // TODO: replace with correct path
               <HeaderIconWrapper
