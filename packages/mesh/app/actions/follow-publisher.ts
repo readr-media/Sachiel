@@ -11,7 +11,7 @@ export async function addFollowPublisher({
   publisherId: string
 }) {
   const payload = {
-    action: 'add_bookmark',
+    action: 'add_follow',
     memberId,
     objective: 'publisher',
     targetId: publisherId,
