@@ -20,10 +20,17 @@ module.exports = {
       width: {
         maxContent: '1440px',
         maxMain: '1120px',
+        maxDesktopNavigation: '680px',
         nav: {
           sm: '128px',
           md: '220px',
           xl: '320px',
+        },
+        articleNav: '300px',
+        articleMain: '600px',
+        articleAside: {
+          lg: '220px',
+          xl: '340px',
         },
       },
       spacing: {
@@ -128,6 +135,10 @@ module.exports = {
           DEFAULT: 'rgba(0, 0, 0, 0.3)',
           dark: 'rgba(0, 0, 0, 0.3)',
         },
+        loading: {
+          DEFAULT: 'rgba(0, 9, 40, 0.15)',
+          dark: 'rgba(0, 9, 40, 0.15)',
+        },
         disable: {
           DEFAULT: '#E0E0E0',
           dark: '#CBCBCB',
@@ -137,6 +148,9 @@ module.exports = {
       boxShadow: {
         'bottom-sheet': '0 -8px 20px 0 rgba(0, 0, 0, 0.1)',
         modal: '0 2px 40px 0 rgba(0, 0, 0, 0.1)',
+        card: '0 2px 2px 0 rgba(0, 9, 40, 0.1), 0 0 4px 0 rgba(0, 9, 40, 0.1)',
+        'light-box':
+          '0px 0px 24px 0px rgba(0, 9, 40, 0.1),0px 2px 40px 0px rgba(0, 9, 40, 0.1)',
       },
     },
   },

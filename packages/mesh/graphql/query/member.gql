@@ -51,33 +51,6 @@ query GetMemberFollowing($memberId: ID!, $takes: Int!) {
   }
 }
 
-query GetMember($memberId: ID!) {
-  member(where: { id: $memberId }) {
-    id
-    name
-    avatar
-    followingMembers: following {
-      id
-      name
-    }
-    picks: pick {
-      id
-      story {
-        id
-      }
-    }
-    followingCategories: following_category(orderBy: { id: asc }) {
-      id
-      title
-      slug
-    }
-    followPublishers: follow_publisher {
-      id
-      title
-    }
-  }
-}
-
 query GetMemberByFollowingCategory($slugs: [String!]!) {
   members(
     where: { following_category: { every: { slug: { in: $slugs } } } }
@@ -98,6 +71,7 @@ query GetCurrentUserMemberId($uid: String!) {
     id
     name
     customId
+    email
     avatar
     avatar_image {
       id
@@ -109,8 +83,16 @@ query GetCurrentUserMemberId($uid: String!) {
     }
     picks: pick(
       where: {
-        kind: { equals: "read" }
-        AND: [{ is_active: { equals: true } }]
+        AND: [{ kind: { equals: "read" } }, { is_active: { equals: true } }]
+      }
+    ) {
+      story {
+        id
+      }
+    }
+    bookmarks: pick(
+      where: {
+        AND: [{ kind: { equals: "bookmark" } }, { is_active: { equals: true } }]
       }
     ) {
       story {
@@ -191,6 +173,9 @@ query GetMemberProfile($customId: String, $takes: Int!) {
             name
             avatar
           }
+        }
+        source {
+          id
         }
       }
       kind
@@ -316,6 +301,9 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
             avatar
           }
         }
+        source {
+          id
+        }
       }
       kind
     }
@@ -439,7 +427,7 @@ query GetMemberTransactions($memberId: ID!, $take: Int) {
         type
         charge
         unlockSingle
-        publisher{
+        publisher {
           id
           title
         }
@@ -504,7 +492,7 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
         type
         charge
         unlockSingle
-        publisher{
+        publisher {
           id
           title
         }
@@ -513,7 +501,7 @@ query GetMemberSingleTransaction($memberId: ID!, $tid: String) {
     sponsor(where: { tid: { equals: $tid }, status: { equals: Success } }) {
       fee
       createdAt
-      publisher{
+      publisher {
         id
         title
       }

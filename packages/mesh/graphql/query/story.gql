@@ -56,6 +56,7 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     url
     og_image
     published_date
+    full_content
     picksCount: pickCount(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
     )
@@ -92,5 +93,71 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     }
     content
     apiData
+    trimApiData
+    isMember
+  }
+}
+
+query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int) {
+  stories(where: { id: { in: $storyIds } }) {
+    id
+    title
+    summary
+    source {
+      id
+      title
+      customId
+    }
+    url
+    og_image
+    published_date
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    picks: pick(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      take: $picksTake
+    ) {
+      id
+      createdAt
+      kind
+      member {
+        id
+        customId
+        name
+        avatar
+      }
+    }
+    commentsCount: commentCount(where: { state: { equals: "public" } })
+    comments: comment(
+      where: { state: { equals: "public" } }
+      orderBy: { createdAt: desc }
+      take: $commentsTake
+    ) {
+      id
+      createdAt
+      member {
+        id
+        customId
+        name
+        avatar
+      }
+      content
+      state
+    }
+    content
+    apiData
+    trimApiData
+    isMember
+  }
+}
+
+query GetStorySource($storyId: ID) {
+  story(where: { id: $storyId }) {
+    source {
+      id
+      customId
+      title
+    }
   }
 }

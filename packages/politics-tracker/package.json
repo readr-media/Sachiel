@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.18.0"
   },
   "dependencies": {
     "@readr-media/react-election-widgets": "^1.1.1",

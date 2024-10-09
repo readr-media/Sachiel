@@ -1,21 +1,34 @@
+import ArticleNav from './article-nav'
 import DefaultNav from './default-nav'
 
-export type NavType = 'default' | 'article'
+export enum NavType {
+  Default = 'default',
+  Article = 'article',
+}
 
-export default function Nav({
-  type,
-  className = '',
-}: {
-  type: NavType
-  className?: string
-}) {
-  switch (type) {
-    case 'default':
-      return <DefaultNav className={className} />
+type NavProps =
+  | {
+      type: NavType.Default
+      className?: string
+    }
+  | {
+      type: NavType.Article
+      shouldShowNav: boolean
+      closeNav: () => void
+    }
 
-    case 'article':
-      // TODO: implement new nav for article page
-      return <div></div>
+export default function Nav(props: NavProps) {
+  switch (props.type) {
+    case NavType.Default:
+      return <DefaultNav className={props.className} />
+
+    case NavType.Article:
+      return (
+        <ArticleNav
+          shouldShowNav={props.shouldShowNav}
+          closeNav={props.closeNav}
+        />
+      )
     default:
       return null
   }

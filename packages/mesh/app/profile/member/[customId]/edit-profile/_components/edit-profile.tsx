@@ -62,7 +62,7 @@ export default function EditProfile() {
     <>
       <form
         ref={formRef}
-        className="relative flex grow flex-col items-center bg-white p-5 sm:px-10"
+        className="relative flex grow flex-col bg-white p-5 sm:px-5 md:px-[70px] lg:px-10"
       >
         <div className="flex w-full max-w-[600px] grow flex-col">
           <section className="body-2 flex flex-col items-center gap-3 border-b border-b-primary-200 pb-5 sm:flex-row sm:border-none">
