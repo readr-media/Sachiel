@@ -25,6 +25,7 @@ export type NavigationButtonProps = {
     type: 'text'
     text: string
     color: TextColor
+    customCss?: string
   }
 >
 
@@ -34,13 +35,21 @@ export default function MobileNavigationButton({
   onClick,
   text,
   color,
+  customCss = '',
 }: NavigationButtonProps) {
   switch (type) {
     case 'icon':
       return <IconButton icon={icon} onClick={onClick} />
 
     case 'text':
-      return <TextButton color={color} text={text} onClick={onClick} />
+      return (
+        <TextButton
+          color={color}
+          text={text}
+          customCss={customCss}
+          onClick={onClick}
+        />
+      )
     default:
       return null
   }
@@ -73,14 +82,16 @@ const TextButton = ({
   color,
   text,
   onClick,
+  customCss,
 }: {
   color: TextColor
   text: string
   onClick: MouseEventHandler<HTMLButtonElement>
+  customCss: string
 }) => {
   return (
     <button
-      className={twMerge('list-title mx-3', colorMap[color])}
+      className={twMerge('list-title mx-3', colorMap[color], customCss)}
       onClick={onClick}
     >
       {text}
