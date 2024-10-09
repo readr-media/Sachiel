@@ -1,0 +1,14 @@
+query GetLatestAddedComment($memberId: ID!, $storyId: ID!) {
+  comments(
+    where: {
+      member: { id: { equals: $memberId } }
+      story: { id: { equals: $storyId } }
+      is_active: { equals: true }
+    }
+    orderBy: { createdAt: desc }
+    # only need 1st comment
+    take: 1
+  ) {
+    id
+  }
+}
