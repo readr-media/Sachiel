@@ -31,6 +31,7 @@ export default function ProfileLayout({
   const navigationData = {
     leftButtons: [<GoBackButton key={0} />],
     title: pageCustomId,
+    // TODO: replace with ProfileMoreActionButton
     rightButtons: [<MoreButton key={0} />],
   }
 

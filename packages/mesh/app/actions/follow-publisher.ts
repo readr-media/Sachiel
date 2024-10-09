@@ -3,47 +3,46 @@
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 
-export async function addPick({
+export async function addFollowPublisher({
   memberId,
-  storyId,
+  publisherId,
 }: {
   memberId: string
-  storyId: string
+  publisherId: string
 }) {
   const payload = {
-    action: 'add_pick',
+    action: 'add_follow',
     memberId,
-    objective: 'story',
-    targetId: storyId,
-    state: 'public',
+    objective: 'publisher',
+    targetId: publisherId,
   }
 
   return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    'Failed to add pick state via pub/sub'
+    'Failed to add follow publisher state via pub/sub'
   )
 }
 
-export async function removePick({
+export async function removeFollowPublisher({
   memberId,
-  storyId,
+  publisherId,
 }: {
   memberId: string
-  storyId: string
+  publisherId: string
 }) {
   const payload = {
-    action: 'remove_pick',
+    action: 'remove_follow',
     memberId,
-    objective: 'story',
-    targetId: storyId,
+    objective: 'publisher',
+    targetId: publisherId,
   }
 
   return await fetchRestfulPost(
     RESTFUL_ENDPOINTS.pubsub,
     payload,
     { cache: 'no-cache' },
-    'Failed to remove pick state via pub/sub'
+    'Failed to remove follow publisher state via pub/sub'
   )
 }

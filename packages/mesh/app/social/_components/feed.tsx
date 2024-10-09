@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { type MongoDBResponse } from '@/utils/data-schema'
 
 import FeedComment from './feed-comment'
@@ -37,9 +37,10 @@ export default function Feed({
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
         <FeedLatestAction actions={storyActions} />
-        <button>
-          <Icon iconName="icon-more-horiz" size="l" />
-        </button>
+        <StoryMoreActionButton
+          storyId={story.id}
+          publisherId={story.publisher.id}
+        />
       </div>
       {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
