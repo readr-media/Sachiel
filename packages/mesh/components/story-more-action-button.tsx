@@ -43,7 +43,10 @@ export default function StoryMoreActionButton({
 }) {
   const [shouldShowShareSheet, setShouldShowShareSheet] = useState(false)
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
-  const [position, setPosition] = useState<Position>({ top: NaN, left: NaN })
+  const [position, setPosition] = useState<Position>({
+    top: Infinity,
+    left: Infinity,
+  })
   const actionSheetRef = useRef<HTMLDivElement>(null)
 
   useClickOutside(actionSheetRef, () => {
@@ -331,25 +334,25 @@ const shareMedia = [
     id: 'facebook',
     icon: 'icon-share-facebook',
     text: 'Facebook',
-    template: 'https://www.facebook.com/share.php?u=${storyUrl}',
+    urlTemplate: 'https://www.facebook.com/share.php?u=${storyUrl}',
   },
   {
     id: 'line',
     icon: 'icon-share-line',
     text: 'LINE',
-    template: 'https://social-plugins.line.me/lineit/share?url=${storyUrl}',
+    urlTemplate: 'https://social-plugins.line.me/lineit/share?url=${storyUrl}',
   },
   {
     id: 'threads',
     icon: 'icon-share-threads',
     text: 'Threads',
-    template: 'https://www.threads.net/intent/post?text=${storyUrl}',
+    urlTemplate: 'https://www.threads.net/intent/post?text=${storyUrl}',
   },
   {
     id: 'x',
     icon: 'icon-share-x',
     text: 'x',
-    template: 'https://twitter.com/intent/tweet?url=${storyUrl}',
+    urlTemplate: 'https://twitter.com/intent/tweet?url=${storyUrl}',
   },
 ] as const
 
@@ -360,9 +363,9 @@ const ShareSheet = ({
   storyId: string
   onClose: () => void
 }) => {
-  const getShareUrl = (template: string) => {
+  const getShareUrl = (urlTemplate: string) => {
     const storyUrl = getStoryUrl(storyId)
-    return template.replace('${storyUrl}', encodeURIComponent(storyUrl))
+    return urlTemplate.replace('${storyUrl}', storyUrl)
   }
 
   const onBackgroundClicked = () => {
@@ -389,7 +392,7 @@ const ShareSheet = ({
           {shareMedia.map((media) => (
             <a
               key={media.id}
-              href={getShareUrl(media.template)}
+              href={getShareUrl(media.urlTemplate)}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full"
