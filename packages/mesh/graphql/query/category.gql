@@ -5,3 +5,11 @@ query GetAllCategories {
     title
   }
 }
+
+query GetCategoryInformation($slug: String) {
+  categories(where: { slug: { equals: $slug } }) {
+    id
+    slug
+    title
+  }
+}

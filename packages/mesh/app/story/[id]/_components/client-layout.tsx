@@ -5,8 +5,8 @@ import { BottomActionBarType } from '@/components/layout-template/bottom-action-
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import GoBackButton from '@/components/navigation/go-back-button'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
-import MoreButton from '@/components/story-card/more-button'
 import StoryPickButton from '@/components/story-card/story-pick-button'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 import Loading from './loading'
@@ -52,9 +52,17 @@ export default function ClientLayout({
         leftButtons: [<GoBackButton key={0} />],
         title: '新聞',
         rightButtons: [
-          <PublisherDonateButton key={0} />,
+          <PublisherDonateButton
+            key={0}
+            publisherId={story?.source?.id ?? ''}
+          />,
           <StoryPickButton storyId={story?.id ?? ''} key={1} />,
-          <MoreButton key={2} className="pl-2" />,
+          <StoryMoreActionButton
+            storyId={story?.id ?? ''}
+            publisherId={story?.source?.id ?? ''}
+            key={2}
+            className="pl-2"
+          />,
         ],
       }}
       actionBar={{ type: BottomActionBarType.Article, story }}

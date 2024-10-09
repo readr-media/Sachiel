@@ -12,6 +12,7 @@ type NavigationIcon =
   | 'icon-share'
   | 'icon-bookmark'
   | 'icon-setting'
+  | 'icon-navigate-previous'
 
 export type NavigationButtonProps = {
   onClick: MouseEventHandler<HTMLButtonElement>

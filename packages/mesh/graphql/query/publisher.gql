@@ -50,6 +50,9 @@ query GetPublisherProfile($publisherId: String, $takes: Int!) {
     paywall
     full_screen_ad
     published_date
+    source {
+      id
+    }
   }
 }
 

@@ -25,7 +25,7 @@ export default async function DailyHighlight() {
 
       {groupStories && <MainGroup stories={groupStories} />}
 
-      <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:gap-y-4 lg:[&>*:nth-child(5)]:shadow-none">
+      <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:[&>*:nth-child(5)]:shadow-none">
         {noGroupStories &&
           noGroupStories.map((story) => (
             <StoryCard key={story.id} story={story} />
