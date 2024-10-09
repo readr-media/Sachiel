@@ -39,6 +39,24 @@ type PageData = {
 const latestStoryPageCount = 20
 const displayPublisherCount = 5
 
+const getInitialPageData = (allCategories: Category[]) => {
+  return allCategories.reduce((acc, curr) => {
+    const categorySlug = curr.slug
+    if (categorySlug) {
+      acc[categorySlug] = {
+        mostPickedStory: null,
+        latestStoriesInfo: {
+          stories: [],
+          totalCount: 0,
+          shouldLoadmore: true,
+        },
+        publishers: [],
+      }
+    }
+    return acc
+  }, {} as PageData)
+}
+
 export default function MediaStories({
   allCategories,
 }: {
@@ -50,21 +68,7 @@ export default function MediaStories({
     user.followingCategories[0]
   )
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
-    allCategories.reduce((acc, curr) => {
-      const categorySlug = curr.slug
-      if (categorySlug) {
-        acc[categorySlug] = {
-          mostPickedStory: null,
-          latestStoriesInfo: {
-            stories: [],
-            totalCount: 0,
-            shouldLoadmore: true,
-          },
-          publishers: [],
-        }
-      }
-      return acc
-    }, {} as PageData)
+    getInitialPageData(allCategories)
   )
 
   const followingPublisherIds = useMemo(
@@ -168,6 +172,10 @@ export default function MediaStories({
       fetchPageData()
     }
   }, [currentCategory.slug, getLatestStoriesfetchBody, mostPickedStory])
+
+  useEffect(() => {
+    setPageDataInCategories(getInitialPageData(allCategories))
+  }, [allCategories, user.followingPublishers])
 
   let contentJsx: JSX.Element
 

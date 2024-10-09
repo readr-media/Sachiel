@@ -3,16 +3,16 @@
 import NextImage from 'next/image'
 import NextLink from 'next/link'
 
-import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
-import type { Story } from '@/types/homepage'
+import type { CategoryStory, Story } from '@/types/homepage'
 
 type Props = {
   isReadrStory?: boolean
-  story: Story
+  story: Story | CategoryStory
   customId: string
   publisher: string
 }
@@ -48,7 +48,10 @@ export default function FeaturedCard({
               <p className="footnote lg:body-3 text-primary-500">{publisher}</p>
             </NextLink>
 
-            <Icon iconName="icon-more-horiz" size="l" />
+            <StoryMoreActionButton
+              storyId={story.id}
+              publisherId={story.source.id}
+            />
           </div>
 
           <h3 className="title-2 lg:title-1 mb-2 text-primary-700 lg:mb-3">

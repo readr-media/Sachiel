@@ -1,7 +1,7 @@
 'use client'
 
 import { useAccount, useSignerStatus } from '@alchemy/aa-alchemy/react'
-import { notFound, useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import Spinner from '@/components/spinner'
@@ -19,7 +19,7 @@ export default function Page() {
   const hasAlchemyAccount = !!user.wallet
   const memberId = user.memberId
 
-  if (!memberId) notFound()
+  if (!memberId) redirect('/login')
 
   useEffect(() => {
     const handleAlchemyRedirect = async () => {

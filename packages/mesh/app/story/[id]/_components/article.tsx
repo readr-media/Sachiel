@@ -4,10 +4,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import Button from '@/components/button'
-import Icon from '@/components/icon'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
+import StoryMoreActionButton from '@/components/story-more-action-button'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { displayTime } from '@/utils/story-display'
 
@@ -126,11 +126,12 @@ export default function Article({
               />
               {/* TODO: update the states and actions according to the user state */}
               <div className="hidden gap-1 sm:flex">
-                <PublisherDonateButton />
+                <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
                 <StoryPickButton storyId={story?.id ?? ''} />
-                <button className="pl-2">
-                  <Icon iconName="icon-more-horiz" size="l" />
-                </button>
+                <StoryMoreActionButton
+                  storyId={story?.id ?? ''}
+                  publisherId={story?.source?.id ?? ''}
+                />
               </div>
             </div>
           </div>

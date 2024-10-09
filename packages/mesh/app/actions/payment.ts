@@ -36,3 +36,30 @@ export async function unlockSingleStory({
     'Failed to unlock single story state via pub/sub'
   )
 }
+
+export async function sponsorPublisher({
+  memberId,
+  publisherId,
+  tid,
+  fee,
+}: {
+  memberId: string
+  publisherId: string
+  tid: string
+  fee: string
+}) {
+  const payload = {
+    action: 'sponsor_media',
+    memberId,
+    publisherId,
+    tid,
+    fee,
+  }
+
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.pubsub,
+    payload,
+    { cache: 'no-cache' },
+    'Failed to sponsor media via pub/sub'
+  )
+}

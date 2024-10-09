@@ -19,7 +19,7 @@ export default function StoryMeta({
       <div className="pl-0.5">{commentCount}</div>
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{displayTimeFromNow(publishDate)}</span>
+        <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>
       </div>
       {paywall && (
         <div className="flex items-center">
