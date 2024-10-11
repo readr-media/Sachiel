@@ -17,7 +17,6 @@ export async function updateProfile(
   memberId: string
 ) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const payload = { action: 'update_member', memberId }
   try {
     // only when has avatar
     if (formData.get('avatar')) {
@@ -47,6 +46,7 @@ export async function updateProfile(
       intro: String(formData.get('intro')),
     })
     // add pub/sub update member
+    const payload = { action: 'update_member', memberId }
     fetchRestfulPost(
       RESTFUL_ENDPOINTS.pubsub,
       payload,
