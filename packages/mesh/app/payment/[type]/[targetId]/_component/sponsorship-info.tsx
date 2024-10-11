@@ -60,7 +60,7 @@ export default function SponsorshipInfo({
   return (
     <main className="flex flex-col items-center lg:items-start">
       {isSponsored ? (
-        <div className="flex h-[calc(100vh-130px)] items-center justify-center">
+        <div className="flex h-[calc(100vh-130px)] w-full items-center justify-center">
           <div className="flex w-dvw max-w-[295px] flex-col items-center sm:max-w-[320px]">
             <Icon
               iconName="icon-check-circle-lg"
