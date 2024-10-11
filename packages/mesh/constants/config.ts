@@ -109,7 +109,7 @@ const STATIC_FILE_ENDPOINTS = {
   categoryMostSponsoredPublishersfn: (categoryName: string) =>
     `${STATIC_FILE_ORIGIN}/data/${categoryName}_recommend_sponsors.json`,
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
-  getPublisherStories: (publisherCustomId: string) =>
+  publisherStoriesFn: (publisherCustomId: string) =>
     `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_stories.json`,
 }
 

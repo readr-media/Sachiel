@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import { getPublisherStories } from '@/app/actions/get-publisher-profile'
+import { publisherStoriesFn } from '@/app/actions/get-publisher-profile'
 import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { formatFollowCount } from '@/utils/format-follow-count'
@@ -18,7 +18,7 @@ const Page = async ({ params }: PageProps) => {
   const userType = 'publisher'
 
   try {
-    const storiesResponse = await getPublisherStories(publisherId)
+    const storiesResponse = await publisherStoriesFn(publisherId)
     const response = await queryGraphQL(GetPublisherProfileDocument, {
       publisherId: storiesResponse?.source.id ?? '',
     })

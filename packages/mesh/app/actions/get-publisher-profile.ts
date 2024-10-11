@@ -3,15 +3,15 @@ import type { Story } from '@/graphql/__generated__/graphql'
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-type GetPublisherStoriesType = {
+type publisherStoriesFnType = {
   source: { id: string; title: string; official_site: string }
   stories: Story[]
 }
 
-export const getPublisherStories = async (publisherCustomId: string) => {
+export const publisherStoriesFn = async (publisherCustomId: string) => {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  return fetchStatic<GetPublisherStoriesType>(
-    STATIC_FILE_ENDPOINTS.getPublisherStories(publisherCustomId),
+  return fetchStatic<publisherStoriesFnType>(
+    STATIC_FILE_ENDPOINTS.publisherStoriesFn(publisherCustomId),
     { next: { revalidate: 10 } },
     globalLogFields
   )
