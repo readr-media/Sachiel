@@ -8,6 +8,7 @@ export default async function ReadrStory() {
   const story = data.stories[0]
   const customId = data.customId
   const publisher = data.title
+  const publisherId = data.id
 
   return (
     <FeaturedCard
@@ -15,6 +16,7 @@ export default async function ReadrStory() {
       story={story}
       customId={customId}
       publisher={publisher}
+      publisherId={publisherId}
     />
   )
 }

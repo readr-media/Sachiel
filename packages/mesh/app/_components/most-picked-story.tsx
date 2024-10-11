@@ -11,6 +11,7 @@ export default async function MostPickedStory() {
       story={story}
       customId={story.source.customId}
       publisher={story.source.title}
+      publisherId={story.source.id}
     />
   )
 }

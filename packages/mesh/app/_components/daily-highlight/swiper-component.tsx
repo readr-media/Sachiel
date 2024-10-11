@@ -1,3 +1,5 @@
+'use client'
+
 import NextLink from 'next/link'
 import type { RefObject } from 'react'
 import { useRef } from 'react'

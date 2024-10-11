@@ -38,11 +38,6 @@ export const storySchema = z.object({
       member: memberSchema.nullable(),
     })
   ),
-  source: z.object({
-    id: z.string(),
-    title: z.string(),
-    customId: z.string(),
-  }),
 })
 
 export const rawFeaturedStorySchema = storySchema.extend({

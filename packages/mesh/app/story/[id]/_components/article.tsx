@@ -125,7 +125,7 @@ export default function Article({
                 commentCount={story?.commentsCount ?? 0}
               />
               {/* TODO: update the states and actions according to the user state */}
-              <div className="hidden gap-1 sm:flex">
+              <div className="hidden items-center gap-1 sm:flex">
                 <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
                 <StoryPickButton storyId={story?.id ?? ''} />
                 <StoryMoreActionButton

@@ -15,6 +15,7 @@ type Props = {
   story: Story | CategoryStory
   customId: string
   publisher: string
+  publisherId: string
 }
 
 export default function FeaturedCard({
@@ -22,6 +23,7 @@ export default function FeaturedCard({
   story,
   customId,
   publisher,
+  publisherId,
 }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
@@ -52,7 +54,7 @@ export default function FeaturedCard({
 
             <StoryMoreActionButton
               storyId={story.id}
-              publisherId={story.source.id}
+              publisherId={publisherId}
             />
           </div>
 

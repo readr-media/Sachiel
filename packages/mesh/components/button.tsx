@@ -7,6 +7,10 @@ export type ButtonColor = keyof typeof buttonColor
 const buttonColor = {
   transparent:
     'bg-transparent text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
+  'transparent-no-border':
+    'bg-transparent text-custom-blue hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
+  'transparent-blue':
+    'bg-transparent text-custom-blue disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   white:
     'bg-white text-primary-700 border border-primary-700 hover:bg-primary-100 disabled:bg-disable disabled:text-primary-400 disabled:border-none disabled:cursor-not-allowed',
   'custom-blue':
