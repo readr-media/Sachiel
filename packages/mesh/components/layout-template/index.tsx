@@ -198,6 +198,7 @@ const ArticleLayout = ({
   const closeNav = () => {
     setShouldShowNav(false)
   }
+  const { isModalOpen } = usePickModal()
   return (
     <body className="min-h-screen bg-white">
       {/* fixed header */}
@@ -228,6 +229,7 @@ const ArticleLayout = ({
       {/* cover on mobile header */}
       <MobileNavigation {...mobileNavigation} />
       {/* cover on mobile bottom nav */}
+      {isModalOpen ? <StoryPickModal /> : null}
       <MobileBottomActionBar {...actionBar} />
     </body>
   )
