@@ -1,7 +1,7 @@
 'use client'
 import '@/styles/global.css'
 
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
@@ -10,6 +10,7 @@ import MoreButton from '@/components/story-card/more-button'
 import { FOLLOW_LIST_PATHS } from '@/constants/page-style'
 import { EditProfileProvider } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
+import { logout } from '@/utils/logout'
 
 const hasNestedLayout = (pathName: string) => {
   return FOLLOW_LIST_PATHS.some((path) => pathName.endsWith(path))
@@ -21,20 +22,11 @@ export default function ProfileMemberLayout({
   children: React.ReactNode
 }) {
   const pathName = usePathname()
-  const router = useRouter()
   const params = useParams<{ customId?: string }>()
   const { user } = useUser()
 
   const pageCustomId = params.customId ?? ''
   const isSelf = pageCustomId === user?.customId
-
-  const goToSettingPage = () => {
-    // TODO: update the setting url
-  }
-
-  const backToPreviousPage = () => {
-    router.back()
-  }
 
   if (hasNestedLayout(pathName)) {
     return <EditProfileProvider>{children}</EditProfileProvider>
@@ -50,12 +42,18 @@ export default function ProfileMemberLayout({
       }}
       mobileNavigation={{
         leftButtons: [
-          <MobileNavigationButton
-            key={0}
-            type="icon"
-            icon="icon-setting"
-            onClick={isSelf ? goToSettingPage : backToPreviousPage}
-          />,
+          isSelf ? (
+            <MobileNavigationButton
+              key={0}
+              type="text"
+              text="登出"
+              color="gray"
+              customCss="button"
+              onClick={logout}
+            />
+          ) : (
+            <GoBackButton key={0} />
+          ),
         ],
         title: pageCustomId,
         rightButtons: [

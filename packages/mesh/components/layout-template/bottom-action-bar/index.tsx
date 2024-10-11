@@ -3,6 +3,7 @@ import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryCommentCount from '@/components/story-card/story-comment-count'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickCount from '@/components/story-card/story-pick-count'
+import { useComment } from '@/context/comment-context'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 
 export enum BottomActionBarType {
@@ -32,10 +33,15 @@ type Story = NonNullable<GetStoryQuery>['story']
 const ArticleBottomActionBar = ({ story }: { story: Story }) => {
   const picksCount = story?.picksCount ?? 0
   const commentsCount = story?.commentsCount ?? 0
+  const { dispatch } = useComment()
+  const openCommentBlock = () => {
+    dispatch({ type: 'TOGGLE_MOBILE_COMMENT_MODAL', payload: { isOpen: true } })
+    document.body.classList.add('overflow-hidden')
+  }
   return (
     <nav className="fixed inset-x-0 bottom-0 h-[theme(height.nav.default)] border-t bg-white shadow-[0_0_8px_0px_rgba(0,0,0,0.1)] sm:hidden">
       <div className="footnote flex justify-between px-5 pt-4 text-primary-500">
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={openCommentBlock}>
           {!!commentsCount && (
             <>
               <StoryCommentCount commentsCount={commentsCount} />

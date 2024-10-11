@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import Icon, { type IconName } from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
-import { useUser } from '@/context/user'
+import { isUserLoggedIn, useUser } from '@/context/user'
 
 type IconInfo = {
   icon: {
@@ -75,6 +75,9 @@ const NonMobileNav = ({
   shouldShowNav: boolean
   userCustomId: string
 }) => {
+  const { user } = useUser()
+  const isLoggedIn = isUserLoggedIn(user)
+
   return (
     <nav
       className={`z-layout hidden transition-transform sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:w-[theme(width.articleNav)] sm:justify-end sm:bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.articleNav))] ${
@@ -128,15 +131,18 @@ const NonMobileNav = ({
           </div>
         </div>
         {/* bottom (third) part */}
-        <div className="flex flex-col border-t py-6">
-          {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+        {isLoggedIn && (
+          <div className="flex flex-col border-t py-6">
+            {/* {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
               isOn={path === iconInfo.href}
               iconInfo={iconInfo}
             />
-          ))}
-        </div>
+          ))} */}
+            <button className="button text-primary-500">登出</button>
+          </div>
+        )}
       </div>
     </nav>
   )
