@@ -29,7 +29,9 @@ export default forwardRef(function StoryCard<
     >
       <div className="mb-1 flex justify-between">
         <NextLink href={`/profile/publisher/${story.source.customId}`}>
-          <p className="caption-1 text-primary-500">{story.source.title}</p>
+          <p className="caption-1 text-primary-500 hover-or-active:text-primary-700">
+            {story.source.title}
+          </p>
         </NextLink>
         <StoryMoreActionButton
           storyId={story.id}
@@ -39,8 +41,8 @@ export default forwardRef(function StoryCard<
 
       <div className="flex justify-between gap-x-3 sm:gap-x-10">
         <div>
-          <p className="subtitle-1 sm:title-2 mb-2 line-clamp-2 grow text-primary-700 sm:mb-1">
-            <NextLink href={`/story/${story.id}`}> {story.title}</NextLink>
+          <p className="subtitle-1 sm:title-2 mb-2 line-clamp-2 grow text-primary-700 hover-or-active:underline sm:mb-1">
+            <NextLink href={`/story/${story.id}`}>{story.title}</NextLink>
           </p>
           <div className="caption-1">
             <StoryMeta

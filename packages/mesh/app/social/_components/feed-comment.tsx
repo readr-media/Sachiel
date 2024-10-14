@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -29,7 +30,12 @@ export default function FeedComment({
       <div className="ml-2">
         <span className="flex items-center">
           <div className="subtitle-2 text-primary-700">
-            {comment.member.name}
+            <Link
+              href={`profile/member/${comment.member.customId}`}
+              className="hover-or-active:underline"
+            >
+              {comment.member.name}
+            </Link>
           </div>
           <Icon iconName="icon-dot" size="s" />
           <div className="caption-1 text-primary-500">
@@ -45,7 +51,7 @@ export default function FeedComment({
               {'...'}
               <button
                 onClick={toggleExpand}
-                className="body-3 pl-1 text-primary-400"
+                className="body-3 pl-1 text-primary-400 hover-or-active:text-primary-700"
               >
                 看完整留言
               </button>

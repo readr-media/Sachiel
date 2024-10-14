@@ -35,7 +35,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
           <div>
             <div className="flex h-6 flex-row items-center justify-between">
               <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
-                <h4 className="body-3 h-5 text-primary-500 lg:h-auto">
+                <h4 className="body-3 h-5 text-primary-500 hover-or-active:text-primary-700 lg:h-auto">
                   {story.source?.title ?? ''}
                 </h4>
               </Link>
@@ -46,7 +46,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               />
             </div>
             <Link href={`/story/${story.id}`}>
-              <div className="hero-title mt-1 text-primary-700">
+              <div className="hero-title mt-1 text-primary-700 hover-or-active:underline">
                 {story.title ?? ''}
               </div>
               <div className="body-3 mt-3 line-clamp-1 text-primary-600">

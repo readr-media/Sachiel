@@ -25,7 +25,7 @@ export default function FollowSuggestionWidget({
                 <div className="ml-3 grow-0">
                   <Link
                     href={`/profile/member/${member.customId}`}
-                    className="subtitle-2 mb-[2px] text-primary-700"
+                    className="subtitle-2 mb-[2px] text-primary-700 hover-or-active:underline"
                   >
                     {member.name}
                   </Link>

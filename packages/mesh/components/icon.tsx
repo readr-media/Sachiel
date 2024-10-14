@@ -70,6 +70,7 @@ export type IconName =
   | 'icon-setting-lg-hover'
   | 'icon-setting-lg-on'
   | 'icon-more-horiz'
+  | 'icon-more-horiz-hover'
   | 'icon-chat-bubble'
   | 'icon-dot'
   | 'icon-avatar-default'

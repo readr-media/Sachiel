@@ -34,7 +34,9 @@ export default function MainCard({ story }: Props) {
         <div>
           <div className="mb-1 flex justify-between">
             <NextLink href={`/profile/publisher/${story.source.customId}`}>
-              <p className="body-3 text-primary-500">{story.source.title}</p>
+              <p className="body-3 text-primary-500 hover-or-active:text-primary-700">
+                {story.source.title}
+              </p>
             </NextLink>
 
             <StoryMoreActionButton
@@ -44,7 +46,7 @@ export default function MainCard({ story }: Props) {
           </div>
 
           <NextLink href={`story/${story.id}`}>
-            <h3 className="title-2 mb-2 text-primary-700 sm:mb-3">
+            <h3 className="title-2 mb-2 text-primary-700 hover-or-active:underline sm:mb-3">
               {story.title}
             </h3>
             <p className="body-3 mb-3 hidden text-primary-600 sm:line-clamp-1">

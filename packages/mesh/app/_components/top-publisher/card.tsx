@@ -27,7 +27,9 @@ const StoryCard = ({
         )}
 
         <div>
-          <h3 className="subtitle-2 mb-1 text-primary-700">{story.title}</h3>
+          <h3 className="subtitle-2 mb-1 text-primary-700 hover-or-active:underline">
+            {story.title}
+          </h3>
           <div className="caption-1">
             <StoryMeta
               commentCount={story.commentCount}
@@ -54,7 +56,7 @@ export default function TopPublisherCard({ publisher }: Props) {
           {/* TODO: render logo of publisher */}
           <div>LOGO</div>
           <div>
-            <p className="subtitle-2 text-primary-700">
+            <p className="subtitle-2 text-primary-700 hover-or-active:underline">
               <NextLink href={`profile/publisher/${publisher.customId}`}>
                 {publisher.title}
               </NextLink>

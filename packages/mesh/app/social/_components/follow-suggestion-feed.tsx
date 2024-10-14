@@ -43,7 +43,7 @@ export default function FollowSuggestionFeed({
                   <div className="flex flex-col items-center gap-1 sm:items-start sm:gap-0.5">
                     <Link
                       href={`/profile/member/${member.customId}`}
-                      className="subtitle-2 text-primary-700"
+                      className="subtitle-2 text-primary-700 hover-or-active:underline"
                     >
                       {member.name}
                     </Link>
