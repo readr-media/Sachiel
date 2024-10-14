@@ -180,3 +180,51 @@ export const mostFollowersMemberSchema = z.array(
 export type MostFollowersMember = z.infer<
   typeof mostFollowersMemberSchema
 >[number]
+
+/**
+ * most sponsored publishers and their stories for media page
+ */
+export const mostSponsorPublishersSchema = z.array(
+  z.object({
+    publisher: z.object({
+      id: z.string(),
+      customId: z.string(),
+      title: z.string(),
+      official_site: z.string(),
+      logo: z.string(),
+      full_content: z.boolean(),
+      paywall: z.boolean(),
+      sponsorCount: z.number(),
+    }),
+    stories: z.array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        title: z.string(),
+        published_date: z.string(),
+        og_title: z.string(),
+        og_image: z.string(),
+        og_description: z.string(),
+        isMember: z.boolean(),
+        category: z
+          .object({
+            slug: z.string(),
+          })
+          .nullable(),
+        readsCount: z.number(),
+        commentCount: z.number(),
+        paywall: z.boolean(),
+        full_screen_ad: z.string(),
+        source: z.object({
+          id: z.string(),
+          title: z.string(),
+          customId: z.string(),
+        }),
+      })
+    ),
+  })
+)
+
+export type MostSponsorPublisher = z.infer<
+  typeof mostSponsorPublishersSchema
+>[number]
