@@ -37,7 +37,7 @@ const DropdownMenu = () => {
           onClick={handleReport}
           className="button-large flex items-center gap-1 px-5 py-2 hover:bg-primary-100"
         >
-          <Icon iconName="icon-edit" size="m" />
+          <Icon iconName="icon-flag" size="m" />
           檢舉留言
         </li>
       ) : (
