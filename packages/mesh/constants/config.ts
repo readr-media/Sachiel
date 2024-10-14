@@ -61,7 +61,7 @@ switch (ENV) {
     FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
       API_KEY: 'AIzaSyBO495WVBDY8cGfuHmpThZxKFgiipRlILs',
-      AUTH_DOMAIN: 'sachel-mesh-dev-4g6paft7cq-de.a.run.app',
+      AUTH_DOMAIN: 'dev.mmesh.news',
       PROJECT_ID: 'readr-dev-38eec',
       STORAGE_BUCKET: 'readr-dev-38eec.appspot.com',
       MESSAGING_SENDER_ID: '611179505112',
