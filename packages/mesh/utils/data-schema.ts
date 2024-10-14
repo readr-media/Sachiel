@@ -104,6 +104,7 @@ export const rawMostSponsoredPublisherStoryByCategorySchema = z.object({
     customId: z.string(),
     official_site: z.string(),
     sponsoredCount: z.number(),
+    logo: z.string(),
   }),
   stories: z.array(
     storySchema.omit({

@@ -63,9 +63,13 @@ export default function PublisherCard({
             />
           </div>
           <div>
-            <div className="subtitle-2 text-primary-700 hover-or-active:underline">
-              {publisherAndStories.publisher.title}
-            </div>
+            <Link
+              href={`/profile/publisher/${publisherAndStories.publisher.customId}`}
+            >
+              <div className="subtitle-2 text-primary-700 hover-or-active:underline">
+                {publisherAndStories.publisher.title}
+              </div>
+            </Link>
             <div className="footnote line-clamp-1 text-primary-500">
               已獲得
               <span className="text-custom-blue">
