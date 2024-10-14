@@ -34,7 +34,9 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         <div className="flex justify-between">
           <div className="flex gap-x-4">
             <div className="relative size-11 shrink-0">
-              <Avatar src={comment.member.avatar} size="l" />
+              <Link href={`profile/member/${comment.member.customId}`}>
+                <Avatar src={comment.member.avatar} size="l" />
+              </Link>
             </div>
 
             <div>
