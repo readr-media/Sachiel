@@ -79,8 +79,8 @@ const ArticleCard = ({
             {(storyData?.source && storyData?.source.title) ?? '預設媒體'}
           </p>
           <StoryMoreActionButton
-            storyId={storyData.id}
-            publisherId={storyData.source?.id ?? ''}
+            storyId={storyData?.id ?? ''}
+            publisherId={storyData?.source?.id ?? ''}
           />
         </section>
         <section className="mb-2 flex items-start justify-between sm:gap-10">
