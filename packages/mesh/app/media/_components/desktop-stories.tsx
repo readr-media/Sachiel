@@ -1,24 +1,22 @@
 import { useMemo } from 'react'
 
+import type { MostSponsorPublisher } from '@/utils/data-schema'
+
 import DesktopInfiniteStories from './desktop-infinite-stories'
 import HeroStoryCard from './hero-story-card'
-import type {
-  DisplayPublisher,
-  LatestStoriesInfo,
-  Story,
-} from './media-stories'
+import type { LatestStoriesInfo, Story } from './media-stories'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard from './publisher-card'
 import StoryCard from './story-card'
 
 export default function DesktopStories({
   mostPickedStory,
-  publishers,
+  publishersAndStories,
   latestStoriesInfo,
   loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
-  publishers: DisplayPublisher[]
+  publishersAndStories: MostSponsorPublisher[]
   latestStoriesInfo: LatestStoriesInfo
   loadMoreLatestStories: () => void
 }) {
@@ -50,7 +48,7 @@ export default function DesktopStories({
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
       <div className="flex gap-10 p-10 pb-15">
-        <section className="w-[600px] shrink-0">
+        <section className="w-articleMain shrink-0">
           <DesktopInfiniteStories
             key={latestStoriesInfo.stories.length}
             latestStoriesInfo={{
@@ -62,10 +60,10 @@ export default function DesktopStories({
           />
         </section>
         <aside className="flex flex-col gap-3">
-          {publishers.map((displayPublisher) => (
+          {publishersAndStories.map((publisherAndStories) => (
             <PublisherCard
-              key={displayPublisher.id}
-              publisher={displayPublisher}
+              key={publisherAndStories.publisher.id}
+              publisherAndStories={publisherAndStories}
             />
           ))}
         </aside>

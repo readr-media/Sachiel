@@ -7,10 +7,9 @@ import getLatestStoriesInCategory, {
   type Story,
 } from '@/app/actions/get-latest-stories-in-category'
 import getMostPickedStoriesInCategory from '@/app/actions/get-most-picked-stories-in-category'
-import getMostSponsorPublishers, {
-  type Publisher,
-} from '@/app/actions/get-most-sponsor-publishers'
+import getMostSponsorPublishersAndStories from '@/app/actions/get-most-sponsor-publishers-and-stories'
 import { useUser } from '@/context/user'
+import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import type { Category } from '../page'
 import CategorySelector from './category-selector'
@@ -20,9 +19,7 @@ import NoStories from './no-stories'
 import NonDesktopStories from './non-desktop-stories'
 
 export { type Story } from '@/app/actions/get-latest-stories-in-category'
-export type DisplayPublisher = Publisher & {
-  stories: Story[]
-}
+
 export type LatestStoriesInfo = {
   stories: Story[]
   totalCount: number
@@ -32,12 +29,13 @@ type PageData = {
   [key: string]: {
     mostPickedStory: Story | null
     latestStoriesInfo: LatestStoriesInfo
-    publishers: DisplayPublisher[]
+    publishersAndStories: MostSponsorPublisher[]
   }
 }
 
 const latestStoryPageCount = 20
 const displayPublisherCount = 5
+const displayPublisherStoriesCount = 3
 
 const getInitialPageData = (allCategories: Category[]) => {
   return allCategories.reduce((acc, curr) => {
@@ -50,7 +48,7 @@ const getInitialPageData = (allCategories: Category[]) => {
           totalCount: 0,
           shouldLoadmore: true,
         },
-        publishers: [],
+        publishersAndStories: [],
       }
     }
     return acc
@@ -75,7 +73,7 @@ export default function MediaStories({
     () => user.followingPublishers.map((publisher) => publisher.id),
     [user.followingPublishers]
   )
-  const { mostPickedStory, latestStoriesInfo, publishers } =
+  const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
     pageDataInCategories[currentCategory.slug ?? '']
   const getLatestStoriesfetchBody = useMemo(
     () => ({
@@ -130,11 +128,11 @@ export default function MediaStories({
         const [
           mostPickedStoryResponse,
           latestStoriesResponse,
-          publishersResponse,
+          publishersAndStoriesResponse,
         ] = await Promise.all([
           getMostPickedStoriesInCategory(currentCategory.slug ?? ''),
           getLatestStoriesInCategory(getLatestStoriesfetchBody),
-          getMostSponsorPublishers(),
+          getMostSponsorPublishersAndStories(),
         ])
 
         // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
@@ -145,13 +143,15 @@ export default function MediaStories({
           shouldLoadmore: true,
         }
 
-        const publishers =
-          publishersResponse
+        const publishersAndStories =
+          publishersAndStoriesResponse
             ?.slice(0, displayPublisherCount)
-            .map((publisher) => ({
-              ...publisher,
-              // TODO: wait getMostSponsorPublishers api to append stories
-              stories: latestStoriesInfo.stories.slice(0, 3),
+            .map((publisherAndStories) => ({
+              publisher: publisherAndStories.publisher,
+              stories: publisherAndStories.stories.slice(
+                0,
+                displayPublisherStoriesCount
+              ),
             })) ?? []
 
         setPageDataInCategories((oldPageData) => ({
@@ -159,7 +159,7 @@ export default function MediaStories({
           [currentCategory.slug ?? '']: {
             mostPickedStory,
             latestStoriesInfo,
-            publishers,
+            publishersAndStories,
           },
         }))
         setIsLoading(false)
@@ -189,14 +189,14 @@ export default function MediaStories({
         <DesktopStories
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
-          publishers={publishers}
+          publishersAndStories={publishersAndStories}
           loadMoreLatestStories={loadMoreLatestStories}
         />
         <NonDesktopStories
           key={latestStoriesInfo.stories.length}
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
-          publishers={publishers}
+          publishersAndStories={publishersAndStories}
           loadMoreLatestStories={loadMoreLatestStories}
         />
       </>
