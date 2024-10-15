@@ -207,11 +207,7 @@ export const mostSponsorPublishersSchema = z.array(
         og_image: z.string(),
         og_description: z.string(),
         isMember: z.boolean(),
-        category: z
-          .object({
-            slug: z.string(),
-          })
-          .nullable(),
+        category: categorySchema.nullable(),
         readsCount: z.number(),
         commentCount: z.number(),
         paywall: z.boolean(),
