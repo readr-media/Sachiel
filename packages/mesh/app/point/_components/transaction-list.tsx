@@ -106,7 +106,9 @@ export default function TransactionList({
                   )}
                   <div className="flex w-full flex-col gap-1">
                     <div className="subtitle-2 flex justify-between gap-4">
-                      <p className="text-primary-700">{transactionTitle}</p>
+                      <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
+                        {transactionTitle}
+                      </p>
                       {data.policy?.type === 'deposit' ? (
                         <p className="text-custom-blue">+{transactionAmount}</p>
                       ) : (
