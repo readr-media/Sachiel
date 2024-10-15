@@ -7,12 +7,25 @@ import {
   MongoDBResponseSchema,
   mostFollowersMemberSchema,
 } from '@/utils/data-schema'
-import { fetchRestfulGet } from '@/utils/fetch-restful'
+import { fetchRestfulPost } from '@/utils/fetch-restful'
 import fetchStatic from '@/utils/fetch-static'
 
-export async function getSocialPageData(memberId: string) {
-  const url = RESTFUL_ENDPOINTS.socialPage + memberId
-  const data = await fetchRestfulGet<MongoDBResponse>(url)
+export async function getSocialPageData(
+  memberId: string,
+  start: number,
+  take: number
+) {
+  const url = RESTFUL_ENDPOINTS.socialPage
+  const data = await fetchRestfulPost<MongoDBResponse>(
+    url,
+    {
+      member_id: memberId,
+      index: start,
+      take,
+    },
+    { cache: 'no-cache' },
+    'Fail to get social page data'
+  )
   const parseResult = MongoDBResponseSchema.safeParse(data)
   if (parseResult.success) {
     return parseResult.data

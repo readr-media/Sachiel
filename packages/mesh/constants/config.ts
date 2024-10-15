@@ -89,7 +89,7 @@ const RESTFUL_ENDPOINTS = {
   relatedStories: `${API_ORIGIN}/search/`,
   accessToken: `${API_ORIGIN}/accesstoken`,
   paymentBalance: `${PAYMENT_ORIGIN}/balance/`,
-  socialPage: `${API_ORIGIN}/socialpage/`,
+  socialPage: `${API_ORIGIN}/socialpage`,
 }
 
 const STATIC_FILE_ENDPOINTS = {
