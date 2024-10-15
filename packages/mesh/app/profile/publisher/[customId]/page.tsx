@@ -7,16 +7,16 @@ import PublisherPage from './_component/publisher-page'
 
 export type PageProps = {
   params: {
-    publisherId: string
+    customId: string
   }
 }
 
 const Page = async ({ params }: PageProps) => {
-  const { publisherId } = params
+  const { customId } = params
   const userType = 'publisher'
 
   try {
-    const storiesResponse = await publisherStoriesFn(publisherId)
+    const storiesResponse = await publisherStoriesFn(customId)
 
     if (!storiesResponse) {
       notFound()
@@ -45,7 +45,7 @@ const Page = async ({ params }: PageProps) => {
           name={userName}
           avatar={userLogo}
           intro={userIntro}
-          publisherId={publisherId}
+          publisherId={customId}
           userType={userType}
           storyData={storyData}
         />
