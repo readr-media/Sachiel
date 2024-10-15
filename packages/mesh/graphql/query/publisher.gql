@@ -10,17 +10,6 @@ query Publishers {
   }
 }
 
-query GetPublisherProfile($publisherId: ID!) {
-  #  使用publishers因為query publisher的where沒有提供customId的篩選
-  publisher(where: { id: $publisherId }) {
-    id
-    title
-    logo
-    followerCount
-    description
-  }
-}
-
 query GetPublisherFollowerList($publisherId: String, $takes: Int!) {
   publishers(where: { customId: { equals: $publisherId } }) {
     id

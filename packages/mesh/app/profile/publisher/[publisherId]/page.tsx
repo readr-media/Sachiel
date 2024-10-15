@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 
 import { publisherStoriesFn } from '@/app/actions/get-publisher-profile'
-import { GetPublisherProfileDocument } from '@/graphql/__generated__/graphql'
-import queryGraphQL from '@/utils/fetch-graphql'
 import { formatFollowCount } from '@/utils/format-follow-count'
 
 import PublisherPage from './_component/publisher-page'
@@ -19,20 +17,18 @@ const Page = async ({ params }: PageProps) => {
 
   try {
     const storiesResponse = await publisherStoriesFn(publisherId)
-    const response = await queryGraphQL(GetPublisherProfileDocument, {
-      publisherId: storiesResponse?.source.id ?? '',
-    })
 
-    if (!response || !response.publisher) {
+    if (!storiesResponse) {
       notFound()
     }
 
-    const userData = response.publisher
-    const userName = userData.title || '使用者名稱'
-    const userLogo = userData.logo || ''
-    const userIntro = userData.description || '使用者介紹'
+    const userData = storiesResponse?.source
+    const userName = userData?.title || '使用者名稱'
+    const userLogo = userData?.logo || ''
+    const userIntro = userData?.description || '使用者介紹'
+    const followerCount = userData?.followerCount || 0
     const storyData = storiesResponse?.stories ?? []
-    const followerCount = userData.followerCount || 0
+
     const convertedFollowerCount = formatFollowCount(followerCount)
 
     // TODO: 等待 API 實現
