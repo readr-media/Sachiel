@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 
+import { MobileCommentModalContent } from '@/components/comment/mobile-comment-section/mobile-comment-modal-content'
+import { CommentProvider } from '@/context/comment-context'
 import { GetStoryDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
@@ -7,7 +9,7 @@ import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import ClientLayout from './_components/client-layout'
 
 const picksTake = 5
-const commentsTake = 3
+const commentsTake = 10
 
 export default async function MediaLayout({
   children,
@@ -29,5 +31,12 @@ export default async function MediaLayout({
     notFound()
   }
 
-  return <ClientLayout story={storyData.story}>{children}</ClientLayout>
+  return (
+    <body>
+      <CommentProvider initialComments={storyData.story?.comments || []}>
+        <MobileCommentModalContent storyData={storyData.story} />
+        <ClientLayout story={storyData.story}>{children}</ClientLayout>
+      </CommentProvider>
+    </body>
+  )
 }

@@ -62,12 +62,12 @@ export default function Feed({
       ) : null}
       <div className="px-5 pb-4 pt-3 sm:px-8 sm:pb-6 sm:pt-4">
         <Link href={`/publisher/${story.publisher.customId}}`}>
-          <h4 className="body-3 mb-1 text-primary-500">
+          <h4 className="body-3 mb-1 text-primary-500 hover-or-active:text-primary-700">
             {story.publisher.title}
           </h4>
         </Link>
         <Link href={`/story/${story.id}`}>
-          <h2 className="title-1 mb-2 line-clamp-2 break-words">
+          <h2 className="title-1 mb-2 line-clamp-2 break-words hover-or-active:underline">
             {story.og_title}
           </h2>
         </Link>

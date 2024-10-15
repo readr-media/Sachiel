@@ -4,6 +4,7 @@ const memberSchema = z.object({
   id: z.string(),
   name: z.string(),
   avatar: z.string(),
+  customId: z.string().optional(),
 })
 
 export const sourceSchema = z.object({
@@ -40,11 +41,6 @@ export const storySchema = z.object({
       member: memberSchema.nullable(),
     })
   ),
-  source: z.object({
-    id: z.string(),
-    title: z.string(),
-    customId: z.string(),
-  }),
 })
 
 export const rawFeaturedStorySchema = storySchema.extend({
@@ -90,6 +86,7 @@ export const rawTopCollectorSchema = z.object({
   email: z.string(),
   nickname: z.string(),
   pickCount: z.number(),
+  customId: z.string(),
 })
 
 export const rawCategoryStorySchema = storySchema

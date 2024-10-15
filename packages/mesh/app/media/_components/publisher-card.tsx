@@ -26,7 +26,9 @@ const PublisherStory = ({
             />
           </div>
         )}
-        <div className="subtitle-2">{story.title ?? ''}</div>
+        <div className="subtitle-2 hover-or-active:underline">
+          {story.title ?? ''}
+        </div>
       </Link>
       <div className="caption-1 mt-1">
         <StoryMeta
@@ -52,7 +54,7 @@ export default function PublisherCard({
           {/* TODO: render logo of publisher */}
           <div>logo</div>
           <div>
-            <div className="subtitle-2 text-primary-700">
+            <div className="subtitle-2 text-primary-700 hover-or-active:underline">
               {publisher.title ?? ''}
             </div>
             <div className="footnote line-clamp-1 text-primary-500">

@@ -13,6 +13,7 @@ export default function MostPickedStory({ story }: Props) {
       story={story}
       customId={story.source.customId}
       publisher={story.source.title}
+      publisherId={story.source.id}
     />
   )
 }

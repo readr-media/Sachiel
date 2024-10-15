@@ -7,7 +7,8 @@ import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
-import { useUser } from '@/context/user'
+import { isUserLoggedIn, useUser } from '@/context/user'
+import { logout } from '@/utils/logout'
 import { matchPath } from '@/utils/nav-button'
 
 type IconInfo = {
@@ -54,6 +55,8 @@ const NonMobileNav = ({
   avatarUrl: string
   userCustomId: string
 }) => {
+  const { user } = useUser()
+  const isLoggedIn = isUserLoggedIn(user)
   return (
     <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:z-layout sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
       {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
@@ -97,15 +100,21 @@ const NonMobileNav = ({
           </div>
         </div>
         {/* bottom (third) part */}
-        <div className="flex flex-col border-t py-6">
-          {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+        {isLoggedIn && (
+          <div className="flex flex-col border-t py-6">
+            {/* TODO: uncomment after setting page is implemented */}
+            {/* {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
             <NonMobileNavIcon
               key={iconInfo.text}
               isOn={matchPath(iconInfo.href, path)}
               iconInfo={iconInfo}
             />
-          ))}
-        </div>
+          ))} */}
+            <button className="button text-primary-500" onClick={logout}>
+              登出
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   )

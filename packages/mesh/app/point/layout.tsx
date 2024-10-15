@@ -5,6 +5,7 @@ import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import Spinner from '@/components/spinner'
 
+import LoadingPoint from './_components/loading'
 import LoadingSponsorship from './sponsorship/_components/loading'
 import LoadingSubscribeStories from './subscribe-stories/_components/loading'
 
@@ -69,6 +70,7 @@ export default function PointLayout({
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}
+      suspenseFallback={<LoadingPoint />}
     >
       {children}
     </LayoutTemplate>

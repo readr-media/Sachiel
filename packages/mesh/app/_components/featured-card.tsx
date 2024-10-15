@@ -15,6 +15,7 @@ type Props = {
   story: Story | CategoryStory
   customId: string
   publisher: string
+  publisherId: string
 }
 
 export default function FeaturedCard({
@@ -22,6 +23,7 @@ export default function FeaturedCard({
   story,
   customId,
   publisher,
+  publisherId,
 }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
@@ -45,16 +47,18 @@ export default function FeaturedCard({
         <div className="grow">
           <div className="mb-1 flex justify-between">
             <NextLink href={`/profile/member/${customId}`}>
-              <p className="footnote lg:body-3 text-primary-500">{publisher}</p>
+              <p className="footnote lg:body-3 text-primary-500 hover-or-active:text-primary-700">
+                {publisher}
+              </p>
             </NextLink>
 
             <StoryMoreActionButton
               storyId={story.id}
-              publisherId={story.source.id}
+              publisherId={publisherId}
             />
           </div>
 
-          <h3 className="title-2 lg:title-1 mb-2 text-primary-700 lg:mb-3">
+          <h3 className="title-2 lg:title-1 mb-2 text-primary-700 hover-or-active:underline lg:mb-3">
             <NextLink href={`/story/${story.id}`}>{story.title}</NextLink>
           </h3>
 

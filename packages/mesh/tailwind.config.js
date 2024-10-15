@@ -1,3 +1,6 @@
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -154,7 +157,12 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant }) {
+      // apply to both :hover and :active but doesn't work for group-*
+      addVariant('hover-or-active', ['&:hover', '&:active'])
+    }),
+  ],
   future: {
     hoverOnlyWhenSupported: true,
   },

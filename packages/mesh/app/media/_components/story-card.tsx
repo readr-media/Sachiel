@@ -57,7 +57,7 @@ export default forwardRef(function StoryCard(
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
           <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
-            <h4 className="caption-1 line-clamp-1 text-primary-500">
+            <h4 className="caption-1 line-clamp-1 text-primary-500 hover-or-active:text-primary-700">
               {story.source?.title ?? ''}
             </h4>
           </Link>
@@ -70,10 +70,14 @@ export default forwardRef(function StoryCard(
         <Link href={`/story/${story.id}`}>
           <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">
             <div>
-              <h2 className={`subtitle-1 text-primary-700 sm:hidden`}>
+              <h2
+                className={`subtitle-1 text-primary-700 hover-or-active:underline sm:hidden`}
+              >
                 {story.title ?? ''}
               </h2>
-              <h2 className={`title-2 hidden text-primary-700 sm:block`}>
+              <h2
+                className={`title-2 hidden text-primary-700 hover-or-active:underline sm:block`}
+              >
                 {story.title ?? ''}
               </h2>
               <StoryMetaWrapper story={story} className="hidden sm:block" />

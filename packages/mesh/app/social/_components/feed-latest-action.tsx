@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
 
@@ -19,7 +21,15 @@ export default function FeedLatestAction({
           <Avatar src={commentsData[0]?.member?.avatar} size="m" />
           <div className="body-3 text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
+              <Link
+                href={`profile/member/${commentsData[0].member.customId}`}
+                className="hover-or-active:underline"
+              >
+                {truncateNameByBytes(
+                  commentsData[0]?.member?.name,
+                  maxNameBytes
+                )}
+              </Link>
             </span>
             在這篇文章留言
           </div>
@@ -40,11 +50,27 @@ export default function FeedLatestAction({
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
+              <Link
+                href={`profile/member/${commentsData[0].member.customId}`}
+                className="hover-or-active:underline"
+              >
+                {truncateNameByBytes(
+                  commentsData[0]?.member?.name,
+                  maxNameBytes
+                )}
+              </Link>
             </span>
             及
             <span className="text-primary-700">
-              {truncateNameByBytes(commentsData[1]?.member?.name, maxNameBytes)}
+              <Link
+                href={`profile/member/${commentsData[1].member.customId}`}
+                className="hover-or-active:underline"
+              >
+                {truncateNameByBytes(
+                  commentsData[1]?.member?.name,
+                  maxNameBytes
+                )}
+              </Link>
             </span>
             在這篇文章留言
           </div>
@@ -58,7 +84,15 @@ export default function FeedLatestAction({
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="text-primary-700">
-              {truncateNameByBytes(commentsData[0]?.member?.name, maxNameBytes)}
+              <Link
+                href={`profile/member/${commentsData[0].member.customId}`}
+                className="hover-or-active:underline"
+              >
+                {truncateNameByBytes(
+                  commentsData[0]?.member?.name,
+                  maxNameBytes
+                )}
+              </Link>
             </span>
             及其他
             <span className="px-1 text-primary-700">{commentsNum - 1}</span>
@@ -73,7 +107,12 @@ export default function FeedLatestAction({
         <Avatar src={picksData[0]?.member?.avatar} size="m" />
         <div className="body-3 text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            <Link
+              href={`profile/member/${picksData[0].member.customId}`}
+              className="hover-or-active:underline"
+            >
+              {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            </Link>
           </span>
           精選了這篇
         </div>
@@ -94,11 +133,21 @@ export default function FeedLatestAction({
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            <Link
+              href={`profile/member/${picksData[0].member.customId}`}
+              className="hover-or-active:underline"
+            >
+              {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            </Link>
           </span>
           及
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
+            <Link
+              href={`profile/member/${picksData[1].member.customId}`}
+              className="hover-or-active:underline"
+            >
+              {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
+            </Link>
           </span>
           精選了這篇文章
         </div>
@@ -112,7 +161,12 @@ export default function FeedLatestAction({
         </div>
         <div className="body-3 flex flex-row text-primary-500">
           <span className="text-primary-700">
-            {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            <Link
+              href={`profile/member/${picksData[0].member.customId}`}
+              className="hover-or-active:underline"
+            >
+              {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
+            </Link>
           </span>
           及其他
           <span className="px-1 text-primary-700">{picksNum - 1}</span>

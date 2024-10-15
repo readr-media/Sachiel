@@ -104,9 +104,18 @@ export default function StoryMoreActionButton({
     <div className="relative">
       <button
         onClick={openActionSheet}
-        className={twMerge('flex items-center justify-center', className)}
+        className={twMerge('group flex items-center justify-center', className)}
       >
-        <Icon iconName="icon-more-horiz" size="l" />
+        <Icon
+          iconName="icon-more-horiz"
+          size="l"
+          className="group-hover:hidden"
+        />
+        <Icon
+          iconName="icon-more-horiz-hover"
+          size="l"
+          className="hidden group-hover:block"
+        />
       </button>
       {shouldShowActionSheet && (
         <ActionSheet

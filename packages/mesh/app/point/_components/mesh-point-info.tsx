@@ -1,27 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
-import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import Icon from '@/components/icon'
-import { useUser } from '@/context/user'
 
 import MeshPointHelper from './mesh-point-helper'
 
-export default function MeshPointInfo() {
-  const [balance, setBalance] = useState(0)
-  const { user } = useUser()
-
-  useEffect(() => {
-    const fetchPoint = async () => {
-      const response = await getMeshPointBalance(user.wallet)
-      if (response?.balance) {
-        setBalance(response.balance)
-      }
-    }
-    fetchPoint()
-  }, [user.wallet])
-
+export default function MeshPointInfo({
+  balance,
+}: {
+  balance: number | undefined
+}) {
   return (
     <>
       <div className="flex flex-col justify-center gap-2 sm:flex-col-reverse sm:self-end">

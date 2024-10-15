@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
@@ -32,12 +34,16 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         <div className="flex justify-between">
           <div className="flex gap-x-4">
             <div className="relative size-11 shrink-0">
-              <Avatar src={comment.member.avatar} size="l" />
+              <Link href={`profile/member/${comment.member.customId}`}>
+                <Avatar src={comment.member.avatar} size="l" />
+              </Link>
             </div>
 
             <div>
-              <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700">
-                {comment.member.name}
+              <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700 hover-or-active:underline">
+                <Link href={`profile/member/${comment.member.customId}`}>
+                  {comment.member.name}
+                </Link>
               </p>
               <p className="footnote text-primary-500">
                 留言獲得{' '}
@@ -68,12 +74,14 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         {/* TODO: border color */}
         {comment.story && (
           <div className="border-t-[0.5px] border-[rgba(0,9,40,0.1)]  pt-3">
-            <h2 className="subtitle-2 mb-2 text-primary-700">
-              {comment.story.title}
+            <h2 className="subtitle-2 mb-2 text-primary-700 hover-or-active:underline">
+              <Link href={`/story/${comment.story.id}`}>
+                {comment.story.title}
+              </Link>
             </h2>
 
             <div className="flex items-center">
-              <p className="caption-1 text-primary-500">
+              <p className="caption-1 text-primary-500 hover-or-active:text-primary-700">
                 {comment.story.source.title}
               </p>
               <Icon iconName="icon-dot" size="s" />

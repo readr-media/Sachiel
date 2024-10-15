@@ -12,7 +12,11 @@ import TransactionList from './transaction-list'
 
 export type Transaction = Awaited<ReturnType<typeof getMemberTransactionRecord>>
 
-export default function MeshPoint() {
+export default function MeshPoint({
+  balance,
+}: {
+  balance: number | undefined
+}) {
   const { user } = useUser()
   const [transactionData, setTransactionData] = useState<Transaction | null>(
     null
@@ -40,7 +44,7 @@ export default function MeshPoint() {
   return (
     <div className="bg-white sm:rounded-md sm:drop-shadow">
       <section className="flex h-[190px] flex-col justify-center border-b-[0.5px] border-primary-200 sm:h-[128px] sm:flex-row sm:justify-between sm:px-10 sm:py-8">
-        <MeshPointInfo />
+        <MeshPointInfo balance={balance} />
         <div className="flex flex-row items-center justify-center gap-4 pt-6 sm:gap-5 sm:self-end sm:pt-0">
           <Link href={'/point/sponsorship'}>
             <div className="flex flex-col items-center gap-1 sm:flex-row">
