@@ -216,11 +216,7 @@ export const mostSponsorPublishersSchema = z.array(
         commentCount: z.number(),
         paywall: z.boolean(),
         full_screen_ad: z.string(),
-        source: z.object({
-          id: z.string(),
-          title: z.string(),
-          customId: z.string(),
-        }),
+        source: sourceSchema,
       })
     ),
   })
