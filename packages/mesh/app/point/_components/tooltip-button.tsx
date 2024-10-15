@@ -70,6 +70,7 @@ export default function TooltipButton({
         aria-controls={tooltipId}
         aria-describedby={tooltipId}
         onClick={() => setIsTooltipVisible(true)}
+        onMouseEnter={() => setIsTooltipVisible(true)}
         className="inline-flex items-center"
       >
         {buttonContent}
