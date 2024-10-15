@@ -3,9 +3,12 @@ import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useReducer } from 'react'
 
 import { addComment, deleteComment, editComment } from '@/app/actions/comment'
+import TOAST_MESSAGE from '@/constants/toast'
 import { type User } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { sleep } from '@/utils/sleep'
+
+import { useToast } from './toast'
 
 // Constants
 const SLEEP_TIME = 1500
@@ -183,10 +186,11 @@ export function CommentProvider({
     ...initialState,
     commentList: initialComments,
   })
+  const { addToast } = useToast()
 
   const handleDeleteCommentModalOnConfirm = useCallback(
     async (user: User) => {
-      await deleteComment({
+      const deleteCommentResponse = await deleteComment({
         memberId: user.memberId,
         commentId: state.commentEditState.commentId,
       })
@@ -200,6 +204,9 @@ export function CommentProvider({
         payload: { ...state.commentEditState, isVisible: false },
       })
       dispatch({ type: 'RESET_EDIT_DRAWER' })
+      if (!deleteCommentResponse) {
+        addToast({ status: 'fail', text: TOAST_MESSAGE.deleteCommentFailed })
+      }
     },
     [state.commentEditState]
   )
@@ -266,8 +273,8 @@ export function CommentProvider({
         })
         dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: '' })
       } catch (error) {
+        addToast({ status: 'fail', text: TOAST_MESSAGE.addCommentFailed })
         console.error('Error publishing comment:', error)
-        // TODO: Implement error handling, e.g., show error toast
       } finally {
         dispatch({
           type: 'TOGGLE_IS_ADDING_COMMENT',
@@ -290,7 +297,7 @@ export function CommentProvider({
   }, [])
 
   const handleCommentEdit = useCallback(
-    (user: User) => {
+    async (user: User) => {
       if (!state.commentEditState.content.trim()) {
         dispatch({ type: 'RESET_EDIT_DRAWER' })
         dispatch({
@@ -302,11 +309,14 @@ export function CommentProvider({
       dispatch({ type: 'EDIT_COMMENT' })
       dispatch({ type: 'RESET_EDIT_DRAWER' })
       dispatch({ type: 'TOGGLE_COMMENT_EDITOR', payload: { isEditing: false } })
-      editComment({
+      const editCommentResponse = await editComment({
         memberId: user.memberId,
         commentId: state.commentEditState.commentId,
         content: state.commentEditState.content,
       })
+      if (!editCommentResponse) {
+        addToast({ status: 'fail', text: TOAST_MESSAGE.editCommentFailed })
+      }
     },
     [state.commentEditState]
   )

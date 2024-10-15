@@ -7,12 +7,15 @@ import {
   removePick,
 } from '@/app/actions/pick'
 import { getPickComment } from '@/app/actions/pick'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 
 export default function useStoryPicker() {
   const { user, setUser } = useUser()
   const [isLoading, setIsLoading] = useState(false)
   const memberId = user.memberId
+  const { addToast } = useToast()
 
   // TODO: simplify the mutation and toast message
   const addStoryPick = useCallback(
@@ -29,6 +32,7 @@ export default function useStoryPicker() {
 
       const addPickResponse = await addPick({ memberId, storyId })
       if (!addPickResponse) {
+        addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
         newPickStoryIds.delete(storyId)
         setUser((user) => ({
           ...user,

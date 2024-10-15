@@ -4,6 +4,8 @@ import { useRef, useState } from 'react'
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
 import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import {
@@ -43,6 +45,7 @@ export default function CategorySelector({
 }) {
   const { user, setUser } = useUser()
   const displayCategories = user.followingCategories
+  const { addToast } = useToast()
 
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
   const { memberId } = user
@@ -74,8 +77,8 @@ export default function CategorySelector({
       })
       if (!addCategoryResponse) {
         finalCategories = undoAddCategories(finalCategories, addedCategoryIds)
-        // TODO: show toast to hint user something went wrong
         console.error('send addedCategory to pubsub failed', addedCategoryIds)
+        addToast({ status: 'fail', text: TOAST_MESSAGE.followCategoryFailed })
       }
     }
     if (deletedCategoryIds.size) {
@@ -89,8 +92,8 @@ export default function CategorySelector({
           deletedCategoryIds,
           allCategories
         )
-        // TODO: show toast to hint user something went wrong
         console.error('send deleteCategory to pubsub failed', addedCategoryIds)
+        addToast({ status: 'fail', text: TOAST_MESSAGE.unfollowCategoryFailed })
       }
     }
 

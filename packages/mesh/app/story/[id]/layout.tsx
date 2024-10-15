@@ -32,11 +32,11 @@ export default async function MediaLayout({
   }
 
   return (
-    <body>
+    <ClientLayout story={storyData.story}>
       <CommentProvider initialComments={storyData.story?.comments || []}>
         <MobileCommentModalContent storyData={storyData.story} />
-        <ClientLayout story={storyData.story}>{children}</ClientLayout>
+        {children}
       </CommentProvider>
-    </body>
+    </ClientLayout>
   )
 }
