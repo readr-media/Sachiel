@@ -4173,6 +4173,7 @@ export type GetMemberFollowingListQuery = {
       customId?: string | null
       title?: string | null
       logo?: string | null
+      source_type?: string | null
     }> | null
   } | null
 }
@@ -4418,22 +4419,6 @@ export type PublishersQuery = {
     official_site?: string | null
     sponsorCount?: number | null
   }> | null
-}
-
-export type GetPublisherProfileQueryVariables = Exact<{
-  publisherId: Scalars['ID']['input']
-}>
-
-export type GetPublisherProfileQuery = {
-  __typename?: 'Query'
-  publisher?: {
-    __typename?: 'Publisher'
-    id: string
-    title?: string | null
-    logo?: string | null
-    followerCount?: number | null
-    description?: string | null
-  } | null
 }
 
 export type GetPublisherFollowerListQueryVariables = Exact<{
@@ -7753,6 +7738,44 @@ export const GetMemberFollowingListDocument = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'follow_publisherCount' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'source_type' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'not' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'equals' },
+                                        value: {
+                                          kind: 'StringValue',
+                                          value: 'empty',
+                                          block: false,
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
                 {
                   kind: 'Field',
@@ -7789,6 +7812,42 @@ export const GetMemberFollowingListDocument = {
                   arguments: [
                     {
                       kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'source_type' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'not' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'equals' },
+                                        value: {
+                                          kind: 'StringValue',
+                                          value: 'empty',
+                                          block: false,
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
                       name: { kind: 'Name', value: 'take' },
                       value: {
                         kind: 'Variable',
@@ -7806,6 +7865,10 @@ export const GetMemberFollowingListDocument = {
                       },
                       { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'source_type' },
+                      },
                     ],
                   },
                 },
@@ -9296,73 +9359,6 @@ export const PublishersDocument = {
     },
   ],
 } as unknown as DocumentNode<PublishersQuery, PublishersQueryVariables>
-export const GetPublisherProfileDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'GetPublisherProfile' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'publisherId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'publisher' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'publisherId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'followerCount' },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'description' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetPublisherProfileQuery,
-  GetPublisherProfileQueryVariables
->
 export const GetPublisherFollowerListDocument = {
   kind: 'Document',
   definitions: [
