@@ -17,6 +17,9 @@ const categorySchema = z.object({
   slug: z.string(),
 })
 
+// Define the full_screen_ad enum
+const FullScreenAdEnum = z.enum(['mobile', 'desktop', 'all', 'none'])
+
 export const storySchema = z.object({
   id: z.string(),
   url: z.string(),
@@ -145,7 +148,7 @@ export const MongoDBResponseSchema = z.object({
       published_date: z.string(),
       og_title: z.string(),
       og_image: z.string(),
-      full_screen_ad: z.enum(['none', 'all', 'mobile', 'desktop']),
+      full_screen_ad: FullScreenAdEnum,
       isMember: z.boolean(),
       readCount: z.number(),
       commentCount: z.number(),
@@ -182,6 +185,67 @@ export type MostFollowersMember = z.infer<
   typeof mostFollowersMemberSchema
 >[number]
 
+export const publisherProfileSchema = z.object({
+  id: z.string().min(1),
+  url: z.string().url(),
+  title: z.string().min(1),
+  published_date: z.string().datetime(),
+  summary: z.string(),
+  og_title: z.string(),
+  og_image: z.string().url(),
+  og_description: z.string(),
+  full_content: z.boolean(),
+  commentCount: z.number().int().nonnegative(),
+  paywall: z.boolean(),
+  full_screen_ad: FullScreenAdEnum,
+  isMember: z.boolean(),
+  pickCount: z.number().int().nonnegative(),
+  picks: z.array(
+    z.object({
+      createdAt: z.string().datetime().optional(),
+      member: memberSchema.nullable(),
+    })
+  ),
+  source: z.object({
+    id: z.string().min(1),
+    customId: z.string().min(1),
+    title: z.string().min(1),
+    official_site: z.string().url(),
+    logo: z.string().url(),
+    description: z.string(),
+    followerCount: z.number().int().nonnegative(),
+  }),
+  stories: z.array(
+    z.object({
+      id: z.string().min(1),
+      title: z.string().min(1),
+      url: z.string().url(),
+      og_title: z.string(),
+      og_image: z.string().url(),
+      og_description: z.string(),
+      published_date: z.string().datetime(),
+      picks: z.array(
+        z.object({
+          createdAt: z.string().datetime(),
+          member: z.object({
+            picksCount: z.number().int().nonnegative(),
+            commentCount: z.number().int().nonnegative(),
+            paywall: z.boolean(),
+            full_screen_ad: FullScreenAdEnum,
+            full_content: z.boolean(),
+            users: z.array(memberSchema),
+          }),
+        })
+      ),
+      picksCount: z.number().int().nonnegative(),
+      commentCount: z.number().int().nonnegative(),
+      paywall: z.boolean(),
+      full_screen_ad: FullScreenAdEnum,
+      full_content: z.boolean(),
+    })
+  ),
+})
+export type PublisherProfile = z.infer<typeof publisherProfileSchema>
 /**
  * most sponsored publishers and their stories for media page
  */
