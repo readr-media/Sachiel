@@ -20,6 +20,7 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+import { debounce } from '@/utils/performance'
 
 import Loading from './loading'
 
@@ -91,7 +92,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   const followList = user.followingMemberIds
   const isFollowing = followList.has(profileData.memberId)
 
-  const handleFollowOnClick = () => {
+  const handleFollowOnClick = debounce(() => {
     const followMemberArgs = {
       memberId: user.memberId,
       targetId: profileData.memberId,
@@ -116,7 +117,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       }
     })
     return removeFollowMember(followMemberArgs)
-  }
+  })
 
   const buttonList = isMember
     ? [

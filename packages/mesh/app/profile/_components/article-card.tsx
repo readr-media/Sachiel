@@ -59,61 +59,65 @@ const ArticleCard = ({
           },
         }
   return (
-    <Link href={`/story/${storyData?.id}`}>
-      <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
-        <Image
-          src={storyData?.og_image || '/images/default-story-image.webP'}
-          alt={`${storyData?.title}'s story cover image`}
-          width={96}
-          height={48}
-          className="size-full object-cover"
-        />
-      </section>
+    <>
+      <Link href={`/story/${storyData?.id}`}>
+        <section className="hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
+          <Image
+            src={storyData?.og_image || '/images/default-story-image.webP'}
+            alt={`${storyData?.title}'s story cover image`}
+            width={96}
+            height={48}
+            className="size-full object-cover"
+          />
+        </section>
+      </Link>
       <div
         className={`flex flex-col p-5 after:absolute after:bottom-1 after:h-px after:w-[calc(100%-40px)] after:bg-primary-200 md:line-clamp-3 md:pt-[12px] md:after:hidden ${
           isLast && 'after:hidden'
         }`}
       >
-        <section className="mb-1 flex items-center justify-between">
-          <p className="caption-1 text-primary-500">
-            {(storyData?.source && storyData?.source.title) ?? '預設媒體'}
-          </p>
-          <StoryMoreActionButton
-            storyId={storyData?.id ?? ''}
-            publisherId={storyData?.source?.id ?? ''}
-          />
-        </section>
-        <section className="mb-2 flex items-start justify-between sm:gap-10">
-          <div className="flex h-full flex-col justify-between">
-            <p className="body-2 mb-2 w-full sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
-              {storyData?.title || '預設標題'}
+        <Link href={`/story/${storyData?.id}`}>
+          <section className="mb-1 flex items-center justify-between">
+            <p className="caption-1 text-primary-500">
+              {(storyData?.source && storyData?.source.title) ?? '預設媒體'}
             </p>
-            <span className=" *:caption-1 *:text-primary-500">
-              <StoryMeta
-                commentCount={storyData?.commentCount || 0}
-                publishDate={storyData?.published_date || ''}
-                paywall={storyData?.paywall || false}
-                fullScreenAd={storyData?.full_screen_ad || ''}
-              />
-            </span>
-          </div>
-          <div className="relative ml-3 aspect-[2/1] min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:w-40 sm:min-w-40 md:hidden">
-            <Image
-              src={storyData?.og_image || '/images/default-story-image.webP'}
-              alt={`${storyData?.title}'s story cover image`}
-              fill
-              className="object-cover"
+            <StoryMoreActionButton
+              storyId={storyData?.id ?? ''}
+              publisherId={storyData?.source?.id ?? ''}
             />
-          </div>
-        </section>
-        <section className="mt-4 flex justify-between">
-          <StoryPickInfo
-            displayPicks={storyData?.pick}
-            pickCount={storyData?.pickCount || 0}
-            maxCount={4}
-          />
-          <StoryPickButton storyId={storyData?.id} />
-        </section>
+          </section>
+          <section className="mb-2 flex items-start justify-between sm:gap-10">
+            <div className="flex h-full flex-col justify-between">
+              <p className="body-2 mb-2 w-full sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
+                {storyData?.title || '預設標題'}
+              </p>
+              <span className=" *:caption-1 *:text-primary-500">
+                <StoryMeta
+                  commentCount={storyData?.commentCount || 0}
+                  publishDate={storyData?.published_date || ''}
+                  paywall={storyData?.paywall || false}
+                  fullScreenAd={storyData?.full_screen_ad || ''}
+                />
+              </span>
+            </div>
+            <div className="relative ml-3 aspect-[2/1] min-w-24 overflow-hidden rounded border-[0.5px] border-primary-200 sm:w-40 sm:min-w-40 md:hidden">
+              <Image
+                src={storyData?.og_image || '/images/default-story-image.webP'}
+                alt={`${storyData?.title}'s story cover image`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          </section>
+          <section className="mt-4 flex justify-between">
+            <StoryPickInfo
+              displayPicks={storyData?.pick}
+              pickCount={storyData?.pickCount || 0}
+              maxCount={4}
+            />
+            <StoryPickButton storyId={storyData?.id} />
+          </section>
+        </Link>
         {shouldShowComment && (
           <Comment
             data={authorComment as CommentType}
@@ -123,7 +127,7 @@ const ArticleCard = ({
           />
         )}
       </div>
-    </Link>
+    </>
   )
 }
 

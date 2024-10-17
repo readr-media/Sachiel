@@ -15,6 +15,7 @@ import {
   TabCategory,
   TabKey,
 } from '@/types/profile'
+import { debounce } from '@/utils/performance'
 
 type PublisherPageProps = {
   name: string
@@ -47,7 +48,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   const isFollowing = !!followingPublisherList.find(
     (publisher) => publisher.id === publisherId
   )
-  const handleFollowOnClick = () => {
+  const handleFollowOnClick = debounce(() => {
     const followPublisherArgs = {
       memberId: user.memberId,
       publisherId,
@@ -76,7 +77,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
       })
       return addFollowPublisher(followPublisherArgs)
     }
-  }
+  })
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
     {
