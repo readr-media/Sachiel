@@ -1,5 +1,6 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
@@ -23,6 +24,7 @@ export default function Page() {
   const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
+  if (!memberId) redirect('/login')
 
   useEffect(() => {
     const fetchSocialData = async () => {
