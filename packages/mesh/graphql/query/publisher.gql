@@ -1,4 +1,3 @@
-# sync cronjob query [gql_mesh_sponsor_publishers](https://github.com/readr-media/mesh-feed-parser/blob/dev/app/gql.py#L47-L57) to create gql types
 query Publishers {
   publishers {
     id

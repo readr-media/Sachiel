@@ -1,24 +1,21 @@
 import { Fragment, useEffect } from 'react'
 
 import useInView from '@/hooks/use-in-view'
+import type { MostSponsorPublisher } from '@/utils/data-schema'
 
-import type {
-  DisplayPublisher,
-  LatestStoriesInfo,
-  Story,
-} from './media-stories'
+import type { LatestStoriesInfo, Story } from './media-stories'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard from './publisher-card'
 import StoryCard from './story-card'
 
 export default function NonDesktopStories({
   mostPickedStory,
-  publishers,
+  publishersAndStories,
   latestStoriesInfo,
   loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
-  publishers: DisplayPublisher[]
+  publishersAndStories: MostSponsorPublisher[]
   latestStoriesInfo: LatestStoriesInfo
   loadMoreLatestStories: () => void
 }) {
@@ -27,8 +24,8 @@ export default function NonDesktopStories({
     useInView()
 
   const specialBlocks = mostPickedStory
-    ? [mostPickedStory, ...publishers]
-    : [...publishers]
+    ? [mostPickedStory, ...publishersAndStories]
+    : [...publishersAndStories]
 
   useEffect(() => {
     if (shouldStartLoadMore && shouldLoadmore) {
@@ -47,7 +44,10 @@ export default function NonDesktopStories({
           const specialBlockJsx =
             'stories' in specialBlock ? (
               <div className="p-5 md:px-[70px]">
-                <PublisherCard key={specialBlock.id} publisher={specialBlock} />
+                <PublisherCard
+                  key={specialBlock.publisher.id}
+                  publisherAndStories={specialBlock}
+                />
               </div>
             ) : (
               <MostPickedStoryCard story={specialBlock} isDesktop={false} />
