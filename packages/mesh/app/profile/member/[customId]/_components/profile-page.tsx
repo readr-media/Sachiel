@@ -2,6 +2,10 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import {
+  addFollowMember,
+  removeFollowMember,
+} from '@/app/actions/follow-member'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
@@ -24,7 +28,7 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
-  const { user } = useUser()
+  const { user, setUser } = useUser()
   const { visitorProfile, isProfileError, isProfileLoading } = useEditProfile()
   const router = useRouter()
   const pathName = usePathname()
@@ -84,15 +88,51 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       redirectLink: `${customId}/following`,
     },
   ]
+  const followList = user.followingMemberIds
+  const isFollowing = followList.has(profileData.memberId)
+
+  const handleFollowOnClick = () => {
+    const followMemberArgs = {
+      memberId: user.memberId,
+      targetId: profileData.memberId,
+    }
+    if (!isFollowing) {
+      setUser((prev) => {
+        return {
+          ...prev,
+          followingMemberIds: prev.followingMemberIds.add(profileData.memberId),
+        }
+      })
+      return addFollowMember(followMemberArgs)
+    }
+    setUser((prev) => {
+      return {
+        ...prev,
+        followingMemberIds: new Set(
+          Array.from(prev.followingMemberIds).filter(
+            (id) => id !== profileData.memberId
+          )
+        ),
+      }
+    })
+    return removeFollowMember(followMemberArgs)
+  }
 
   const buttonList = isMember
     ? [
         {
-          text: '編輯個人檔案',
+          text: { default: '編輯個人檔案', isActive: '' },
           clickFn: () => router.push(`${currentUrl}/edit-profile`),
+          isActive: false,
         },
       ]
-    : [{ text: '追蹤' }]
+    : [
+        {
+          text: { default: '追蹤', isActive: '追蹤中' },
+          clickFn: handleFollowOnClick,
+          isActive: isFollowing,
+        },
+      ]
 
   const getMessage = (category: TabCategory): string => {
     const messages: { [key: string]: string } = {
