@@ -70,6 +70,7 @@ const Toast = ({ toast, onClose }: { toast?: Toast; onClose: () => void }) => {
       className={`fixed bottom-full left-1/2 z-modal flex h-toast -translate-x-1/2 items-center gap-1 rounded-md pl-3 pr-4 transition-transform ${
         toast?.status === 'success' ? 'bg-primary-600' : 'bg-custom-red'
       } ${classes}`}
+      role="alert"
     >
       <span className="flex size-6 items-center justify-center ">
         <Icon
