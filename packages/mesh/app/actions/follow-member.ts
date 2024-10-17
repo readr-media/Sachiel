@@ -1,3 +1,4 @@
+'use server'
 import { z } from 'zod'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'

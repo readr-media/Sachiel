@@ -28,6 +28,7 @@ const Page = async ({ params }: PageProps) => {
     const userIntro = userData?.description || '使用者介紹'
     const followerCount = userData?.followerCount || 0
     const storyData = storiesResponse?.stories ?? []
+    const publisherId = storiesResponse.source.id
 
     const convertedFollowerCount = formatFollowCount(followerCount)
 
@@ -45,7 +46,8 @@ const Page = async ({ params }: PageProps) => {
           name={userName}
           avatar={userLogo}
           intro={userIntro}
-          publisherId={customId}
+          publisherCustomId={customId}
+          publisherId={publisherId}
           userType={userType}
           storyData={storyData}
         />
