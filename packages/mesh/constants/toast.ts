@@ -8,13 +8,14 @@ const TOAST_MESSAGE = {
   followMemberFailed: '追蹤失敗，請重新嘗試',
   unfollowMemberFailed: '取消追蹤失敗，請重新嘗試',
   pickStoryFailed: '加入精選失敗，請重新嘗試',
+  deletePickFailed: '移除精選失敗，請重新嘗試',
   addBookmarkFailed: '加入書籤失敗，請重新嘗試',
   deleteBookmarkFailed: '刪除書籤失敗，請重新嘗試',
   copyStoryLinkSuccess: '已複製連結',
   unlockStorySuccess: '已成功解鎖',
   payFailedInsufficient: '讀選點數餘額不足',
-  // TODO: to be added
   payFailedUnowknown: '支付失敗，請重新嘗試',
+  // TODO: to be added
   blockMemberSuccess: '已封鎖',
   unblockMemberSuccess: '已取消封鎖',
   blockMemberFailed: '封鎖失敗，請重新嘗試',
@@ -24,6 +25,6 @@ const TOAST_MESSAGE = {
   createCollectionFailed: '建立集錦失敗，請重新嘗試',
   deleteCollectionSuccess: '成功刪除集錦',
   deleteCollectionFailed: '刪除集錦失敗，請重新嘗試',
-}
+} as const
 
 export default TOAST_MESSAGE

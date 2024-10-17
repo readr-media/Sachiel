@@ -68,6 +68,7 @@ export default function useStoryPicker() {
       }
 
       if (!removePickResponse) {
+        addToast({ status: 'fail', text: TOAST_MESSAGE.deletePickFailed })
         newPickStoryIds.add(storyId)
         setUser((user) => ({
           ...user,

@@ -10,6 +10,8 @@ import { type Hex, encodeFunctionData } from 'viem'
 
 import { getMeshPointContract } from '@/app/actions/payment'
 import { ALCHEMY_ADDRESS } from '@/constants/config'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import {
   accountClientOptions as opts,
   accountType,
@@ -31,6 +33,7 @@ export default function SendTransaction({
   handleSuccess: (hash: Hex) => Promise<void>
 }) {
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
+  const { addToast } = useToast()
 
   // use config values to initialize our smart account client
   const { client } = useSmartAccountClient({
@@ -64,7 +67,7 @@ export default function SendTransaction({
       handleSuccess(hash)
     },
     onError: (error) => {
-      // [optional] Do something with the error
+      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
       console.error(error)
     },
   })
