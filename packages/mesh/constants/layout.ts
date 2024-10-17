@@ -1,12 +1,12 @@
 const LOGO_ICONS = {
   mobile: {
-    size: { width: 100, height: 44 },
-    icon: 'icon-readr-logo',
+    size: { width: 144, height: 36 },
+    icon: 'icon-readr-logoA-mobile',
     href: '/',
   },
   nonMobile: {
-    size: { width: 120, height: 60 },
-    icon: 'icon-readr-logo-lg',
+    size: { width: 176, height: 44 },
+    icon: 'icon-readr-logoA-desktop',
     href: '/',
   },
 } as const

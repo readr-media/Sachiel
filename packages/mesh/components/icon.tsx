@@ -11,8 +11,6 @@ export type IconName =
   | 'icon-notifications'
   | 'icon-notifications-new'
   | 'icon-search-bar'
-  | 'icon-readr-logo'
-  | 'icon-readr-logo-lg'
   | 'icon-readr-logo-simple'
   | 'icon-readr-logoA-mobile'
   | 'icon-readr-logoA-desktop'
