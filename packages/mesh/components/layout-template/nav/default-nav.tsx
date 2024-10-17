@@ -218,7 +218,7 @@ const MobileNavIcon = ({
         width={20}
         height={20}
         alt="user avatar"
-        className="rounded-[50%]"
+        className="min-h-full rounded-[50%] object-cover"
       />
     </div>
   ) : isOn ? (
