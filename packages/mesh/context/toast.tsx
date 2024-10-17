@@ -23,6 +23,10 @@ type ToastContextValue = {
 
 const ToastContext = createContext<ToastContextValue | undefined>(undefined)
 
+const delayToShowToast = 0.5 * SECOND
+const delayToCompleteToast = 0.4 * SECOND
+const delayToHideToast = 3 * SECOND
+
 const Toast = ({ toast, onClose }: { toast?: Toast; onClose: () => void }) => {
   const [showToast, setShowToast] = useState(false)
   // use ref to store onClose callback to prevent timeout being cleared
@@ -37,17 +41,17 @@ const Toast = ({ toast, onClose }: { toast?: Toast; onClose: () => void }) => {
     if (toast) {
       setTimeout(() => {
         setShowToast(true)
-      }, 0.5 * SECOND)
+      }, delayToShowToast)
     }
   }, [toast])
 
   useEffect(() => {
-    // hide the toast after 3 seconds, wait a bit longer than duration to prevent toast prop update
+    // hide the toast after 3 seconds, wait a bit longer than animate duration to prevent toast prop update
     if (showToast) {
       const timer = setTimeout(() => {
         setShowToast(false)
-        setTimeout(onCloseRef.current, 0.3 * SECOND)
-      }, 3 * SECOND)
+        setTimeout(onCloseRef.current, delayToCompleteToast)
+      }, delayToHideToast)
 
       return () => {
         clearTimeout(timer)
@@ -56,7 +60,7 @@ const Toast = ({ toast, onClose }: { toast?: Toast; onClose: () => void }) => {
   }, [showToast])
 
   const classes = showToast
-    ? 'duration-200 translate-y-[calc(theme(height.header.default)+theme(height.toast))] sm:translate-y-[calc(theme(height.header.sm)+theme(height.toast)+18px)]'
+    ? 'duration-300 translate-y-[calc(theme(height.header.default)+theme(height.toast))] sm:translate-y-[calc(theme(height.header.sm)+theme(height.toast)+18px)]'
     : ''
 
   if (!toast) return null
