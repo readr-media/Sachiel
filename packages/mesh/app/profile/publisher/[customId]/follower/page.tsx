@@ -8,7 +8,7 @@ import { type PageProps } from '../page'
 const FollowerPage = async ({ params }: PageProps) => {
   const takeCount = 20
   const response = await queryGraphQL(GetPublisherFollowerListDocument, {
-    publisherId: params.publisherId,
+    publisherId: params.customId,
     takes: takeCount,
   })
   const targetPublisher = response?.publishers && response?.publishers[0]

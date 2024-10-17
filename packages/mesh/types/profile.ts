@@ -2,7 +2,7 @@ import type { ChangeEvent, RefObject } from 'react'
 
 import {
   type GetMemberProfileQuery,
-  type GetPublisherProfileQuery,
+  type Story,
 } from '@/graphql/__generated__/graphql'
 
 export enum TabKey {
@@ -46,7 +46,7 @@ export type ProfileTypes = {
 export type Member = GetMemberProfileQuery['member']
 export type PickList = NonNullable<Member>['picks']
 export type Bookmarks = NonNullable<GetMemberProfileQuery['member']>['books']
-export type StoryData = NonNullable<GetPublisherProfileQuery['stories']>
+export type StoryData = Story[]
 export type StoryDataItem = NonNullable<NonNullable<StoryData>[number]>
 export type PickListItem = NonNullable<PickList>[number]['story']
 export type UserType = 'member' | 'visitor' | 'publisher'
