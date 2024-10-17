@@ -7,6 +7,8 @@ import { twMerge } from 'tailwind-merge'
 
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import { removeFollowPublisher } from '@/app/actions/follow-publisher'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 import { PaymentType } from '@/types/payment'
@@ -183,10 +185,14 @@ const ActionSheet = forwardRef(function ActionSheet(
   const { user, setUser } = useUser()
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
+  const { addToast } = useToast()
 
   const onAction = async (type: ActionType) => {
     if (!storyId || !publisherId) {
-      // TODO: show toast to hint error
+      addToast({ status: 'fail', text: TOAST_MESSAGE.storyMoreActionError })
+      console.error(
+        `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
+      )
       return
     }
     switch (type) {
@@ -213,8 +219,12 @@ const ActionSheet = forwardRef(function ActionSheet(
                 )
               ),
             }))
+          } else {
+            addToast({
+              status: 'fail',
+              text: TOAST_MESSAGE.deleteBookmarkFailed,
+            })
           }
-          // TODO: show error toase?
           onClose()
         } else {
           const addBookmarkResponse = await addBookmark({
@@ -226,8 +236,12 @@ const ActionSheet = forwardRef(function ActionSheet(
               ...oldUser,
               bookmarkStoryIds: new Set([...oldUser.bookmarkStoryIds, storyId]),
             }))
+          } else {
+            addToast({
+              status: 'fail',
+              text: TOAST_MESSAGE.addBookmarkFailed,
+            })
           }
-          // TODO: show error toase?
           onClose()
         }
         break
@@ -253,7 +267,10 @@ const ActionSheet = forwardRef(function ActionSheet(
         navigator.clipboard
           .writeText(storyUrl)
           .then(() => {
-            // TODO: show toast for url copied successfully
+            addToast({
+              status: 'success',
+              text: TOAST_MESSAGE.copyStoryLinkSuccess,
+            })
             onClose()
           })
           .catch((error) => {

@@ -129,6 +129,8 @@ export type IconName =
   | 'icon-sponsor-500'
   | 'icon-sponsor-input'
   | 'icon-check-circle-lg'
+  | 'icon-toast-success'
+  | 'icon-toast-fail'
 
 export type IconProps = {
   size: Size

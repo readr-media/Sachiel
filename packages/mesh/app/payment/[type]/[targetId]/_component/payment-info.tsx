@@ -10,6 +10,8 @@ import { unlockSingleStory } from '@/app/actions/payment'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
 import { isValidEmail } from '@/utils/validate-email'
@@ -29,6 +31,7 @@ export default function PaymentInfo({
   const [isChecked, setIsChecked] = useState(false)
   const isValid = isValidEmail(email)
   const [isLoading, setIsLoading] = useState(false)
+  const { addToast } = useToast()
   //TODO: replace with media sca
   const recipientAddress = '0xABD79306a5bD03B667F24a7013Af63238288a0aE'
 
@@ -41,6 +44,7 @@ export default function PaymentInfo({
       storyId,
     }
     await unlockSingleStory(txr)
+    addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
 
     if (auth.currentUser) {
       const idToken = await auth.currentUser.getIdToken()
