@@ -106,8 +106,10 @@ export default function Article({
         <div className="px-5 sm:px-0">
           {/* article meta */}
           <div>
-            <div className="body-3 text-primary-500">
-              {story?.source?.title ?? ''}
+            <div className="body-3 text-primary-500 hover-or-active:text-primary-700">
+              <Link href={`/profile/publisher/${story?.source?.customId}`}>
+                {story?.source?.title ?? ''}
+              </Link>
             </div>
             <h1 className="hero-title mt-1 text-primary-700">
               {story?.title ?? ''}

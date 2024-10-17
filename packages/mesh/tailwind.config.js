@@ -109,6 +109,10 @@ module.exports = {
           DEFAULT: '#007AFF',
           dark: '#0A84FF',
         },
+        'custom-blue-hover': {
+          DEFAULT: '#0170E9',
+          dark: '#007AFF',
+        },
         'custom-red-text': {
           DEFAULT: '#EE4141',
           dark: '#FF453A',
