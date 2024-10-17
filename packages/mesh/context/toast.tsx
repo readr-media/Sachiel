@@ -37,24 +37,38 @@ const Toast = ({ toast, onClose }: { toast?: Toast; onClose: () => void }) => {
   }, [onClose])
 
   useEffect(() => {
-    // when toast prop is true show the toast, add delay for toastCount more than one
+    // When toast prop is true show the toast after `delayToShowToast` to let toast UI update first.
     if (toast) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setShowToast(true)
       }, delayToShowToast)
+
+      return () => {
+        clearTimeout(timer)
+      }
     }
   }, [toast])
 
   useEffect(() => {
-    // hide the toast after 3 seconds, wait a bit longer than animate duration to prevent toast prop update
+    // if showing toast, hide the toast after `delayToHideToast`
     if (showToast) {
-      const timer = setTimeout(() => {
+      const hideToastTimer = setTimeout(() => {
         setShowToast(false)
-        setTimeout(onCloseRef.current, delayToCompleteToast)
       }, delayToHideToast)
 
       return () => {
-        clearTimeout(timer)
+        clearTimeout(hideToastTimer)
+      }
+    }
+    // If the toast is hidden call onClose prop after `delayToCompleteToast`, this logic will call onClose when the toast is mounted which is harmless.
+    else {
+      const completeToastTimer = setTimeout(
+        onCloseRef.current,
+        delayToCompleteToast
+      )
+
+      return () => {
+        clearTimeout(completeToastTimer)
       }
     }
   }, [showToast])
