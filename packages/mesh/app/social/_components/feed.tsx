@@ -5,6 +5,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryPickInfo from '@/components/story-card/story-pick-info'
 import StoryMoreActionButton from '@/components/story-more-action-button'
+import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { type MongoDBResponse } from '@/utils/data-schema'
 
 import FeedComment from './feed-comment'
@@ -18,20 +19,10 @@ export default function Feed({
 }: {
   story: MongoDBResponse['stories'][number]
 }) {
-  if (!story) {
-    return null
-  }
+  const storyWithPicks = transformSocialStoryPicks(story)
+  const { displayPicks, displayPicksCount } = useDisplayPicks(storyWithPicks)
   const { following_actions } = story
   const storyActions = processStoryActions(following_actions)
-  const displayPicks = story.following_actions
-    .filter((action) => action.kind === 'read')
-    .map((pick) => ({
-      member: {
-        id: pick.member.id,
-        name: pick.member.name,
-        avatar: pick.member.avatar,
-      },
-    }))
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
@@ -83,7 +74,7 @@ export default function Feed({
           <div className="mb-4 flex h-8 justify-between">
             <StoryPickInfo
               displayPicks={displayPicks}
-              pickCount={story.readCount}
+              pickCount={displayPicksCount}
             />
             <StoryPickButton storyId={story.id} />
           </div>
@@ -132,5 +123,22 @@ function processStoryActions(storyAction: StoryActions) {
     commentsNum,
     picksData,
     commentsData,
+  }
+}
+
+export type SocialStoryPicks = ReturnType<typeof transformSocialStoryPicks>
+function transformSocialStoryPicks(story: MongoDBResponse['stories'][number]) {
+  return {
+    id: story.id,
+    picks: story.following_actions
+      .filter((action) => action.kind === 'read')
+      .map((pick) => ({
+        member: {
+          id: pick.member.id,
+          name: pick.member.name,
+          avatar: pick.member.avatar,
+        },
+      })),
+    picksCount: story.readCount,
   }
 }
