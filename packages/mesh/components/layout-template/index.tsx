@@ -64,8 +64,8 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
   const pathName = usePathname()
 
   const childrenJsx = (
+    // set key for dynamic route to re-render fallback
     <Suspense key={pathName} fallback={suspenseFallback}>
-      {/* set key for dynamic route to re-render fallback */}
       {children}
     </Suspense>
   )

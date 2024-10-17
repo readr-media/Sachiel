@@ -10,6 +10,8 @@ import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 
 import SponsorInput from './sponsor-input'
@@ -32,6 +34,7 @@ export default function SponsorshipInfo({
   const [amount, setAmount] = useState(0)
   const [isSyncing, setIsSyncing] = useState(false)
   const [isSponsored, setIsSponsored] = useState(false)
+  const { addToast } = useToast()
   //TODO: replace with media sca
   const recipientAddress = '0xABD79306a5bD03B667F24a7013Af63238288a0aE'
 
@@ -51,8 +54,10 @@ export default function SponsorshipInfo({
   }
 
   const onClickOption = (value: SponsorshipPoints | undefined) => {
-    //TODO: insufficient balance ux
-    if (value && balance && value > balance) return
+    if (value && balance && value > balance) {
+      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedInsufficient })
+      return
+    }
     setSelectedOption(value)
     setAmount(value ?? 0)
   }
