@@ -215,6 +215,7 @@ export const publisherProfileSchema = z.object({
     description: z.string(),
     followerCount: z.number().int().nonnegative(),
     sponsoredCount: z.number().int().nonnegative(),
+    picksCount: z.number().int().nonnegative(),
   }),
   stories: z.array(
     z.object({

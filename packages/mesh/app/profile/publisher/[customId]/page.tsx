@@ -37,9 +37,7 @@ const Page = async ({ params }: PageProps) => {
       })) || []
     const convertedFollowerCount = formatFollowCount(followerCount)
     const convertedSponsoredCount = formatFollowCount(userData.sponsoredCount)
-
-    // TODO: 等待 API 實現
-    const pickedCount = 100
+    const pickedCount = parseInt(formatFollowCount(userData.picksCount ?? 0))
 
     return (
       <main className="flex grow flex-col">
