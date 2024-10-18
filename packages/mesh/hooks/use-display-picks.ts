@@ -1,8 +1,11 @@
+import type { SocialStoryPicks } from '@/app/social/_components/feed'
 import { useUser } from '@/context/user'
 import type { CategoryStory, DailyStory, Story } from '@/types/homepage'
 
 // This hook handles the display of picks for homepage
-export function useDisplayPicks(story: CategoryStory | DailyStory | Story) {
+export function useDisplayPicks(
+  story: CategoryStory | DailyStory | Story | SocialStoryPicks
+) {
   const { user } = useUser()
   const isStoryPicked = user.pickStoryIds.has(story.id)
   const isUserInPicks = story.picks.some(

@@ -8,6 +8,7 @@ import { twMerge } from 'tailwind-merge'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import SearchBar from '@/components/search-bar'
+import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 
 export default function ArticleHeader({ showNav }: { showNav: () => void }) {
@@ -31,10 +32,10 @@ export default function ArticleHeader({ showNav }: { showNav: () => void }) {
             >
               <Icon size="l" iconName="icon-hamburger-menu" />
             </button>
-            <Link href="/">
+            <Link href={LOGO_ICONS.nonMobile.href}>
               <Icon
-                size={{ width: 100, height: 44 }}
-                iconName="icon-readr-logo"
+                size={LOGO_ICONS.nonMobile.size}
+                iconName={LOGO_ICONS.nonMobile.icon}
               />
             </Link>
           </div>

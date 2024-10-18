@@ -1,5 +1,6 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
@@ -11,23 +12,24 @@ import Feed from './_components/feed'
 import FollowSuggestionFeed from './_components/follow-suggestion-feed'
 import FollowSuggestionWidget from './_components/follow-suggestion-widget'
 import Loading from './_components/loading'
+import MoreFeed from './_components/more-feed'
 import NoFollowings from './_components/no-followings'
 
 export default function Page() {
-  //TODO: infiniteScroll
   const { user } = useUser()
-  // const feedsNumber = 20
+  const feedsNumber = 10
   const firstSectionAmount = 3
   const suggestedFollowersNumber = 5
   const memberId = user.memberId
   const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
+  if (!memberId) redirect('/login')
 
   useEffect(() => {
     const fetchSocialData = async () => {
       setIsLoading(true)
-      const response = await getSocialPageData(memberId)
+      const response = await getSocialPageData(memberId, 0, feedsNumber)
       if (!response) {
         setIsNotFound(true)
       } else {
@@ -65,6 +67,7 @@ export default function Page() {
           {secondSectionStories.map((story) => {
             return <Feed key={story.id} story={story} />
           })}
+          <MoreFeed feedsNumber={feedsNumber} />
         </div>
         <FollowSuggestionWidget
           suggestedFollowers={members.slice(0, suggestedFollowersNumber)}

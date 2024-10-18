@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import { useState } from 'react'
 
 import Icon from '@/components/icon'
 
@@ -33,16 +36,19 @@ export default function Avatar({
 }) {
   const sideLength = avatarSizes[size]
   const avatarClass = avatarClasses[size]
+  const [imgSrc, setImgSrc] = useState(src)
 
+  // TODO: replace with <ImageWithFallback/>
   return src ? (
     <Image
       className={`${avatarClass} inline-block ${
         isRound && 'rounded-full'
       } bg-white ring-2 ring-white ${extra} object-cover`}
-      src={src}
+      src={imgSrc}
       width={sideLength}
       height={sideLength}
       alt={src}
+      onError={() => setImgSrc('/images/default-avatar-image.png')}
     />
   ) : (
     <Icon

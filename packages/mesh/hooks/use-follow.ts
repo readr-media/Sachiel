@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import {
   addMemberFollowing,
@@ -13,6 +13,7 @@ import { debounce } from '@/utils/performance'
 
 export const useFollow = (followingId: string) => {
   const router = useRouter()
+  const pathname = usePathname()
   const { user, setUser } = useUser()
   const memberId = user.memberId
   const isFollowing = user.followingMemberIds.has(followingId)
@@ -20,6 +21,7 @@ export const useFollow = (followingId: string) => {
 
   const handelClickFollow = debounce(async () => {
     if (!memberId) {
+      localStorage.setItem('login-redirect', pathname)
       router.push('/login')
       return
     }

@@ -42,8 +42,10 @@ export default function LoginSteps() {
         if (response.result === 'sign-up') {
           setStep('set-name')
         } else if (response.result === 'logged-in') {
+          const redirectRoute = localStorage.getItem('login-redirect') ?? '/'
           setIsLoggedIn(true)
-          router.push('/media')
+          localStorage.removeItem('login-redirect')
+          router.push(redirectRoute)
         }
       })
       return () => unsubscribe()

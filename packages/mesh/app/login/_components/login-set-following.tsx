@@ -17,6 +17,7 @@ export default function LoginSetFollowing() {
   const [recommend, setRecommend] =
     useState<GetMemberByFollowingCategoryQuery | null>(null)
   const [isFollowAll, setIsFollowAll] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,8 +62,10 @@ export default function LoginSetFollowing() {
   }
 
   const handleFinishSignUp = async () => {
+    setLoading(true)
     const idToken = await auth.currentUser?.getIdToken()
     const response = await signUpMember(formData, idToken)
+
     if (response) {
       setUser((prev) => ({
         ...prev,
@@ -70,6 +73,8 @@ export default function LoginSetFollowing() {
       }))
       setStep('set-wallet')
     }
+
+    setLoading(false)
   }
 
   return (
@@ -133,7 +138,7 @@ export default function LoginSetFollowing() {
                   />
                 </div>
               </div>
-              {index !== recommend?.members?.length ?? 0 - 1 ? (
+              {index !== (recommend?.members?.length ?? 0) - 1 ? (
                 <div className="w-full border-t-[0.5px]"></div>
               ) : null}
             </div>
@@ -146,6 +151,7 @@ export default function LoginSetFollowing() {
           color="primary"
           text="完成"
           onClick={handleFinishSignUp}
+          disabled={loading}
         />
       </div>
     </>
