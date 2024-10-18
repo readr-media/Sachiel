@@ -1,14 +1,21 @@
+'use client'
+import {
+  addFollowPublisher,
+  removeFollowPublisher,
+} from '@/app/actions/follow-publisher'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
+import { useUser } from '@/context/user'
 import {
   type StoryData,
   type UserType,
   TabCategory,
   TabKey,
 } from '@/types/profile'
+import { debounce } from '@/utils/performance'
 
 type PublisherPageProps = {
   name: string
@@ -17,6 +24,7 @@ type PublisherPageProps = {
   userType: UserType
   storyData: StoryData
   publisherId: string
+  publisherCustomId: string
   followerCount: string
   sponsoredCount: string
   pickedCount: number
@@ -32,19 +40,64 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   sponsoredCount,
   pickedCount,
   publisherId,
+  publisherCustomId,
 }) => {
+  const { user, setUser } = useUser()
+  const followingPublisherList = user.followingPublishers
+
+  const isFollowing = !!followingPublisherList.find(
+    (publisher) => publisher.id === publisherId
+  )
+  const handleFollowOnClick = debounce(() => {
+    const followPublisherArgs = {
+      memberId: user.memberId,
+      publisherId,
+    }
+    if (isFollowing) {
+      setUser((prev) => {
+        return {
+          ...prev,
+          followingPublishers: prev.followingPublishers.filter(
+            (publisher) => publisher.id !== publisherId
+          ),
+        }
+      })
+      removeFollowPublisher(followPublisherArgs)
+    } else {
+      setUser((prev) => {
+        const newPublisher = {
+          __typename: 'Publisher' as const,
+          id: publisherId,
+          title: name,
+        }
+        return {
+          ...prev,
+          followingPublishers: [...prev.followingPublishers, newPublisher],
+        }
+      })
+      return addFollowPublisher(followPublisherArgs)
+    }
+  })
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
     {
       tabName: TabKey.FOLLOWER,
       count: followerCount,
-      redirectLink: `${publisherId}/follower`,
+      redirectLink: `${publisherCustomId}/follower`,
     },
   ]
 
   const buttonList = [
-    { text: '追蹤' },
-    { text: '贊助/訂閱媒體', primary: true },
+    {
+      text: { default: '追蹤', isActive: '追蹤中' },
+      isActive: isFollowing,
+      clickFn: handleFollowOnClick,
+    },
+    {
+      text: { default: '贊助/訂閱媒體', isActive: '' },
+      primary: true,
+      isActive: false,
+    },
   ]
 
   return (

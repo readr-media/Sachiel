@@ -1,5 +1,7 @@
 'use server'
 
+import { z } from 'zod'
+
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { GetLatestAddedCommentDocument } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
@@ -7,14 +9,39 @@ import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 import { sleep } from '@/utils/sleep'
 
-const getLatestAddComment = async ({
-  memberId,
-  storyId,
-}: {
-  memberId: string
-  storyId: string
-}) => {
+const ItemIdSchema = z.string().regex(/^\d+$/).min(1)
+const ContentSchema = z.string().min(1)
+
+const AddCommentSchema = z.object({
+  memberId: ItemIdSchema,
+  storyId: ItemIdSchema,
+  content: ContentSchema,
+  latestCommentId: ItemIdSchema,
+})
+
+const EditCommentSchema = z.object({
+  memberId: ItemIdSchema,
+  commentId: ItemIdSchema,
+  content: ContentSchema,
+})
+
+const DeleteCommentSchema = z.object({
+  memberId: ItemIdSchema,
+  commentId: ItemIdSchema,
+})
+
+const LikeCommentSchema = DeleteCommentSchema
+
+const GetLatestAddCommentSchema = z.object({
+  memberId: ItemIdSchema,
+  storyId: ItemIdSchema,
+})
+
+const getLatestAddComment = async (
+  input: z.infer<typeof GetLatestAddCommentSchema>
+) => {
   const globalLogFields = getLogTraceObjectFromHeaders()
+  const { memberId, storyId } = GetLatestAddCommentSchema.parse(input)
   const data = await fetchGraphQL(
     GetLatestAddedCommentDocument,
     {
@@ -29,20 +56,13 @@ const getLatestAddComment = async ({
   return comments[0].id
 }
 
-export async function addComment({
-  memberId,
-  storyId,
-  content,
-  latestCommentId,
-}: {
-  memberId: string
-  storyId: string
-  content: string
-  latestCommentId: string
-}): Promise<string | null> {
+export async function addComment(
+  input: z.infer<typeof AddCommentSchema>
+): Promise<string | null> {
   const sleepTime = 500
   const retryTimes = 3
-
+  const { memberId, storyId, content, latestCommentId } =
+    AddCommentSchema.parse(input)
   const payload = {
     action: 'add_comment',
     memberId,
@@ -81,15 +101,8 @@ export async function addComment({
   return null
 }
 
-export async function editComment({
-  memberId,
-  commentId,
-  content,
-}: {
-  memberId: string
-  commentId: string
-  content: string
-}) {
+export async function editComment(input: z.infer<typeof EditCommentSchema>) {
+  const { memberId, commentId, content } = EditCommentSchema.parse(input)
   const payload = {
     action: 'edit_comment',
     memberId,
@@ -104,13 +117,10 @@ export async function editComment({
   )
 }
 
-export async function deleteComment({
-  memberId,
-  commentId,
-}: {
-  memberId: string
-  commentId: string
-}) {
+export async function deleteComment(
+  input: z.infer<typeof DeleteCommentSchema>
+) {
+  const { memberId, commentId } = DeleteCommentSchema.parse(input)
   const payload = {
     action: 'remove_comment',
     memberId,
@@ -121,5 +131,34 @@ export async function deleteComment({
     payload,
     { cache: 'no-cache' },
     'Failed to remove comment state via pub/sub'
+  )
+}
+
+export async function likeComment(input: z.infer<typeof LikeCommentSchema>) {
+  const { memberId, commentId } = LikeCommentSchema.parse(input)
+  const payload = {
+    action: 'add_like',
+    memberId,
+    commentId,
+  }
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.pubsub,
+    payload,
+    { cache: 'no-cache' },
+    'Failed to like comment via pub/sub'
+  )
+}
+export async function unlikeComment(input: z.infer<typeof LikeCommentSchema>) {
+  const { memberId, commentId } = LikeCommentSchema.parse(input)
+  const payload = {
+    action: 'remove_like',
+    memberId,
+    commentId,
+  }
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.pubsub,
+    payload,
+    { cache: 'no-cache' },
+    'Failed to unlike comment via pub/sub'
   )
 }

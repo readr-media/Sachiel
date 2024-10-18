@@ -2,8 +2,12 @@
 import Button from '@/components/button'
 
 type ProfileButton = {
-  text: string
+  text: {
+    default: string
+    isActive: string
+  }
   primary?: boolean
+  isActive: boolean
   clickFn?: () => void
 }
 type ProfileButtonListProps = {
@@ -19,9 +23,13 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
         <div key={index} className="flex *:flex-1 sm:w-[180px]">
           <Button
             onClick={button.clickFn ? button.clickFn : () => {}}
-            text={button.text}
+            text={button.text.default}
             size="md"
             color={button.primary ? 'custom-blue' : 'white'}
+            activeState={{
+              isActive: button.isActive,
+              activeText: button.text.isActive,
+            }}
           />
         </div>
       ))}

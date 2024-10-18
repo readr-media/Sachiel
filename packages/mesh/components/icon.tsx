@@ -129,6 +129,7 @@ export type IconName =
   | 'icon-sponsor-500'
   | 'icon-sponsor-input'
   | 'icon-check-circle-lg'
+  | 'icon-liked'
   | 'icon-toast-success'
   | 'icon-toast-fail'
 

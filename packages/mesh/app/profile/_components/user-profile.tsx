@@ -49,7 +49,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           {userPickOrPickedSubtitle(userType)}
         </div>
       </section>
-      <p className="body-3 sm:body-2 mt-3 line-clamp-6 w-full text-primary-500 sm:mt-4">
+      <p className="body-3 sm:body-2 mt-3 line-clamp-6 w-full whitespace-pre text-primary-500 sm:mt-4">
         {intro}
       </p>
     </>
