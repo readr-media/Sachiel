@@ -316,18 +316,22 @@ query GetMemberFollowingList($customId: String, $take: Int!) {
     name
     avatar
     followingCount
-    follow_publisherCount
+    follow_publisherCount(where: { source_type: { not: { equals: "empty" } } })
     following(take: $take) {
       id
       customId
       name
       avatar
     }
-    follow_publisher(take: $take) {
+    follow_publisher(
+      where: { source_type: { not: { equals: "empty" } } }
+      take: $take
+    ) {
       id
       customId
       title
       logo
+      source_type
     }
   }
 }

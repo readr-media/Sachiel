@@ -6,6 +6,8 @@ module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './context/**/*.{js,ts,jsx,tsx,mdx}',
+    './hooks/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     screens: {
@@ -51,6 +53,7 @@ module.exports = {
         nav: {
           default: '64px',
         },
+        toast: '32px',
       },
       minHeight: {
         screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],

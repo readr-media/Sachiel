@@ -4,9 +4,12 @@ import { useState } from 'react'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import Icon from '@/components/icon'
 
-import { type FollowingListType } from '../page'
+import {
+  type FollowingListType,
+  type FollowingPublisherListType,
+} from '../page'
 type FollowingListProps = {
-  followingList: FollowingListType
+  followingList: FollowingListType | FollowingPublisherListType
   title: string
   defaultToggle: boolean
   type: 'member' | 'publisher'
@@ -44,16 +47,32 @@ const FollowingList = ({
       {resultShowing && (
         <ul className="lg:grid lg:grid-cols-2 lg:gap-x-5">
           {followingList?.map((following) => {
-            return (
-              <FollowListItem
-                key={following.id}
-                followerId={following.id}
-                followerAvatar={following.avatar || ''}
-                followerName={following.name || ''}
-                followerCustomId={following.customId || ''}
-                type={type}
-              />
-            )
+            switch (following.__typename) {
+              case 'Member':
+                return (
+                  <FollowListItem
+                    key={following.id}
+                    followerId={following.id}
+                    followerAvatar={following.avatar || ''}
+                    followerName={following.name || ''}
+                    followerCustomId={following.customId || ''}
+                    type={type}
+                  />
+                )
+              case 'Publisher':
+                return (
+                  <FollowListItem
+                    key={following.id}
+                    followerId={following.id}
+                    followerAvatar={following.logo || ''}
+                    followerName={following.title || ''}
+                    followerCustomId={following.customId || ''}
+                    type={type}
+                  />
+                )
+              default:
+                return null
+            }
           })}
         </ul>
       )}

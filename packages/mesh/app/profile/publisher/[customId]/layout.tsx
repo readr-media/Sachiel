@@ -20,9 +20,9 @@ export default function ProfileLayout({
   children: React.ReactNode
 }) {
   const pathName = usePathname()
-  const params = useParams<{ publisherId?: string }>()
+  const params = useParams<{ customId?: string }>()
 
-  const pageCustomId = params.publisherId ?? ''
+  const pageCustomId = params.customId ?? ''
 
   if (hasNestedLayout(pathName)) {
     return <>{children}</>
