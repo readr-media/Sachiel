@@ -82,7 +82,11 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
 
             <div className="flex items-center">
               <p className="caption-1 text-primary-500 hover-or-active:text-primary-700">
-                {comment.story.source.title}
+                <Link
+                  href={`/profile/publisher/${comment.story.source.customId}`}
+                >
+                  {comment.story.source.title}
+                </Link>
               </p>
               <Icon iconName="icon-dot" size="s" />
               <p className="caption-1 text-primary-500">
