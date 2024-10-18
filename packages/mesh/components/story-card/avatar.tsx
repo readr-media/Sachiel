@@ -38,6 +38,7 @@ export default function Avatar({
   const avatarClass = avatarClasses[size]
   const [imgSrc, setImgSrc] = useState(src)
 
+  // TODO: replace with <ImageWithFallback/>
   return src ? (
     <Image
       className={`${avatarClass} inline-block ${

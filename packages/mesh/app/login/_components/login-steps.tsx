@@ -44,6 +44,7 @@ export default function LoginSteps() {
         } else if (response.result === 'logged-in') {
           const redirectRoute = localStorage.getItem('login-redirect') ?? '/'
           setIsLoggedIn(true)
+          localStorage.removeItem('login-redirect')
           router.push(redirectRoute)
         }
       })
