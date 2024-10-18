@@ -27,14 +27,17 @@ const Page = async ({ params }: PageProps) => {
     const userLogo = userData?.logo || ''
     const userIntro = userData?.description || '使用者介紹'
     const followerCount = userData?.followerCount || 0
-    const storyData = storiesResponse?.stories ?? []
-
+    const storyData =
+      storiesResponse?.stories?.map((data) => ({
+        ...data,
+        source: {
+          id: userData.id,
+          title: userData.title,
+        },
+      })) || []
     const convertedFollowerCount = formatFollowCount(followerCount)
-
-    // TODO: 等待 API 實現
-    const convertedSponsoredCount = formatFollowCount(999999)
-    // TODO: 等待 API 實現
-    const pickedCount = 100
+    const convertedSponsoredCount = formatFollowCount(userData.sponsoredCount)
+    const pickedCount = parseInt(formatFollowCount(userData.picksCount ?? 0))
 
     return (
       <main className="flex grow flex-col">
