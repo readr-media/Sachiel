@@ -1,5 +1,6 @@
 'use client'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
+import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
@@ -47,7 +48,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     },
   ]
 
-  const buttonList = [
+  const buttonList: ProfileButton[] = [
     {
       text: { default: '追蹤', isActive: '追蹤中' },
       isActive: isFollowing,
@@ -55,7 +56,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     },
     {
       text: { default: '贊助/訂閱媒體', isActive: '' },
-      primary: true,
+      color: 'custom-blue',
       isActive: false,
       component: <PublisherDonateButton key={0} publisherId={publisherId} />,
     },

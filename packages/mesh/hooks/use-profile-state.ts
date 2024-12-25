@@ -36,10 +36,11 @@ export default function useProfileState({
   const [isError, setIsError] = useState(false)
   const { user, setUser } = useUser()
 
-  const isMember = memberId === user.customId
+  const isCurrentUser = memberId === user.customId
 
   const fetchMemberProfile = useCallback(async () => {
     const memberProfileResult = await getMemberProfile(memberId, takesCount)
+    console.log(memberProfileResult)
     if (!memberProfileResult) {
       throw new Error('Failed to fetch member profile')
     }
@@ -76,7 +77,7 @@ export default function useProfileState({
       setIsLoading(true)
       setIsError(false)
       try {
-        if (isMember) {
+        if (isCurrentUser) {
           await fetchMemberProfile()
         } else {
           await fetchVisitorProfile()
@@ -90,7 +91,7 @@ export default function useProfileState({
     }
 
     fetchProfile()
-  }, [isMember, fetchMemberProfile, fetchVisitorProfile])
+  }, [isCurrentUser, fetchMemberProfile, fetchVisitorProfile])
 
   return { visitorProfile, isLoading, isError }
 }

@@ -187,6 +187,9 @@ query GetMemberProfile($customId: String, $takes: Int!) {
       kind
       objective
     }
+    publishers: publisher(where: { is_active: { equals: true } }) {
+      customId
+    }
   }
   collections(
     where: {

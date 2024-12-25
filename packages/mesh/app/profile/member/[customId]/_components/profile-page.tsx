@@ -5,6 +5,7 @@ import { useMemo, useRef } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import CollectionsCarousel from '@/app/profile/_components/collections-carousel'
+import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
 import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
@@ -114,14 +115,32 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
     },
   ]
 
-  const buttonList = isCurrentUser
-    ? [
-        {
-          text: { default: '編輯個人檔案', isActive: '' },
-          clickFn: () => router.push(`${currentUrl}/edit-profile`),
-          isActive: false,
-        },
-      ]
+  const publisherCustomId = user.publishers?.[0].customId
+  const isMediaManager = isCurrentUser && publisherCustomId
+
+  const buttonList: ProfileButton[] = isCurrentUser
+    ? isMediaManager
+      ? [
+          {
+            text: { default: '編輯個人檔案', isActive: '' },
+            clickFn: () => router.push(`${currentUrl}/edit-profile`),
+            isActive: false,
+          },
+          {
+            text: { default: '進入媒體後台', isActive: '' },
+            color: 'primary',
+            clickFn: () =>
+              router.push(`/media-backstage/${publisherCustomId}/point`),
+            isActive: false,
+          },
+        ]
+      : [
+          {
+            text: { default: '編輯個人檔案', isActive: '' },
+            clickFn: () => router.push(`${currentUrl}/edit-profile`),
+            isActive: false,
+          },
+        ]
     : [
         {
           text: { default: '追蹤', isActive: '追蹤中' },

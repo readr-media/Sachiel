@@ -5520,6 +5520,10 @@ export type GetMemberProfileQuery = {
         }> | null
       } | null
     }> | null
+    publishers?: Array<{
+      __typename?: 'Publisher'
+      customId?: string | null
+    }> | null
   } | null
   collections?: Array<{
     __typename?: 'Collection'
@@ -13154,6 +13158,45 @@ export const GetMemberProfileDocument = {
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'objective' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'publishers' },
+                  name: { kind: 'Name', value: 'publisher' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
                       },
                     ],
                   },

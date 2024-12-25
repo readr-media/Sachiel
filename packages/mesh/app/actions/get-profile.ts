@@ -35,6 +35,7 @@ export async function getMemberProfile(memberId: string, takes: number) {
         memberData.picks?.filter(
           (pick) => pick.objective === PickObjective.Collection
         ) ?? [],
+      publishers: memberData.publishers || [],
     }
   } catch (error) {
     logServerSideError(error, 'Failed to get member profile', globalLogFields)
