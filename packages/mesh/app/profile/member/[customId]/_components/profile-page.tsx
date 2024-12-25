@@ -21,10 +21,10 @@ import { type PickList, TabCategory, TabKey } from '@/types/profile'
 import Loading from './loading'
 
 interface ProfilePageProps {
-  isMember: boolean
+  isCurrentUser: boolean
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
   const { user } = useUser()
   const searchParams = useSearchParams()
   const queryTab = searchParams.get('tab')
@@ -48,7 +48,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
     router.push(`${pathName}?tab=${newCategory}`, { scroll: false })
   }
 
-  const profileData = isMember ? user : visitorProfile
+  const profileData = isCurrentUser ? user : visitorProfile
   const { handleClickFollow, isFollowing } = useFollow(
     String(profileData.memberId)
   )
@@ -114,7 +114,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
     },
   ]
 
-  const buttonList = isMember
+  const buttonList = isCurrentUser
     ? [
         {
           text: { default: '編輯個人檔案', isActive: '' },
@@ -132,7 +132,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
 
   const getMessage = (category: TabCategoryType): string => {
     const messages: { [key: string]: string } = {
-      PICKS: isMember
+      PICKS: isCurrentUser
         ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧'
         : '這個人還沒有精選新聞',
       BOOKMARKS: '沒有已儲存的書籤',
@@ -159,7 +159,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
             name={name}
             pickCount={pickCount}
             avatar={avatar}
-            userType={isMember ? 'member' : 'visitor'}
+            userType={isCurrentUser ? 'member' : 'visitor'}
             intro={intro}
           />
           <ProfileButtonList buttonList={buttonList} />
@@ -169,7 +169,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       <Tab
         tabCategory={category}
         setCategory={setCategory}
-        userType={isMember ? 'member' : 'visitor'}
+        userType={isCurrentUser ? 'member' : 'visitor'}
       />
       {pickCollections?.length ? (
         <>
