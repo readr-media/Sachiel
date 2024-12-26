@@ -152,6 +152,7 @@ export async function getCurrentUser() {
         ),
         followingCategories: data.member.followingCategories ?? [],
         followingPublishers: data.member.followingPublishers ?? [],
+        publishers: data.member.publishers ?? [],
       }
     } else {
       return undefined

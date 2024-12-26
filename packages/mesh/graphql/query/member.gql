@@ -124,6 +124,14 @@ query GetCurrentUserMemberId($uid: String!) {
       id
       title
     }
+    publishers: publisher(
+      where: { is_active: { equals: true } }
+      orderBy: { id: asc }
+    ) {
+      title
+      customId
+      logo
+    }
   }
 }
 
@@ -187,8 +195,13 @@ query GetMemberProfile($customId: String, $takes: Int!) {
       kind
       objective
     }
-    publishers: publisher(where: { is_active: { equals: true } }) {
+    publishers: publisher(
+      where: { is_active: { equals: true } }
+      orderBy: { id: asc }
+    ) {
+      title
       customId
+      logo
     }
   }
   collections(

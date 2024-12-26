@@ -1,3 +1,5 @@
+import { logout } from '@/utils/logout'
+
 const LOGO_ICONS = {
   mobile: {
     size: { width: 144, height: 36 },
@@ -78,7 +80,6 @@ const FOOTER_COMPANY_INFOS = [
   'readr@readr.tw',
 ] as const
 
-// TODO: update href according to SPEC
 const NON_MOBILE_NAV_ICONS = {
   first: [
     {
@@ -158,7 +159,6 @@ const NON_MOBILE_NAV_ICONS = {
   ],
 } as const
 
-// TODO: update href according to SPEC
 const MOBILE_NAV_ICONS = [
   {
     icon: {
@@ -212,12 +212,51 @@ const MOBILE_NAV_ICONS = [
   },
 ] as const
 
+const MEDIA_BACKSTAGE_NAV_ICONS = {
+  first: [
+    {
+      icon: {
+        default: 'icon-redeem',
+        hover: 'icon-redeem',
+        on: 'icon-redeem',
+      },
+      hrefFn: (publisherCustomId: string) =>
+        `/media-backstage/${publisherCustomId}/point`,
+      text: '點數兌換',
+    },
+    {
+      icon: {
+        default: 'icon-report',
+        hover: 'icon-report-hover',
+        on: 'icon-report-on',
+      },
+      hrefFn: (publisherCustomId: string) =>
+        `/media-backstage/${publisherCustomId}/report`,
+      text: '收益報表',
+    },
+  ],
+  second: [
+    {
+      icon: {
+        default: 'icon-logout',
+        hover: 'icon-logout-hover',
+        on: 'icon-logout',
+      },
+      action: () => {
+        logout()
+      },
+      text: '登出',
+    },
+  ],
+} as const
+
 export {
   DOWNLOAD_APP_LINKS,
   FOOTER_COMPANY_INFOS,
   FOOTER_NAV_LINKS,
   FOOTER_SHARED_ICONS,
   LOGO_ICONS,
+  MEDIA_BACKSTAGE_NAV_ICONS,
   MOBILE_NAV_ICONS,
   NON_MOBILE_NAV_ICONS,
 }

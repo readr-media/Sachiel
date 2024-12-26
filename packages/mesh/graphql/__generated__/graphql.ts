@@ -5341,6 +5341,12 @@ export type GetCurrentUserMemberIdQuery = {
       id: string
       title?: string | null
     }> | null
+    publishers?: Array<{
+      __typename?: 'Publisher'
+      title?: string | null
+      customId?: string | null
+      logo?: string | null
+    }> | null
   } | null
 }
 
@@ -5522,7 +5528,9 @@ export type GetMemberProfileQuery = {
     }> | null
     publishers?: Array<{
       __typename?: 'Publisher'
+      title?: string | null
       customId?: string | null
+      logo?: string | null
     }> | null
   } | null
   collections?: Array<{
@@ -12576,6 +12584,61 @@ export const GetCurrentUserMemberIdDocument = {
                     ],
                   },
                 },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'publishers' },
+                  name: { kind: 'Name', value: 'publisher' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'id' },
+                            value: { kind: 'EnumValue', value: 'asc' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -13190,14 +13253,30 @@ export const GetMemberProfileDocument = {
                         ],
                       },
                     },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'id' },
+                            value: { kind: 'EnumValue', value: 'asc' },
+                          },
+                        ],
+                      },
+                    },
                   ],
                   selectionSet: {
                     kind: 'SelectionSet',
                     selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'customId' },
                       },
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                     ],
                   },
                 },

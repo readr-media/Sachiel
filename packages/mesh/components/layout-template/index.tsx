@@ -20,7 +20,12 @@ import NonMobileNavigation, {
   NonMobileNavigationType,
 } from './navigation/non-mobile-navigation'
 
-type LayoutType = 'default' | 'stateless' | 'article' | 'collection'
+type LayoutType =
+  | 'default'
+  | 'stateless'
+  | 'article'
+  | 'collection'
+  | 'media-backstage'
 
 type CustomStyle = {
   background?: string
@@ -54,6 +59,10 @@ type LayoutTemplateProps = {
   | {
       type: 'collection'
       mobileNavigation: MobileNavigationProps
+    }
+  | {
+      type: 'media-backstage'
+      publisherCustomId: string
     }
 )
 
@@ -101,6 +110,12 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
         <CollectionLayout mobileNavigation={props.mobileNavigation}>
           {childrenJsx}
         </CollectionLayout>
+      )
+    case 'media-backstage':
+      return (
+        <MediaBackstageLayout publisherCustomId={props.publisherCustomId}>
+          {childrenJsx}
+        </MediaBackstageLayout>
       )
     default:
       console.error('LayoutTemplate with unhandleType', type)
@@ -256,6 +271,27 @@ const CollectionLayout = ({
       <div className="primary-container-collection">{children}</div>
       {/* cover on mobile header if navigation is setup */}
       {mobileNavigation && <MobileNavigation {...mobileNavigation} />}
+    </div>
+  )
+}
+
+const MediaBackstageLayout = ({
+  publisherCustomId,
+  children,
+}: {
+  publisherCustomId: string
+  children: React.ReactNode
+}) => {
+  return (
+    <div className="flex min-h-screen min-w-[1200px] flex-col bg-multi-layer-light">
+      <Header type={HeaderType.MediaBackstage} />
+      <Nav
+        type={NavType.MediaBackstage}
+        publisherCustomId={publisherCustomId}
+      />
+      <div className="grow pl-[theme(width.nav.xl)] xl:pl-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
+        {children}
+      </div>
     </div>
   )
 }
