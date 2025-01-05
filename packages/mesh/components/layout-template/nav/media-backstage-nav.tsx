@@ -27,7 +27,7 @@ export default function MediaBackstageNav({
 }) {
   const path = usePathname()
   return (
-    <nav className="absolute bottom-0 left-0 top-[theme(height.header.sm)] flex justify-end border-r bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
+    <nav className="fixed bottom-0 left-0 top-[theme(height.header.sm)] z-layout flex justify-end border-r bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
       <div className="flex w-[theme(width.nav.xl)] flex-col justify-between px-10">
         <div className="py-10">
           <div className="flex flex-col gap-5">
