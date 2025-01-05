@@ -70,7 +70,11 @@ export default function PointLayout({
         restrictMainWidth: false,
         footer: 'hidden sm:block',
       }}
-      suspenseFallback={<LoadingPoint />}
+      suspenseFallback={
+        <main className="flex grow flex-col sm:p-5 md:px-[70px] md:py-10 lg:p-10">
+          <LoadingPoint />
+        </main>
+      }
     >
       {children}
     </LayoutTemplate>
