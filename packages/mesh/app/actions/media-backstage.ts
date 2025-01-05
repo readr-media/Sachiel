@@ -24,19 +24,20 @@ export async function getPublisherTransactionRecord(publisherCustomId: string) {
 
   return {
     [RecordType.Sponsor]: {
-      type: RecordType.Sponsor,
       totalCount: totalSponsorCount,
       records: sponsorRecords,
     },
     [RecordType.Transaction]: {
-      type: RecordType.Transaction,
       totalCount: totalTransactionCount,
       records: transactionRecords,
     },
     [RecordType.Redeem]: {
-      type: RecordType.Redeem,
       totalCount: totalRedeemCount,
       records: redeemRecords,
+    },
+    [RecordType.MutualFund]: {
+      totalCount: 0,
+      records: [],
     },
   }
 }

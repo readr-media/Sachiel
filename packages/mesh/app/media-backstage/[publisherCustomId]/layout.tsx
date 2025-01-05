@@ -3,6 +3,8 @@ import { notFound, redirect } from 'next/navigation'
 import { getCurrentUser } from '@/app/actions/auth'
 import LayoutTemplate from '@/components/layout-template'
 
+import Loading from './point/_components/loading'
+
 export default async function MediaBackstageLayout({
   children,
   params,
@@ -29,6 +31,11 @@ export default async function MediaBackstageLayout({
     <LayoutTemplate
       type="media-backstage"
       publisherCustomId={publisherCustomId}
+      suspenseFallback={
+        <main className="flex w-maxMain grow flex-col gap-5 p-10 pb-[134px]">
+          <Loading />
+        </main>
+      }
     >
       {children}
     </LayoutTemplate>

@@ -6,8 +6,9 @@ export type Media = NonNullable<
 >[number]
 
 export enum RecordType {
-  Transaction = 'transaction',
   Sponsor = 'sponsor',
+  Transaction = 'transaction',
+  MutualFund = 'mutual-fund',
   Redeem = 'redeem',
 }
 
