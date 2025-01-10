@@ -10,7 +10,7 @@ type StyledProps = {
 }
 
 const Container = styled.div`
-  background-color: #f5ebff;
+  background-color: #ebe3ff;
   color: #000928;
   line-height: 1.5;
   text-align: center;

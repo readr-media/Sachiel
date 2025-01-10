@@ -106,7 +106,7 @@ const ReportTitle = styled.h3`
   font-size: 16px;
   line-height: 23px;
   letter-spacing: 0.03em;
-  color: rgba(0, 9, 40, 0.87);
+  color: #212944;
 `
 
 const ReportDesc = styled.p`
@@ -116,7 +116,7 @@ const ReportDesc = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(0, 9, 40, 0.5);
+  color: #7f8493;
 `
 
 export default function More({

@@ -10,7 +10,7 @@ import Landing from '~/components/about/landing'
 import Members from '~/components/about/members'
 import More from '~/components/about/more'
 import Qa from '~/components/about/qa'
-import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
+import LayoutGeneral from '~/components/layout/layout-general'
 import { QA_RECORD_CONFIG } from '~/constants/environment-variables'
 import editoolsClient from '~/editools-apollo-client'
 import type { Award } from '~/graphql/query/award'
@@ -68,14 +68,14 @@ const wording: Record<Language, languageWording> = {
 
 const Page = styled.div`
   background: #000928;
-  box-shadow: inset 8px 0px 0px #ebf02c;
+  box-shadow: inset 8px 0px 0px #eee500;
   max-width: 100vw;
   min-width: 100vw;
   font-family: 'Noto Sans TC';
   overflow: hidden;
   ${({ theme }) => `
     ${theme.breakpoint.md} {
-      box-shadow: inset 20px 0px 0px #ebf02c;
+      box-shadow: inset 20px 0px 0px #eee500;
     }
   `}
 `
@@ -292,7 +292,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
 About.getLayout = function getLayout(page: ReactElement) {
   const pageTitle = '關於我們'
 
-  return <LayoutWithLogoOnly title={pageTitle}>{page}</LayoutWithLogoOnly>
+  return <LayoutGeneral title={pageTitle}>{page}</LayoutGeneral>
 }
 
 export default About

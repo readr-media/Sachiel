@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation'
 
 import FollowButton from '@/app/social/_components/follow-button'
 import Avatar from '@/components/story-card/avatar'
+import { useUser } from '@/context/user'
 import { type SearchResults } from '@/utils/data-schema'
 
 import FollowPublisherButton from './follow-publisher-button'
@@ -15,6 +16,7 @@ export default function MemberAndPublisher({
   memberResult: SearchResults['member']
   publisherResult: SearchResults['publisher']
 }) {
+  const { user } = useUser()
   const router = useRouter()
   const isNoResult = !memberResult.length && !publisherResult.length
 
@@ -41,9 +43,11 @@ export default function MemberAndPublisher({
                   </p>
                   <p className="body-3 text-primary-500">{m.customId}</p>
                 </div>
-                <div className="shrink-0">
-                  <FollowButton followingId={m.id} />
-                </div>
+                {m.id === user.memberId ? null : (
+                  <div className="shrink-0">
+                    <FollowButton followingId={m.id} />
+                  </div>
+                )}
               </div>
             </div>
           ))}

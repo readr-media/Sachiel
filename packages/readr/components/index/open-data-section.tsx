@@ -44,8 +44,8 @@ const Section = styled.section``
 
 const Header = styled.h2`
   width: 100%;
-  background-color: #04295e;
-  color: #ebf02c;
+  background-color: #0b2163;
+  color: #eee500;
   padding-top: 20px;
   padding-bottom: 20px;
   border-top-left-radius: 2px;

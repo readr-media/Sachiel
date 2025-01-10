@@ -34,7 +34,7 @@ const Link = styled.a<StyledProps>`
   ${({ theme, $shouldHighlightReport }) =>
     $shouldHighlightReport &&
     `
-      background-color: rgba(245, 235, 255, 0.5);
+      background-color: #f5f0ff;
       padding: 12px 8px 12px 0;
       ${theme.breakpoint.sm} {
         padding: 0 0 12px;
@@ -178,7 +178,7 @@ const TextWrapper = styled.div<Pick<StyledProps, '$shouldHighlightReport'>>`
         bottom: 0;
         left: 0;
         width: 8px;
-        background-color: #ebf02c;
+        background-color: #eee500;
       }
     `}
 `

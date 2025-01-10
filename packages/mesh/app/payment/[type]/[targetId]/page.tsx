@@ -46,6 +46,7 @@ export default async function Page({
             <PaymentInfo
               unlockPolicy={unlockPolicy}
               storyId={targetId}
+              balance={balance}
               recipientAddress={publisherAddress}
             />
           }

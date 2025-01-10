@@ -16,12 +16,12 @@ const TagWrapper = styled.ul`
     line-height: 1.5;
     text-align: left;
     border-radius: 2px;
-    color: rgba(0, 9, 40, 0.66);
+    color: #575d71;
     background-color: #f6f6fb;
     margin: 0 8px 8px 0;
 
     &:hover {
-      color: rgba(0, 9, 40, 0.5);
+      color: #7f8493;
     }
   }
 

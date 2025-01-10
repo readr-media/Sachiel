@@ -16,7 +16,7 @@ const DotStyle = css`
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: rgba(0, 9, 40, 0.2);
+  background-color: #b2b5be;
 `
 
 const LineStyle = css`
@@ -26,7 +26,7 @@ const LineStyle = css`
   left: 4px;
   width: 20px;
   height: 1px;
-  background-color: rgba(0, 9, 40, 0.66);
+  background-color: #575d71;
 
   ${({ theme }) => theme.breakpoint.md} {
     left: 5px;
@@ -88,7 +88,7 @@ const CreditList = styled.ul`
 
 const CreditTitle = styled.span`
   display: block;
-  color: rgba(0, 9, 40, 0.66);
+  color: #575d71;
   display: inline;
   width: fit-content;
   min-width: 28px;

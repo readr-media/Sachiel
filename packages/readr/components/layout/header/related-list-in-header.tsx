@@ -54,7 +54,7 @@ const Container = styled.div<{ $show: boolean }>`
 
 const Divider = styled.div`
   height: 6px;
-  background-color: #ebf02c;
+  background-color: #eee500;
 `
 
 type RelatedListInHeaderProps = {

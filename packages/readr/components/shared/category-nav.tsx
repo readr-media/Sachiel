@@ -22,7 +22,7 @@ const Item = styled.li<StyledProps>`
   > button {
     position: relative;
     margin: 0 20px 12px 0;
-    color: rgba(0, 9, 40, 0.3);
+    color: #b2b5be;
     font-size: 16px;
     line-height: 1.5;
 
@@ -38,18 +38,18 @@ const Item = styled.li<StyledProps>`
       bottom: 0;
       width: 0;
       height: 2px;
-      background-color: #ebf02c;
+      background-color: #eee500;
       transition: all 0.3s ease;
     }
     &:hover,
     &:focus {
-      color: rgba(0, 9, 40, 0.66);
+      color: #575d71;
     }
 
     ${({ $isActive }) =>
       $isActive &&
       `
-        color: rgba(0, 9, 40, 0.87);
+        color: #212944;
         &:after {
           left: 0;
           width: 100%;

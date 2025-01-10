@@ -27,7 +27,7 @@ const Container = styled.div`
 
 const Message = styled.p`
   order: 2;
-  background-color: #04295e;
+  background-color: #0b2163;
   color: #fff;
   padding: 20px;
   ${({ theme }) => theme.breakpoint.md} {
@@ -46,8 +46,8 @@ const Message = styled.p`
 
 const Control = styled.button`
   order: 1;
-  background-color: #ebf02c;
-  color: #04295e;
+  background-color: #eee500;
+  color: #0b2163;
   padding-top: 11px;
   padding-bottom: 11px;
   letter-spacing: 2.5px;

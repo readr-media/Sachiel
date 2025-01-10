@@ -48,7 +48,7 @@ export default function NotificationDropdown({
             <Icon iconName="icon-close" size="l" />
           </button>
         </div>
-        {announcement ? (
+        {announcement && announcement.length > 0 ? (
           <div className="flex flex-col gap-1 rounded-t-md bg-highlight-red p-5">
             <p className="subtitle-2 text-primary-700">系統維修公告</p>
             <p className="body-3 max-w-[335px] text-primary-600">

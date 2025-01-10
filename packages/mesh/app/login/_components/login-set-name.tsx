@@ -34,7 +34,7 @@ export default function LoginSetName() {
       <Icon iconName="icon-login-step-1" size={{ width: 335, height: 20 }} />
       <div>
         <input
-          className="w-full appearance-none border-b border-primary-200"
+          className="w-full appearance-none border-b border-primary-200 pb-2 focus-within:border-b-primary-600"
           type="text"
           value={name}
           onChange={(e) =>

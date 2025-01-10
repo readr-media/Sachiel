@@ -1,6 +1,12 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import {
+  type Dispatch,
+  type SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
 
 import PickModal from '@/components/pick-modal'
@@ -11,7 +17,8 @@ type ModalType = {
   objectId: string
   isModalOpen: boolean
   isPicked: boolean
-
+  interactCommentStack: string[]
+  setInteractCommentStack: Dispatch<SetStateAction<string[]>>
   openPickModal: (
     pickObjective: PickObjective,
     objectId: string,
@@ -29,6 +36,7 @@ export function PickModalProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPicked, setIsPicked] = useState(false)
   const [objectId, setObjectId] = useState('')
+  const [interactCommentStack, setInteractCommentStack] = useState<string[]>([])
 
   const openPickModal = (
     pickObjective: PickObjective,
@@ -50,6 +58,8 @@ export function PickModalProvider({ children }: { children: React.ReactNode }) {
         pickObjective,
         objectId,
         isPicked,
+        interactCommentStack,
+        setInteractCommentStack,
         openPickModal,
         closePickModal,
       }}

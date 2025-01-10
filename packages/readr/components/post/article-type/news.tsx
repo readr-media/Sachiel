@@ -35,7 +35,7 @@ const HeroImage = styled.figure`
   figcaption {
     font-size: 14px;
     line-height: 21px;
-    color: rgba(0, 9, 40, 0.5);
+    color: #7f8493;
     padding: 0 20px;
     margin: 8px 0 0;
 

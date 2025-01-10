@@ -28,8 +28,13 @@ export default function PickModal() {
 const AddPickModal = () => {
   const { user } = useUser()
   const { width } = useWindowDimensions()
-  const { isModalOpen, objectId, closePickModal, pickObjective } =
-    usePickModal()
+  const {
+    isModalOpen,
+    objectId,
+    closePickModal,
+    pickObjective,
+    setInteractCommentStack,
+  } = usePickModal()
   const { addPick, addPickAndComment } = usePicker()
   const mobileTextAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const desktopTextAreaRef = useRef<HTMLTextAreaElement | null>(null)
@@ -65,6 +70,7 @@ const AddPickModal = () => {
   const handleAddPick = () => {
     if (value) {
       addPickAndComment(objectId, pickObjective, value)
+      setInteractCommentStack((prev) => [...prev, objectId])
     } else {
       addPick(objectId, pickObjective)
     }

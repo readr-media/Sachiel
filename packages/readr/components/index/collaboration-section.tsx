@@ -108,7 +108,7 @@ export default function CollaborationSection(
     <Container aria-label={sectionTitle}>
       <SectionHeading
         title={sectionTitle}
-        highlightColor="#ebf02c"
+        highlightColor="#eee500"
         headingLevel={2}
       />
       <HighlightPart>

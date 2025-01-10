@@ -74,7 +74,7 @@ const CategoryItem = styled.li`
     padding: 40px 0;
   }
   & + & {
-    border-top: 3px solid #04295e;
+    border-top: 3px solid #0b2163;
   }
   a {
     display: block;
@@ -84,7 +84,7 @@ const CategoryItem = styled.li`
       font-weight: 900;
       line-height: 36px;
       letter-spacing: 0.03em;
-      color: rgba(0, 9, 40, 0.87);
+      color: #212944;
     }
 
     &:active,
@@ -96,7 +96,7 @@ const CategoryItem = styled.li`
         left: 0;
         right: 0;
         height: 20px;
-        background-color: #ebf02c;
+        background-color: #eee500;
         z-index: -1; // be behind text
       }
     }

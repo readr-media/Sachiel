@@ -229,6 +229,7 @@ const ArticleCard = ({
                 </p>
                 <span className="*:caption-1 *:text-primary-500">
                   <StoryMeta
+                    storyId={storyData.id}
                     commentCount={storyData?.commentCount || 0}
                     publishDate={storyGetters.publishedDate(storyData)}
                     paywall={storyGetters.paywall(storyData)}

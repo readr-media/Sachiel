@@ -9,7 +9,7 @@ const Label = styled.span`
   font-size: 13px;
   line-height: 19px;
   color: #fff;
-  background-color: rgba(0, 9, 40, 0.5);
+  background-color: #7f8493;
   border-radius: 2px;
   padding: 2px 4px;
   ${({ theme }) => theme.breakpoint.sm} {

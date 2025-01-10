@@ -9,7 +9,7 @@ import { getHref } from '~/utils/post'
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: #ebf02c;
+  background-color: #eee500;
   padding: 48px 20px;
 
   ${({ theme }) => theme.breakpoint.md} {

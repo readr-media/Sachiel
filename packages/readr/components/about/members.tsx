@@ -134,7 +134,7 @@ const Position = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #04295e;
+  color: #0b2163;
   text-align: center;
 `
 const Name = styled.p`
@@ -142,7 +142,7 @@ const Name = styled.p`
   font-weight: 700;
   font-size: 20px;
   line-height: 30px;
-  color: rgba(0, 9, 40, 0.87);
+  color: #212944;
   position: relative;
   z-index: 1;
   display: inline-block;
@@ -155,8 +155,8 @@ const Name = styled.p`
 
     text-decoration-line: line-through;
     -webkit-text-decoration-line: line-through;
-    text-decoration-color: #ebf02c;
-    -webkit-text-decoration-color: #ebf02c;
+    text-decoration-color: #eee500;
+    -webkit-text-decoration-color: #eee500;
     text-decoration-thickness: 10px;
     -webkit-text-decoration-thickness: 10px;
 
@@ -178,12 +178,12 @@ const Number = styled.div`
   font-size: 16px;
   line-height: 23px;
   letter-spacing: 0.03em;
-  color: rgba(0, 9, 40, 0.87);
+  color: #212944;
   display: flex;
   margin-bottom: 38px;
   .digit {
     text-align: center;
-    box-shadow: inset 0px -1px 0px rgba(0, 9, 40, 0.87);
+    box-shadow: inset 0px -1px 0px #212944;
     width: 26px;
     height: 26px;
     margin: 8px;
@@ -198,13 +198,13 @@ const Work = styled.div`
   line-height: 160%;
   color: #000928;
   width: 100%;
-  background-color: #ebf02c;
+  background-color: #eee500;
   border-radius: 0px 0px 6px 6px;
   position: absolute;
   bottom: 0;
   transition: all 0.3s ease;
   &:hover {
-    background-color: #04295e;
+    background-color: #0b2163;
     color: #fff;
     cursor: pointer;
   }
@@ -213,7 +213,7 @@ const Work = styled.div`
 // Card Back
 
 const CardBack = styled.div`
-  background: #ebf02c;
+  background: #eee500;
   width: 100%;
   height: 100%;
   border-radius: 6px;
@@ -258,7 +258,7 @@ const Caption = styled.div`
   line-height: 20px;
   text-align: center;
   padding: 10px 32px;
-  color: rgba(0, 9, 40, 0.66);
+  color: #575d71;
 `
 
 // Index Filter
@@ -302,7 +302,7 @@ const Tr = styled.tr`
 
   &.active {
     .position {
-      color: #ebf02c;
+      color: #eee500;
     }
 
     .count {
@@ -318,7 +318,7 @@ const Tr = styled.tr`
       height: 0;
       border-style: solid;
       border-width: 6.5px 0 6.5px 11.3px;
-      border-color: transparent transparent transparent #ebf02c;
+      border-color: transparent transparent transparent #eee500;
     }
   }
 `

@@ -1,9 +1,9 @@
 // TODO: replace it with share component
 
+import Image from 'next/image'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
-import ReadrLogo from '~/public/icons/readr-logo.svg'
 import * as gtag from '~/utils/gtag'
 
 const Link = styled(NextLink)`
@@ -30,7 +30,7 @@ export default function HeaderLogo({
       aria-label="首頁"
       onClick={clickHander}
     >
-      <ReadrLogo />
+      <Image src="/icons/readr-logo.svg" alt="Readr logo" fill />
     </Link>
   )
 }

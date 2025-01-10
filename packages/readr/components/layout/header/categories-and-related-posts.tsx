@@ -44,7 +44,7 @@ const CategoryItem = styled.li`
           left: 0;
           right: 0;
           height: 8px;
-          background-color: #ebf02c;
+          background-color: #eee500;
           z-index: -1; // be behind text
         }
         // triangle
@@ -58,7 +58,7 @@ const CategoryItem = styled.li`
           transform: translateX(-50%);
           border-style: solid;
           border-width: 0 12px 10px 12px;
-          border-color: transparent transparent #ebf02c transparent;
+          border-color: transparent transparent #eee500 transparent;
         }
       }
     }

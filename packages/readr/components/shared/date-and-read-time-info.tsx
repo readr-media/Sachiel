@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Container = styled.div`
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(0, 9, 40, 0.66);
+  color: #575d71;
   ${({ theme }) => theme.breakpoint.md} {
     font-size: 16px;
   }
@@ -28,7 +28,7 @@ const ReadTime = styled.p`
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: rgba(0, 9, 40, 0.2);
+    background-color: #b2b5be;
     ${({ theme }) => theme.breakpoint.md} {
       top: 11px;
       left: 8px;

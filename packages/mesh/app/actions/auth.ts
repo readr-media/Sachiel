@@ -71,7 +71,7 @@ export async function getAccessToken(idToken: string) {
         Authorization: `Bearer ${idToken}`,
       },
     },
-    'fail message'
+    'Fail to get access token'
   )) as { token: string }
 
   if (!response) return undefined

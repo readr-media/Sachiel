@@ -46,6 +46,7 @@ const PublisherStory = ({
       </Link>
       <div className="caption-1 mt-1">
         <StoryMeta
+          storyId={story.id}
           commentCount={story.commentCount}
           publishDate={story.published_date}
           paywall={story.paywall}

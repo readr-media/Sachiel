@@ -86,11 +86,11 @@ const LandingContent = styled.div`
     color: transparent;
     &:before {
       content: '';
-      color: rgba(235, 240, 44, 1);
+      color: #eee500;
       position: absolute;
       top: 50%;
       left: 50%;
-      background: rgba(235, 240, 44, 1);
+      background: #eee500;
       width: 0;
       height: 1.2em;
       -webkit-transform: translate(-50%, -55%);
@@ -109,7 +109,7 @@ const LandingContent = styled.div`
       }
     }
     &.state-3 {
-      color: rgba(235, 240, 44, 1);
+      color: #eee500;
       &:before {
         width: 0;
       }
@@ -178,7 +178,7 @@ const LanguageChoice = styled.button<StyleProps>`
     color: #ffffff;
   }
 
-  ${({ $isActive }) => $isActive && `color: #EBF02C;`}
+  ${({ $isActive }) => $isActive && `color: #EEE500;`}
 `
 
 export default function Landing({

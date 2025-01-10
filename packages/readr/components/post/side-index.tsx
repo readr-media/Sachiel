@@ -10,7 +10,7 @@ type WrapperProps = {
 
 const SideIndexWrapper = styled.div<WrapperProps>`
   background: #f6f6fb;
-  border: 1px solid rgba(0, 9, 40, 0.1);
+  border: 1px solid #e5e6e9;
   border-radius: 2px;
   padding: 16px 0px;
   margin-bottom: 24px;
@@ -20,7 +20,7 @@ const SideIndexWrapper = styled.div<WrapperProps>`
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    color: #04295e;
+    color: #0b2163;
     margin-bottom: 8px;
   }
 
@@ -43,15 +43,14 @@ const SideIndexList = styled.li<StyleProps>`
   cursor: pointer;
   box-shadow: ${(props) =>
     props.isActive ? 'inset 4px 0px 0px 0px black' : 'none'};
-  color: ${(props) =>
-    props.isActive ? 'rgba(0, 9, 40, 0.87)' : 'rgba(0, 9, 40, 0.5)'};
+  color: ${(props) => (props.isActive ? '#212944' : '#7f8493')};
 
   & + li {
     margin-top: 12px;
   }
 
   &:hover {
-    color: rgba(0, 9, 40, 0.87);
+    color: #212944;
     box-shadow: inset 4px 0px 0px 0px black;
   }
 

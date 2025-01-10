@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
-import { getStoryAccess } from '@/app/actions/auth'
-import { unlockSingleStory } from '@/app/actions/payment'
+import {
+  type CreatePaymentProps,
+  type UpdatePaymentProps,
+} from '@/app/actions/payment'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Icon from '@/components/icon'
-import Spinner from '@/components/spinner'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
-import { auth } from '@/firebase/client'
 import useUserPayload from '@/hooks/use-user-payload'
 import { logPayment } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
@@ -23,10 +23,12 @@ import { type StoryUnlockPolicy } from '../page'
 export default function PaymentInfo({
   unlockPolicy,
   storyId,
+  balance,
   recipientAddress,
 }: {
   unlockPolicy: StoryUnlockPolicy
   storyId: string
+  balance: number | undefined
   recipientAddress: Hex
 }) {
   const { user } = useUser()
@@ -34,33 +36,29 @@ export default function PaymentInfo({
   const [email, setEmail] = useState(user.email)
   const [isChecked, setIsChecked] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const { addToast } = useToast()
   const isValid = isValidEmail(email)
   const userPayload = useUserPayload()
+  const createUnlockStorySinglePayment: CreatePaymentProps = {
+    action: 'unlock_story_single',
+    memberId: user.memberId,
+    policyId: unlockPolicy[0].id,
+    storyId: storyId,
+  }
+  const updateUnlockStorySinglePayment: UpdatePaymentProps = {
+    action: 'unlock_story_single',
+    memberId: user.memberId,
+    objective: 'transaction',
+    targetId: '0',
+    tid: '0x',
+  }
 
-  const handleUserOperationSuccess = async (hash: Hex) => {
-    setIsLoading(true)
-    const txr = {
-      memberId: user.memberId,
-      policyId: unlockPolicy[0].id,
-      tid: hash,
-      storyId,
-    }
-    await unlockSingleStory(txr)
+  const handleUnlockStorySingleSuccess = () => {
     addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
     logPayment(userPayload, storyId)
-    if (auth.currentUser) {
-      const idToken = await auth.currentUser.getIdToken()
-      const response = await getStoryAccess(idToken, storyId)
-
-      if (response) {
-        setTimeout(() => {
-          router.push(`/story/${storyId}`)
-        }, 300)
-      }
-    }
-    setIsLoading(false)
+    setTimeout(() => {
+      router.push(`/story/${storyId}`)
+    }, 300)
   }
 
   return (
@@ -142,16 +140,15 @@ export default function PaymentInfo({
         </label>
       </div>
       <div className="fixed bottom-0 left-0 w-full max-w-[600px] border-t px-5 py-4 sm:static sm:border-t-0 sm:pt-10">
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <SendTransaction
-            amount={unlockPolicy[0].charge ?? 0}
-            recipientAddress={recipientAddress}
-            disabled={!isChecked}
-            handleSuccess={handleUserOperationSuccess}
-          />
-        )}
+        <SendTransaction
+          balance={balance}
+          amount={unlockPolicy[0].charge ?? 0}
+          recipientAddress={recipientAddress}
+          disabled={!isChecked}
+          createPaymentPayload={createUnlockStorySinglePayment}
+          updatePaymentPayload={updateUnlockStorySinglePayment}
+          onSuccess={handleUnlockStorySingleSuccess}
+        />
       </div>
     </main>
   )

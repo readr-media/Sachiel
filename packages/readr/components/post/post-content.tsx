@@ -61,14 +61,14 @@ const Summary = styled.article`
   padding: 20px 24px;
   border-width: 16px 2px 2px 2px;
   border-style: solid;
-  border-color: #04295e;
+  border-color: #0b2163;
   border-radius: 2px;
   ${defaultMarginBottom}
 
   .title {
     font-size: 14px;
     line-height: 21px;
-    color: #04295e;
+    color: #0b2163;
     margin-bottom: 4px;
   }
 
@@ -91,7 +91,7 @@ const ActionList = styled.article`
     font-size: 24px;
     line-height: 1.5;
     letter-spacing: 0.032em;
-    color: rgba(0, 9, 40, 0.87);
+    color: #212944;
     margin-bottom: 16px;
 
     ${({ theme }) => theme.breakpoint.md} {
@@ -122,9 +122,9 @@ const Citation = styled.article`
     font-weight: 700;
     line-height: 27px;
     letter-spacing: 0.03em;
-    color: #ebf02c;
+    color: #eee500;
     text-align: center;
-    background-color: #04295e;
+    background-color: #0b2163;
     padding: 8px 0;
 
     ${({ theme }) => theme.breakpoint.md} {
@@ -134,7 +134,7 @@ const Citation = styled.article`
   }
 
   .content {
-    background-color: rgba(245, 235, 255, 0.5);
+    background-color: #f5f0ff;
     padding: 12px 24px;
 
     ${({ theme }) => theme.breakpoint.md} {

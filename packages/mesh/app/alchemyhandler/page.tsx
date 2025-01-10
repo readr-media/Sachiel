@@ -39,10 +39,8 @@ export default function Page() {
   }, [address, hasAlchemyAccount, isConnected, memberId, router])
 
   return (
-    <body>
-      <main className="flex h-dvh justify-center">
-        <Spinner />
-      </main>
-    </body>
+    <main className="flex h-dvh justify-center">
+      <Spinner />
+    </main>
   )
 }

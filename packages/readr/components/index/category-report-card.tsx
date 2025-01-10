@@ -13,7 +13,7 @@ import * as gtag from '~/utils/gtag'
 const Container = styled(NextLink)`
   display: block;
   position: relative;
-  background-color: rgba(245, 235, 255, 0.5);
+  background-color: #f5f0ff;
   border-radius: 2px;
   padding: 0 0 16px;
 
@@ -94,7 +94,7 @@ const TextWrapper = styled.div`
     bottom: 0;
     left: 0;
     width: 8px;
-    background-color: #ebf02c;
+    background-color: #eee500;
     ${({ theme }) => theme.breakpoint.sm} {
       top: 45px;
       bottom: 45px;

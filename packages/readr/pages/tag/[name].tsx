@@ -123,7 +123,7 @@ const Tag: NextPageWithLayout<PageProps> = ({ tagRelatedPosts }) => {
       <StyledAdsense_HD pageKey="tag" adKey="HD" />
       <SectionHeading
         title={sectionTitle}
-        highlightColor="#ebf02c"
+        highlightColor="#eee500"
         headingLevel={2}
       />
 

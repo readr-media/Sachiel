@@ -125,7 +125,10 @@ export default function AddStoryToCollection({
         {addedCollections.map((collection, i) => (
           <React.Fragment key={i}>
             「
-            <Link href={`/collection/${collection.id}`}>
+            <Link
+              href={`/collection/${collection.id}`}
+              className="hover-or-active:underline"
+            >
               <span className="text-primary-700">{collection.title ?? ''}</span>
             </Link>
             」{i !== addedCollections.length - 1 ? '、' : ''}
@@ -158,14 +161,23 @@ export default function AddStoryToCollection({
           </div>
           <div className="list-title text-primary-800">加入集錦</div>
           <div
-            className="pointer-events-none flex size-11 items-center justify-center sm:pointer-events-auto sm:cursor-pointer"
+            className="group pointer-events-none relative flex size-11 items-center justify-center sm:pointer-events-auto sm:cursor-pointer"
             onClick={onClose}
           >
-            <Icon className="hidden sm:block" iconName="icon-close" size="l" />
+            <Icon
+              className="absolute hidden opacity-100 group-hover:opacity-0 sm:block"
+              iconName="icon-close"
+              size="l"
+            />
+            <Icon
+              className="absolute size-full opacity-0 group-hover:opacity-100"
+              iconName="icon-close-with-background-gray"
+              size="l"
+            />
           </div>
         </div>
         {/* collection list */}
-        <div className="flex grow flex-col overflow-auto">
+        <div className="flex grow flex-col overflow-auto px-5">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -174,12 +186,12 @@ export default function AddStoryToCollection({
               {collections.map((collection) => (
                 <div
                   key={collection.id}
-                  className="cursor-pointer p-5 pb-0"
+                  className="group cursor-pointer border-b py-5 last:border-0"
                   onClick={debounce(
                     addStoryToCollection.bind(null, collection)
                   )}
                 >
-                  <div className="flex gap-3 border-b pb-5">
+                  <div className="flex gap-3">
                     <div className="relative aspect-[2/1] w-24 shrink-0">
                       <ImageWithFallback
                         src={collection.heroImage?.resized?.original ?? ''}
@@ -189,7 +201,7 @@ export default function AddStoryToCollection({
                       />
                     </div>
                     <div className="flex items-center">
-                      <div className="subtitle-1 line-clamp-2 text-primary-700">
+                      <div className="subtitle-1 line-clamp-2 text-primary-700 group-hover:underline">
                         {collection.title ?? ''}
                       </div>
                     </div>
@@ -200,7 +212,7 @@ export default function AddStoryToCollection({
           )}
         </div>
         {/* main action */}
-        <div className="px-5 py-3">
+        <div className="border-t px-5 py-3 sm:py-5">
           <Button
             size="lg"
             text="建立新集錦"

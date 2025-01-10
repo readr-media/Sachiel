@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 import type { ReactElement } from 'react'
 import styled from 'styled-components'
 
-import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
+import LayoutGeneral from '~/components/layout/layout-general'
 
 import type { NextPageWithLayout } from './_app'
 
@@ -198,7 +198,7 @@ const PrivacyRule: NextPageWithLayout = () => {
 PrivacyRule.getLayout = function getLayout(page: ReactElement) {
   const pageTitle = '隱私政策'
 
-  return <LayoutWithLogoOnly title={pageTitle}>{page}</LayoutWithLogoOnly>
+  return <LayoutGeneral title={pageTitle}>{page}</LayoutGeneral>
 }
 
 // force this page to be static
