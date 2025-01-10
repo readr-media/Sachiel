@@ -10,7 +10,7 @@ const DotStyle = `
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: rgba(0, 9, 40, 0.2);
+    background-color: #b2b5be;
 `
 
 const CategoryWrapper = styled.ul`
@@ -50,7 +50,7 @@ const CategoryWrapper = styled.ul`
     left: 0;
     right: 0;
     height: 8px;
-    background-color: #ebf02c;
+    background-color: #eee500;
     z-index: -1;
   }
 `

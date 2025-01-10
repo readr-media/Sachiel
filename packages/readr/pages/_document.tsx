@@ -72,14 +72,14 @@ export default class MyDocument extends Document {
             sizes="16x16"
             href="/favicon-16x16.png"
           />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#04295e" />
+          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0b2163" />
           <link rel="manifest" href="/site.webmanifest" />
           <meta
             name="msapplication-TileColor"
-            content="#ebf02c"
+            content="#eee500"
             key="msapplication-TileColor"
           />
-          <meta name="theme-color" content="#04295e" key="theme-color" />
+          <meta name="theme-color" content="#0b2163" key="theme-color" />
           <meta
             name="google-site-verification"
             content="-MwBO0YdSWdyXLTCRzvcfKr-xpY1nBddINN0pGnc7SI"

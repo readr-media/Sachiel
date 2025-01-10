@@ -226,7 +226,7 @@ const Category: NextPageWithLayout<PageProps> = ({ categories, latest }) => {
       <StyledAdsense_HD pageKey={activeCategory.slug} adKey="HD" />
       <SectionHeading
         title={sectionTitle}
-        highlightColor="#ebf02c"
+        highlightColor="#eee500"
         headingLevel={2}
         categorySlug={activeCategory.slug}
       />

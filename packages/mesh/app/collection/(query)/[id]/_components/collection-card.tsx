@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import type { RefObject } from 'react'
+import { type RefObject, useEffect } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
@@ -10,12 +10,12 @@ import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useComment } from '@/context/comment'
 import useClamp from '@/hooks/use-clamp'
+import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { PickObjective } from '@/types/objective'
 
 import type { Collection } from '../../_types/collection'
 import CollectionMeta from './collection-meta'
-
 export default function CollectionCard({
   collection,
 }: {
@@ -27,6 +27,16 @@ export default function CollectionCard({
     PickObjective.Collection
   )
   const { state: comment } = useComment()
+  const { displayCommentCount, setDisplayCommentCount } =
+    useDisplayCommentCount({
+      objectiveId: collection.id,
+      initialCount: comment.commentsCount,
+    })
+
+  useEffect(() => {
+    setDisplayCommentCount(Math.max(comment.commentsCount, displayCommentCount))
+  }, [comment.commentsCount, displayCommentCount, setDisplayCommentCount])
+
   return (
     <section className="border-b-[0.5px] border-primary-200 bg-white">
       <div className="max-w-[theme(width.maxMain)] pb-5 sm:px-5 md:px-[70px] lg:px-10 xl:px-10">
@@ -77,6 +87,7 @@ export default function CollectionCard({
             </div>
             <div className="footnote mt-3">
               <CollectionMeta
+                collectionId={collection.id}
                 commentCount={collection.commentsCount ?? 0}
                 updateAt={collection.updatedAt}
               />
@@ -86,7 +97,7 @@ export default function CollectionCard({
                 displayPicks={displayPicks}
                 pickCount={displayPicksCount}
                 showCommentCount={true}
-                commentCount={comment.commentsCount}
+                commentCount={displayCommentCount}
                 objectiveId={collection.id}
                 pickObjective={PickObjective.Collection}
               />

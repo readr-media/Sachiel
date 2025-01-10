@@ -7061,10 +7061,10 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
-"@readr-media/react-component@^2.1.5":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.1.5.tgz#ca41aabc9f112200af86194a87d563843dd6eb5f"
-  integrity sha512-APW3TpJ7P+ou7R2IQ85i8Eoi8DxW6Ju/UbVzsGUvq7Bvqv5Cd/XUR1L7A4guoijj3q85m+XYNct05juchNUupA==
+"@readr-media/react-component@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@readr-media/react-component/-/react-component-2.2.0.tgz#239002f09abf0e27e0b78ebec0e4eee8f87c3ccc"
+  integrity sha512-5dXNJttgpfk4Jlxh3xDMCZKv68nX7eGb6UXol5QSCGHjX7JPxRzeV8reW+mi5GYMiutGRA73Ck/R0otk+iHqYA==
   dependencies:
     "@readr-media/react-image" "^1.5.1"
     dayjs "^1.11.7"

@@ -122,7 +122,7 @@ const Author: NextPageWithLayout<PageProps> = ({ authorPosts, authorName }) => {
       <StyledAdsense_HD pageKey="author" adKey="HD" />
       <SectionHeading
         title={sectionTitle}
-        highlightColor="#ebf02c"
+        highlightColor="#eee500"
         headingLevel={2}
       />
 

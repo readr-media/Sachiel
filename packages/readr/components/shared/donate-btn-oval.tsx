@@ -9,8 +9,8 @@ const DonateLink = styled(NextLink)`
   justify-content: center;
   font-size: 16px;
   font-weight: 400;
-  color: rgba(0, 9, 40, 0.87);
-  background-color: #ebf02c;
+  color: #212944;
+  background-color: #eee500;
   border-radius: 100px;
   height: 32px;
   width: 108px;
@@ -21,11 +21,11 @@ const DonateLink = styled(NextLink)`
   &:hover,
   &:active,
   &:focus {
-    background-color: #ebf02c;
-    color: rgba(0, 9, 40, 0.66);
+    background-color: #eee500;
+    color: #575d71;
     svg {
       path {
-        fill: rgba(0, 9, 40, 0.66);
+        fill: #575d71;
       }
     }
   }

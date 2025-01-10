@@ -96,7 +96,7 @@ export default function LatestReportSection({
         title={sectionTitle}
         showMoreText={getShowMoreText(activeCategory)}
         categorySlug={activeCategory.slug}
-        highlightColor="#ebf02c"
+        highlightColor="#eee500"
         headingLevel={2}
         clickOnMore={() => gtag.sendEvent('homepage', 'click', 'latest-more')}
       />

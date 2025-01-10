@@ -26,6 +26,7 @@ const StoryMetaWrapper = ({
   return (
     <div className={twMerge('caption-1 mt-2 sm:mt-1', className)}>
       <StoryMeta
+        storyId={story.id}
         commentCount={story.commentCount ?? 0}
         publishDate={story.published_date}
         paywall={story.paywall ?? false}

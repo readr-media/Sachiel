@@ -7,7 +7,7 @@ import type { ReactElement } from 'react'
 import styled, { css } from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
-import LayoutWithLogoOnly from '~/components/layout/layout-with-logo-only'
+import LayoutGeneral from '~/components/layout/layout-general'
 import ArticleListCard from '~/components/shared/article-list-card'
 import { SITE_TITLE } from '~/constants/constant'
 import type { Post } from '~/graphql/fragments/post'
@@ -35,7 +35,7 @@ const shareStyle = css`
 `
 
 const Page = styled.div`
-  background: #ebf02c;
+  background: #eee500;
   font-family: 'Noto Sans TC';
   overflow: hidden;
   display: flex;
@@ -70,7 +70,7 @@ const ErrorContainer = styled.div`
 const Button = styled.button`
   width: 240px;
   height: 47px;
-  background: #04295e;
+  background: #0b2163;
   border: 1px solid #ffffff;
   border-radius: 2px;
 
@@ -100,7 +100,7 @@ const ErrorMsg = styled.div`
   font-size: 18px;
   line-height: 28px;
   letter-spacing: 2.5px;
-  color: #04295e;
+  color: #0b2163;
   z-index: 1;
   ${({ theme }) => theme.breakpoint.sm} {
     font-size: 24px;
@@ -117,7 +117,7 @@ const ErrorMsg = styled.div`
     position: absolute;
     height: 0;
     width: 220px;
-    border-bottom: 36px solid #ebf02c;
+    border-bottom: 36px solid #eee500;
     border-left: 5px solid transparent;
     top: 50%;
     transform: translateY(-50%);
@@ -325,7 +325,7 @@ Error.getInitialProps = async (
 }
 
 Error.getLayout = function getLayout(page: ReactElement): ReactElement {
-  return <LayoutWithLogoOnly>{page}</LayoutWithLogoOnly>
+  return <LayoutGeneral>{page}</LayoutGeneral>
 }
 
 export default Error

@@ -4,17 +4,20 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
-import { sponsorPublisher } from '@/app/actions/payment'
+import {
+  type CreatePaymentProps,
+  type UpdatePaymentProps,
+} from '@/app/actions/payment'
 import { type PublisherData } from '@/app/actions/publisher'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import Spinner from '@/components/spinner'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
 import { logSponsor } from '@/utils/event-logs'
+import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
 import { type SponsorshipPoints } from './sponsor-option'
@@ -36,25 +39,21 @@ export default function SponsorshipInfo({
     SponsorshipPoints | undefined | null
   >(null)
   const [amount, setAmount] = useState(0)
-  const [isSyncing, setIsSyncing] = useState(false)
   const [isSponsored, setIsSponsored] = useState(false)
   const { addToast } = useToast()
-  const userPayoload = useUserPayload()
-
-  const handleUserOperationSuccess = async (hash: Hex) => {
-    setIsSyncing(true)
-    const txr = {
-      memberId: user.memberId,
-      publisherId: publisher.id,
-      tid: hash,
-      fee: `${amount}`,
-    }
-    const response = await sponsorPublisher(txr)
-    if (response) {
-      setIsSponsored(true)
-      logSponsor(userPayoload, publisher.title ?? '')
-    }
-    setIsSyncing(false)
+  const userPayload = useUserPayload()
+  const createSponsorPayment: CreatePaymentProps = {
+    action: 'sponsor_media',
+    memberId: user.memberId,
+    publisherId: publisher.id,
+    fee: `${amount}`,
+  }
+  const updateSponsorPayment: UpdatePaymentProps = {
+    action: 'sponsor_media',
+    memberId: user.memberId,
+    objective: 'sponsorship',
+    targetId: '0',
+    tid: '0x',
   }
 
   const onClickOption = (value: SponsorshipPoints | undefined) => {
@@ -64,6 +63,21 @@ export default function SponsorshipInfo({
     }
     setSelectedOption(value)
     setAmount(value ?? 0)
+  }
+
+  const handleChangeAmount = debounce((value: number) => {
+    if (balance === undefined) return
+    if (value <= balance) {
+      setAmount(value)
+    } else {
+      setAmount(0)
+      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedInsufficient })
+    }
+  }, 500)
+
+  const handleSponsorSuccess = () => {
+    setIsSponsored(true)
+    logSponsor(userPayload, publisher.title ?? '')
   }
 
   return (
@@ -92,10 +106,7 @@ export default function SponsorshipInfo({
           </div>
         </div>
       ) : isInputMode ? (
-        <SponsorInput
-          balance={balance}
-          onChangeAmount={(value: number) => setAmount(value)}
-        />
+        <SponsorInput balance={balance} onChangeAmount={handleChangeAmount} />
       ) : (
         <SponsorOption
           publisherTitle={publisher.title ?? ''}
@@ -107,18 +118,15 @@ export default function SponsorshipInfo({
       {isSponsored ? null : (
         <div className="fixed bottom-0 left-0 w-full max-w-[600px] border-t border-primary-200 bg-white px-5 py-3 sm:static sm:border-0 sm:py-0">
           {amount > 0 ? (
-            isSyncing ? (
-              <div className="flex h-[46px] justify-center">
-                <Spinner />
-              </div>
-            ) : (
-              <SendTransaction
-                amount={amount}
-                recipientAddress={recipientAddress}
-                disabled={selectedOption === null}
-                handleSuccess={handleUserOperationSuccess}
-              />
-            )
+            <SendTransaction
+              amount={amount}
+              balance={balance}
+              recipientAddress={recipientAddress}
+              disabled={selectedOption === null}
+              createPaymentPayload={createSponsorPayment}
+              updatePaymentPayload={updateSponsorPayment}
+              onSuccess={handleSponsorSuccess}
+            />
           ) : (
             <div className="flex w-full justify-center">
               <div className="shrink-0 grow sm:max-w-[335px]">

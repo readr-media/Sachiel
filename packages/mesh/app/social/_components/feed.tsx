@@ -53,7 +53,7 @@ export default function Feed({
           </Link>
         </div>
       ) : null}
-      <div className="px-5 pb-4 pt-3 sm:px-8 sm:pb-6 sm:pt-4">
+      <div className="px-5 pb-4 pt-3 sm:px-8 sm:pt-4">
         <Link href={`/profile/publisher/${story.publisher.customId}`}>
           <h4 className="body-3 mb-1 text-primary-500 hover-or-active:text-primary-700">
             {story.publisher.title}
@@ -81,6 +81,7 @@ export default function Feed({
         </Link>
         <div className="footnote mb-4">
           <StoryMeta
+            storyId={story.id}
             commentCount={story.commentCount}
             publishDate={story.published_date}
             paywall={story.isMember}
@@ -88,7 +89,7 @@ export default function Feed({
           />
         </div>
         <div className="flex flex-col gap-4">
-          <div className="mb-4 flex h-8 justify-between">
+          <div className="flex h-8 justify-between">
             <ObjectivePickInfo
               displayPicks={displayPicks}
               pickCount={displayPicksCount}

@@ -125,7 +125,7 @@ export default function EditProfile() {
                 />
                 {editProfileForm.name && (
                   <button onClick={() => clearFormInput('name')}>
-                    <Icon iconName="icon-close-with-background" size="l" />
+                    <Icon iconName="icon-close-with-background-blue" size="l" />
                   </button>
                 )}
               </section>
@@ -157,7 +157,7 @@ export default function EditProfile() {
                 />
                 {editProfileForm.customId && (
                   <button onClick={() => clearFormInput('customId')}>
-                    <Icon iconName="icon-close-with-background" size="l" />
+                    <Icon iconName="icon-close-with-background-blue" size="l" />
                   </button>
                 )}
               </section>

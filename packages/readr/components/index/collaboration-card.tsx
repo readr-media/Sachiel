@@ -42,11 +42,11 @@ const InfoLabel = styled.span`
   position: absolute;
   top: 8px;
   left: 7px;
-  background-color: #ebf02c;
+  background-color: #eee500;
   border-radius: 22px;
   font-size: 13px;
   font-weight: 600;
-  color: #04295e;
+  color: #0b2163;
   line-height: 2;
   padding: 2px 12px;
 
@@ -60,7 +60,7 @@ const StatusLabel = styled.span<StyledProps>`
   bottom: 7px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #04295e;
+  background-color: #0b2163;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 2.5px;
@@ -149,10 +149,10 @@ const ProgressContent = styled.div`
       background-color: rgba(216, 216, 216, 0.5);
     }
     &::-webkit-progress-value {
-      background-color: #ebf02c;
+      background-color: #eee500;
     }
     &::-moz-progress-bar {
-      background-color: #ebf02c;
+      background-color: #eee500;
     }
 
     ${({ theme }) => theme.breakpoint.md} {

@@ -98,7 +98,7 @@ const AwardDate = styled.div`
     width: 8px;
     min-width: 8px;
     height: 8px;
-    background: #ebf02c;
+    background: #eee500;
     margin-right: 8px;
   }
   ${({ theme }) => `
@@ -121,7 +121,7 @@ const AwardName = styled.h3`
   line-height: 23px;
   text-align: justify;
   letter-spacing: 0.03em;
-  color: #ebf02c;
+  color: #eee500;
   margin-top: 9px;
   ${({ theme }) => `
   ${theme.breakpoint.md} {
@@ -146,9 +146,9 @@ const AwardReport = styled.span<{ isLink?: string }>`
   ${(props) =>
     props.isLink &&
     `
-    border-bottom: 1px solid #ebf02c;
+    border-bottom: 1px solid #EEE500;
     :hover {
-      color: #ebf02c;
+      color: #EEE500;
     }
   `}
 `

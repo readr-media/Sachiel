@@ -31,11 +31,7 @@ const Container = styled(NextLink)<Pick<StyledProps, '$isFirst'>>`
       left: 0;
       right: 0;
       z-index: ${({ theme }) => theme.zIndex.maskOfPicture};
-      background: linear-gradient(
-        180deg,
-        rgba(0, 9, 40, 0) 0%,
-        rgba(0, 9, 40, 0.3) 100%
-      );
+      background: linear-gradient(180deg, rgba(0, 9, 40, 0) 0%, #b2b5be 100%);
     }
     &::after {
       content: '';
@@ -101,7 +97,7 @@ const SharedDescWithEmojiStyles = `
   line-height: 1.5;
   letter-spacing: 0.03em;
   color: #000928;
-  background-color: #ebf02c;
+  background-color: #eee500;
   padding: 4px 8px;
 `
 

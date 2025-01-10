@@ -33,8 +33,7 @@ const Question = styled.div`
   display: flex;
   justify-content: space-between;
   line-height: 150%;
-  color: #000928;
-  opacity: 0.87;
+  color: #212944;
   &:hover {
     cursor: pointer;
   }
@@ -64,7 +63,7 @@ const Answer = styled.div`
   margin-top: 12px;
   .DraftEditor-root {
     line-height: 200%;
-    color: rgba(0, 9, 40, 0.66);
+    color: #575d71;
     ul {
       list-style: none;
       padding-left: 0;
@@ -81,7 +80,7 @@ const Answer = styled.div`
           width: 3px;
           height: 3px;
           border-radius: 50%;
-          background: rgba(0, 9, 40, 0.66);
+          background: #575d71;
           margin: 0 0.75rem;
         }
       }

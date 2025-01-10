@@ -68,6 +68,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             </Link>
             <div className="footnote mt-3">
               <StoryMeta
+                storyId={story.id}
                 commentCount={story.commentCount ?? 0}
                 publishDate={story.published_date}
                 paywall={story.paywall ?? false}

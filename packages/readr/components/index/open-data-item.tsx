@@ -79,7 +79,7 @@ const Control = styled(NextLink)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5ebff;
+  background-color: #ebe3ff;
 `
 
 const IconPlus = styled.div`

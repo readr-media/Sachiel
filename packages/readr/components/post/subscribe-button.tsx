@@ -8,7 +8,7 @@ const SubscribeWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #04295e;
+  background-color: #0b2163;
   padding: 0 20px;
 `
 

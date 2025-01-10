@@ -147,6 +147,8 @@ const RESTFUL_ENDPOINTS = {
   search: `${API_ORIGIN}/search`,
   accessToken: `${API_ORIGIN}/accesstoken`,
   paymentBalance: `${PAYMENT_ORIGIN}/balance/`,
+  paymentCreate: `${PAYMENT_ORIGIN}/v1/payment/create`,
+  paymentAuth: `${PAYMENT_ORIGIN}/v1/payment/auth`,
   socialPage: `${API_ORIGIN}/socialpage`,
   invitationCodes: `${API_ORIGIN}/invitation_codes`,
   notifications: `${API_ORIGIN}/notifications`,

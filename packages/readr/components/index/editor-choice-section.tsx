@@ -41,7 +41,7 @@ const Container = styled.section`
 
 const FeaturedBlock = styled.div`
   width: 100%;
-  background-color: #ebf02c;
+  background-color: #eee500;
   padding: 0 0 24px;
   ${({ theme }) => theme.breakpoint.md} {
     padding: 40px 48px;

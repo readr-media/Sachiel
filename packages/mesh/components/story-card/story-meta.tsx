@@ -1,13 +1,16 @@
 import { displayTimeFromNow } from '@/utils/story-display'
 
+import CommentCount from '../comment-count'
 import Icon from '../icon'
 
 export default function StoryMeta({
+  storyId,
   commentCount,
   publishDate,
   paywall,
   fullScreenAd,
 }: {
+  storyId: string
   commentCount: number
   publishDate: string
   paywall: boolean
@@ -16,7 +19,7 @@ export default function StoryMeta({
   return (
     <div className="flex items-center text-primary-500">
       <Icon iconName="icon-chat-bubble" size="s" />
-      <div className="pl-0.5">{commentCount}</div>
+      <CommentCount objectiveId={storyId} initialCommentCounts={commentCount} />
       <Icon iconName="icon-dot" size="s" />
       <div>
         <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>

@@ -16,15 +16,13 @@ export default function SponsorInput({
   }
 
   const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
-    if (!balance) return
+    if (balance === undefined) return
     const value = e.currentTarget.value
-
     if (value && !/^[1-9][0-9]*$/.test(value)) {
       return
     }
-
-    setUserInput(value ? `${Math.min(parseInt(value), balance)}` : '')
-    onChangeAmount(Math.min(parseInt(value), balance) || 0)
+    setUserInput(value)
+    onChangeAmount(parseInt(value) || 0)
   }
 
   return (

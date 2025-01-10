@@ -66,6 +66,7 @@ export default function MainCard({ story }: Props) {
 
           <div className="footnote">
             <StoryMeta
+              storyId={story.id}
               commentCount={story.commentCount}
               publishDate={story.published_date}
               paywall={story.paywall}
