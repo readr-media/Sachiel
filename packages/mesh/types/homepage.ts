@@ -34,3 +34,8 @@ export type CategoryStory = z.infer<typeof rawCategoryStorySchema>
 export type SponsoredStoryByCategory = z.infer<
   typeof rawMostSponsoredPublisherStoryByCategorySchema
 >
+
+export type GtmTags = {
+  story: string
+  pick: string
+}

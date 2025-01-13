@@ -147,7 +147,10 @@ export default function Article({
               {/* TODO: update the states and actions according to the user state */}
               <div className="hidden items-center gap-1 sm:flex">
                 <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
-                <StoryPickButton storyId={story?.id ?? ''} />
+                <StoryPickButton
+                  storyId={story?.id ?? ''}
+                  gtmClassName="GTM-article_click_pick_article"
+                />
                 {story && (
                   <StoryMoreActionButton
                     story={story}
@@ -158,7 +161,10 @@ export default function Article({
             </div>
           </div>
           {story?.summary && (
-            <div className="body-2 mt-6 border-y px-6 py-5 text-primary-700">
+            <div
+              className="body-2 mt-6 border-y px-6 py-5 text-primary-700"
+              itemProp="articleBody"
+            >
               {story?.summary}
             </div>
           )}

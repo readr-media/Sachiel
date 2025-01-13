@@ -48,6 +48,9 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     id
     title
     summary
+    category {
+      title
+    }
     source {
       id
       title
@@ -175,12 +178,9 @@ query GetStoryPickers($storyId: ID, $picksTake: Int, $picksSkip: Int) {
     id
     picks: pick(
       where: { kind: { equals: "read" }, is_active: { equals: true } }
-      orderBy:  {
-         createdAt: desc
-      }
+      orderBy: { createdAt: desc }
       take: $picksTake
       skip: $picksSkip
-  
     ) {
       id
       createdAt

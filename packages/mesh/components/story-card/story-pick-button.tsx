@@ -12,9 +12,11 @@ import { debounce } from '@/utils/performance'
 export default function StoryPickButton({
   storyId,
   color = 'white',
+  gtmClassName = '',
 }: {
   storyId: string
   color?: ButtonColor
+  gtmClassName?: string
 }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -47,6 +49,7 @@ export default function StoryPickButton({
         activeText: '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
+      gtmClassName={gtmClassName}
     />
   )
 }

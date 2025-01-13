@@ -28,7 +28,12 @@ export default async function DailyHighlight() {
       <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:[&>*:nth-child(5)]:shadow-none">
         {noGroupStories &&
           noGroupStories.map((story) => (
-            <StoryCard key={story.id} story={story} />
+            <StoryCard
+              key={story.id}
+              story={story}
+              className="GTM-homepage_click_focus_article"
+              storyPickGtmClasssName="GTM-homepage_pick_focus_article"
+            />
           ))}
       </div>
     </section>

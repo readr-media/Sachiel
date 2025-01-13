@@ -64,7 +64,10 @@ export default function FollowSuggestionWidget({
                   </p>
                 </div>
                 <div className="shrink-0 lg:ml-4">
-                  <FollowButton followingId={member.id} />
+                  <FollowButton
+                    followingId={member.id}
+                    gtmClassName="GTM-soc_click_user_follow"
+                  />
                 </div>
               </div>
             </div>

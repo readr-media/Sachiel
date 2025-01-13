@@ -165,7 +165,22 @@ const ArticleCard = ({
         commentObjective={CommentObjective.Story}
         commentObjectiveData={storyData}
       >
-        <Link className="md:flex md:w-full" href={redirectLink()}>
+        <Link
+          className={`md:flex md:w-full ${
+            isCollection(storyData) ? 'GTM-collection_click' : ''
+          }`}
+          href={redirectLink()}
+          onClick={() =>
+            isCollection(storyData)
+              ? logCollectionClick(userPayload, storyData.title ?? '')
+              : logStoryClick(
+                  userPayload,
+                  storyData.id,
+                  storyData?.title ?? '',
+                  storyGetters.source(storyData)
+                )
+          }
+        >
           <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
             <ImageWithFallback
               fallbackCategory={ImageCategory.STORY}
@@ -186,7 +201,9 @@ const ArticleCard = ({
           }`}
         >
           <Link
-            className="flex grow flex-col"
+            className={`flex grow flex-col ${
+              isCollection(storyData) ? 'GTM-collection_click' : ''
+            }`}
             href={redirectLink()}
             onClick={() =>
               isCollection(storyData)
@@ -271,7 +288,10 @@ const ArticleCard = ({
               objectiveId={storyData.id}
             />
             {isCollection(storyData) ? (
-              <CollectionPickButton collectionId={storyData.id} />
+              <CollectionPickButton
+                collectionId={storyData.id}
+                gtmClassName="GTM-collection_pick"
+              />
             ) : (
               <StoryPickButton storyId={storyData?.id} />
             )}

@@ -19,11 +19,15 @@ import ImageWithFallback from './image-with-fallback'
 type Props<T> = {
   story: T
   className?: string
+  storyPickGtmClasssName?: string
 }
 
 export default forwardRef(function StoryCard<
   T extends CategoryStory | DailyStory
->({ story, className }: Props<T>, ref: ForwardedRef<unknown>) {
+>(
+  { story, className = '', storyPickGtmClasssName = '' }: Props<T>,
+  ref: ForwardedRef<unknown>
+) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
@@ -88,7 +92,10 @@ export default forwardRef(function StoryCard<
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton storyId={story.id} />
+        <StoryPickButton
+          storyId={story.id}
+          gtmClassName={storyPickGtmClasssName}
+        />
       </div>
     </article>
   )

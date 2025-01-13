@@ -47,6 +47,7 @@ export default function Button({
   disabled,
   type,
   onClick,
+  gtmClassName,
 }: {
   size: keyof typeof buttonStyles
   color: keyof typeof buttonColor
@@ -60,6 +61,7 @@ export default function Button({
   disabled?: boolean
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type']
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+  gtmClassName?: string
 }) {
   const {
     isActive = false,
@@ -70,7 +72,9 @@ export default function Button({
   return (
     <button
       className={`flex ${buttonStyles[size]} items-center justify-center ${
-        isActive ? buttonColor['primary'] : buttonColor[color]
+        isActive
+          ? buttonColor['primary']
+          : `${buttonColor[color]} ${gtmClassName}`
       } focus-visible:outline-none`}
       onClick={onClick}
       type={type ?? 'button'}

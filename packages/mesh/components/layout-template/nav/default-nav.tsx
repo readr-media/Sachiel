@@ -19,6 +19,7 @@ type IconInfo = {
   }
   href: string
   text: string
+  gtmName: string
 }
 
 export default function DefaultNav({ className = '' }: { className?: string }) {
@@ -172,7 +173,7 @@ const NonMobileNavIcon = ({
     <Link
       key={iconInfo.text}
       href={iconInfo.href}
-      className="group flex rounded-md md:h-14 md:items-center md:gap-3 md:pl-2 md:hover:bg-primary-100"
+      className={`GTM-nav_click_${iconInfo.gtmName} group flex rounded-md md:h-14 md:items-center md:gap-3 md:pl-2 md:hover:bg-primary-100`}
     >
       {iconJsx}
       {textJsx}
@@ -261,7 +262,7 @@ const MobileNavIcon = ({
     <Link
       key={iconInfo.icon.default}
       href={iconInfo.href}
-      className="flex h-full flex-1 flex-col items-center justify-center"
+      className={`GTM-nav_click_${iconInfo.gtmName} flex h-full flex-1 flex-col items-center justify-center`}
     >
       {iconJsx}
       {textJsx}

@@ -56,11 +56,11 @@ export default function DefaultHeader() {
                 className="hidden sm:block"
               />
             </Link>
-            <DesktopSearchBar className="hidden sm:flex" />
+            <DesktopSearchBar className="GTM-header_click_search_bar hidden sm:flex" />
           </div>
           {/* right side block */}
           <div className="flex">
-            <HeaderIconWrapper className="sm:hidden">
+            <HeaderIconWrapper className="GTM-header_click_search_bar sm:hidden">
               <MobileSearchWrapper />
             </HeaderIconWrapper>
             {isLoggedIn ? (

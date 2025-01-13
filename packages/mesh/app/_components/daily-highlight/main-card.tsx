@@ -24,7 +24,10 @@ export default function MainCard({ story }: Props) {
 
   return (
     <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-x-10">
-      <NextLink href={`story/${story.id}`}>
+      <NextLink
+        href={`story/${story.id}`}
+        className="GTM-homepage_click_focus_article"
+      >
         <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md lg:h-[250px] lg:w-[500px]">
           <ImageWithFallback
             src={story.og_image}
@@ -39,7 +42,10 @@ export default function MainCard({ story }: Props) {
       <div className="lg:flex lg:flex-col lg:justify-between">
         <div>
           <div className="mb-1 flex justify-between">
-            <NextLink href={`profile/publisher/${story.source.customId}`}>
+            <NextLink
+              href={`profile/publisher/${story.source.customId}`}
+              className="GTM-homepage_click_media_title"
+            >
               <p className="body-3 text-primary-500 hover-or-active:text-primary-700">
                 {story.source.title}
               </p>
@@ -86,7 +92,10 @@ export default function MainCard({ story }: Props) {
             pickCount={displayPicksCount}
             objectiveId={story.id}
           />
-          <StoryPickButton storyId={story.id} />
+          <StoryPickButton
+            storyId={story.id}
+            gtmClassName="GTM-homepage_pick_focus_article"
+          />
         </div>
       </div>
     </div>

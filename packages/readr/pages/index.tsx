@@ -259,28 +259,33 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       }
 
       {
-        // fetch latest reports
+        // fetch uncategorized latest reports
 
         const response = await axios.get<{ posts: Post[] }>(LATEST_POSTS_URL)
         const { posts: latestPosts } = response.data
 
-        let postCount = 0
-        const report = latestPosts.find(
-          (post) => post.style !== ValidPostStyle.NEWS
+        const { posts, reports } = latestPosts.reduce(
+          ({ posts, reports }, latestPost) => {
+            if (latestPost.style === ValidPostStyle.NEWS) {
+              posts.push(latestPost)
+            } else {
+              reports.push(latestPost)
+            }
+            return { posts, reports }
+          },
+          {
+            posts: [] as Post[],
+            reports: [] as Post[],
+          }
         )
 
-        const posts = latestPosts.filter((post) => {
-          if (postCount < 4 && post.style === ValidPostStyle.NEWS) {
-            postCount += 1
-            return true
-          }
-          return false
-        })
-
-        if (report) {
-          latest.reports = [postConvertFunc(report)]
+        if (reports.length) {
+          latest.reports = [postConvertFunc(reports[0])]
         }
-        latest.posts = posts.map(postConvertFunc)
+
+        latest.posts = (reports.length ? posts.slice(0, 4) : posts).map(
+          postConvertFunc
+        )
       }
     }
 

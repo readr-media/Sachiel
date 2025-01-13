@@ -19,7 +19,7 @@ type CommentType = NonEmptyObject<Exclude<CategoryStory['comment'], undefined>>
 export default function StorySection({ activeTitle, stories, slug }: Props) {
   return (
     <div>
-      <NextLink href={`/${slug}`}>
+      <NextLink href={`/${slug}`} className="GTM-homepage_click_categorypage">
         <div className="group flex pb-3 pt-2 lg:pb-4">
           <h3 className="list-title lg:title-1 text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
             {activeTitle}
@@ -51,7 +51,12 @@ export default function StorySection({ activeTitle, stories, slug }: Props) {
 
           <div className="flex flex-col gap-y-5">
             {stories.slice(1, 4).map((story) => (
-              <StoryCard story={story} key={story.id} />
+              <StoryCard
+                story={story}
+                key={story.id}
+                className="GTM-homepage_click_category_article"
+                storyPickGtmClasssName="GTM-homepage_pick_category_article"
+              />
             ))}
           </div>
         </div>

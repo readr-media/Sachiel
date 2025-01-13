@@ -36,7 +36,10 @@ export default function Feed({
       </div>
       {story.og_image ? (
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
-          <Link href={`/story/${story.id}`} className="size-full">
+          <Link
+            href={`/story/${story.id}`}
+            className="GTM-soc_click_article size-full"
+          >
             <ImageWithFallback
               src={story.og_image}
               alt={story.og_title}
@@ -53,14 +56,19 @@ export default function Feed({
           </Link>
         </div>
       ) : null}
+
       <div className="px-5 pb-4 pt-3 sm:px-8 sm:pt-4">
-        <Link href={`/profile/publisher/${story.publisher.customId}`}>
+        <Link
+          href={`/profile/publisher/${story.publisher.customId}`}
+          className="GTM-soc_click_media_title"
+        >
           <h4 className="body-3 mb-1 text-primary-500 hover-or-active:text-primary-700">
             {story.publisher.title}
           </h4>
         </Link>
         <Link
           href={`/story/${story.id}`}
+          className="GTM-soc_click_article"
           onClick={() => {
             logStoryClick(
               userPayload,
@@ -95,7 +103,10 @@ export default function Feed({
               pickCount={displayPicksCount}
               objectiveId={story.id}
             />
-            <StoryPickButton storyId={story.id} />
+            <StoryPickButton
+              storyId={story.id}
+              gtmClassName="GTM-soc_pick_article"
+            />
           </div>
           {storyActions.commentsData.length ? (
             <FeedComment comment={storyActions.commentsData[0]} />

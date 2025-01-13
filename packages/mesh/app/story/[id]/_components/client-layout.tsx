@@ -54,7 +54,11 @@ export default function ClientLayout({
             key={0}
             publisherId={story?.source?.id ?? ''}
           />,
-          <StoryPickButton storyId={story?.id ?? ''} key={1} />,
+          <StoryPickButton
+            storyId={story?.id ?? ''}
+            key={1}
+            gtmClassName="GTM-article_click_pick_article"
+          />,
           story ? (
             <StoryMoreActionButton
               story={story}

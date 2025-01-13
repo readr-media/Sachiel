@@ -17,11 +17,13 @@ const DOWNLOAD_APP_LINKS = [
     size: { width: 162.1, height: 48 },
     icon: 'icon-google-play',
     href: '/',
+    gtmName: 'googleplay',
   },
   {
     size: { width: 130.33, height: 48 },
     icon: 'icon-app-store',
     href: '/',
+    gtmName: 'appstore',
   },
 ] as const
 
@@ -29,9 +31,17 @@ const DOWNLOAD_APP_LINKS = [
 const FOOTER_NAV_LINKS = [
   // TODO: Uncomment it when page is complete
   // { text: '關於我們', href: '/' },
-  { text: '聯絡我們', href: '/contact' },
-  { text: '隱私政策', href: '/policy/privacy-policy' },
-  { text: '服務條款', href: '/policy/terms-of-service' },
+  { text: '聯絡我們', href: '/contact', gtmName: 'contact' },
+  {
+    text: '隱私政策',
+    href: '/policy/privacy-policy',
+    gtmName: 'privacy_terms',
+  },
+  {
+    text: '服務條款',
+    href: '/policy/terms-of-service',
+    gtmName: 'service_terms',
+  },
 ] as const
 
 // TODO: update path
@@ -40,21 +50,25 @@ const FOOTER_SHARED_ICONS = [
     icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
     href: '/',
     size: { width: 24, height: 24 },
+    gtmName: 'FB',
   },
   {
     icon: { default: 'icon-x', hover: 'icon-x-hover' },
     href: '/',
     size: { width: 24, height: 20 },
+    gtmName: 'twitter',
   },
   {
     icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
     href: '/',
     size: { width: 22, height: 22 },
+    gtmName: 'IG',
   },
   {
     icon: { default: 'icon-discord', hover: 'icon-discord-hover' },
     href: '/',
     size: { width: 21, height: 24 },
+    gtmName: 'DC',
   },
 ] as const
 
@@ -75,6 +89,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/',
       text: '首頁',
+      gtmName: 'homepage',
     },
     {
       icon: {
@@ -84,6 +99,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/social',
       text: '社群',
+      gtmName: 'social',
     },
     {
       icon: {
@@ -93,6 +109,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/media',
       text: '最新',
+      gtmName: 'media',
     },
   ],
   second: [
@@ -104,6 +121,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/profile',
       text: '個人檔案',
+      gtmName: 'profile',
     },
     {
       icon: {
@@ -113,6 +131,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/point',
       text: '讀選點數',
+      gtmName: 'point',
     },
     {
       icon: {
@@ -122,6 +141,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/profile',
       text: '書籤',
+      gtmName: 'bookmark',
     },
   ],
   third: [
@@ -133,6 +153,7 @@ const NON_MOBILE_NAV_ICONS = {
       },
       href: '/setting',
       text: '設定',
+      gtmName: 'setting',
     },
   ],
 } as const
@@ -147,6 +168,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/',
     text: '首頁',
+    gtmName: 'homepage',
   },
   {
     icon: {
@@ -156,6 +178,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/social',
     text: '社群',
+    gtmName: 'social',
   },
   {
     icon: {
@@ -165,6 +188,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/media',
     text: '最新',
+    gtmName: 'media',
   },
   {
     icon: {
@@ -174,6 +198,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/point',
     text: '讀選點數',
+    gtmName: 'point',
   },
   {
     icon: {
@@ -183,6 +208,7 @@ const MOBILE_NAV_ICONS = [
     },
     href: '/profile',
     text: '個人檔案',
+    gtmName: 'profile',
   },
 ] as const
 

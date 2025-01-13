@@ -29,6 +29,8 @@ export async function generateMetadata(
   const storyTitle = story?.title
   const storyDescription = story?.summary
   const storyImage = story?.og_image ?? ''
+  const storyCategory = story?.category?.title ?? ''
+  const storyPublishTime = story?.published_date ?? ''
 
   const metaTitle = storyTitle ? `${storyTitle} | ${SITE_TITLE}` : SITE_TITLE
   const metaDescription = storyDescription || SITE_DESCRIPTION
@@ -44,6 +46,11 @@ export async function generateMetadata(
       title: metaTitle,
       description: metaDescription,
       images: metaImages,
+    },
+    other: {
+      item_id: storyId,
+      'article:section': storyCategory,
+      'article:published_time': storyPublishTime,
     },
   }
 }
