@@ -1632,6 +1632,10 @@ export type Mutation = {
   createPolicy?: Maybe<Policy>
   createPublisher?: Maybe<Publisher>
   createPublishers?: Maybe<Array<Maybe<Publisher>>>
+  createReportReason?: Maybe<ReportReason>
+  createReportReasons?: Maybe<Array<Maybe<ReportReason>>>
+  createReportRecord?: Maybe<ReportRecord>
+  createReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
   createSponsorship?: Maybe<Sponsorship>
   createSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   createStories?: Maybe<Array<Maybe<Story>>>
@@ -1674,6 +1678,10 @@ export type Mutation = {
   deletePolicy?: Maybe<Policy>
   deletePublisher?: Maybe<Publisher>
   deletePublishers?: Maybe<Array<Maybe<Publisher>>>
+  deleteReportReason?: Maybe<ReportReason>
+  deleteReportReasons?: Maybe<Array<Maybe<ReportReason>>>
+  deleteReportRecord?: Maybe<ReportRecord>
+  deleteReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
   deleteSponsorship?: Maybe<Sponsorship>
   deleteSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   deleteStories?: Maybe<Array<Maybe<Story>>>
@@ -1717,6 +1725,10 @@ export type Mutation = {
   updatePolicy?: Maybe<Policy>
   updatePublisher?: Maybe<Publisher>
   updatePublishers?: Maybe<Array<Maybe<Publisher>>>
+  updateReportReason?: Maybe<ReportReason>
+  updateReportReasons?: Maybe<Array<Maybe<ReportReason>>>
+  updateReportRecord?: Maybe<ReportRecord>
+  updateReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
   updateSponsorship?: Maybe<Sponsorship>
   updateSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
   updateStories?: Maybe<Array<Maybe<Story>>>
@@ -1864,6 +1876,22 @@ export type MutationCreatePublisherArgs = {
 
 export type MutationCreatePublishersArgs = {
   data: Array<PublisherCreateInput>
+}
+
+export type MutationCreateReportReasonArgs = {
+  data: ReportReasonCreateInput
+}
+
+export type MutationCreateReportReasonsArgs = {
+  data: Array<ReportReasonCreateInput>
+}
+
+export type MutationCreateReportRecordArgs = {
+  data: ReportRecordCreateInput
+}
+
+export type MutationCreateReportRecordsArgs = {
+  data: Array<ReportRecordCreateInput>
 }
 
 export type MutationCreateSponsorshipArgs = {
@@ -2032,6 +2060,22 @@ export type MutationDeletePublisherArgs = {
 
 export type MutationDeletePublishersArgs = {
   where: Array<PublisherWhereUniqueInput>
+}
+
+export type MutationDeleteReportReasonArgs = {
+  where: ReportReasonWhereUniqueInput
+}
+
+export type MutationDeleteReportReasonsArgs = {
+  where: Array<ReportReasonWhereUniqueInput>
+}
+
+export type MutationDeleteReportRecordArgs = {
+  where: ReportRecordWhereUniqueInput
+}
+
+export type MutationDeleteReportRecordsArgs = {
+  where: Array<ReportRecordWhereUniqueInput>
 }
 
 export type MutationDeleteSponsorshipArgs = {
@@ -2216,6 +2260,24 @@ export type MutationUpdatePublisherArgs = {
 
 export type MutationUpdatePublishersArgs = {
   data: Array<PublisherUpdateArgs>
+}
+
+export type MutationUpdateReportReasonArgs = {
+  data: ReportReasonUpdateInput
+  where: ReportReasonWhereUniqueInput
+}
+
+export type MutationUpdateReportReasonsArgs = {
+  data: Array<ReportReasonUpdateArgs>
+}
+
+export type MutationUpdateReportRecordArgs = {
+  data: ReportRecordUpdateInput
+  where: ReportRecordWhereUniqueInput
+}
+
+export type MutationUpdateReportRecordsArgs = {
+  data: Array<ReportRecordUpdateArgs>
 }
 
 export type MutationUpdateSponsorshipArgs = {
@@ -3147,6 +3209,12 @@ export type Query = {
   publisher?: Maybe<Publisher>
   publishers?: Maybe<Array<Publisher>>
   publishersCount?: Maybe<Scalars['Int']['output']>
+  reportReason?: Maybe<ReportReason>
+  reportReasons?: Maybe<Array<ReportReason>>
+  reportReasonsCount?: Maybe<Scalars['Int']['output']>
+  reportRecord?: Maybe<ReportRecord>
+  reportRecords?: Maybe<Array<ReportRecord>>
+  reportRecordsCount?: Maybe<Scalars['Int']['output']>
   sponsorship?: Maybe<Sponsorship>
   sponsorships?: Maybe<Array<Sponsorship>>
   sponsorshipsCount?: Maybe<Scalars['Int']['output']>
@@ -3404,6 +3472,36 @@ export type QueryPublishersCountArgs = {
   where?: PublisherWhereInput
 }
 
+export type QueryReportReasonArgs = {
+  where: ReportReasonWhereUniqueInput
+}
+
+export type QueryReportReasonsArgs = {
+  orderBy?: Array<ReportReasonOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: ReportReasonWhereInput
+}
+
+export type QueryReportReasonsCountArgs = {
+  where?: ReportReasonWhereInput
+}
+
+export type QueryReportRecordArgs = {
+  where: ReportRecordWhereUniqueInput
+}
+
+export type QueryReportRecordsArgs = {
+  orderBy?: Array<ReportRecordOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: ReportRecordWhereInput
+}
+
+export type QueryReportRecordsCountArgs = {
+  where?: ReportRecordWhereInput
+}
+
 export type QuerySponsorshipArgs = {
   where: SponsorshipWhereUniqueInput
 }
@@ -3482,6 +3580,141 @@ export type QueryUsersCountArgs = {
 export enum QueryMode {
   Default = 'default',
   Insensitive = 'insensitive',
+}
+
+export type ReportReason = {
+  __typename?: 'ReportReason'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  id: Scalars['ID']['output']
+  reason?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type ReportReasonCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  reason?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type ReportReasonOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  reason?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type ReportReasonRelateToOneForCreateInput = {
+  connect?: InputMaybe<ReportReasonWhereUniqueInput>
+  create?: InputMaybe<ReportReasonCreateInput>
+}
+
+export type ReportReasonRelateToOneForUpdateInput = {
+  connect?: InputMaybe<ReportReasonWhereUniqueInput>
+  create?: InputMaybe<ReportReasonCreateInput>
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type ReportReasonUpdateArgs = {
+  data: ReportReasonUpdateInput
+  where: ReportReasonWhereUniqueInput
+}
+
+export type ReportReasonUpdateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  reason?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type ReportReasonWhereInput = {
+  AND?: InputMaybe<Array<ReportReasonWhereInput>>
+  NOT?: InputMaybe<Array<ReportReasonWhereInput>>
+  OR?: InputMaybe<Array<ReportReasonWhereInput>>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  id?: InputMaybe<IdFilter>
+  reason?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type ReportReasonWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+  reason?: InputMaybe<Scalars['String']['input']>
+}
+
+export type ReportRecord = {
+  __typename?: 'ReportRecord'
+  collection?: Maybe<Collection>
+  comment?: Maybe<Comment>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  id: Scalars['ID']['output']
+  informant?: Maybe<Member>
+  reason?: Maybe<ReportReason>
+  respondent?: Maybe<Member>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type ReportRecordCreateInput = {
+  collection?: InputMaybe<CollectionRelateToOneForCreateInput>
+  comment?: InputMaybe<CommentRelateToOneForCreateInput>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  informant?: InputMaybe<MemberRelateToOneForCreateInput>
+  reason?: InputMaybe<ReportReasonRelateToOneForCreateInput>
+  respondent?: InputMaybe<MemberRelateToOneForCreateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type ReportRecordOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type ReportRecordUpdateArgs = {
+  data: ReportRecordUpdateInput
+  where: ReportRecordWhereUniqueInput
+}
+
+export type ReportRecordUpdateInput = {
+  collection?: InputMaybe<CollectionRelateToOneForUpdateInput>
+  comment?: InputMaybe<CommentRelateToOneForUpdateInput>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  informant?: InputMaybe<MemberRelateToOneForUpdateInput>
+  reason?: InputMaybe<ReportReasonRelateToOneForUpdateInput>
+  respondent?: InputMaybe<MemberRelateToOneForUpdateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type ReportRecordWhereInput = {
+  AND?: InputMaybe<Array<ReportRecordWhereInput>>
+  NOT?: InputMaybe<Array<ReportRecordWhereInput>>
+  OR?: InputMaybe<Array<ReportRecordWhereInput>>
+  collection?: InputMaybe<CollectionWhereInput>
+  comment?: InputMaybe<CommentWhereInput>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  id?: InputMaybe<IdFilter>
+  informant?: InputMaybe<MemberWhereInput>
+  reason?: InputMaybe<ReportReasonWhereInput>
+  respondent?: InputMaybe<MemberWhereInput>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type ReportRecordWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
 }
 
 export type ResizedImages = {
@@ -3985,6 +4218,7 @@ export type TagWhereInput = {
 
 export type TagWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
 }
 
 export type Transaction = {
@@ -6266,6 +6500,7 @@ export type GetStoryQuery = {
     isMember?: boolean | null
     picksCount?: number | null
     commentsCount?: number | null
+    category?: { __typename?: 'Category'; title?: string | null } | null
     source?: {
       __typename?: 'Publisher'
       id: string
@@ -19272,6 +19507,16 @@ export const GetStoryDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'summary' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'category' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'source' },

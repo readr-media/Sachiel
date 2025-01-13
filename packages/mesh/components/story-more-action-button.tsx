@@ -177,26 +177,43 @@ enum ActionType {
 }
 
 const actions = [
-  { type: ActionType.Sponsor, text: '贊助', icon: 'icon-wallet' },
+  {
+    type: ActionType.Sponsor,
+    text: '贊助',
+    icon: 'icon-wallet',
+    gtmClass: 'GTM-article_click_sponsor_article',
+  },
   {
     type: ActionType.AddBookMark,
     text: '加入書籤',
     icon: 'icon-bookmark',
     offText: '移除書籤',
     offIcon: 'icon-bookmark-off',
+    gtmClass: 'GTM-article_click_bookmark',
   },
   {
     type: ActionType.AddCollection,
     text: '加入集錦',
     icon: 'icon-collection',
+    gtmClass: 'GTM-article_click_collection',
   },
   {
     type: ActionType.UnFollow,
     text: '取消追蹤',
     icon: 'icon-unfollow',
   },
-  { type: ActionType.CopyLink, text: '複製連結', icon: 'icon-copy' },
-  { type: ActionType.Share, text: '分享', icon: 'icon-share' },
+  {
+    type: ActionType.CopyLink,
+    text: '複製連結',
+    icon: 'icon-copy',
+    gtmClass: 'GTM-article_click_copy',
+  },
+  {
+    type: ActionType.Share,
+    text: '分享',
+    icon: 'icon-share',
+    gtmClass: 'GTM-article_click_share',
+  },
 ] as const
 
 const ActionSheet = forwardRef(function ActionSheet(
@@ -373,7 +390,9 @@ const ActionSheet = forwardRef(function ActionSheet(
             return (
               <button
                 key={action.type}
-                className="flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px]"
+                className={`flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px] ${
+                  isStoryAddedBookmark ? '' : action.gtmClass
+                }`}
                 onClick={onAction.bind(null, action.type)}
               >
                 <Icon
@@ -404,7 +423,7 @@ const ActionSheet = forwardRef(function ActionSheet(
             return (
               <button
                 key={action.type}
-                className="flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px]"
+                className={`flex w-full cursor-pointer gap-1 px-5 py-3 hover:bg-primary-100 sm:w-auto sm:min-w-max sm:py-[9px] ${action.gtmClass}`}
                 onClick={onAction.bind(null, action.type)}
               >
                 <Icon iconName={action.icon} size="l" />

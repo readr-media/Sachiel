@@ -26,6 +26,7 @@ const StoryCard = ({
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0">
       <NextLink
         href={`/story/${story.id}`}
+        className="GTM-homepage_click_media_article"
         onClick={() =>
           logStoryClick(userPayload, story.id, story.title, publisherName)
         }
@@ -72,7 +73,7 @@ export default function TopPublisherCard({ publisher }: Props) {
         <div className="flex gap-x-3">
           <NextLink
             href={`profile/publisher/${publisher.customId}`}
-            className="relative size-11 overflow-hidden rounded-lg"
+            className="GTM-homepage_click_media relative size-11 overflow-hidden rounded-lg"
           >
             <NextImage
               src={publisher.logo || '/images/default-publisher-logo.png'}
@@ -82,7 +83,10 @@ export default function TopPublisherCard({ publisher }: Props) {
           </NextLink>
           <div>
             <p className="subtitle-2 text-primary-700 hover-or-active:underline">
-              <NextLink href={`profile/publisher/${publisher.customId}`}>
+              <NextLink
+                href={`profile/publisher/${publisher.customId}`}
+                className="GTM-homepage_click_media"
+              >
                 {publisher.title}
               </NextLink>
             </p>
@@ -95,7 +99,10 @@ export default function TopPublisherCard({ publisher }: Props) {
             </p>
           </div>
         </div>
-        <PublisherDonateButton publisherId={publisher.id} />
+        <PublisherDonateButton
+          publisherId={publisher.id}
+          gtmClassName="GTM-homepage_click_media_sponsor"
+        />
       </div>
       {publisher.stories.map((story, index) => (
         <StoryCard

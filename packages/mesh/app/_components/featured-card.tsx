@@ -9,7 +9,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
-import type { CategoryStory, Story } from '@/types/homepage'
+import type { CategoryStory, GtmTags, Story } from '@/types/homepage'
 import { logStoryClick } from '@/utils/event-logs'
 
 import ImageWithFallback from './image-with-fallback'
@@ -20,6 +20,7 @@ type Props = {
   customId: string
   publisher: string
   publisherId: string
+  gtmTags: GtmTags
 }
 
 export default function FeaturedCard({
@@ -28,6 +29,7 @@ export default function FeaturedCard({
   customId,
   publisher,
   publisherId,
+  gtmTags,
 }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
@@ -38,7 +40,7 @@ export default function FeaturedCard({
         {isReadrStory ? 'READr 最新報導' : '最多人精選'}
       </h2>
       <article className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-5 lg:gap-x-10">
-        <NextLink href={`/story/${story.id}`}>
+        <NextLink href={`/story/${story.id}`} className={gtmTags.story}>
           <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md sm:aspect-square sm:size-[168px] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
             <ImageWithFallback
               src={story.og_image}
@@ -67,6 +69,7 @@ export default function FeaturedCard({
               onClick={() =>
                 logStoryClick(userPayload, story.id, story.title, publisher)
               }
+              className={gtmTags.story}
             >
               {story.title}
             </NextLink>
@@ -89,7 +92,11 @@ export default function FeaturedCard({
               ringColor="primary-100"
               objectiveId={story.id}
             />
-            <StoryPickButton storyId={story.id} color="transparent" />
+            <StoryPickButton
+              storyId={story.id}
+              color="transparent"
+              gtmClassName={gtmTags.pick}
+            />
           </div>
         </div>
       </article>

@@ -37,7 +37,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
         <div className="flex justify-between">
           <div className="flex gap-x-4">
             <div className="relative size-11 shrink-0">
-              <Link href={`profile/member/${comment.member.customId}`}>
+              <Link
+                href={`profile/member/${comment.member.customId}`}
+                className="GTM-homepage_click_popular_user"
+              >
                 <Avatar
                   src={comment.member.avatar}
                   size="l"
@@ -48,7 +51,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
 
             <div>
               <p className="subtitle-2 mb-[2px] line-clamp-1 text-primary-700 hover-or-active:underline">
-                <Link href={`profile/member/${comment.member.customId}`}>
+                <Link
+                  href={`profile/member/${comment.member.customId}`}
+                  className="GTM-homepage_click_popular_user"
+                >
                   {comment.member.name}
                 </Link>
               </p>
@@ -70,6 +76,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                   activeText: '追蹤中',
                 }}
                 onClick={handleClickFollow}
+                gtmClassName="GTM-homepage_click_popular_user_follow"
               />
             </div>
           )}
@@ -84,6 +91,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
             <h2 className="subtitle-2 mb-2 text-primary-700 hover-or-active:underline">
               <Link
                 href={`/story/${comment.story.id}`}
+                className="GTM-homepage_click_popular_user_article"
                 onClick={() =>
                   logStoryClick(
                     userPayload,

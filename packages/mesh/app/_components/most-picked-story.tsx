@@ -12,6 +12,10 @@ export default async function MostPickedStory() {
       customId={story.source.customId}
       publisher={story.source.title}
       publisherId={story.source.id}
+      gtmTags={{
+        story: 'GTM-homepage_click_popular_article',
+        pick: 'GTM-homepage_pick_popular_article',
+      }}
     />
   )
 }

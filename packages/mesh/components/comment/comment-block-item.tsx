@@ -133,7 +133,12 @@ const CommentBlockItem = ({
                 <p className="caption-1 text-primary-600">
                   {commentData.likeCount || 0}
                 </p>
-                <button onClick={handleLikeComment}>
+                <button
+                  onClick={handleLikeComment}
+                  className={`${
+                    isCommentLiked ? '' : 'GTM-article_click_like_message'
+                  }`}
+                >
                   <Icon
                     iconName={isCommentLiked ? 'icon-liked' : 'icon-heart'}
                     size="l"

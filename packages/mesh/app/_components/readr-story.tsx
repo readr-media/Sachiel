@@ -17,6 +17,10 @@ export default async function ReadrStory() {
       customId={customId}
       publisher={publisher}
       publisherId={publisherId}
+      gtmTags={{
+        story: 'GTM-homepage_click_readr_latest_ article',
+        pick: 'GTM-homepage_pick_readr_latest_ article',
+      }}
     />
   )
 }

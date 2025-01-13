@@ -27,7 +27,7 @@ export default function LoginEntry() {
           .filter((option) => option.method !== 'facebook')
           .map((option) => (
             <div
-              className="w-full max-w-[320px]"
+              className={`w-full max-w-[320px] GTM-login_click_${option.method}`}
               key={`login-with-${option.method}`}
             >
               <Button

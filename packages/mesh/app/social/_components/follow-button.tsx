@@ -3,7 +3,13 @@
 import Button from '@/components/button'
 import { useFollow } from '@/hooks/use-follow'
 
-export default function FollowButton({ followingId }: { followingId: string }) {
+export default function FollowButton({
+  followingId,
+  gtmClassName = '',
+}: {
+  followingId: string
+  gtmClassName?: string
+}) {
   const { handleClickFollow, isFollowing } = useFollow(followingId)
 
   return (
@@ -16,6 +22,7 @@ export default function FollowButton({ followingId }: { followingId: string }) {
         activeText: '追蹤中',
       }}
       onClick={handleClickFollow}
+      gtmClassName={gtmClassName}
     />
   )
 }

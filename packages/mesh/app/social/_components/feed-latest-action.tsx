@@ -23,7 +23,7 @@ export default function FeedLatestAction({
             <span className="text-primary-700">
               <Link
                 href={`profile/member/${commentsData[0].member.customId}`}
-                className="hover-or-active:underline"
+                className="GTM-soc_click_user hover-or-active:underline"
               >
                 {truncateNameByBytes(
                   commentsData[0]?.member?.name,
@@ -52,7 +52,7 @@ export default function FeedLatestAction({
             <span className="text-primary-700">
               <Link
                 href={`profile/member/${commentsData[0].member.customId}`}
-                className="hover-or-active:underline"
+                className="GTM-soc_click_user hover-or-active:underline"
               >
                 {truncateNameByBytes(
                   commentsData[0]?.member?.name,
@@ -66,7 +66,7 @@ export default function FeedLatestAction({
                 <span className="text-primary-700">
                   <Link
                     href={`profile/member/${commentsData[1].member.customId}`}
-                    className="hover-or-active:underline"
+                    className="GTM-soc_click_user hover-or-active:underline"
                   >
                     {truncateNameByBytes(
                       commentsData[1]?.member?.name,
@@ -90,7 +90,7 @@ export default function FeedLatestAction({
             <span className="text-primary-700">
               <Link
                 href={`profile/member/${commentsData[0].member.customId}`}
-                className="hover-or-active:underline"
+                className="GTM-soc_click_user hover-or-active:underline"
               >
                 {truncateNameByBytes(
                   commentsData[0]?.member?.name,
@@ -113,7 +113,7 @@ export default function FeedLatestAction({
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[0].member.customId}`}
-              className="hover-or-active:underline"
+              className="GTM-soc_click_user hover-or-active:underline"
             >
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
@@ -139,7 +139,7 @@ export default function FeedLatestAction({
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[0].member.customId}`}
-              className="hover-or-active:underline"
+              className="GTM-soc_click_user hover-or-active:underline"
             >
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
@@ -148,7 +148,7 @@ export default function FeedLatestAction({
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[1].member.customId}`}
-              className="hover-or-active:underline"
+              className="GTM-soc_click_user hover-or-active:underline"
             >
               {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
             </Link>
@@ -167,7 +167,7 @@ export default function FeedLatestAction({
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[0].member.customId}`}
-              className="hover-or-active:underline"
+              className="GTM-soc_click_user hover-or-active:underline"
             >
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>

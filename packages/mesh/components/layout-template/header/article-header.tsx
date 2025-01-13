@@ -45,18 +45,21 @@ export default function ArticleHeader({ showNav }: { showNav: () => void }) {
             >
               <Icon size="l" iconName="icon-hamburger-menu" />
             </button>
-            <Link href={LOGO_ICONS.nonMobile.href}>
+            <Link
+              href={LOGO_ICONS.nonMobile.href}
+              className="GTM-header_click_mesh_logo"
+            >
               <Icon
                 size={LOGO_ICONS.nonMobile.size}
                 iconName={LOGO_ICONS.nonMobile.icon}
               />
             </Link>
           </div>
-          <DesktopSearchBar className="hidden sm:flex" />
+          <DesktopSearchBar className="GTM-header_click_search_bar hidden sm:flex" />
         </div>
         {/* right side block */}
         <div className="flex">
-          <HeaderIconWrapper className="sm:hidden">
+          <HeaderIconWrapper className="GTM-header_click_search_bar sm:hidden">
             <MobileSearchWrapper />
           </HeaderIconWrapper>
           {isLoggedIn ? (

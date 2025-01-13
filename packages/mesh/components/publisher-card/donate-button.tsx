@@ -10,8 +10,10 @@ import Button from '../button'
 
 export default function PublisherDonateButton({
   publisherId,
+  gtmClassName = '',
 }: {
   publisherId: string
+  gtmClassName?: string
 }) {
   const router = useRouter()
   const [isWalletAvailable, setIsWalletAvailable] = useState(false)
@@ -37,6 +39,7 @@ export default function PublisherDonateButton({
       text="贊助"
       onClick={handleClickDonate}
       disabled={!isWalletAvailable}
+      gtmClassName={gtmClassName}
     />
   )
 }

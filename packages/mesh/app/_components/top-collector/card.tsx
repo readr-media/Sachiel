@@ -64,6 +64,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
                 activeText: '追蹤中',
               }}
               onClick={handleClickFollow}
+              gtmClassName="GTM-homepage_click_hot_user_follow"
             />
           </div>
           <div className="hidden lg:block lg:w-full">
@@ -76,6 +77,7 @@ export default function TopCollectorCard({ person, rank }: Props) {
                 activeText: '追蹤中',
               }}
               onClick={handleClickFollow}
+              gtmClassName="GTM-homepage_click_hot_user_follow"
             />
           </div>
         </>

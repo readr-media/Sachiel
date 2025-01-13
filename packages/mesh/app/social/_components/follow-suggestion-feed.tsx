@@ -72,7 +72,10 @@ export default function FollowSuggestionFeed({
                       )}
                     </p>
                   </div>
-                  <FollowButton followingId={member.id} />
+                  <FollowButton
+                    followingId={member.id}
+                    gtmClassName="GTM-soc_click_user_follow"
+                  />
                 </div>
               </div>
               {index !== displaySuggestedFollowers.length - 1 ? (

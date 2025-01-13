@@ -87,7 +87,10 @@ export default function NavList({ categories, initialStories }: Props) {
               className="mr-[-8px]"
             />
             {categories?.map((category) => (
-              <div className="shrink-0" key={category.id}>
+              <div
+                className="GTM-homepage_click_category shrink-0"
+                key={category.id}
+              >
                 <Button
                   size="xs"
                   color="nav-chip"

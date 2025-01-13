@@ -24,7 +24,7 @@ export default function Footer({ className = '' }: { className?: string }) {
         {/* first row */}
         <div className="flex flex-col gap-5 sm:h-[100px] sm:w-full sm:flex-row sm:justify-between sm:gap-0 sm:border-b">
           {/* first row left block  */}
-          <div className="flex flex-col items-center sm:flex-row">
+          <div className="GTM-footer_click_mesh_logo flex flex-col items-center sm:flex-row">
             {/* mobile logo */}
             <Link href={LOGO_ICONS.mobile.href} className="sm:hidden">
               <Icon
@@ -43,7 +43,11 @@ export default function Footer({ className = '' }: { className?: string }) {
           {/* first row second block */}
           <div className="flex flex-col items-center gap-5 sm:flex-row">
             {DOWNLOAD_APP_LINKS.map((linkInfo) => (
-              <Link key={linkInfo.icon} href={linkInfo.href}>
+              <Link
+                key={linkInfo.icon}
+                href={linkInfo.href}
+                className={`GTM-footer_click_${linkInfo.gtmName}`}
+              >
                 <Icon size={linkInfo.size} iconName={linkInfo.icon} />
               </Link>
             ))}
@@ -54,7 +58,11 @@ export default function Footer({ className = '' }: { className?: string }) {
           {/* second row left block  */}
           <nav className="flex flex-col items-center gap-3 sm:flex-row sm:gap-10">
             {FOOTER_NAV_LINKS.map((link) => (
-              <Link href={link.href} key={link.text}>
+              <Link
+                href={link.href}
+                key={link.text}
+                className={`GTM-footer_click_${link.gtmName}`}
+              >
                 <span className="button-large cursor-pointer">{link.text}</span>
               </Link>
             ))}
@@ -65,7 +73,7 @@ export default function Footer({ className = '' }: { className?: string }) {
               <Link
                 href={iconInfo.href}
                 key={iconInfo.icon.default}
-                className="group"
+                className={`group GTM-footer_click_${iconInfo.gtmName}`}
               >
                 <div className="flex size-6 items-center justify-center">
                   <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />

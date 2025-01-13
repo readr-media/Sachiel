@@ -13,10 +13,12 @@ export default function CollectionPickButton({
   collectionId,
   color = 'white',
   size = 'sm',
+  gtmClassName = '',
 }: {
   collectionId: string
   color?: ButtonColor
   size?: ButtonSize
+  gtmClassName?: string
 }) {
   const router = useRouter()
   const { user } = useUser()
@@ -44,6 +46,7 @@ export default function CollectionPickButton({
         activeText: '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
+      gtmClassName={gtmClassName}
     />
   )
 }
