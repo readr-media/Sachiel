@@ -73,7 +73,7 @@ export default function Footer({ className = '' }: { className?: string }) {
               <Link
                 href={iconInfo.href}
                 key={iconInfo.icon.default}
-                className={`group GTM-footer_click_${iconInfo.gtmName}`}
+                className={`group GTM-footer_click_social_${iconInfo.gtmName}`}
               >
                 <div className="flex size-6 items-center justify-center">
                   <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />

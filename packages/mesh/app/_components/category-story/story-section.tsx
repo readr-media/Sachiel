@@ -54,8 +54,10 @@ export default function StorySection({ activeTitle, stories, slug }: Props) {
               <StoryCard
                 story={story}
                 key={story.id}
-                className="GTM-homepage_click_category_article"
-                storyPickGtmClasssName="GTM-homepage_pick_category_article"
+                gtmTags={{
+                  story: 'GTM-homepage_click_category_article',
+                  pick: 'GTM-homepage_pick_category_article',
+                }}
               />
             ))}
           </div>

@@ -48,7 +48,7 @@ export async function generateMetadata(
       images: metaImages,
     },
     other: {
-      item_id: storyId,
+      'dable:item_id': storyId,
       'article:section': storyCategory,
       'article:published_time': storyPublishTime,
     },

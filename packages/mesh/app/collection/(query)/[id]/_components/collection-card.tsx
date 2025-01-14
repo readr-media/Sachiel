@@ -101,7 +101,10 @@ export default function CollectionCard({
                 objectiveId={collection.id}
                 pickObjective={PickObjective.Collection}
               />
-              <CollectionPickButton collectionId={collection.id} />
+              <CollectionPickButton
+                collectionId={collection.id}
+                gtmClassName="GTM-collection_pick_collection"
+              />
             </div>
           </div>
         </div>

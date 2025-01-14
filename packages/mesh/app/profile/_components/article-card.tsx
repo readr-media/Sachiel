@@ -167,7 +167,7 @@ const ArticleCard = ({
       >
         <Link
           className={`md:flex md:w-full ${
-            isCollection(storyData) ? 'GTM-collection_click' : ''
+            isCollection(storyData) ? 'GTM-collection_tab_click' : ''
           }`}
           href={redirectLink()}
           onClick={() =>
@@ -202,7 +202,7 @@ const ArticleCard = ({
         >
           <Link
             className={`flex grow flex-col ${
-              isCollection(storyData) ? 'GTM-collection_click' : ''
+              isCollection(storyData) ? 'GTM-collection_tab_click' : ''
             }`}
             href={redirectLink()}
             onClick={() =>
@@ -290,7 +290,7 @@ const ArticleCard = ({
             {isCollection(storyData) ? (
               <CollectionPickButton
                 collectionId={storyData.id}
-                gtmClassName="GTM-collection_pick"
+                gtmClassName="GTM-collection_tab_pick"
               />
             ) : (
               <StoryPickButton storyId={storyData?.id} />

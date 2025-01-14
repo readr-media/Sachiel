@@ -12,6 +12,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
+import type { GtmTags } from '@/types/homepage'
 import { logStoryClick } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
@@ -40,11 +41,11 @@ export default forwardRef(function StoryCard(
   {
     story,
     className = '',
-    storyPickGtmClassName = '',
+    gtmTags,
   }: {
     story: Story
     className?: string
-    storyPickGtmClassName?: string
+    gtmTags: GtmTags
   },
   ref
 ) {
@@ -61,7 +62,10 @@ export default forwardRef(function StoryCard(
     >
       <div>
         <div className="flex h-6 flex-row items-center justify-between">
-          <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
+          <Link
+            href={`/profile/publisher/${story.source?.customId ?? ''}`}
+            className="GTM-media_click_media_title"
+          >
             <h4 className="caption-1 line-clamp-1 text-primary-500 hover-or-active:text-primary-700">
               {story.source?.title ?? ''}
             </h4>
@@ -74,6 +78,7 @@ export default forwardRef(function StoryCard(
         </div>
         <Link
           href={`/story/${story.id}`}
+          className={gtmTags.story}
           onClick={() =>
             logStoryClick(
               userPayload,
@@ -119,10 +124,7 @@ export default forwardRef(function StoryCard(
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton
-          storyId={story.id}
-          gtmClassName={storyPickGtmClassName}
-        />
+        <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
       </div>
     </article>
   )

@@ -49,6 +49,10 @@ export default function DesktopStories({
         <StoryCard
           key={story.id}
           story={story}
+          gtmTags={{
+            story: 'GTM-categorypage_click_latest_article',
+            pick: 'GTM-categorypage_pick_latest_article',
+          }}
           ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
         />
       )

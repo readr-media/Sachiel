@@ -33,6 +33,10 @@ export default function DesktopInfiniteStories({
           }`}
           story={story}
           ref={i === stories.length - 5 ? triggerLoadmoreRef : undefined}
+          gtmTags={{
+            story: 'GTM-media_click_category_article',
+            pick: 'GTM-media_pick_category_article',
+          }}
         />
       ))}
     </>

@@ -11,7 +11,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
-import type { CategoryStory, DailyStory } from '@/types/homepage'
+import type { CategoryStory, DailyStory, GtmTags } from '@/types/homepage'
 import { logStoryClick } from '@/utils/event-logs'
 
 import ImageWithFallback from './image-with-fallback'
@@ -19,15 +19,12 @@ import ImageWithFallback from './image-with-fallback'
 type Props<T> = {
   story: T
   className?: string
-  storyPickGtmClasssName?: string
+  gtmTags: GtmTags
 }
 
 export default forwardRef(function StoryCard<
   T extends CategoryStory | DailyStory
->(
-  { story, className = '', storyPickGtmClasssName = '' }: Props<T>,
-  ref: ForwardedRef<unknown>
-) {
+>({ story, className = '', gtmTags }: Props<T>, ref: ForwardedRef<unknown>) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
@@ -50,6 +47,7 @@ export default forwardRef(function StoryCard<
           <p className="subtitle-1 sm:title-2 mb-2 line-clamp-2 grow text-primary-700 hover-or-active:underline sm:mb-1">
             <NextLink
               href={`/story/${story.id}`}
+              className={gtmTags.story}
               onClick={() =>
                 logStoryClick(
                   userPayload,
@@ -73,7 +71,18 @@ export default forwardRef(function StoryCard<
           </div>
         </div>
 
-        <NextLink href={`/story/${story.id}`}>
+        <NextLink
+          href={`/story/${story.id}`}
+          className={gtmTags.story}
+          onClick={() =>
+            logStoryClick(
+              userPayload,
+              story.id,
+              story.title,
+              story.source.title
+            )
+          }
+        >
           <div className="relative h-[48px] w-[96px] shrink-0 overflow-hidden rounded sm:h-[80px] sm:w-[160px]">
             <ImageWithFallback
               src={story.og_image}
@@ -92,10 +101,7 @@ export default forwardRef(function StoryCard<
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton
-          storyId={story.id}
-          gtmClassName={storyPickGtmClasssName}
-        />
+        <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
       </div>
     </article>
   )

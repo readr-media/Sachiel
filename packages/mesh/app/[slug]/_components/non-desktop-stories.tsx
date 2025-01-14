@@ -58,6 +58,10 @@ export default function NonDesktopStories({
               ? 'shadow-none'
               : ''
           }`}
+          gtmTags={{
+            story: 'GTM-categorypage_click_latest_article',
+            pick: 'GTM-categorypage_pick_latest_article',
+          }}
         />
       )
       if (
