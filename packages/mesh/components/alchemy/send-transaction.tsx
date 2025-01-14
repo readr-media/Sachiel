@@ -5,14 +5,16 @@ import {
   useSmartAccountClient,
 } from '@alchemy/aa-alchemy/react'
 import { type Abi } from '@alchemy/aa-core'
-import { type FormEvent, useEffect, useState } from 'react'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
 import { type Hex, encodeFunctionData } from 'viem'
 
 import { getAccessToken } from '@/app/actions/auth'
+import type { FailPaymentProps } from '@/app/actions/payment'
 import {
   type CreatePaymentProps,
   type UpdatePaymentProps,
   createPayment,
+  failPayment,
   getMeshPointContract,
   updatePayment,
 } from '@/app/actions/payment'
@@ -36,6 +38,7 @@ export default function SendTransaction({
   disabled,
   createPaymentPayload,
   updatePaymentPayload,
+  failPaymentPayload,
   onSuccess,
 }: {
   recipientAddress: Hex
@@ -44,12 +47,14 @@ export default function SendTransaction({
   disabled: boolean
   createPaymentPayload: CreatePaymentProps
   updatePaymentPayload: UpdatePaymentProps
+  failPaymentPayload: FailPaymentProps
   onSuccess: () => void
 }) {
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
   const [paymentId, setPaymentId] = useState('')
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false)
+  const isCmsPaymentInProgressRef = useRef(false)
   // use config values to initialize our smart account client
   const { client } = useSmartAccountClient({
     type: accountType,
@@ -67,15 +72,26 @@ export default function SendTransaction({
     fetchContractInterface()
   }, [])
 
+  const turnCmsPaymentIntoFailure = (complement: string) => {
+    failPayment({
+      ...failPaymentPayload,
+      targetId: paymentId,
+      complement,
+    })
+  }
+
   const handleUserOperationSuccess = async (
     paymentPayload: UpdatePaymentProps
   ) => {
     try {
       if (!auth.currentUser) throw new Error('User is not authenticated')
       const idToken = await auth.currentUser.getIdToken()
+      isCmsPaymentInProgressRef.current = false
       const updatePaymentResponse = await updatePayment(paymentPayload)
       if (!updatePaymentResponse)
-        throw new Error('Failed to get payment status')
+        throw new Error(
+          `Failed to get payment status, ${JSON.stringify(paymentPayload)}`
+        )
       const accessTokenResponse = await getAccessToken(idToken)
       if (!accessTokenResponse)
         throw new Error('Failed to refresh access token after user operation')
@@ -84,6 +100,13 @@ export default function SendTransaction({
     } catch (error) {
       console.error('Transaction failed:', error)
       addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      if (isCmsPaymentInProgressRef.current) {
+        turnCmsPaymentIntoFailure(
+          `Transaction failed when alchemy on success, \n${
+            (error as Error).message
+          }`
+        )
+      }
     }
   }
 
@@ -103,6 +126,9 @@ export default function SendTransaction({
     onError: (error) => {
       addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
       console.error(error)
+      turnCmsPaymentIntoFailure(
+        `Transaction failed when alchemy on error, \n${error.message}`
+      )
     },
   })
 
@@ -138,6 +164,7 @@ export default function SendTransaction({
       if (!createPaymentResponse?.id) {
         throw new Error('Failed to get payment id')
       }
+      isCmsPaymentInProgressRef.current = true
       setPaymentId(createPaymentResponse.id)
       const userOperationCallData = encodeCallData(contractInterface)
       sendUserOperation({

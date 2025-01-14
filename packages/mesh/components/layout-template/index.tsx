@@ -290,9 +290,7 @@ const MediaBackstageLayout = ({
         publisherCustomId={publisherCustomId}
       />
       <div className="flex grow flex-col pl-[theme(width.nav.xl)] pt-[theme(height.header.sm)] xl:pl-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
-        <div className="flex max-w-[calc(theme(width.maxContent)-theme(width.nav.xl))] grow flex-col">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   )

@@ -8,6 +8,10 @@ const FIREBASE_CLIENT_EMAIL =
   process.env.FIREBASE_CLIENT_EMAIL || 'admin-sdk-service-account-keys'
 const FIREBASE_PRIVATE_KEY =
   process.env.FIREBASE_PRIVATE_KEY || 'admin-sdk-service-account-keys'
+const MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT =
+  process.env.MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT || '1000'
+const MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE =
+  process.env.MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE || '0.1'
 
 let GTM_ENV = ''
 let ADSENSE_CLIENT = ''
@@ -149,6 +153,7 @@ const RESTFUL_ENDPOINTS = {
   paymentBalance: `${PAYMENT_ORIGIN}/balance/`,
   paymentCreate: `${PAYMENT_ORIGIN}/v1/payment/create`,
   paymentAuth: `${PAYMENT_ORIGIN}/v1/payment/auth`,
+  paymentFail: `${PAYMENT_ORIGIN}/v1/payment/failed`,
   socialPage: `${API_ORIGIN}/socialpage`,
   invitationCodes: `${API_ORIGIN}/invitation_codes`,
   notifications: `${API_ORIGIN}/notifications`,
@@ -193,6 +198,8 @@ export {
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
   GTM_ID,
+  MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
+  MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
   NEXT_PAGES_REVALIDATE,
   PAYMENT_CHAIN,
   RESTFUL_ENDPOINTS,

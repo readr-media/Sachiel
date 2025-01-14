@@ -6,6 +6,7 @@ import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import { getPublisherWallet } from '@/app/actions/publisher'
 import { getStoryUnlockPolicy } from '@/app/actions/story'
 import { PaymentType } from '@/types/payment'
+import { isHexAddress } from '@/utils/alchemy/address'
 
 import PaymentInfo from './_component/payment-info'
 import SponsorshipInfo from './_component/sponsorship-info'
@@ -77,11 +78,4 @@ export default async function Page({
     default:
       return <p>Invalid payment type</p>
   }
-}
-
-function isHexAddress(
-  address: string | null | undefined
-): address is `0x${string}` {
-  if (!address) return false
-  return /^0x[a-fA-F0-9]{40}$/.test(address)
 }

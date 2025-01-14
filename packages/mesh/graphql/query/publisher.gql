@@ -42,6 +42,25 @@ query GetPublisherWallet($id: ID) {
   }
 }
 
+query GetExchangePublisherInfo($customId: String) {
+  publishers(where: { customId: { equals: $customId } }) {
+    id
+    title
+    admin {
+      id
+      wallet
+    }
+  }
+  officialWallet: publishers(where: { customId: { equals: "readr" } }) {
+    id
+    title
+    admin {
+      id
+      wallet
+    }
+  }
+}
+
 query GetPublisherTransactions($publisherCustomId: String) {
   transactionsCount(
     where: {

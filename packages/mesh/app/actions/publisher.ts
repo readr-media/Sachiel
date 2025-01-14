@@ -1,14 +1,16 @@
 'use server'
 
 import {
+  GetExchangePublisherInfoDocument,
   GetPublisherWalletDocument,
   PublishersDocument,
 } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-type AllPublisherData = Awaited<ReturnType<typeof getAllPublishers>>
-export type PublisherData = AllPublisherData extends Array<infer U> ? U : never
+export type PublisherData = NonNullable<
+  Awaited<ReturnType<typeof getPublisherWallet>>
+>
 
 export async function getAllPublishers() {
   const globalLogFields = getLogTraceObjectFromHeaders()
@@ -30,4 +32,18 @@ export async function getPublisherWallet(publisherId: string) {
     'Failed to get publisher admin wallet'
   )
   return data?.publisher
+}
+
+export async function getExchangePublisherInfo(publisherCustomId: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const data = await queryGraphQL(
+    GetExchangePublisherInfoDocument,
+    { customId: publisherCustomId },
+    globalLogFields,
+    `Failed to get publisher exchange through publisherCustomId: ${publisherCustomId}`
+  )
+  return {
+    publisher: data?.publishers?.[0],
+    officialWalletAddress: data?.officialWallet?.[0].admin?.wallet,
+  }
 }

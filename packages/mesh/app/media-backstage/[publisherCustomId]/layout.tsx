@@ -31,11 +31,7 @@ export default async function MediaBackstageLayout({
     <LayoutTemplate
       type="media-backstage"
       publisherCustomId={publisherCustomId}
-      suspenseFallback={
-        <main className="flex w-maxMain grow flex-col gap-5 p-10 pb-[134px]">
-          <Loading />
-        </main>
-      }
+      suspenseFallback={<Loading />}
     >
       {children}
     </LayoutTemplate>

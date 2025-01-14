@@ -20,7 +20,7 @@ export default async function MediaPointPage({
   }
 
   return (
-    <main className="flex w-maxMain grow flex-col gap-5 p-10 pb-[134px]">
+    <main className="flex grow flex-col gap-5">
       {hasAlchemyAccount ? (
         <MeshPoint balance={balance} publisherCustomId={publisherCustomId} />
       ) : (

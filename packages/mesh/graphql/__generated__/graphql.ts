@@ -6443,6 +6443,26 @@ export type GetPublisherWalletQuery = {
   } | null
 }
 
+export type GetExchangePublisherInfoQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetExchangePublisherInfoQuery = {
+  __typename?: 'Query'
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    title?: string | null
+    admin?: { __typename?: 'Member'; id: string; wallet?: string | null } | null
+  }> | null
+  officialWallet?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    title?: string | null
+    admin?: { __typename?: 'Member'; id: string; wallet?: string | null } | null
+  }> | null
+}
+
 export type GetPublisherTransactionsQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
 }>
@@ -19347,6 +19367,142 @@ export const GetPublisherWalletDocument = {
 } as unknown as DocumentNode<
   GetPublisherWalletQuery,
   GetPublisherWalletQueryVariables
+>
+export const GetExchangePublisherInfoDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetExchangePublisherInfo' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'customId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'admin' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'wallet' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'officialWallet' },
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'StringValue',
+                              value: 'readr',
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'admin' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'wallet' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetExchangePublisherInfoQuery,
+  GetExchangePublisherInfoQueryVariables
 >
 export const GetPublisherTransactionsDocument = {
   kind: 'Document',

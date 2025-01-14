@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
+import type { FailPaymentProps } from '@/app/actions/payment'
 import {
   type CreatePaymentProps,
   type UpdatePaymentProps,
@@ -54,6 +55,13 @@ export default function SponsorshipInfo({
     objective: 'sponsorship',
     targetId: '0',
     tid: '0x',
+  }
+  const failSponsorPayment: FailPaymentProps = {
+    action: 'sponsor_media',
+    memberId: user.memberId,
+    objective: 'sponsorship',
+    targetId: '0',
+    complement: 'Reason of failure',
   }
 
   const onClickOption = (value: SponsorshipPoints | undefined) => {
@@ -125,6 +133,7 @@ export default function SponsorshipInfo({
               disabled={selectedOption === null}
               createPaymentPayload={createSponsorPayment}
               updatePaymentPayload={updateSponsorPayment}
+              failPaymentPayload={failSponsorPayment}
               onSuccess={handleSponsorSuccess}
             />
           ) : (

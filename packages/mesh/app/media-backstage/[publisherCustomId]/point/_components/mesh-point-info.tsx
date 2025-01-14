@@ -6,8 +6,10 @@ import { useUser } from '@/context/user'
 
 export default function MeshPointInfo({
   balance,
+  goExchange,
 }: {
   balance: number | undefined
+  goExchange: () => void
 }) {
   const { user } = useUser()
   const doesUserOwnMultiMedia =
@@ -33,7 +35,7 @@ export default function MeshPointInfo({
         <div className="w-[112px]">
           <Button
             text="點數兌換"
-            onClick={() => {}}
+            onClick={goExchange}
             size="lg"
             color="custom-blue"
           />
