@@ -21,8 +21,11 @@ export default function RelatedStories({
           <StoryCard
             key={relatedStory.id}
             story={relatedStory}
-            className="GTM-article_click_related_article last-of-type:border-b-0"
-            storyPickGtmClassName="GTM-article_click_pick_related_article"
+            gtmTags={{
+              story: 'GTM-article_click_related_article',
+              pick: 'GTM-article_click_pick_related_article',
+            }}
+            className="last-of-type:border-b-0"
           />
         ))}
       </div>

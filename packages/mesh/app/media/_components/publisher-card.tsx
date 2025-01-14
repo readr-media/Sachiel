@@ -25,6 +25,7 @@ const PublisherStory = ({
     <article className="border-b py-3 last-of-type:border-b-0">
       <Link
         href={`/story/${story.id}`}
+        className="GTM-media_click_media_article"
         onClick={() =>
           logStoryClick(userPayload, story.id, story.title, publisherName)
         }
@@ -77,6 +78,7 @@ export default function PublisherCard({
           <div>
             <Link
               href={`/profile/publisher/${publisherAndStories.publisher.customId}`}
+              className="GTM-media_click_media_file"
             >
               <div className="subtitle-2 text-primary-700 hover-or-active:underline">
                 {publisherAndStories.publisher.title}
@@ -91,7 +93,10 @@ export default function PublisherCard({
             </div>
           </div>
         </div>
-        <PublisherDonateButton publisherId={publisherAndStories.publisher.id} />
+        <PublisherDonateButton
+          publisherId={publisherAndStories.publisher.id}
+          gtmClassName="GTM-media_click_media_sponsor"
+        />
       </div>
       {publisherAndStories.stories.map((story, i) => (
         <PublisherStory

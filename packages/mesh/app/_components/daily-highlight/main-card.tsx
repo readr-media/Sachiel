@@ -9,25 +9,23 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
-import type { DailyStory } from '@/types/homepage'
+import type { DailyStory, GtmTags } from '@/types/homepage'
 import { logStoryClick } from '@/utils/event-logs'
 
 import ImageWithFallback from '../image-with-fallback'
 
 type Props = {
   story: DailyStory
+  gtmTags: GtmTags
 }
 
-export default function MainCard({ story }: Props) {
+export default function MainCard({ story, gtmTags }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
 
   return (
     <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-x-10">
-      <NextLink
-        href={`story/${story.id}`}
-        className="GTM-homepage_click_focus_article"
-      >
+      <NextLink href={`story/${story.id}`} className={gtmTags.story}>
         <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md lg:h-[250px] lg:w-[500px]">
           <ImageWithFallback
             src={story.og_image}
@@ -58,6 +56,7 @@ export default function MainCard({ story }: Props) {
 
           <NextLink
             href={`story/${story.id}`}
+            className={gtmTags.story}
             onClick={() =>
               logStoryClick(
                 userPayload,
@@ -92,10 +91,7 @@ export default function MainCard({ story }: Props) {
             pickCount={displayPicksCount}
             objectiveId={story.id}
           />
-          <StoryPickButton
-            storyId={story.id}
-            gtmClassName="GTM-homepage_pick_focus_article"
-          />
+          <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
         </div>
       </div>
     </div>

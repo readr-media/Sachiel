@@ -40,6 +40,10 @@ export default function DesktopStories({
               key={story.id}
               story={story}
               className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
+              gtmTags={{
+                story: 'GTM-media_click_category_article',
+                pick: 'GTM-media_pick_category_article',
+              }}
             />
           )
         )}

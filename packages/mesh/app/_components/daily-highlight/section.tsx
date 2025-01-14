@@ -31,8 +31,10 @@ export default async function DailyHighlight() {
             <StoryCard
               key={story.id}
               story={story}
-              className="GTM-homepage_click_focus_article"
-              storyPickGtmClasssName="GTM-homepage_pick_focus_article"
+              gtmTags={{
+                story: 'GTM-homepage_click_focus_article',
+                pick: 'GTM-homepage_pick_focus_article',
+              }}
             />
           ))}
       </div>

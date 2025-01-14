@@ -34,7 +34,10 @@ export default function MostPickedStoryCard({
         </div>
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:size-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
-            <Link href={`/story/${story.id}`} className="size-full">
+            <Link
+              href={`/story/${story.id}`}
+              className="GTM-media_click_popular_article size-full"
+            >
               <ImageWithFallback
                 className="rounded-md"
                 src={story.og_image ?? ''}
@@ -51,6 +54,7 @@ export default function MostPickedStoryCard({
               <div className="flex h-6 flex-row items-center justify-between">
                 <Link
                   href={`/profile/publisher/${story.source?.customId ?? ''}`}
+                  className="GTM-media_click_media_title"
                 >
                   <h4
                     className={`${
@@ -73,6 +77,7 @@ export default function MostPickedStoryCard({
               >
                 <Link
                   href={`/story/${story.id}`}
+                  className="GTM-media_click_popular_article"
                   onClick={() =>
                     logStoryClick(
                       userPayload,
@@ -105,7 +110,11 @@ export default function MostPickedStoryCard({
                   ringColor="primary-100"
                   objectiveId={story.id}
                 />
-                <StoryPickButton storyId={story.id} color="transparent" />
+                <StoryPickButton
+                  storyId={story.id}
+                  color="transparent"
+                  gtmClassName="GTM-media_pick_popular_article"
+                />
               </div>
             </div>
           </div>

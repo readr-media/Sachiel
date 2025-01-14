@@ -23,7 +23,10 @@ export default function HeroStoryCard({ story }: { story: Story }) {
         {/* use padding-top to set aspect-ratio to prevent height growing when right block grows in too many lines of titles */}
 
         <div className="relative h-0 w-[calc((100%-40px)/2)] flex-1 pt-[calc((100%-40px)/4)]">
-          <Link href={`/story/${story.id}`} className="size-full">
+          <Link
+            href={`/story/${story.id}`}
+            className="GTM-media_click_category_article size-full"
+          >
             <ImageWithFallback
               className="rounded-md object-cover"
               src={story.og_image ?? ''}
@@ -37,7 +40,10 @@ export default function HeroStoryCard({ story }: { story: Story }) {
           {/* right top section */}
           <div>
             <div className="flex h-6 flex-row items-center justify-between">
-              <Link href={`/profile/publisher/${story.source?.customId ?? ''}`}>
+              <Link
+                href={`/profile/publisher/${story.source?.customId ?? ''}`}
+                className="GTM-media_click_media_title"
+              >
                 <h4 className="body-3 h-5 text-primary-500 hover-or-active:text-primary-700 lg:h-auto">
                   {story.source?.title ?? ''}
                 </h4>
@@ -50,6 +56,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
             </div>
             <Link
               href={`/story/${story.id}`}
+              className="GTM-media_click_category_article"
               onClick={() =>
                 logStoryClick(
                   userPayload,
@@ -84,7 +91,10 @@ export default function HeroStoryCard({ story }: { story: Story }) {
                 pickCount={displayPicksCount}
                 objectiveId={story.id}
               />
-              <StoryPickButton storyId={story.id} />
+              <StoryPickButton
+                storyId={story.id}
+                gtmClassName="GTM-media_pick_category_article"
+              />
             </div>
           </div>
         </div>

@@ -206,7 +206,7 @@ const actions = [
     type: ActionType.CopyLink,
     text: '複製連結',
     icon: 'icon-copy',
-    gtmClass: 'GTM-article_click_copy',
+    gtmClass: 'GTM-article_click_copy_url',
   },
   {
     type: ActionType.Share,

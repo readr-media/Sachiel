@@ -87,7 +87,7 @@ export default function ShareSheet({
               href={getShareUrl(media.urlTemplate, url)}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full"
+              className={`GTM-article_click_share_${media.id} block w-full`}
               onClick={() => {
                 if (storyInfo) {
                   logShareClick(userPayload, {

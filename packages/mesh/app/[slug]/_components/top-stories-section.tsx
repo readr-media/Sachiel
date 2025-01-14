@@ -16,7 +16,13 @@ export default function TopStoriesSection({
     <section className="flex flex-col gap-y-6 px-5 sm:gap-y-10 md:px-[70px] lg:px-10 lg:pb-5">
       {groupStories && (
         <div className="flex flex-col gap-y-4 sm:gap-y-5">
-          <MainCard story={groupStories[0]} />
+          <MainCard
+            story={groupStories[0]}
+            gtmTags={{
+              story: 'GTM-categorypage_click_focus_article',
+              pick: 'GTM-categorypage_pick_pop_article',
+            }}
+          />
           {groupStories.length > 3 && (
             <SwiperComponent stories={groupStories.slice(1, 4)} />
           )}
@@ -24,9 +30,16 @@ export default function TopStoriesSection({
       )}
       <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:[&>*:nth-child(5)]:shadow-none">
         {otherStories &&
-          otherStories
-            .slice(0, 6)
-            .map((story) => <StoryCard story={story} key={story.id} />)}
+          otherStories.slice(0, 6).map((story) => (
+            <StoryCard
+              story={story}
+              key={story.id}
+              gtmTags={{
+                story: 'GTM-categorypage_click_focus_article',
+                pick: 'GTM-categorypage_pick_pop_article',
+              }}
+            />
+          ))}
       </div>
     </section>
   )

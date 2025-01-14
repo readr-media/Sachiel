@@ -127,7 +127,10 @@ export default function CategorySelector({
               className="mr-[-8px]"
             />
             {displayCategories.map((category) => (
-              <div key={category.id} className="shrink-0">
+              <div
+                key={category.id}
+                className="GTM-latest_click_category shrink-0"
+              >
                 <Button
                   size="xs"
                   color="nav-chip"

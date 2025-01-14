@@ -23,7 +23,10 @@ const StoryCard = ({
 
   return (
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0 ">
-      <NextLink href={`/story/${story.id}`}>
+      <NextLink
+        href={`/story/${story.id}`}
+        className="GTM-categorypage_pick_media_article"
+      >
         {showImage && story.og_image && (
           <div className="relative mb-3 aspect-[2/1] overflow-hidden rounded">
             <ImageWithFallback
@@ -81,7 +84,10 @@ export default function PublisherCard({ data }: Props) {
           </div>
           <div>
             <p className="subtitle-2 text-primary-700 hover-or-active:underline">
-              <NextLink href={`profile/publisher/${data.publisher.customId}`}>
+              <NextLink
+                href={`profile/publisher/${data.publisher.customId}`}
+                className="GTM-categorypage_pick_media_file"
+              >
                 {data.publisher.title}
               </NextLink>
             </p>
@@ -94,7 +100,10 @@ export default function PublisherCard({ data }: Props) {
             </p>
           </div>
         </div>
-        <PublisherDonateButton publisherId={data.publisher.id} />
+        <PublisherDonateButton
+          publisherId={data.publisher.id}
+          gtmClassName="GTM-categorypage_pick_sponsor"
+        />
       </div>
       {data.stories.map((story, index) => (
         <StoryCard

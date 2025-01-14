@@ -34,6 +34,7 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
   return (
     <Link
       href={`/story/${story?.id}`}
+      className="GTM-collection_pick_collection_article"
       onClick={() =>
         logStoryClick(
           userPayload,
@@ -100,7 +101,10 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
             maxCount={4}
             objectiveId={story?.id ?? ''}
           />
-          <StoryPickButton storyId={story?.id ?? ''} />
+          <StoryPickButton
+            storyId={story?.id ?? ''}
+            gtmClassName="GTM-collection_pick_article"
+          />
         </section>
         {creatorComment && (
           <Comment
