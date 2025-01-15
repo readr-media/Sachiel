@@ -60,7 +60,7 @@ export function MobileCommentModalContent({
   return (
     <div className="fixed left-0 top-0 z-30 size-full bg-white">
       <MobileCommentHeader />
-      <div className="max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
+      <div className="commentEditor max-h-[calc(100dvh_-_60px)] overflow-y-auto py-4 pb-[69px]">
         <MobileCommentMeta
           objectiveId={data.id}
           title={data.title || ''}
