@@ -194,10 +194,6 @@ export default function MediaStories({
     mostPickedStory,
   ])
 
-  useEffect(() => {
-    setPageDataInCategories(getInitialPageData(allCategories))
-  }, [allCategories, user.followingPublishers])
-
   let contentJsx: JSX.Element
 
   if (isLoading || !currentCategory) {

@@ -10,7 +10,6 @@ export const LoginState = {
   SetCategory: 'set-category',
   SetFollowing: 'set-following',
   SetWallet: 'set-wallet',
-  Code: 'code',
 } as const
 
 export type LoginStepsKey = typeof LoginState[keyof typeof LoginState]
@@ -29,10 +28,10 @@ export type UserFormData = {
 type LoginContextType = {
   step: LoginStepsKey
   formData: UserFormData
+  cachedEmail: string
   setStep: Dispatch<SetStateAction<LoginStepsKey>>
   setFormData: Dispatch<SetStateAction<UserFormData>>
-  lastUsedEmail: string
-  setLastUsedEmail: Dispatch<SetStateAction<string>>
+  setCachedEmail: Dispatch<SetStateAction<string>>
 }
 
 export function LoginProvider({ children }: { children: React.ReactNode }) {
@@ -47,17 +46,17 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
       code: '',
     },
   })
-  const [lastUsedEmail, setLastUsedEmail] = useState('')
+  const [cachedEmail, setCachedEmail] = useState('')
 
   return (
     <LoginContext.Provider
       value={{
         step,
         formData,
+        cachedEmail,
         setStep,
         setFormData,
-        lastUsedEmail,
-        setLastUsedEmail,
+        setCachedEmail,
       }}
     >
       {children}

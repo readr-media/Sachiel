@@ -6,34 +6,32 @@ import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { useUser } from '@/context/user'
 
 const chevronMap: Pick<
-  Record<LoginStepsKey, { title: string; goToStep: LoginStepsKey }>,
+  Record<LoginStepsKey, { title: string; goBackTo: LoginStepsKey }>,
   | typeof LoginState.Email
   | typeof LoginState.TermsConfirmation
   | typeof LoginState.EmailConfirmation
   | typeof LoginState.SetCategory
   | typeof LoginState.SetFollowing
-  | typeof LoginState.Code
 > = {
-  [LoginState.Email]: { title: 'Email', goToStep: LoginState.Entry },
   [LoginState.TermsConfirmation]: {
     title: '服務條款',
-    goToStep: LoginState.Code,
+    goBackTo: LoginState.Entry,
+  },
+  [LoginState.Email]: {
+    title: 'Email',
+    goBackTo: LoginState.Entry,
   },
   [LoginState.EmailConfirmation]: {
     title: '確認收件匣',
-    goToStep: LoginState.Email,
+    goBackTo: LoginState.Email,
   },
   [LoginState.SetCategory]: {
     title: '新聞類別',
-    goToStep: LoginState.SetName,
+    goBackTo: LoginState.SetName,
   },
   [LoginState.SetFollowing]: {
     title: '推薦追蹤',
-    goToStep: LoginState.SetCategory,
-  },
-  [LoginState.Code]: {
-    title: '邀請碼',
-    goToStep: LoginState.SetName,
+    goBackTo: LoginState.SetCategory,
   },
 }
 
@@ -69,10 +67,10 @@ export default function LoginStepsTitle() {
     case LoginState.EmailConfirmation:
     case LoginState.SetCategory:
     case LoginState.SetFollowing: {
-      const { title, goToStep } = chevronMap[step]
+      const { title, goBackTo } = chevronMap[step]
       return (
         <>
-          <button onClick={() => setStep(goToStep)}>
+          <button onClick={() => setStep(goBackTo)}>
             <Icon
               iconName="icon-chevron-left-hover"
               size="m"
@@ -86,8 +84,6 @@ export default function LoginStepsTitle() {
     }
     case LoginState.SetName:
       return <h2 className="list-title mx-auto">姓名</h2>
-    case LoginState.Code:
-      return <h2 className="list-title mx-auto">邀請碼</h2>
     case LoginState.SetWallet:
       return (
         <div className="flex w-full px-5">
