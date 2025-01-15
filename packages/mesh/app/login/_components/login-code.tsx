@@ -12,6 +12,11 @@ import Button from '@/components/button'
 import Spinner from '@/components/spinner'
 import { LoginState, useLogin } from '@/context/login'
 
+/**
+ * @deprecated This component has been deprecated as the beta version has ended.
+ * Users no longer require an invitation code to access the website.
+ * Please use the standard login flow instead.
+ */
 export default function LoginCode() {
   const codeDigits = 6
   const { setFormData, setStep } = useLogin()

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { getInvalidNameList } from '@/app/actions/get-invalid-names'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 
 export default function LoginSetName() {
   const { formData, setFormData, setStep } = useLogin()
@@ -25,7 +25,7 @@ export default function LoginSetName() {
 
   const handleSubmit = () => {
     if (isValid) {
-      setStep('set-category')
+      setStep(LoginState.SetCategory)
     }
   }
 

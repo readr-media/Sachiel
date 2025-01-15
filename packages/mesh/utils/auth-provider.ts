@@ -11,7 +11,7 @@ import {
 import { FIREBASE_CONFIG } from '@/constants/config'
 import { auth } from '@/firebase/client'
 
-const loginOptions = [
+export const loginOptions = [
   {
     method: 'apple',
     iconName: 'icon-apple',
@@ -37,19 +37,14 @@ const actionCodeSettings = {
   handleCodeInApp: true,
 }
 
-export function authProvider() {
-  const handleLoginMethod = async (method: LoginMethod) => {
-    if (method === 'email') return method
-
-    const provider = createAuthProvider(method)
-    if (provider) {
-      await setPersistence(auth, browserLocalPersistence)
-      await signInWithRedirect(auth, provider)
-    }
-    return method
+export const handleAuthProvider = async (
+  method: Exclude<LoginMethod, 'email'>
+) => {
+  const provider = createAuthProvider(method)
+  if (provider) {
+    await setPersistence(auth, browserLocalPersistence)
+    await signInWithRedirect(auth, provider)
   }
-
-  return { loginOptions, handleLoginMethod }
 }
 
 export async function sendEmailLink(email: string) {

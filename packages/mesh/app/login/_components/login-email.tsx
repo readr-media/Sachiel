@@ -1,12 +1,12 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 import { sendEmailLink } from '@/utils/auth-provider'
 import { debounce } from '@/utils/performance'
 import { isValidEmail } from '@/utils/validate-email'
 
 export default function LoginEmail() {
-  const { formData, setFormData, setStep, lastUsedEmail, setLastUsedEmail } =
+  const { formData, setFormData, setStep, cachedEmail, setCachedEmail } =
     useLogin()
   const { email } = formData
   const isValid = isValidEmail(email)
@@ -18,13 +18,12 @@ export default function LoginEmail() {
   }
 
   const handleSubmit = debounce(async () => {
-    if (isValid) {
-      if (email !== lastUsedEmail) {
-        await sendEmailLink(email)
-        setLastUsedEmail(email)
-      }
-      setStep('email-confirmation')
+    if (!isValid) return
+    if (email !== cachedEmail) {
+      await sendEmailLink(email)
+      setCachedEmail(email)
     }
+    setStep(LoginState.EmailConfirmation)
   })
 
   return (

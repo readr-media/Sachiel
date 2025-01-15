@@ -64,13 +64,6 @@ export default function DefaultHeader() {
               <MobileSearchWrapper />
             </HeaderIconWrapper>
             {isLoggedIn ? (
-              <HeaderIconWrapper className="">
-                <Link href="/invitation-code">
-                  <Icon size="2xl" iconName="icon-invitation-code" />
-                </Link>
-              </HeaderIconWrapper>
-            ) : null}
-            {isLoggedIn ? (
               <NotificationWrapper />
             ) : (
               <div className="mx-3 my-1 flex items-center">
