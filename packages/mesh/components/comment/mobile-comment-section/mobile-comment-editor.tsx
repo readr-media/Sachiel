@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import Avatar from '@/components/story-card/avatar'
@@ -22,17 +22,21 @@ const MobileCommentEditor = () => {
     dispatch({ type: 'UPDATE_COMMENT_DRAFT', payload: e.target.value })
   }
   useClickOutside(commentEditorRef, handleCloseCommentEditor)
+  const recoverScroll = () => (document.body.style.overflow = 'scroll')
+  useEffect(() => {
+    recoverScroll()
+  }, [isEditingComment])
   if (!isEditingComment) return null
   return (
     <>
-      {isEditingInProfile &&
-        createPortal(
-          <div className="fixed inset-0 z-10 bg-lightbox-dark" />,
-          document.body
-        )}
+      {createPortal(
+        <div className="fixed inset-0 z-30 overscroll-none bg-lightbox-dark" />,
+        document.querySelector('.commentEditor') ||
+          document.createElement('div')
+      )}
       <div
         ref={commentEditorRef}
-        className=" fixed inset-x-0 bottom-0 z-40 flex h-[216px] w-screen flex-col bg-white p-5 pt-3"
+        className="fixed inset-x-0 bottom-0 z-40 flex h-[216px] w-screen flex-col border bg-white p-5 pt-3"
       >
         <section className="flex items-center justify-start gap-2">
           <Avatar src={avatar} size="l" />
@@ -49,7 +53,6 @@ const MobileCommentEditor = () => {
           onClick={() => handleCommentEdit(user)}
           className="body-2 flex items-center justify-end text-custom-blue"
         >
-          {/** TODO: 如果在個人檔案為儲存*/}
           {state.commentEditState.content.trim()
             ? isEditingInProfile
               ? '儲存'
