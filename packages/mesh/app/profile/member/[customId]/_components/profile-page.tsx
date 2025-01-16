@@ -22,10 +22,10 @@ import { type PickList, TabCategory, TabKey } from '@/types/profile'
 import Loading from './loading'
 
 interface ProfilePageProps {
-  isCurrentUser: boolean
+  isMember: boolean
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   const { user } = useUser()
   const searchParams = useSearchParams()
   const queryTab = searchParams.get('tab')
@@ -49,7 +49,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
     router.push(`${pathName}?tab=${newCategory}`, { scroll: false })
   }
 
-  const profileData = isCurrentUser ? user : visitorProfile
+  const profileData = isMember ? user : visitorProfile
   const { handleClickFollow, isFollowing } = useFollow(
     String(profileData.memberId)
   )
@@ -116,9 +116,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
   ]
 
   const publisherCustomId = user.publishers?.[0].customId
-  const isMediaManager = isCurrentUser && publisherCustomId
+  const isMediaManager = isMember && publisherCustomId
 
-  const buttonList: ProfileButton[] = isCurrentUser
+  const buttonList: ProfileButton[] = isMember
     ? isMediaManager
       ? [
           {
@@ -151,7 +151,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
 
   const getMessage = (category: TabCategoryType): string => {
     const messages: { [key: string]: string } = {
-      PICKS: isCurrentUser
+      PICKS: isMember
         ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧'
         : '這個人還沒有精選新聞',
       BOOKMARKS: '沒有已儲存的書籤',
@@ -178,7 +178,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
             name={name}
             pickCount={pickCount}
             avatar={avatar}
-            userType={isCurrentUser ? 'member' : 'visitor'}
+            userType={isMember ? 'member' : 'visitor'}
             intro={intro}
           />
           <ProfileButtonList buttonList={buttonList} />
@@ -188,7 +188,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isCurrentUser }) => {
       <Tab
         tabCategory={category}
         setCategory={setCategory}
-        userType={isCurrentUser ? 'member' : 'visitor'}
+        userType={isMember ? 'member' : 'visitor'}
       />
       {pickCollections?.length ? (
         <>
