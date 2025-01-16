@@ -169,6 +169,9 @@ export type IconName =
   | 'icon-report'
   | 'icon-report-hover'
   | 'icon-report-on'
+  | 'icon-calendar'
+  | 'icon-expand-month-picker'
+  | 'icon-fold-month-picker'
 
 export type IconProps = {
   size: Size

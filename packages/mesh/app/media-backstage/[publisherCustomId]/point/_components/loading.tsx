@@ -1,6 +1,9 @@
 export default function Loading() {
   return (
     <div className="min-w-[800px] max-w-[1040px] p-10 pb-[134px]">
+      <div className="animate-pulse pb-5">
+        <div className="h-9 w-15 rounded-[100px] bg-loading" />
+      </div>
       <div className="animate-pulse bg-white sm:rounded-xl sm:drop-shadow">
         <div className="flex flex-col items-center gap-6 border-b border-[rgba(0,9,40,0.1)] py-10 sm:flex-row sm:items-end sm:justify-between sm:px-10">
           <div className="flex flex-col items-center gap-2 sm:flex-col-reverse sm:items-start">

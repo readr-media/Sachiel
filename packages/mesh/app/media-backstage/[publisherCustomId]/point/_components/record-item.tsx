@@ -1,3 +1,5 @@
+import { forwardRef } from 'react'
+
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import Avatar from '@/components/story-card/avatar'
 import { ImageCategory } from '@/constants/fallback-src'
@@ -9,99 +11,121 @@ import type {
 import type { SponsorRecord } from '@/types/media-backstage'
 import { displayTime } from '@/utils/story-display'
 
-export default function RecordItem({ record }: { record: Record }) {
+export default forwardRef(function RecordItem(
+  { record }: { record: Record },
+  ref
+) {
   switch (record.__typename) {
     case 'Transaction':
-      return <TransactionRecordItem record={record} />
+      return <TransactionRecordItem record={record} ref={ref} />
     case 'Sponsorship':
-      return <SponsorRecordItem record={record} />
+      return <SponsorRecordItem record={record} ref={ref} />
     case 'Exchange':
-      return <RedeemRecordItem record={record} />
+      return <RedeemRecordItem record={record} ref={ref} />
 
     default:
       return null
   }
-}
+})
 
-const TransactionRecordItem = ({ record }: { record: TransactionRecord }) => {
-  const { member, policy, unlockStory, createdAt } = record
+const TransactionRecordItem = forwardRef(
+  ({ record }: { record: TransactionRecord }, ref) => {
+    const { member, policy, unlockStory, createdAt } = record
 
-  if (!(policy?.type === 'unlock_one_publisher' && policy.unlockSingle)) {
-    console.error(
-      `媒體有不支援的交易紀錄，交易id:${record.id}, ${policy?.explanation}`,
-      record
+    if (!(policy?.type === 'unlock_one_publisher' && policy.unlockSingle)) {
+      console.error(
+        `媒體有不支援的交易紀錄，交易id:${record.id}, ${policy?.explanation}`,
+        record
+      )
+      return null
+    }
+
+    const transactionTitle = `${member?.name ?? '會員'} - 付費解鎖 - ${
+      unlockStory?.title ?? '文章'
+    }`
+    return (
+      <li
+        className="flex gap-2 py-5"
+        ref={ref as React.RefObject<HTMLLIElement>}
+      >
+        <Avatar size="l" src={member?.avatar ?? ''} />
+        <div className="flex w-full flex-col gap-1">
+          <div className="subtitle-2 flex justify-between gap-4">
+            <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
+              {transactionTitle}
+            </p>
+            {policy?.charge && (
+              <p className="subtitle-2 w-12 text-custom-blue">{`+${policy.charge}`}</p>
+            )}
+          </div>
+          <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
+        </div>
+      </li>
     )
-    return null
   }
+)
+TransactionRecordItem.displayName = 'TransactionRecordItem'
 
-  const transactionTitle = `${member?.name ?? '會員'} - 付費解鎖 - ${
-    unlockStory?.title ?? '文章'
-  }`
-  return (
-    <li className="flex gap-2 py-5">
-      <Avatar size="l" src={member?.avatar ?? ''} />
-      <div className="flex w-full flex-col gap-1">
-        <div className="subtitle-2 flex justify-between gap-4">
-          <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-            {transactionTitle}
-          </p>
-          {policy?.charge && (
-            <p className="subtitle-2 w-12 text-custom-blue">{`+${policy.charge}`}</p>
-          )}
+const SponsorRecordItem = forwardRef(
+  ({ record }: { record: SponsorRecord }, ref) => {
+    const { sponsor, fee, createdAt } = record
+
+    const transactionTitle = `${sponsor?.name ?? '會員'} - 贊助`
+    return (
+      <li
+        className="flex gap-2 py-5"
+        ref={ref as React.RefObject<HTMLLIElement>}
+        id={displayTime(createdAt)}
+      >
+        <Avatar size="l" src={sponsor?.avatar ?? ''} />
+        <div className="flex w-full flex-col gap-1">
+          <div className="subtitle-2 flex justify-between gap-4">
+            <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
+              {transactionTitle}
+            </p>
+            {fee && (
+              <p className="subtitle-2 w-12 text-custom-blue">{`+${fee}`}</p>
+            )}
+          </div>
+          <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
         </div>
-        <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
-      </div>
-    </li>
-  )
-}
+      </li>
+    )
+  }
+)
+SponsorRecordItem.displayName = 'SponsorRecordItem'
 
-const SponsorRecordItem = ({ record }: { record: SponsorRecord }) => {
-  const { sponsor, fee, createdAt } = record
+const RedeemRecordItem = forwardRef(
+  ({ record }: { record: RedeemRecord }, ref) => {
+    const { publisher, exchangeVolume, createdAt } = record
 
-  const transactionTitle = `${sponsor?.name ?? '會員'} - 贊助`
-  return (
-    <li className="flex gap-2 py-5">
-      <Avatar size="l" src={sponsor?.avatar ?? ''} />
-      <div className="flex w-full flex-col gap-1">
-        <div className="subtitle-2 flex justify-between gap-4">
-          <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-            {transactionTitle}
-          </p>
-          {fee && (
-            <p className="subtitle-2 w-12 text-custom-blue">{`+${fee}`}</p>
-          )}
+    const transactionTitle = '點數兌換'
+    return (
+      <li
+        className="flex gap-2 py-5"
+        ref={ref as React.RefObject<HTMLLIElement>}
+      >
+        <div className="relative size-11 overflow-hidden rounded-lg border-primary-200">
+          <ImageWithFallback
+            src={publisher?.logo ?? ''}
+            fill
+            alt={publisher?.title ?? ''}
+            fallbackCategory={ImageCategory.PUBLISHER}
+          />
         </div>
-        <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
-      </div>
-    </li>
-  )
-}
-
-const RedeemRecordItem = ({ record }: { record: RedeemRecord }) => {
-  const { publisher, exchangeVolume, createdAt } = record
-
-  const transactionTitle = '點數兌換'
-  return (
-    <li className="flex gap-2 py-5">
-      <div className="relative size-11 overflow-hidden rounded-lg border-primary-200">
-        <ImageWithFallback
-          src={publisher?.logo ?? ''}
-          fill
-          alt={publisher?.title ?? ''}
-          fallbackCategory={ImageCategory.PUBLISHER}
-        />
-      </div>
-      <div className="flex w-full flex-col gap-1">
-        <div className="subtitle-2 flex justify-between gap-4">
-          <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-            {transactionTitle}
-          </p>
-          {exchangeVolume && (
-            <p className="subtitle-2 w-12 text-primary-700">{`-${exchangeVolume}`}</p>
-          )}
+        <div className="flex w-full flex-col gap-1">
+          <div className="subtitle-2 flex justify-between gap-4">
+            <p className="text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
+              {transactionTitle}
+            </p>
+            {exchangeVolume && (
+              <p className="subtitle-2 w-12 text-primary-700">{`-${exchangeVolume}`}</p>
+            )}
+          </div>
+          <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
         </div>
-        <p className="caption-1 text-primary-500">{displayTime(createdAt)}</p>
-      </div>
-    </li>
-  )
-}
+      </li>
+    )
+  }
+)
+RedeemRecordItem.displayName = 'RedeemRecordItem'

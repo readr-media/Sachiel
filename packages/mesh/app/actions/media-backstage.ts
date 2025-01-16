@@ -1,43 +1,78 @@
 'use server'
 
-import { GetPublisherTransactionsDocument } from '@/graphql/__generated__/graphql'
-import { RecordType } from '@/types/media-backstage'
+import {
+  GetPublisherExchangesDocument,
+  GetPublisherSponsorshipsDocument,
+  GetPublisherTransactionsDocument,
+} from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-export async function getPublisherTransactionRecord(publisherCustomId: string) {
+export async function getPublisherTransactions({
+  publisherCustomId,
+  take,
+  skip,
+  gte,
+  lte,
+}: {
+  publisherCustomId: string
+  take: number
+  skip: number
+  gte: string
+  lte: string
+}) {
   const globalLogFields = getLogTraceObjectFromHeaders()
-  const transactionsResponse = await fetchGraphQL(
+  const response = await fetchGraphQL(
     GetPublisherTransactionsDocument,
-    { publisherCustomId },
+    { publisherCustomId, take, skip, gte, lte },
+    globalLogFields,
+    'Failed to get Publisher Transactions'
+  )
+  return response
+}
+
+export async function getPublisherSponsorships({
+  publisherCustomId,
+  take,
+  skip,
+  gte,
+  lte,
+}: {
+  publisherCustomId: string
+  take: number
+  skip: number
+  gte: string
+  lte: string
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const response = await fetchGraphQL(
+    GetPublisherSponsorshipsDocument,
+    { publisherCustomId, take, skip, gte, lte },
+    globalLogFields,
+    'Failed to get Publisher Sponsorships'
+  )
+  return response
+}
+
+export async function getPublisherRedeems({
+  publisherCustomId,
+  take,
+  skip,
+  gte,
+  lte,
+}: {
+  publisherCustomId: string
+  take: number
+  skip: number
+  gte: string
+  lte: string
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const response = await fetchGraphQL(
+    GetPublisherExchangesDocument,
+    { publisherCustomId, take, skip, gte, lte },
     globalLogFields,
     'Failed to get Publisher Transactions Data'
   )
-
-  const totalSponsorCount =
-    transactionsResponse?.publishers?.[0]?.sponsoredCount ?? 0
-  const sponsorRecords = transactionsResponse?.publishers?.[0]?.sponsored ?? []
-  const totalTransactionCount = transactionsResponse?.transactionsCount ?? 0
-  const transactionRecords = transactionsResponse?.transactions ?? []
-  const totalRedeemCount = transactionsResponse?.redeemsCount ?? 0
-  const redeemRecords = transactionsResponse?.redeems ?? []
-
-  return {
-    [RecordType.Sponsor]: {
-      totalCount: totalSponsorCount,
-      records: sponsorRecords,
-    },
-    [RecordType.Transaction]: {
-      totalCount: totalTransactionCount,
-      records: transactionRecords,
-    },
-    [RecordType.Redeem]: {
-      totalCount: totalRedeemCount,
-      records: redeemRecords,
-    },
-    [RecordType.MutualFund]: {
-      totalCount: 0,
-      records: [],
-    },
-  }
+  return response
 }

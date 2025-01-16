@@ -1,0 +1,35 @@
+query GetPublisherExchanges(
+  $publisherCustomId: String
+  $take: Int
+  $skip: Int
+  $gte: DateTime
+  $lte: DateTime
+) {
+  redeemsCount: exchangesCount(
+    where: {
+      publisher: { customId: { equals: $publisherCustomId } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+  )
+  redeems: exchanges(
+    where: {
+      publisher: { customId: { equals: $publisherCustomId } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+    orderBy: { createdAt: desc }
+    take: $take
+    skip: $skip
+  ) {
+    id
+    tid
+    exchangeVolume
+    publisher {
+      logo
+      title
+    }
+    status
+    createdAt
+  }
+}

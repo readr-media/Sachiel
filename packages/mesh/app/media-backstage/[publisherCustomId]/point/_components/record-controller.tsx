@@ -1,6 +1,9 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction } from 'react'
 
+import type { PointRecordDate } from '@/types/media-backstage'
 import { RecordType } from '@/types/media-backstage'
+
+import DatePicker from './date-picker'
 
 const recordTypes = Object.values(RecordType)
 
@@ -14,9 +17,13 @@ const recordTypeWordings = {
 export default function RecordController({
   currentRecordType,
   setRecordType,
+  date,
+  setDate,
 }: {
   currentRecordType: RecordType
   setRecordType: Dispatch<SetStateAction<RecordType>>
+  date: PointRecordDate
+  setDate: Dispatch<SetStateAction<PointRecordDate>>
 }) {
   return (
     <div className="flex justify-between">
@@ -32,7 +39,7 @@ export default function RecordController({
           />
         ))}
       </nav>
-      <div></div>
+      <DatePicker date={date} setDate={setDate} />
     </div>
   )
 }

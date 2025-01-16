@@ -40,7 +40,6 @@ export default function useProfileState({
 
   const fetchMemberProfile = useCallback(async () => {
     const memberProfileResult = await getMemberProfile(memberId, takesCount)
-    console.log(memberProfileResult)
     if (!memberProfileResult) {
       throw new Error('Failed to fetch member profile')
     }

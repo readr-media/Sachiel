@@ -1,9 +1,26 @@
+import { useEffect } from 'react'
+
+import useInViewDynamicRef from '@/hooks/use-in-view-dynamic-ref'
 import type { RecordData } from '@/types/media-backstage'
 
 import RecordItem from './record-item'
 
-export default function RecordList({ recordData }: { recordData: RecordData }) {
-  const { records, totalCount } = recordData
+export default function RecordList({
+  recordData,
+  loadMoreRecords,
+}: {
+  recordData: RecordData
+  loadMoreRecords: () => void
+}) {
+  const { setTarget: triggerLoadmoreRef, isIntersecting: shouldStartLoadMore } =
+    useInViewDynamicRef()
+  const { records, totalCount, shouldLoadMore } = recordData
+
+  useEffect(() => {
+    if (shouldStartLoadMore && shouldLoadMore) {
+      loadMoreRecords()
+    }
+  }, [loadMoreRecords, shouldLoadMore, shouldStartLoadMore])
 
   return (
     <section className="flex w-full grow flex-col px-10">
@@ -13,8 +30,12 @@ export default function RecordList({ recordData }: { recordData: RecordData }) {
         </p>
       ) : (
         <ul>
-          {records.map((record) => (
-            <RecordItem key={record.createdAt} record={record} />
+          {records.map((record, i) => (
+            <RecordItem
+              key={record.createdAt}
+              record={record}
+              ref={i === records.length - 3 ? triggerLoadmoreRef : undefined}
+            />
           ))}
         </ul>
       )}
