@@ -15,6 +15,7 @@ import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+// TODO: add user log to log exchange record
 // import useUserPayload from '@/hooks/use-user-payload'
 // import { logSponsor } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
@@ -35,6 +36,7 @@ export default function ExchangeInfo({
   const [isSponsored, setIsSponsored] = useState(false)
   const [nextMonthNumber, setNextMonthNumber] = useState<number | null>(null)
   const { addToast } = useToast()
+  // TODO: add user log to log exchange record
   // const userPayload = useUserPayload()
   const createExchangePayment: CreatePaymentProps = {
     action: 'exchange_media',
@@ -69,6 +71,7 @@ export default function ExchangeInfo({
   const handleSponsorSuccess = () => {
     setIsSponsored(true)
     setNextMonthNumber(getNextMonthNumber())
+    // TODO: add user log to log exchange record
     // logSponsor(userPayload, publisher.title ?? '')
   }
 

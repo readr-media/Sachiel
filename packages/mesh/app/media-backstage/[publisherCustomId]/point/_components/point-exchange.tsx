@@ -6,7 +6,7 @@ import AlchemyAuth from '@/components/alchemy/alchemy-auth'
 import Spinner from '@/components/spinner'
 import { isHexAddress } from '@/utils/alchemy/address'
 
-import ExchangeInfo from './exchnage-info'
+import ExchangeInfo from './exchange-info'
 
 export default function PointExchange({
   balance,
