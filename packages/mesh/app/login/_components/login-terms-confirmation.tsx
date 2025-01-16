@@ -8,7 +8,7 @@ import { fetchTermsOfService } from '@/app/actions/policy'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 import { processPolicy } from '@/utils/process-policy'
 
 export default function LoginTermsConfirmation() {
@@ -26,7 +26,7 @@ export default function LoginTermsConfirmation() {
   }
 
   const handleSubmit = () => {
-    setStep('set-name')
+    setStep(LoginState.SetName)
   }
 
   useEffect(() => {

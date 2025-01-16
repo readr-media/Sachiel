@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { getInvalidNameList } from '@/app/actions/get-invalid-names'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 
 export default function LoginSetName() {
   const { formData, setFormData, setStep } = useLogin()
@@ -25,7 +25,7 @@ export default function LoginSetName() {
 
   const handleSubmit = () => {
     if (isValid) {
-      setStep('set-category')
+      setStep(LoginState.SetCategory)
     }
   }
 
@@ -73,7 +73,7 @@ export default function LoginSetName() {
           ))}
         </div>
         <p className="footnote pt-3 text-primary-500">
-          請輸入您想使用的公開顯示名稱。我們鼓勵使用者填寫真實姓名，這有助於促進透明和負責任的互動。
+          輸入您想使用的公開顯示名稱。您隨時都能更改姓名。
         </p>
       </div>
       <div className="w-full max-w-[320px] px-5">

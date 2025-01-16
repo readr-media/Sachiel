@@ -10,6 +10,7 @@ import { useUser } from '@/context/user'
 import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import { useCommentLike } from '@/hooks/use-comment-like'
+import useWindowDimensions from '@/hooks/use-window-dimension'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import CommentEditor from './comment-editor'
@@ -37,7 +38,8 @@ const CommentBlockItem = ({
     clampLineCount,
     canToggle
   )
-
+  const { width } = useWindowDimensions()
+  const isDesktop = width > 768
   const initializeEditCommentDrawer = (
     mode: EditDrawerShowType,
     commentId: string,
@@ -87,6 +89,7 @@ const CommentBlockItem = ({
         <Avatar src={commentData.member?.avatar || ''} size="l" />
       </Link>
       {state.isEditingComment &&
+      isDesktop &&
       state.commentEditState.commentId === commentData.id ? (
         <CommentEditor />
       ) : (

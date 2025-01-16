@@ -1,16 +1,22 @@
 import Link from 'next/link'
 
 import Button from '@/components/button'
-import { useLogin } from '@/context/login'
-import { type LoginMethod, authProvider } from '@/utils/auth-provider'
+import { LoginState, useLogin } from '@/context/login'
+import {
+  type LoginMethod,
+  handleAuthProvider,
+  loginOptions,
+} from '@/utils/auth-provider'
 
 export default function LoginEntry() {
   const { setStep } = useLogin()
-  const { loginOptions, handleLoginMethod } = authProvider()
 
-  const onLoginMethodClick = async (method: LoginMethod) => {
-    const result = await handleLoginMethod(method)
-    if (result === 'email') setStep('email')
+  const onClickLoginMethod = async (method: LoginMethod) => {
+    if (method === 'email') {
+      setStep(LoginState.Email)
+    } else {
+      await handleAuthProvider(method)
+    }
   }
 
   return (
@@ -35,7 +41,7 @@ export default function LoginEntry() {
                 color="white"
                 text={transformedBtnText(option.method)}
                 icon={{ iconName: option.iconName, size: 'm' }}
-                onClick={() => onLoginMethodClick(option.method)}
+                onClick={() => onClickLoginMethod(option.method)}
               />
             </div>
           ))}
@@ -43,14 +49,12 @@ export default function LoginEntry() {
       <p className="footnote text-center text-primary-400">
         繼續使用代表您同意與接受我們的
         <Link href={'/policy/terms-of-service'}>
-          {/* TODO: URL need updated */}
           <span className="text-primary-700 underline underline-offset-2">
             《服務條款》
           </span>
         </Link>
         及
         <Link href={'/policy/privacy-policy'}>
-          {/* TODO: URL need updated */}
           <span className="text-primary-700 underline underline-offset-2">
             《隱私政策》
           </span>

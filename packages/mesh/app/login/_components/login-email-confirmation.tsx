@@ -1,4 +1,4 @@
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 import useCountdown from '@/hooks/use-countdown'
 import { sendEmailLink } from '@/utils/auth-provider'
 
@@ -36,7 +36,7 @@ export default function LoginEmailConfirmation() {
         <button
           className="footnote w-full text-center text-primary-700 underline underline-offset-2"
           onClick={() => {
-            setStep('entry')
+            setStep(LoginState.Entry)
           }}
         >
           嘗試其他登入方式

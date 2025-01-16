@@ -150,24 +150,41 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       ]
 
   const getMessage = (category: TabCategoryType): string => {
+    // NOTE: 如果是單一訊息，直接使用字串；如果有多種情況，使用物件
+    const picksMessage = {
+      isMember: '這裡還空空的\n趕緊將喜愛的新聞加入精選吧',
+      isVisitor: '這個人還沒有精選新聞',
+    }
+    const collectionsMessage = {
+      isMember: '從精選新聞或書籤中\n將數篇新聞打包成集錦',
+      isVisitor: '這個人還沒有建立集錦',
+    }
+    const messageByIdentity = (
+      isMember: boolean,
+      emptyMessageObject: Record<'isMember' | 'isVisitor', string>
+    ) => {
+      if (isMember) return emptyMessageObject['isMember']
+      return emptyMessageObject['isVisitor']
+    }
     const messages: { [key: string]: string } = {
-      PICKS: isMember
-        ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧'
-        : '這個人還沒有精選新聞',
+      PICKS: messageByIdentity(isMember, picksMessage),
       BOOKMARKS: '沒有已儲存的書籤',
-      COLLECTIONS: `從精選新聞或書籤中\n將數篇新聞打包成集錦`,
+      COLLECTIONS: messageByIdentity(isMember, collectionsMessage),
     }
     return messages[category] || ''
   }
 
   const shouldShowComment = category === TabCategory.PICKS
   const emptyElement = (category: TabCategoryType): React.ReactNode => {
-    if (category === TabCategory.COLLECTIONS)
+    if (category === TabCategory.COLLECTIONS) {
+      // NOTE: only member need try button
+      if (!isMember) return null
       return (
         <Link href={`/collection/new`}>
           <Button size="md" color="transparent" text="立即嘗試" />
         </Link>
       )
+    }
   }
 
   return (

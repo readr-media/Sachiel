@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import getAllCategories from '@/app/actions/get-all-categories'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import { useLogin } from '@/context/login'
+import { LoginState, useLogin } from '@/context/login'
 import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
 
 export default function LoginSetCategory() {
@@ -65,7 +65,7 @@ export default function LoginSetCategory() {
           size="lg"
           color="primary"
           text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
-          onClick={() => setStep('set-following')}
+          onClick={() => setStep(LoginState.SetFollowing)}
           disabled={formData.interests.length < 3}
         />
       </div>
