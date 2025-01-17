@@ -32,7 +32,7 @@ export default function DesktopStories({
 
   return (
     <div className="hidden lg:block">
-      <section className="grid grid-cols-2 gap-x-10 px-10">
+      <section className="grid grid-cols-2 gap-x-10 p-10 pt-0">
         {firstSectionStories.map((story, i) =>
           i === 0 ? (
             <HeroStoryCard key={story.id} story={story} />
@@ -49,9 +49,7 @@ export default function DesktopStories({
           )
         )}
       </section>
-      <div className="pb-10 pt-5">
-        <AdSense pageKey="media" adKey="D1" />
-      </div>
+      <AdSense pageKey="media" adKey="D1" className="pb-10 pt-[-20px]" />
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
