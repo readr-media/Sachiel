@@ -71,6 +71,10 @@ export default function AdSense({
     }
   }, [adSize, adSlot])
 
+  /**
+   * Hide Ad when no ads were returned and the ad unit is empty.
+   * ref: https://support.google.com/adsense/answer/10762946?hl=en
+   */
   return (
     <ins
       id={adUnit}
