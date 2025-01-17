@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import DesktopInfiniteStories from './desktop-infinite-stories'
@@ -48,6 +49,7 @@ export default function DesktopStories({
           )
         )}
       </section>
+      <AdSense pageKey="media" adKey="D1" className="mb-10 mt-[-20px]" />
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
