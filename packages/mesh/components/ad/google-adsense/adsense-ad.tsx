@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ADSENSE_CLIENT, ENV } from '@/constants/config'
+import { ADSENSE_CLIENT } from '@/constants/config'
 import { getAdParam, getAdParamBySlot } from '@/utils/ad'
 
 type Props = {
@@ -28,13 +28,6 @@ export default function AdSense({
   const [adUnit, setAdUnit] = useState('')
   const [adSlot, setAdSlot] = useState('')
   const [adSize, setAdSize] = useState([0, 0])
-  const [adTest, setAdTest] = useState('off')
-
-  useEffect(() => {
-    if (ENV === 'dev') {
-      setAdTest('on')
-    }
-  }, [])
 
   useEffect(() => {
     if (pageKey && adKey) {
@@ -90,7 +83,6 @@ export default function AdSense({
       data-ad-slot={adSlot}
       data-ad-format={format}
       data-full-width-responsive={responsive}
-      data-adtest={adTest}
       data-ad-layout={layout}
       data-ad-layout-key={layoutKey}
       {...rest}
