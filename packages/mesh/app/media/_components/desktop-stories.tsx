@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import DesktopInfiniteStories from './desktop-infinite-stories'
@@ -31,7 +32,7 @@ export default function DesktopStories({
 
   return (
     <div className="hidden lg:block">
-      <section className="grid grid-cols-2 gap-x-10 p-10 pt-0">
+      <section className="grid grid-cols-2 gap-x-10 px-10">
         {firstSectionStories.map((story, i) =>
           i === 0 ? (
             <HeroStoryCard key={story.id} story={story} />
@@ -48,6 +49,9 @@ export default function DesktopStories({
           )
         )}
       </section>
+      <div className="pb-10 pt-5">
+        <AdSense pageKey="media" adKey="D1" />
+      </div>
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
