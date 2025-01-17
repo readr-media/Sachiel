@@ -74,7 +74,7 @@ export default function AdSense({
   return (
     <ins
       id={adUnit}
-      className={`adsbygoogle m-auto block ${className} data-[ad-status=unfilled]:hidden`}
+      className={`adsbygoogle m-auto block data-[ad-status=unfilled]:hidden ${className}`}
       style={{
         width: adSize ? `${adSize[0]}px` : 'unset',
         height: adSize ? `${adSize[1]}px` : 'unset',

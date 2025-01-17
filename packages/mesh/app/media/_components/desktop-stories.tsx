@@ -49,7 +49,7 @@ export default function DesktopStories({
           )
         )}
       </section>
-      <AdSense pageKey="media" adKey="D1" className="pb-10 pt-[-20px]" />
+      <AdSense pageKey="media" adKey="D1" className="mb-10 mt-[-20px]" />
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
