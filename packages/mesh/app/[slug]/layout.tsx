@@ -22,7 +22,7 @@ export default function SubpageLayout({
       const result = await fetchCategoryInformation(categorySlug)
       if (!result) return null
 
-      setTitle(`${result.title}熱門` ?? '')
+      setTitle(`${result.title}熱門`)
     }
     fetchSlugInfo()
   }, [categorySlug])
