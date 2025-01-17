@@ -30,9 +30,11 @@ export default function AdSense({
   const [adSize, setAdSize] = useState([0, 0])
   const [adTest, setAdTest] = useState('off')
 
-  if (ENV === 'dev') {
-    setAdTest('on')
-  }
+  useEffect(() => {
+    if (ENV === 'dev') {
+      setAdTest('on')
+    }
+  }, [])
 
   useEffect(() => {
     if (pageKey && adKey) {
