@@ -29,8 +29,12 @@ export default function LoginEntry() {
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-3">
         {/* 因第三方因素，暫時停用 facebook login 機制 */}
+        {/* 因privaterelay，暫時停用 apple login 機制 */}
         {loginOptions
-          .filter((option) => option.method !== 'facebook')
+          .filter(
+            (option) =>
+              option.method !== 'facebook' && option.method !== 'apple'
+          )
           .map((option) => (
             <div
               className={`w-full max-w-[320px] GTM-login_click_${option.method}`}
