@@ -19,7 +19,9 @@ export type ShareData = {
 export type PageInfo = {
   referrer: string
   pageUrl: string
-  pageName: string | { storyId?: string; collectionId?: string }
+  pageName: string
+  storyId: string
+  collectionId: string
 }
 
 type StoryInteraction = {
