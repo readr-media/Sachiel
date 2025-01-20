@@ -1,6 +1,8 @@
 import { optimism, optimismSepolia } from '@alchemy/aa-core'
 import { type Chain, type Hex } from 'viem'
 
+import { getCurrentYear } from '../utils/date'
+
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 
@@ -55,7 +57,7 @@ switch (ENV) {
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
-    GCP_LOG_NAME = 'mesh-next-userlog-local'
+    GCP_LOG_NAME = `mesh-next-userlog-local-${getCurrentYear()}`
     PAYMENT_CHAIN = optimismSepolia
     FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
     FIREBASE_CONFIG = {
@@ -76,7 +78,7 @@ switch (ENV) {
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
-    GCP_LOG_NAME = 'mesh-next-userlog-dev'
+    GCP_LOG_NAME = `mesh-next-userlog-dev-${getCurrentYear()}`
     PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
     PAYMENT_CHAIN = optimismSepolia
     FIREBASE_DOMAIN = 'readr-dev-38eec.firebaseapp.com'
@@ -108,7 +110,7 @@ switch (ENV) {
       'https://mesh-proxy-server-prod-1075249966777.asia-east1.run.app'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-prod'
-    GCP_LOG_NAME = 'mesh-next-userlog-prod'
+    GCP_LOG_NAME = `mesh-next-userlog-prod-${getCurrentYear()}`
     PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
     PAYMENT_ORIGIN =
       'https://mesh-payment-chain-prod-1075249966777.asia-east1.run.app'
