@@ -32,9 +32,6 @@ export default function DesktopStories({
       stories.slice(firstSectionCount),
     ]
   }, [stories])
-  const publisherSuggestion = allPublishers
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .slice(0, 5)
 
   return (
     <div className="hidden lg:block">
@@ -71,7 +68,7 @@ export default function DesktopStories({
           />
         </section>
         <aside className="flex flex-col gap-3">
-          <PublisherSuggestion publisherSuggestion={publisherSuggestion} />
+          <PublisherSuggestion publisherSuggestion={allPublishers} />
           {publishersAndStories.map((publisherAndStories) => (
             <PublisherCard
               key={publisherAndStories.publisher.id}

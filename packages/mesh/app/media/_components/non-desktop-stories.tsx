@@ -28,9 +28,6 @@ export default function NonDesktopStories({
     useInView()
   const firstSectionStories = stories.slice(0, 5)
   const secondSectionStories = stories.slice(5)
-  const publisherSuggestion = allPublishers
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .slice(0, 5)
 
   useEffect(() => {
     if (shouldStartLoadMore && shouldLoadmore) {
@@ -54,7 +51,7 @@ export default function NonDesktopStories({
           }}
         />
       ))}
-      <PublisherSuggestion publisherSuggestion={publisherSuggestion} />
+      <PublisherSuggestion publisherSuggestion={allPublishers} />
       {mostPickedStory ? (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={false} />
       ) : null}

@@ -9,8 +9,9 @@ import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export type AllPublisherData = Awaited<ReturnType<typeof getAllPublishers>>
 
-export async function getAllPublishers() {
+export async function getAllPublishers(limit?: number) {
   const globalLogFields = getLogTraceObjectFromHeaders()
+  const itemCount = limit ? Math.floor(Math.abs(limit)) : undefined
   const data = await queryGraphQL(
     PublishersDocument,
     undefined,
@@ -19,13 +20,15 @@ export async function getAllPublishers() {
   )
 
   const transformedData =
-    data?.publishers?.map((data) => ({
-      ...data,
-      createdAt: new Date(data.createdAt).getTime(),
-      isHidden: false,
-    })) ?? []
+    data?.publishers
+      ?.map((data) => ({
+        ...data,
+        createdAt: new Date(data.createdAt).getTime(),
+        isHidden: false,
+      }))
+      .sort((a, b) => b.createdAt - a.createdAt) ?? []
 
-  return transformedData
+  return itemCount ? transformedData.slice(0, itemCount) : transformedData
 }
 
 export type PublisherWalletData = Awaited<ReturnType<typeof getPublisherWallet>>
