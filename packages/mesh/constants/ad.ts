@@ -38,8 +38,28 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adSize: [600, 90],
     },
     'MB_MD2-1': {
-      adUnit: 'Mesh_m_media_300x250_MD1',
+      adUnit: 'Mesh_m_media_300x250_MD2-1',
       adSlot: '8760443410',
+      adSize: [300, 250],
+    },
+    'MB_MD2-2': {
+      adUnit: 'Mesh_m_media_300x250_MD2-2',
+      adSlot: '2728591375',
+      adSize: [300, 250],
+    },
+    'MB_MD2-3': {
+      adUnit: 'Mesh_m_media_300x250_MD2-3',
+      adSlot: '2007634120',
+      adSize: [300, 250],
+    },
+    'MB_MD2-4': {
+      adUnit: 'Mesh_m_media_300x250_MD2-4',
+      adSlot: '2893879384',
+      adSize: [300, 250],
+    },
+    'MB_MD2-5': {
+      adUnit: 'Mesh_m_media_300x250_MD2-5',
+      adSlot: '9921783167',
       adSize: [300, 250],
     },
   },

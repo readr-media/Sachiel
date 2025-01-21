@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react'
 
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import useInView from '@/hooks/use-in-view'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
@@ -39,18 +40,33 @@ export default function NonDesktopStories({
         const shouldInsertSpecialBlock = (i + 1) % 5 === 0
         const specialBlock = specialBlocks[Math.floor((i + 1) / 5) - 1]
         const shouldSetTriggerRef = i === stories.length - 5
+        const shouldRenderAd = i < 25
 
         if (shouldInsertSpecialBlock && specialBlock) {
           const specialBlockJsx =
             'stories' in specialBlock ? (
-              <div className="p-5 md:px-[70px]">
-                <PublisherCard
-                  key={specialBlock.publisher.id}
-                  publisherAndStories={specialBlock}
-                />
-              </div>
+              <>
+                {shouldRenderAd && (
+                  <AdSense pageKey="media" adKey={`MD2-${(i + 1) / 5 + 1}`} />
+                )}
+                <div className="p-5 md:px-[70px]">
+                  <PublisherCard
+                    key={specialBlock.publisher.id}
+                    publisherAndStories={specialBlock}
+                  />
+                </div>
+              </>
             ) : (
-              <MostPickedStoryCard story={specialBlock} isDesktop={false} />
+              <>
+                {shouldRenderAd && (
+                  <AdSense
+                    pageKey="media"
+                    adKey={`MD2-${(i + 1) / 5 + 1}`}
+                    className="mb-5 mt-1"
+                  />
+                )}
+                <MostPickedStoryCard story={specialBlock} isDesktop={false} />
+              </>
             )
           return (
             <Fragment key={story.id}>
