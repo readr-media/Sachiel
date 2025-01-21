@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 import { GCP_LOG_NAME, GCP_PROJECT_ID } from '@/constants/config'
+import { getCurrentYear } from '@/utils/date'
 import { logServerSideError } from '@/utils/log'
 
 const loggingClient = new Logging({
@@ -11,8 +12,9 @@ const loggingClient = new Logging({
 
 export async function POST(req: NextRequest) {
   try {
+    const logName = `${GCP_LOG_NAME}-${getCurrentYear()}`
     const body = await req.json()
-    const log = loggingClient.log(GCP_LOG_NAME)
+    const log = loggingClient.log(logName)
     const metadata = {
       resource: { type: 'global' },
       severity: 'INFO',
