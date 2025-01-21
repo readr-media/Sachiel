@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import DesktopInfiniteStories from './desktop-infinite-stories'
@@ -52,6 +53,7 @@ export default function DesktopStories({
           )
         )}
       </section>
+      <AdSense pageKey="media" adKey="D1" className="mb-10 mt-[-20px]" />
       {mostPickedStory && (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={true} />
       )}
@@ -67,7 +69,7 @@ export default function DesktopStories({
             loadMoreLatestStories={loadMoreLatestStories}
           />
         </section>
-        <aside className="flex flex-col gap-3">
+        <aside className="flex flex-col items-center gap-3">
           <PublisherSuggestion publisherSuggestion={allPublishers} />
           {publishersAndStories.map((publisherAndStories) => (
             <PublisherCard
@@ -75,6 +77,7 @@ export default function DesktopStories({
               publisherAndStories={publisherAndStories}
             />
           ))}
+          <AdSense pageKey="media" adKey="D3" className="mt-5" />
         </aside>
       </div>
     </div>
