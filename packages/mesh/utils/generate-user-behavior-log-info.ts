@@ -48,15 +48,20 @@ const generateUserBehaviorLogInfo = (
     referrer: document.referrer,
     pageUrl: window.location.href,
     pageName: pathname,
+    storyId: '',
+    collectionId: '',
   }
 
-  if (pathname.startsWith('/story/')) {
-    pageInfo['pageName'] = { storyId: pathname.split('/story/')?.[1] ?? '' }
+  const routes: Record<string, keyof PageInfo> = {
+    '/story': 'storyId',
+    '/collection': 'collectionId',
   }
 
-  if (pathname.startsWith('/collection/')) {
-    pageInfo['pageName'] = {
-      collectionId: pathname.split('/story/')?.[1] ?? '',
+  for (const [route, idKey] of Object.entries(routes)) {
+    if (pathname.startsWith(route)) {
+      pageInfo.pageName = route
+      pageInfo[idKey] = pathname.split(`${route}`)?.[1] ?? ''
+      break
     }
   }
 

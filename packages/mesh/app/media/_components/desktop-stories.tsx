@@ -65,13 +65,14 @@ export default function DesktopStories({
             loadMoreLatestStories={loadMoreLatestStories}
           />
         </section>
-        <aside className="flex flex-col gap-3">
+        <aside className="flex flex-col items-center gap-3">
           {publishersAndStories.map((publisherAndStories) => (
             <PublisherCard
               key={publisherAndStories.publisher.id}
               publisherAndStories={publisherAndStories}
             />
           ))}
+          <AdSense pageKey="media" adKey="D3" className="mt-5" />
         </aside>
       </div>
     </div>

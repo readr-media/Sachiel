@@ -21,3 +21,9 @@ export function getCurrentTimeInISOFormat() {
   const date = new Date()
   return date.toISOString()
 }
+
+export function getCurrentYear() {
+  const date = new Date()
+  const year = String(date.getFullYear())
+  return year
+}
