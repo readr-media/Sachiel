@@ -6376,12 +6376,14 @@ export type PublishersQuery = {
   publishers?: Array<{
     __typename?: 'Publisher'
     id: string
+    customId?: string | null
     title?: string | null
     logo?: string | null
     rss?: string | null
     official_site?: string | null
+    followerCount?: number | null
     wallet?: string | null
-    sponsorCount?: number | null
+    createdAt?: any | null
   }> | null
 }
 
@@ -18888,10 +18890,36 @@ export const PublishersDocument = {
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'is_active' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'BooleanValue', value: true },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'rss' } },
@@ -18901,10 +18929,10 @@ export const PublishersDocument = {
                 },
                 {
                   kind: 'Field',
-                  alias: { kind: 'Name', value: 'sponsorCount' },
                   name: { kind: 'Name', value: 'followerCount' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'wallet' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],
             },
           },
