@@ -37,29 +37,61 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adSlot: '1006615475',
       adSize: [600, 90],
     },
-    'MB_MD2-1': {
-      adUnit: 'Mesh_m_media_300x250_MD2-1',
+    'MB_D2-1': {
+      adUnit: 'Mesh_m_media_300x250_D2-1',
       adSlot: '8760443410',
       adSize: [300, 250],
     },
-    'MB_MD2-2': {
-      adUnit: 'Mesh_m_media_300x250_MD2-2',
+    'MB_D2-2': {
+      adUnit: 'Mesh_m_media_300x250_D2-2',
       adSlot: '2728591375',
       adSize: [300, 250],
     },
-    'MB_MD2-3': {
-      adUnit: 'Mesh_m_media_300x250_MD2-3',
+    'MB_D2-3': {
+      adUnit: 'Mesh_m_media_300x250_D2-3',
       adSlot: '2007634120',
       adSize: [300, 250],
     },
-    'MB_MD2-4': {
-      adUnit: 'Mesh_m_media_300x250_MD2-4',
+    'MB_D2-4': {
+      adUnit: 'Mesh_m_media_300x250_D2-4',
       adSlot: '2893879384',
       adSize: [300, 250],
     },
-    'MB_MD2-5': {
-      adUnit: 'Mesh_m_media_300x250_MD2-5',
+    'MB_D2-5': {
+      adUnit: 'Mesh_m_media_300x250_D2-5',
       adSlot: '9921783167',
+      adSize: [300, 250],
+    },
+  },
+  homepage: {
+    PC_A1: {
+      adUnit: 'Mesh_pc_hp_728x90_A1',
+      adSlot: '3232289721',
+      adSize: [728, 90],
+    },
+    PC_A2: {
+      adUnit: 'Mesh_pc_hp_728x90_A2',
+      adSlot: '3931127877',
+      adSize: [728, 90],
+    },
+    PC_A3: {
+      adUnit: 'Mesh_pc_hp_728x90_A3',
+      adSlot: '3186658891',
+      adSize: [728, 90],
+    },
+    MB_A1: {
+      adUnit: 'Mesh_m_hp_300x250_A1',
+      adSlot: '7341288647',
+      adSize: [300, 250],
+    },
+    MB_A2: {
+      adUnit: 'Mesh_m_hp_300x250_A2',
+      adSlot: '1766067339',
+      adSize: [300, 250],
+    },
+    MB_A3: {
+      adUnit: 'Mesh_m_hp_300x250_A3',
+      adSlot: '1908998569',
       adSize: [300, 250],
     },
   },
