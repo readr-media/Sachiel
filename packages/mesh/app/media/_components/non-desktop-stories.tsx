@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import useInView from '@/hooks/use-in-view'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
@@ -52,6 +53,7 @@ export default function NonDesktopStories({
         />
       ))}
       <PublisherSuggestion publisherSuggestion={allPublishers} />
+      <AdSense pageKey="media" adKey="D1" className="my-5" />
       {mostPickedStory ? (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={false} />
       ) : null}
@@ -73,12 +75,19 @@ export default function NonDesktopStories({
               }}
             />
             {specialBlock && (
-              <div className="p-5 md:px-[70px]">
-                <PublisherCard
-                  key={specialBlock.publisher.id}
-                  publisherAndStories={specialBlock}
+              <>
+                <AdSense
+                  pageKey="media"
+                  adKey={`D2-${Math.floor(i / 5) + 1}`}
+                  className="mb-5"
                 />
-              </div>
+                <div className="p-5 md:px-[70px]">
+                  <PublisherCard
+                    key={specialBlock.publisher.id}
+                    publisherAndStories={specialBlock}
+                  />
+                </div>
+              </>
             )}
           </Fragment>
         )

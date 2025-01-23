@@ -37,6 +37,11 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adSlot: '1006615475',
       adSize: [600, 90],
     },
+    MB_D1: {
+      adUnit: 'Mesh_m_media_300x250_D1',
+      adSlot: '9250934987',
+      adSize: [300, 250],
+    },
     'MB_D2-1': {
       adUnit: 'Mesh_m_media_300x250_D2-1',
       adSlot: '8760443410',
