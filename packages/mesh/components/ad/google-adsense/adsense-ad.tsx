@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 
 import { ADSENSE_CLIENT } from '@/constants/config'
@@ -70,6 +71,8 @@ export default function AdSense({
       console.error(err)
     }
   }, [adSize, adSlot])
+
+  if (!adSlot) return null
 
   /**
    * Hide Ad when no ads were returned and the ad unit is empty.
