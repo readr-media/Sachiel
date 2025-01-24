@@ -77,3 +77,27 @@ mutation UpdateWalletAddress($id: ID!, $wallet: String!) {
     wallet
   }
 }
+
+mutation AddExcludePublisher($memberId: ID, $publisherId: ID) {
+  updateMember(
+    where: { id: $memberId }
+    data: { exclude_publisher: { connect: { id: $publisherId } } }
+  ) {
+    id
+    exclude_publisher {
+      id
+    }
+  }
+}
+
+mutation RemoveExcludePublisher($memberId: ID, $publisherId: ID) {
+  updateMember(
+    where: { id: $memberId }
+    data: { exclude_publisher: { disconnect: { id: $publisherId } } }
+  ) {
+    id
+    exclude_publisher {
+      id
+    }
+  }
+}

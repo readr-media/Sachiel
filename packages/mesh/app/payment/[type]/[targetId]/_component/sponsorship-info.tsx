@@ -8,7 +8,7 @@ import {
   type CreatePaymentProps,
   type UpdatePaymentProps,
 } from '@/app/actions/payment'
-import { type PublisherData } from '@/app/actions/publisher'
+import { type PublisherWalletData } from '@/app/actions/publisher'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -28,7 +28,7 @@ export default function SponsorshipInfo({
   balance,
   recipientAddress,
 }: {
-  publisher: PublisherData
+  publisher: NonNullable<PublisherWalletData>
   balance: number | undefined
   recipientAddress: Hex
 }) {
