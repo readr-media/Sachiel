@@ -1,11 +1,10 @@
 import { useRouter } from 'next/navigation'
 
 import FollowButton from '@/app/social/_components/follow-button'
+import FollowPublisherButton from '@/components/follow-publisher-button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
 import { type SearchResults } from '@/utils/data-schema'
-
-import FollowPublisherButton from './follow-publisher-button'
 
 export default function MemberAndPublisher({
   query,
@@ -78,12 +77,11 @@ export default function MemberAndPublisher({
                     {p.followerCount} 人追蹤
                   </p>
                 </div>
-                <div className="shrink-0">
-                  <FollowPublisherButton
-                    publisherId={p.id}
-                    publisherName={p.title}
-                  />
-                </div>
+                <FollowPublisherButton
+                  size="sm"
+                  publisherId={p.id}
+                  publisherName={p.title}
+                />
               </div>
             </div>
           ))}

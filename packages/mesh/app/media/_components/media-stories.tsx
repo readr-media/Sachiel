@@ -9,6 +9,7 @@ import getLatestStoriesInCategory, {
 } from '@/app/actions/get-latest-stories-in-category'
 import getMostPickedStoriesInCategory from '@/app/actions/get-most-picked-stories-in-category'
 import getMostSponsorPublishersAndStories from '@/app/actions/get-most-sponsor-publishers-and-stories'
+import { type AllPublisherData } from '@/app/actions/publisher'
 import { categorySearchParamName } from '@/constants/search-param-names'
 import { useUser } from '@/context/user'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
@@ -60,8 +61,10 @@ const getInitialPageData = (allCategories: Category[]) => {
 
 export default function MediaStories({
   allCategories,
+  publisherList,
 }: {
   allCategories: Category[]
+  publisherList: AllPublisherData
 }) {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
@@ -207,6 +210,7 @@ export default function MediaStories({
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}
+          publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
         />
         <NonDesktopStories
@@ -214,6 +218,7 @@ export default function MediaStories({
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}
+          publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
         />
       </>

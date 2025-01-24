@@ -1217,6 +1217,8 @@ export type Member = {
   createdBy?: Maybe<User>
   customId?: Maybe<Scalars['String']['output']>
   email?: Maybe<Scalars['String']['output']>
+  exclude_publisher?: Maybe<Array<Publisher>>
+  exclude_publisherCount?: Maybe<Scalars['Int']['output']>
   firebaseId?: Maybe<Scalars['String']['output']>
   follow_publisher?: Maybe<Array<Publisher>>
   follow_publisherCount?: Maybe<Scalars['Int']['output']>
@@ -1296,6 +1298,17 @@ export type MemberCreate_CollectionArgs = {
 
 export type MemberCreate_CollectionCountArgs = {
   where?: CollectionMemberWhereInput
+}
+
+export type MemberExclude_PublisherArgs = {
+  orderBy?: Array<PublisherOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: PublisherWhereInput
+}
+
+export type MemberExclude_PublisherCountArgs = {
+  where?: PublisherWhereInput
 }
 
 export type MemberFollow_PublisherArgs = {
@@ -1441,6 +1454,7 @@ export type MemberCreateInput = {
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
   customId?: InputMaybe<Scalars['String']['input']>
   email?: InputMaybe<Scalars['String']['input']>
+  exclude_publisher?: InputMaybe<PublisherRelateToManyForCreateInput>
   firebaseId?: InputMaybe<Scalars['String']['input']>
   follow_publisher?: InputMaybe<PublisherRelateToManyForCreateInput>
   follower?: InputMaybe<MemberRelateToManyForCreateInput>
@@ -1526,6 +1540,7 @@ export type MemberUpdateInput = {
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
   customId?: InputMaybe<Scalars['String']['input']>
   email?: InputMaybe<Scalars['String']['input']>
+  exclude_publisher?: InputMaybe<PublisherRelateToManyForUpdateInput>
   firebaseId?: InputMaybe<Scalars['String']['input']>
   follow_publisher?: InputMaybe<PublisherRelateToManyForUpdateInput>
   follower?: InputMaybe<MemberRelateToManyForUpdateInput>
@@ -1564,6 +1579,7 @@ export type MemberWhereInput = {
   createdBy?: InputMaybe<UserWhereInput>
   customId?: InputMaybe<StringFilter>
   email?: InputMaybe<StringFilter>
+  exclude_publisher?: InputMaybe<PublisherManyRelationFilter>
   firebaseId?: InputMaybe<StringFilter>
   follow_publisher?: InputMaybe<PublisherManyRelationFilter>
   follower?: InputMaybe<MemberManyRelationFilter>
@@ -2947,6 +2963,8 @@ export type Publisher = {
   description?: Maybe<Scalars['String']['output']>
   exchange?: Maybe<Array<Exchange>>
   exchangeCount?: Maybe<Scalars['Int']['output']>
+  exclude_follower?: Maybe<Array<Member>>
+  exclude_followerCount?: Maybe<Scalars['Int']['output']>
   follower?: Maybe<Array<Member>>
   followerCount?: Maybe<Scalars['Int']['output']>
   full_content?: Maybe<Scalars['Boolean']['output']>
@@ -2979,6 +2997,17 @@ export type PublisherExchangeArgs = {
 
 export type PublisherExchangeCountArgs = {
   where?: ExchangeWhereInput
+}
+
+export type PublisherExclude_FollowerArgs = {
+  orderBy?: Array<MemberOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: MemberWhereInput
+}
+
+export type PublisherExclude_FollowerCountArgs = {
+  where?: MemberWhereInput
 }
 
 export type PublisherFollowerArgs = {
@@ -3022,6 +3051,7 @@ export type PublisherCreateInput = {
   customId?: InputMaybe<Scalars['String']['input']>
   description?: InputMaybe<Scalars['String']['input']>
   exchange?: InputMaybe<ExchangeRelateToManyForCreateInput>
+  exclude_follower?: InputMaybe<MemberRelateToManyForCreateInput>
   follower?: InputMaybe<MemberRelateToManyForCreateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
@@ -3103,6 +3133,7 @@ export type PublisherUpdateInput = {
   customId?: InputMaybe<Scalars['String']['input']>
   description?: InputMaybe<Scalars['String']['input']>
   exchange?: InputMaybe<ExchangeRelateToManyForUpdateInput>
+  exclude_follower?: InputMaybe<MemberRelateToManyForUpdateInput>
   follower?: InputMaybe<MemberRelateToManyForUpdateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
@@ -3133,6 +3164,7 @@ export type PublisherWhereInput = {
   customId?: InputMaybe<StringFilter>
   description?: InputMaybe<StringFilter>
   exchange?: InputMaybe<ExchangeManyRelationFilter>
+  exclude_follower?: InputMaybe<MemberManyRelationFilter>
   follower?: InputMaybe<MemberManyRelationFilter>
   full_content?: InputMaybe<BooleanFilter>
   full_screen_ad?: InputMaybe<StringNullableFilter>
@@ -4803,6 +4835,34 @@ export type UpdateWalletAddressMutation = {
   } | null
 }
 
+export type AddExcludePublisherMutationVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+  publisherId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type AddExcludePublisherMutation = {
+  __typename?: 'Mutation'
+  updateMember?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{ __typename?: 'Publisher'; id: string }> | null
+  } | null
+}
+
+export type RemoveExcludePublisherMutationVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+  publisherId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type RemoveExcludePublisherMutation = {
+  __typename?: 'Mutation'
+  updateMember?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{ __typename?: 'Publisher'; id: string }> | null
+  } | null
+}
+
 export type GetAnnouncementsQueryVariables = Exact<{
   take?: InputMaybe<Scalars['Int']['input']>
 }>
@@ -6103,6 +6163,23 @@ export type GetMemberNameQuery = {
   member?: { __typename?: 'Member'; name?: string | null } | null
 }
 
+export type GetMemberExcludePublisherQueryVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type GetMemberExcludePublisherQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{
+      __typename?: 'Publisher'
+      id: string
+      title?: string | null
+    }> | null
+  } | null
+}
+
 export type GetMorePicksQueryVariables = Exact<{
   customId?: InputMaybe<Scalars['String']['input']>
   takes?: InputMaybe<Scalars['Int']['input']>
@@ -6376,12 +6453,14 @@ export type PublishersQuery = {
   publishers?: Array<{
     __typename?: 'Publisher'
     id: string
+    customId?: string | null
     title?: string | null
     logo?: string | null
     rss?: string | null
     official_site?: string | null
+    followerCount?: number | null
     wallet?: string | null
-    sponsorCount?: number | null
+    createdAt?: any | null
   }> | null
 }
 
@@ -9000,6 +9079,232 @@ export const UpdateWalletAddressDocument = {
 } as unknown as DocumentNode<
   UpdateWalletAddressMutation,
   UpdateWalletAddressMutationVariables
+>
+export const AddExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'AddExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'exclude_publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'connect' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AddExcludePublisherMutation,
+  AddExcludePublisherMutationVariables
+>
+export const RemoveExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'exclude_publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'disconnect' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveExcludePublisherMutation,
+  RemoveExcludePublisherMutationVariables
 >
 export const GetAnnouncementsDocument = {
   kind: 'Document',
@@ -17058,6 +17363,74 @@ export const GetMemberNameDocument = {
     },
   ],
 } as unknown as DocumentNode<GetMemberNameQuery, GetMemberNameQueryVariables>
+export const GetMemberExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMemberExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetMemberExcludePublisherQuery,
+  GetMemberExcludePublisherQueryVariables
+>
 export const GetMorePicksDocument = {
   kind: 'Document',
   definitions: [
@@ -18888,10 +19261,36 @@ export const PublishersDocument = {
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'is_active' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'BooleanValue', value: true },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'rss' } },
@@ -18901,10 +19300,10 @@ export const PublishersDocument = {
                 },
                 {
                   kind: 'Field',
-                  alias: { kind: 'Name', value: 'sponsorCount' },
                   name: { kind: 'Name', value: 'followerCount' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'wallet' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],
             },
           },

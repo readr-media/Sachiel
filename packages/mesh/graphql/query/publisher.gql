@@ -1,12 +1,14 @@
 query Publishers {
-  publishers {
+  publishers(where: { is_active: { equals: true } }) {
     id
+    customId
     title
     logo
     rss
     official_site
-    sponsorCount: followerCount
+    followerCount
     wallet
+    createdAt
   }
 }
 
