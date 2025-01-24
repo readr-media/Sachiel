@@ -16,13 +16,13 @@ export default function DesktopStories({
   mostPickedStory,
   publishersAndStories,
   latestStoriesInfo,
-  allPublishers,
+  publisherList,
   loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
   publishersAndStories: MostSponsorPublisher[]
   latestStoriesInfo: LatestStoriesInfo
-  allPublishers: AllPublisherData
+  publisherList: AllPublisherData
   loadMoreLatestStories: () => void
 }) {
   const { stories } = latestStoriesInfo
@@ -70,7 +70,7 @@ export default function DesktopStories({
           />
         </section>
         <aside className="flex flex-col items-center gap-3">
-          <PublisherSuggestion publisherSuggestion={allPublishers} />
+          <PublisherSuggestion publisherSuggestion={publisherList} />
           {publishersAndStories.map((publisherAndStories) => (
             <PublisherCard
               key={publisherAndStories.publisher.id}

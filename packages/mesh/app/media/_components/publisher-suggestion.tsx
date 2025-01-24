@@ -3,11 +3,13 @@ import { useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import { type AllPublisherData } from '@/app/actions/publisher'
+import { updateExcludePublisher } from '@/app/actions/publisher'
 import Button from '@/components/button'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { DAY } from '@/constants/time-unit'
+import { useUser } from '@/context/user'
 
 export default function PublisherSuggestion({
   publisherSuggestion,
@@ -17,16 +19,23 @@ export default function PublisherSuggestion({
   const [followSuggestions, setFollowSuggestions] =
     useState(publisherSuggestion)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const { user } = useUser()
+  const memberId = user?.memberId
 
-  const toggleSuggestionVisibility = (id: string, isHidden: boolean) => {
+  const toggleSuggestionVisibility = async (id: string, isHidden: boolean) => {
     setFollowSuggestions((prev) =>
       prev.map((item) => (item.id === id ? { ...item, isHidden } : item))
     )
+    if (isHidden) {
+      await updateExcludePublisher(memberId, 'add', id)
+    } else {
+      await updateExcludePublisher(memberId, 'remove', id)
+    }
   }
 
   return (
-    <div className="flex flex-col gap-3 py-4 lg:rounded-lg lg:bg-primary-100 lg:px-5 lg:py-3">
-      <div className="flex flex-row justify-between px-5 md:px-[70px] lg:px-3 lg:pt-3">
+    <div className="flex flex-col gap-3 py-4 lg:w-full lg:rounded-lg lg:bg-primary-100 lg:px-5 lg:py-3">
+      <div className="flex flex-row items-center justify-between px-5 md:px-[70px] lg:px-3 lg:pt-3">
         <p className="list-title text-primary-700">推薦追蹤</p>
         <NextLink href={'/publisher-list'}>
           <span className="button text-primary-500">查看全部</span>

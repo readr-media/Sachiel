@@ -15,13 +15,13 @@ export default function NonDesktopStories({
   mostPickedStory,
   publishersAndStories,
   latestStoriesInfo,
-  allPublishers,
+  publisherList,
   loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
   publishersAndStories: MostSponsorPublisher[]
   latestStoriesInfo: LatestStoriesInfo
-  allPublishers: AllPublisherData
+  publisherList: AllPublisherData
   loadMoreLatestStories: () => void
 }) {
   const { stories, shouldLoadmore } = latestStoriesInfo
@@ -52,7 +52,7 @@ export default function NonDesktopStories({
           }}
         />
       ))}
-      <PublisherSuggestion publisherSuggestion={allPublishers} />
+      <PublisherSuggestion publisherSuggestion={publisherList} />
       <AdSense pageKey="media" adKey="D1" className="my-5" />
       {mostPickedStory ? (
         <MostPickedStoryCard story={mostPickedStory} isDesktop={false} />

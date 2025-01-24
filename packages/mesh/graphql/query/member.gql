@@ -574,3 +574,13 @@ query GetMemberName($memberCustomId: String) {
     name
   }
 }
+
+query GetMemberExcludePublisher($memberId: ID) {
+  member(where: { id: $memberId }) {
+    id
+    exclude_publisher {
+      id
+      title
+    }
+  }
+}
