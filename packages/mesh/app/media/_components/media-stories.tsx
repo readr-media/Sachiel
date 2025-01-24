@@ -61,10 +61,10 @@ const getInitialPageData = (allCategories: Category[]) => {
 
 export default function MediaStories({
   allCategories,
-  allPublishers,
+  publisherList,
 }: {
   allCategories: Category[]
-  allPublishers: AllPublisherData
+  publisherList: AllPublisherData
 }) {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
@@ -210,7 +210,7 @@ export default function MediaStories({
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}
-          allPublishers={allPublishers}
+          publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
         />
         <NonDesktopStories
@@ -218,7 +218,7 @@ export default function MediaStories({
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}
-          allPublishers={allPublishers}
+          publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
         />
       </>
