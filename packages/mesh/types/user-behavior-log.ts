@@ -9,7 +9,7 @@ export type UserPayload = {
 }
 
 export type ShareData = {
-  shareActions: {
+  shareAction: {
     storyId: string
     storyTitle: string
     sharePlatform: SharePlatform
@@ -20,31 +20,38 @@ export type PageInfo = {
   referrer: string
   pageUrl: string
   pageName: string
-  storyId: string
-  collectionId: string
 }
 
+export type EventType =
+  | 'pageview'
+  | 'scroll-to-50%'
+  | 'scroll-to-80%'
+  | 'exit'
+  | 'storyClick'
+  | 'categoryClick'
+  | 'socialFeedClick'
+  | 'collectionClick'
+  | 'storyAction'
+  | 'share'
+  | 'videoPlay'
+  | 'sponsor'
+  | 'unlock'
+
 type StoryInteraction = {
-  interaction:
-    | {
-        relatedStories: {
-          relatedStoryId: string
-          relatedTitle: string
-        }
-        story?: undefined
-      }
-    | {
-        story: {
-          storyId: string
-          storyTitle: string
-        }
-        relatedStories?: undefined
-      }
+  interaction: {
+    story: {
+      type: 'relatedStory' | 'story'
+      storyId: string
+      storyTitle: string
+      publisherName: string
+      publisherId: string
+    }
+  }
 }
 
 type ShareInteraction = {
   interaction: {
-    shareActions: {
+    shareAction: {
       storyId: string
       storyTitle: string
       sharePlatform: SharePlatform
@@ -54,39 +61,22 @@ type ShareInteraction = {
 
 type CategoryInteraction = {
   interaction: {
-    categories: {
+    category: {
       categoryName: string
     }
   }
 }
 
-type PickInteraction = {
+type StoryAction = {
   interaction: {
-    pick: {
-      storyId: string
-    }
-  }
-}
-
-type BookmarkInteraction = {
-  interaction: {
-    bookmark: {
-      storyId: string
-    }
-  }
-}
-
-type CollectionInteraction = {
-  interaction: {
-    collection: {
-      storyId: string
-    }
+    type: 'pick' | 'collection' | 'bookmark'
+    storyId: string
   }
 }
 
 type UserActivityInteraction = {
   userActivity: {
-    activityType: string
+    activityType: 'pick' | 'pick-comment' | 'comment' | undefined
     userId: string[]
   }
 }
@@ -99,9 +89,34 @@ type MediaInteraction = {
   }
 }
 
+type SponsorInteraction = {
+  interaction: {
+    sponsorAction: {
+      sponsorName: string
+      sponsorId: string
+    }
+  }
+}
+
+type UnlockInteraction = {
+  interaction: {
+    unlock: {
+      storyId: string
+    }
+  }
+}
+
+type CollectionInteraction = {
+  interaction: {
+    collectionInfo: {
+      collectionTitle: string
+    }
+  }
+}
+
 export type BaseLog = {
   triggerEvent: {
-    'event-type': string
+    eventType: EventType
     datetime: string
   }
   clientInfo: {
@@ -120,8 +135,9 @@ export type UserBehaviorLogInfo =
   | (BaseLog & StoryInteraction)
   | (BaseLog & ShareInteraction)
   | (BaseLog & CategoryInteraction)
-  | (BaseLog & PickInteraction)
-  | (BaseLog & BookmarkInteraction)
-  | (BaseLog & CollectionInteraction)
+  | (BaseLog & StoryAction)
   | (BaseLog & UserActivityInteraction)
   | (BaseLog & MediaInteraction)
+  | (BaseLog & SponsorInteraction)
+  | (BaseLog & UnlockInteraction)
+  | (BaseLog & CollectionInteraction)

@@ -9,7 +9,7 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type MongoDBResponse } from '@/utils/data-schema'
-import { logStoryActionClick, logStoryClick } from '@/utils/event-logs'
+import { logSocialFeedClick, logStoryClick } from '@/utils/event-logs'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
@@ -70,13 +70,13 @@ export default function Feed({
           href={`/story/${story.id}`}
           className="GTM-soc_click_article"
           onClick={() => {
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.og_title,
-              story.publisher.title
-            )
-            logStoryActionClick(
+            logStoryClick(userPayload, {
+              storyId: story.id,
+              storyTitle: story.og_title,
+              publisherId: story.publisher.id,
+              publisherName: story.publisher.title,
+            })
+            logSocialFeedClick(
               userPayload,
               storyActions.actionType,
               storyActions.memberIds

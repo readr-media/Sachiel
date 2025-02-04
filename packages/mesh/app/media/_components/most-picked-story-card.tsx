@@ -79,12 +79,12 @@ export default function MostPickedStoryCard({
                   href={`/story/${story.id}`}
                   className="GTM-media_click_popular_article"
                   onClick={() =>
-                    logStoryClick(
-                      userPayload,
-                      story.id,
-                      story?.title ?? '',
-                      story.source?.title ?? ''
-                    )
+                    logStoryClick(userPayload, {
+                      storyId: story.id,
+                      storyTitle: story?.title ?? '',
+                      publisherId: story.source?.id ?? '',
+                      publisherName: story.source?.title ?? '',
+                    })
                   }
                 >
                   {story.title}

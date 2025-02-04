@@ -13,11 +13,11 @@ import { logStoryClick } from '@/utils/event-logs'
 const StoryCard = ({
   showImage,
   story,
-  publisherName,
+  publisherInfo,
 }: {
   showImage: boolean
   story: SponsoredStoryByCategory['stories'][number]
-  publisherName: string
+  publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
 
@@ -43,7 +43,11 @@ const StoryCard = ({
           <h3
             className="subtitle-2 mb-1 text-primary-700 hover-or-active:underline"
             onClick={() =>
-              logStoryClick(userPayload, story.id, story.title, publisherName)
+              logStoryClick(userPayload, {
+                storyId: story.id,
+                storyTitle: story.title,
+                ...publisherInfo,
+              })
             }
           >
             {story.title}
@@ -110,7 +114,10 @@ export default function PublisherCard({ data }: Props) {
           showImage={index === 0}
           story={story}
           key={story.id}
-          publisherName={data.publisher.title}
+          publisherInfo={{
+            publisherName: data.publisher.title,
+            publisherId: data.publisher.id,
+          }}
         />
       ))}
     </div>

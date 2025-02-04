@@ -1,4 +1,4 @@
-import type { PageInfo } from '@/types/user-behavior-log'
+import type { EventType, PageInfo } from '@/types/user-behavior-log'
 
 import {
   detectIsInApp,
@@ -10,7 +10,7 @@ import {
 import { displayTime } from './story-display'
 
 const generateUserBehaviorLogInfo = (
-  eventType: string,
+  eventType: EventType,
   payload = {
     memberType: 'none-logged-in',
     email: '',
@@ -26,7 +26,7 @@ const generateUserBehaviorLogInfo = (
   const { memberType, email, firebaseId } = payload
 
   const triggerEvent = {
-    'event-type': eventType,
+    eventType,
     datetime: displayTime(new Date()) ?? '',
   }
 
@@ -48,21 +48,6 @@ const generateUserBehaviorLogInfo = (
     referrer: document.referrer,
     pageUrl: window.location.href,
     pageName: pathname,
-    storyId: '',
-    collectionId: '',
-  }
-
-  const routes: Record<string, keyof PageInfo> = {
-    '/story': 'storyId',
-    '/collection': 'collectionId',
-  }
-
-  for (const [route, idKey] of Object.entries(routes)) {
-    if (pathname.startsWith(route)) {
-      pageInfo.pageName = route
-      pageInfo[idKey] = pathname.split(`${route}`)?.[1] ?? ''
-      break
-    }
   }
 
   return { triggerEvent, clientInfo, pageInfo }

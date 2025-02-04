@@ -55,12 +55,12 @@ export default function MainCard({ story }: Props) {
             href={`story/${story.id}`}
             className="GTM-homepage_click_category_article"
             onClick={() =>
-              logStoryClick(
-                userPayload,
-                story.id,
-                story.title,
-                story.source.title
-              )
+              logStoryClick(userPayload, {
+                storyId: story.id,
+                storyTitle: story.title,
+                publisherName: story.source.title,
+                publisherId: story.source.id,
+              })
             }
           >
             <h3 className="title-2 mb-2 text-primary-700 hover-or-active:underline sm:mb-3">

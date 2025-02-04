@@ -91,7 +91,7 @@ export default function ShareSheet({
               onClick={() => {
                 if (storyInfo) {
                   logShareClick(userPayload, {
-                    shareActions: {
+                    shareAction: {
                       ...storyInfo,
                       sharePlatform: media.id,
                     },

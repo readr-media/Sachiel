@@ -14,11 +14,11 @@ import ImageWithFallback from '../image-with-fallback'
 const StoryCard = ({
   showImage,
   story,
-  publisherName,
+  publisherInfo,
 }: {
   showImage: boolean
   story: SponsoredStory['stories'][number]
-  publisherName: string
+  publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
 
@@ -28,7 +28,11 @@ const StoryCard = ({
         href={`/story/${story.id}`}
         className="GTM-homepage_click_media_article"
         onClick={() =>
-          logStoryClick(userPayload, story.id, story.title, publisherName)
+          logStoryClick(userPayload, {
+            storyId: story.id,
+            storyTitle: story.title,
+            ...publisherInfo,
+          })
         }
       >
         {showImage && story.og_image && (
@@ -109,7 +113,10 @@ export default function TopPublisherCard({ publisher }: Props) {
           showImage={index === 0}
           story={story}
           key={story.id}
-          publisherName={publisher.title}
+          publisherInfo={{
+            publisherName: publisher.title,
+            publisherId: publisher.id,
+          }}
         />
       ))}
     </div>

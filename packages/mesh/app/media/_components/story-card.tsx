@@ -82,9 +82,12 @@ export default forwardRef(function StoryCard(
           onClick={() =>
             logStoryClick(
               userPayload,
-              story.id,
-              story?.title ?? '',
-              story.source?.title ?? '',
+              {
+                storyId: story.id,
+                storyTitle: story?.title ?? '',
+                publisherId: story.source?.id ?? '',
+                publisherName: story.source?.title ?? '',
+              },
               true
             )
           }

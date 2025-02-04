@@ -67,7 +67,12 @@ export default function FeaturedCard({
             <NextLink
               href={`/story/${story.id}`}
               onClick={() =>
-                logStoryClick(userPayload, story.id, story.title, publisher)
+                logStoryClick(userPayload, {
+                  storyId: story.id,
+                  storyTitle: story.title,
+                  publisherName: publisher,
+                  publisherId: publisherId,
+                })
               }
               className={gtmTags.story}
             >

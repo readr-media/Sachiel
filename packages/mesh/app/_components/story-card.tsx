@@ -49,12 +49,12 @@ export default forwardRef(function StoryCard<
               href={`/story/${story.id}`}
               className={gtmTags.story}
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story.title,
-                  story.source.title
-                )
+                logStoryClick(userPayload, {
+                  storyId: story.id,
+                  storyTitle: story.title,
+                  publisherName: story.source.title,
+                  publisherId: story.source.id,
+                })
               }
             >
               {story.title}
@@ -75,12 +75,12 @@ export default forwardRef(function StoryCard<
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logStoryClick(userPayload, {
+              storyId: story.id,
+              storyTitle: story.title,
+              publisherName: story.source.title,
+              publisherId: story.source.id,
+            })
           }
         >
           <div className="relative h-[48px] w-[96px] shrink-0 overflow-hidden rounded sm:h-[80px] sm:w-[160px]">

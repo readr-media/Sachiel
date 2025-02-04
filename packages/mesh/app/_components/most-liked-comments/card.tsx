@@ -93,12 +93,12 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 href={`/story/${comment.story.id}`}
                 className="GTM-homepage_click_popular_user_article"
                 onClick={() =>
-                  logStoryClick(
-                    userPayload,
-                    comment.story?.id ?? '',
-                    comment.story?.title ?? '',
-                    comment.story?.source.title ?? ''
-                  )
+                  logStoryClick(userPayload, {
+                    storyId: comment.story?.id ?? '',
+                    storyTitle: comment.story?.title ?? '',
+                    publisherName: comment.story?.source.title ?? '',
+                    publisherId: comment.story?.source.id ?? '',
+                  })
                 }
               >
                 {comment.story.title}

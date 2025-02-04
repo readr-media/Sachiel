@@ -173,12 +173,12 @@ const ArticleCard = ({
           onClick={() =>
             isCollection(storyData)
               ? logCollectionClick(userPayload, storyData.title ?? '')
-              : logStoryClick(
-                  userPayload,
-                  storyData.id,
-                  storyData?.title ?? '',
-                  storyGetters.source(storyData)
-                )
+              : logStoryClick(userPayload, {
+                  storyId: storyData.id,
+                  storyTitle: storyData?.title ?? '',
+                  publisherId: storyGetters.sourceId(storyData),
+                  publisherName: storyGetters.source(storyData),
+                })
           }
         >
           <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -208,12 +208,12 @@ const ArticleCard = ({
             onClick={() =>
               isCollection(storyData)
                 ? logCollectionClick(userPayload, storyData.title ?? '')
-                : logStoryClick(
-                    userPayload,
-                    storyData.id,
-                    storyData?.title ?? '',
-                    storyGetters.source(storyData)
-                  )
+                : logStoryClick(userPayload, {
+                    storyId: storyData.id,
+                    storyTitle: storyData?.title ?? '',
+                    publisherId: storyGetters.sourceId(storyData),
+                    publisherName: storyGetters.source(storyData),
+                  })
             }
           >
             {shouldShowSource && (
