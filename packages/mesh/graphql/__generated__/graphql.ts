@@ -1205,6 +1205,7 @@ export type Member = {
   __typename?: 'Member'
   avatar?: Maybe<Scalars['String']['output']>
   avatar_image?: Maybe<Photo>
+  balance?: Maybe<Scalars['Int']['output']>
   block?: Maybe<Array<Member>>
   blockCount?: Maybe<Scalars['Int']['output']>
   blocked?: Maybe<Array<Member>>
@@ -1446,6 +1447,7 @@ export type MemberTransactionCountArgs = {
 export type MemberCreateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForCreateInput>
   blocked?: InputMaybe<MemberRelateToManyForCreateInput>
   comment?: InputMaybe<CommentRelateToManyForCreateInput>
@@ -1487,6 +1489,7 @@ export type MemberManyRelationFilter = {
 
 export type MemberOrderByInput = {
   avatar?: InputMaybe<OrderDirection>
+  balance?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
   customId?: InputMaybe<OrderDirection>
   email?: InputMaybe<OrderDirection>
@@ -1532,6 +1535,7 @@ export type MemberUpdateArgs = {
 export type MemberUpdateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForUpdateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForUpdateInput>
   blocked?: InputMaybe<MemberRelateToManyForUpdateInput>
   comment?: InputMaybe<CommentRelateToManyForUpdateInput>
@@ -1571,6 +1575,7 @@ export type MemberWhereInput = {
   OR?: InputMaybe<Array<MemberWhereInput>>
   avatar?: InputMaybe<StringFilter>
   avatar_image?: InputMaybe<PhotoWhereInput>
+  balance?: InputMaybe<IntNullableFilter>
   block?: InputMaybe<MemberManyRelationFilter>
   blocked?: InputMaybe<MemberManyRelationFilter>
   comment?: InputMaybe<CommentManyRelationFilter>
