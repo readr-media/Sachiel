@@ -11,7 +11,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { PickObjective } from '@/types/objective'
-import { logStoryAddedToPick } from '@/utils/event-logs'
+import { logStoryAction } from '@/utils/event-logs'
 import { addPickToUser, removePickFromUser } from '@/utils/mutate-user-pick-ids'
 
 import useUserPayload from './use-user-payload'
@@ -44,7 +44,7 @@ export default function usePicker() {
         addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
         reverseMutation()
       }
-      logStoryAddedToPick(userPayload, targetId)
+      logStoryAction(userPayload, 'pick', targetId)
       setIsLoading(false)
     },
     [memberId, user, setUser, addToast, userPayload]
@@ -107,7 +107,7 @@ export default function usePicker() {
         addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
         reverseMutation()
       }
-      logStoryAddedToPick(userPayload, targetId)
+      logStoryAction(userPayload, 'pick', targetId)
       setIsLoading(false)
     },
     [memberId, user, setUser, addToast, userPayload]

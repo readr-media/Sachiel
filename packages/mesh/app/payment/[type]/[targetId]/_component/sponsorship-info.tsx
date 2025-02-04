@@ -77,7 +77,7 @@ export default function SponsorshipInfo({
 
   const handleSponsorSuccess = () => {
     setIsSponsored(true)
-    logSponsor(userPayload, publisher.title ?? '')
+    logSponsor(userPayload, publisher.title ?? '', publisher.id)
   }
 
   return (

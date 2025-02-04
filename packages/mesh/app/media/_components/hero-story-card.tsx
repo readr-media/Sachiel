@@ -58,12 +58,12 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               href={`/story/${story.id}`}
               className="GTM-media_click_category_article"
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story?.title ?? '',
-                  story.source?.title ?? ''
-                )
+                logStoryClick(userPayload, {
+                  storyId: story.id,
+                  storyTitle: story?.title ?? '',
+                  publisherId: story.source?.id ?? '',
+                  publisherName: story.source?.title ?? '',
+                })
               }
             >
               <div className="hero-title mt-1 text-primary-700 hover-or-active:underline">

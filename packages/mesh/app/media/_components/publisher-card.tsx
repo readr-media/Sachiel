@@ -13,11 +13,11 @@ type Story = MostSponsorPublisher['stories'][number]
 const PublisherStory = ({
   story,
   showImage,
-  publisherName,
+  publisherInfo,
 }: {
   story: Story
   showImage: boolean
-  publisherName: string
+  publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
 
@@ -27,7 +27,11 @@ const PublisherStory = ({
         href={`/story/${story.id}`}
         className="GTM-media_click_media_article"
         onClick={() =>
-          logStoryClick(userPayload, story.id, story.title, publisherName)
+          logStoryClick(userPayload, {
+            storyId: story.id,
+            storyTitle: story.title,
+            ...publisherInfo,
+          })
         }
       >
         {showImage && story.og_image && (
@@ -103,7 +107,10 @@ export default function PublisherCard({
           key={story.id}
           story={story}
           showImage={i === 0}
-          publisherName={publisherAndStories.publisher.title}
+          publisherInfo={{
+            publisherName: publisherAndStories.publisher.title,
+            publisherId: publisherAndStories.publisher.id,
+          }}
         />
       ))}
     </section>

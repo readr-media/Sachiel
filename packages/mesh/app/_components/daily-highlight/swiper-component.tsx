@@ -45,12 +45,12 @@ function StoryCard({ story }: Story) {
         <NextLink
           href={`story/${story.id}`}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logStoryClick(userPayload, {
+              storyId: story.id,
+              storyTitle: story.title,
+              publisherName: story.source.title,
+              publisherId: story.source.id,
+            })
           }
         >
           {story.title}

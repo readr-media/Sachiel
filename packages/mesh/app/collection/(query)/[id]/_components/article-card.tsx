@@ -36,12 +36,12 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
       href={`/story/${story?.id}`}
       className="GTM-collection_pick_collection_article"
       onClick={() =>
-        logStoryClick(
-          userPayload,
-          story?.id ?? '',
-          story?.title ?? '',
-          story?.source?.title ?? ''
-        )
+        logStoryClick(userPayload, {
+          storyId: story?.id ?? '',
+          storyTitle: story?.title ?? '',
+          publisherName: story?.source?.title ?? '',
+          publisherId: story?.source?.id ?? '',
+        })
       }
     >
       <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
