@@ -10,7 +10,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type Props = {
   story: CategoryStory
@@ -55,12 +55,17 @@ export default function MainCard({ story }: Props) {
             href={`story/${story.id}`}
             className="GTM-homepage_click_category_article"
             onClick={() =>
-              logStoryClick(
-                userPayload,
-                story.id,
-                story.title,
-                story.source.title
-              )
+              logClickEvent(userPayload, 'click-story', {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story.title,
+                source: 'homepage',
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source.id,
+                  targetName: story.source.title,
+                },
+              })
             }
           >
             <h3 className="title-2 mb-2 text-primary-700 hover-or-active:underline sm:mb-3">

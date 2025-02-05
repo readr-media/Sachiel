@@ -12,19 +12,23 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory, DailyStory, GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from './image-with-fallback'
 
 type Props<T> = {
   story: T
+  pageType: 'homepage' | 'subpage'
   className?: string
   gtmTags: GtmTags
 }
 
 export default forwardRef(function StoryCard<
   T extends CategoryStory | DailyStory
->({ story, className = '', gtmTags }: Props<T>, ref: ForwardedRef<unknown>) {
+>(
+  { story, className = '', gtmTags, pageType }: Props<T>,
+  ref: ForwardedRef<unknown>
+) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
@@ -49,12 +53,17 @@ export default forwardRef(function StoryCard<
               href={`/story/${story.id}`}
               className={gtmTags.story}
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story.title,
-                  story.source.title
-                )
+                logClickEvent(userPayload, 'click-story', {
+                  target: 'story',
+                  targetId: story.id,
+                  targetTitle: story.title,
+                  source: pageType,
+                  complementary: {
+                    publisherTarget: 'publisher',
+                    targetId: story.source.id,
+                    targetName: story.source.title,
+                  },
+                })
               }
             >
               {story.title}
@@ -75,12 +84,17 @@ export default forwardRef(function StoryCard<
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logClickEvent(userPayload, 'click-story', {
+              target: 'story',
+              targetId: story.id,
+              targetTitle: story.title,
+              source: pageType,
+              complementary: {
+                publisherTarget: 'publisher',
+                targetId: story.source.id,
+                targetName: story.source.title,
+              },
+            })
           }
         >
           <div className="relative h-[48px] w-[96px] shrink-0 overflow-hidden rounded sm:h-[80px] sm:w-[160px]">

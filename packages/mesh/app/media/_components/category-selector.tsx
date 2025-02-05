@@ -16,7 +16,7 @@ import {
   undoAddCategories,
   undoDeleteCategroies,
 } from '@/utils/edit-category'
-import { logCategoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 import { setSearchParams } from '@/utils/search-params'
 
 import type { Category } from '../page'
@@ -139,7 +139,12 @@ export default function CategorySelector({
                     isActive: category.slug === currentCategory?.slug,
                   }}
                   onClick={() => {
-                    logCategoryClick(userPayoload, category?.title ?? '')
+                    logClickEvent(userPayoload, 'click-category', {
+                      target: 'category',
+                      targetId: category.id,
+                      targetTitle: category?.title ?? '',
+                      source: 'mediaPage',
+                    })
                     setSearchParams(
                       categorySearchParamName,
                       category.slug ?? ''

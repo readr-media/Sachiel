@@ -8,7 +8,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type Props = {
   stories: DailyStory[]
@@ -16,9 +16,10 @@ type Props = {
 
 type Story = {
   story: DailyStory
+  pageType: 'homepage' | 'subpage'
 }
 
-function StoryCard({ story }: Story) {
+function StoryCard({ story, pageType }: Story) {
   const scrollContainerRef = useRef<HTMLElement>(null)
   const userPayload = useUserPayload()
 
@@ -45,12 +46,17 @@ function StoryCard({ story }: Story) {
         <NextLink
           href={`story/${story.id}`}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logClickEvent(userPayload, 'click-story', {
+              target: 'story',
+              targetId: story.id,
+              targetTitle: story.title,
+              source: pageType,
+              complementary: {
+                publisherTarget: 'publisher',
+                targetId: story.source.id,
+                targetName: story.source.title,
+              },
+            })
           }
         >
           {story.title}
@@ -79,7 +85,7 @@ export default function SwiperComponent({ stories }: Props) {
         className="no-scrollbar flex gap-x-2 overflow-x-auto lg:grid lg:grid-cols-3"
       >
         {stories.map((story) => (
-          <StoryCard story={story} key={story.id} />
+          <StoryCard story={story} key={story.id} pageType="homepage" />
         ))}
       </div>
     </div>

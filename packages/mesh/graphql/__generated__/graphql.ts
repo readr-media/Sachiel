@@ -1205,6 +1205,7 @@ export type Member = {
   __typename?: 'Member'
   avatar?: Maybe<Scalars['String']['output']>
   avatar_image?: Maybe<Photo>
+  balance?: Maybe<Scalars['Int']['output']>
   block?: Maybe<Array<Member>>
   blockCount?: Maybe<Scalars['Int']['output']>
   blocked?: Maybe<Array<Member>>
@@ -1446,6 +1447,7 @@ export type MemberTransactionCountArgs = {
 export type MemberCreateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForCreateInput>
   blocked?: InputMaybe<MemberRelateToManyForCreateInput>
   comment?: InputMaybe<CommentRelateToManyForCreateInput>
@@ -1487,6 +1489,7 @@ export type MemberManyRelationFilter = {
 
 export type MemberOrderByInput = {
   avatar?: InputMaybe<OrderDirection>
+  balance?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
   customId?: InputMaybe<OrderDirection>
   email?: InputMaybe<OrderDirection>
@@ -1532,6 +1535,7 @@ export type MemberUpdateArgs = {
 export type MemberUpdateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForUpdateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForUpdateInput>
   blocked?: InputMaybe<MemberRelateToManyForUpdateInput>
   comment?: InputMaybe<CommentRelateToManyForUpdateInput>
@@ -1571,6 +1575,7 @@ export type MemberWhereInput = {
   OR?: InputMaybe<Array<MemberWhereInput>>
   avatar?: InputMaybe<StringFilter>
   avatar_image?: InputMaybe<PhotoWhereInput>
+  balance?: InputMaybe<IntNullableFilter>
   block?: InputMaybe<MemberManyRelationFilter>
   blocked?: InputMaybe<MemberManyRelationFilter>
   comment?: InputMaybe<CommentManyRelationFilter>
@@ -4593,6 +4598,7 @@ export type CollectionInfoFragment = {
   creator?: {
     __typename?: 'Member'
     customId?: string | null
+    name?: string | null
     id: string
   } | null
 }
@@ -5523,6 +5529,7 @@ export type GetMemberProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5630,6 +5637,7 @@ export type GetMemberProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -5753,6 +5761,7 @@ export type GetVisitorProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5807,6 +5816,7 @@ export type GetVisitorProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -6288,6 +6298,7 @@ export type GetMorePicksQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -6417,6 +6428,7 @@ export type GetMoreCollectionsQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -7234,6 +7246,7 @@ export const CollectionInfoFragmentDoc = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -13985,6 +13998,7 @@ export const GetMemberProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -14830,6 +14844,7 @@ export const GetVisitorProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -18120,6 +18135,7 @@ export const GetMorePicksDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -19118,6 +19134,7 @@ export const GetMoreCollectionsDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },

@@ -11,6 +11,7 @@ export default function MostPickedStory({ story }: Props) {
   return (
     <FeaturedCard
       story={story}
+      pageType="subpage"
       customId={story.source.customId}
       publisher={story.source.title}
       publisherId={story.source.id}

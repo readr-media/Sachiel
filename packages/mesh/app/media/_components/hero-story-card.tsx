@@ -8,7 +8,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
 
@@ -58,12 +58,17 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               href={`/story/${story.id}`}
               className="GTM-media_click_category_article"
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story?.title ?? '',
-                  story.source?.title ?? ''
-                )
+                logClickEvent(userPayload, 'click-story', {
+                  target: 'story',
+                  targetId: story.id,
+                  targetTitle: story?.title ?? '',
+                  source: 'mediaPage',
+                  complementary: {
+                    publisherTarget: 'publisher',
+                    targetId: story.source?.id ?? '',
+                    targetName: story.source?.title ?? '',
+                  },
+                })
               }
             >
               <div className="hero-title mt-1 text-primary-700 hover-or-active:underline">

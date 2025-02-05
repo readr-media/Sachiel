@@ -15,10 +15,8 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
-import useUserPayload from '@/hooks/use-user-payload'
 import { setCrossPageCollectionPickStory } from '@/utils/cross-page-create-collection'
 import { getCurrentTimeInISOFormat } from '@/utils/date'
-import { logStoryAddedToCollection } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
 import Button from './button'
@@ -41,7 +39,6 @@ export default function AddStoryToCollection({
   const { user } = useUser()
   useBlockBodyScroll(true)
   const { addToast } = useToast()
-  const userPayload = useUserPayload()
 
   const addStoryToCollection = async (collection: Collection) => {
     if (!collection.collectionpicks) return
@@ -56,7 +53,6 @@ export default function AddStoryToCollection({
     })
     if (response) {
       addToast({ status: 'success', text: '成功加入集錦' })
-      logStoryAddedToCollection(userPayload, story.id)
     } else {
       addToast({ status: 'fail', text: '加入集錦失敗，請重新嘗試' })
     }

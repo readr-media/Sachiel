@@ -30,6 +30,7 @@ export default async function DailyHighlight() {
         {noGroupStories &&
           noGroupStories.map((story) => (
             <StoryCard
+              pageType="homepage"
               key={story.id}
               story={story}
               gtmTags={{

@@ -6,20 +6,21 @@ import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type Story = MostSponsorPublisher['stories'][number]
 
 const PublisherStory = ({
   story,
   showImage,
-  publisherName,
+  publisherInfo,
 }: {
   story: Story
   showImage: boolean
-  publisherName: string
+  publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
+  const { publisherId, publisherName } = publisherInfo
 
   return (
     <article className="border-b py-3 last-of-type:border-b-0">
@@ -27,7 +28,17 @@ const PublisherStory = ({
         href={`/story/${story.id}`}
         className="GTM-media_click_media_article"
         onClick={() =>
-          logStoryClick(userPayload, story.id, story.title, publisherName)
+          logClickEvent(userPayload, 'click-story', {
+            target: 'story',
+            targetId: story.id,
+            targetTitle: story.title,
+            source: 'mediaPage',
+            complementary: {
+              publisherTarget: 'publisher',
+              targetId: publisherId,
+              targetName: publisherName,
+            },
+          })
         }
       >
         {showImage && story.og_image && (
@@ -103,7 +114,10 @@ export default function PublisherCard({
           key={story.id}
           story={story}
           showImage={i === 0}
-          publisherName={publisherAndStories.publisher.title}
+          publisherInfo={{
+            publisherName: publisherAndStories.publisher.title,
+            publisherId: publisherAndStories.publisher.id,
+          }}
         />
       ))}
     </section>

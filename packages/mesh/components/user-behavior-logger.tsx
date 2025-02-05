@@ -4,6 +4,7 @@ import throttle from 'raf-throttle'
 import { useEffect } from 'react'
 
 import useUserPayload from '@/hooks/use-user-payload'
+import type { UserBehaviorLogInfo } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
@@ -12,22 +13,32 @@ export default function UserBehaviorLogger() {
 
   //pageview event
   useEffect(() => {
-    const info = generateUserBehaviorLogInfo('pageview', userPayload)
-    if (info) {
+    const basicInfo = generateUserBehaviorLogInfo(userPayload)
+    if (basicInfo) {
+      const info: UserBehaviorLogInfo = {
+        ...basicInfo,
+        type: 'pageview',
+      }
       sendUserBehaviorLog(info)
     }
   }, [userPayload])
 
   //exit event
   useEffect(() => {
-    const info = generateUserBehaviorLogInfo('exit', userPayload)
+    const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
     let hasEventTriggered = false
 
     const beforeLeavingPage = () => {
       if (!hasEventTriggered) {
         hasEventTriggered = true
-        sendUserBehaviorLog(info)
+        if (basicInfo) {
+          const info: UserBehaviorLogInfo = {
+            ...basicInfo,
+            type: 'exit',
+          }
+          sendUserBehaviorLog(info)
+        }
       }
     }
 
@@ -56,14 +67,26 @@ export default function UserBehaviorLogger() {
 
       if (!hasScrolledTo50 && scrollPercent >= 0.5) {
         hasScrolledTo50 = true
-        const info50 = generateUserBehaviorLogInfo('scroll-to-50%', userPayload)
-        sendUserBehaviorLog(info50)
+        const basicInfo = generateUserBehaviorLogInfo(userPayload)
+        if (basicInfo) {
+          const info50: UserBehaviorLogInfo = {
+            ...basicInfo,
+            type: 'scroll-to-50%',
+          }
+          sendUserBehaviorLog(info50)
+        }
       }
 
       if (!hasScrolledTo80 && scrollPercent >= 0.8) {
         hasScrolledTo80 = true
-        const info80 = generateUserBehaviorLogInfo('scroll-to-80%', userPayload)
-        sendUserBehaviorLog(info80)
+        const basicInfo = generateUserBehaviorLogInfo(userPayload)
+        if (basicInfo) {
+          const info80: UserBehaviorLogInfo = {
+            ...basicInfo,
+            type: 'scroll-to-80%',
+          }
+          sendUserBehaviorLog(info80)
+        }
       }
     })
 
