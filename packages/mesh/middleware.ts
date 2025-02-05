@@ -6,10 +6,8 @@ export async function middleware(request: NextRequest) {
     /^\/media(\/.*)?$/,
     /^\/social(\/.*)?$/,
     /^\/point(\/.*)?$/,
-    /^\/profile(\/.*)?$/,
     /^\/payment(\/.*)?$/,
     /^\/setting(\/.*)?$/,
-    /^\/collection(\/.*)?$/,
     /^\/publisher-list(\/.*)?$/,
   ]
   const currentPath = request.nextUrl.pathname
