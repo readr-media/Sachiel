@@ -13,9 +13,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import useUserPayload from '@/hooks/use-user-payload'
 import { PaymentType } from '@/types/payment'
-import { logStoryAction } from '@/utils/event-logs'
 import { getStoryUrl } from '@/utils/get-url'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
@@ -140,7 +138,7 @@ export default function StoryMoreActionButton({
       {shouldShowActionSheet && (
         <ActionSheet
           ref={actionSheetRef}
-          storyId={story.id}
+          storyInfo={storyInfo}
           publisherId={publisherId}
           onClose={closeActionSheet}
           openShareSheet={openShareSheet}
@@ -218,7 +216,7 @@ const actions = [
 
 const ActionSheet = forwardRef(function ActionSheet(
   {
-    storyId,
+    storyInfo,
     publisherId,
     openShareSheet,
     openAddCollection,
@@ -226,7 +224,10 @@ const ActionSheet = forwardRef(function ActionSheet(
     position,
     onClose,
   }: {
-    storyId: string
+    storyInfo: {
+      storyId: string
+      storyTitle: string
+    }
     publisherId: string
     openShareSheet: () => void
     openAddCollection: () => void
@@ -238,7 +239,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 ) {
   const router = useRouter()
   const { user, setUser } = useUser()
-  const userPayload = useUserPayload()
+  const storyId = storyInfo.storyId
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
   const { addToast } = useToast()
@@ -307,7 +308,6 @@ const ActionSheet = forwardRef(function ActionSheet(
               status: 'success',
               text: TOAST_MESSAGE.addBookmarkSuccess,
             })
-            logStoryAction(userPayload, 'bookmark', storyId)
           } else {
             addToast({
               status: 'fail',

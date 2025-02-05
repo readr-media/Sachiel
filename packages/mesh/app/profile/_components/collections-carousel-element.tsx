@@ -8,7 +8,7 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useEditProfile } from '@/context/edit-profile'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { PickCollections } from '@/types/profile'
-import { logCollectionClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type CollectionsCarouselElementProps = {
   data: NonNullable<PickCollections>[number]
@@ -26,7 +26,19 @@ const CollectionsCarouselElement = ({
     <div className="flex h-full w-[150px] flex-col rounded border bg-white md:w-full">
       <Link
         href={`/collection/${id}`}
-        onClick={() => logCollectionClick(userPayload, title ?? '')}
+        onClick={() =>
+          logClickEvent(userPayload, 'click-collection', {
+            target: 'collection',
+            targetId: id,
+            targetTitle: title ?? '',
+            source: 'profile',
+            complementary: {
+              publisherTarget: 'member',
+              targetId: creator?.id ?? '',
+              targetName: creator?.name ?? '',
+            },
+          })
+        }
       >
         <div className="relative aspect-[2] w-full">
           <ImageWithFallback
@@ -46,7 +58,19 @@ const CollectionsCarouselElement = ({
         <Link
           className="flex grow flex-col"
           href={`/collection/${id}`}
-          onClick={() => logCollectionClick(userPayload, title ?? '')}
+          onClick={() =>
+            logClickEvent(userPayload, 'click-collection', {
+              target: 'collection',
+              targetId: id,
+              targetTitle: title ?? '',
+              source: 'profile',
+              complementary: {
+                publisherTarget: 'member',
+                targetId: creator?.id ?? '',
+                targetName: creator?.name ?? '',
+              },
+            })
+          }
         >
           <div className="h-full flex-col justify-between">
             <p className="caption-1 text-primary-500">@{creator?.customId}</p>

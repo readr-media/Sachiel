@@ -8,7 +8,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStoryByCategory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 const StoryCard = ({
   showImage,
@@ -17,10 +17,10 @@ const StoryCard = ({
 }: {
   showImage: boolean
   story: SponsoredStoryByCategory['stories'][number]
-  publisherInfo: { publisherName: string; publisherId: string }
+  publisherInfo: { publisherId: string; publisherName: string }
 }) => {
   const userPayload = useUserPayload()
-
+  const { publisherId, publisherName } = publisherInfo
   return (
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0 ">
       <NextLink
@@ -43,10 +43,16 @@ const StoryCard = ({
           <h3
             className="subtitle-2 mb-1 text-primary-700 hover-or-active:underline"
             onClick={() =>
-              logStoryClick(userPayload, {
-                storyId: story.id,
-                storyTitle: story.title,
-                ...publisherInfo,
+              logClickEvent(userPayload, 'click-story', {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story.title,
+                source: 'subpage',
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: publisherId,
+                  targetName: publisherName,
+                },
               })
             }
           >

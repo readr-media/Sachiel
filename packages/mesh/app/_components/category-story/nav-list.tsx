@@ -12,7 +12,7 @@ import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
 import useInView from '@/hooks/use-in-view'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
-import { logCategoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 import { replaceSearchParams, setSearchParams } from '@/utils/search-params'
 
 import StorySection from './story-section'
@@ -99,7 +99,12 @@ export default function NavList({ categories, initialStories }: Props) {
                     isActive: category === activeCategory,
                   }}
                   onClick={() => {
-                    logCategoryClick(userPayload, category?.title ?? '')
+                    logClickEvent(userPayload, 'click-category', {
+                      target: 'category',
+                      targetId: category.id,
+                      targetTitle: category?.title ?? '',
+                      source: 'homepage',
+                    })
                     setSearchParams(
                       categorySearchParamName,
                       category.slug ?? ''

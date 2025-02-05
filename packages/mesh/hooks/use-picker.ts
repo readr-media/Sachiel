@@ -11,14 +11,10 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { PickObjective } from '@/types/objective'
-import { logStoryAction } from '@/utils/event-logs'
 import { addPickToUser, removePickFromUser } from '@/utils/mutate-user-pick-ids'
-
-import useUserPayload from './use-user-payload'
 
 export default function usePicker() {
   const { user, setUser } = useUser()
-  const userPayload = useUserPayload()
   const [isLoading, setIsLoading] = useState(false)
   const memberId = user.memberId
   const { addToast } = useToast()
@@ -44,10 +40,9 @@ export default function usePicker() {
         addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
         reverseMutation()
       }
-      logStoryAction(userPayload, 'pick', targetId)
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast, userPayload]
+    [memberId, user, setUser, addToast]
   )
 
   const removePick = useCallback(
@@ -107,10 +102,9 @@ export default function usePicker() {
         addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
         reverseMutation()
       }
-      logStoryAction(userPayload, 'pick', targetId)
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast, userPayload]
+    [memberId, user, setUser, addToast]
   )
 
   return {

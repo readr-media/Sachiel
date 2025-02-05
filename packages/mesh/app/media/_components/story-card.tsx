@@ -13,7 +13,7 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
 
@@ -40,10 +40,12 @@ const StoryMetaWrapper = ({
 export default forwardRef(function StoryCard(
   {
     story,
+    pageType,
     className = '',
     gtmTags,
   }: {
     story: Story
+    pageType: 'mediaPage' | 'storyPage'
     className?: string
     gtmTags: GtmTags
   },
@@ -80,16 +82,17 @@ export default forwardRef(function StoryCard(
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              {
-                storyId: story.id,
-                storyTitle: story?.title ?? '',
-                publisherId: story.source?.id ?? '',
-                publisherName: story.source?.title ?? '',
+            logClickEvent(userPayload, 'click-story', {
+              target: 'story',
+              targetId: story.id,
+              targetTitle: story?.title ?? '',
+              source: pageType === 'mediaPage' ? 'mediaPage' : '1500',
+              complementary: {
+                publisherTarget: 'publisher',
+                targetId: story.source?.id ?? '',
+                targetName: story.source?.title ?? '',
               },
-              true
-            )
+            })
           }
         >
           <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">

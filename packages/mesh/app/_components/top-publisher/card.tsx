@@ -7,7 +7,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from '../image-with-fallback'
 
@@ -21,6 +21,7 @@ const StoryCard = ({
   publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
+  const { publisherId, publisherName } = publisherInfo
 
   return (
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0">
@@ -28,10 +29,16 @@ const StoryCard = ({
         href={`/story/${story.id}`}
         className="GTM-homepage_click_media_article"
         onClick={() =>
-          logStoryClick(userPayload, {
-            storyId: story.id,
-            storyTitle: story.title,
-            ...publisherInfo,
+          logClickEvent(userPayload, 'click-story', {
+            target: 'story',
+            targetId: story.id,
+            targetTitle: story.title,
+            source: 'homepage',
+            complementary: {
+              publisherTarget: 'publisher',
+              targetId: publisherId,
+              targetName: publisherName,
+            },
           })
         }
       >

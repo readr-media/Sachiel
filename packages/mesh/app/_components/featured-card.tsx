@@ -10,12 +10,13 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory, GtmTags, Story } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from './image-with-fallback'
 
 type Props = {
   isReadrStory?: boolean
+  pageType: 'homepage' | 'subpage'
   story: Story | CategoryStory
   customId: string
   publisher: string
@@ -25,6 +26,7 @@ type Props = {
 
 export default function FeaturedCard({
   isReadrStory,
+  pageType,
   story,
   customId,
   publisher,
@@ -67,11 +69,16 @@ export default function FeaturedCard({
             <NextLink
               href={`/story/${story.id}`}
               onClick={() =>
-                logStoryClick(userPayload, {
-                  storyId: story.id,
-                  storyTitle: story.title,
-                  publisherName: publisher,
-                  publisherId: publisherId,
+                logClickEvent(userPayload, 'click-story', {
+                  target: 'story',
+                  targetId: story.id,
+                  targetTitle: story.title,
+                  source: pageType,
+                  complementary: {
+                    publisherTarget: 'publisher',
+                    targetId: publisherId,
+                    targetName: publisher,
+                  },
                 })
               }
               className={gtmTags.story}

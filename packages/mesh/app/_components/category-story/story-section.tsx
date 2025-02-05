@@ -52,6 +52,7 @@ export default function StorySection({ activeTitle, stories, slug }: Props) {
           <div className="flex flex-col gap-y-5">
             {stories.slice(1, 4).map((story) => (
               <StoryCard
+                pageType="homepage"
                 story={story}
                 key={story.id}
                 gtmTags={{

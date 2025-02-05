@@ -1,4 +1,4 @@
-import type { EventType, PageInfo } from '@/types/user-behavior-log'
+import type { BaseLogInfo } from '@/types/user-behavior-log'
 
 import {
   detectIsInApp,
@@ -10,47 +10,34 @@ import {
 import { displayTime } from './story-display'
 
 const generateUserBehaviorLogInfo = (
-  eventType: EventType,
   payload = {
-    memberType: 'none-logged-in',
+    logInStatus: false,
+    memberId: '',
     email: '',
     firebaseId: '',
   }
-) => {
+): BaseLogInfo => {
   if (isServer()) {
     return null
   }
 
   const userAgent = window.navigator.userAgent
-  const pathname = window.location.pathname
-  const { memberType, email, firebaseId } = payload
+  const { logInStatus, email, firebaseId, memberId } = payload
 
-  const triggerEvent = {
-    eventType,
-    datetime: displayTime(new Date()) ?? '',
-  }
+  const datetime = displayTime(new Date()) ?? ''
 
   const clientInfo = {
-    ip: '',
-    userInfo: {
-      memberType,
-      email,
-      firebaseId,
-    },
+    logInStatus,
+    memberId,
+    email,
+    firebaseId,
     device: getDeviceInfo(userAgent),
     browser: getBrowserInfo(userAgent),
-    isInApBrowser: detectIsInApp(userAgent),
+    isInAppBrowser: detectIsInApp(userAgent),
     screenSize: getWindowSizeInfo(),
   }
 
-  // TODO: add pageType if pageType is defined
-  const pageInfo: PageInfo = {
-    referrer: document.referrer,
-    pageUrl: window.location.href,
-    pageName: pathname,
-  }
-
-  return { triggerEvent, clientInfo, pageInfo }
+  return { ...clientInfo, datetime }
 }
 
 export { generateUserBehaviorLogInfo }

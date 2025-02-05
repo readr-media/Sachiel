@@ -18,7 +18,7 @@ import {
   type CommentType,
   type PickListItem,
 } from '@/types/profile'
-import { logCollectionClick, logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type StoryDataTypes =
   | NonNullable<PickListItem>
@@ -171,14 +171,23 @@ const ArticleCard = ({
           }`}
           href={redirectLink()}
           onClick={() =>
-            isCollection(storyData)
-              ? logCollectionClick(userPayload, storyData.title ?? '')
-              : logStoryClick(userPayload, {
-                  storyId: storyData.id,
-                  storyTitle: storyData?.title ?? '',
-                  publisherId: storyGetters.sourceId(storyData),
-                  publisherName: storyGetters.source(storyData),
-                })
+            logClickEvent(
+              userPayload,
+              isCollection(storyData) ? 'click-collection' : 'click-story',
+              {
+                target: isCollection(storyData) ? 'collection' : 'story',
+                targetId: storyData.id,
+                targetTitle: storyData?.title ?? '',
+                source: 'profile',
+                complementary: {
+                  publisherTarget: isCollection(storyData)
+                    ? 'member'
+                    : 'publisher',
+                  targetId: storyGetters.sourceId(storyData),
+                  targetName: storyGetters.source(storyData),
+                },
+              }
+            )
           }
         >
           <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -206,14 +215,23 @@ const ArticleCard = ({
             }`}
             href={redirectLink()}
             onClick={() =>
-              isCollection(storyData)
-                ? logCollectionClick(userPayload, storyData.title ?? '')
-                : logStoryClick(userPayload, {
-                    storyId: storyData.id,
-                    storyTitle: storyData?.title ?? '',
-                    publisherId: storyGetters.sourceId(storyData),
-                    publisherName: storyGetters.source(storyData),
-                  })
+              logClickEvent(
+                userPayload,
+                isCollection(storyData) ? 'click-collection' : 'click-story',
+                {
+                  target: isCollection(storyData) ? 'collection' : 'story',
+                  targetId: storyData.id,
+                  targetTitle: storyData?.title ?? '',
+                  source: 'profile',
+                  complementary: {
+                    publisherTarget: isCollection(storyData)
+                      ? 'member'
+                      : 'publisher',
+                    targetId: storyGetters.sourceId(storyData),
+                    targetName: storyGetters.source(storyData),
+                  },
+                }
+              )
             }
           >
             {shouldShowSource && (

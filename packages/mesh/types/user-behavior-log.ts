@@ -1,25 +1,10 @@
 import type Bowser from 'bowser'
 
-import type { SharePlatform } from '@/components/share-sheet'
-
 export type UserPayload = {
-  memberType: string
+  logInStatus: boolean
+  memberId: string
   email: string
   firebaseId: string
-}
-
-export type ShareData = {
-  shareAction: {
-    storyId: string
-    storyTitle: string
-    sharePlatform: SharePlatform
-  }
-}
-
-export type PageInfo = {
-  referrer: string
-  pageUrl: string
-  pageName: string
 }
 
 export type EventType =
@@ -27,117 +12,71 @@ export type EventType =
   | 'scroll-to-50%'
   | 'scroll-to-80%'
   | 'exit'
-  | 'storyClick'
-  | 'categoryClick'
-  | 'socialFeedClick'
-  | 'collectionClick'
-  | 'storyAction'
-  | 'share'
-  | 'videoPlay'
-  | 'sponsor'
-  | 'unlock'
+  | 'click'
+  | 'interaction'
+  | 'payment'
 
-type StoryInteraction = {
-  interaction: {
-    story: {
-      type: 'relatedStory' | 'story'
-      storyId: string
-      storyTitle: string
-      publisherName: string
-      publisherId: string
-    }
-  }
+export type InteractionInfo = {
+  type: 'share' | 'pick' | 'collection' | 'bookmark'
+  storyId: string | null
+  storyTitle: string | null
+  sharePlatform: string | null
 }
 
-type ShareInteraction = {
-  interaction: {
-    shareAction: {
-      storyId: string
-      storyTitle: string
-      sharePlatform: SharePlatform
-    }
-  }
+export type ClickType =
+  | 'click-story'
+  | 'click-collection'
+  | 'click-social'
+  | 'click-category'
+
+export type ClickTarget = 'story' | 'collection' | 'category'
+
+export type Complementary = {
+  publisherTarget: 'publisher' | 'member'
+  targetId: string
+  targetName: string
+  feedAction?: string
+  feedOwnerId?: string[]
 }
 
-type CategoryInteraction = {
-  interaction: {
-    category: {
-      categoryName: string
-    }
-  }
+export type PageType =
+  | 'homepage'
+  | 'subpage'
+  | 'mediaPage'
+  | 'profile'
+  | '1500'
+  | 'socialPage'
+
+type ClickEvent = {
+  type: ClickType
+  target: ClickTarget
+  targetId: string
+  targetTitle: string
+  source: PageType
+  complementary:
+    | (Omit<Complementary, 'feedAction' | 'feedOwnerId'> & {
+        feedAction: string | null
+        feedOwnerId: string[] | null
+      })
+    | null
 }
 
-type StoryAction = {
-  interaction: {
-    type: 'pick' | 'collection' | 'bookmark'
-    storyId: string
-  }
+type GeneralEvent = {
+  type: 'pageview' | 'exit' | 'scroll-to-50%' | 'scroll-to-80%'
 }
 
-type UserActivityInteraction = {
-  userActivity: {
-    activityType: 'pick' | 'pick-comment' | 'comment' | undefined
-    userId: string[]
-  }
-}
-
-type MediaInteraction = {
-  interaction: {
-    media: {
-      videoPlay: boolean
-    }
-  }
-}
-
-type SponsorInteraction = {
-  interaction: {
-    sponsorAction: {
-      sponsorName: string
-      sponsorId: string
-    }
-  }
-}
-
-type UnlockInteraction = {
-  interaction: {
-    unlock: {
-      storyId: string
-    }
-  }
-}
-
-type CollectionInteraction = {
-  interaction: {
-    collectionInfo: {
-      collectionTitle: string
-    }
-  }
-}
-
-export type BaseLog = {
-  triggerEvent: {
-    eventType: EventType
-    datetime: string
-  }
-  clientInfo: {
-    ip: string
-    userInfo: UserPayload
-    device: { name: string; version: string }
-    browser: Bowser.Parser.Details
-    isInApBrowser: boolean
-    screenSize: { width: number; height: number }
-  }
-  pageInfo: PageInfo
+export type BaseLogInfo = {
+  logInStatus: boolean
+  memberId: string
+  email: string
+  firebaseId: string
+  device: { name: string; version: string }
+  browser: Bowser.Parser.Details
+  isInAppBrowser: boolean
+  screenSize: { width: number; height: number }
+  datetime: string
 } | null
 
 export type UserBehaviorLogInfo =
-  | BaseLog
-  | (BaseLog & StoryInteraction)
-  | (BaseLog & ShareInteraction)
-  | (BaseLog & CategoryInteraction)
-  | (BaseLog & StoryAction)
-  | (BaseLog & UserActivityInteraction)
-  | (BaseLog & MediaInteraction)
-  | (BaseLog & SponsorInteraction)
-  | (BaseLog & UnlockInteraction)
-  | (BaseLog & CollectionInteraction)
+  | (BaseLogInfo & GeneralEvent)
+  | (BaseLogInfo & ClickEvent)

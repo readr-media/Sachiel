@@ -9,7 +9,7 @@ import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { Comment } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 type Props = {
@@ -93,11 +93,16 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 href={`/story/${comment.story.id}`}
                 className="GTM-homepage_click_popular_user_article"
                 onClick={() =>
-                  logStoryClick(userPayload, {
-                    storyId: comment.story?.id ?? '',
-                    storyTitle: comment.story?.title ?? '',
-                    publisherName: comment.story?.source.title ?? '',
-                    publisherId: comment.story?.source.id ?? '',
+                  logClickEvent(userPayload, 'click-story', {
+                    target: 'story',
+                    targetId: comment.story?.id ?? '',
+                    targetTitle: comment.story?.title ?? '',
+                    source: 'homepage',
+                    complementary: {
+                      publisherTarget: 'publisher',
+                      targetId: comment.story?.source.id ?? '',
+                      targetName: comment.story?.source.title ?? '',
+                    },
                   })
                 }
               >

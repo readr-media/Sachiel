@@ -49,6 +49,7 @@ export default function NonDesktopStories({
       elements.push(
         <StoryCard
           key={story.id}
+          pageType="subpage"
           story={story}
           ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
           className={`${

@@ -14,8 +14,6 @@ import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
-import useUserPayload from '@/hooks/use-user-payload'
-import { logPayment } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
 
 import { type StoryUnlockPolicy } from '../page'
@@ -38,7 +36,6 @@ export default function PaymentInfo({
   const [isFocused, setIsFocused] = useState(false)
   const { addToast } = useToast()
   const isValid = isValidEmail(email)
-  const userPayload = useUserPayload()
   const createUnlockStorySinglePayment: CreatePaymentProps = {
     action: 'unlock_story_single',
     memberId: user.memberId,
@@ -55,7 +52,6 @@ export default function PaymentInfo({
 
   const handleUnlockStorySingleSuccess = () => {
     addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
-    logPayment(userPayload, storyId)
     setTimeout(() => {
       router.push(`/story/${storyId}`)
     }, 300)

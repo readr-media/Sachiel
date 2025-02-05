@@ -4598,6 +4598,7 @@ export type CollectionInfoFragment = {
   creator?: {
     __typename?: 'Member'
     customId?: string | null
+    name?: string | null
     id: string
   } | null
 }
@@ -5528,6 +5529,7 @@ export type GetMemberProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5635,6 +5637,7 @@ export type GetMemberProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -5758,6 +5761,7 @@ export type GetVisitorProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5812,6 +5816,7 @@ export type GetVisitorProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -6293,6 +6298,7 @@ export type GetMorePicksQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -6422,6 +6428,7 @@ export type GetMoreCollectionsQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -7239,6 +7246,7 @@ export const CollectionInfoFragmentDoc = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -13990,6 +13998,7 @@ export const GetMemberProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -14835,6 +14844,7 @@ export const GetVisitorProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -18125,6 +18135,7 @@ export const GetMorePicksDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -19123,6 +19134,7 @@ export const GetMoreCollectionsDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },

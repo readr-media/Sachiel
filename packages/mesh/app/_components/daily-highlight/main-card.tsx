@@ -10,16 +10,17 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory, GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from '../image-with-fallback'
 
 type Props = {
   story: DailyStory
   gtmTags: GtmTags
+  pageType: 'homepage' | 'subpage'
 }
 
-export default function MainCard({ story, gtmTags }: Props) {
+export default function MainCard({ story, gtmTags, pageType }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
 
@@ -58,11 +59,16 @@ export default function MainCard({ story, gtmTags }: Props) {
             href={`story/${story.id}`}
             className={gtmTags.story}
             onClick={() =>
-              logStoryClick(userPayload, {
-                storyId: story.id,
-                storyTitle: story.title,
-                publisherName: story.source.title,
-                publisherId: story.source.id,
+              logClickEvent(userPayload, 'click-story', {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story.title,
+                source: pageType,
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source.id,
+                  targetName: story.source.title,
+                },
               })
             }
           >

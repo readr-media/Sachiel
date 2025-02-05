@@ -11,7 +11,7 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type CommentType } from '@/types/profile'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import type { CollectionPick } from '../../_types/collection'
 import Comment from './comment'
@@ -36,11 +36,16 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
       href={`/story/${story?.id}`}
       className="GTM-collection_pick_collection_article"
       onClick={() =>
-        logStoryClick(userPayload, {
-          storyId: story?.id ?? '',
-          storyTitle: story?.title ?? '',
-          publisherName: story?.source?.title ?? '',
-          publisherId: story?.source?.id ?? '',
+        logClickEvent(userPayload, 'click-story', {
+          target: 'story',
+          targetId: story?.id ?? '',
+          targetTitle: story?.title ?? '',
+          source: 'profile',
+          complementary: {
+            publisherTarget: 'publisher',
+            targetId: story?.source?.id ?? '',
+            targetName: story?.source?.title ?? '',
+          },
         })
       }
     >

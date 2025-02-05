@@ -20,6 +20,7 @@ export default function RelatedStories({
         {relatedStories.map((relatedStory) => (
           <StoryCard
             key={relatedStory.id}
+            pageType="storyPage"
             story={relatedStory}
             gtmTags={{
               story: 'GTM-article_click_related_article',
