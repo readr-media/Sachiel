@@ -13,8 +13,12 @@ const loggingClient = new Logging({
 export async function POST(req: NextRequest) {
   try {
     const body: UserBehaviorLogInfo = await req.json()
+    const clientIp = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').split(
+      ','
+    )[0]
 
     if (body) {
+      body.ip = clientIp
       const eventType = body.type
       const logCategory = [
         'pageview',

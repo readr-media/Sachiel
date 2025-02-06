@@ -66,6 +66,7 @@ type GeneralEvent = {
 }
 
 export type BaseLogInfo = {
+  ip: string
   logInStatus: boolean
   memberId: string
   email: string

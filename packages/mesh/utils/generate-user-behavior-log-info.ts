@@ -27,6 +27,7 @@ const generateUserBehaviorLogInfo = (
   const datetime = displayTime(new Date()) ?? ''
 
   const clientInfo = {
+    ip: '',
     logInStatus,
     memberId,
     email,
