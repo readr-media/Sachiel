@@ -20,13 +20,13 @@ export default function RelatedStories({
         {relatedStories.map((relatedStory) => (
           <StoryCard
             key={relatedStory.id}
-            pageType="storyPage"
             story={relatedStory}
             gtmTags={{
               story: 'GTM-article_click_related_article',
               pick: 'GTM-article_click_pick_related_article',
             }}
             className="last-of-type:border-b-0"
+            pageType="storyPage"
           />
         ))}
       </div>

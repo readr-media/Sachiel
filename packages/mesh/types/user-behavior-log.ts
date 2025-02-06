@@ -25,6 +25,7 @@ export type InteractionInfo = {
 
 export type ClickType =
   | 'click-story'
+  | 'click-related-story'
   | 'click-collection'
   | 'click-social'
   | 'click-category'
@@ -44,15 +45,15 @@ export type PageType =
   | 'subpage'
   | 'mediaPage'
   | 'profile'
-  | '1500'
   | 'socialPage'
+  | 'storyPage'
 
 type ClickEvent = {
   type: ClickType
   target: ClickTarget
   targetId: string
   targetTitle: string
-  source: PageType
+  source: PageType | string
   complementary:
     | (Omit<Complementary, 'feedAction' | 'feedOwnerId'> & {
         feedAction: string | null
@@ -81,3 +82,8 @@ export type BaseLogInfo = {
 export type UserBehaviorLogInfo =
   | (BaseLogInfo & GeneralEvent)
   | (BaseLogInfo & ClickEvent)
+
+export const clickTypeMap = {
+  mediaPage: 'click-story',
+  storyPage: 'click-related-story',
+} as const

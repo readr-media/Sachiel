@@ -13,6 +13,8 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { GtmTags } from '@/types/homepage'
+import type { PageType } from '@/types/user-behavior-log'
+import { clickTypeMap } from '@/types/user-behavior-log'
 import { logClickEvent } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
@@ -53,6 +55,9 @@ export default forwardRef(function StoryCard(
 ) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
+  const getSource = (pageType: PageType, storyId: string) => {
+    return pageType === 'storyPage' ? storyId : pageType
+  }
 
   return (
     <article
@@ -82,11 +87,11 @@ export default forwardRef(function StoryCard(
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logClickEvent(userPayload, 'click-story', {
+            logClickEvent(userPayload, clickTypeMap[pageType], {
               target: 'story',
               targetId: story.id,
               targetTitle: story?.title ?? '',
-              source: pageType === 'mediaPage' ? 'mediaPage' : '1500',
+              source: getSource(pageType, story.id),
               complementary: {
                 publisherTarget: 'publisher',
                 targetId: story.source?.id ?? '',

@@ -31,7 +31,7 @@ export function logClickEvent(
     target: ClickTarget
     targetId: string
     targetTitle: string
-    source: PageType
+    source: PageType | string
     complementary?: Complementary
   }
 ) {
