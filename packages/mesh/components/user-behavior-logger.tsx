@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import throttle from 'raf-throttle'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -10,16 +10,18 @@ import type { UserBehaviorLogInfo } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
+const pathTarget = {
+  '/story': 'story',
+  '/collection': 'collection',
+}
+
 export default function UserBehaviorLogger() {
   const userPayload = useUserPayload()
   const pathName = usePathname()
-  const pathTarget = {
-    '/story': 'story',
-    '/collection': 'collection',
-  }
+
   const pageName = usePageName()
 
-  const getComplementary = () => {
+  const getComplementary = useCallback(() => {
     for (const key in pathTarget) {
       if (pathName.startsWith(key)) {
         return {
@@ -29,7 +31,7 @@ export default function UserBehaviorLogger() {
       }
     }
     return null
-  }
+  }, [pathName])
 
   //pageview event
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function UserBehaviorLogger() {
       }
       sendUserBehaviorLog(info)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   //exit event
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function UserBehaviorLogger() {
     return () => {
       window.removeEventListener('beforeunload', beforeLeavingPage)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   // scroll event (50%、80%)
   useEffect(() => {
@@ -123,7 +125,7 @@ export default function UserBehaviorLogger() {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   return null
 }
