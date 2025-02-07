@@ -10,6 +10,7 @@ import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
 import { categorySearchParamName } from '@/constants/search-param-names'
 import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
 import useInView from '@/hooks/use-in-view'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -42,6 +43,7 @@ export default function NavList({ categories, initialStories }: Props) {
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
   const userPayload = useUserPayload()
   const searchParams = useSearchParams()
+  const pageName = usePageName()
   const activeCategorySlug = searchParams.get(categorySearchParamName)
   const activeCategory = categories?.find(
     (category) => category.slug === activeCategorySlug
@@ -103,7 +105,7 @@ export default function NavList({ categories, initialStories }: Props) {
                       target: 'category',
                       targetId: category.id,
                       targetTitle: category?.title ?? '',
-                      source: 'homepage',
+                      source: pageName,
                     })
                     setSearchParams(
                       categorySearchParamName,

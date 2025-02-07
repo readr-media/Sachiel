@@ -6,6 +6,7 @@ import CollectionPickButton from '@/components/collection-card/collection-pick-b
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useEditProfile } from '@/context/edit-profile'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { PickCollections } from '@/types/profile'
 import { logClickEvent } from '@/utils/event-logs'
@@ -19,6 +20,7 @@ const CollectionsCarouselElement = ({
 }: CollectionsCarouselElementProps) => {
   const { visitorProfile } = useEditProfile()
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   if (!data) return <></>
   const { heroImage, title, creator, picksCount, id } = data
   const shouldShowCollectionPickButton = visitorProfile.customId
@@ -31,7 +33,7 @@ const CollectionsCarouselElement = ({
             target: 'collection',
             targetId: id,
             targetTitle: title ?? '',
-            source: 'profile',
+            source: pageName,
             complementary: {
               publisherTarget: 'member',
               targetId: creator?.id ?? '',
@@ -63,7 +65,7 @@ const CollectionsCarouselElement = ({
               target: 'collection',
               targetId: id,
               targetTitle: title ?? '',
-              source: 'profile',
+              source: pageName,
               complementary: {
                 publisherTarget: 'member',
                 targetId: creator?.id ?? '',

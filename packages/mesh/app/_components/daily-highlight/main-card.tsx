@@ -8,6 +8,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory, GtmTags } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -17,12 +18,12 @@ import ImageWithFallback from '../image-with-fallback'
 type Props = {
   story: DailyStory
   gtmTags: GtmTags
-  pageType: 'homepage' | 'subpage'
 }
 
-export default function MainCard({ story, gtmTags, pageType }: Props) {
+export default function MainCard({ story, gtmTags }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-x-10">
@@ -63,7 +64,7 @@ export default function MainCard({ story, gtmTags, pageType }: Props) {
                 target: 'story',
                 targetId: story.id,
                 targetTitle: story.title,
-                source: pageType,
+                source: pageName,
                 complementary: {
                   publisherTarget: 'publisher',
                   targetId: story.source.id,

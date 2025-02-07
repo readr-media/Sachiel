@@ -17,7 +17,6 @@ export default function TopStoriesSection({
       {groupStories && (
         <div className="flex flex-col gap-y-4 sm:gap-y-5">
           <MainCard
-            pageType="subpage"
             story={groupStories[0]}
             gtmTags={{
               story: 'GTM-categorypage_click_focus_article',

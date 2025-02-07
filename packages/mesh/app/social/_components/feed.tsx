@@ -7,6 +7,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type MongoDBResponse } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
@@ -27,6 +28,7 @@ export default function Feed({
   const { following_actions } = story
   const storyActions = processStoryActions(following_actions)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const actionTypeMap = {
     'pick-comment': storyActions.actionType.isPickAndComment,
     pick: storyActions.actionType.isPick,
@@ -41,7 +43,7 @@ export default function Feed({
     target: 'story',
     targetId: story.id,
     targetTitle: story.og_title,
-    source: 'socialPage',
+    source: pageName,
   } as const
   const publisherInfo = {
     publisherTarget: 'publisher',

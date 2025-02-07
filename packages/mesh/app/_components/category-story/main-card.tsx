@@ -8,6 +8,7 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -19,6 +20,7 @@ type Props = {
 export default function MainCard({ story }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div className="flex flex-col gap-y-3 pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] lg:shadow-none">
@@ -59,7 +61,7 @@ export default function MainCard({ story }: Props) {
                 target: 'story',
                 targetId: story.id,
                 targetTitle: story.title,
-                source: 'homepage',
+                source: pageName,
                 complementary: {
                   publisherTarget: 'publisher',
                   targetId: story.source.id,

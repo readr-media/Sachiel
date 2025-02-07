@@ -9,6 +9,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import {
   getAddedCategoryIds,
@@ -49,6 +50,7 @@ export default function CategorySelector({
   const displayCategories = user.followingCategories
   const { addToast } = useToast()
   const userPayoload = useUserPayload()
+  const pageName = usePageName()
 
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
   const { memberId } = user
@@ -143,7 +145,7 @@ export default function CategorySelector({
                       target: 'category',
                       targetId: category.id,
                       targetTitle: category?.title ?? '',
-                      source: 'mediaPage',
+                      source: pageName,
                     })
                     setSearchParams(
                       categorySearchParamName,

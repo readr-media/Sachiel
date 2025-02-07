@@ -7,6 +7,7 @@ import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { Comment } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -23,6 +24,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
   )
   const { user } = useUser()
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div className="flex items-start gap-x-3">
@@ -97,7 +99,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                     target: 'story',
                     targetId: comment.story?.id ?? '',
                     targetTitle: comment.story?.title ?? '',
-                    source: 'homepage',
+                    source: pageName,
                     complementary: {
                       publisherTarget: 'publisher',
                       targetId: comment.story?.source.id ?? '',
