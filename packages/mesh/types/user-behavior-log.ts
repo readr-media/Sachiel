@@ -64,6 +64,11 @@ type ClickEvent = {
 
 type GeneralEvent = {
   type: 'pageview' | 'exit' | 'scroll-to-50%' | 'scroll-to-80%'
+  source: string
+  complementary: {
+    target: string
+    targetId: string
+  } | null
 }
 
 export type BaseLogInfo = {

@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import throttle from 'raf-throttle'
 import { useEffect } from 'react'
 
@@ -10,6 +11,31 @@ import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
 export default function UserBehaviorLogger() {
   const userPayload = useUserPayload()
+  const pathName = usePathname()
+  const pathTarget = {
+    '/story': 'story',
+    '/collection': 'collection',
+  }
+
+  const getPageName = () => {
+    if (pathName === '/') {
+      return 'homepage'
+    } else {
+      return pathName.split('/')?.[1] ?? ''
+    }
+  }
+
+  const getComplementary = () => {
+    for (const key in pathTarget) {
+      if (pathName.startsWith(key)) {
+        return {
+          target: pathTarget[key as keyof typeof pathTarget],
+          targetId: pathName.split('/')[2] ?? '',
+        }
+      }
+    }
+    return null
+  }
 
   //pageview event
   useEffect(() => {
@@ -18,6 +44,8 @@ export default function UserBehaviorLogger() {
       const info: UserBehaviorLogInfo = {
         ...basicInfo,
         type: 'pageview',
+        source: getPageName(),
+        complementary: getComplementary(),
       }
       sendUserBehaviorLog(info)
     }
@@ -36,6 +64,8 @@ export default function UserBehaviorLogger() {
           const info: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'exit',
+            source: getPageName(),
+            complementary: getComplementary(),
           }
           sendUserBehaviorLog(info)
         }
@@ -72,6 +102,8 @@ export default function UserBehaviorLogger() {
           const info50: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'scroll-to-50%',
+            source: getPageName(),
+            complementary: getComplementary(),
           }
           sendUserBehaviorLog(info50)
         }
@@ -84,6 +116,8 @@ export default function UserBehaviorLogger() {
           const info80: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'scroll-to-80%',
+            source: getPageName(),
+            complementary: getComplementary(),
           }
           sendUserBehaviorLog(info80)
         }
