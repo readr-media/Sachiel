@@ -15,7 +15,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logUnlockStoryEvent } from '@/utils/event-logs'
+import { logStoryUnlockEvent } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
 
 import { type StoryUnlockPolicy } from '../page'
@@ -55,7 +55,7 @@ export default function PaymentInfo({
 
   const handleUnlockStorySingleSuccess = () => {
     addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
-    logUnlockStoryEvent(userPayload, {
+    logStoryUnlockEvent(userPayload, {
       policyId: unlockPolicy[0].id,
       policyName: unlockPolicy[0]?.name ?? '',
       publisherId: unlockPolicy[0].publisher?.id ?? '',

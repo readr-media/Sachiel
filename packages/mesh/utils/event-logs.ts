@@ -71,7 +71,7 @@ export function logSponsorEvent(
   }
 }
 
-export function logUnlockStoryEvent(
+export function logStoryUnlockEvent(
   userPayload: UserPayload,
   eventInfo: {
     policyId: string
