@@ -40,20 +40,12 @@ export type Complementary = {
   feedOwnerId?: string[]
 }
 
-export type PageType =
-  | 'homepage'
-  | 'subpage'
-  | 'mediaPage'
-  | 'profile'
-  | 'socialPage'
-  | 'storyPage'
-
 type ClickEvent = {
   type: ClickType
   target: ClickTarget
   targetId: string
   targetTitle: string
-  source: PageType | string
+  source: string
   complementary:
     | (Omit<Complementary, 'feedAction' | 'feedOwnerId'> & {
         feedAction: string | null

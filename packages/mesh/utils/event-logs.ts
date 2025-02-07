@@ -2,7 +2,6 @@ import type {
   ClickTarget,
   ClickType,
   Complementary,
-  PageType,
   UserBehaviorLogInfo,
   UserPayload,
 } from '@/types/user-behavior-log'
@@ -31,7 +30,7 @@ export function logClickEvent(
     target: ClickTarget
     targetId: string
     targetTitle: string
-    source: PageType | string
+    source: string
     complementary?: Complementary
   }
 ) {
