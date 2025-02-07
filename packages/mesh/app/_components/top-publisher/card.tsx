@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -21,6 +22,7 @@ const StoryCard = ({
   publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const { publisherId, publisherName } = publisherInfo
 
   return (
@@ -33,7 +35,7 @@ const StoryCard = ({
             target: 'story',
             targetId: story.id,
             targetTitle: story.title,
-            source: 'homepage',
+            source: pageName,
             complementary: {
               publisherTarget: 'publisher',
               targetId: publisherId,

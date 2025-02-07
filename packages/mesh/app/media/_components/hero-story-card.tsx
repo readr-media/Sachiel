@@ -7,6 +7,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { logClickEvent } from '@/utils/event-logs'
 
@@ -15,6 +16,7 @@ import { type Story } from './media-stories'
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
   return (
@@ -62,7 +64,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
                   target: 'story',
                   targetId: story.id,
                   targetTitle: story?.title ?? '',
-                  source: 'mediaPage',
+                  source: pageName,
                   complementary: {
                     publisherTarget: 'publisher',
                     targetId: story.source?.id ?? '',

@@ -17,7 +17,6 @@ export default function MainGroup({ stories }: Props) {
     <article className="mb-6 sm:mb-10">
       <div className="mb-4 sm:mb-5">
         <MainCard
-          pageType="homepage"
           story={story}
           gtmTags={{
             story: 'GTM-homepage_click_focus_article',

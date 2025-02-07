@@ -6,6 +6,7 @@ import { useRef } from 'react'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -16,12 +17,12 @@ type Props = {
 
 type Story = {
   story: DailyStory
-  pageType: 'homepage' | 'subpage'
 }
 
-function StoryCard({ story, pageType }: Story) {
+function StoryCard({ story }: Story) {
   const scrollContainerRef = useRef<HTMLElement>(null)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div
@@ -50,7 +51,7 @@ function StoryCard({ story, pageType }: Story) {
               target: 'story',
               targetId: story.id,
               targetTitle: story.title,
-              source: pageType,
+              source: pageName,
               complementary: {
                 publisherTarget: 'publisher',
                 targetId: story.source.id,
@@ -85,7 +86,7 @@ export default function SwiperComponent({ stories }: Props) {
         className="no-scrollbar flex gap-x-2 overflow-x-auto lg:grid lg:grid-cols-3"
       >
         {stories.map((story) => (
-          <StoryCard story={story} key={story.id} pageType="homepage" />
+          <StoryCard story={story} key={story.id} />
         ))}
       </div>
     </div>

@@ -6,6 +6,7 @@ import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStoryByCategory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -20,7 +21,9 @@ const StoryCard = ({
   publisherInfo: { publisherId: string; publisherName: string }
 }) => {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const { publisherId, publisherName } = publisherInfo
+
   return (
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0 ">
       <NextLink
@@ -47,7 +50,7 @@ const StoryCard = ({
                 target: 'story',
                 targetId: story.id,
                 targetTitle: story.title,
-                source: 'subpage',
+                source: pageName,
                 complementary: {
                   publisherTarget: 'publisher',
                   targetId: publisherId,

@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type SearchResults } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
@@ -15,12 +16,13 @@ export default function StoryCard({
   extra?: string
 }) {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const sendClickLog = () => {
     logClickEvent(userPayload, 'click-story', {
       target: 'story',
       targetId: story.id,
       targetTitle: story.title,
-      source: 'searchPage',
+      source: pageName,
       complementary: {
         publisherTarget: 'publisher',
         targetId: story.source.id,

@@ -4,6 +4,7 @@ import ImageWithFallback from '@/app/_components/image-with-fallback'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { type SearchResults } from '@/utils/data-schema'
@@ -18,12 +19,13 @@ export default function CollectionCard({
   const { width } = useWindowDimensions()
   const buttonSize = width >= 1440 ? 'md' : 'sm'
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const sendClickLog = () => {
     logClickEvent(userPayload, 'click-collection', {
       target: 'collection',
       targetId: id,
       targetTitle: title,
-      source: 'searchPage',
+      source: pageName,
       complementary: {
         publisherTarget: 'member',
         targetId: creator.id,

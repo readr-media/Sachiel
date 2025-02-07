@@ -4,6 +4,7 @@ import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
@@ -20,6 +21,7 @@ const PublisherStory = ({
   publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const { publisherId, publisherName } = publisherInfo
 
   return (
@@ -32,7 +34,7 @@ const PublisherStory = ({
             target: 'story',
             targetId: story.id,
             targetTitle: story.title,
-            source: 'mediaPage',
+            source: pageName,
             complementary: {
               publisherTarget: 'publisher',
               targetId: publisherId,
