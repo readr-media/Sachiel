@@ -26,7 +26,6 @@ export default function RelatedStories({
               pick: 'GTM-article_click_pick_related_article',
             }}
             className="last-of-type:border-b-0"
-            pageType="storyPage"
           />
         ))}
       </div>

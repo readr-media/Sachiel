@@ -89,6 +89,6 @@ export type UserBehaviorLogInfo =
   | (BaseLogInfo & ClickEvent)
 
 export const clickTypeMap = {
-  mediaPage: 'click-story',
-  storyPage: 'click-related-story',
+  media: 'click-story',
+  story: 'click-related-story',
 } as const

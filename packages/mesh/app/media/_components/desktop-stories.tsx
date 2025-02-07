@@ -49,7 +49,6 @@ export default function DesktopStories({
                 story: 'GTM-media_click_category_article',
                 pick: 'GTM-media_pick_category_article',
               }}
-              pageType="mediaPage"
             />
           )
         )}

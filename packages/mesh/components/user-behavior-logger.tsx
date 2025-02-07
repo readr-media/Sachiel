@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import throttle from 'raf-throttle'
 import { useEffect } from 'react'
 
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { UserBehaviorLogInfo } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
@@ -16,14 +17,7 @@ export default function UserBehaviorLogger() {
     '/story': 'story',
     '/collection': 'collection',
   }
-
-  const getPageName = () => {
-    if (pathName === '/') {
-      return 'homepage'
-    } else {
-      return pathName.split('/')?.[1] ?? ''
-    }
-  }
+  const pageName = usePageName()
 
   const getComplementary = () => {
     for (const key in pathTarget) {
@@ -44,7 +38,7 @@ export default function UserBehaviorLogger() {
       const info: UserBehaviorLogInfo = {
         ...basicInfo,
         type: 'pageview',
-        source: getPageName(),
+        source: pageName,
         complementary: getComplementary(),
       }
       sendUserBehaviorLog(info)
@@ -64,7 +58,7 @@ export default function UserBehaviorLogger() {
           const info: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'exit',
-            source: getPageName(),
+            source: pageName,
             complementary: getComplementary(),
           }
           sendUserBehaviorLog(info)
@@ -102,7 +96,7 @@ export default function UserBehaviorLogger() {
           const info50: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'scroll-to-50%',
-            source: getPageName(),
+            source: pageName,
             complementary: getComplementary(),
           }
           sendUserBehaviorLog(info50)
@@ -116,7 +110,7 @@ export default function UserBehaviorLogger() {
           const info80: UserBehaviorLogInfo = {
             ...basicInfo,
             type: 'scroll-to-80%',
-            source: getPageName(),
+            source: pageName,
             complementary: getComplementary(),
           }
           sendUserBehaviorLog(info80)

@@ -50,7 +50,6 @@ export default function NonDesktopStories({
             story: 'GTM-media_click_category_article',
             pick: 'GTM-media_pick_category_article',
           }}
-          pageType="mediaPage"
         />
       ))}
       <PublisherSuggestion publisherSuggestion={publisherList} />
@@ -74,7 +73,6 @@ export default function NonDesktopStories({
                 story: 'GTM-media_click_category_article',
                 pick: 'GTM-media_pick_category_article',
               }}
-              pageType="mediaPage"
             />
             {specialBlock && (
               <>

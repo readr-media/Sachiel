@@ -9,7 +9,6 @@ export default async function MostPickedStory() {
   return (
     <FeaturedCard
       story={story}
-      pageType="homepage"
       customId={story.source.customId}
       publisher={story.source.title}
       publisherId={story.source.id}

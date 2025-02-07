@@ -11,9 +11,9 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { GtmTags } from '@/types/homepage'
-import type { PageType } from '@/types/user-behavior-log'
 import { clickTypeMap } from '@/types/user-behavior-log'
 import { logClickEvent } from '@/utils/event-logs'
 
@@ -42,12 +42,10 @@ const StoryMetaWrapper = ({
 export default forwardRef(function StoryCard(
   {
     story,
-    pageType,
     className = '',
     gtmTags,
   }: {
     story: Story
-    pageType: 'mediaPage' | 'storyPage'
     className?: string
     gtmTags: GtmTags
   },
@@ -55,9 +53,7 @@ export default forwardRef(function StoryCard(
 ) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
-  const getSource = (pageType: PageType, storyId: string) => {
-    return pageType === 'storyPage' ? storyId : pageType
-  }
+  const pageName = usePageName()
 
   return (
     <article
@@ -87,17 +83,21 @@ export default forwardRef(function StoryCard(
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logClickEvent(userPayload, clickTypeMap[pageType], {
-              target: 'story',
-              targetId: story.id,
-              targetTitle: story?.title ?? '',
-              source: getSource(pageType, story.id),
-              complementary: {
-                publisherTarget: 'publisher',
-                targetId: story.source?.id ?? '',
-                targetName: story.source?.title ?? '',
-              },
-            })
+            logClickEvent(
+              userPayload,
+              clickTypeMap[pageName as keyof typeof clickTypeMap],
+              {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story?.title ?? '',
+                source: pageName === 'story' ? story.id : pageName,
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source?.id ?? '',
+                  targetName: story.source?.title ?? '',
+                },
+              }
+            )
           }
         >
           <div className="mt-1 flex flex-row justify-between gap-3 sm:gap-10">

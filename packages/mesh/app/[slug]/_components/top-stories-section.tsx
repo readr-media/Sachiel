@@ -34,7 +34,6 @@ export default function TopStoriesSection({
           otherStories.slice(0, 6).map((story) => (
             <StoryCard
               story={story}
-              pageType="subpage"
               key={story.id}
               gtmTags={{
                 story: 'GTM-categorypage_click_focus_article',

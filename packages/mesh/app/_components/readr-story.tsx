@@ -15,7 +15,6 @@ export default async function ReadrStory() {
     <>
       <FeaturedCard
         isReadrStory={true}
-        pageType="homepage"
         story={story}
         customId={customId}
         publisher={publisher}
