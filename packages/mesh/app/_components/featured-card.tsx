@@ -8,6 +8,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory, GtmTags, Story } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
@@ -16,7 +17,6 @@ import ImageWithFallback from './image-with-fallback'
 
 type Props = {
   isReadrStory?: boolean
-  pageType: 'homepage' | 'subpage'
   story: Story | CategoryStory
   customId: string
   publisher: string
@@ -26,7 +26,6 @@ type Props = {
 
 export default function FeaturedCard({
   isReadrStory,
-  pageType,
   story,
   customId,
   publisher,
@@ -35,6 +34,7 @@ export default function FeaturedCard({
 }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <section className="bg-primary-100 p-5 md:px-[70px] lg:px-10 lg:py-8">
@@ -73,7 +73,7 @@ export default function FeaturedCard({
                   target: 'story',
                   targetId: story.id,
                   targetTitle: story.title,
-                  source: pageType,
+                  source: pageName,
                   complementary: {
                     publisherTarget: 'publisher',
                     targetId: publisherId,

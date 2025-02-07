@@ -25,6 +25,7 @@ export type InteractionInfo = {
 
 export type ClickType =
   | 'click-story'
+  | 'click-related-story'
   | 'click-collection'
   | 'click-social'
   | 'click-category'
@@ -39,20 +40,12 @@ export type Complementary = {
   feedOwnerId?: string[]
 }
 
-export type PageType =
-  | 'homepage'
-  | 'subpage'
-  | 'mediaPage'
-  | 'profile'
-  | '1500'
-  | 'socialPage'
-
 type ClickEvent = {
   type: ClickType
   target: ClickTarget
   targetId: string
   targetTitle: string
-  source: PageType
+  source: string
   complementary:
     | (Omit<Complementary, 'feedAction' | 'feedOwnerId'> & {
         feedAction: string | null
@@ -63,9 +56,15 @@ type ClickEvent = {
 
 type GeneralEvent = {
   type: 'pageview' | 'exit' | 'scroll-to-50%' | 'scroll-to-80%'
+  source: string
+  complementary: {
+    target: string
+    targetId: string
+  } | null
 }
 
 export type BaseLogInfo = {
+  ip: string
   logInStatus: boolean
   memberId: string
   email: string
@@ -80,3 +79,8 @@ export type BaseLogInfo = {
 export type UserBehaviorLogInfo =
   | (BaseLogInfo & GeneralEvent)
   | (BaseLogInfo & ClickEvent)
+
+export const clickTypeMap = {
+  media: 'click-story',
+  story: 'click-related-story',
+} as const
