@@ -15,6 +15,8 @@ import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import useUserPayload from '@/hooks/use-user-payload'
+import { logSponsorEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
@@ -32,6 +34,7 @@ export default function SponsorshipInfo({
 }) {
   const { user } = useUser()
   const router = useRouter()
+  const userPayload = useUserPayload()
   const [isInputMode, setIsInputMode] = useState(false)
   const [selectedOption, setSelectedOption] = useState<
     SponsorshipPoints | undefined | null
@@ -74,6 +77,13 @@ export default function SponsorshipInfo({
 
   const handleSponsorSuccess = () => {
     setIsSponsored(true)
+    logSponsorEvent(userPayload, {
+      sponsorId: user.memberId,
+      sponsorName: user.name,
+      publisherId: publisher.id,
+      publisherName: publisher?.title ?? '',
+      point: amount,
+    })
   }
 
   return (

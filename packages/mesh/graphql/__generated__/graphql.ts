@@ -6444,11 +6444,13 @@ export type GetPublisherPolicyQuery = {
   policies?: Array<{
     __typename?: 'Policy'
     id: string
+    name?: string | null
     charge?: number | null
     duration?: number | null
     publisher?: {
       __typename?: 'Publisher'
       id: string
+      title?: string | null
       admin?: {
         __typename?: 'Member'
         id: string
@@ -19225,6 +19227,7 @@ export const GetPublisherPolicyDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'charge' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
                 {
@@ -19234,6 +19237,7 @@ export const GetPublisherPolicyDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'admin' },

@@ -63,6 +63,28 @@ type GeneralEvent = {
   } | null
 }
 
+type SponsorEvent = {
+  type: 'sponsor'
+  sponsor: {
+    sponsorId: string
+    sponsorName: string
+    publisherId: string
+    publisherName: string
+    point: number
+  }
+}
+
+type StoryUnlockEvent = {
+  type: 'tx-unlock-single'
+  transaction: {
+    policyId: string
+    policyName: string
+    publisherId: string
+    publisherName: string
+    storyId: string
+  }
+}
+
 export type BaseLogInfo = {
   ip: string
   logInStatus: boolean
@@ -79,6 +101,8 @@ export type BaseLogInfo = {
 export type UserBehaviorLogInfo =
   | (BaseLogInfo & GeneralEvent)
   | (BaseLogInfo & ClickEvent)
+  | (BaseLogInfo & SponsorEvent)
+  | (BaseLogInfo & StoryUnlockEvent)
 
 export const clickTypeMap = {
   media: 'click-story',

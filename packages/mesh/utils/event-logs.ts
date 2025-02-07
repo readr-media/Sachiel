@@ -46,3 +46,51 @@ export function logClickEvent(
     sendUserBehaviorLog(info)
   }
 }
+
+export function logSponsorEvent(
+  userPayload: UserPayload,
+  eventInfo: {
+    sponsorId: string
+    sponsorName: string
+    publisherId: string
+    publisherName: string
+    point: number
+  }
+) {
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
+
+  if (basicInfo) {
+    const info: UserBehaviorLogInfo = {
+      type: 'sponsor',
+      ...basicInfo,
+      sponsor: {
+        ...eventInfo,
+      },
+    }
+    sendUserBehaviorLog(info)
+  }
+}
+
+export function logUnlockStoryEvent(
+  userPayload: UserPayload,
+  eventInfo: {
+    policyId: string
+    policyName: string
+    publisherId: string
+    publisherName: string
+    storyId: string
+  }
+) {
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
+
+  if (basicInfo) {
+    const info: UserBehaviorLogInfo = {
+      type: 'tx-unlock-single',
+      ...basicInfo,
+      transaction: {
+        ...eventInfo,
+      },
+    }
+    sendUserBehaviorLog(info)
+  }
+}
