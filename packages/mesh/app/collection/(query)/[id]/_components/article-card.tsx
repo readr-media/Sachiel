@@ -111,6 +111,7 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
           />
           <StoryPickButton
             storyId={story?.id ?? ''}
+            storyTitle={story?.title ?? ''}
             gtmClassName="GTM-collection_pick_article"
           />
         </section>

@@ -103,6 +103,7 @@ export default function CollectionCard({
               />
               <CollectionPickButton
                 collectionId={collection.id}
+                collectionTitle={collection?.title ?? ''}
                 gtmClassName="GTM-collection_pick_collection"
               />
             </div>

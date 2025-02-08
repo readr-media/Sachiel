@@ -92,7 +92,7 @@ export default function MainCard({ story }: Props) {
             pickCount={displayPicksCount}
             objectiveId={story.id}
           />
-          <StoryPickButton storyId={story.id} />
+          <StoryPickButton storyId={story.id} storyTitle={story.title} />
         </div>
       </div>
     </div>

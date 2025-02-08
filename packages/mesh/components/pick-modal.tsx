@@ -31,6 +31,7 @@ const AddPickModal = () => {
   const {
     isModalOpen,
     objectId,
+    objectTitle,
     closePickModal,
     pickObjective,
     setInteractCommentStack,
@@ -69,10 +70,10 @@ const AddPickModal = () => {
 
   const handleAddPick = () => {
     if (value) {
-      addPickAndComment(objectId, pickObjective, value)
+      addPickAndComment(objectId, objectTitle, pickObjective, value)
       setInteractCommentStack((prev) => [...prev, objectId])
     } else {
-      addPick(objectId, pickObjective)
+      addPick(objectId, objectTitle, pickObjective)
     }
     closePickModal()
   }

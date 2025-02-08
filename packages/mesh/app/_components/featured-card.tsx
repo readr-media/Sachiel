@@ -106,6 +106,7 @@ export default function FeaturedCard({
             />
             <StoryPickButton
               storyId={story.id}
+              storyTitle={story.title}
               color="transparent"
               gtmClassName={gtmTags.pick}
             />

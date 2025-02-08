@@ -2,7 +2,7 @@ import type {
   ClickTarget,
   ClickType,
   Complementary,
-  UserBehaviorLogInfo,
+  Info,
   UserPayload,
 } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
@@ -37,11 +37,14 @@ export function logClickEvent(
   const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const info: UserBehaviorLogInfo = {
-      type,
-      ...basicInfo,
-      ...eventInfo,
-      ...createClickComplementary(eventInfo.complementary),
+    const info: Info = {
+      logCategory: 'click',
+      logInfo: {
+        type,
+        ...basicInfo,
+        ...eventInfo,
+        ...createClickComplementary(eventInfo.complementary),
+      },
     }
     sendUserBehaviorLog(info)
   }
@@ -60,11 +63,14 @@ export function logSponsorEvent(
   const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const info: UserBehaviorLogInfo = {
-      type: 'sponsor',
-      ...basicInfo,
-      sponsor: {
-        ...eventInfo,
+    const info: Info = {
+      logCategory: 'payment',
+      logInfo: {
+        type: 'sponsor',
+        ...basicInfo,
+        sponsor: {
+          ...eventInfo,
+        },
       },
     }
     sendUserBehaviorLog(info)
@@ -84,10 +90,36 @@ export function logStoryUnlockEvent(
   const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const info: UserBehaviorLogInfo = {
-      type: 'tx-unlock-single',
-      ...basicInfo,
-      transaction: {
+    const info: Info = {
+      logCategory: 'payment',
+      logInfo: {
+        type: 'tx-unlock-single',
+        ...basicInfo,
+        transaction: {
+          ...eventInfo,
+        },
+      },
+    }
+    sendUserBehaviorLog(info)
+  }
+}
+
+export function logStoryInteractionEvent(
+  userPayload: UserPayload,
+  eventInfo: {
+    type: string
+    storyId: string
+    storyTitle: string
+    source: string
+  }
+) {
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
+
+  if (basicInfo) {
+    const info: Info = {
+      logCategory: 'interaction',
+      logInfo: {
+        ...basicInfo,
         ...eventInfo,
       },
     }

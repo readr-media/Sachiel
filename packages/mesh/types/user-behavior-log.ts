@@ -7,15 +7,6 @@ export type UserPayload = {
   firebaseId: string
 }
 
-export type EventType =
-  | 'pageview'
-  | 'scroll-to-50%'
-  | 'scroll-to-80%'
-  | 'exit'
-  | 'click'
-  | 'interaction'
-  | 'payment'
-
 export type InteractionInfo = {
   type: 'share' | 'pick' | 'collection' | 'bookmark'
   storyId: string | null
@@ -85,6 +76,20 @@ type StoryUnlockEvent = {
   }
 }
 
+type StoryInteractionEvent = {
+  type: string
+  storyId: string
+  storyTitle: string
+  source: string
+}
+
+export type LogCategory = 'click' | 'general' | 'payment' | 'interaction'
+
+export type Info = {
+  logCategory: LogCategory
+  logInfo: UserBehaviorLogInfo
+}
+
 export type BaseLogInfo = {
   ip: string
   logInStatus: boolean
@@ -103,6 +108,7 @@ export type UserBehaviorLogInfo =
   | (BaseLogInfo & ClickEvent)
   | (BaseLogInfo & SponsorEvent)
   | (BaseLogInfo & StoryUnlockEvent)
+  | (BaseLogInfo & StoryInteractionEvent)
 
 export const clickTypeMap = {
   media: 'click-story',

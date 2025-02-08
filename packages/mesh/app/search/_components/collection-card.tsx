@@ -62,7 +62,11 @@ export default function CollectionCard({
             精選
           </p>
         </NextLink>
-        <CollectionPickButton collectionId={id} size={buttonSize} />
+        <CollectionPickButton
+          collectionId={id}
+          collectionTitle={title}
+          size={buttonSize}
+        />
       </div>
     </div>
   )

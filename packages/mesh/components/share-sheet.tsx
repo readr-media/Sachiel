@@ -43,8 +43,8 @@ export default function ShareSheet({
   url: string
   onClose: () => void
   storyInfo?: {
-    storyId: string
-    storyTitle: string
+    id: string
+    title: string
   }
 }) {
   useBlockBodyScroll(true)

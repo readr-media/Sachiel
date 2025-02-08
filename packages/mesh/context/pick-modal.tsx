@@ -15,6 +15,7 @@ import { PickObjective } from '@/types/objective'
 type ModalType = {
   pickObjective: PickObjective
   objectId: string
+  objectTitle: string
   isModalOpen: boolean
   isPicked: boolean
   interactCommentStack: string[]
@@ -22,6 +23,7 @@ type ModalType = {
   openPickModal: (
     pickObjective: PickObjective,
     objectId: string,
+    objectTitle: string,
     isPicked: boolean
   ) => void
   closePickModal: () => void
@@ -36,14 +38,17 @@ export function PickModalProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isPicked, setIsPicked] = useState(false)
   const [objectId, setObjectId] = useState('')
+  const [objectTitle, setObjectTitle] = useState('')
   const [interactCommentStack, setInteractCommentStack] = useState<string[]>([])
 
   const openPickModal = (
     pickObjective: PickObjective,
     objectId: string,
+    objectTitle: string,
     isPicked: boolean
   ) => {
     setObjectId(objectId)
+    setObjectTitle(objectTitle)
     setIsPicked(isPicked)
     setIsModalOpen(true)
     setPickObjective(pickObjective)
@@ -57,6 +62,7 @@ export function PickModalProvider({ children }: { children: React.ReactNode }) {
         isModalOpen,
         pickObjective,
         objectId,
+        objectTitle,
         isPicked,
         interactCommentStack,
         setInteractCommentStack,

@@ -11,10 +11,12 @@ import { debounce } from '@/utils/performance'
 
 export default function StoryPickButton({
   storyId,
+  storyTitle,
   color = 'white',
   gtmClassName = '',
 }: {
   storyId: string
+  storyTitle: string
   color?: ButtonColor
   gtmClassName?: string
 }) {
@@ -31,7 +33,7 @@ export default function StoryPickButton({
       router.push('/login')
       return
     }
-    openPickModal(PickObjective.Story, storyId, isStoryPicked)
+    openPickModal(PickObjective.Story, storyId, storyTitle, isStoryPicked)
   })
 
   return (

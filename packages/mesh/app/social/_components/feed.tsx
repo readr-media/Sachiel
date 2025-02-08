@@ -131,6 +131,7 @@ export default function Feed({
             />
             <StoryPickButton
               storyId={story.id}
+              storyTitle={story.og_title}
               gtmClassName="GTM-soc_pick_article"
             />
           </div>

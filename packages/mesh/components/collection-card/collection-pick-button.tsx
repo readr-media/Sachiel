@@ -11,11 +11,13 @@ import { debounce } from '@/utils/performance'
 
 export default function CollectionPickButton({
   collectionId,
+  collectionTitle,
   color = 'white',
   size = 'sm',
   gtmClassName = '',
 }: {
   collectionId: string
+  collectionTitle: string
   color?: ButtonColor
   size?: ButtonSize
   gtmClassName?: string
@@ -31,7 +33,12 @@ export default function CollectionPickButton({
       router.push('/login')
       return
     }
-    openPickModal(PickObjective.Collection, collectionId, isStoryPicked)
+    openPickModal(
+      PickObjective.Collection,
+      collectionId,
+      collectionTitle,
+      isStoryPicked
+    )
   })
 
   return (

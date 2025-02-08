@@ -113,7 +113,11 @@ export default forwardRef(function StoryCard<
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
+        <StoryPickButton
+          storyId={story.id}
+          storyTitle={story.title}
+          gtmClassName={gtmTags.pick}
+        />
       </div>
     </article>
   )
