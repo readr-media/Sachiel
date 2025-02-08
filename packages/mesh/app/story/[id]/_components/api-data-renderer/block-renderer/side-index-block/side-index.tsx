@@ -142,9 +142,9 @@ const SideIndex = ({ sideIndexList }: { sideIndexList: SideIndexItem[] }) => {
                       e.preventDefault()
                       scrollTargetIntoView(id)
                     }}
-                  >
-                    {title}
-                  </li>
+                    // title from mirrormedia could be html string
+                    dangerouslySetInnerHTML={{ __html: title }}
+                  ></li>
                 </a>
               )
             }
