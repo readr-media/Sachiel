@@ -29,7 +29,7 @@ export default function CollectionCard({
       complementary: {
         publisherTarget: 'member',
         targetId: creator.id,
-        targetName: creator.nickname,
+        targetName: creator.name,
       },
     })
   }
