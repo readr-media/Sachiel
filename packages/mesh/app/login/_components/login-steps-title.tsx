@@ -4,6 +4,7 @@ import { getCurrentUser } from '@/app/actions/auth'
 import Icon from '@/components/icon'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { useUser } from '@/context/user'
+import { loginRedirectPathKey } from '@/hooks/use-redirect-login'
 
 const chevronMap: Pick<
   Record<LoginStepsKey, { title: string; goBackTo: LoginStepsKey }>,
@@ -41,8 +42,8 @@ export default function LoginStepsTitle() {
   const { setUser } = useUser()
 
   const handleSkipButton = async () => {
-    const redirectRoute = localStorage.getItem('login-redirect') ?? '/'
-    localStorage.removeItem('login-redirect')
+    const redirectRoute = localStorage.getItem(loginRedirectPathKey) ?? '/'
+    localStorage.removeItem(loginRedirectPathKey)
     const userData = await getCurrentUser()
     if (userData) {
       setUser(userData)
