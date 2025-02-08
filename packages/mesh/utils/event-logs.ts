@@ -107,7 +107,7 @@ export function logStoryUnlockEvent(
 export function logStoryInteractionEvent(
   userPayload: UserPayload,
   eventInfo: {
-    type: string
+    type: 'pick' | 'bookmark'
     storyId: string
     storyTitle: string
     source: string
