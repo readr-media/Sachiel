@@ -17,6 +17,7 @@ import { MobileCommentModalContent } from '@/components/comment/mobile-comment-s
 import TOAST_MESSAGE from '@/constants/toast'
 import { type User } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import type { CommentObjectiveData } from '@/types/comment'
 import { CommentObjective } from '@/types/objective'
@@ -290,6 +291,7 @@ export function CommentProvider({
   })
   const { addToast } = useToast()
   const { width } = useWindowDimensions()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   const handleDeleteCommentModalOnConfirm = useCallback(
     async (user: User) => {
@@ -328,7 +330,7 @@ export function CommentProvider({
 
   const handleCommentPublish = useCallback(
     async ({ user, targetId }: { user: User; targetId: string }) => {
-      if (!user?.memberId) throw new Error('no user id')
+      if (detectIfShouldRedirectToLogin()) return
       if (!targetId) throw new Error('no story id')
 
       dispatch({
@@ -454,6 +456,9 @@ export function CommentProvider({
 
   const handleReport = (e: React.MouseEvent<HTMLLIElement>) => {
     e.stopPropagation()
+    if (detectIfShouldRedirectToLogin()) {
+      return
+    }
     dispatch({ type: 'TOGGLE_REPORTING_MODAL', payload: { isVisible: true } })
     dispatch({
       type: 'UPDATE_EDIT_DRAWER',

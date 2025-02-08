@@ -1,11 +1,10 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
-
 import type { ButtonColor } from '@/components/button'
 import Button from '@/components/button'
 import { usePickModal } from '@/context/pick-modal'
 import { useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PickObjective } from '@/types/objective'
 import { debounce } from '@/utils/performance'
 
@@ -20,17 +19,13 @@ export default function StoryPickButton({
   color?: ButtonColor
   gtmClassName?: string
 }) {
-  const router = useRouter()
-  const pathname = usePathname()
   const { user } = useUser()
   const { openPickModal } = usePickModal()
-  const memberId = user.memberId
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const isStoryPicked = user.pickStoryIds.has(storyId)
 
   const handleClickPick = debounce(async () => {
-    if (!memberId) {
-      localStorage.setItem('login-redirect', pathname)
-      router.push('/login')
+    if (detectIfShouldRedirectToLogin()) {
       return
     }
     openPickModal(PickObjective.Story, storyId, storyTitle, isStoryPicked)

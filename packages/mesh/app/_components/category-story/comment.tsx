@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
@@ -12,6 +11,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import type { CategoryStory } from '@/types/homepage'
 import { debounce } from '@/utils/performance'
 import { displayTimeFromNow } from '@/utils/story-display'
@@ -27,7 +27,7 @@ export default function Comment({ comment }: Props) {
   const [likeCount, setLikeCount] = useState(0)
   const { user } = useUser()
   const { addToast } = useToast()
-  const router = useRouter()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const memberId = user.memberId
   const commentId = comment.id
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Comment({ comment }: Props) {
   }, [commentId, memberId])
 
   const handleCommentLiked = debounce(async () => {
-    if (!memberId) router.push('/login')
+    if (detectIfShouldRedirectToLogin()) return
 
     if (isLikedBySelf) {
       try {

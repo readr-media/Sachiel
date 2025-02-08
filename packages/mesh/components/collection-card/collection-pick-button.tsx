@@ -1,11 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import type { ButtonColor, ButtonSize } from '@/components/button'
 import Button from '@/components/button'
 import { usePickModal } from '@/context/pick-modal'
 import { useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PickObjective } from '@/types/objective'
 import { debounce } from '@/utils/performance'
 
@@ -22,15 +21,13 @@ export default function CollectionPickButton({
   size?: ButtonSize
   gtmClassName?: string
 }) {
-  const router = useRouter()
   const { user } = useUser()
   const { openPickModal } = usePickModal()
-  const memberId = user.memberId
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const isStoryPicked = user.pickCollectionIds.has(collectionId)
 
   const handleClickPick = debounce(async () => {
-    if (!memberId) {
-      router.push('/login')
+    if (detectIfShouldRedirectToLogin()) {
       return
     }
     openPickModal(
