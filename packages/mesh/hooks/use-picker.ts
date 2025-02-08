@@ -131,7 +131,7 @@ export default function usePicker() {
       })
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast]
+    [memberId, user, setUser, addToast, pageName, userPayload]
   )
 
   return {
