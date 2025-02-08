@@ -1,14 +1,14 @@
 import type {
+  ClickComplementary,
   ClickTarget,
   ClickType,
-  Complementary,
   Info,
   UserPayload,
 } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
-function createClickComplementary(info: Complementary | undefined) {
+function createClickComplementary(info: ClickComplementary | undefined) {
   if (!info) {
     return {
       complementary: null,
@@ -31,7 +31,7 @@ export function logClickEvent(
     targetId: string
     targetTitle: string
     source: string
-    complementary?: Complementary
+    complementary?: ClickComplementary
   }
 ) {
   const basicInfo = generateUserBehaviorLogInfo(userPayload)
@@ -107,10 +107,15 @@ export function logStoryUnlockEvent(
 export function logStoryInteractionEvent(
   userPayload: UserPayload,
   eventInfo: {
-    type: 'pick' | 'bookmark'
+    type: 'pick' | 'bookmark' | 'collection'
     storyId: string
     storyTitle: string
     source: string
+    complementary?: {
+      target: 'collection'
+      targetId: string
+      targetName: string
+    }
   }
 ) {
   const basicInfo = generateUserBehaviorLogInfo(userPayload)
@@ -119,6 +124,7 @@ export function logStoryInteractionEvent(
     const info: Info = {
       logCategory: 'interaction',
       logInfo: {
+        complementary: null,
         ...basicInfo,
         ...eventInfo,
       },
