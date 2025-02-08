@@ -13,7 +13,10 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
+import usePageName from '@/hooks/use-page-name'
+import useUserPayload from '@/hooks/use-user-payload'
 import { PaymentType } from '@/types/payment'
+import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { getStoryUrl } from '@/utils/get-url'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
@@ -240,9 +243,12 @@ const ActionSheet = forwardRef(function ActionSheet(
   const router = useRouter()
   const { user, setUser } = useUser()
   const storyId = storyInfo.id
+  const storyTitle = storyInfo.title
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
   const { addToast } = useToast()
+  const pageName = usePageName()
+  const userPayolad = useUserPayload()
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
@@ -307,6 +313,12 @@ const ActionSheet = forwardRef(function ActionSheet(
             addToast({
               status: 'success',
               text: TOAST_MESSAGE.addBookmarkSuccess,
+            })
+            logStoryInteractionEvent(userPayolad, {
+              type: 'bookmark',
+              storyId,
+              storyTitle,
+              source: pageName,
             })
           } else {
             addToast({

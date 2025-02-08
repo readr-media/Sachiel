@@ -23,7 +23,7 @@ export type ClickType =
 
 export type ClickTarget = 'story' | 'collection' | 'category'
 
-export type Complementary = {
+export type ClickComplementary = {
   publisherTarget: 'publisher' | 'member'
   targetId: string
   targetName: string
@@ -38,7 +38,7 @@ type ClickEvent = {
   targetTitle: string
   source: string
   complementary:
-    | (Omit<Complementary, 'feedAction' | 'feedOwnerId'> & {
+    | (Omit<ClickComplementary, 'feedAction' | 'feedOwnerId'> & {
         feedAction: string | null
         feedOwnerId: string[] | null
       })
