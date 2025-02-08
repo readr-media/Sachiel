@@ -100,6 +100,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               />
               <StoryPickButton
                 storyId={story.id}
+                storyTitle={story?.title ?? ''}
                 gtmClassName="GTM-media_pick_category_article"
               />
             </div>

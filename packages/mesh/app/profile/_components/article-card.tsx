@@ -310,10 +310,14 @@ const ArticleCard = ({
             {isCollection(storyData) ? (
               <CollectionPickButton
                 collectionId={storyData.id}
+                collectionTitle={storyData?.title ?? ''}
                 gtmClassName="GTM-collection_tab_pick"
               />
             ) : (
-              <StoryPickButton storyId={storyData?.id} />
+              <StoryPickButton
+                storyId={storyData?.id}
+                storyTitle={storyData?.title ?? ''}
+              />
             )}
           </section>
 

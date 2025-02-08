@@ -114,8 +114,8 @@ export default function StoryMoreActionButton({
   }, [closeActionSheet, nestedScrollContainerRef])
 
   const storyInfo = {
-    storyId: story.id,
-    storyTitle: story?.title ?? '',
+    id: story.id,
+    title: story?.title ?? '',
   }
 
   return (
@@ -225,8 +225,8 @@ const ActionSheet = forwardRef(function ActionSheet(
     onClose,
   }: {
     storyInfo: {
-      storyId: string
-      storyTitle: string
+      id: string
+      title: string
     }
     publisherId: string
     openShareSheet: () => void
@@ -239,7 +239,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 ) {
   const router = useRouter()
   const { user, setUser } = useUser()
-  const storyId = storyInfo.storyId
+  const storyId = storyInfo.id
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
   const { addToast } = useToast()

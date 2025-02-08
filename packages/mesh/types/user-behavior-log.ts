@@ -7,15 +7,6 @@ export type UserPayload = {
   firebaseId: string
 }
 
-export type EventType =
-  | 'pageview'
-  | 'scroll-to-50%'
-  | 'scroll-to-80%'
-  | 'exit'
-  | 'click'
-  | 'interaction'
-  | 'payment'
-
 export type InteractionInfo = {
   type: 'share' | 'pick' | 'collection' | 'bookmark'
   storyId: string | null
@@ -63,6 +54,42 @@ type GeneralEvent = {
   } | null
 }
 
+type SponsorEvent = {
+  type: 'sponsor'
+  sponsor: {
+    sponsorId: string
+    sponsorName: string
+    publisherId: string
+    publisherName: string
+    point: number
+  }
+}
+
+type StoryUnlockEvent = {
+  type: 'tx-unlock-single'
+  transaction: {
+    policyId: string
+    policyName: string
+    publisherId: string
+    publisherName: string
+    storyId: string
+  }
+}
+
+type StoryInteractionEvent = {
+  type: string
+  storyId: string
+  storyTitle: string
+  source: string
+}
+
+export type LogCategory = 'click' | 'general' | 'payment' | 'interaction'
+
+export type Info = {
+  logCategory: LogCategory
+  logInfo: UserBehaviorLogInfo
+}
+
 export type BaseLogInfo = {
   ip: string
   logInStatus: boolean
@@ -79,6 +106,9 @@ export type BaseLogInfo = {
 export type UserBehaviorLogInfo =
   | (BaseLogInfo & GeneralEvent)
   | (BaseLogInfo & ClickEvent)
+  | (BaseLogInfo & SponsorEvent)
+  | (BaseLogInfo & StoryUnlockEvent)
+  | (BaseLogInfo & StoryInteractionEvent)
 
 export const clickTypeMap = {
   media: 'click-story',

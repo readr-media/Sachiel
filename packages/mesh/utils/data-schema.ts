@@ -354,6 +354,7 @@ export const SearchResultsSchema = z.object({
         status: z.string(),
         creator: z.object({
           id: z.string(),
+          name: z.string(),
           customId: z.string(),
           nickname: z.string(),
         }),

@@ -119,6 +119,7 @@ export default function MostPickedStoryCard({
                 />
                 <StoryPickButton
                   storyId={story.id}
+                  storyTitle={story?.title ?? ''}
                   color="transparent"
                   gtmClassName="GTM-media_pick_popular_article"
                 />

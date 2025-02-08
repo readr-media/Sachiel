@@ -84,7 +84,10 @@ const CollectionsCarouselElement = ({
           </p>
         </Link>
         {shouldShowCollectionPickButton ? (
-          <CollectionPickButton collectionId={id} />
+          <CollectionPickButton
+            collectionId={id}
+            collectionTitle={title ?? ''}
+          />
         ) : (
           <></>
         )}

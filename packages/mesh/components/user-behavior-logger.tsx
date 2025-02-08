@@ -6,7 +6,7 @@ import { useCallback, useEffect } from 'react'
 
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
-import type { UserBehaviorLogInfo } from '@/types/user-behavior-log'
+import type { Info } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
@@ -37,11 +37,14 @@ export default function UserBehaviorLogger() {
   useEffect(() => {
     const basicInfo = generateUserBehaviorLogInfo(userPayload)
     if (basicInfo) {
-      const info: UserBehaviorLogInfo = {
-        ...basicInfo,
-        type: 'pageview',
-        source: pageName,
-        complementary: getComplementary(),
+      const info: Info = {
+        logCategory: 'general',
+        logInfo: {
+          ...basicInfo,
+          type: 'pageview',
+          source: pageName,
+          complementary: getComplementary(),
+        },
       }
       sendUserBehaviorLog(info)
     }
@@ -57,11 +60,14 @@ export default function UserBehaviorLogger() {
       if (!hasEventTriggered) {
         hasEventTriggered = true
         if (basicInfo) {
-          const info: UserBehaviorLogInfo = {
-            ...basicInfo,
-            type: 'exit',
-            source: pageName,
-            complementary: getComplementary(),
+          const info: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'exit',
+              source: pageName,
+              complementary: getComplementary(),
+            },
           }
           sendUserBehaviorLog(info)
         }
@@ -95,11 +101,14 @@ export default function UserBehaviorLogger() {
         hasScrolledTo50 = true
         const basicInfo = generateUserBehaviorLogInfo(userPayload)
         if (basicInfo) {
-          const info50: UserBehaviorLogInfo = {
-            ...basicInfo,
-            type: 'scroll-to-50%',
-            source: pageName,
-            complementary: getComplementary(),
+          const info50: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'scroll-to-50%',
+              source: pageName,
+              complementary: getComplementary(),
+            },
           }
           sendUserBehaviorLog(info50)
         }
@@ -109,11 +118,14 @@ export default function UserBehaviorLogger() {
         hasScrolledTo80 = true
         const basicInfo = generateUserBehaviorLogInfo(userPayload)
         if (basicInfo) {
-          const info80: UserBehaviorLogInfo = {
-            ...basicInfo,
-            type: 'scroll-to-80%',
-            source: pageName,
-            complementary: getComplementary(),
+          const info80: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'scroll-to-80%',
+              source: pageName,
+              complementary: getComplementary(),
+            },
           }
           sendUserBehaviorLog(info80)
         }
