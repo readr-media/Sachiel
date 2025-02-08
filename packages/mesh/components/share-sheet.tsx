@@ -3,6 +3,9 @@
 import { type MouseEventHandler } from 'react'
 
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
+import usePageName from '@/hooks/use-page-name'
+import useUserPayload from '@/hooks/use-user-payload'
+import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { getShareUrl } from '@/utils/get-url'
 
 import Icon from './icon'
@@ -39,6 +42,7 @@ export type SharePlatform = typeof shareMedia[number]['id']
 export default function ShareSheet({
   url,
   onClose,
+  storyInfo,
 }: {
   url: string
   onClose: () => void
@@ -53,6 +57,8 @@ export default function ShareSheet({
   ) => {
     evt.stopPropagation()
   }
+  const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div
@@ -81,6 +87,21 @@ export default function ShareSheet({
             <a
               key={media.id}
               href={getShareUrl(media.urlTemplate, url)}
+              onClick={() => {
+                if (storyInfo) {
+                  logStoryInteractionEvent(userPayload, {
+                    type: 'share',
+                    storyId: storyInfo.id,
+                    storyTitle: storyInfo.title,
+                    source: pageName,
+                    complementary: {
+                      target: 'platform',
+                      targetId: null,
+                      targetName: media.id,
+                    },
+                  })
+                }
+              }}
               target="_blank"
               rel="noopener noreferrer"
               className={`GTM-article_click_share_${media.id} block w-full`}

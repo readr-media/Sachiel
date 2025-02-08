@@ -107,13 +107,13 @@ export function logStoryUnlockEvent(
 export function logStoryInteractionEvent(
   userPayload: UserPayload,
   eventInfo: {
-    type: 'pick' | 'bookmark' | 'collection'
+    type: 'pick' | 'bookmark' | 'collection' | 'share'
     storyId: string
     storyTitle: string
     source: string
     complementary?: {
-      target: 'collection'
-      targetId: string
+      target: 'collection' | 'platform'
+      targetId: string | null
       targetName: string
     }
   }
