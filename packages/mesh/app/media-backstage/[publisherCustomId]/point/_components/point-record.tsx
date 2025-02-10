@@ -55,9 +55,11 @@ export default function PointRecord({
     async ({
       take,
       skip,
+      recordType,
     }: {
       take: number
       skip: number
+      recordType: RecordType
     }): Promise<RecordData> => {
       const { firstSecond: gte, lastSecond: lte } = getFirstAndLastSeconds(date)
       switch (recordType) {
@@ -126,7 +128,7 @@ export default function PointRecord({
           }
       }
     },
-    [date, publisherCustomId, recordType]
+    [date, publisherCustomId]
   )
 
   // Trigger loadmore (set flag instead of calling loadmore fn to prevent this function change cause RecordList rerender)
@@ -142,19 +144,23 @@ export default function PointRecord({
   // Actually fetch more records
   useEffect(() => {
     const loadMoreRecords = async () => {
+      // keep the recordType in closure in case it change while fetching
+      const currentRecordType = recordType
+
       const newRecordData = await getRecordsInPage({
         take: recordTake,
         skip: recordData.records.length,
+        recordType: currentRecordType,
       })
 
       setPageDataInRecordTypes((pageDataInRecordTypes) => {
         const newRecords = [
-          ...pageDataInRecordTypes[recordType].records,
+          ...pageDataInRecordTypes[currentRecordType].records,
           ...newRecordData.records,
         ]
         return {
           ...pageDataInRecordTypes,
-          [recordType]: {
+          [currentRecordType]: {
             totalCount: newRecordData.totalCount,
             records: newRecords,
             initialized: true,
@@ -174,14 +180,19 @@ export default function PointRecord({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
+
+      // keep the recordType in closure in case it change while fetching
+      const currentRecordType = recordType
+
       const newRecordData = await getRecordsInPage({
         take: recordTake,
         skip: recordData.records.length,
+        recordType: currentRecordType,
       })
 
       setPageDataInRecordTypes((pageDataInRecordTypes) => ({
         ...pageDataInRecordTypes,
-        [recordType]: newRecordData,
+        [currentRecordType]: newRecordData,
       }))
       setIsLoading(false)
     }
