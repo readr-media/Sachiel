@@ -613,7 +613,6 @@ export type Comment = {
   likeCount?: Maybe<Scalars['Int']['output']>
   member?: Maybe<Member>
   parent?: Maybe<Comment>
-  podcast?: Maybe<Podcast>
   published_date?: Maybe<Scalars['DateTime']['output']>
   root?: Maybe<Comment>
   state?: Maybe<Scalars['String']['output']>
@@ -643,7 +642,6 @@ export type CommentCreateInput = {
   like?: InputMaybe<MemberRelateToManyForCreateInput>
   member?: InputMaybe<MemberRelateToOneForCreateInput>
   parent?: InputMaybe<CommentRelateToOneForCreateInput>
-  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   root?: InputMaybe<CommentRelateToOneForCreateInput>
   state?: InputMaybe<Scalars['String']['input']>
@@ -707,7 +705,6 @@ export type CommentUpdateInput = {
   like?: InputMaybe<MemberRelateToManyForUpdateInput>
   member?: InputMaybe<MemberRelateToOneForUpdateInput>
   parent?: InputMaybe<CommentRelateToOneForUpdateInput>
-  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   root?: InputMaybe<CommentRelateToOneForUpdateInput>
   state?: InputMaybe<Scalars['String']['input']>
@@ -730,7 +727,6 @@ export type CommentWhereInput = {
   like?: InputMaybe<MemberManyRelationFilter>
   member?: InputMaybe<MemberWhereInput>
   parent?: InputMaybe<CommentWhereInput>
-  podcast?: InputMaybe<PodcastWhereInput>
   published_date?: InputMaybe<DateTimeNullableFilter>
   root?: InputMaybe<CommentWhereInput>
   state?: InputMaybe<StringNullableFilter>
@@ -2556,7 +2552,6 @@ export type Pick = {
   pick_comment?: Maybe<Array<Comment>>
   pick_commentCount?: Maybe<Scalars['Int']['output']>
   picked_date?: Maybe<Scalars['DateTime']['output']>
-  podcast?: Maybe<Podcast>
   state?: Maybe<Scalars['String']['output']>
   story?: Maybe<Story>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -2586,7 +2581,6 @@ export type PickCreateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick_comment?: InputMaybe<CommentRelateToManyForCreateInput>
   picked_date?: InputMaybe<Scalars['DateTime']['input']>
-  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   state?: InputMaybe<Scalars['String']['input']>
   story?: InputMaybe<StoryRelateToOneForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2640,7 +2634,6 @@ export type PickUpdateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick_comment?: InputMaybe<CommentRelateToManyForUpdateInput>
   picked_date?: InputMaybe<Scalars['DateTime']['input']>
-  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   state?: InputMaybe<Scalars['String']['input']>
   story?: InputMaybe<StoryRelateToOneForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2663,7 +2656,6 @@ export type PickWhereInput = {
   paywall?: InputMaybe<BooleanFilter>
   pick_comment?: InputMaybe<CommentManyRelationFilter>
   picked_date?: InputMaybe<DateTimeNullableFilter>
-  podcast?: InputMaybe<PodcastWhereInput>
   state?: InputMaybe<StringNullableFilter>
   story?: InputMaybe<StoryWhereInput>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -2677,84 +2669,28 @@ export type PickWhereUniqueInput = {
 export type Podcast = {
   __typename?: 'Podcast'
   author?: Maybe<Scalars['String']['output']>
-  category?: Maybe<Category>
-  comment?: Maybe<Array<Comment>>
-  commentCount?: Maybe<Scalars['Int']['output']>
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
-  description?: Maybe<Scalars['String']['output']>
   duration?: Maybe<Scalars['String']['output']>
+  file_size?: Maybe<Scalars['Int']['output']>
   id: Scalars['ID']['output']
-  isMember?: Maybe<Scalars['Boolean']['output']>
-  is_active?: Maybe<Scalars['Boolean']['output']>
-  og_description?: Maybe<Scalars['String']['output']>
-  og_image?: Maybe<Scalars['String']['output']>
-  og_title?: Maybe<Scalars['String']['output']>
-  origid?: Maybe<Scalars['String']['output']>
-  pick?: Maybe<Array<Pick>>
-  pickCount?: Maybe<Scalars['Int']['output']>
-  published_date?: Maybe<Scalars['DateTime']['output']>
+  mime_type?: Maybe<Scalars['String']['output']>
   source?: Maybe<Publisher>
-  tag?: Maybe<Array<Tag>>
-  tagCount?: Maybe<Scalars['Int']['output']>
-  title?: Maybe<Scalars['String']['output']>
+  story?: Maybe<Story>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
   updatedBy?: Maybe<User>
   url?: Maybe<Scalars['String']['output']>
 }
 
-export type PodcastCommentArgs = {
-  orderBy?: Array<CommentOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: CommentWhereInput
-}
-
-export type PodcastCommentCountArgs = {
-  where?: CommentWhereInput
-}
-
-export type PodcastPickArgs = {
-  orderBy?: Array<PickOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: PickWhereInput
-}
-
-export type PodcastPickCountArgs = {
-  where?: PickWhereInput
-}
-
-export type PodcastTagArgs = {
-  orderBy?: Array<TagOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: TagWhereInput
-}
-
-export type PodcastTagCountArgs = {
-  where?: TagWhereInput
-}
-
 export type PodcastCreateInput = {
   author?: InputMaybe<Scalars['String']['input']>
-  category?: InputMaybe<CategoryRelateToOneForCreateInput>
-  comment?: InputMaybe<CommentRelateToManyForCreateInput>
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
-  description?: InputMaybe<Scalars['String']['input']>
   duration?: InputMaybe<Scalars['String']['input']>
-  isMember?: InputMaybe<Scalars['Boolean']['input']>
-  is_active?: InputMaybe<Scalars['Boolean']['input']>
-  og_description?: InputMaybe<Scalars['String']['input']>
-  og_image?: InputMaybe<Scalars['String']['input']>
-  og_title?: InputMaybe<Scalars['String']['input']>
-  origid?: InputMaybe<Scalars['String']['input']>
-  pick?: InputMaybe<PickRelateToManyForCreateInput>
-  published_date?: InputMaybe<Scalars['DateTime']['input']>
+  file_size?: InputMaybe<Scalars['Int']['input']>
+  mime_type?: InputMaybe<Scalars['String']['input']>
   source?: InputMaybe<PublisherRelateToOneForCreateInput>
-  tag?: InputMaybe<TagRelateToManyForCreateInput>
-  title?: InputMaybe<Scalars['String']['input']>
+  story?: InputMaybe<StoryRelateToOneForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   url?: InputMaybe<Scalars['String']['input']>
@@ -2763,17 +2699,10 @@ export type PodcastCreateInput = {
 export type PodcastOrderByInput = {
   author?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
-  description?: InputMaybe<OrderDirection>
   duration?: InputMaybe<OrderDirection>
+  file_size?: InputMaybe<OrderDirection>
   id?: InputMaybe<OrderDirection>
-  isMember?: InputMaybe<OrderDirection>
-  is_active?: InputMaybe<OrderDirection>
-  og_description?: InputMaybe<OrderDirection>
-  og_image?: InputMaybe<OrderDirection>
-  og_title?: InputMaybe<OrderDirection>
-  origid?: InputMaybe<OrderDirection>
-  published_date?: InputMaybe<OrderDirection>
-  title?: InputMaybe<OrderDirection>
+  mime_type?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
   url?: InputMaybe<OrderDirection>
 }
@@ -2796,23 +2725,13 @@ export type PodcastUpdateArgs = {
 
 export type PodcastUpdateInput = {
   author?: InputMaybe<Scalars['String']['input']>
-  category?: InputMaybe<CategoryRelateToOneForUpdateInput>
-  comment?: InputMaybe<CommentRelateToManyForUpdateInput>
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
-  description?: InputMaybe<Scalars['String']['input']>
   duration?: InputMaybe<Scalars['String']['input']>
-  isMember?: InputMaybe<Scalars['Boolean']['input']>
-  is_active?: InputMaybe<Scalars['Boolean']['input']>
-  og_description?: InputMaybe<Scalars['String']['input']>
-  og_image?: InputMaybe<Scalars['String']['input']>
-  og_title?: InputMaybe<Scalars['String']['input']>
-  origid?: InputMaybe<Scalars['String']['input']>
-  pick?: InputMaybe<PickRelateToManyForUpdateInput>
-  published_date?: InputMaybe<Scalars['DateTime']['input']>
+  file_size?: InputMaybe<Scalars['Int']['input']>
+  mime_type?: InputMaybe<Scalars['String']['input']>
   source?: InputMaybe<PublisherRelateToOneForUpdateInput>
-  tag?: InputMaybe<TagRelateToManyForUpdateInput>
-  title?: InputMaybe<Scalars['String']['input']>
+  story?: InputMaybe<StoryRelateToOneForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
   url?: InputMaybe<Scalars['String']['input']>
@@ -2823,24 +2742,14 @@ export type PodcastWhereInput = {
   NOT?: InputMaybe<Array<PodcastWhereInput>>
   OR?: InputMaybe<Array<PodcastWhereInput>>
   author?: InputMaybe<StringFilter>
-  category?: InputMaybe<CategoryWhereInput>
-  comment?: InputMaybe<CommentManyRelationFilter>
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
-  description?: InputMaybe<StringFilter>
   duration?: InputMaybe<StringFilter>
+  file_size?: InputMaybe<IntNullableFilter>
   id?: InputMaybe<IdFilter>
-  isMember?: InputMaybe<BooleanFilter>
-  is_active?: InputMaybe<BooleanFilter>
-  og_description?: InputMaybe<StringFilter>
-  og_image?: InputMaybe<StringFilter>
-  og_title?: InputMaybe<StringFilter>
-  origid?: InputMaybe<StringFilter>
-  pick?: InputMaybe<PickManyRelationFilter>
-  published_date?: InputMaybe<DateTimeNullableFilter>
+  mime_type?: InputMaybe<StringFilter>
   source?: InputMaybe<PublisherWhereInput>
-  tag?: InputMaybe<TagManyRelationFilter>
-  title?: InputMaybe<StringFilter>
+  story?: InputMaybe<StoryWhereInput>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
   updatedBy?: InputMaybe<UserWhereInput>
   url?: InputMaybe<StringFilter>
@@ -3893,7 +3802,7 @@ export type Story = {
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
   full_content?: Maybe<Scalars['Boolean']['output']>
-  full_screen_ad?: Maybe<Scalars['String']['output']>
+  full_screen_ad?: Maybe<StoryFullScreenAdType>
   id: Scalars['ID']['output']
   isMember?: Maybe<Scalars['Boolean']['output']>
   is_active?: Maybe<Scalars['Boolean']['output']>
@@ -3904,10 +3813,12 @@ export type Story = {
   paywall?: Maybe<Scalars['Boolean']['output']>
   pick?: Maybe<Array<Pick>>
   pickCount?: Maybe<Scalars['Int']['output']>
+  podcast?: Maybe<Podcast>
   published_date?: Maybe<Scalars['DateTime']['output']>
   related?: Maybe<Array<Story>>
   relatedCount?: Maybe<Scalars['Int']['output']>
   source?: Maybe<Publisher>
+  story_type?: Maybe<StoryStoryTypeType>
   summary?: Maybe<Scalars['String']['output']>
   tag?: Maybe<Array<Tag>>
   tagCount?: Maybe<Scalars['Int']['output']>
@@ -3973,7 +3884,7 @@ export type StoryCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
-  full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdType>
   isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
@@ -3982,9 +3893,11 @@ export type StoryCreateInput = {
   origid?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick?: InputMaybe<PickRelateToManyForCreateInput>
+  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   related?: InputMaybe<StoryRelateToManyForCreateInput>
   source?: InputMaybe<PublisherRelateToOneForCreateInput>
+  story_type?: InputMaybe<StoryStoryTypeType>
   summary?: InputMaybe<Scalars['String']['input']>
   tag?: InputMaybe<TagRelateToManyForCreateInput>
   title?: InputMaybe<Scalars['String']['input']>
@@ -3994,6 +3907,20 @@ export type StoryCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   url?: InputMaybe<Scalars['String']['input']>
   writer?: InputMaybe<Scalars['String']['input']>
+}
+
+export enum StoryFullScreenAdType {
+  All = 'all',
+  Desktop = 'desktop',
+  Mobile = 'mobile',
+  None = 'none',
+}
+
+export type StoryFullScreenAdTypeNullableFilter = {
+  equals?: InputMaybe<StoryFullScreenAdType>
+  in?: InputMaybe<Array<StoryFullScreenAdType>>
+  not?: InputMaybe<StoryFullScreenAdTypeNullableFilter>
+  notIn?: InputMaybe<Array<StoryFullScreenAdType>>
 }
 
 export type StoryManyRelationFilter = {
@@ -4016,6 +3943,7 @@ export type StoryOrderByInput = {
   origid?: InputMaybe<OrderDirection>
   paywall?: InputMaybe<OrderDirection>
   published_date?: InputMaybe<OrderDirection>
+  story_type?: InputMaybe<OrderDirection>
   summary?: InputMaybe<OrderDirection>
   title?: InputMaybe<OrderDirection>
   trimContent?: InputMaybe<OrderDirection>
@@ -4047,6 +3975,18 @@ export type StoryRelateToOneForUpdateInput = {
   disconnect?: InputMaybe<Scalars['Boolean']['input']>
 }
 
+export enum StoryStoryTypeType {
+  Podcast = 'podcast',
+  Story = 'story',
+}
+
+export type StoryStoryTypeTypeNullableFilter = {
+  equals?: InputMaybe<StoryStoryTypeType>
+  in?: InputMaybe<Array<StoryStoryTypeType>>
+  not?: InputMaybe<StoryStoryTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<StoryStoryTypeType>>
+}
+
 export type StoryUpdateArgs = {
   data: StoryUpdateInput
   where: StoryWhereUniqueInput
@@ -4061,7 +4001,7 @@ export type StoryUpdateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
-  full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdType>
   isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
@@ -4070,9 +4010,11 @@ export type StoryUpdateInput = {
   origid?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick?: InputMaybe<PickRelateToManyForUpdateInput>
+  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   related?: InputMaybe<StoryRelateToManyForUpdateInput>
   source?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  story_type?: InputMaybe<StoryStoryTypeType>
   summary?: InputMaybe<Scalars['String']['input']>
   tag?: InputMaybe<TagRelateToManyForUpdateInput>
   title?: InputMaybe<Scalars['String']['input']>
@@ -4095,7 +4037,7 @@ export type StoryWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
   full_content?: InputMaybe<BooleanFilter>
-  full_screen_ad?: InputMaybe<StringNullableFilter>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdTypeNullableFilter>
   id?: InputMaybe<IdFilter>
   isMember?: InputMaybe<BooleanFilter>
   is_active?: InputMaybe<BooleanFilter>
@@ -4105,9 +4047,11 @@ export type StoryWhereInput = {
   origid?: InputMaybe<StringFilter>
   paywall?: InputMaybe<BooleanFilter>
   pick?: InputMaybe<PickManyRelationFilter>
+  podcast?: InputMaybe<PodcastWhereInput>
   published_date?: InputMaybe<DateTimeNullableFilter>
   related?: InputMaybe<StoryManyRelationFilter>
   source?: InputMaybe<PublisherWhereInput>
+  story_type?: InputMaybe<StoryStoryTypeTypeNullableFilter>
   summary?: InputMaybe<StringFilter>
   tag?: InputMaybe<TagManyRelationFilter>
   title?: InputMaybe<StringFilter>
@@ -4529,7 +4473,7 @@ export type StoryInfoFragment = {
   pickCount?: number | null
   commentCount?: number | null
   paywall?: boolean | null
-  full_screen_ad?: string | null
+  full_screen_ad?: StoryFullScreenAdType | null
   published_date?: any | null
   source?: {
     __typename?: 'Publisher'
@@ -4612,7 +4556,7 @@ export type UserActionStoryFragment = {
   og_description?: string | null
   published_date?: any | null
   paywall?: boolean | null
-  full_screen_ad?: string | null
+  full_screen_ad?: StoryFullScreenAdType | null
   pickCount?: number | null
   commentCount?: number | null
   source?: {
@@ -5006,7 +4950,7 @@ export type GetCollectionStoriesQuery = {
         og_image?: string | null
         published_date?: any | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         picksCount?: number | null
         commentsCount?: number | null
         source?: {
@@ -5259,7 +5203,7 @@ export type GetMemberFollowingQuery = {
           og_description?: string | null
           published_date?: any | null
           paywall?: boolean | null
-          full_screen_ad?: string | null
+          full_screen_ad?: StoryFullScreenAdType | null
           pickCount?: number | null
           commentCount?: number | null
           source?: {
@@ -5307,7 +5251,7 @@ export type GetMemberFollowingQuery = {
           og_description?: string | null
           published_date?: any | null
           paywall?: boolean | null
-          full_screen_ad?: string | null
+          full_screen_ad?: StoryFullScreenAdType | null
           pickCount?: number | null
           commentCount?: number | null
           source?: {
@@ -5443,7 +5387,7 @@ export type GetMemberProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -5548,7 +5492,7 @@ export type GetMemberProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -5676,7 +5620,7 @@ export type GetVisitorProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -6212,7 +6156,7 @@ export type GetMorePicksQuery = {
       pickCount?: number | null
       commentCount?: number | null
       paywall?: boolean | null
-      full_screen_ad?: string | null
+      full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
       comment?: Array<{
         __typename?: 'Comment'
@@ -6327,7 +6271,7 @@ export type GetMoreBookmarksQuery = {
       pickCount?: number | null
       commentCount?: number | null
       paywall?: boolean | null
-      full_screen_ad?: string | null
+      full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
       comment?: Array<{
         __typename?: 'Comment'
@@ -6545,7 +6489,7 @@ export type LatestStoriesQuery = {
     origid?: string | null
     commentCount?: number | null
     paywall?: boolean | null
-    full_screen_ad?: string | null
+    full_screen_ad?: StoryFullScreenAdType | null
     picksCount?: number | null
     category?: {
       __typename?: 'Category'
