@@ -6,8 +6,10 @@ import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
 type Story = NonNullable<GetStoriesQuery['stories']>[number]
 
 export default function RelatedStories({
+  sourceStoryId,
   relatedStories,
 }: {
+  sourceStoryId: string
   relatedStories: Story[]
 }) {
   if (!relatedStories.length) return null
@@ -20,6 +22,7 @@ export default function RelatedStories({
         {relatedStories.map((relatedStory) => (
           <StoryCard
             key={relatedStory.id}
+            sourceStoryId={sourceStoryId}
             story={relatedStory}
             gtmTags={{
               story: 'GTM-article_click_related_article',

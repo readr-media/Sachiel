@@ -42,10 +42,12 @@ const StoryMetaWrapper = ({
 export default forwardRef(function StoryCard(
   {
     story,
+    sourceStoryId = '',
     className = '',
     gtmTags,
   }: {
     story: Story
+    sourceStoryId?: string
     className?: string
     gtmTags: GtmTags
   },
@@ -90,7 +92,7 @@ export default forwardRef(function StoryCard(
                 target: 'story',
                 targetId: story.id,
                 targetTitle: story?.title ?? '',
-                source: pageName === 'story' ? story.id : pageName,
+                source: pageName === 'story' ? sourceStoryId : pageName,
                 complementary: {
                   publisherTarget: 'publisher',
                   targetId: story.source?.id ?? '',
