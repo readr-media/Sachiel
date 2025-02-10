@@ -6,9 +6,9 @@ import { ImageCategory } from '@/constants/fallback-src'
 import type {
   Record,
   RedeemRecord,
+  SponsorRecord,
   TransactionRecord,
 } from '@/types/media-backstage'
-import type { SponsorRecord } from '@/types/media-backstage'
 import { displayTime } from '@/utils/story-display'
 
 export default forwardRef(function RecordItem(
