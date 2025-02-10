@@ -9,6 +9,7 @@ export function getCurrentDate() {
 
 export function getDatesToPick() {
   const maxMonthCount = 12
+  // TODO: confirm prod minDate to prevent user select month before website launch
   const minDate: PointRecordDate = {
     year: 2024,
     month: 5,
