@@ -40,6 +40,7 @@ export default function SendTransaction({
   updatePaymentPayload,
   failPaymentPayload,
   onSuccess,
+  actionText = '完成付款',
 }: {
   recipientAddress: Hex
   amount: number
@@ -49,6 +50,7 @@ export default function SendTransaction({
   updatePaymentPayload: UpdatePaymentProps
   failPaymentPayload: FailPaymentProps
   onSuccess: () => void
+  actionText?: string
 }) {
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
@@ -187,7 +189,7 @@ export default function SendTransaction({
               type="submit"
               size="lg"
               color="primary"
-              text="完成付款"
+              text={actionText}
               disabled={disabled || !client}
             />
           </div>

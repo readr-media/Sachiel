@@ -12,6 +12,7 @@ import { type PublisherData } from '@/app/actions/publisher'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT } from '@/constants/config'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
@@ -112,11 +113,15 @@ export default function ExchangeInfo({
               amount={amount}
               balance={balance}
               recipientAddress={recipientAddress}
-              disabled={!amount}
+              disabled={
+                !amount ||
+                amount < NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT
+              }
               createPaymentPayload={createExchangePayment}
               updatePaymentPayload={updateExchangePayment}
               failPaymentPayload={failExchangePayment}
               onSuccess={handleSponsorSuccess}
+              actionText="兌換"
             />
           </div>
         </>
