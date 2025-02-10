@@ -1,31 +1,32 @@
 'use server'
 
+import type { z } from 'zod'
+
+import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   AddExcludePublisherDocument,
   GetMemberExcludePublisherDocument,
   GetPublisherWalletDocument,
-  PublishersDocument,
   RemoveExcludePublisherDocument,
 } from '@/graphql/__generated__/graphql'
+import { PublisherListSchema } from '@/utils/data-schema'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { mutateGraphQL } from '@/utils/fetch-graphql'
+import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export type AllPublisherData = Awaited<ReturnType<typeof getAllPublishers>>
 
 async function getAllPublishers(limit?: number) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
   const itemCount = limit ? Math.floor(Math.abs(limit)) : undefined
-  const data = await queryGraphQL(
-    PublishersDocument,
-    undefined,
-    globalLogFields,
-    'Failed to get all publishers'
+  const response = await fetchStatic<z.infer<typeof PublisherListSchema>>(
+    STATIC_FILE_ENDPOINTS.publisherList
   )
-
+  const publisherListJSON = PublisherListSchema.parse(response)
+  const rawData = Object.values(publisherListJSON)
   const transformedData =
-    data?.publishers
-      ?.map((data) => ({
+    rawData
+      .map((data) => ({
         ...data,
         createdAt: new Date(data.createdAt).getTime(),
         isHidden: false,
