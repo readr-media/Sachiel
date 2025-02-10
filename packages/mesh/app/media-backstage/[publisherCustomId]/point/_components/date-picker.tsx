@@ -34,7 +34,7 @@ export default function DatePicker({
         }}
       >
         <Icon iconName="icon-calendar" size="l" />
-        <div className="body-2 ml-2 text-primary-700">{`${date.year} 年 ${date.month} 月`}</div>
+        <div className="body-2 ml-2 text-nowrap text-primary-700">{`${date.year} 年 ${date.month} 月`}</div>
         {showDropdown ? (
           <Icon iconName="icon-fold-month-picker" size="l" />
         ) : (
