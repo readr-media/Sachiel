@@ -1,11 +1,13 @@
 import { type FormEvent, useState } from 'react'
 
 import {
-  MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
-  MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
+  NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
+  NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
 } from '@/constants/config'
 
-const exchangeFeeRate = parseFloat(MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE)
+const exchangeFeeRate = parseFloat(
+  NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE
+)
 const amountWithFeeRatio = 1 + exchangeFeeRate
 
 export default function ExchangeInput({
@@ -65,7 +67,7 @@ export default function ExchangeInput({
         <p className="footnote flex flex-col text-primary-500">
           <span>請輸入您要兌換的金額。</span>
           <span className="text-custom-blue">
-            {`點數最低兌換點數為 ${MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
+            {`點數最低兌換點數為 ${NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
               exchangeFeeRate * 100
             }%。`}
           </span>
