@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { type Hex } from 'viem'
 
 import type { PublisherData } from '@/app/actions/publisher'
 import { getExchangePublisherInfo } from '@/app/actions/publisher'
@@ -15,8 +16,7 @@ export default function PointExchange({
   balance: number | undefined
   publisherCustomId: string
 }) {
-  const [officialWalletAddress, setOfficialWalletAddress] =
-    useState<`0x${string}`>('0x')
+  const [officialWalletAddress, setOfficialWalletAddress] = useState<Hex>('0x')
   const [publisher, setPublisher] = useState<PublisherData | null>(null)
 
   useEffect(() => {
