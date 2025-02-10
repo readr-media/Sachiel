@@ -79,16 +79,11 @@ const MediaSelector = ({
     mediaList.find((media) => media.customId === publisherCustomId) ??
     mediaList[0]
 
-  const genMediaLink = (publisherCustomId: string) =>
-    pathname.split('/').reduce((link, splitedPath, i) => {
-      if (i === 2) {
-        link += `/${publisherCustomId}`
-      } else {
-        link += splitedPath ? `/${splitedPath}` : ''
-      }
-
-      return link
-    }, '')
+  const genMediaLink = (newPublisherCustomId: string) =>
+    pathname
+      .split('/')
+      .map((seg, i) => (i === 2 ? newPublisherCustomId : seg))
+      .join('/')
 
   const isSelectable = mediaList.length > 1
 
