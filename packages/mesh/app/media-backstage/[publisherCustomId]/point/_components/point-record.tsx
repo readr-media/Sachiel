@@ -130,7 +130,7 @@ export default function PointRecord({
   )
 
   // Trigger loadmore (set flag instead of calling loadmore fn to prevent this function change cause RecordList rerender)
-  const loadMoreRecords = useCallback(() => {
+  const triggerLoadMoreRecords = useCallback(() => {
     setShouldLoadMore(true)
   }, [])
 
@@ -211,7 +211,7 @@ export default function PointRecord({
         ) : (
           <RecordList
             recordData={recordData}
-            loadMoreRecords={loadMoreRecords}
+            loadMoreRecords={triggerLoadMoreRecords}
           />
         )}
       </div>
