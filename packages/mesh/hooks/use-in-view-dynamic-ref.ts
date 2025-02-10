@@ -4,7 +4,7 @@ export default function useInViewDynamicRef() {
   const [isIntersecting, setIsIntersecting] = useState<boolean | null>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
 
-  const setTarget = useCallback((node: HTMLDivElement | null) => {
+  const setTarget = useCallback((node: HTMLElement | null) => {
     if (observerRef.current) {
       observerRef.current.disconnect()
     }
