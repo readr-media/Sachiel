@@ -3,10 +3,10 @@
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
-import type { FailPaymentProps } from '@/app/actions/payment'
-import {
-  type CreatePaymentProps,
-  type UpdatePaymentProps,
+import type {
+  CreatePaymentProps,
+  FailPaymentProps,
+  UpdatePaymentProps,
 } from '@/app/actions/payment'
 import { type PublisherData } from '@/app/actions/publisher'
 import SendTransaction from '@/components/alchemy/send-transaction'
