@@ -5,10 +5,7 @@ import {
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
 } from '@/constants/config'
 
-const exchangeFeeRate = parseFloat(
-  NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE
-)
-const amountWithFeeRatio = 1 + exchangeFeeRate
+const amountWithFeeRatio = 1 + NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE
 
 export default function ExchangeInput({
   balance,
@@ -68,7 +65,7 @@ export default function ExchangeInput({
           <span>請輸入您要兌換的金額。</span>
           <span className="text-custom-blue">
             {`點數最低兌換點數為 ${NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
-              exchangeFeeRate * 100
+              NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100
             }%。`}
           </span>
           <span>您的讀選點數餘額：${balance}</span>
