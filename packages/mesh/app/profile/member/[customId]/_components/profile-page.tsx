@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo, useRef } from 'react'
 
@@ -11,9 +10,11 @@ import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import Button from '@/components/button'
 import ErrorPage from '@/components/status/error-page'
+import { collectionCreateParamName } from '@/constants/search-param-names'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
+import usePageName from '@/hooks/use-page-name'
 import { PickObjective } from '@/types/objective'
 import type { PickCollections, TabCategoryType } from '@/types/profile'
 import { type PickList, TabCategory, TabKey } from '@/types/profile'
@@ -32,6 +33,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
   const router = useRouter()
   const pathName = usePathname()
   const currentUrl = pathName
+  const pageName = usePageName()
+  const collectionCreatePageParams = new URLSearchParams({
+    [collectionCreateParamName]: pageName,
+  })
   const hasMoreData = useRef({
     [TabCategory.PICKS]: true,
     [TabCategory.BOOKMARKS]: true,
@@ -161,9 +166,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
       // NOTE: only member need try button
       if (!isMember) return null
       return (
-        <Link href={`/collection/new`}>
-          <Button size="md" color="transparent" text="立即嘗試" />
-        </Link>
+        <Button
+          size="md"
+          color="transparent"
+          text="立即嘗試"
+          onClick={() =>
+            router.push(
+              `/collection/new?${collectionCreatePageParams.toString()}`
+            )
+          }
+        />
       )
     }
   }

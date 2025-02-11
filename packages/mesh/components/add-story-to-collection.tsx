@@ -11,6 +11,7 @@ import {
 } from '@/app/actions/collection'
 import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
 import { ImageCategory } from '@/constants/fallback-src'
+import { collectionCreateParamName } from '@/constants/search-param-names'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
@@ -44,6 +45,9 @@ export default function AddStoryToCollection({
   const { addToast } = useToast()
   const userPayload = useUserPayload()
   const pageName = usePageName()
+  const searchParams = new URLSearchParams({
+    [collectionCreateParamName]: pageName,
+  })
 
   const addStoryToCollection = async (collection: Collection) => {
     if (!collection.collectionpicks) return
@@ -77,7 +81,7 @@ export default function AddStoryToCollection({
 
   const createCollection = () => {
     setCrossPageCollectionPickStory(story)
-    router.push('/collection/new')
+    router.push(`/collection/new?${searchParams.toString()}`)
   }
 
   useEffect(() => {
