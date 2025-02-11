@@ -32,7 +32,7 @@ export default function RecordList({
         <ul>
           {records.map((record, i) => (
             <RecordItem
-              key={record.createdAt}
+              key={`${record.createdAt}-${i}`}
               record={record}
               ref={i === records.length - 3 ? triggerLoadmoreRef : undefined}
             />
