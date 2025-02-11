@@ -354,6 +354,7 @@ export const SearchResultsSchema = z.object({
         status: z.string(),
         creator: z.object({
           id: z.string(),
+          name: z.string(),
           customId: z.string(),
           nickname: z.string(),
         }),
@@ -370,3 +371,15 @@ export const SearchResultsSchema = z.object({
 })
 
 export type SearchResults = z.infer<typeof SearchResultsSchema>
+
+export const PublisherListSchema = z.record(
+  z.object({
+    id: z.string(),
+    customId: z.string(),
+    title: z.string(),
+    logo: z.string(),
+    followerCount: z.number(),
+    description: z.string(),
+    createdAt: z.string().datetime(),
+  })
+)

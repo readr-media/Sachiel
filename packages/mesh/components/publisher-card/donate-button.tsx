@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { getPublisherWallet } from '@/app/actions/publisher'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PaymentType } from '@/types/payment'
 
 import Button from '../button'
@@ -17,6 +18,7 @@ export default function PublisherDonateButton({
 }) {
   const router = useRouter()
   const [isWalletAvailable, setIsWalletAvailable] = useState(false)
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   useEffect(() => {
     const init = async () => {
@@ -28,6 +30,9 @@ export default function PublisherDonateButton({
   }, [publisherId])
 
   const handleClickDonate = () => {
+    if (detectIfShouldRedirectToLogin()) {
+      return
+    }
     router.push(`/payment/${PaymentType.Sponsor}/${publisherId}`)
   }
 

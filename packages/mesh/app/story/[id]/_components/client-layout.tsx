@@ -56,6 +56,7 @@ export default function ClientLayout({
           />,
           <StoryPickButton
             storyId={story?.id ?? ''}
+            storyTitle={story?.title ?? ''}
             key={1}
             gtmClassName="GTM-article_click_pick_article"
           />,
@@ -80,7 +81,11 @@ export default function ClientLayout({
             key={0}
             publisherId={story?.source?.id ?? ''}
           />,
-          <StoryPickButton key={1} storyId={story?.id ?? ''} />,
+          <StoryPickButton
+            key={1}
+            storyId={story?.id ?? ''}
+            storyTitle={story?.title ?? ''}
+          />,
         ],
         isSinglePickByCurrentUser,
       }}

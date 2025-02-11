@@ -7,9 +7,10 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type MongoDBResponse } from '@/utils/data-schema'
-import { logStoryActionClick, logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
@@ -27,6 +28,28 @@ export default function Feed({
   const { following_actions } = story
   const storyActions = processStoryActions(following_actions)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
+  const actionTypeMap = {
+    'pick-comment': storyActions.actionType.isPickAndComment,
+    pick: storyActions.actionType.isPick,
+    comment: storyActions.actionType.isComment,
+  }
+  const actionType = (
+    Object.entries(actionTypeMap) as Array<
+      [keyof typeof actionTypeMap, boolean]
+    >
+  ).find(([_, value]) => value)?.[0]
+  const storyInfo = {
+    target: 'story',
+    targetId: story.id,
+    targetTitle: story.og_title,
+    source: pageName,
+  } as const
+  const publisherInfo = {
+    publisherTarget: 'publisher',
+    targetId: story.publisher.id,
+    targetName: story.publisher.title,
+  } as const
 
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
@@ -70,17 +93,20 @@ export default function Feed({
           href={`/story/${story.id}`}
           className="GTM-soc_click_article"
           onClick={() => {
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.og_title,
-              story.publisher.title
-            )
-            logStoryActionClick(
-              userPayload,
-              storyActions.actionType,
-              storyActions.memberIds
-            )
+            logClickEvent(userPayload, 'click-social', {
+              ...storyInfo,
+              complementary: {
+                ...publisherInfo,
+                feedAction: actionType,
+                feedOwnerId: storyActions.memberIds,
+              },
+            })
+            logClickEvent(userPayload, 'click-story', {
+              ...storyInfo,
+              complementary: {
+                ...publisherInfo,
+              },
+            })
           }}
         >
           <h2 className="title-1 mb-2 line-clamp-2 break-words hover-or-active:underline">
@@ -105,6 +131,7 @@ export default function Feed({
             />
             <StoryPickButton
               storyId={story.id}
+              storyTitle={story.og_title}
               gtmClassName="GTM-soc_pick_article"
             />
           </div>

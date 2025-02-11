@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
-import { createElement, useEffect, useState } from 'react'
+import { createElement, useEffect } from 'react'
 
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
-import { auth } from '@/firebase/client'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
+import { loginRedirectPathKey } from '@/hooks/use-redirect-login'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -30,32 +30,25 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
 export default function LoginSteps() {
   const router = useRouter()
   const { step, setStep } = useLogin()
-  const { handleSignIn, status: isSignInLoading } = useHandleSignIn()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isAuthReady, setIsAuthReady] = useState(false)
+  const { authStatus } = useHandleSignIn()
 
   useEffect(() => {
-    const init = async () => {
-      await auth.authStateReady()
-      setIsAuthReady(true)
-      const unsubscribe = auth.onAuthStateChanged(async () => {
-        const response = await handleSignIn()
-        if (!response) return
-        if (response.result === 'sign-up') {
-          setStep(LoginState.TermsConfirmation)
-        } else if (response.result === 'logged-in') {
-          const redirectRoute = localStorage.getItem('login-redirect') ?? '/'
-          setIsLoggedIn(true)
-          localStorage.removeItem('login-redirect')
-          router.push(redirectRoute)
-        }
-      })
-      return () => unsubscribe()
+    switch (authStatus) {
+      case 'proceed':
+        setStep(LoginState.TermsConfirmation)
+        break
+      case 'redirect': {
+        const redirectRoute = localStorage.getItem(loginRedirectPathKey) ?? '/'
+        localStorage.removeItem(loginRedirectPathKey)
+        router.push(redirectRoute)
+        break
+      }
+      default:
+        break
     }
-    init()
-  }, [handleSignIn, router, setStep])
+  }, [authStatus, router, setStep])
 
-  if (isSignInLoading === 'loading' || isLoggedIn || !isAuthReady) {
+  if (authStatus === 'loading' || authStatus === 'redirect') {
     return (
       <div className="flex size-full items-center justify-center">
         <Spinner />

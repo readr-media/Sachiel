@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 
 import Button from '@/components/button'
@@ -9,11 +8,12 @@ import Icon from '@/components/icon'
 import NotificationWrapper from '@/components/notification-wrapper'
 import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 
 export default function CollectionHeader() {
-  const router = useRouter()
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   return (
     <header className="fixed inset-x-0 top-0 z-layout h-[theme(height.header.default)] border-b bg-white sm:h-[theme(height.header.sm)]">
@@ -53,10 +53,7 @@ export default function CollectionHeader() {
                 size="sm"
                 color="white"
                 text="登入"
-                onClick={() => {
-                  // TODO: handle on login here
-                  router.push('/login')
-                }}
+                onClick={detectIfShouldRedirectToLogin}
               />
             </div>
           )}

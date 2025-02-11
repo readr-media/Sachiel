@@ -173,6 +173,7 @@ export default function Article({
                 <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
                 <StoryPickButton
                   storyId={story?.id ?? ''}
+                  storyTitle={story?.title ?? ''}
                   gtmClassName="GTM-article_click_pick_article"
                 />
                 {story && (

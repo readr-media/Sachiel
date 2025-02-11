@@ -75,15 +75,16 @@ export default function Footer({ className = '' }: { className?: string }) {
           {/* second row right block  */}
           <div className="flex gap-5">
             {FOOTER_SHARED_ICONS.map((iconInfo) => (
-              <Link
+              <a
                 href={iconInfo.href}
                 key={iconInfo.icon.default}
+                target="_blank"
                 className={`group GTM-footer_click_social_${iconInfo.gtmName}`}
               >
                 <div className="flex size-6 items-center justify-center">
                   <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>

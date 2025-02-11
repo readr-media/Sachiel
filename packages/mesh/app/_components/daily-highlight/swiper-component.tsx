@@ -6,9 +6,10 @@ import { useRef } from 'react'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type Props = {
   stories: DailyStory[]
@@ -21,6 +22,7 @@ type Story = {
 function StoryCard({ story }: Story) {
   const scrollContainerRef = useRef<HTMLElement>(null)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div
@@ -45,12 +47,17 @@ function StoryCard({ story }: Story) {
         <NextLink
           href={`story/${story.id}`}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logClickEvent(userPayload, 'click-story', {
+              target: 'story',
+              targetId: story.id,
+              targetTitle: story.title,
+              source: pageName,
+              complementary: {
+                publisherTarget: 'publisher',
+                targetId: story.source.id,
+                targetName: story.source.title,
+              },
+            })
           }
         >
           {story.title}

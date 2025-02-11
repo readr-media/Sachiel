@@ -6,11 +6,13 @@ query GetPublisherPolicy($customId: String) {
     }
   ) {
     id
+    name
     charge
     duration
     publisher {
       id
-      admin{
+      title
+      admin {
         id
         wallet
       }

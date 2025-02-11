@@ -11,9 +11,11 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { clickTypeMap } from '@/types/user-behavior-log'
+import { logClickEvent } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
 
@@ -40,10 +42,12 @@ const StoryMetaWrapper = ({
 export default forwardRef(function StoryCard(
   {
     story,
+    sourceStoryId = '',
     className = '',
     gtmTags,
   }: {
     story: Story
+    sourceStoryId?: string
     className?: string
     gtmTags: GtmTags
   },
@@ -51,6 +55,7 @@ export default forwardRef(function StoryCard(
 ) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
+  const pageName = usePageName()
 
   return (
     <article
@@ -80,12 +85,20 @@ export default forwardRef(function StoryCard(
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logStoryClick(
+            logClickEvent(
               userPayload,
-              story.id,
-              story?.title ?? '',
-              story.source?.title ?? '',
-              true
+              clickTypeMap[pageName as keyof typeof clickTypeMap],
+              {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story?.title ?? '',
+                source: pageName === 'story' ? sourceStoryId : pageName,
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source?.id ?? '',
+                  targetName: story.source?.title ?? '',
+                },
+              }
             )
           }
         >
@@ -124,7 +137,11 @@ export default forwardRef(function StoryCard(
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
+        <StoryPickButton
+          storyId={story.id}
+          storyTitle={story?.title ?? ''}
+          gtmClassName={gtmTags.pick}
+        />
       </div>
     </article>
   )

@@ -3,8 +3,9 @@
 import { type MouseEventHandler } from 'react'
 
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logShareClick } from '@/utils/event-logs'
+import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { getShareUrl } from '@/utils/get-url'
 
 import Icon from './icon'
@@ -46,8 +47,8 @@ export default function ShareSheet({
   url: string
   onClose: () => void
   storyInfo?: {
-    storyId: string
-    storyTitle: string
+    id: string
+    title: string
   }
 }) {
   useBlockBodyScroll(true)
@@ -57,6 +58,7 @@ export default function ShareSheet({
     evt.stopPropagation()
   }
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div
@@ -85,19 +87,24 @@ export default function ShareSheet({
             <a
               key={media.id}
               href={getShareUrl(media.urlTemplate, url)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`GTM-article_click_share_${media.id} block w-full`}
               onClick={() => {
                 if (storyInfo) {
-                  logShareClick(userPayload, {
-                    shareActions: {
-                      ...storyInfo,
-                      sharePlatform: media.id,
+                  logStoryInteractionEvent(userPayload, {
+                    type: 'share',
+                    storyId: storyInfo.id,
+                    storyTitle: storyInfo.title,
+                    source: pageName,
+                    complementary: {
+                      target: 'platform',
+                      targetId: null,
+                      targetName: media.id,
                     },
                   })
                 }
               }}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`GTM-article_click_share_${media.id} block w-full`}
             >
               <div className="flex flex-col items-center gap-2 sm:flex-1">
                 <Icon iconName={media.icon} size={{ width: 40, height: 40 }} />
