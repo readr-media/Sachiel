@@ -41,9 +41,10 @@ export default function MeshPointInfo({
           />
         </div>
       </div>
-      <div className="rounded-xl border-primary-200 bg-primary-100 py-3 pl-6 pr-[280px] text-primary-600">
-        收益每兩個月結算一次，結算日為次月五號，請於結算日前兌換，否則收益將計入下一期報表
-        例：1-2 月收益，應於 3/5
+      <div className="rounded-xl border-primary-200 bg-primary-100 py-3 pl-6 text-primary-600">
+        收益每兩個月結算一次，結算日為雙數月的最後一天，請於結算日前兌換，否則收益將計入下一期報表
+        <br />
+        例：1-2 月收益，應於 2/28
         前兌換，若未兌換，收益將記入下個結算日（5/5）之報表
       </div>
     </section>
