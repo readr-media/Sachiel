@@ -16,6 +16,7 @@ import useClickOutside from '@/hooks/use-click-outside'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { PaymentType } from '@/types/payment'
+import { type MongoDBResponse } from '@/utils/data-schema'
 import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { getStoryUrl } from '@/utils/get-url'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -40,7 +41,7 @@ export default function StoryMoreActionButton({
   nestedScrollContainerRef,
   className,
 }: {
-  story: CollectionPickStory
+  story: CollectionPickStory | MongoDBResponse['stories'][number]
   publisherId: string
   canUnFollowPublisher?: boolean
   nestedScrollContainerRef?: RefObject<HTMLElement>
@@ -118,7 +119,10 @@ export default function StoryMoreActionButton({
 
   const storyInfo = {
     id: story.id,
-    title: story?.title ?? '',
+    title:
+      ('title' in story && story?.title) ||
+      ('og_title' in story && story?.og_title) ||
+      '',
   }
 
   return (
