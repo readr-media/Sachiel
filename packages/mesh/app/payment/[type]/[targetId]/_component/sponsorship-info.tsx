@@ -16,7 +16,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logSponsor } from '@/utils/event-logs'
+import { logSponsorEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
@@ -34,6 +34,7 @@ export default function SponsorshipInfo({
 }) {
   const { user } = useUser()
   const router = useRouter()
+  const userPayload = useUserPayload()
   const [isInputMode, setIsInputMode] = useState(false)
   const [selectedOption, setSelectedOption] = useState<
     SponsorshipPoints | undefined | null
@@ -41,7 +42,6 @@ export default function SponsorshipInfo({
   const [amount, setAmount] = useState(0)
   const [isSponsored, setIsSponsored] = useState(false)
   const { addToast } = useToast()
-  const userPayload = useUserPayload()
   const createSponsorPayment: CreatePaymentProps = {
     action: 'sponsor_media',
     memberId: user.memberId,
@@ -77,7 +77,13 @@ export default function SponsorshipInfo({
 
   const handleSponsorSuccess = () => {
     setIsSponsored(true)
-    logSponsor(userPayload, publisher.title ?? '')
+    logSponsorEvent(userPayload, {
+      sponsorId: user.memberId,
+      sponsorName: user.name,
+      publisherId: publisher.id,
+      publisherName: publisher?.title ?? '',
+      point: amount,
+    })
   }
 
   return (

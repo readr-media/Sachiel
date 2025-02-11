@@ -6,9 +6,10 @@ import CollectionPickButton from '@/components/collection-card/collection-pick-b
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useEditProfile } from '@/context/edit-profile'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { PickCollections } from '@/types/profile'
-import { logCollectionClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type CollectionsCarouselElementProps = {
   data: NonNullable<PickCollections>[number]
@@ -19,6 +20,7 @@ const CollectionsCarouselElement = ({
 }: CollectionsCarouselElementProps) => {
   const { visitorProfile } = useEditProfile()
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   if (!data) return <></>
   const { heroImage, title, creator, picksCount, id } = data
   const shouldShowCollectionPickButton = visitorProfile.customId
@@ -26,7 +28,19 @@ const CollectionsCarouselElement = ({
     <div className="flex h-full w-[150px] flex-col rounded border bg-white md:w-full">
       <Link
         href={`/collection/${id}`}
-        onClick={() => logCollectionClick(userPayload, title ?? '')}
+        onClick={() =>
+          logClickEvent(userPayload, 'click-collection', {
+            target: 'collection',
+            targetId: id,
+            targetTitle: title ?? '',
+            source: pageName,
+            complementary: {
+              publisherTarget: 'member',
+              targetId: creator?.id ?? '',
+              targetName: creator?.name ?? '',
+            },
+          })
+        }
       >
         <div className="relative aspect-[2] w-full">
           <ImageWithFallback
@@ -46,7 +60,19 @@ const CollectionsCarouselElement = ({
         <Link
           className="flex grow flex-col"
           href={`/collection/${id}`}
-          onClick={() => logCollectionClick(userPayload, title ?? '')}
+          onClick={() =>
+            logClickEvent(userPayload, 'click-collection', {
+              target: 'collection',
+              targetId: id,
+              targetTitle: title ?? '',
+              source: pageName,
+              complementary: {
+                publisherTarget: 'member',
+                targetId: creator?.id ?? '',
+                targetName: creator?.name ?? '',
+              },
+            })
+          }
         >
           <div className="h-full flex-col justify-between">
             <p className="caption-1 text-primary-500">@{creator?.customId}</p>
@@ -58,7 +84,10 @@ const CollectionsCarouselElement = ({
           </p>
         </Link>
         {shouldShowCollectionPickButton ? (
-          <CollectionPickButton collectionId={id} />
+          <CollectionPickButton
+            collectionId={id}
+            collectionTitle={title ?? ''}
+          />
         ) : (
           <></>
         )}

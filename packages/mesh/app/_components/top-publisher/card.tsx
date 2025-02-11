@@ -5,22 +5,25 @@ import NextLink from 'next/link'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from '../image-with-fallback'
 
 const StoryCard = ({
   showImage,
   story,
-  publisherName,
+  publisherInfo,
 }: {
   showImage: boolean
   story: SponsoredStory['stories'][number]
-  publisherName: string
+  publisherInfo: { publisherName: string; publisherId: string }
 }) => {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
+  const { publisherId, publisherName } = publisherInfo
 
   return (
     <article className="border-b-[0.5px] border-primary-200 py-3 last:border-b-0">
@@ -28,7 +31,17 @@ const StoryCard = ({
         href={`/story/${story.id}`}
         className="GTM-homepage_click_media_article"
         onClick={() =>
-          logStoryClick(userPayload, story.id, story.title, publisherName)
+          logClickEvent(userPayload, 'click-story', {
+            target: 'story',
+            targetId: story.id,
+            targetTitle: story.title,
+            source: pageName,
+            complementary: {
+              publisherTarget: 'publisher',
+              targetId: publisherId,
+              targetName: publisherName,
+            },
+          })
         }
       >
         {showImage && story.og_image && (
@@ -109,7 +122,10 @@ export default function TopPublisherCard({ publisher }: Props) {
           showImage={index === 0}
           story={story}
           key={story.id}
-          publisherName={publisher.title}
+          publisherInfo={{
+            publisherName: publisher.title,
+            publisherId: publisher.id,
+          }}
         />
       ))}
     </div>

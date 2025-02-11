@@ -26,6 +26,7 @@ mutation CreateCollection(
     }
   ) {
     id
+    title
   }
 }
 

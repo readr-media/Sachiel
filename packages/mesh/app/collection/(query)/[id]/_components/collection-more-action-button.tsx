@@ -13,6 +13,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
@@ -252,6 +253,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const router = useRouter()
   const { user } = useUser()
   const { addToast } = useToast()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   const hasPosition = isPositionValid(position)
 
@@ -288,6 +290,9 @@ const ActionSheet = forwardRef(function ActionSheet(
       }
       case ActionType.Report: {
         // TODO: report the collection
+        if (detectIfShouldRedirectToLogin()) {
+          return
+        }
         onOpenDialog(ActionType.Report)
         break
       }

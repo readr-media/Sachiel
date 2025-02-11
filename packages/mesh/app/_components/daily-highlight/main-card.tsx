@@ -8,9 +8,10 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { DailyStory, GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from '../image-with-fallback'
 
@@ -22,6 +23,7 @@ type Props = {
 export default function MainCard({ story, gtmTags }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-x-10">
@@ -58,12 +60,17 @@ export default function MainCard({ story, gtmTags }: Props) {
             href={`story/${story.id}`}
             className={gtmTags.story}
             onClick={() =>
-              logStoryClick(
-                userPayload,
-                story.id,
-                story.title,
-                story.source.title
-              )
+              logClickEvent(userPayload, 'click-story', {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story.title,
+                source: pageName,
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source.id,
+                  targetName: story.source.title,
+                },
+              })
             }
           >
             <h3 className="title-2 mb-2 text-primary-700 hover-or-active:underline sm:mb-3">
@@ -91,7 +98,11 @@ export default function MainCard({ story, gtmTags }: Props) {
             pickCount={displayPicksCount}
             objectiveId={story.id}
           />
-          <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
+          <StoryPickButton
+            storyId={story.id}
+            storyTitle={story.title}
+            gtmClassName={gtmTags.pick}
+          />
         </div>
       </div>
     </div>

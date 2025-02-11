@@ -87,9 +87,10 @@ const NonMobileNav = ({
                     }
                     iconInfo={{
                       ...iconInfo,
-                      href:
-                        iconInfo.href +
-                        `/member/${userCustomId}?tab=${TabCategory.PICKS}`,
+                      href: userCustomId
+                        ? iconInfo.href +
+                          `/member/${userCustomId}?tab=${TabCategory.PICKS}`
+                        : '/login',
                     }}
                     avatarUrl={avatarUrl}
                   />

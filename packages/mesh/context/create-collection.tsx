@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import type { CreateCollectionParams } from '@/app/actions/collection'
@@ -14,6 +15,8 @@ import {
   DesktopCreateCollectionStep,
   MobileCreateCollectionStep,
 } from '@/app/collection/(mutate)/new/_types/create-collection'
+import { collectionCreateParamName } from '@/constants/search-param-names'
+import useUserPayload from '@/hooks/use-user-payload'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { clearCreateCollectionStoryLS } from '@/utils/cross-page-create-collection'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
@@ -21,6 +24,7 @@ import {
   generateUniqueTimestamp,
   getCurrentTimeInISOFormat,
 } from '@/utils/date'
+import { logStoryInteractionEvent } from '@/utils/event-logs'
 
 import { useUser } from './user'
 
@@ -88,6 +92,8 @@ export default function CreateCollectionProvider({
   const { width } = useWindowDimensions()
   const mobileStepName = mobileStepNames[step]
   const desktopStepName = desktopStepNames[step]
+  const userPayload = useUserPayload()
+  const searchParams = useSearchParams()
 
   const isMobileStepFullfilled = useMemo(() => {
     switch (mobileStepName) {
@@ -183,6 +189,20 @@ export default function CreateCollectionProvider({
       // clear localstorage data once collection created
       clearCreateCollectionStoryLS()
       const collectionId = response.createCollection?.id
+      const collectionTitle = response.createCollection?.title
+      collectionPickStories.forEach((story) => {
+        logStoryInteractionEvent(userPayload, {
+          type: 'collection',
+          storyId: story.id,
+          storyTitle: story?.title ?? '',
+          source: searchParams.get(collectionCreateParamName) ?? '',
+          complementary: {
+            target: 'collection',
+            targetId: collectionId ?? '',
+            targetName: collectionTitle ?? '',
+          },
+        })
+      })
       router.push(`/collection/${collectionId}`)
     } else {
       setCrossPageToast({ status: 'fail', text: '建立集錦失敗，請重新嘗試' })

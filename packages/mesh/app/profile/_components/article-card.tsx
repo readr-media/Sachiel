@@ -10,6 +10,7 @@ import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { CommentProvider } from '@/context/comment'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { CommentObjective } from '@/types/objective'
 import {
@@ -18,7 +19,7 @@ import {
   type CommentType,
   type PickListItem,
 } from '@/types/profile'
-import { logCollectionClick, logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type StoryDataTypes =
   | NonNullable<PickListItem>
@@ -152,6 +153,7 @@ const ArticleCard = ({
     picksCount: storyGetters.pickCount(storyData),
   })
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const shouldShowSource = !isCollection(storyData)
   const redirectLink = () => {
     if (isCollection(storyData)) return `/collection/${storyData.id}`
@@ -171,14 +173,23 @@ const ArticleCard = ({
           }`}
           href={redirectLink()}
           onClick={() =>
-            isCollection(storyData)
-              ? logCollectionClick(userPayload, storyData.title ?? '')
-              : logStoryClick(
-                  userPayload,
-                  storyData.id,
-                  storyData?.title ?? '',
-                  storyGetters.source(storyData)
-                )
+            logClickEvent(
+              userPayload,
+              isCollection(storyData) ? 'click-collection' : 'click-story',
+              {
+                target: isCollection(storyData) ? 'collection' : 'story',
+                targetId: storyData.id,
+                targetTitle: storyData?.title ?? '',
+                source: pageName,
+                complementary: {
+                  publisherTarget: isCollection(storyData)
+                    ? 'member'
+                    : 'publisher',
+                  targetId: storyGetters.sourceId(storyData),
+                  targetName: storyGetters.source(storyData),
+                },
+              }
+            )
           }
         >
           <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -206,14 +217,23 @@ const ArticleCard = ({
             }`}
             href={redirectLink()}
             onClick={() =>
-              isCollection(storyData)
-                ? logCollectionClick(userPayload, storyData.title ?? '')
-                : logStoryClick(
-                    userPayload,
-                    storyData.id,
-                    storyData?.title ?? '',
-                    storyGetters.source(storyData)
-                  )
+              logClickEvent(
+                userPayload,
+                isCollection(storyData) ? 'click-collection' : 'click-story',
+                {
+                  target: isCollection(storyData) ? 'collection' : 'story',
+                  targetId: storyData.id,
+                  targetTitle: storyData?.title ?? '',
+                  source: pageName,
+                  complementary: {
+                    publisherTarget: isCollection(storyData)
+                      ? 'member'
+                      : 'publisher',
+                    targetId: storyGetters.sourceId(storyData),
+                    targetName: storyGetters.source(storyData),
+                  },
+                }
+              )
             }
           >
             {shouldShowSource && (
@@ -290,10 +310,14 @@ const ArticleCard = ({
             {isCollection(storyData) ? (
               <CollectionPickButton
                 collectionId={storyData.id}
+                collectionTitle={storyData?.title ?? ''}
                 gtmClassName="GTM-collection_tab_pick"
               />
             ) : (
-              <StoryPickButton storyId={storyData?.id} />
+              <StoryPickButton
+                storyId={storyData?.id}
+                storyTitle={storyData?.title ?? ''}
+              />
             )}
           </section>
 
