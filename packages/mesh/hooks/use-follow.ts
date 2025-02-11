@@ -1,7 +1,5 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
-
 import {
   addMemberFollowing,
   removeMemberFollowing,
@@ -11,18 +9,17 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
+import useRedirectLogin from './use-redirect-login'
+
 export const useFollow = (followingId: string) => {
-  const router = useRouter()
-  const pathname = usePathname()
   const { user, setUser } = useUser()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const memberId = user.memberId
   const isFollowing = user.followingMemberIds.has(followingId)
   const { addToast } = useToast()
 
   const handleClickFollow = debounce(async () => {
-    if (!memberId) {
-      localStorage.setItem('login-redirect', pathname)
-      router.push('/login')
+    if (detectIfShouldRedirectToLogin()) {
       return
     }
 

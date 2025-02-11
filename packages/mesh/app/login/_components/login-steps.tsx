@@ -4,6 +4,7 @@ import { createElement, useEffect } from 'react'
 import Spinner from '@/components/spinner'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import useHandleSignIn from '@/hooks/use-handle-sign-in'
+import { loginRedirectPathKey } from '@/hooks/use-redirect-login'
 
 import LoginEmail from './login-email'
 import LoginEmailConfirmation from './login-email-confirmation'
@@ -37,8 +38,8 @@ export default function LoginSteps() {
         setStep(LoginState.TermsConfirmation)
         break
       case 'redirect': {
-        const redirectRoute = localStorage.getItem('login-redirect') ?? '/'
-        localStorage.removeItem('login-redirect')
+        const redirectRoute = localStorage.getItem(loginRedirectPathKey) ?? '/'
+        localStorage.removeItem(loginRedirectPathKey)
         router.push(redirectRoute)
         break
       }
