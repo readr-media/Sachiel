@@ -11,6 +11,7 @@ import {
 } from '@/app/actions/collection'
 import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
 import { ImageCategory } from '@/constants/fallback-src'
+import { collectionCreateParamName } from '@/constants/search-param-names'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
@@ -18,6 +19,7 @@ import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { setCrossPageCollectionPickStory } from '@/utils/cross-page-create-collection'
+import { type MongoDBResponse } from '@/utils/data-schema'
 import { getCurrentTimeInISOFormat } from '@/utils/date'
 import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
@@ -32,7 +34,7 @@ export default function AddStoryToCollection({
   story,
   onClose,
 }: {
-  story: CollectionPickStory
+  story: CollectionPickStory | MongoDBResponse['stories'][number]
   onClose: () => void
 }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -44,6 +46,9 @@ export default function AddStoryToCollection({
   const { addToast } = useToast()
   const userPayload = useUserPayload()
   const pageName = usePageName()
+  const searchParams = new URLSearchParams({
+    [collectionCreateParamName]: pageName,
+  })
 
   const addStoryToCollection = async (collection: Collection) => {
     if (!collection.collectionpicks) return
@@ -61,7 +66,10 @@ export default function AddStoryToCollection({
       logStoryInteractionEvent(userPayload, {
         type: 'collection',
         storyId: story.id,
-        storyTitle: story?.title ?? '',
+        storyTitle:
+          ('title' in story && story?.title) ||
+          ('og_title' in story && story?.og_title) ||
+          '',
         source: pageName,
         complementary: {
           target: 'collection',
@@ -77,7 +85,7 @@ export default function AddStoryToCollection({
 
   const createCollection = () => {
     setCrossPageCollectionPickStory(story)
-    router.push('/collection/new')
+    router.push(`/collection/new?${searchParams.toString()}`)
   }
 
   useEffect(() => {

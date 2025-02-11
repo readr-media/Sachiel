@@ -4608,7 +4608,11 @@ export type CreateCollectionMutationVariables = Exact<{
 
 export type CreateCollectionMutation = {
   __typename?: 'Mutation'
-  createCollection?: { __typename?: 'Collection'; id: string } | null
+  createCollection?: {
+    __typename?: 'Collection'
+    id: string
+    title?: string | null
+  } | null
 }
 
 export type AddStoryToCollectionMutationVariables = Exact<{
@@ -7654,6 +7658,7 @@ export const CreateCollectionDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
               ],
             },
           },
