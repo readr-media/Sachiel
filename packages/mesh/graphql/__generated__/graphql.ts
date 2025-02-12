@@ -6112,13 +6112,24 @@ export type GetMemberPickAndBookmarkQuery = {
   } | null
 }
 
-export type GetMemberNameQueryVariables = Exact<{
+export type GetMemberForOgQueryVariables = Exact<{
   memberCustomId?: InputMaybe<Scalars['String']['input']>
 }>
 
-export type GetMemberNameQuery = {
+export type GetMemberForOgQuery = {
   __typename?: 'Query'
-  member?: { __typename?: 'Member'; name?: string | null } | null
+  member?: {
+    __typename?: 'Member'
+    name?: string | null
+    avatar?: string | null
+    avatar_image?: {
+      __typename?: 'Photo'
+      resized?: {
+        __typename?: 'ResizedImages'
+        original?: string | null
+      } | null
+    } | null
+  } | null
 }
 
 export type GetMemberExcludePublisherQueryVariables = Exact<{
@@ -6449,13 +6460,17 @@ export type GetPublisherFollowerListQuery = {
   }> | null
 }
 
-export type GetPublisherNameQueryVariables = Exact<{
+export type GetPublisherForOgQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
 }>
 
-export type GetPublisherNameQuery = {
+export type GetPublisherForOgQuery = {
   __typename?: 'Query'
-  publishers?: Array<{ __typename?: 'Publisher'; title?: string | null }> | null
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    title?: string | null
+    logo?: string | null
+  }> | null
 }
 
 export type GetPublisherWalletQueryVariables = Exact<{
@@ -17275,13 +17290,13 @@ export const GetMemberPickAndBookmarkDocument = {
   GetMemberPickAndBookmarkQuery,
   GetMemberPickAndBookmarkQueryVariables
 >
-export const GetMemberNameDocument = {
+export const GetMemberForOgDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetMemberName' },
+      name: { kind: 'Name', value: 'GetMemberForOG' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -17321,6 +17336,29 @@ export const GetMemberNameDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'avatar_image' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'resized' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'original' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -17328,7 +17366,7 @@ export const GetMemberNameDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetMemberNameQuery, GetMemberNameQueryVariables>
+} as unknown as DocumentNode<GetMemberForOgQuery, GetMemberForOgQueryVariables>
 export const GetMemberExcludePublisherDocument = {
   kind: 'Document',
   definitions: [
@@ -19394,13 +19432,13 @@ export const GetPublisherFollowerListDocument = {
   GetPublisherFollowerListQuery,
   GetPublisherFollowerListQueryVariables
 >
-export const GetPublisherNameDocument = {
+export const GetPublisherForOgDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetPublisherName' },
+      name: { kind: 'Name', value: 'GetPublisherForOG' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -19452,6 +19490,7 @@ export const GetPublisherNameDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
               ],
             },
           },
@@ -19460,8 +19499,8 @@ export const GetPublisherNameDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetPublisherNameQuery,
-  GetPublisherNameQueryVariables
+  GetPublisherForOgQuery,
+  GetPublisherForOgQueryVariables
 >
 export const GetPublisherWalletDocument = {
   kind: 'Document',
