@@ -7,6 +7,7 @@ import { type FormEvent } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { ENV } from '@/constants/config'
 import { useUser } from '@/context/user'
 
 import { Card } from './card'
@@ -77,7 +78,7 @@ export const LogInCard = ({
             <p className="footnote text-center text-primary-400">
               讀選點數是什麼？
               {/* TODO: update link */}
-              <Link href={'/'}>
+              <Link href={ENV === 'prod' ? '/story/53192' : '/'}>
                 <span className="text-primary-700 underline underline-offset-2">
                   了解更多
                 </span>
