@@ -66,7 +66,7 @@ const MobileCommentMeta = ({
           pickCount={pickCount}
           objectiveId={objectiveId}
         />
-        <StoryPickButton storyId={'0'} />
+        <StoryPickButton storyId={objectiveId} storyTitle={title} />
       </div>
     </section>
   )

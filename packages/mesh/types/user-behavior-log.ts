@@ -1,125 +1,116 @@
 import type Bowser from 'bowser'
 
-import type { SharePlatform } from '@/components/share-sheet'
-
 export type UserPayload = {
-  memberType: string
+  logInStatus: boolean
+  memberId: string
   email: string
   firebaseId: string
 }
 
-export type ShareData = {
-  shareActions: {
+export type InteractionInfo = {
+  type: 'share' | 'pick' | 'collection' | 'bookmark'
+  storyId: string | null
+  storyTitle: string | null
+  sharePlatform: string | null
+}
+
+export type ClickType =
+  | 'click-story'
+  | 'click-related-story'
+  | 'click-collection'
+  | 'click-social'
+  | 'click-category'
+
+export type ClickTarget = 'story' | 'collection' | 'category'
+
+export type ClickComplementary = {
+  publisherTarget: 'publisher' | 'member'
+  targetId: string
+  targetName: string
+  feedAction?: string
+  feedOwnerId?: string[]
+}
+
+type ClickEvent = {
+  type: ClickType
+  target: ClickTarget
+  targetId: string
+  targetTitle: string
+  source: string
+  complementary:
+    | (Omit<ClickComplementary, 'feedAction' | 'feedOwnerId'> & {
+        feedAction: string | null
+        feedOwnerId: string[] | null
+      })
+    | null
+}
+
+type GeneralEvent = {
+  type: 'pageview' | 'exit' | 'scroll-to-50%' | 'scroll-to-80%'
+  source: string
+  complementary: {
+    target: string
+    targetId: string
+  } | null
+}
+
+type SponsorEvent = {
+  type: 'sponsor'
+  sponsor: {
+    sponsorId: string
+    sponsorName: string
+    publisherId: string
+    publisherName: string
+    point: number
+  }
+}
+
+type StoryUnlockEvent = {
+  type: 'tx-unlock-single'
+  transaction: {
+    policyId: string
+    policyName: string
+    publisherId: string
+    publisherName: string
     storyId: string
-    storyTitle: string
-    sharePlatform: SharePlatform
   }
 }
 
-export type PageInfo = {
-  referrer: string
-  pageUrl: string
-  pageName: string | { storyId?: string; collectionId?: string }
+type StoryInteractionEvent = {
+  type: string
+  storyId: string
+  storyTitle: string
+  source: string
 }
 
-type StoryInteraction = {
-  interaction:
-    | {
-        relatedStories: {
-          relatedStoryId: string
-          relatedTitle: string
-        }
-        story?: undefined
-      }
-    | {
-        story: {
-          storyId: string
-          storyTitle: string
-        }
-        relatedStories?: undefined
-      }
+export type LogCategory = 'click' | 'general' | 'payment' | 'interaction'
+
+export type Info = {
+  logCategory: LogCategory
+  logInfo: UserBehaviorLogInfo
 }
 
-type ShareInteraction = {
-  interaction: {
-    shareActions: {
-      storyId: string
-      storyTitle: string
-      sharePlatform: SharePlatform
-    }
-  }
-}
-
-type CategoryInteraction = {
-  interaction: {
-    categories: {
-      categoryName: string
-    }
-  }
-}
-
-type PickInteraction = {
-  interaction: {
-    pick: {
-      storyId: string
-    }
-  }
-}
-
-type BookmarkInteraction = {
-  interaction: {
-    bookmark: {
-      storyId: string
-    }
-  }
-}
-
-type CollectionInteraction = {
-  interaction: {
-    collection: {
-      storyId: string
-    }
-  }
-}
-
-type UserActivityInteraction = {
-  userActivity: {
-    activityType: string
-    userId: string[]
-  }
-}
-
-type MediaInteraction = {
-  interaction: {
-    media: {
-      videoPlay: boolean
-    }
-  }
-}
-
-export type BaseLog = {
-  triggerEvent: {
-    'event-type': string
-    datetime: string
-  }
-  clientInfo: {
-    ip: string
-    userInfo: UserPayload
-    device: { name: string; version: string }
-    browser: Bowser.Parser.Details
-    isInApBrowser: boolean
-    screenSize: { width: number; height: number }
-  }
-  pageInfo: PageInfo
+export type BaseLogInfo = {
+  ip: string
+  logInStatus: boolean
+  memberId: string
+  email: string
+  firebaseId: string
+  device: { name: string; version: string }
+  browser: Bowser.Parser.Details
+  isInAppBrowser: boolean
+  screenSize: { width: number; height: number }
+  datetime: string
 } | null
 
 export type UserBehaviorLogInfo =
-  | BaseLog
-  | (BaseLog & StoryInteraction)
-  | (BaseLog & ShareInteraction)
-  | (BaseLog & CategoryInteraction)
-  | (BaseLog & PickInteraction)
-  | (BaseLog & BookmarkInteraction)
-  | (BaseLog & CollectionInteraction)
-  | (BaseLog & UserActivityInteraction)
-  | (BaseLog & MediaInteraction)
+  | (BaseLogInfo & GeneralEvent)
+  | (BaseLogInfo & ClickEvent)
+  | (BaseLogInfo & SponsorEvent)
+  | (BaseLogInfo & StoryUnlockEvent)
+  | (BaseLogInfo & StoryInteractionEvent)
+
+export const clickTypeMap = {
+  media: 'click-story',
+  story: 'click-related-story',
+} as const

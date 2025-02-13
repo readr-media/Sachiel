@@ -12,8 +12,10 @@ import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
+import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
 import RelatedStories from './_components/related-stories'
+import StoryEndAd from './_components/story-end-ad'
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
@@ -52,9 +54,13 @@ export default async function Page({ params }: { params: { id: string } }) {
         hasPayed={hasPayed}
         policy={policy}
       />
-      <RelatedStories relatedStories={relatedStories} />
+      <StoryEndAd />
+      <RelatedStories
+        sourceStoryId={storyData.story.id}
+        relatedStories={relatedStories}
+      />
       <Comment targetId={storyId} />
-      <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
+      <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] lg:flex-col xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
         {!isMemberStory && (
           <SideIndex
             apiData={storyData.story?.apiData as ApiData}
@@ -63,6 +69,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           />
         )}
       </aside>
+      <AsideAd />
     </>
   )
 }

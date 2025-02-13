@@ -1,11 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import { BookmarkObjective } from '@/types/objective'
 
 import Icon from '../icon'
@@ -17,9 +16,9 @@ export default function AddBookMarkButton({
   bookmarkObjective: BookmarkObjective
   targetId: string
 }) {
-  const router = useRouter()
   const { addToast } = useToast()
   const { user, setUser } = useUser()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const userBookmarkSetKey =
     bookmarkObjective === BookmarkObjective.Story
       ? 'bookmarkStoryIds'
@@ -27,8 +26,7 @@ export default function AddBookMarkButton({
   const isAddedBookmark = user[userBookmarkSetKey].has(targetId)
 
   const onToggleBookmark = async () => {
-    if (!user.memberId) {
-      router.push('/login')
+    if (detectIfShouldRedirectToLogin()) {
       return
     }
     if (isAddedBookmark) {

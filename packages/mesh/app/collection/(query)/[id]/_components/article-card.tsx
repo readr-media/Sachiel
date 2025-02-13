@@ -9,9 +9,10 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type CommentType } from '@/types/profile'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import type { CollectionPick } from '../../_types/collection'
 import Comment from './comment'
@@ -31,17 +32,24 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
   const creatorComment = commentList[0]
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
+
   return (
     <Link
       href={`/story/${story?.id}`}
       className="GTM-collection_pick_collection_article"
       onClick={() =>
-        logStoryClick(
-          userPayload,
-          story?.id ?? '',
-          story?.title ?? '',
-          story?.source?.title ?? ''
-        )
+        logClickEvent(userPayload, 'click-story', {
+          target: 'story',
+          targetId: story?.id ?? '',
+          targetTitle: story?.title ?? '',
+          source: pageName,
+          complementary: {
+            publisherTarget: 'publisher',
+            targetId: story?.source?.id ?? '',
+            targetName: story?.source?.title ?? '',
+          },
+        })
       }
     >
       <section className="relative hidden md:block md:aspect-[2/1] md:w-full md:overflow-hidden md:rounded-t-md">
@@ -103,6 +111,7 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
           />
           <StoryPickButton
             storyId={story?.id ?? ''}
+            storyTitle={story?.title ?? ''}
             gtmClassName="GTM-collection_pick_article"
           />
         </section>

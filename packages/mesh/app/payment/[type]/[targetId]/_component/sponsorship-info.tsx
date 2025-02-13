@@ -9,7 +9,7 @@ import {
   type CreatePaymentProps,
   type UpdatePaymentProps,
 } from '@/app/actions/payment'
-import { type PublisherData } from '@/app/actions/publisher'
+import { type PublisherWalletData } from '@/app/actions/publisher'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -17,7 +17,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logSponsor } from '@/utils/event-logs'
+import { logSponsorEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
@@ -29,12 +29,13 @@ export default function SponsorshipInfo({
   balance,
   recipientAddress,
 }: {
-  publisher: PublisherData
+  publisher: NonNullable<PublisherWalletData>
   balance: number | undefined
   recipientAddress: Hex
 }) {
   const { user } = useUser()
   const router = useRouter()
+  const userPayload = useUserPayload()
   const [isInputMode, setIsInputMode] = useState(false)
   const [selectedOption, setSelectedOption] = useState<
     SponsorshipPoints | undefined | null
@@ -42,7 +43,6 @@ export default function SponsorshipInfo({
   const [amount, setAmount] = useState(0)
   const [isSponsored, setIsSponsored] = useState(false)
   const { addToast } = useToast()
-  const userPayload = useUserPayload()
   const createSponsorPayment: CreatePaymentProps = {
     action: 'sponsor_media',
     memberId: user.memberId,
@@ -85,7 +85,13 @@ export default function SponsorshipInfo({
 
   const handleSponsorSuccess = () => {
     setIsSponsored(true)
-    logSponsor(userPayload, publisher.title ?? '')
+    logSponsorEvent(userPayload, {
+      sponsorId: user.memberId,
+      sponsorName: user.name,
+      publisherId: publisher.id,
+      publisherName: publisher?.title ?? '',
+      point: amount,
+    })
   }
 
   return (

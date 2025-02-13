@@ -613,7 +613,6 @@ export type Comment = {
   likeCount?: Maybe<Scalars['Int']['output']>
   member?: Maybe<Member>
   parent?: Maybe<Comment>
-  podcast?: Maybe<Podcast>
   published_date?: Maybe<Scalars['DateTime']['output']>
   root?: Maybe<Comment>
   state?: Maybe<Scalars['String']['output']>
@@ -643,7 +642,6 @@ export type CommentCreateInput = {
   like?: InputMaybe<MemberRelateToManyForCreateInput>
   member?: InputMaybe<MemberRelateToOneForCreateInput>
   parent?: InputMaybe<CommentRelateToOneForCreateInput>
-  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   root?: InputMaybe<CommentRelateToOneForCreateInput>
   state?: InputMaybe<Scalars['String']['input']>
@@ -707,7 +705,6 @@ export type CommentUpdateInput = {
   like?: InputMaybe<MemberRelateToManyForUpdateInput>
   member?: InputMaybe<MemberRelateToOneForUpdateInput>
   parent?: InputMaybe<CommentRelateToOneForUpdateInput>
-  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   root?: InputMaybe<CommentRelateToOneForUpdateInput>
   state?: InputMaybe<Scalars['String']['input']>
@@ -730,7 +727,6 @@ export type CommentWhereInput = {
   like?: InputMaybe<MemberManyRelationFilter>
   member?: InputMaybe<MemberWhereInput>
   parent?: InputMaybe<CommentWhereInput>
-  podcast?: InputMaybe<PodcastWhereInput>
   published_date?: InputMaybe<DateTimeNullableFilter>
   root?: InputMaybe<CommentWhereInput>
   state?: InputMaybe<StringNullableFilter>
@@ -1205,6 +1201,7 @@ export type Member = {
   __typename?: 'Member'
   avatar?: Maybe<Scalars['String']['output']>
   avatar_image?: Maybe<Photo>
+  balance?: Maybe<Scalars['Int']['output']>
   block?: Maybe<Array<Member>>
   blockCount?: Maybe<Scalars['Int']['output']>
   blocked?: Maybe<Array<Member>>
@@ -1217,6 +1214,8 @@ export type Member = {
   createdBy?: Maybe<User>
   customId?: Maybe<Scalars['String']['output']>
   email?: Maybe<Scalars['String']['output']>
+  exclude_publisher?: Maybe<Array<Publisher>>
+  exclude_publisherCount?: Maybe<Scalars['Int']['output']>
   firebaseId?: Maybe<Scalars['String']['output']>
   follow_publisher?: Maybe<Array<Publisher>>
   follow_publisherCount?: Maybe<Scalars['Int']['output']>
@@ -1296,6 +1295,17 @@ export type MemberCreate_CollectionArgs = {
 
 export type MemberCreate_CollectionCountArgs = {
   where?: CollectionMemberWhereInput
+}
+
+export type MemberExclude_PublisherArgs = {
+  orderBy?: Array<PublisherOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: PublisherWhereInput
+}
+
+export type MemberExclude_PublisherCountArgs = {
+  where?: PublisherWhereInput
 }
 
 export type MemberFollow_PublisherArgs = {
@@ -1433,6 +1443,7 @@ export type MemberTransactionCountArgs = {
 export type MemberCreateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForCreateInput>
   blocked?: InputMaybe<MemberRelateToManyForCreateInput>
   comment?: InputMaybe<CommentRelateToManyForCreateInput>
@@ -1441,6 +1452,7 @@ export type MemberCreateInput = {
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
   customId?: InputMaybe<Scalars['String']['input']>
   email?: InputMaybe<Scalars['String']['input']>
+  exclude_publisher?: InputMaybe<PublisherRelateToManyForCreateInput>
   firebaseId?: InputMaybe<Scalars['String']['input']>
   follow_publisher?: InputMaybe<PublisherRelateToManyForCreateInput>
   follower?: InputMaybe<MemberRelateToManyForCreateInput>
@@ -1473,6 +1485,7 @@ export type MemberManyRelationFilter = {
 
 export type MemberOrderByInput = {
   avatar?: InputMaybe<OrderDirection>
+  balance?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
   customId?: InputMaybe<OrderDirection>
   email?: InputMaybe<OrderDirection>
@@ -1518,6 +1531,7 @@ export type MemberUpdateArgs = {
 export type MemberUpdateInput = {
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForUpdateInput>
+  balance?: InputMaybe<Scalars['Int']['input']>
   block?: InputMaybe<MemberRelateToManyForUpdateInput>
   blocked?: InputMaybe<MemberRelateToManyForUpdateInput>
   comment?: InputMaybe<CommentRelateToManyForUpdateInput>
@@ -1526,6 +1540,7 @@ export type MemberUpdateInput = {
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
   customId?: InputMaybe<Scalars['String']['input']>
   email?: InputMaybe<Scalars['String']['input']>
+  exclude_publisher?: InputMaybe<PublisherRelateToManyForUpdateInput>
   firebaseId?: InputMaybe<Scalars['String']['input']>
   follow_publisher?: InputMaybe<PublisherRelateToManyForUpdateInput>
   follower?: InputMaybe<MemberRelateToManyForUpdateInput>
@@ -1556,6 +1571,7 @@ export type MemberWhereInput = {
   OR?: InputMaybe<Array<MemberWhereInput>>
   avatar?: InputMaybe<StringFilter>
   avatar_image?: InputMaybe<PhotoWhereInput>
+  balance?: InputMaybe<IntNullableFilter>
   block?: InputMaybe<MemberManyRelationFilter>
   blocked?: InputMaybe<MemberManyRelationFilter>
   comment?: InputMaybe<CommentManyRelationFilter>
@@ -1564,6 +1580,7 @@ export type MemberWhereInput = {
   createdBy?: InputMaybe<UserWhereInput>
   customId?: InputMaybe<StringFilter>
   email?: InputMaybe<StringFilter>
+  exclude_publisher?: InputMaybe<PublisherManyRelationFilter>
   firebaseId?: InputMaybe<StringFilter>
   follow_publisher?: InputMaybe<PublisherManyRelationFilter>
   follower?: InputMaybe<MemberManyRelationFilter>
@@ -1636,8 +1653,12 @@ export type Mutation = {
   createReportReasons?: Maybe<Array<Maybe<ReportReason>>>
   createReportRecord?: Maybe<ReportRecord>
   createReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
+  createRevenue?: Maybe<Revenue>
+  createRevenues?: Maybe<Array<Maybe<Revenue>>>
   createSponsorship?: Maybe<Sponsorship>
   createSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
+  createStatement?: Maybe<Statement>
+  createStatements?: Maybe<Array<Maybe<Statement>>>
   createStories?: Maybe<Array<Maybe<Story>>>
   createStory?: Maybe<Story>
   createTag?: Maybe<Tag>
@@ -1682,8 +1703,12 @@ export type Mutation = {
   deleteReportReasons?: Maybe<Array<Maybe<ReportReason>>>
   deleteReportRecord?: Maybe<ReportRecord>
   deleteReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
+  deleteRevenue?: Maybe<Revenue>
+  deleteRevenues?: Maybe<Array<Maybe<Revenue>>>
   deleteSponsorship?: Maybe<Sponsorship>
   deleteSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
+  deleteStatement?: Maybe<Statement>
+  deleteStatements?: Maybe<Array<Maybe<Statement>>>
   deleteStories?: Maybe<Array<Maybe<Story>>>
   deleteStory?: Maybe<Story>
   deleteTag?: Maybe<Tag>
@@ -1729,8 +1754,12 @@ export type Mutation = {
   updateReportReasons?: Maybe<Array<Maybe<ReportReason>>>
   updateReportRecord?: Maybe<ReportRecord>
   updateReportRecords?: Maybe<Array<Maybe<ReportRecord>>>
+  updateRevenue?: Maybe<Revenue>
+  updateRevenues?: Maybe<Array<Maybe<Revenue>>>
   updateSponsorship?: Maybe<Sponsorship>
   updateSponsorships?: Maybe<Array<Maybe<Sponsorship>>>
+  updateStatement?: Maybe<Statement>
+  updateStatements?: Maybe<Array<Maybe<Statement>>>
   updateStories?: Maybe<Array<Maybe<Story>>>
   updateStory?: Maybe<Story>
   updateTag?: Maybe<Tag>
@@ -1894,12 +1923,28 @@ export type MutationCreateReportRecordsArgs = {
   data: Array<ReportRecordCreateInput>
 }
 
+export type MutationCreateRevenueArgs = {
+  data: RevenueCreateInput
+}
+
+export type MutationCreateRevenuesArgs = {
+  data: Array<RevenueCreateInput>
+}
+
 export type MutationCreateSponsorshipArgs = {
   data: SponsorshipCreateInput
 }
 
 export type MutationCreateSponsorshipsArgs = {
   data: Array<SponsorshipCreateInput>
+}
+
+export type MutationCreateStatementArgs = {
+  data: StatementCreateInput
+}
+
+export type MutationCreateStatementsArgs = {
+  data: Array<StatementCreateInput>
 }
 
 export type MutationCreateStoriesArgs = {
@@ -2078,12 +2123,28 @@ export type MutationDeleteReportRecordsArgs = {
   where: Array<ReportRecordWhereUniqueInput>
 }
 
+export type MutationDeleteRevenueArgs = {
+  where: RevenueWhereUniqueInput
+}
+
+export type MutationDeleteRevenuesArgs = {
+  where: Array<RevenueWhereUniqueInput>
+}
+
 export type MutationDeleteSponsorshipArgs = {
   where: SponsorshipWhereUniqueInput
 }
 
 export type MutationDeleteSponsorshipsArgs = {
   where: Array<SponsorshipWhereUniqueInput>
+}
+
+export type MutationDeleteStatementArgs = {
+  where: StatementWhereUniqueInput
+}
+
+export type MutationDeleteStatementsArgs = {
+  where: Array<StatementWhereUniqueInput>
 }
 
 export type MutationDeleteStoriesArgs = {
@@ -2280,6 +2341,15 @@ export type MutationUpdateReportRecordsArgs = {
   data: Array<ReportRecordUpdateArgs>
 }
 
+export type MutationUpdateRevenueArgs = {
+  data: RevenueUpdateInput
+  where: RevenueWhereUniqueInput
+}
+
+export type MutationUpdateRevenuesArgs = {
+  data: Array<RevenueUpdateArgs>
+}
+
 export type MutationUpdateSponsorshipArgs = {
   data: SponsorshipUpdateInput
   where: SponsorshipWhereUniqueInput
@@ -2287,6 +2357,15 @@ export type MutationUpdateSponsorshipArgs = {
 
 export type MutationUpdateSponsorshipsArgs = {
   data: Array<SponsorshipUpdateArgs>
+}
+
+export type MutationUpdateStatementArgs = {
+  data: StatementUpdateInput
+  where: StatementWhereUniqueInput
+}
+
+export type MutationUpdateStatementsArgs = {
+  data: Array<StatementUpdateArgs>
 }
 
 export type MutationUpdateStoriesArgs = {
@@ -2535,7 +2614,6 @@ export type Pick = {
   pick_comment?: Maybe<Array<Comment>>
   pick_commentCount?: Maybe<Scalars['Int']['output']>
   picked_date?: Maybe<Scalars['DateTime']['output']>
-  podcast?: Maybe<Podcast>
   state?: Maybe<Scalars['String']['output']>
   story?: Maybe<Story>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -2565,7 +2643,6 @@ export type PickCreateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick_comment?: InputMaybe<CommentRelateToManyForCreateInput>
   picked_date?: InputMaybe<Scalars['DateTime']['input']>
-  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   state?: InputMaybe<Scalars['String']['input']>
   story?: InputMaybe<StoryRelateToOneForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2619,7 +2696,6 @@ export type PickUpdateInput = {
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick_comment?: InputMaybe<CommentRelateToManyForUpdateInput>
   picked_date?: InputMaybe<Scalars['DateTime']['input']>
-  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   state?: InputMaybe<Scalars['String']['input']>
   story?: InputMaybe<StoryRelateToOneForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -2642,7 +2718,6 @@ export type PickWhereInput = {
   paywall?: InputMaybe<BooleanFilter>
   pick_comment?: InputMaybe<CommentManyRelationFilter>
   picked_date?: InputMaybe<DateTimeNullableFilter>
-  podcast?: InputMaybe<PodcastWhereInput>
   state?: InputMaybe<StringNullableFilter>
   story?: InputMaybe<StoryWhereInput>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -2656,84 +2731,28 @@ export type PickWhereUniqueInput = {
 export type Podcast = {
   __typename?: 'Podcast'
   author?: Maybe<Scalars['String']['output']>
-  category?: Maybe<Category>
-  comment?: Maybe<Array<Comment>>
-  commentCount?: Maybe<Scalars['Int']['output']>
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
-  description?: Maybe<Scalars['String']['output']>
   duration?: Maybe<Scalars['String']['output']>
+  file_size?: Maybe<Scalars['Int']['output']>
   id: Scalars['ID']['output']
-  isMember?: Maybe<Scalars['Boolean']['output']>
-  is_active?: Maybe<Scalars['Boolean']['output']>
-  og_description?: Maybe<Scalars['String']['output']>
-  og_image?: Maybe<Scalars['String']['output']>
-  og_title?: Maybe<Scalars['String']['output']>
-  origid?: Maybe<Scalars['String']['output']>
-  pick?: Maybe<Array<Pick>>
-  pickCount?: Maybe<Scalars['Int']['output']>
-  published_date?: Maybe<Scalars['DateTime']['output']>
+  mime_type?: Maybe<Scalars['String']['output']>
   source?: Maybe<Publisher>
-  tag?: Maybe<Array<Tag>>
-  tagCount?: Maybe<Scalars['Int']['output']>
-  title?: Maybe<Scalars['String']['output']>
+  story?: Maybe<Story>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
   updatedBy?: Maybe<User>
   url?: Maybe<Scalars['String']['output']>
 }
 
-export type PodcastCommentArgs = {
-  orderBy?: Array<CommentOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: CommentWhereInput
-}
-
-export type PodcastCommentCountArgs = {
-  where?: CommentWhereInput
-}
-
-export type PodcastPickArgs = {
-  orderBy?: Array<PickOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: PickWhereInput
-}
-
-export type PodcastPickCountArgs = {
-  where?: PickWhereInput
-}
-
-export type PodcastTagArgs = {
-  orderBy?: Array<TagOrderByInput>
-  skip?: Scalars['Int']['input']
-  take?: InputMaybe<Scalars['Int']['input']>
-  where?: TagWhereInput
-}
-
-export type PodcastTagCountArgs = {
-  where?: TagWhereInput
-}
-
 export type PodcastCreateInput = {
   author?: InputMaybe<Scalars['String']['input']>
-  category?: InputMaybe<CategoryRelateToOneForCreateInput>
-  comment?: InputMaybe<CommentRelateToManyForCreateInput>
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
-  description?: InputMaybe<Scalars['String']['input']>
   duration?: InputMaybe<Scalars['String']['input']>
-  isMember?: InputMaybe<Scalars['Boolean']['input']>
-  is_active?: InputMaybe<Scalars['Boolean']['input']>
-  og_description?: InputMaybe<Scalars['String']['input']>
-  og_image?: InputMaybe<Scalars['String']['input']>
-  og_title?: InputMaybe<Scalars['String']['input']>
-  origid?: InputMaybe<Scalars['String']['input']>
-  pick?: InputMaybe<PickRelateToManyForCreateInput>
-  published_date?: InputMaybe<Scalars['DateTime']['input']>
+  file_size?: InputMaybe<Scalars['Int']['input']>
+  mime_type?: InputMaybe<Scalars['String']['input']>
   source?: InputMaybe<PublisherRelateToOneForCreateInput>
-  tag?: InputMaybe<TagRelateToManyForCreateInput>
-  title?: InputMaybe<Scalars['String']['input']>
+  story?: InputMaybe<StoryRelateToOneForCreateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   url?: InputMaybe<Scalars['String']['input']>
@@ -2742,17 +2761,10 @@ export type PodcastCreateInput = {
 export type PodcastOrderByInput = {
   author?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
-  description?: InputMaybe<OrderDirection>
   duration?: InputMaybe<OrderDirection>
+  file_size?: InputMaybe<OrderDirection>
   id?: InputMaybe<OrderDirection>
-  isMember?: InputMaybe<OrderDirection>
-  is_active?: InputMaybe<OrderDirection>
-  og_description?: InputMaybe<OrderDirection>
-  og_image?: InputMaybe<OrderDirection>
-  og_title?: InputMaybe<OrderDirection>
-  origid?: InputMaybe<OrderDirection>
-  published_date?: InputMaybe<OrderDirection>
-  title?: InputMaybe<OrderDirection>
+  mime_type?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
   url?: InputMaybe<OrderDirection>
 }
@@ -2775,23 +2787,13 @@ export type PodcastUpdateArgs = {
 
 export type PodcastUpdateInput = {
   author?: InputMaybe<Scalars['String']['input']>
-  category?: InputMaybe<CategoryRelateToOneForUpdateInput>
-  comment?: InputMaybe<CommentRelateToManyForUpdateInput>
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
-  description?: InputMaybe<Scalars['String']['input']>
   duration?: InputMaybe<Scalars['String']['input']>
-  isMember?: InputMaybe<Scalars['Boolean']['input']>
-  is_active?: InputMaybe<Scalars['Boolean']['input']>
-  og_description?: InputMaybe<Scalars['String']['input']>
-  og_image?: InputMaybe<Scalars['String']['input']>
-  og_title?: InputMaybe<Scalars['String']['input']>
-  origid?: InputMaybe<Scalars['String']['input']>
-  pick?: InputMaybe<PickRelateToManyForUpdateInput>
-  published_date?: InputMaybe<Scalars['DateTime']['input']>
+  file_size?: InputMaybe<Scalars['Int']['input']>
+  mime_type?: InputMaybe<Scalars['String']['input']>
   source?: InputMaybe<PublisherRelateToOneForUpdateInput>
-  tag?: InputMaybe<TagRelateToManyForUpdateInput>
-  title?: InputMaybe<Scalars['String']['input']>
+  story?: InputMaybe<StoryRelateToOneForUpdateInput>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
   updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
   url?: InputMaybe<Scalars['String']['input']>
@@ -2802,24 +2804,14 @@ export type PodcastWhereInput = {
   NOT?: InputMaybe<Array<PodcastWhereInput>>
   OR?: InputMaybe<Array<PodcastWhereInput>>
   author?: InputMaybe<StringFilter>
-  category?: InputMaybe<CategoryWhereInput>
-  comment?: InputMaybe<CommentManyRelationFilter>
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
-  description?: InputMaybe<StringFilter>
   duration?: InputMaybe<StringFilter>
+  file_size?: InputMaybe<IntNullableFilter>
   id?: InputMaybe<IdFilter>
-  isMember?: InputMaybe<BooleanFilter>
-  is_active?: InputMaybe<BooleanFilter>
-  og_description?: InputMaybe<StringFilter>
-  og_image?: InputMaybe<StringFilter>
-  og_title?: InputMaybe<StringFilter>
-  origid?: InputMaybe<StringFilter>
-  pick?: InputMaybe<PickManyRelationFilter>
-  published_date?: InputMaybe<DateTimeNullableFilter>
+  mime_type?: InputMaybe<StringFilter>
   source?: InputMaybe<PublisherWhereInput>
-  tag?: InputMaybe<TagManyRelationFilter>
-  title?: InputMaybe<StringFilter>
+  story?: InputMaybe<StoryWhereInput>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
   updatedBy?: InputMaybe<UserWhereInput>
   url?: InputMaybe<StringFilter>
@@ -2947,6 +2939,8 @@ export type Publisher = {
   description?: Maybe<Scalars['String']['output']>
   exchange?: Maybe<Array<Exchange>>
   exchangeCount?: Maybe<Scalars['Int']['output']>
+  exclude_follower?: Maybe<Array<Member>>
+  exclude_followerCount?: Maybe<Scalars['Int']['output']>
   follower?: Maybe<Array<Member>>
   followerCount?: Maybe<Scalars['Int']['output']>
   full_content?: Maybe<Scalars['Boolean']['output']>
@@ -2961,6 +2955,8 @@ export type Publisher = {
   source_type?: Maybe<Scalars['String']['output']>
   sponsored?: Maybe<Array<Sponsorship>>
   sponsoredCount?: Maybe<Scalars['Int']['output']>
+  statements?: Maybe<Array<Statement>>
+  statementsCount?: Maybe<Scalars['Int']['output']>
   summary?: Maybe<Scalars['String']['output']>
   title?: Maybe<Scalars['String']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -2979,6 +2975,17 @@ export type PublisherExchangeArgs = {
 
 export type PublisherExchangeCountArgs = {
   where?: ExchangeWhereInput
+}
+
+export type PublisherExclude_FollowerArgs = {
+  orderBy?: Array<MemberOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: MemberWhereInput
+}
+
+export type PublisherExclude_FollowerCountArgs = {
+  where?: MemberWhereInput
 }
 
 export type PublisherFollowerArgs = {
@@ -3003,6 +3010,17 @@ export type PublisherSponsoredCountArgs = {
   where?: SponsorshipWhereInput
 }
 
+export type PublisherStatementsArgs = {
+  orderBy?: Array<StatementOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: StatementWhereInput
+}
+
+export type PublisherStatementsCountArgs = {
+  where?: StatementWhereInput
+}
+
 export type PublisherUserArgs = {
   orderBy?: Array<UserOrderByInput>
   skip?: Scalars['Int']['input']
@@ -3022,6 +3040,7 @@ export type PublisherCreateInput = {
   customId?: InputMaybe<Scalars['String']['input']>
   description?: InputMaybe<Scalars['String']['input']>
   exchange?: InputMaybe<ExchangeRelateToManyForCreateInput>
+  exclude_follower?: InputMaybe<MemberRelateToManyForCreateInput>
   follower?: InputMaybe<MemberRelateToManyForCreateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
@@ -3033,6 +3052,7 @@ export type PublisherCreateInput = {
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForCreateInput>
+  statements?: InputMaybe<StatementRelateToManyForCreateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -3103,6 +3123,7 @@ export type PublisherUpdateInput = {
   customId?: InputMaybe<Scalars['String']['input']>
   description?: InputMaybe<Scalars['String']['input']>
   exchange?: InputMaybe<ExchangeRelateToManyForUpdateInput>
+  exclude_follower?: InputMaybe<MemberRelateToManyForUpdateInput>
   follower?: InputMaybe<MemberRelateToManyForUpdateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
   full_screen_ad?: InputMaybe<Scalars['String']['input']>
@@ -3114,6 +3135,7 @@ export type PublisherUpdateInput = {
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
+  statements?: InputMaybe<StatementRelateToManyForUpdateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -3133,6 +3155,7 @@ export type PublisherWhereInput = {
   customId?: InputMaybe<StringFilter>
   description?: InputMaybe<StringFilter>
   exchange?: InputMaybe<ExchangeManyRelationFilter>
+  exclude_follower?: InputMaybe<MemberManyRelationFilter>
   follower?: InputMaybe<MemberManyRelationFilter>
   full_content?: InputMaybe<BooleanFilter>
   full_screen_ad?: InputMaybe<StringNullableFilter>
@@ -3145,6 +3168,7 @@ export type PublisherWhereInput = {
   rss?: InputMaybe<StringFilter>
   source_type?: InputMaybe<StringNullableFilter>
   sponsored?: InputMaybe<SponsorshipManyRelationFilter>
+  statements?: InputMaybe<StatementManyRelationFilter>
   summary?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -3215,9 +3239,15 @@ export type Query = {
   reportRecord?: Maybe<ReportRecord>
   reportRecords?: Maybe<Array<ReportRecord>>
   reportRecordsCount?: Maybe<Scalars['Int']['output']>
+  revenue?: Maybe<Revenue>
+  revenues?: Maybe<Array<Revenue>>
+  revenuesCount?: Maybe<Scalars['Int']['output']>
   sponsorship?: Maybe<Sponsorship>
   sponsorships?: Maybe<Array<Sponsorship>>
   sponsorshipsCount?: Maybe<Scalars['Int']['output']>
+  statement?: Maybe<Statement>
+  statements?: Maybe<Array<Statement>>
+  statementsCount?: Maybe<Scalars['Int']['output']>
   stories?: Maybe<Array<Story>>
   storiesCount?: Maybe<Scalars['Int']['output']>
   story?: Maybe<Story>
@@ -3502,6 +3532,21 @@ export type QueryReportRecordsCountArgs = {
   where?: ReportRecordWhereInput
 }
 
+export type QueryRevenueArgs = {
+  where: RevenueWhereUniqueInput
+}
+
+export type QueryRevenuesArgs = {
+  orderBy?: Array<RevenueOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: RevenueWhereInput
+}
+
+export type QueryRevenuesCountArgs = {
+  where?: RevenueWhereInput
+}
+
 export type QuerySponsorshipArgs = {
   where: SponsorshipWhereUniqueInput
 }
@@ -3515,6 +3560,21 @@ export type QuerySponsorshipsArgs = {
 
 export type QuerySponsorshipsCountArgs = {
   where?: SponsorshipWhereInput
+}
+
+export type QueryStatementArgs = {
+  where: StatementWhereUniqueInput
+}
+
+export type QueryStatementsArgs = {
+  orderBy?: Array<StatementOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: StatementWhereInput
+}
+
+export type QueryStatementsCountArgs = {
+  where?: StatementWhereInput
 }
 
 export type QueryStoriesArgs = {
@@ -3737,6 +3797,96 @@ export type ResizedWebPImages = {
   w2400?: Maybe<Scalars['String']['output']>
 }
 
+export type Revenue = {
+  __typename?: 'Revenue'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  end_date?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['ID']['output']
+  publisher?: Maybe<Publisher>
+  start_date?: Maybe<Scalars['DateTime']['output']>
+  title?: Maybe<Scalars['String']['output']>
+  type?: Maybe<RevenueTypeType>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+  value?: Maybe<Scalars['Float']['output']>
+}
+
+export type RevenueCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  end_date?: InputMaybe<Scalars['DateTime']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForCreateInput>
+  start_date?: InputMaybe<Scalars['DateTime']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<RevenueTypeType>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+  value?: InputMaybe<Scalars['Float']['input']>
+}
+
+export type RevenueOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  end_date?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  start_date?: InputMaybe<OrderDirection>
+  title?: InputMaybe<OrderDirection>
+  type?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+  value?: InputMaybe<OrderDirection>
+}
+
+export enum RevenueTypeType {
+  MutualFundRevenue = 'mutual_fund_revenue',
+  StoryAdRevenue = 'story_ad_revenue',
+}
+
+export type RevenueTypeTypeNullableFilter = {
+  equals?: InputMaybe<RevenueTypeType>
+  in?: InputMaybe<Array<RevenueTypeType>>
+  not?: InputMaybe<RevenueTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<RevenueTypeType>>
+}
+
+export type RevenueUpdateArgs = {
+  data: RevenueUpdateInput
+  where: RevenueWhereUniqueInput
+}
+
+export type RevenueUpdateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  end_date?: InputMaybe<Scalars['DateTime']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  start_date?: InputMaybe<Scalars['DateTime']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<RevenueTypeType>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  value?: InputMaybe<Scalars['Float']['input']>
+}
+
+export type RevenueWhereInput = {
+  AND?: InputMaybe<Array<RevenueWhereInput>>
+  NOT?: InputMaybe<Array<RevenueWhereInput>>
+  OR?: InputMaybe<Array<RevenueWhereInput>>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  end_date?: InputMaybe<DateTimeNullableFilter>
+  id?: InputMaybe<IdFilter>
+  publisher?: InputMaybe<PublisherWhereInput>
+  start_date?: InputMaybe<DateTimeNullableFilter>
+  title?: InputMaybe<StringFilter>
+  type?: InputMaybe<RevenueTypeTypeNullableFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+  value?: InputMaybe<FloatFilter>
+}
+
+export type RevenueWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
 export type Sponsorship = {
   __typename?: 'Sponsorship'
   complement?: Maybe<Scalars['String']['output']>
@@ -3845,6 +3995,115 @@ export type SponsorshipWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
+export type Statement = {
+  __typename?: 'Statement'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  end_date?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['ID']['output']
+  publisher?: Maybe<Publisher>
+  start_date?: Maybe<Scalars['DateTime']['output']>
+  title?: Maybe<Scalars['String']['output']>
+  type?: Maybe<StatementTypeType>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+  url?: Maybe<Scalars['String']['output']>
+}
+
+export type StatementCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  end_date?: InputMaybe<Scalars['DateTime']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForCreateInput>
+  start_date?: InputMaybe<Scalars['DateTime']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<StatementTypeType>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+  url?: InputMaybe<Scalars['String']['input']>
+}
+
+export type StatementManyRelationFilter = {
+  every?: InputMaybe<StatementWhereInput>
+  none?: InputMaybe<StatementWhereInput>
+  some?: InputMaybe<StatementWhereInput>
+}
+
+export type StatementOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  end_date?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  start_date?: InputMaybe<OrderDirection>
+  title?: InputMaybe<OrderDirection>
+  type?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+  url?: InputMaybe<OrderDirection>
+}
+
+export type StatementRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<StatementWhereUniqueInput>>
+  create?: InputMaybe<Array<StatementCreateInput>>
+}
+
+export type StatementRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<StatementWhereUniqueInput>>
+  create?: InputMaybe<Array<StatementCreateInput>>
+  disconnect?: InputMaybe<Array<StatementWhereUniqueInput>>
+  set?: InputMaybe<Array<StatementWhereUniqueInput>>
+}
+
+export enum StatementTypeType {
+  Month = 'month',
+  Quarter = 'quarter',
+  SemiAnnual = 'semi_annual',
+}
+
+export type StatementTypeTypeNullableFilter = {
+  equals?: InputMaybe<StatementTypeType>
+  in?: InputMaybe<Array<StatementTypeType>>
+  not?: InputMaybe<StatementTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<StatementTypeType>>
+}
+
+export type StatementUpdateArgs = {
+  data: StatementUpdateInput
+  where: StatementWhereUniqueInput
+}
+
+export type StatementUpdateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  end_date?: InputMaybe<Scalars['DateTime']['input']>
+  publisher?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  start_date?: InputMaybe<Scalars['DateTime']['input']>
+  title?: InputMaybe<Scalars['String']['input']>
+  type?: InputMaybe<StatementTypeType>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  url?: InputMaybe<Scalars['String']['input']>
+}
+
+export type StatementWhereInput = {
+  AND?: InputMaybe<Array<StatementWhereInput>>
+  NOT?: InputMaybe<Array<StatementWhereInput>>
+  OR?: InputMaybe<Array<StatementWhereInput>>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  end_date?: InputMaybe<DateTimeNullableFilter>
+  id?: InputMaybe<IdFilter>
+  publisher?: InputMaybe<PublisherWhereInput>
+  start_date?: InputMaybe<DateTimeNullableFilter>
+  title?: InputMaybe<StringFilter>
+  type?: InputMaybe<StatementTypeTypeNullableFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+  url?: InputMaybe<StringFilter>
+}
+
+export type StatementWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
 export type Story = {
   __typename?: 'Story'
   apiData?: Maybe<Scalars['JSON']['output']>
@@ -3856,7 +4115,7 @@ export type Story = {
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
   full_content?: Maybe<Scalars['Boolean']['output']>
-  full_screen_ad?: Maybe<Scalars['String']['output']>
+  full_screen_ad?: Maybe<StoryFullScreenAdType>
   id: Scalars['ID']['output']
   isMember?: Maybe<Scalars['Boolean']['output']>
   is_active?: Maybe<Scalars['Boolean']['output']>
@@ -3867,10 +4126,12 @@ export type Story = {
   paywall?: Maybe<Scalars['Boolean']['output']>
   pick?: Maybe<Array<Pick>>
   pickCount?: Maybe<Scalars['Int']['output']>
+  podcast?: Maybe<Podcast>
   published_date?: Maybe<Scalars['DateTime']['output']>
   related?: Maybe<Array<Story>>
   relatedCount?: Maybe<Scalars['Int']['output']>
   source?: Maybe<Publisher>
+  story_type?: Maybe<StoryStoryTypeType>
   summary?: Maybe<Scalars['String']['output']>
   tag?: Maybe<Array<Tag>>
   tagCount?: Maybe<Scalars['Int']['output']>
@@ -3936,7 +4197,7 @@ export type StoryCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
-  full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdType>
   isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
@@ -3945,9 +4206,11 @@ export type StoryCreateInput = {
   origid?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick?: InputMaybe<PickRelateToManyForCreateInput>
+  podcast?: InputMaybe<PodcastRelateToOneForCreateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   related?: InputMaybe<StoryRelateToManyForCreateInput>
   source?: InputMaybe<PublisherRelateToOneForCreateInput>
+  story_type?: InputMaybe<StoryStoryTypeType>
   summary?: InputMaybe<Scalars['String']['input']>
   tag?: InputMaybe<TagRelateToManyForCreateInput>
   title?: InputMaybe<Scalars['String']['input']>
@@ -3957,6 +4220,20 @@ export type StoryCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   url?: InputMaybe<Scalars['String']['input']>
   writer?: InputMaybe<Scalars['String']['input']>
+}
+
+export enum StoryFullScreenAdType {
+  All = 'all',
+  Desktop = 'desktop',
+  Mobile = 'mobile',
+  None = 'none',
+}
+
+export type StoryFullScreenAdTypeNullableFilter = {
+  equals?: InputMaybe<StoryFullScreenAdType>
+  in?: InputMaybe<Array<StoryFullScreenAdType>>
+  not?: InputMaybe<StoryFullScreenAdTypeNullableFilter>
+  notIn?: InputMaybe<Array<StoryFullScreenAdType>>
 }
 
 export type StoryManyRelationFilter = {
@@ -3979,6 +4256,7 @@ export type StoryOrderByInput = {
   origid?: InputMaybe<OrderDirection>
   paywall?: InputMaybe<OrderDirection>
   published_date?: InputMaybe<OrderDirection>
+  story_type?: InputMaybe<OrderDirection>
   summary?: InputMaybe<OrderDirection>
   title?: InputMaybe<OrderDirection>
   trimContent?: InputMaybe<OrderDirection>
@@ -4010,6 +4288,18 @@ export type StoryRelateToOneForUpdateInput = {
   disconnect?: InputMaybe<Scalars['Boolean']['input']>
 }
 
+export enum StoryStoryTypeType {
+  Podcast = 'podcast',
+  Story = 'story',
+}
+
+export type StoryStoryTypeTypeNullableFilter = {
+  equals?: InputMaybe<StoryStoryTypeType>
+  in?: InputMaybe<Array<StoryStoryTypeType>>
+  not?: InputMaybe<StoryStoryTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<StoryStoryTypeType>>
+}
+
 export type StoryUpdateArgs = {
   data: StoryUpdateInput
   where: StoryWhereUniqueInput
@@ -4024,7 +4314,7 @@ export type StoryUpdateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
   full_content?: InputMaybe<Scalars['Boolean']['input']>
-  full_screen_ad?: InputMaybe<Scalars['String']['input']>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdType>
   isMember?: InputMaybe<Scalars['Boolean']['input']>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
   og_description?: InputMaybe<Scalars['String']['input']>
@@ -4033,9 +4323,11 @@ export type StoryUpdateInput = {
   origid?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
   pick?: InputMaybe<PickRelateToManyForUpdateInput>
+  podcast?: InputMaybe<PodcastRelateToOneForUpdateInput>
   published_date?: InputMaybe<Scalars['DateTime']['input']>
   related?: InputMaybe<StoryRelateToManyForUpdateInput>
   source?: InputMaybe<PublisherRelateToOneForUpdateInput>
+  story_type?: InputMaybe<StoryStoryTypeType>
   summary?: InputMaybe<Scalars['String']['input']>
   tag?: InputMaybe<TagRelateToManyForUpdateInput>
   title?: InputMaybe<Scalars['String']['input']>
@@ -4058,7 +4350,7 @@ export type StoryWhereInput = {
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
   full_content?: InputMaybe<BooleanFilter>
-  full_screen_ad?: InputMaybe<StringNullableFilter>
+  full_screen_ad?: InputMaybe<StoryFullScreenAdTypeNullableFilter>
   id?: InputMaybe<IdFilter>
   isMember?: InputMaybe<BooleanFilter>
   is_active?: InputMaybe<BooleanFilter>
@@ -4068,9 +4360,11 @@ export type StoryWhereInput = {
   origid?: InputMaybe<StringFilter>
   paywall?: InputMaybe<BooleanFilter>
   pick?: InputMaybe<PickManyRelationFilter>
+  podcast?: InputMaybe<PodcastWhereInput>
   published_date?: InputMaybe<DateTimeNullableFilter>
   related?: InputMaybe<StoryManyRelationFilter>
   source?: InputMaybe<PublisherWhereInput>
+  story_type?: InputMaybe<StoryStoryTypeTypeNullableFilter>
   summary?: InputMaybe<StringFilter>
   tag?: InputMaybe<TagManyRelationFilter>
   title?: InputMaybe<StringFilter>
@@ -4492,7 +4786,7 @@ export type StoryInfoFragment = {
   pickCount?: number | null
   commentCount?: number | null
   paywall?: boolean | null
-  full_screen_ad?: string | null
+  full_screen_ad?: StoryFullScreenAdType | null
   published_date?: any | null
   source?: {
     __typename?: 'Publisher'
@@ -4561,6 +4855,7 @@ export type CollectionInfoFragment = {
   creator?: {
     __typename?: 'Member'
     customId?: string | null
+    name?: string | null
     id: string
   } | null
 }
@@ -4574,7 +4869,7 @@ export type UserActionStoryFragment = {
   og_description?: string | null
   published_date?: any | null
   paywall?: boolean | null
-  full_screen_ad?: string | null
+  full_screen_ad?: StoryFullScreenAdType | null
   pickCount?: number | null
   commentCount?: number | null
   source?: {
@@ -4626,7 +4921,11 @@ export type CreateCollectionMutationVariables = Exact<{
 
 export type CreateCollectionMutation = {
   __typename?: 'Mutation'
-  createCollection?: { __typename?: 'Collection'; id: string } | null
+  createCollection?: {
+    __typename?: 'Collection'
+    id: string
+    title?: string | null
+  } | null
 }
 
 export type AddStoryToCollectionMutationVariables = Exact<{
@@ -4803,6 +5102,34 @@ export type UpdateWalletAddressMutation = {
   } | null
 }
 
+export type AddExcludePublisherMutationVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+  publisherId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type AddExcludePublisherMutation = {
+  __typename?: 'Mutation'
+  updateMember?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{ __typename?: 'Publisher'; id: string }> | null
+  } | null
+}
+
+export type RemoveExcludePublisherMutationVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+  publisherId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type RemoveExcludePublisherMutation = {
+  __typename?: 'Mutation'
+  updateMember?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{ __typename?: 'Publisher'; id: string }> | null
+  } | null
+}
+
 export type GetAnnouncementsQueryVariables = Exact<{
   take?: InputMaybe<Scalars['Int']['input']>
 }>
@@ -4940,7 +5267,7 @@ export type GetCollectionStoriesQuery = {
         og_image?: string | null
         published_date?: any | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         picksCount?: number | null
         commentsCount?: number | null
         source?: {
@@ -5219,7 +5546,7 @@ export type GetMemberFollowingQuery = {
           og_description?: string | null
           published_date?: any | null
           paywall?: boolean | null
-          full_screen_ad?: string | null
+          full_screen_ad?: StoryFullScreenAdType | null
           pickCount?: number | null
           commentCount?: number | null
           source?: {
@@ -5267,7 +5594,7 @@ export type GetMemberFollowingQuery = {
           og_description?: string | null
           published_date?: any | null
           paywall?: boolean | null
-          full_screen_ad?: string | null
+          full_screen_ad?: StoryFullScreenAdType | null
           pickCount?: number | null
           commentCount?: number | null
           source?: {
@@ -5409,7 +5736,7 @@ export type GetMemberProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -5495,6 +5822,7 @@ export type GetMemberProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5513,7 +5841,7 @@ export type GetMemberProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -5608,6 +5936,7 @@ export type GetMemberProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -5646,7 +5975,7 @@ export type GetVisitorProfileQuery = {
         pickCount?: number | null
         commentCount?: number | null
         paywall?: boolean | null
-        full_screen_ad?: string | null
+        full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
         comment?: Array<{
           __typename?: 'Comment'
@@ -5731,6 +6060,7 @@ export type GetVisitorProfileQuery = {
         creator?: {
           __typename?: 'Member'
           customId?: string | null
+          name?: string | null
           id: string
         } | null
       } | null
@@ -5785,6 +6115,7 @@ export type GetVisitorProfileQuery = {
     creator?: {
       __typename?: 'Member'
       customId?: string | null
+      name?: string | null
       id: string
     } | null
   }> | null
@@ -6132,13 +6463,41 @@ export type GetMemberPickAndBookmarkQuery = {
   } | null
 }
 
-export type GetMemberNameQueryVariables = Exact<{
+export type GetMemberForOgQueryVariables = Exact<{
   memberCustomId?: InputMaybe<Scalars['String']['input']>
 }>
 
-export type GetMemberNameQuery = {
+export type GetMemberForOgQuery = {
   __typename?: 'Query'
-  member?: { __typename?: 'Member'; name?: string | null } | null
+  member?: {
+    __typename?: 'Member'
+    name?: string | null
+    avatar?: string | null
+    avatar_image?: {
+      __typename?: 'Photo'
+      resized?: {
+        __typename?: 'ResizedImages'
+        original?: string | null
+      } | null
+    } | null
+  } | null
+}
+
+export type GetMemberExcludePublisherQueryVariables = Exact<{
+  memberId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type GetMemberExcludePublisherQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    id: string
+    exclude_publisher?: Array<{
+      __typename?: 'Publisher'
+      id: string
+      title?: string | null
+    }> | null
+  } | null
 }
 
 export type GetMorePicksQueryVariables = Exact<{
@@ -6163,7 +6522,7 @@ export type GetMorePicksQuery = {
       pickCount?: number | null
       commentCount?: number | null
       paywall?: boolean | null
-      full_screen_ad?: string | null
+      full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
       comment?: Array<{
         __typename?: 'Comment'
@@ -6249,6 +6608,7 @@ export type GetMorePicksQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -6277,7 +6637,7 @@ export type GetMoreBookmarksQuery = {
       pickCount?: number | null
       commentCount?: number | null
       paywall?: boolean | null
-      full_screen_ad?: string | null
+      full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
       comment?: Array<{
         __typename?: 'Comment'
@@ -6378,6 +6738,7 @@ export type GetMoreCollectionsQuery = {
       creator?: {
         __typename?: 'Member'
         customId?: string | null
+        name?: string | null
         id: string
       } | null
     } | null
@@ -6393,11 +6754,13 @@ export type GetPublisherPolicyQuery = {
   policies?: Array<{
     __typename?: 'Policy'
     id: string
+    name?: string | null
     charge?: number | null
     duration?: number | null
     publisher?: {
       __typename?: 'Publisher'
       id: string
+      title?: string | null
       admin?: {
         __typename?: 'Member'
         id: string
@@ -6414,12 +6777,14 @@ export type PublishersQuery = {
   publishers?: Array<{
     __typename?: 'Publisher'
     id: string
+    customId?: string | null
     title?: string | null
     logo?: string | null
     rss?: string | null
     official_site?: string | null
+    followerCount?: number | null
     wallet?: string | null
-    sponsorCount?: number | null
+    createdAt?: any | null
   }> | null
 }
 
@@ -6446,13 +6811,17 @@ export type GetPublisherFollowerListQuery = {
   }> | null
 }
 
-export type GetPublisherNameQueryVariables = Exact<{
+export type GetPublisherForOgQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
 }>
 
-export type GetPublisherNameQuery = {
+export type GetPublisherForOgQuery = {
   __typename?: 'Query'
-  publishers?: Array<{ __typename?: 'Publisher'; title?: string | null }> | null
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    title?: string | null
+    logo?: string | null
+  }> | null
 }
 
 export type GetPublisherWalletQueryVariables = Exact<{
@@ -6536,7 +6905,7 @@ export type LatestStoriesQuery = {
     origid?: string | null
     commentCount?: number | null
     paywall?: boolean | null
-    full_screen_ad?: string | null
+    full_screen_ad?: StoryFullScreenAdType | null
     picksCount?: number | null
     category?: {
       __typename?: 'Category'
@@ -7275,6 +7644,7 @@ export const CollectionInfoFragmentDoc = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -7736,6 +8106,7 @@ export const CreateCollectionDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
               ],
             },
           },
@@ -9120,6 +9491,232 @@ export const UpdateWalletAddressDocument = {
 } as unknown as DocumentNode<
   UpdateWalletAddressMutation,
   UpdateWalletAddressMutationVariables
+>
+export const AddExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'AddExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'exclude_publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'connect' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AddExcludePublisherMutation,
+  AddExcludePublisherMutationVariables
+>
+export const RemoveExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'RemoveExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'exclude_publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'disconnect' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RemoveExcludePublisherMutation,
+  RemoveExcludePublisherMutationVariables
 >
 export const GetAnnouncementsDocument = {
   kind: 'Document',
@@ -14186,6 +14783,7 @@ export const GetMemberProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -15031,6 +15629,7 @@ export const GetVisitorProfileDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -17510,13 +18109,13 @@ export const GetMemberPickAndBookmarkDocument = {
   GetMemberPickAndBookmarkQuery,
   GetMemberPickAndBookmarkQueryVariables
 >
-export const GetMemberNameDocument = {
+export const GetMemberForOgDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetMemberName' },
+      name: { kind: 'Name', value: 'GetMemberForOG' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -17556,6 +18155,29 @@ export const GetMemberNameDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'avatar_image' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'resized' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'original' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -17563,7 +18185,75 @@ export const GetMemberNameDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetMemberNameQuery, GetMemberNameQueryVariables>
+} as unknown as DocumentNode<GetMemberForOgQuery, GetMemberForOgQueryVariables>
+export const GetMemberExcludePublisherDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMemberExcludePublisher' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'memberId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'memberId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exclude_publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetMemberExcludePublisherQuery,
+  GetMemberExcludePublisherQueryVariables
+>
 export const GetMorePicksDocument = {
   kind: 'Document',
   definitions: [
@@ -18253,6 +18943,7 @@ export const GetMorePicksDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -19251,6 +19942,7 @@ export const GetMoreCollectionsDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
               ],
             },
@@ -19341,6 +20033,7 @@ export const GetPublisherPolicyDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'charge' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'duration' } },
                 {
@@ -19350,6 +20043,7 @@ export const GetPublisherPolicyDocument = {
                     kind: 'SelectionSet',
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                       {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'admin' },
@@ -19394,10 +20088,36 @@ export const PublishersDocument = {
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'is_active' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'BooleanValue', value: true },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'rss' } },
@@ -19407,10 +20127,10 @@ export const PublishersDocument = {
                 },
                 {
                   kind: 'Field',
-                  alias: { kind: 'Name', value: 'sponsorCount' },
                   name: { kind: 'Name', value: 'followerCount' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'wallet' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
               ],
             },
           },
@@ -19531,13 +20251,13 @@ export const GetPublisherFollowerListDocument = {
   GetPublisherFollowerListQuery,
   GetPublisherFollowerListQueryVariables
 >
-export const GetPublisherNameDocument = {
+export const GetPublisherForOgDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetPublisherName' },
+      name: { kind: 'Name', value: 'GetPublisherForOG' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -19589,6 +20309,7 @@ export const GetPublisherNameDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
               ],
             },
           },
@@ -19597,8 +20318,8 @@ export const GetPublisherNameDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetPublisherNameQuery,
-  GetPublisherNameQueryVariables
+  GetPublisherForOgQuery,
+  GetPublisherForOgQueryVariables
 >
 export const GetPublisherWalletDocument = {
   kind: 'Document',

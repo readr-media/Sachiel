@@ -20,7 +20,10 @@ import { type PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
 import PaymentWall from './payment-wall'
-
+/** feature toggle starts */
+const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const targetArticleId = ENV === 'prod' ? '50441' : '1343937'
+/** feature toggle ends */
 export type Story = NonNullable<GetStoryQuery>['story']
 
 const inHousePublisherCustomIds = ['mirrormedia', 'readr']
@@ -43,7 +46,28 @@ export default function Article({
   const { state: comment } = useComment()
   const getArticleContent = (story: Story, sourceCustomId: string) => {
     const shouldUseApiData = inHousePublisherCustomIds.includes(sourceCustomId)
-
+    /** feature toggle starts */
+    const storyId = story?.id ?? ''
+    if (storyId === targetArticleId)
+      return (
+        <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
+          <div className="body-3 text-primary-500">本篇為外連文章</div>
+          <Link
+            href={story?.url ?? ''}
+            target="_blank"
+            className="block w-full max-w-[400px]"
+          >
+            <Button
+              size="lg"
+              color="primary"
+              text="閱讀原文"
+              icon={{ size: 'm', iconName: 'icon-open-new-tab' }}
+              onClick={() => {}}
+            />
+          </Link>
+        </div>
+      )
+    /** feature toggle ends */
     if (shouldUseApiData) {
       return (
         <>
@@ -149,6 +173,7 @@ export default function Article({
                 <PublisherDonateButton publisherId={story?.source?.id ?? ''} />
                 <StoryPickButton
                   storyId={story?.id ?? ''}
+                  storyTitle={story?.title ?? ''}
                   gtmClassName="GTM-article_click_pick_article"
                 />
                 {story && (

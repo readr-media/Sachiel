@@ -10,9 +10,10 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory, DailyStory, GtmTags } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import ImageWithFallback from './image-with-fallback'
 
@@ -27,6 +28,7 @@ export default forwardRef(function StoryCard<
 >({ story, className = '', gtmTags }: Props<T>, ref: ForwardedRef<unknown>) {
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
+  const pageName = usePageName()
 
   return (
     <article
@@ -49,12 +51,17 @@ export default forwardRef(function StoryCard<
               href={`/story/${story.id}`}
               className={gtmTags.story}
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story.title,
-                  story.source.title
-                )
+                logClickEvent(userPayload, 'click-story', {
+                  target: 'story',
+                  targetId: story.id,
+                  targetTitle: story.title,
+                  source: pageName,
+                  complementary: {
+                    publisherTarget: 'publisher',
+                    targetId: story.source.id,
+                    targetName: story.source.title,
+                  },
+                })
               }
             >
               {story.title}
@@ -75,12 +82,17 @@ export default forwardRef(function StoryCard<
           href={`/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
-            logStoryClick(
-              userPayload,
-              story.id,
-              story.title,
-              story.source.title
-            )
+            logClickEvent(userPayload, 'click-story', {
+              target: 'story',
+              targetId: story.id,
+              targetTitle: story.title,
+              source: pageName,
+              complementary: {
+                publisherTarget: 'publisher',
+                targetId: story.source.id,
+                targetName: story.source.title,
+              },
+            })
           }
         >
           <div className="relative h-[48px] w-[96px] shrink-0 overflow-hidden rounded sm:h-[80px] sm:w-[160px]">
@@ -101,7 +113,11 @@ export default forwardRef(function StoryCard<
           pickCount={displayPicksCount}
           objectiveId={story.id}
         />
-        <StoryPickButton storyId={story.id} gtmClassName={gtmTags.pick} />
+        <StoryPickButton
+          storyId={story.id}
+          storyTitle={story.title}
+          gtmClassName={gtmTags.pick}
+        />
       </div>
     </article>
   )

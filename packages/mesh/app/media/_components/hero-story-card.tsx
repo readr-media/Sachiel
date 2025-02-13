@@ -7,14 +7,16 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 import { type Story } from './media-stories'
 
 // only used in desktop width
 export default function HeroStoryCard({ story }: { story: Story }) {
   const userPayload = useUserPayload()
+  const pageName = usePageName()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
 
   return (
@@ -58,12 +60,17 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               href={`/story/${story.id}`}
               className="GTM-media_click_category_article"
               onClick={() =>
-                logStoryClick(
-                  userPayload,
-                  story.id,
-                  story?.title ?? '',
-                  story.source?.title ?? ''
-                )
+                logClickEvent(userPayload, 'click-story', {
+                  target: 'story',
+                  targetId: story.id,
+                  targetTitle: story?.title ?? '',
+                  source: pageName,
+                  complementary: {
+                    publisherTarget: 'publisher',
+                    targetId: story.source?.id ?? '',
+                    targetName: story.source?.title ?? '',
+                  },
+                })
               }
             >
               <div className="hero-title mt-1 text-primary-700 hover-or-active:underline">
@@ -93,6 +100,7 @@ export default function HeroStoryCard({ story }: { story: Story }) {
               />
               <StoryPickButton
                 storyId={story.id}
+                storyTitle={story?.title ?? ''}
                 gtmClassName="GTM-media_pick_category_article"
               />
             </div>

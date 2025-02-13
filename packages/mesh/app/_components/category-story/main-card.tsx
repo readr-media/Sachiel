@@ -8,9 +8,10 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
-import { logStoryClick } from '@/utils/event-logs'
+import { logClickEvent } from '@/utils/event-logs'
 
 type Props = {
   story: CategoryStory
@@ -19,6 +20,7 @@ type Props = {
 export default function MainCard({ story }: Props) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
+  const pageName = usePageName()
 
   return (
     <div className="flex flex-col gap-y-3 pb-4 shadow-[0_0.5px_0_0_rgba(0,9,40,0.1)] lg:shadow-none">
@@ -55,12 +57,17 @@ export default function MainCard({ story }: Props) {
             href={`story/${story.id}`}
             className="GTM-homepage_click_category_article"
             onClick={() =>
-              logStoryClick(
-                userPayload,
-                story.id,
-                story.title,
-                story.source.title
-              )
+              logClickEvent(userPayload, 'click-story', {
+                target: 'story',
+                targetId: story.id,
+                targetTitle: story.title,
+                source: pageName,
+                complementary: {
+                  publisherTarget: 'publisher',
+                  targetId: story.source.id,
+                  targetName: story.source.title,
+                },
+              })
             }
           >
             <h3 className="title-2 mb-2 text-primary-700 hover-or-active:underline sm:mb-3">
@@ -85,7 +92,7 @@ export default function MainCard({ story }: Props) {
             pickCount={displayPicksCount}
             objectiveId={story.id}
           />
-          <StoryPickButton storyId={story.id} />
+          <StoryPickButton storyId={story.id} storyTitle={story.title} />
         </div>
       </div>
     </div>

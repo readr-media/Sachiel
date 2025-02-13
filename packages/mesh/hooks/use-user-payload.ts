@@ -11,7 +11,8 @@ export default function useUserPayload() {
 
   return useMemo(() => {
     return {
-      memberType: memberId ? 'logged-in' : 'none-logged-in',
+      logInStatus: memberId ? true : false,
+      memberId,
       email,
       firebaseId,
     }

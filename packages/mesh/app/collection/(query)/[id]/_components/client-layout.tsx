@@ -65,7 +65,11 @@ export default function ClientLayout({
         picksCount: collection.picksCount ?? 0,
         commentsCount: comment.commentsCount ?? 0,
         actions: [
-          <CollectionPickButton key={0} collectionId={collection.id} />,
+          <CollectionPickButton
+            key={0}
+            collectionId={collection.id}
+            collectionTitle={collection?.title ?? ''}
+          />,
         ],
         isSinglePickByCurrentUser,
       }}

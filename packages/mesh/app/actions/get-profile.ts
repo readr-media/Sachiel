@@ -1,9 +1,9 @@
 'use server'
 
 import {
-  GetMemberNameDocument,
+  GetMemberForOgDocument,
   GetMemberProfileDocument,
-  GetPublisherNameDocument,
+  GetPublisherForOgDocument,
   GetVisitorProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import { PickObjective } from '@/types/objective'
@@ -61,10 +61,10 @@ export async function getVisitorProfile(visitorId: string, takes: number) {
   }
 }
 
-export async function getMemberName(customId: string) {
+export async function getMemberForOG(customId: string) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const result = await queryGraphQL(GetMemberNameDocument, {
+    const result = await queryGraphQL(GetMemberForOgDocument, {
       memberCustomId: customId,
     })
     // if visitor data not found bubble this error to nextjs error handling
@@ -78,10 +78,10 @@ export async function getMemberName(customId: string) {
   }
 }
 
-export async function getPublisherName(customId: string) {
+export async function getPublisherForOG(customId: string) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const result = await queryGraphQL(GetPublisherNameDocument, {
+    const result = await queryGraphQL(GetPublisherForOgDocument, {
       publisherCustomId: customId,
     })
     // if visitor data not found bubble this error to nextjs error handling

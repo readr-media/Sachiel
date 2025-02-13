@@ -7,6 +7,7 @@ import type { MouseEventHandler } from 'react'
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
+import { type MongoDBResponse } from '@/utils/data-schema'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import type { CollectionPickStory, UseCollection } from '../_types/collection'
@@ -15,7 +16,7 @@ export default function SortStoryCard({
   story,
   useCollection,
 }: {
-  story: CollectionPickStory
+  story: CollectionPickStory | MongoDBResponse['stories'][number]
   useCollection: UseCollection
 }) {
   const {
@@ -41,6 +42,15 @@ export default function SortStoryCard({
     )
   }
 
+  const storyTitle =
+    ('title' in story && story?.title) ||
+    ('og_title' in story && story?.og_title) ||
+    ''
+
+  const sourceTitle =
+    ('source' in story && story?.source?.title) ||
+    ('publisher' in story && story?.publisher?.title) ||
+    ''
   return (
     <div
       className="flex w-full cursor-pointer bg-white pt-5"
@@ -56,15 +66,11 @@ export default function SortStoryCard({
         <div className="flex justify-between gap-3">
           <div className="flex flex-col gap-1">
             <div className="subtitle-1 sm:title-2 line-clamp-2 text-primary-700">
-              {story?.title ?? ''}
+              {storyTitle}
             </div>
             <div className="caption-1 hidden gap-1 text-primary-500 sm:flex">
-              {story?.source?.title ? (
-                <>
-                  <span>{story?.source?.title ?? ''}</span>
-                  <Icon iconName="icon-dot" size="s" />
-                </>
-              ) : null}
+              <span>{sourceTitle}</span>
+              <Icon iconName="icon-dot" size="s" />
               <span>
                 {story?.published_date &&
                   displayTimeFromNow(story.published_date)}
@@ -75,7 +81,7 @@ export default function SortStoryCard({
             <ImageWithFallback
               src={story?.og_image ?? ''}
               fallbackCategory={ImageCategory.STORY}
-              alt={story?.title ?? ''}
+              alt={storyTitle}
               fill
               style={{
                 objectFit: 'cover',
@@ -84,12 +90,8 @@ export default function SortStoryCard({
           </div>
         </div>
         <div className="caption-1 flex gap-1 text-primary-500 sm:hidden">
-          {story?.source?.title ? (
-            <>
-              <span>{story?.source?.title ?? ''}</span>
-              <Icon iconName="icon-dot" size="s" />
-            </>
-          ) : null}
+          <span>{sourceTitle}</span>
+          <Icon iconName="icon-dot" size="s" />
           <span>
             {story?.published_date && displayTimeFromNow(story.published_date)}
           </span>

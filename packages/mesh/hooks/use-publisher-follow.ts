@@ -7,6 +7,8 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
+import useRedirectLogin from './use-redirect-login'
+
 type UseFollowPublisherProps = {
   publisherId: string
   publisherName: string
@@ -18,6 +20,7 @@ const useFollowPublisher = ({
 }: UseFollowPublisherProps) => {
   const { user, setUser } = useUser()
   const { addToast } = useToast()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   const followingPublisherList = user.followingPublishers
   const isFollowing = !!followingPublisherList.find(
@@ -25,6 +28,10 @@ const useFollowPublisher = ({
   )
 
   const handleFollowOnClick = debounce(async () => {
+    if (detectIfShouldRedirectToLogin()) {
+      return
+    }
+
     const followPublisherArgs = {
       memberId: user.memberId,
       publisherId,

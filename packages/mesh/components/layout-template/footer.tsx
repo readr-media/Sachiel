@@ -10,6 +10,7 @@ import {
   FOOTER_SHARED_ICONS,
   LOGO_ICONS,
 } from '@/constants/layout'
+const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
   return (
@@ -40,18 +41,22 @@ export default function Footer({ className = '' }: { className?: string }) {
               />
             </Link>
           </div>
-          {/* first row second block */}
-          <div className="flex flex-col items-center gap-5 sm:flex-row">
-            {DOWNLOAD_APP_LINKS.map((linkInfo) => (
-              <Link
-                key={linkInfo.icon}
-                href={linkInfo.href}
-                className={`GTM-footer_click_${linkInfo.gtmName}`}
-              >
-                <Icon size={linkInfo.size} iconName={linkInfo.icon} />
-              </Link>
-            ))}
-          </div>
+          {/* first row second block 
+            NOTE: 之後要顯示的話，移除上面變數並且回復這段程式碼。
+          */}
+          {SHOULD_SHOW_APP_STORE && (
+            <div className="flex flex-col items-center gap-5 sm:flex-row">
+              {DOWNLOAD_APP_LINKS.map((linkInfo) => (
+                <Link
+                  key={linkInfo.icon}
+                  href={linkInfo.href}
+                  className={`GTM-footer_click_${linkInfo.gtmName}`}
+                >
+                  <Icon size={linkInfo.size} iconName={linkInfo.icon} />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         {/* second row */}
         <div className="flex flex-col items-center gap-10 sm:h-[76px] sm:flex-row sm:justify-between sm:gap-0 sm:border-b">
@@ -70,15 +75,16 @@ export default function Footer({ className = '' }: { className?: string }) {
           {/* second row right block  */}
           <div className="flex gap-5">
             {FOOTER_SHARED_ICONS.map((iconInfo) => (
-              <Link
+              <a
                 href={iconInfo.href}
                 key={iconInfo.icon.default}
+                target="_blank"
                 className={`group GTM-footer_click_social_${iconInfo.gtmName}`}
               >
                 <div className="flex size-6 items-center justify-center">
                   <InteractiveIcon icon={iconInfo.icon} size={iconInfo.size} />
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>

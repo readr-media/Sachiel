@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import Icon from '@/components/icon'
+import { ENV } from '@/constants/config'
 
 import TooltipButton from './tooltip-button'
 
@@ -25,8 +26,12 @@ export default function MeshPointHelper() {
             <p className="caption-1">
               讀選點數（READR）能用來贊助媒體、支持你喜歡的報導。你可以透過閱讀新聞獲得讀選點數。
             </p>
-            <Link href={'/'} target={'_blank'} className="footnote">
-              {/*TODO: update link */}
+            {/* TODO: update link */}
+            <Link
+              href={ENV === 'prod' ? '/story/53192' : '/'}
+              target="_blank"
+              className="footnote"
+            >
               了解更多
             </Link>
           </div>

@@ -1,33 +1,76 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import throttle from 'raf-throttle'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
+import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
+import type { Info } from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
+const pathTarget = {
+  '/story': 'story',
+  '/collection': 'collection',
+}
+
 export default function UserBehaviorLogger() {
   const userPayload = useUserPayload()
+  const pathName = usePathname()
+
+  const pageName = usePageName()
+
+  const getComplementary = useCallback(() => {
+    for (const key in pathTarget) {
+      if (pathName.startsWith(key)) {
+        return {
+          target: pathTarget[key as keyof typeof pathTarget],
+          targetId: pathName.split('/')[2] ?? '',
+        }
+      }
+    }
+    return null
+  }, [pathName])
 
   //pageview event
   useEffect(() => {
-    const info = generateUserBehaviorLogInfo('pageview', userPayload)
-    if (info) {
+    const basicInfo = generateUserBehaviorLogInfo(userPayload)
+    if (basicInfo) {
+      const info: Info = {
+        logCategory: 'general',
+        logInfo: {
+          ...basicInfo,
+          type: 'pageview',
+          source: pageName,
+          complementary: getComplementary(),
+        },
+      }
       sendUserBehaviorLog(info)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   //exit event
   useEffect(() => {
-    const info = generateUserBehaviorLogInfo('exit', userPayload)
+    const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
     let hasEventTriggered = false
 
     const beforeLeavingPage = () => {
       if (!hasEventTriggered) {
         hasEventTriggered = true
-        sendUserBehaviorLog(info)
+        if (basicInfo) {
+          const info: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'exit',
+              source: pageName,
+              complementary: getComplementary(),
+            },
+          }
+          sendUserBehaviorLog(info)
+        }
       }
     }
 
@@ -36,7 +79,7 @@ export default function UserBehaviorLogger() {
     return () => {
       window.removeEventListener('beforeunload', beforeLeavingPage)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   // scroll event (50%、80%)
   useEffect(() => {
@@ -56,14 +99,36 @@ export default function UserBehaviorLogger() {
 
       if (!hasScrolledTo50 && scrollPercent >= 0.5) {
         hasScrolledTo50 = true
-        const info50 = generateUserBehaviorLogInfo('scroll-to-50%', userPayload)
-        sendUserBehaviorLog(info50)
+        const basicInfo = generateUserBehaviorLogInfo(userPayload)
+        if (basicInfo) {
+          const info50: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'scroll-to-50%',
+              source: pageName,
+              complementary: getComplementary(),
+            },
+          }
+          sendUserBehaviorLog(info50)
+        }
       }
 
       if (!hasScrolledTo80 && scrollPercent >= 0.8) {
         hasScrolledTo80 = true
-        const info80 = generateUserBehaviorLogInfo('scroll-to-80%', userPayload)
-        sendUserBehaviorLog(info80)
+        const basicInfo = generateUserBehaviorLogInfo(userPayload)
+        if (basicInfo) {
+          const info80: Info = {
+            logCategory: 'general',
+            logInfo: {
+              ...basicInfo,
+              type: 'scroll-to-80%',
+              source: pageName,
+              complementary: getComplementary(),
+            },
+          }
+          sendUserBehaviorLog(info80)
+        }
       }
     })
 
@@ -72,7 +137,7 @@ export default function UserBehaviorLogger() {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [userPayload])
+  }, [userPayload, pageName, getComplementary])
 
   return null
 }

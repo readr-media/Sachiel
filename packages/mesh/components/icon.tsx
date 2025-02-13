@@ -123,6 +123,7 @@ export type IconName =
   | 'icon-copy'
   | 'icon-unfollow'
   | 'icon-close'
+  | 'icon-close-400'
   | 'icon-share-facebook'
   | 'icon-share-line'
   | 'icon-share-threads'
@@ -172,6 +173,7 @@ export type IconName =
   | 'icon-calendar'
   | 'icon-expand-month-picker'
   | 'icon-fold-month-picker'
+  | 'icon-hide-publisher'
 
 export type IconProps = {
   size: Size

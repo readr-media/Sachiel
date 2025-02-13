@@ -585,8 +585,24 @@ query GetMemberPickAndBookmark(
   }
 }
 
-query GetMemberName($memberCustomId: String) {
+query GetMemberForOG($memberCustomId: String) {
   member(where: { customId: $memberCustomId }) {
     name
+    avatar
+    avatar_image {
+      resized {
+        original
+      }
+    }
+  }
+}
+
+query GetMemberExcludePublisher($memberId: ID) {
+  member(where: { id: $memberId }) {
+    id
+    exclude_publisher {
+      id
+      title
+    }
   }
 }

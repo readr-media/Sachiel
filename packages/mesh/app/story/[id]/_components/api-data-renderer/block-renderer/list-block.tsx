@@ -2,13 +2,13 @@ import type { ApiDataBlockBase, ApiDataBlockType } from '../types'
 
 export interface ApiDataUnorderList extends ApiDataBlockBase {
   type: ApiDataBlockType.UnorderList
-  content: string[][]
+  content: string[][] | string[]
   alignment: 'center'
 }
 
 export interface ApiDataOrderList extends ApiDataBlockBase {
   type: ApiDataBlockType.OrderList
-  content: string[][]
+  content: string[][] | string[]
   alignment: 'center'
 }
 
@@ -17,7 +17,14 @@ export function UnorderListBlock({
 }: {
   apiDataBlock: ApiDataUnorderList
 }) {
-  const list = apiDataBlock.content[0]
+  let list: string[]
+
+  if (Array.isArray(apiDataBlock.content[0])) {
+    list = apiDataBlock.content[0]
+  } else {
+    list = apiDataBlock.content as string[]
+  }
+
   return (
     <ul>
       {list.map((listItem) => (
@@ -32,7 +39,13 @@ export function OrderListBlock({
 }: {
   apiDataBlock: ApiDataOrderList
 }) {
-  const list = apiDataBlock.content[0]
+  let list: string[]
+
+  if (Array.isArray(apiDataBlock.content[0])) {
+    list = apiDataBlock.content[0]
+  } else {
+    list = apiDataBlock.content as string[]
+  }
   return (
     <ol>
       {list.map((listItem) => (

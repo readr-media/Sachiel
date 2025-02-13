@@ -9,6 +9,8 @@ import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { type CommentType } from '@/types/profile'
 import { debounce } from '@/utils/performance'
 
+import useRedirectLogin from './use-redirect-login'
+
 // 從 Story Query 中提取 Comment 型別
 type CommentTypeFromStory = NonNullable<
   NonNullable<GetStoryQuery['story']>['comments']
@@ -52,6 +54,7 @@ export const useCommentLike = ({
   const { user } = useUser()
   const { addToast } = useToast()
   const { updateCommentLikeStatus } = useComment()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   const memberLikedList = useMemo(() => {
     if (isCommentType(commentData)) {
@@ -68,6 +71,8 @@ export const useCommentLike = ({
   )
 
   const handleLikeComment = debounce(async () => {
+    if (detectIfShouldRedirectToLogin()) return
+
     const likeCommentArgs = {
       memberId: user.memberId,
       commentId: commentData.id,

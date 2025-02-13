@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 
 import Button from '@/components/button'
@@ -10,6 +9,7 @@ import Icon from '@/components/icon'
 import NotificationWrapper from '@/components/notification-wrapper'
 import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 const DesktopSearchBar = dynamic(
   () => import('@/components/desktop-search-bar'),
   {
@@ -24,15 +24,9 @@ const MobileSearchWrapper = dynamic(
 )
 
 export default function DefaultHeader() {
-  const pathname = usePathname()
-  const router = useRouter()
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
-
-  const handleLoginButton = () => {
-    localStorage.setItem('login-redirect', pathname)
-    router.push('/login')
-  }
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   return (
     <>
@@ -71,7 +65,7 @@ export default function DefaultHeader() {
                   size="sm"
                   color="white"
                   text="登入"
-                  onClick={handleLoginButton}
+                  onClick={detectIfShouldRedirectToLogin}
                 />
               </div>
             )}

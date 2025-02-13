@@ -184,6 +184,7 @@ const STATIC_FILE_ENDPOINTS = {
   invalidNameList: `${STATIC_FILE_ORIGIN}/data/invalid_names.json`,
   termsOfService: `${STATIC_FILE_ORIGIN}/policies/terms-of-service.html`,
   privacyPolicy: `${STATIC_FILE_ORIGIN}/policies/privacy-policy.html`,
+  publisherList: `${STATIC_FILE_ORIGIN}/data/open_publishers.json`,
 }
 
 const SITE_URL = `https://${SITE_HOST}`

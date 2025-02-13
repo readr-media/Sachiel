@@ -1,256 +1,134 @@
-import type { ShareData, UserPayload } from '@/types/user-behavior-log'
+import type {
+  ClickComplementary,
+  ClickTarget,
+  ClickType,
+  Info,
+  UserPayload,
+} from '@/types/user-behavior-log'
 import { generateUserBehaviorLogInfo } from '@/utils/generate-user-behavior-log-info'
 import { sendUserBehaviorLog } from '@/utils/send-user-behavior-log'
 
-export function logStoryClick(
-  userPayload: UserPayload,
-  storyId: string,
-  storyTitle: string,
-  publisher: string,
-  isRelatedStory = false
-) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const interaction = isRelatedStory
-      ? {
-          relatedStories: {
-            relatedStoryId: storyId,
-            relatedTitle: storyTitle,
-            publisher,
-          },
-        }
-      : {
-          story: {
-            storyId,
-            storyTitle,
-            publisher,
-          },
-        }
-
-    const info = {
-      ...basicInfo,
-      interaction,
+function createClickComplementary(info: ClickComplementary | undefined) {
+  if (!info) {
+    return {
+      complementary: null,
     }
-
-    sendUserBehaviorLog(info)
+  }
+  return {
+    complementary: {
+      feedAction: null,
+      feedOwnerId: null,
+      ...info,
+    },
   }
 }
 
-export function logShareClick(
+export function logClickEvent(
   userPayload: UserPayload,
-  interactionData: ShareData
-) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const interaction = {
-      ...interactionData,
-    }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
-    sendUserBehaviorLog(info)
+  type: ClickType,
+  eventInfo: {
+    target: ClickTarget
+    targetId: string
+    targetTitle: string
+    source: string
+    complementary?: ClickComplementary
   }
-}
-
-export function logCategoryClick(
-  userPayload: UserPayload,
-  categoryName: string
 ) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const interaction = {
-      categories: {
-        categoryName: categoryName,
+    const info: Info = {
+      logCategory: 'click',
+      logInfo: {
+        type,
+        ...basicInfo,
+        ...eventInfo,
+        ...createClickComplementary(eventInfo.complementary),
       },
     }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
     sendUserBehaviorLog(info)
   }
 }
 
-export function logStoryAddedToPick(userPayload: UserPayload, storyId: string) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const interaction = {
-      pick: {
-        storyId,
-      },
-    }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
-    sendUserBehaviorLog(info)
-  }
-}
-
-export function logStoryAddedToBookmark(
+export function logSponsorEvent(
   userPayload: UserPayload,
-  storyId: string
+  eventInfo: {
+    sponsorId: string
+    sponsorName: string
+    publisherId: string
+    publisherName: string
+    point: number
+  }
 ) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const interaction = {
-      bookmark: {
-        storyId,
+    const info: Info = {
+      logCategory: 'payment',
+      logInfo: {
+        type: 'sponsor',
+        ...basicInfo,
+        sponsor: {
+          ...eventInfo,
+        },
       },
     }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
     sendUserBehaviorLog(info)
   }
 }
 
-export function logStoryAddedToCollection(
+export function logStoryUnlockEvent(
   userPayload: UserPayload,
-  storyId: string
+  eventInfo: {
+    policyId: string
+    policyName: string
+    publisherId: string
+    publisherName: string
+    storyId: string
+  }
 ) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const interaction = {
-      collection: {
-        storyId,
+    const info: Info = {
+      logCategory: 'payment',
+      logInfo: {
+        type: 'tx-unlock-single',
+        ...basicInfo,
+        transaction: {
+          ...eventInfo,
+        },
       },
     }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
     sendUserBehaviorLog(info)
   }
 }
 
-export function logStoryActionClick(
+export function logStoryInteractionEvent(
   userPayload: UserPayload,
-  actionType: {
-    isPick: boolean
-    isComment: boolean
-    isPickAndComment: boolean
-  },
-  actionOwnerIds: string[]
+  eventInfo: {
+    type: 'pick' | 'bookmark' | 'collection' | 'share'
+    storyId: string
+    storyTitle: string
+    source: string
+    complementary?: {
+      target: 'collection' | 'platform'
+      targetId: string | null
+      targetName: string
+    }
+  }
 ) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-  if (basicInfo) {
-    const typeMap = {
-      'pick-comment': actionType.isPickAndComment,
-      pick: actionType.isPick,
-      comment: actionType.isComment,
-    }
-
-    const type = (Object.keys(typeMap) as Array<keyof typeof typeMap>).find(
-      (key) => typeMap[key]
-    )
-
-    const userActivity = {
-      activityType: type,
-      userId: actionOwnerIds,
-    }
-
-    const info = {
-      ...basicInfo,
-      userActivity,
-    }
-
-    sendUserBehaviorLog(info)
-  }
-}
-
-export function logVideoPlay(userPayload: UserPayload) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
+  const basicInfo = generateUserBehaviorLogInfo(userPayload)
 
   if (basicInfo) {
-    const interaction = {
-      media: {
-        videoPlay: true,
+    const info: Info = {
+      logCategory: 'interaction',
+      logInfo: {
+        complementary: null,
+        ...basicInfo,
+        ...eventInfo,
       },
     }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
-    sendUserBehaviorLog(info)
-  }
-}
-
-export function logSponsor(userPayload: UserPayload, publisher: string) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const interaction = {
-      sponsorAction: {
-        sponsor: publisher,
-      },
-    }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
-    sendUserBehaviorLog(info)
-  }
-}
-
-export function logPayment(userPayload: UserPayload, storyId: string) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const interaction = {
-      unlock: {
-        unlockAction: true,
-        storyId,
-      },
-    }
-
-    const info = {
-      ...basicInfo,
-      interaction,
-    }
-
-    sendUserBehaviorLog(info)
-  }
-}
-
-export function logCollectionClick(
-  userPayload: UserPayload,
-  collectionTitle: string
-) {
-  const basicInfo = generateUserBehaviorLogInfo('click', userPayload)
-
-  if (basicInfo) {
-    const collectionInfo = {
-      collectionTitle,
-    }
-
-    const info = {
-      ...basicInfo,
-      collectionInfo,
-    }
-
     sendUserBehaviorLog(info)
   }
 }

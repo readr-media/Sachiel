@@ -11,8 +11,8 @@ const CONTACT_LINKS = [
   },
   {
     name: 'Discord 社群',
-    href: 'https://discord.gg/zDTZsGEn',
-    text: 'https://discord.gg/zDTZsGEn',
+    href: 'https://discord.gg/m7334TdYd3',
+    text: 'https://discord.gg/m7334TdYd3',
   },
 ]
 

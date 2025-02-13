@@ -13,9 +13,12 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
+import usePageName from '@/hooks/use-page-name'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 import useUserPayload from '@/hooks/use-user-payload'
 import { PaymentType } from '@/types/payment'
-import { logStoryAddedToBookmark } from '@/utils/event-logs'
+import { type MongoDBResponse } from '@/utils/data-schema'
+import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { getStoryUrl } from '@/utils/get-url'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
@@ -39,7 +42,7 @@ export default function StoryMoreActionButton({
   nestedScrollContainerRef,
   className,
 }: {
-  story: CollectionPickStory
+  story: CollectionPickStory | MongoDBResponse['stories'][number]
   publisherId: string
   canUnFollowPublisher?: boolean
   nestedScrollContainerRef?: RefObject<HTMLElement>
@@ -116,8 +119,11 @@ export default function StoryMoreActionButton({
   }, [closeActionSheet, nestedScrollContainerRef])
 
   const storyInfo = {
-    storyId: story.id,
-    storyTitle: story?.title ?? '',
+    id: story.id,
+    title:
+      ('title' in story && story?.title) ||
+      ('og_title' in story && story?.og_title) ||
+      '',
   }
 
   return (
@@ -140,7 +146,7 @@ export default function StoryMoreActionButton({
       {shouldShowActionSheet && (
         <ActionSheet
           ref={actionSheetRef}
-          storyId={story.id}
+          storyInfo={storyInfo}
           publisherId={publisherId}
           onClose={closeActionSheet}
           openShareSheet={openShareSheet}
@@ -218,7 +224,7 @@ const actions = [
 
 const ActionSheet = forwardRef(function ActionSheet(
   {
-    storyId,
+    storyInfo,
     publisherId,
     openShareSheet,
     openAddCollection,
@@ -226,7 +232,10 @@ const ActionSheet = forwardRef(function ActionSheet(
     position,
     onClose,
   }: {
-    storyId: string
+    storyInfo: {
+      id: string
+      title: string
+    }
     publisherId: string
     openShareSheet: () => void
     openAddCollection: () => void
@@ -238,10 +247,14 @@ const ActionSheet = forwardRef(function ActionSheet(
 ) {
   const router = useRouter()
   const { user, setUser } = useUser()
-  const userPayload = useUserPayload()
+  const storyId = storyInfo.id
+  const storyTitle = storyInfo.title
   const isStoryAddedBookmark = user.bookmarkStoryIds.has(storyId)
   const hasPosition = isPositionValid(position)
   const { addToast } = useToast()
+  const pageName = usePageName()
+  const userPayolad = useUserPayload()
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
@@ -253,6 +266,9 @@ const ActionSheet = forwardRef(function ActionSheet(
     }
     switch (type) {
       case ActionType.Sponsor: {
+        if (detectIfShouldRedirectToLogin()) {
+          return
+        }
         if (!publisherId) {
           addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
           console.error(
@@ -264,8 +280,7 @@ const ActionSheet = forwardRef(function ActionSheet(
         break
       }
       case ActionType.AddBookMark: {
-        if (!user.memberId) {
-          router.push('/login')
+        if (detectIfShouldRedirectToLogin()) {
           return
         }
         if (isStoryAddedBookmark) {
@@ -307,7 +322,12 @@ const ActionSheet = forwardRef(function ActionSheet(
               status: 'success',
               text: TOAST_MESSAGE.addBookmarkSuccess,
             })
-            logStoryAddedToBookmark(userPayload, storyId)
+            logStoryInteractionEvent(userPayolad, {
+              type: 'bookmark',
+              storyId,
+              storyTitle,
+              source: pageName,
+            })
           } else {
             addToast({
               status: 'fail',
@@ -354,6 +374,9 @@ const ActionSheet = forwardRef(function ActionSheet(
         openShareSheet()
         break
       case ActionType.AddCollection:
+        if (detectIfShouldRedirectToLogin()) {
+          return
+        }
         openAddCollection()
         break
       default:

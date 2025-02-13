@@ -6,11 +6,10 @@ export async function middleware(request: NextRequest) {
     /^\/media(\/.*)?$/,
     /^\/social(\/.*)?$/,
     /^\/point(\/.*)?$/,
-    /^\/profile(\/.*)?$/,
     /^\/payment(\/.*)?$/,
     /^\/setting(\/.*)?$/,
-    /^\/collection(\/.*)?$/,
     /^\/media-backstage(\/.*)?$/,
+    /^\/publisher-list(\/.*)?$/,
   ]
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = protectRoutesPattern.some((pattern) =>
@@ -18,7 +17,20 @@ export async function middleware(request: NextRequest) {
   )
   if (isProtectedRoute) {
     const cookie = cookies().get('token')?.value
-    if (!cookie) {
+    const userAgent = request.headers.get('user-agent') || ''
+
+    /**
+     * Facebook crawler: https://developers.facebook.com/docs/sharing/webmasters/web-crawlers
+     * Line crawler: https://help2.line.me/linesearchbot/web/?contentId=50006055&lang=en
+     * X(Twitter) crawler: https://developer.x.com/en/docs/x-for-websites/cards/guides/getting-started (URL Crawling & Caching)
+     * online crawler user agents: https://github.com/monperrus/crawler-user-agents/blob/master/crawler-user-agents.json
+     */
+    const isSocialBot =
+      /facebookexternalhit|facebookcatalog|Linespider|Twitterbot/.test(
+        userAgent
+      )
+
+    if (!isSocialBot && !cookie) {
       return NextResponse.redirect(new URL('/login', request.nextUrl))
     }
   }

@@ -46,29 +46,29 @@ const FOOTER_NAV_LINKS = [
   },
 ] as const
 
-// TODO: update path
 const FOOTER_SHARED_ICONS = [
   {
     icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
-    href: '/',
+    href: 'https://www.facebook.com/profile.php?id=61567155163574',
     size: { width: 24, height: 24 },
     gtmName: 'FB',
   },
-  {
-    icon: { default: 'icon-x', hover: 'icon-x-hover' },
-    href: '/',
-    size: { width: 24, height: 20 },
-    gtmName: 'twitter',
-  },
-  {
-    icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
-    href: '/',
-    size: { width: 22, height: 22 },
-    gtmName: 'IG',
-  },
+  // TODO: wait till mesh url available
+  // {
+  //   icon: { default: 'icon-x', hover: 'icon-x-hover' },
+  //   href: '/',
+  //   size: { width: 24, height: 20 },
+  //   gtmName: 'twitter',
+  // },
+  // {
+  //   icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
+  //   href: '/',
+  //   size: { width: 22, height: 22 },
+  //   gtmName: 'IG',
+  // },
   {
     icon: { default: 'icon-discord', hover: 'icon-discord-hover' },
-    href: '/',
+    href: 'https://discord.gg/m7334TdYd3',
     size: { width: 21, height: 24 },
     gtmName: 'DC',
   },

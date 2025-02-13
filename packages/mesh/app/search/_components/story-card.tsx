@@ -3,7 +3,11 @@ import NextLink from 'next/link'
 
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryMoreActionButton from '@/components/story-more-action-button'
+import usePageName from '@/hooks/use-page-name'
+import useUserPayload from '@/hooks/use-user-payload'
 import { type SearchResults } from '@/utils/data-schema'
+import { logClickEvent } from '@/utils/event-logs'
+
 export default function StoryCard({
   story,
   extra,
@@ -11,6 +15,22 @@ export default function StoryCard({
   story: NonNullable<SearchResults['story']>[number]
   extra?: string
 }) {
+  const userPayload = useUserPayload()
+  const pageName = usePageName()
+  const sendClickLog = () => {
+    logClickEvent(userPayload, 'click-story', {
+      target: 'story',
+      targetId: story.id,
+      targetTitle: story.title,
+      source: pageName,
+      complementary: {
+        publisherTarget: 'publisher',
+        targetId: story.source.id,
+        targetName: story.source.title,
+      },
+    })
+  }
+
   return (
     <div
       className={`flex flex-col border-b-[0.5px] last:border-b-0 sm:max-w-[600px] ${extra}`}
@@ -25,7 +45,7 @@ export default function StoryCard({
       </div>
       <div className="flex flex-row justify-between gap-3 sm:gap-10">
         <div>
-          <NextLink href={`/story/${story.id}`}>
+          <NextLink href={`/story/${story.id}`} onClick={() => sendClickLog()}>
             <span className="subtitle-1 sm:title-2 line-clamp-2 grow text-primary-700 hover-or-active:underline">
               {story.title}
             </span>
