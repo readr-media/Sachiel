@@ -5,8 +5,6 @@ import {
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
 } from '@/constants/config'
 
-const amountWithFeeRatio = 1 + NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE
-
 export default function ExchangeInput({
   balance,
   onChangeAmount,
@@ -14,10 +12,9 @@ export default function ExchangeInput({
   balance: number | undefined
   onChangeAmount: (value: number) => void
 }) {
-  const [newAmount, setNewAmount] = useState(0)
   const [userInput, setUserInput] = useState('')
   const [fullfillMinimum, setFullfillMimium] = useState(true)
-  const maxAmount = Math.floor((balance ?? 0) / amountWithFeeRatio)
+  const maxAmount = balance ?? 0
   const isMax = `${userInput}` === `${balance}`
 
   const handleMaxClick = () => {
@@ -35,13 +32,11 @@ export default function ExchangeInput({
     }
 
     const newInputAmount = Math.min(parseInt(value) || 0, maxAmount)
-    const newAmount = Math.ceil(newInputAmount * amountWithFeeRatio)
     const isNewValueFullfillMinimum =
       newInputAmount >= NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT
 
     setUserInput(newInputAmount ? newInputAmount.toString() : '')
-    onChangeAmount(newAmount)
-    setNewAmount(newAmount)
+    onChangeAmount(newInputAmount)
     setFullfillMimium(isNewValueFullfillMinimum)
   }
 
@@ -79,7 +74,6 @@ export default function ExchangeInput({
         <p className="footnote mt-6 flex flex-col text-primary-500">
           <span>請輸入您要兌換的金額。</span>
           <span>您的讀選點數餘額：${balance}</span>
-          <span className="text-custom-red-text">{`本次扣除：$${newAmount}`}</span>
           <span className="mt-5 text-custom-blue">
             {`點數最低兌換點數為 ${NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
               NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100
