@@ -54,7 +54,7 @@ query GetExchangePublisherInfo($customId: String) {
       wallet
     }
   }
-  officialWallet: publishers(where: { customId: { equals: "readr" } }) {
+  officialWallet: publishers(where: { customId: { equals: "mesh" } }) {
     id
     title
     admin {
