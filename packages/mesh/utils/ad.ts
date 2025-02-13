@@ -11,29 +11,9 @@ function getDevice(width: number): 'PC' | 'MB' {
 }
 
 // Generate full key like 'PC_HD' if the component support dynamic device adKey like 'HD'
-function getAdFullKey(device: 'PC' | 'MB', adKey: string): string {
-  return adKey.includes('_') ? adKey : `${device}_${adKey}`
-}
-
-function getAdData(pageKey: string, adKey: string, width: number) {
+export function getAdFullKey(adKey: string, width: number): string {
   const device = getDevice(width)
-  const adFullKey = getAdFullKey(device, adKey)
-  const adData = ADSENSE_UNITS[pageKey]?.[adFullKey]
-  if (!adData) {
-    console.error(
-      `Unable to find the AD data. Got the pageKey "${pageKey}" and adKey "${adFullKey}". Please provide a valid pageKey or adKey.`
-    )
-  }
-  return adData
-}
-
-export function getAdParam(pageKey: string, adKey: string, width: number) {
-  const adData = getAdData(pageKey, adKey, width)
-  if (!adData) {
-    return
-  }
-  const { adSlot, adSize, adUnit } = adData
-  return { adSlot, adSize, adUnit }
+  return adKey.includes('_') ? adKey : `${device}_${adKey}`
 }
 
 export function getAdParamBySlot(adSlot: string) {
@@ -45,4 +25,17 @@ export function getAdParamBySlot(adSlot: string) {
     }
   }
   return null
+}
+
+export function getMinSize(input: number[] | number[][]): number[] {
+  if (Array.isArray(input[0])) {
+    return (input as number[][]).reduce((smallest, current) => {
+      const [smallestWidth, smallestHeight] = smallest
+      const [currentWidth, currentHeight] = current
+      return currentWidth * currentHeight < smallestWidth * smallestHeight
+        ? current
+        : smallest
+    })
+  }
+  return input as number[]
 }

@@ -1,8 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
 
+import { ADSENSE_UNITS } from '@/constants/ad'
 import { ADSENSE_CLIENT } from '@/constants/config'
-import { getAdParam, getAdParamBySlot } from '@/utils/ad'
+import { getAdFullKey, getAdParamBySlot } from '@/utils/ad'
 
 type Props = {
   pageKey?: string
@@ -34,12 +35,12 @@ export default function AdSense({
     if (pageKey && adKey) {
       // get adParam by pageKey & adKey
       const width = window.innerWidth
-      const adParam = getAdParam(pageKey, adKey, width)
-      if (!adParam) {
+      const adFullKey = getAdFullKey(adKey, width)
+      const adData = ADSENSE_UNITS[pageKey]?.[adFullKey]
+      if (!adData) {
         return
       }
-
-      const { adSlot, adSize, adUnit } = adParam
+      const { adUnit, adSlot, adSize } = adData
       setAdSlot(adSlot)
       setAdSize(adSize)
       setAdUnit(adUnit)

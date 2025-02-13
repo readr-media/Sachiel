@@ -1,4 +1,4 @@
-import type { AdsenseUnits } from '@/types/ad'
+import type { AdsenseUnits, GamUnits } from '@/types/ad'
 
 export const ADSENSE_UNITS: AdsenseUnits = {
   media: {
@@ -98,6 +98,32 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adUnit: 'Mesh_m_hp_300x250_A3',
       adSlot: '1908998569',
       adSize: [300, 250],
+    },
+  },
+}
+
+export const GAM_UNITS: GamUnits = {
+  story: {
+    PC_E0: {
+      adUnit: 'mmesh_article_pc_300x600_RB',
+      adSlot: '1738637939769-0',
+      adSize: [300, 600],
+    },
+    PC_E1: {
+      adUnit: 'mmesh_article_PC_336x280_LB',
+      adSlot: '1738637965083-0',
+      adSize: [
+        [300, 250],
+        [336, 280],
+      ],
+    },
+    PC_E2: {
+      adUnit: 'mmesh_article_PC_336x280_RB',
+      adSlot: '1738637990207-0',
+      adSize: [
+        [300, 250],
+        [336, 280],
+      ],
     },
   },
 }
