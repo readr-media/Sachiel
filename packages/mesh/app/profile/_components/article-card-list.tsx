@@ -116,7 +116,7 @@ function ArticleCardList({
       >
         {(renderList) => {
           return (
-            <div className="flex grow flex-col bg-multi-layer-light">
+            <div className="grow bg-multi-layer-light">
               <ul
                 className={`max-w-[theme(width.maxMain)] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:p-10 md:px-[70px] md:pt-3 lg:h-full lg:grid-cols-3 lg:px-10 ${
                   isCollection
