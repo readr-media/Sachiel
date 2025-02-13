@@ -43,6 +43,7 @@ export type User = {
   bookmarks?: ProfileTypes['bookmarks']
   collections?: Collections
   pickCollections?: ProfileTypes['picksData']
+  publishers?: ProfileTypes['publishers']
 }
 
 type UserContextType = {

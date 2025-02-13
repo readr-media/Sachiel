@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
+import type { FailPaymentProps } from '@/app/actions/payment'
 import {
   type CreatePaymentProps,
   type UpdatePaymentProps,
@@ -51,6 +52,13 @@ export default function PaymentInfo({
     objective: 'transaction',
     targetId: '0',
     tid: '0x',
+  }
+  const failUnlockStorySinglePayment: FailPaymentProps = {
+    action: 'unlock_story_single',
+    memberId: user.memberId,
+    objective: 'transaction',
+    targetId: '0',
+    complement: 'Reason of failure',
   }
 
   const handleUnlockStorySingleSuccess = () => {
@@ -153,6 +161,7 @@ export default function PaymentInfo({
           disabled={!isChecked}
           createPaymentPayload={createUnlockStorySinglePayment}
           updatePaymentPayload={updateUnlockStorySinglePayment}
+          failPaymentPayload={failUnlockStorySinglePayment}
           onSuccess={handleUnlockStorySingleSuccess}
         />
       </div>

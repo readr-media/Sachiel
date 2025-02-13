@@ -42,7 +42,7 @@ export default function MeshPoint({
   if (!transactionData) return <Loading />
 
   return (
-    <div className="bg-white sm:rounded-md sm:drop-shadow">
+    <div className="bg-white sm:rounded-xl sm:drop-shadow">
       <section className="flex h-[190px] flex-col justify-center border-b-[0.5px] border-primary-200 sm:h-[128px] sm:flex-row sm:justify-between sm:px-10 sm:py-8">
         <MeshPointInfo balance={balance} />
         <div className="flex flex-row items-center justify-center gap-4 pt-6 sm:gap-5 sm:self-end sm:pt-0">
