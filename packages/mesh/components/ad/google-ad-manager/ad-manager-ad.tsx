@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { GAM_UNITS } from '@/constants/ad'
-import { getAdFullKey, getAdParamBySlot, getMinSize } from '@/utils/ad'
+import { getAdFullKey, getAdUnitPath } from '@/utils/ad'
 
 type Props = {
   pageKey?: string
@@ -12,12 +12,11 @@ type Props = {
 }
 
 export default function AdManager({ pageKey, adKey, slot }: Props) {
-  const [adUnit, setAdUnit] = useState('')
+  const [adUnitPath, setAdUnitPath] = useState('')
   const [adDivId, setAdDivId] = useState('')
   const [adSize, setAdSize] = useState<[number, number] | [number, number][]>(
     []
   )
-  const [minSize, setMinSize] = useState([0, 0])
 
   useEffect(() => {
     if (pageKey && adKey) {
@@ -30,54 +29,32 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
       const { adSlot, adSize, adUnit } = adData
       setAdDivId(`div-gpt-ad-${adSlot}`)
       setAdSize(adSize)
-      setAdUnit(adUnit)
-      const minSize = getMinSize(adSize)
-      setMinSize(minSize)
-    } else if (slot) {
-      // get adParam by slot
-      const adParam = getAdParamBySlot(slot)
-      if (!adParam) {
-        return
-      }
-      const { adSize, adUnit } = adParam
-      setAdDivId(`div-gpt-ad-${slot}`)
-      setAdSize(adSize)
-      setAdUnit(adUnit)
-      const minSize = getMinSize(adSize)
-      setMinSize(minSize)
+      setAdUnitPath(getAdUnitPath(adUnit))
     } else {
       console.error(
         `Adsense not receive necessary pageKey '${pageKey}' and adKey '${adKey}' or '${slot}'`
       )
       return
     }
-  }, [adKey, pageKey, slot])
+  }, [adDivId, adKey, pageKey, slot])
 
   useEffect(() => {
-    if (window.googletag && adSize && adDivId && adUnit) {
-      const googletag = window.googletag || { cmd: [] }
+    if (window.googletag && adSize && adDivId && adUnitPath) {
+      window.googletag = window.googletag || { cmd: [] }
+
       googletag.cmd.push(() => {
-        const slot = googletag
-          .defineSlot(`/23277192286/${adUnit}`, adSize, adDivId)
-          .addService(googletag.pubads())
+        const slot = window.googletag.defineSlot(adUnitPath, adSize, adDivId)
 
         if (slot) {
-          googletag.pubads().enableSingleRequest()
-          googletag.pubads().collapseEmptyDivs()
-          googletag.enableServices()
+          slot.addService(window.googletag.pubads())
           googletag.display(adDivId)
+          googletag.pubads().enableSingleRequest()
+          googletag.pubads().collapseEmptyDivs(true)
+          googletag.enableServices()
         }
       })
     }
-  }, [adSize, adUnit, adDivId])
+  }, [adSize, adUnitPath, adDivId])
 
-  return (
-    <div
-      id={adDivId}
-      style={{
-        minWidth: `${minSize[0]}px`,
-        minHeight: `${minSize[1]}px`,
-      }}
-    />
-  )
+  return <div id={adDivId} />
 }

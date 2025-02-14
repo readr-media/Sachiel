@@ -1,4 +1,4 @@
-import { ADSENSE_UNITS } from '@/constants/ad'
+import { ADSENSE_UNITS, GPT_AD_NETWORK } from '@/constants/ad'
 
 import { getTailwindConfig } from './tailwind'
 
@@ -8,6 +8,15 @@ const breakpoints = tailwindFullConfig?.theme?.screens
 function getDevice(width: number): 'PC' | 'MB' {
   const isDesktopWidth = width >= parseInt(breakpoints?.lg)
   return isDesktopWidth ? 'PC' : 'MB'
+}
+
+export function getAdUnitPath(adUnit: string): string {
+  return `/${GPT_AD_NETWORK}/${adUnit}`
+}
+
+export function getAdWidth(adSize: [number, number][]): string {
+  const widthMax = adSize?.reduce((acc, curr) => Math.max(curr[0], acc), 0)
+  return widthMax ? `${widthMax}px` : '0px'
 }
 
 // Generate full key like 'PC_HD' if the component support dynamic device adKey like 'HD'
@@ -25,17 +34,4 @@ export function getAdParamBySlot(adSlot: string) {
     }
   }
   return null
-}
-
-export function getMinSize(input: number[] | number[][]): number[] {
-  if (Array.isArray(input[0])) {
-    return (input as number[][]).reduce((smallest, current) => {
-      const [smallestWidth, smallestHeight] = smallest
-      const [currentWidth, currentHeight] = current
-      return currentWidth * currentHeight < smallestWidth * smallestHeight
-        ? current
-        : smallest
-    })
-  }
-  return input as number[]
 }
