@@ -194,3 +194,55 @@ query GetStoryPickers($storyId: ID, $picksTake: Int, $picksSkip: Int) {
     }
   }
 }
+
+query GetPodcast($podcastId: ID) {
+  story(where: { id: $podcastId }) {
+    id
+    title
+    og_image
+    content
+    story_type
+    podcast {
+      id
+      author
+      url
+      file_size
+      mime_type
+      duration
+      createdAt
+    }
+  }
+}
+
+query GetPodcastComments($podcastId: ID, $commentsTake: Int) {
+  story(where: { id: $podcastId }) {
+    id
+    title,
+    source{
+      id
+    }
+    commentsCount: commentCount(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+    )
+    comments: comment(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+      orderBy: { createdAt: desc }
+      take: $commentsTake
+    ) {
+      id
+      createdAt
+      likeCount
+      like {
+        id
+      }
+      member {
+        id
+        customId
+        name
+        avatar
+      }
+      content
+      state
+    }
+  }
+}

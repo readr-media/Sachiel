@@ -20,7 +20,7 @@ import NonMobileNavigation, {
   NonMobileNavigationType,
 } from './navigation/non-mobile-navigation'
 
-type LayoutType = 'default' | 'stateless' | 'article' | 'collection'
+type LayoutType = 'default' | 'stateless' | 'article' | 'collection' | 'podcast'
 
 type CustomStyle = {
   background?: string
@@ -54,6 +54,12 @@ type LayoutTemplateProps = {
   | {
       type: 'collection'
       mobileNavigation: MobileNavigationProps
+    }
+  | {
+      type: 'podcast'
+      mobileNavigation: MobileNavigationProps
+      nonMobileNavigation: ArticleNavigationProps
+      mobileActionBar?: MobileBottomActionBarProps
     }
 )
 
@@ -101,6 +107,16 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
         <CollectionLayout mobileNavigation={props.mobileNavigation}>
           {childrenJsx}
         </CollectionLayout>
+      )
+    case 'podcast':
+      return (
+        <PodcastLayout
+          mobileNavigation={props.mobileNavigation}
+          nonMobileNavigation={props.nonMobileNavigation}
+          mobileActionBar={props.mobileActionBar}
+        >
+          {childrenJsx}
+        </PodcastLayout>
       )
     default:
       console.error('LayoutTemplate with unhandleType', type)
@@ -256,6 +272,70 @@ const CollectionLayout = ({
       <div className="primary-container-collection">{children}</div>
       {/* cover on mobile header if navigation is setup */}
       {mobileNavigation && <MobileNavigation {...mobileNavigation} />}
+    </div>
+  )
+}
+
+const PodcastLayout = ({
+  mobileNavigation,
+  nonMobileNavigation,
+  mobileActionBar,
+  children,
+}: {
+  mobileNavigation: MobileNavigationProps
+  nonMobileNavigation: ArticleNavigationProps
+  mobileActionBar?: MobileBottomActionBarProps
+  children: React.ReactNode
+}) => {
+  const [shouldShowNav, setShouldShowNav] = useState(false)
+  const showNav = () => {
+    setShouldShowNav(true)
+  }
+  const closeNav = () => {
+    setShouldShowNav(false)
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* fixed header */}
+      <Header type={HeaderType.Article} showNav={showNav} />
+      {/* block for non-fixed content, set padding for fixed blocks */}
+      <div className="primary-container-article">
+        <div className="flex grow flex-col items-center bg-white">
+          <div className="flex w-full grow justify-center xl:max-w-[theme(width.maxContent)]">
+            <main className="flex w-full max-w-[theme(width.articleMain)] flex-col sm:pb-10">
+              <div className="sticky top-[68px] z-[5] hidden size-full h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:flex">
+                <NonMobileNavigation
+                  type={NonMobileNavigationType.Article}
+                  {...nonMobileNavigation}
+                />
+              </div>
+              {children}
+            </main>
+          </div>
+        </div>
+        {/* footer after main content */}
+        <div className="pb-[84px]">
+          <Footer />
+        </div>
+        <div
+          id="desktop-audio-container"
+          className="fixed bottom-0 left-0 hidden sm:block"
+        ></div>
+      </div>
+      <Nav
+        type={NavType.Article}
+        shouldShowNav={shouldShowNav}
+        closeNav={closeNav}
+      />
+      {/* cover on mobile header */}
+      <MobileNavigation {...mobileNavigation} />
+      {/* cover on mobile bottom nav */}
+      <div
+        id="mobile-audio-container"
+        className="fixed inset-x-0 bottom-16 block sm:hidden"
+      ></div>
+      {mobileActionBar && <MobileBottomActionBar {...mobileActionBar} />}
     </div>
   )
 }
