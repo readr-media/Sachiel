@@ -127,3 +127,5 @@ export const GAM_UNITS: GamUnits = {
     },
   },
 }
+
+export const GPT_AD_NETWORK = '23277192286'
