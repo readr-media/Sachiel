@@ -120,7 +120,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ isMember }) => {
     },
   ]
 
-  const publisherCustomId = user.publishers?.[0].customId
+  const publisherCustomId = user.publishers?.[0]?.customId
   const isMediaManager = isMember && publisherCustomId
 
   const buttonList: ProfileButton[] = isMember

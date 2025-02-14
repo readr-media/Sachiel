@@ -42,15 +42,15 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
     if (window.googletag && adSize && adDivId && adUnitPath) {
       window.googletag = window.googletag || { cmd: [] }
 
-      googletag.cmd.push(() => {
+      window.googletag.cmd.push(() => {
         const slot = window.googletag.defineSlot(adUnitPath, adSize, adDivId)
 
         if (slot) {
           slot.addService(window.googletag.pubads())
-          googletag.display(adDivId)
-          googletag.pubads().enableSingleRequest()
-          googletag.pubads().collapseEmptyDivs(true)
-          googletag.enableServices()
+          window.googletag.display(adDivId)
+          window.googletag.pubads().enableSingleRequest()
+          window.googletag.pubads().collapseEmptyDivs(true)
+          window.googletag.enableServices()
         }
       })
     }
