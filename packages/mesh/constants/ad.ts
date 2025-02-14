@@ -126,6 +126,16 @@ export const GAM_UNITS: GamUnits = {
       ],
     },
   },
+  social: {
+    PC_C1: {
+      adUnit: 'mmesh_social_PC_1x1_3',
+      adSlot: '1738639664687-0',
+      adSize: [
+        [728, 90],
+        [1, 1],
+      ],
+    },
+  },
 }
 
 export const GPT_AD_NETWORK = '23277192286'
