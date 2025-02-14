@@ -7939,6 +7939,11 @@
   resolved "https://registry.yarnpkg.com/@types/extract-files/-/extract-files-13.0.1.tgz#3ec057a3fa25f778245a76a17271d23b71ee31d7"
   integrity sha512-/fRbzc2lAd7jDJSSnxWiUyXWjdUZZ4HbISLJzVgt1AvrdOa7U49YRPcvuCUywkmURZ7uwJOheDjx19itbQ5KvA==
 
+"@types/google-publisher-tag@^1.20250210.0":
+  version "1.20250210.0"
+  resolved "https://registry.yarnpkg.com/@types/google-publisher-tag/-/google-publisher-tag-1.20250210.0.tgz#b8d941e80b94ff317653500867ab110b081452bf"
+  integrity sha512-VAGJPSphhIYubiqyZwmZI1bzVDxAveiJJj8EEBo1RDXlOmozsrQg6ZzBRqbzm8HG8pTKQeX42qbu0P84aFhiaQ==
+
 "@types/hoist-non-react-statics@*":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
