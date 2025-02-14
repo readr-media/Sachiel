@@ -128,9 +128,12 @@ export const GAM_UNITS: GamUnits = {
   },
   social: {
     PC_C1: {
-      adUnit: 'mmesh_social_MW_300x250_3',
-      adSlot: '1738638093005-0',
-      adSize: [300, 250],
+      adUnit: 'mmesh_social_PC_1x1_3',
+      adSlot: '1738639664687-0',
+      adSize: [
+        [728, 90],
+        [1, 1],
+      ],
     },
   },
 }
