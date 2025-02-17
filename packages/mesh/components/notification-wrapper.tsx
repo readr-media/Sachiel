@@ -67,9 +67,9 @@ export default function NotificationWrapper() {
     }
   }, [fetchData, isNotificationModalOpen, memberId])
 
-  const handleToggleModal = async () => {
+  const handleToggleModal = () => {
     if (!isNotificationModalOpen) {
-      await readNotification(memberId)
+      readNotification(memberId)
     }
     setIsNotificationModalOpen((prev) => !prev)
     setHasNewNotification(false)
