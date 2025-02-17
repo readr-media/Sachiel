@@ -7,6 +7,7 @@ import {
   getRelatedStories,
   getStory,
 } from '@/app/actions/story'
+import AdManagerPopUp from '@/components/ad/google-ad-manager/ad-manager-pop-up'
 import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
@@ -54,6 +55,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         hasPayed={hasPayed}
         policy={policy}
       />
+      <AdManagerPopUp pageKey="story" adKey="D1" />
       <StoryEndAd />
       <RelatedStories
         sourceStoryId={storyData.story.id}
