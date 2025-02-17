@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 import Button from '@/components/button'
 import { LoginState, useLogin } from '@/context/login'
@@ -7,17 +8,27 @@ import {
   handleAuthProvider,
   loginOptions,
 } from '@/utils/auth-provider'
+import { isInAppBrowser } from '@/utils/login'
 
 export default function LoginEntry() {
+  const [isWebView, setIsWebView] = useState(false)
   const { setStep } = useLogin()
 
   const onClickLoginMethod = async (method: LoginMethod) => {
+    if (isWebView) {
+      setStep(LoginState.WebviewHint)
+      return
+    }
     if (method === 'email') {
       setStep(LoginState.Email)
     } else {
       await handleAuthProvider(method)
     }
   }
+
+  useEffect(() => {
+    setIsWebView(isInAppBrowser(window.navigator.userAgent))
+  }, [])
 
   return (
     <div className="flex flex-col gap-6 p-10">

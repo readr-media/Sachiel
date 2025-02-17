@@ -174,6 +174,7 @@ export type IconName =
   | 'icon-expand-month-picker'
   | 'icon-fold-month-picker'
   | 'icon-hide-publisher'
+  | 'icon-open-in-browser'
 
 export type IconProps = {
   size: Size

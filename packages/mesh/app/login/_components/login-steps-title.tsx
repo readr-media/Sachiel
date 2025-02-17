@@ -13,6 +13,7 @@ const chevronMap: Pick<
   | typeof LoginState.EmailConfirmation
   | typeof LoginState.SetCategory
   | typeof LoginState.SetFollowing
+  | typeof LoginState.WebviewHint
 > = {
   [LoginState.TermsConfirmation]: {
     title: '服務條款',
@@ -33,6 +34,10 @@ const chevronMap: Pick<
   [LoginState.SetFollowing]: {
     title: '推薦追蹤',
     goBackTo: LoginState.SetCategory,
+  },
+  [LoginState.WebviewHint]: {
+    title: '註冊／登入',
+    goBackTo: LoginState.Entry,
   },
 }
 
@@ -67,7 +72,8 @@ export default function LoginStepsTitle() {
     case LoginState.TermsConfirmation:
     case LoginState.EmailConfirmation:
     case LoginState.SetCategory:
-    case LoginState.SetFollowing: {
+    case LoginState.SetFollowing:
+    case LoginState.WebviewHint: {
       const { title, goBackTo } = chevronMap[step]
       return (
         <>
