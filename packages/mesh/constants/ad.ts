@@ -100,17 +100,54 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adSize: [300, 250],
     },
   },
+  category: {
+    PC_B1: {
+      adUnit: 'Mesh_pc_category_728x90_B1',
+      adSlot: '5289618609',
+      adSize: [728, 90],
+    },
+    'PC_B2-1': {
+      adUnit: 'Mesh_pc_category_728x90_B2-1',
+      adSlot: '1454315376',
+      adSize: [600, 90],
+    },
+    'PC_B2-2': {
+      adUnit: 'Mesh_pc_category_728x90_B2-2',
+      adSlot: '6515070367',
+      adSize: [600, 90],
+    },
+    PC_B3: {
+      adUnit: 'Mesh_pc_category_160x600_B3',
+      adSlot: '4033969573',
+      adSize: [160, 600],
+    },
+    MB_B1: {
+      adUnit: 'Mesh_m_category_300x250_B1',
+      adSlot: '5391283272',
+      adSize: [300, 250],
+    },
+    'MB_B2-1': {
+      adUnit: 'Mesh_m_category_300x250_B2-1',
+      adSlot: '8075564042',
+      adSize: [300, 250],
+    },
+    'MB_B2-2': {
+      adUnit: 'Mesh_m_category_300x250_B2-2',
+      adSlot: '6704364943',
+      adSize: [300, 250],
+    },
+  },
 }
 
 export const GAM_UNITS: GamUnits = {
   story: {
     PC_E0: {
-      adUnit: 'mmesh_article_pc_300x600_RB',
+      adUnit: 'mmesh_article_pc_300x600_rb',
       adSlot: '1738637939769-0',
       adSize: [300, 600],
     },
     PC_E1: {
-      adUnit: 'mmesh_article_PC_336x280_LB',
+      adUnit: 'mmesh_article_pc_336x280_lb',
       adSlot: '1738637965083-0',
       adSize: [
         [300, 250],
@@ -118,7 +155,7 @@ export const GAM_UNITS: GamUnits = {
       ],
     },
     PC_E2: {
-      adUnit: 'mmesh_article_PC_336x280_RB',
+      adUnit: 'mmesh_article_pc_336x280_rb',
       adSlot: '1738637990207-0',
       adSize: [
         [300, 250],
@@ -127,7 +164,7 @@ export const GAM_UNITS: GamUnits = {
     },
     //pop up
     MB_D1: {
-      adUnit: 'mmesh_article_MW_popup_320x480',
+      adUnit: 'mmesh_article_mw_popup_320x480',
       adSlot: 'sfpdpopup_d1',
       adSize: [
         [320, 480],
@@ -137,7 +174,7 @@ export const GAM_UNITS: GamUnits = {
   },
   social: {
     PC_C1: {
-      adUnit: 'mmesh_social_PC_1x1_3',
+      adUnit: 'mmesh_social_pc_1x1_3',
       adSlot: '1738639664687-0',
       adSize: [
         [728, 90],
