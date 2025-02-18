@@ -1,6 +1,5 @@
 'use client'
 
-import Script from 'next/script'
 import { useEffect, useState } from 'react'
 
 import { GAM_UNITS } from '@/constants/ad'
@@ -12,8 +11,9 @@ type Props = {
 }
 
 export default function AdManagerPopUp({ pageKey, adKey }: Props) {
-  const [isAdReady, setIsAdReady] = useState(false)
   const [adSlot, setAdSlot] = useState('')
+  const [adUnitPath, setAdUnitPath] = useState('')
+  const [adSize, setAdSize] = useState('')
 
   useEffect(() => {
     const width = window.innerWidth
@@ -23,21 +23,22 @@ export default function AdManagerPopUp({ pageKey, adKey }: Props) {
       return
     }
     const { adUnit, adSize, adSlot } = adData
-
     if (window.googletag && adUnit && adSize && adSlot) {
-      window.sf_dfp_path = getAdUnitPath(adUnit)
-      window.sf_dfp_size = JSON.stringify(adSize)
-
       setAdSlot(adSlot)
-      setIsAdReady(true)
+      const unitPath = getAdUnitPath(adUnit)
+      setAdUnitPath(unitPath)
+      setAdSize(JSON.stringify(adSize))
     }
   }, [pageKey, adKey])
 
-  return isAdReady ? (
-    <Script
+  return (
+    <script
       src="//cdn2.sales-frontier.com/adtype/pdpopup/sfpdpopexp.js"
       type="text/javascript"
+      async
       id={adSlot}
+      sf-dfp-path={adUnitPath}
+      sf-dfp-size={adSize}
     />
-  ) : null
+  )
 }
