@@ -31,6 +31,8 @@ export default function AdManagerPopUp({ pageKey, adKey }: Props) {
     }
   }, [pageKey, adKey])
 
+  if (!adSlot || !adUnitPath || !adSize) return null
+
   return (
     <script
       src="//cdn2.sales-frontier.com/adtype/pdpopup/sfpdpopexp.js"
