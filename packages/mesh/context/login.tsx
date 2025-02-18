@@ -10,6 +10,7 @@ export const LoginState = {
   SetCategory: 'set-category',
   SetFollowing: 'set-following',
   SetWallet: 'set-wallet',
+  WebviewHint: 'webview-hint',
 } as const
 
 export type LoginStepsKey = typeof LoginState[keyof typeof LoginState]

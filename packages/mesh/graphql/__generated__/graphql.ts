@@ -2951,6 +2951,7 @@ export type Publisher = {
   logo?: Maybe<Scalars['String']['output']>
   official_site?: Maybe<Scalars['String']['output']>
   paywall?: Maybe<Scalars['Boolean']['output']>
+  podcast_url?: Maybe<Scalars['String']['output']>
   rss?: Maybe<Scalars['String']['output']>
   source_type?: Maybe<Scalars['String']['output']>
   sponsored?: Maybe<Array<Sponsorship>>
@@ -3049,6 +3050,7 @@ export type PublisherCreateInput = {
   logo?: InputMaybe<Scalars['String']['input']>
   official_site?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
+  podcast_url?: InputMaybe<Scalars['String']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForCreateInput>
@@ -3079,6 +3081,7 @@ export type PublisherOrderByInput = {
   logo?: InputMaybe<OrderDirection>
   official_site?: InputMaybe<OrderDirection>
   paywall?: InputMaybe<OrderDirection>
+  podcast_url?: InputMaybe<OrderDirection>
   rss?: InputMaybe<OrderDirection>
   source_type?: InputMaybe<OrderDirection>
   summary?: InputMaybe<OrderDirection>
@@ -3132,6 +3135,7 @@ export type PublisherUpdateInput = {
   logo?: InputMaybe<Scalars['String']['input']>
   official_site?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
+  podcast_url?: InputMaybe<Scalars['String']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
@@ -3165,6 +3169,7 @@ export type PublisherWhereInput = {
   logo?: InputMaybe<StringFilter>
   official_site?: InputMaybe<StringFilter>
   paywall?: InputMaybe<BooleanFilter>
+  podcast_url?: InputMaybe<StringFilter>
   rss?: InputMaybe<StringFilter>
   source_type?: InputMaybe<StringNullableFilter>
   sponsored?: InputMaybe<SponsorshipManyRelationFilter>
@@ -3178,6 +3183,7 @@ export type PublisherWhereInput = {
 }
 
 export type PublisherWhereUniqueInput = {
+  customId?: InputMaybe<Scalars['String']['input']>
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
