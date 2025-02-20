@@ -49,8 +49,8 @@ export default function Button({
   onClick,
   gtmClassName,
 }: {
-  size: keyof typeof buttonStyles
-  color: keyof typeof buttonColor
+  size: ButtonSize
+  color: ButtonColor
   text: string
   icon?: IconProps
   activeState?: {

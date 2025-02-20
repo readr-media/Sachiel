@@ -1,6 +1,8 @@
 'use server'
 
 import {
+  GetMemberFollowingDocument,
+  GetMemberFollowingListDocument,
   GetMemberForOgDocument,
   GetMemberProfileDocument,
   GetPublisherForOgDocument,
@@ -35,6 +37,7 @@ export async function getMemberProfile(memberId: string, takes: number) {
         memberData.picks?.filter(
           (pick) => pick.objective === PickObjective.Collection
         ) ?? [],
+      publishers: memberData.publishers || [],
     }
   } catch (error) {
     logServerSideError(error, 'Failed to get member profile', globalLogFields)
@@ -90,6 +93,47 @@ export async function getPublisherForOG(customId: string) {
     return result
   } catch (error) {
     logServerSideError(error, 'Failed to get visitor profile', globalLogFields)
+    throw error
+  }
+}
+
+export async function getMemberFollowingList(customId: string, take: number) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(GetMemberFollowingListDocument, {
+      customId,
+      take,
+    })
+    return response
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to get member following list',
+      globalLogFields
+    )
+    throw error
+  }
+}
+
+export async function getMoreMemberFollowing(
+  customId: string,
+  take: number,
+  skip: number
+) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(GetMemberFollowingDocument, {
+      customId,
+      take,
+      skip,
+    })
+    return response
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to get member following loadmre',
+      globalLogFields
+    )
     throw error
   }
 }

@@ -2,7 +2,7 @@ import Icon from '@/components/icon'
 
 export default function Loading() {
   return (
-    <div className="animate-pulse bg-white sm:rounded-md sm:drop-shadow">
+    <div className="animate-pulse bg-white sm:rounded-xl sm:drop-shadow">
       <div className="flex flex-col items-center gap-6 border-b border-[rgba(0,9,40,0.1)] py-10 sm:flex-row sm:items-end sm:justify-between sm:px-10">
         <div className="flex flex-col items-center gap-2 sm:flex-col-reverse sm:items-start">
           <div className="h-8 w-[120px] rounded-sm bg-loading" />

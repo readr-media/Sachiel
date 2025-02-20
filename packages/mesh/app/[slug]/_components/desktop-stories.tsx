@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import StoryCard from '@/app/_components/story-card'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import Spinner from '@/components/spinner'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
@@ -44,6 +45,18 @@ export default function DesktopStories({
       const remainingStories = visibleCount - (index + 1)
       const shouldSetTriggerRef =
         remainingStories === 9 || remainingStories === 0
+      const shouldRenderAd = index === 5 || index === 10
+
+      if (shouldRenderAd) {
+        elements.push(
+          <AdSense
+            key={`ad-${index}`}
+            pageKey="category"
+            adKey={`B2-${index / 5}`}
+            className="mt-[-20px]"
+          />
+        )
+      }
 
       elements.push(
         <StoryCard
@@ -57,6 +70,7 @@ export default function DesktopStories({
         />
       )
     })
+
     return elements
   }
   return (
@@ -69,11 +83,12 @@ export default function DesktopStories({
           </div>
         )}
 
-        <aside className="lg:flex lg:flex-col lg:gap-y-3 ">
+        <aside className="lg:flex lg:flex-col lg:gap-y-3">
           {publishersAndStories &&
             publishersAndStories.map((data) => (
               <PublisherCard key={data.publisher.id} data={data} />
             ))}
+          <AdSense pageKey="category" adKey="B3" className="mt-5" />
         </aside>
       </div>
       {isLoading && (

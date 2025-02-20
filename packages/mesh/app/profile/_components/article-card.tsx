@@ -198,7 +198,7 @@ const ArticleCard = ({
               src={storyGetters.image(storyData)}
               alt={`${storyData?.title}'s story cover image`}
               fill
-              className="size-full object-cover"
+              className="size-full rounded-[inherit] object-cover"
             />
           </section>
         </Link>
