@@ -161,7 +161,20 @@ export type IconName =
   | 'icon-expand'
   | 'icon-fold'
   | 'icon-add-article'
+  | 'icon-logout'
+  | 'icon-logout-hover'
+  | 'icon-expand-media'
+  | 'icon-fold-media'
+  | 'icon-check'
+  | 'icon-redeem'
+  | 'icon-report'
+  | 'icon-report-hover'
+  | 'icon-report-on'
+  | 'icon-calendar'
+  | 'icon-expand-month-picker'
+  | 'icon-fold-month-picker'
   | 'icon-hide-publisher'
+  | 'icon-open-in-browser'
 
 export type IconProps = {
   size: Size

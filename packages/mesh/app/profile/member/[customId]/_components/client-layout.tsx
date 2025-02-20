@@ -28,7 +28,7 @@ export default function ClientLayout({
   const typeOfUser = 'member'
 
   const pageCustomId = params.customId ?? ''
-  const isSelf = pageCustomId === user?.customId
+  const isCurrentUser = pageCustomId === user?.customId
 
   if (hasNestedLayout(pathName)) {
     return <EditProfileProvider>{children}</EditProfileProvider>
@@ -44,7 +44,7 @@ export default function ClientLayout({
       }}
       mobileNavigation={{
         leftButtons: [
-          isSelf ? (
+          isCurrentUser ? (
             <MobileNavigationButton
               key={0}
               type="icon"
@@ -65,7 +65,7 @@ export default function ClientLayout({
         ],
       }}
       nonMobileNavigation={{
-        leftButtons: isSelf ? [] : [<GoBackButton key={0} />],
+        leftButtons: isCurrentUser ? [] : [<GoBackButton key={0} />],
         title: pageCustomId,
         rightButtons: [
           <ProfileMoreActionButton

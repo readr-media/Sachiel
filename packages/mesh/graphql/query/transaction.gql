@@ -1,0 +1,43 @@
+query GetPublisherTransactions(
+  $publisherCustomId: String
+  $take: Int
+  $skip: Int
+  $gte: DateTime
+  $lte: DateTime
+) {
+  transactionsCount(
+    where: {
+      policy: { publisher: { customId: { equals: $publisherCustomId } } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+  )
+  transactions(
+    where: {
+      policy: { publisher: { customId: { equals: $publisherCustomId } } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+    orderBy: { createdAt: desc }
+    take: $take
+    skip: $skip
+  ) {
+    id
+    tid
+    member {
+      name
+      avatar
+    }
+    unlockStory {
+      id
+      title
+    }
+    policy {
+      type
+      charge
+      unlockSingle
+      explanation
+    }
+    createdAt
+  }
+}

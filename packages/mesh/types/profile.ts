@@ -33,6 +33,7 @@ export type Member = NonNullable<GetMemberProfileQuery['member']>
 export type Collections = NonNullable<GetMemberProfileQuery['collections']>
 export type PickList = NonNullable<Member['picks']>
 export type Bookmarks = NonNullable<Member['books']>
+export type Publishers = NonNullable<Member['publishers']>
 
 // 4. Derived types that depend on base types
 export type PickListItem = NonNullable<PickList[number]['story']>
@@ -77,6 +78,7 @@ export interface ProfileTypes {
   memberId: string
   collections: Collections
   pickCollections: PickList
+  publishers?: Publishers
 }
 
 export interface EditProfileContextType {

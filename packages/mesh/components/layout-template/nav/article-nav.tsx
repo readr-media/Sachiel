@@ -2,21 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import Icon, { type IconName } from '@/components/icon'
+import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
+import type { IconInfo } from '@/types/layout'
 import { TabCategory } from '@/types/profile'
-
-type IconInfo = {
-  icon: {
-    default: IconName
-    hover: IconName
-    on: IconName
-  }
-  href: string
-  text: string
-}
 
 const NonMobileNavIcon = ({
   isOn,
@@ -148,14 +139,13 @@ const NonMobileNav = ({
         {/* bottom (third) part */}
         {isLoggedIn && (
           <div className="flex flex-col border-t py-6">
-            {/* {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
-            <NonMobileNavIcon
-              key={iconInfo.text}
-              isOn={path === iconInfo.href}
-              iconInfo={iconInfo}
-            />
-          ))} */}
-            <button className="button text-primary-500">登出</button>
+            {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+              <NonMobileNavIcon
+                key={iconInfo.text}
+                isOn={path === iconInfo.href}
+                iconInfo={iconInfo}
+              />
+            ))}
           </div>
         )}
       </div>
