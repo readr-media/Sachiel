@@ -160,6 +160,8 @@ const RESTFUL_ENDPOINTS = {
   socialPage: `${API_ORIGIN}/socialpage`,
   invitationCodes: `${API_ORIGIN}/invitation_codes`,
   notifications: `${API_ORIGIN}/notifications`,
+  publisherSignedCookie: (publisherId: string) =>
+    `${API_ORIGIN}/media/cookie/${publisherId}`,
 }
 
 const STATIC_FILE_ENDPOINTS = {
