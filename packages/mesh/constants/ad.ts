@@ -162,15 +162,6 @@ export const GAM_UNITS: GamUnits = {
         [336, 280],
       ],
     },
-    //pop up
-    MB_D1: {
-      adUnit: 'mmesh_article_mw_popup_320x480',
-      adSlot: 'sfpdpopup_d1',
-      adSize: [
-        [320, 480],
-        [1, 1],
-      ],
-    },
   },
   social: {
     PC_C1: {
