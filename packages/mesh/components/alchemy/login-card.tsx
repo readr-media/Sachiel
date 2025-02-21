@@ -77,7 +77,7 @@ export const LogInCard = ({
           {isHelperText ? (
             <p className="footnote text-center text-primary-400">
               讀選點數是什麼？
-              {/* TODO: update link */}
+              {/* TODO: 待點數說明頁面完成，更新連結 */}
               <Link href={ENV === 'prod' ? '/story/53192' : '/'}>
                 <span className="text-primary-700 underline underline-offset-2">
                   了解更多
