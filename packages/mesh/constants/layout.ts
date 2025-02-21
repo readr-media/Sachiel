@@ -1,3 +1,5 @@
+import { logout } from '@/utils/logout'
+
 const LOGO_ICONS = {
   mobile: {
     size: { width: 144, height: 36 },
@@ -44,29 +46,29 @@ const FOOTER_NAV_LINKS = [
   },
 ] as const
 
-// TODO: update path
 const FOOTER_SHARED_ICONS = [
   {
     icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
-    href: '/',
+    href: 'https://www.facebook.com/profile.php?id=61567155163574',
     size: { width: 24, height: 24 },
     gtmName: 'FB',
   },
-  {
-    icon: { default: 'icon-x', hover: 'icon-x-hover' },
-    href: '/',
-    size: { width: 24, height: 20 },
-    gtmName: 'twitter',
-  },
-  {
-    icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
-    href: '/',
-    size: { width: 22, height: 22 },
-    gtmName: 'IG',
-  },
+  // TODO: wait till mesh url available
+  // {
+  //   icon: { default: 'icon-x', hover: 'icon-x-hover' },
+  //   href: '/',
+  //   size: { width: 24, height: 20 },
+  //   gtmName: 'twitter',
+  // },
+  // {
+  //   icon: { default: 'icon-instagram', hover: 'icon-instagram-hover' },
+  //   href: '/',
+  //   size: { width: 22, height: 22 },
+  //   gtmName: 'IG',
+  // },
   {
     icon: { default: 'icon-discord', hover: 'icon-discord-hover' },
-    href: '/',
+    href: 'https://discord.gg/m7334TdYd3',
     size: { width: 21, height: 24 },
     gtmName: 'DC',
   },
@@ -78,7 +80,6 @@ const FOOTER_COMPANY_INFOS = [
   'readr@readr.tw',
 ] as const
 
-// TODO: update href according to SPEC
 const NON_MOBILE_NAV_ICONS = {
   first: [
     {
@@ -158,7 +159,6 @@ const NON_MOBILE_NAV_ICONS = {
   ],
 } as const
 
-// TODO: update href according to SPEC
 const MOBILE_NAV_ICONS = [
   {
     icon: {
@@ -212,12 +212,52 @@ const MOBILE_NAV_ICONS = [
   },
 ] as const
 
+const MEDIA_BACKSTAGE_NAV_ICONS = {
+  first: [
+    {
+      icon: {
+        default: 'icon-redeem',
+        hover: 'icon-redeem',
+        on: 'icon-redeem',
+      },
+      hrefFn: (publisherCustomId: string) =>
+        `/media-backstage/${publisherCustomId}/point`,
+      text: '點數兌換',
+    },
+    // TODO: add report page when be is ready
+    // {
+    //   icon: {
+    //     default: 'icon-report',
+    //     hover: 'icon-report-hover',
+    //     on: 'icon-report-on',
+    //   },
+    //   hrefFn: (publisherCustomId: string) =>
+    //     `/media-backstage/${publisherCustomId}/report`,
+    //   text: '收益報表',
+    // },
+  ],
+  second: [
+    {
+      icon: {
+        default: 'icon-logout',
+        hover: 'icon-logout-hover',
+        on: 'icon-logout',
+      },
+      action: () => {
+        logout()
+      },
+      text: '登出',
+    },
+  ],
+} as const
+
 export {
   DOWNLOAD_APP_LINKS,
   FOOTER_COMPANY_INFOS,
   FOOTER_NAV_LINKS,
   FOOTER_SHARED_ICONS,
   LOGO_ICONS,
+  MEDIA_BACKSTAGE_NAV_ICONS,
   MOBILE_NAV_ICONS,
   NON_MOBILE_NAV_ICONS,
 }

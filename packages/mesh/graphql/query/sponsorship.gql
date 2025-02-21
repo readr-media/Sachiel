@@ -1,0 +1,35 @@
+query GetPublisherSponsorships(
+  $publisherCustomId: String
+  $take: Int
+  $skip: Int
+  $gte: DateTime
+  $lte: DateTime
+) {
+  sponsorshipsCount(
+    where: {
+      publisher: { customId: { equals: $publisherCustomId } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+  )
+  sponsorships(
+    where: {
+      publisher: { customId: { equals: $publisherCustomId } }
+      status: { equals: Success }
+      createdAt: { gte: $gte, lte: $lte }
+    }
+    orderBy: { createdAt: desc }
+    take: $take
+    skip: $skip
+  ) {
+    id
+    tid
+    sponsor {
+      customId
+      name
+      avatar
+    }
+    fee
+    createdAt
+  }
+}

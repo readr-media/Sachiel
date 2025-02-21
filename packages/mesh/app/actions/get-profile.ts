@@ -1,9 +1,11 @@
 'use server'
 
 import {
-  GetMemberNameDocument,
+  GetMemberFollowingDocument,
+  GetMemberFollowingListDocument,
+  GetMemberForOgDocument,
   GetMemberProfileDocument,
-  GetPublisherNameDocument,
+  GetPublisherForOgDocument,
   GetVisitorProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import { PickObjective } from '@/types/objective'
@@ -35,6 +37,7 @@ export async function getMemberProfile(memberId: string, takes: number) {
         memberData.picks?.filter(
           (pick) => pick.objective === PickObjective.Collection
         ) ?? [],
+      publishers: memberData.publishers || [],
     }
   } catch (error) {
     logServerSideError(error, 'Failed to get member profile', globalLogFields)
@@ -60,10 +63,10 @@ export async function getVisitorProfile(visitorId: string, takes: number) {
   }
 }
 
-export async function getMemberName(customId: string) {
+export async function getMemberForOG(customId: string) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const result = await queryGraphQL(GetMemberNameDocument, {
+    const result = await queryGraphQL(GetMemberForOgDocument, {
       memberCustomId: customId,
     })
     // if visitor data not found bubble this error to nextjs error handling
@@ -77,10 +80,10 @@ export async function getMemberName(customId: string) {
   }
 }
 
-export async function getPublisherName(customId: string) {
+export async function getPublisherForOG(customId: string) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
-    const result = await queryGraphQL(GetPublisherNameDocument, {
+    const result = await queryGraphQL(GetPublisherForOgDocument, {
       publisherCustomId: customId,
     })
     // if visitor data not found bubble this error to nextjs error handling
@@ -90,6 +93,47 @@ export async function getPublisherName(customId: string) {
     return result
   } catch (error) {
     logServerSideError(error, 'Failed to get visitor profile', globalLogFields)
+    throw error
+  }
+}
+
+export async function getMemberFollowingList(customId: string, take: number) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(GetMemberFollowingListDocument, {
+      customId,
+      take,
+    })
+    return response
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to get member following list',
+      globalLogFields
+    )
+    throw error
+  }
+}
+
+export async function getMoreMemberFollowing(
+  customId: string,
+  take: number,
+  skip: number
+) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(GetMemberFollowingDocument, {
+      customId,
+      take,
+      skip,
+    })
+    return response
+  } catch (error) {
+    logServerSideError(
+      error,
+      'Failed to get member following loadmre',
+      globalLogFields
+    )
     throw error
   }
 }

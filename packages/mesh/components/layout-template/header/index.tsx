@@ -1,6 +1,7 @@
 import ArticleHeader from './article-header'
 import CollectionHeader from './collection-header'
 import DefaultHeader from './default-header'
+import MediaBackstageHeader from './media-backstage-header'
 import StatelessHeader from './stateless-header'
 
 export enum HeaderType {
@@ -8,6 +9,7 @@ export enum HeaderType {
   Stateless = 'stateless',
   Article = 'article',
   Collection = 'collection',
+  MediaBackstage = 'media-backstage',
 }
 
 type HeaderProps =
@@ -24,6 +26,9 @@ type HeaderProps =
   | {
       type: HeaderType.Collection
     }
+  | {
+      type: HeaderType.MediaBackstage
+    }
 
 export default function Header(props: HeaderProps) {
   switch (props.type) {
@@ -35,6 +40,8 @@ export default function Header(props: HeaderProps) {
       return <ArticleHeader showNav={props.showNav} />
     case HeaderType.Collection:
       return <CollectionHeader />
+    case HeaderType.MediaBackstage:
+      return <MediaBackstageHeader />
     default:
       return null
   }

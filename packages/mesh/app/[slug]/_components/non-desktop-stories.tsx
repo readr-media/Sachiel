@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import StoryCard from '@/app/_components/story-card'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import Spinner from '@/components/spinner'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
@@ -46,6 +47,8 @@ export default function NonDesktopStories({
       const remainingStories = visibleCount - (index + 1)
       const shouldSetTriggerRef =
         remainingStories === 9 || remainingStories === 0
+      const shouldRenderAd = index === 4 || index === 9
+
       elements.push(
         <StoryCard
           key={story.id}
@@ -64,6 +67,17 @@ export default function NonDesktopStories({
           }}
         />
       )
+
+      if (shouldRenderAd) {
+        elements.push(
+          <AdSense
+            key={`ad-${index}`}
+            pageKey="category"
+            adKey={`B2-${(index + 1) / 5}`}
+          />
+        )
+      }
+
       if (
         (index + 1) % 5 === 0 &&
         publishersAndStories &&

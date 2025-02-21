@@ -12,8 +12,10 @@ import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
+import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
 import RelatedStories from './_components/related-stories'
+import StoryEndAd from './_components/story-end-ad'
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
@@ -52,6 +54,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         hasPayed={hasPayed}
         policy={policy}
       />
+      <StoryEndAd />
       <RelatedStories
         sourceStoryId={storyData.story.id}
         relatedStories={relatedStories}
@@ -66,6 +69,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           />
         )}
       </aside>
+      <AsideAd />
     </>
   )
 }

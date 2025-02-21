@@ -1,4 +1,4 @@
-import { ADSENSE_UNITS } from '@/constants/ad'
+import { ADSENSE_UNITS, GPT_AD_NETWORK } from '@/constants/ad'
 
 import { getTailwindConfig } from './tailwind'
 
@@ -10,30 +10,19 @@ function getDevice(width: number): 'PC' | 'MB' {
   return isDesktopWidth ? 'PC' : 'MB'
 }
 
+export function getAdUnitPath(adUnit: string): string {
+  return `/${GPT_AD_NETWORK}/${adUnit}`
+}
+
+export function getAdWidth(adSize: [number, number][]): string {
+  const widthMax = adSize?.reduce((acc, curr) => Math.max(curr[0], acc), 0)
+  return widthMax ? `${widthMax}px` : '0px'
+}
+
 // Generate full key like 'PC_HD' if the component support dynamic device adKey like 'HD'
-function getAdFullKey(device: 'PC' | 'MB', adKey: string): string {
-  return adKey.includes('_') ? adKey : `${device}_${adKey}`
-}
-
-function getAdData(pageKey: string, adKey: string, width: number) {
+export function getAdFullKey(adKey: string, width: number): string {
   const device = getDevice(width)
-  const adFullKey = getAdFullKey(device, adKey)
-  const adData = ADSENSE_UNITS[pageKey]?.[adFullKey]
-  if (!adData) {
-    console.error(
-      `Unable to find the AD data. Got the pageKey "${pageKey}" and adKey "${adFullKey}". Please provide a valid pageKey or adKey.`
-    )
-  }
-  return adData
-}
-
-export function getAdParam(pageKey: string, adKey: string, width: number) {
-  const adData = getAdData(pageKey, adKey, width)
-  if (!adData) {
-    return
-  }
-  const { adSlot, adSize, adUnit } = adData
-  return { adSlot, adSize, adUnit }
+  return adKey.includes('_') ? adKey : `${device}_${adKey}`
 }
 
 export function getAdParamBySlot(adSlot: string) {

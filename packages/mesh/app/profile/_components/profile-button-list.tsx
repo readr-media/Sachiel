@@ -1,12 +1,13 @@
 'use client'
+import type { ButtonColor } from '@/components/button'
 import Button from '@/components/button'
 
-type ProfileButton = {
+export type ProfileButton = {
   text: {
     default: string
     isActive: string
   }
-  primary?: boolean
+  color?: ButtonColor
   isActive: boolean
   clickFn?: () => void
   component?: React.ReactNode
@@ -34,7 +35,7 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
               onClick={button.clickFn ? button.clickFn : () => {}}
               text={button.text.default}
               size="md"
-              color={button.primary ? 'custom-blue' : 'white'}
+              color={button.color ?? 'white'}
               activeState={{
                 isActive: button.isActive,
                 activeText: button.text.isActive,

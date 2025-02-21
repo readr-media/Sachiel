@@ -15,6 +15,7 @@ import LoginSetName from './login-set-name'
 import LoginSetWallet from './login-set-wallet'
 import LoginStepsTitle from './login-steps-title'
 import LoginTermsConfirmation from './login-terms-confirmation'
+import LoginWebviewHint from './login-webview-hint'
 
 const loginStepComponents: Record<LoginStepsKey, React.FC> = {
   [LoginState.Entry]: LoginEntry,
@@ -25,6 +26,7 @@ const loginStepComponents: Record<LoginStepsKey, React.FC> = {
   [LoginState.SetCategory]: LoginSetCategory,
   [LoginState.SetFollowing]: LoginSetFollowing,
   [LoginState.SetWallet]: LoginSetWallet,
+  [LoginState.WebviewHint]: LoginWebviewHint,
 }
 
 export default function LoginSteps() {
