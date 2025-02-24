@@ -75,3 +75,20 @@ export async function updatePayment(paymentPayload: UpdatePaymentProps) {
   )
   return null
 }
+
+export type FailPaymentProps = {
+  action: PaymentActionType
+  memberId: string
+  objective: 'transaction' | 'sponsorship' | 'exchange'
+  targetId: string
+  complement: string
+}
+
+export async function failPayment(paymentPayload: FailPaymentProps) {
+  return await fetchRestfulPost(
+    RESTFUL_ENDPOINTS.paymentFail,
+    paymentPayload,
+    { cache: 'no-cache' },
+    'Failed to turn payment into failure'
+  )
+}

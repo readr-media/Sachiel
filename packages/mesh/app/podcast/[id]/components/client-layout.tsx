@@ -32,7 +32,7 @@ export default function ClientLayout({
 
   return (
     <LayoutTemplate
-      type="podcast"
+      type="article"
       mobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
         title: 'Podcast',

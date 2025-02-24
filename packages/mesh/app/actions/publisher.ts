@@ -5,6 +5,7 @@ import type { z } from 'zod'
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
 import {
   AddExcludePublisherDocument,
+  GetExchangePublisherInfoDocument,
   GetMemberExcludePublisherDocument,
   GetPublisherWalletDocument,
   RemoveExcludePublisherDocument,
@@ -15,6 +16,9 @@ import { mutateGraphQL } from '@/utils/fetch-graphql'
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
+export type PublisherData = NonNullable<
+  Awaited<ReturnType<typeof getPublisherWallet>>
+>
 export type AllPublisherData = Awaited<ReturnType<typeof getAllPublishers>>
 
 async function getAllPublishers(limit?: number) {
@@ -94,4 +98,18 @@ export {
   getExcludePublishers,
   getPublisherWallet,
   updateExcludePublisher,
+}
+
+export async function getExchangePublisherInfo(publisherCustomId: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const data = await queryGraphQL(
+    GetExchangePublisherInfoDocument,
+    { customId: publisherCustomId },
+    globalLogFields,
+    `Failed to get publisher exchange through publisherCustomId: ${publisherCustomId}`
+  )
+  return {
+    publisher: data?.publishers?.[0],
+    officialWalletAddress: data?.officialWallet?.[0].admin?.wallet,
+  }
 }

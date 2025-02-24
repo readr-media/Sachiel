@@ -1233,6 +1233,7 @@ export type Member = {
   invitedCount?: Maybe<Scalars['Int']['output']>
   invited_by?: Maybe<InvitationCode>
   is_active?: Maybe<Scalars['Boolean']['output']>
+  language?: Maybe<MemberLanguageType>
   member_like?: Maybe<Array<Comment>>
   member_likeCount?: Maybe<Scalars['Int']['output']>
   modify_collection?: Maybe<Array<CollectionMember>>
@@ -1463,6 +1464,7 @@ export type MemberCreateInput = {
   invited?: InputMaybe<InvitationCodeRelateToManyForCreateInput>
   invited_by?: InputMaybe<InvitationCodeRelateToOneForCreateInput>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
+  language?: InputMaybe<MemberLanguageType>
   member_like?: InputMaybe<CommentRelateToManyForCreateInput>
   modify_collection?: InputMaybe<CollectionMemberRelateToManyForCreateInput>
   name?: InputMaybe<Scalars['String']['input']>
@@ -1475,6 +1477,23 @@ export type MemberCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
   wallet?: InputMaybe<Scalars['String']['input']>
+}
+
+export enum MemberLanguageType {
+  DeDe = 'de_DE',
+  EnGb = 'en_GB',
+  EnUs = 'en_US',
+  FrFr = 'fr_FR',
+  JaJp = 'ja_JP',
+  ZhCn = 'zh_CN',
+  ZhTw = 'zh_TW',
+}
+
+export type MemberLanguageTypeNullableFilter = {
+  equals?: InputMaybe<MemberLanguageType>
+  in?: InputMaybe<Array<MemberLanguageType>>
+  not?: InputMaybe<MemberLanguageTypeNullableFilter>
+  notIn?: InputMaybe<Array<MemberLanguageType>>
 }
 
 export type MemberManyRelationFilter = {
@@ -1493,6 +1512,7 @@ export type MemberOrderByInput = {
   id?: InputMaybe<OrderDirection>
   intro?: InputMaybe<OrderDirection>
   is_active?: InputMaybe<OrderDirection>
+  language?: InputMaybe<OrderDirection>
   name?: InputMaybe<OrderDirection>
   nickname?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
@@ -1551,6 +1571,7 @@ export type MemberUpdateInput = {
   invited?: InputMaybe<InvitationCodeRelateToManyForUpdateInput>
   invited_by?: InputMaybe<InvitationCodeRelateToOneForUpdateInput>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
+  language?: InputMaybe<MemberLanguageType>
   member_like?: InputMaybe<CommentRelateToManyForUpdateInput>
   modify_collection?: InputMaybe<CollectionMemberRelateToManyForUpdateInput>
   name?: InputMaybe<Scalars['String']['input']>
@@ -1592,6 +1613,7 @@ export type MemberWhereInput = {
   invited?: InputMaybe<InvitationCodeManyRelationFilter>
   invited_by?: InputMaybe<InvitationCodeWhereInput>
   is_active?: InputMaybe<BooleanFilter>
+  language?: InputMaybe<MemberLanguageTypeNullableFilter>
   member_like?: InputMaybe<CommentManyRelationFilter>
   modify_collection?: InputMaybe<CollectionMemberManyRelationFilter>
   name?: InputMaybe<StringFilter>
@@ -2951,6 +2973,7 @@ export type Publisher = {
   logo?: Maybe<Scalars['String']['output']>
   official_site?: Maybe<Scalars['String']['output']>
   paywall?: Maybe<Scalars['Boolean']['output']>
+  podcast_url?: Maybe<Scalars['String']['output']>
   rss?: Maybe<Scalars['String']['output']>
   source_type?: Maybe<Scalars['String']['output']>
   sponsored?: Maybe<Array<Sponsorship>>
@@ -3049,6 +3072,7 @@ export type PublisherCreateInput = {
   logo?: InputMaybe<Scalars['String']['input']>
   official_site?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
+  podcast_url?: InputMaybe<Scalars['String']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForCreateInput>
@@ -3079,6 +3103,7 @@ export type PublisherOrderByInput = {
   logo?: InputMaybe<OrderDirection>
   official_site?: InputMaybe<OrderDirection>
   paywall?: InputMaybe<OrderDirection>
+  podcast_url?: InputMaybe<OrderDirection>
   rss?: InputMaybe<OrderDirection>
   source_type?: InputMaybe<OrderDirection>
   summary?: InputMaybe<OrderDirection>
@@ -3132,6 +3157,7 @@ export type PublisherUpdateInput = {
   logo?: InputMaybe<Scalars['String']['input']>
   official_site?: InputMaybe<Scalars['String']['input']>
   paywall?: InputMaybe<Scalars['Boolean']['input']>
+  podcast_url?: InputMaybe<Scalars['String']['input']>
   rss?: InputMaybe<Scalars['String']['input']>
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
@@ -3165,6 +3191,7 @@ export type PublisherWhereInput = {
   logo?: InputMaybe<StringFilter>
   official_site?: InputMaybe<StringFilter>
   paywall?: InputMaybe<BooleanFilter>
+  podcast_url?: InputMaybe<StringFilter>
   rss?: InputMaybe<StringFilter>
   source_type?: InputMaybe<StringNullableFilter>
   sponsored?: InputMaybe<SponsorshipManyRelationFilter>
@@ -3178,6 +3205,7 @@ export type PublisherWhereInput = {
 }
 
 export type PublisherWhereUniqueInput = {
+  customId?: InputMaybe<Scalars['String']['input']>
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
@@ -5436,6 +5464,32 @@ export type GetCommentLikesQuery = {
   } | null
 }
 
+export type GetPublisherExchangesQueryVariables = Exact<{
+  publisherCustomId?: InputMaybe<Scalars['String']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  gte?: InputMaybe<Scalars['DateTime']['input']>
+  lte?: InputMaybe<Scalars['DateTime']['input']>
+}>
+
+export type GetPublisherExchangesQuery = {
+  __typename?: 'Query'
+  redeemsCount?: number | null
+  redeems?: Array<{
+    __typename?: 'Exchange'
+    id: string
+    tid?: string | null
+    exchangeVolume?: number | null
+    status?: ExchangeStatusType | null
+    createdAt?: any | null
+    publisher?: {
+      __typename?: 'Publisher'
+      logo?: string | null
+      title?: string | null
+    } | null
+  }> | null
+}
+
 export type IsInvitationCodeValidQueryVariables = Exact<{
   code: Scalars['String']['input']
 }>
@@ -5479,137 +5533,6 @@ export type GetSentInvitationCodesQuery = {
       avatar?: string | null
     } | null
   }> | null
-}
-
-export type GetMemberFollowingQueryVariables = Exact<{
-  memberId: Scalars['ID']['input']
-  takes: Scalars['Int']['input']
-}>
-
-export type GetMemberFollowingQuery = {
-  __typename?: 'Query'
-  member?: {
-    __typename?: 'Member'
-    id: string
-    name?: string | null
-    avatar?: string | null
-    following?: Array<{
-      __typename?: 'Member'
-      id: string
-      customId?: string | null
-      name?: string | null
-      avatar?: string | null
-      following?: Array<{
-        __typename?: 'Member'
-        id: string
-        customId?: string | null
-        name?: string | null
-        avatar?: string | null
-        followerCount?: number | null
-      }> | null
-      pick?: Array<{
-        __typename?: 'Pick'
-        id: string
-        createdAt?: any | null
-        story?: {
-          __typename?: 'Story'
-          id: string
-          url?: string | null
-          title?: string | null
-          og_image?: string | null
-          og_description?: string | null
-          published_date?: any | null
-          paywall?: boolean | null
-          full_screen_ad?: StoryFullScreenAdType | null
-          pickCount?: number | null
-          commentCount?: number | null
-          source?: {
-            __typename?: 'Publisher'
-            customId?: string | null
-            title?: string | null
-            createdAt?: any | null
-          } | null
-          pick?: Array<{
-            __typename?: 'Pick'
-            createdAt?: any | null
-            member?: {
-              __typename?: 'Member'
-              id: string
-              name?: string | null
-              avatar?: string | null
-            } | null
-          }> | null
-          comment?: Array<{
-            __typename?: 'Comment'
-            id: string
-            content?: string | null
-            state?: string | null
-            published_date?: any | null
-            createdAt?: any | null
-            member?: {
-              __typename?: 'Member'
-              id: string
-              name?: string | null
-              avatar?: string | null
-            } | null
-          }> | null
-        } | null
-      }> | null
-      comment?: Array<{
-        __typename?: 'Comment'
-        id: string
-        createdAt?: any | null
-        story?: {
-          __typename?: 'Story'
-          id: string
-          url?: string | null
-          title?: string | null
-          og_image?: string | null
-          og_description?: string | null
-          published_date?: any | null
-          paywall?: boolean | null
-          full_screen_ad?: StoryFullScreenAdType | null
-          pickCount?: number | null
-          commentCount?: number | null
-          source?: {
-            __typename?: 'Publisher'
-            customId?: string | null
-            title?: string | null
-            createdAt?: any | null
-          } | null
-          pick?: Array<{
-            __typename?: 'Pick'
-            createdAt?: any | null
-            member?: {
-              __typename?: 'Member'
-              id: string
-              name?: string | null
-              avatar?: string | null
-            } | null
-          }> | null
-          comment?: Array<{
-            __typename?: 'Comment'
-            id: string
-            content?: string | null
-            state?: string | null
-            published_date?: any | null
-            createdAt?: any | null
-            member?: {
-              __typename?: 'Member'
-              id: string
-              name?: string | null
-              avatar?: string | null
-            } | null
-          }> | null
-        } | null
-      }> | null
-    }> | null
-    pick?: Array<{
-      __typename?: 'Pick'
-      id: string
-      story?: { __typename?: 'Story'; id: string } | null
-    }> | null
-  } | null
 }
 
 export type GetMemberByFollowingCategoryQueryVariables = Exact<{
@@ -5667,6 +5590,12 @@ export type GetCurrentUserMemberIdQuery = {
       __typename?: 'Publisher'
       id: string
       title?: string | null
+    }> | null
+    publishers?: Array<{
+      __typename?: 'Publisher'
+      title?: string | null
+      customId?: string | null
+      logo?: string | null
     }> | null
   } | null
 }
@@ -5847,6 +5776,12 @@ export type GetMemberProfileQuery = {
           } | null
         }> | null
       } | null
+    }> | null
+    publishers?: Array<{
+      __typename?: 'Publisher'
+      title?: string | null
+      customId?: string | null
+      logo?: string | null
     }> | null
   } | null
   collections?: Array<{
@@ -6096,7 +6031,7 @@ export type GetMemberFollowingListQuery = {
     name?: string | null
     avatar?: string | null
     followingCount?: number | null
-    follow_publisherCount?: number | null
+    follow_publisher_count?: number | null
     following?: Array<{
       __typename?: 'Member'
       id: string
@@ -6111,6 +6046,27 @@ export type GetMemberFollowingListQuery = {
       title?: string | null
       logo?: string | null
       source_type?: string | null
+    }> | null
+  } | null
+}
+
+export type GetMemberFollowingQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+  take: Scalars['Int']['input']
+  skip: Scalars['Int']['input']
+}>
+
+export type GetMemberFollowingQuery = {
+  __typename?: 'Query'
+  member?: {
+    __typename?: 'Member'
+    followingCount?: number | null
+    following?: Array<{
+      __typename?: 'Member'
+      id: string
+      customId?: string | null
+      name?: string | null
+      avatar?: string | null
     }> | null
   } | null
 }
@@ -6800,6 +6756,52 @@ export type GetPublisherWalletQuery = {
   } | null
 }
 
+export type GetExchangePublisherInfoQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetExchangePublisherInfoQuery = {
+  __typename?: 'Query'
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    title?: string | null
+    admin?: { __typename?: 'Member'; id: string; wallet?: string | null } | null
+  }> | null
+  officialWallet?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    title?: string | null
+    admin?: { __typename?: 'Member'; id: string; wallet?: string | null } | null
+  }> | null
+}
+
+export type GetPublisherSponsorshipsQueryVariables = Exact<{
+  publisherCustomId?: InputMaybe<Scalars['String']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  gte?: InputMaybe<Scalars['DateTime']['input']>
+  lte?: InputMaybe<Scalars['DateTime']['input']>
+}>
+
+export type GetPublisherSponsorshipsQuery = {
+  __typename?: 'Query'
+  sponsorshipsCount?: number | null
+  sponsorships?: Array<{
+    __typename?: 'Sponsorship'
+    id: string
+    tid?: string | null
+    fee?: number | null
+    createdAt?: any | null
+    sponsor?: {
+      __typename?: 'Member'
+      customId?: string | null
+      name?: string | null
+      avatar?: string | null
+    } | null
+  }> | null
+}
+
 export type LatestStoriesQueryVariables = Exact<{
   date?: InputMaybe<Scalars['DateTime']['input']>
 }>
@@ -7067,6 +7069,42 @@ export type GetPodcastCommentsQuery = {
       } | null
     }> | null
   } | null
+}
+
+export type GetPublisherTransactionsQueryVariables = Exact<{
+  publisherCustomId?: InputMaybe<Scalars['String']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  skip?: InputMaybe<Scalars['Int']['input']>
+  gte?: InputMaybe<Scalars['DateTime']['input']>
+  lte?: InputMaybe<Scalars['DateTime']['input']>
+}>
+
+export type GetPublisherTransactionsQuery = {
+  __typename?: 'Query'
+  transactionsCount?: number | null
+  transactions?: Array<{
+    __typename?: 'Transaction'
+    id: string
+    tid?: string | null
+    createdAt?: any | null
+    member?: {
+      __typename?: 'Member'
+      name?: string | null
+      avatar?: string | null
+    } | null
+    unlockStory?: {
+      __typename?: 'Story'
+      id: string
+      title?: string | null
+    } | null
+    policy?: {
+      __typename?: 'Policy'
+      type?: PolicyTypeType | null
+      charge?: number | null
+      unlockSingle?: boolean | null
+      explanation?: string | null
+    } | null
+  }> | null
 }
 
 export const MemberBasicInfoFragmentDoc = {
@@ -11753,6 +11791,282 @@ export const GetCommentLikesDocument = {
   GetCommentLikesQuery,
   GetCommentLikesQueryVariables
 >
+export const GetPublisherExchangesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherExchanges' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherCustomId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'gte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'lte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'redeemsCount' },
+            name: { kind: 'Name', value: 'exchangesCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherCustomId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'redeems' },
+            name: { kind: 'Name', value: 'exchanges' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherCustomId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: { kind: 'EnumValue', value: 'desc' },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'tid' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'exchangeVolume' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'publisher' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherExchangesQuery,
+  GetPublisherExchangesQueryVariables
+>
 export const IsInvitationCodeValidDocument = {
   kind: 'Document',
   definitions: [
@@ -12159,530 +12473,6 @@ export const GetSentInvitationCodesDocument = {
 } as unknown as DocumentNode<
   GetSentInvitationCodesQuery,
   GetSentInvitationCodesQueryVariables
->
-export const GetMemberFollowingDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'GetMemberFollowing' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'memberId' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'takes' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'member' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'memberId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'following' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'customId' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'avatar' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'following' },
-                        arguments: [
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'where' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'id' },
-                                  value: {
-                                    kind: 'ObjectValue',
-                                    fields: [
-                                      {
-                                        kind: 'ObjectField',
-                                        name: { kind: 'Name', value: 'gte' },
-                                        value: { kind: 'IntValue', value: '0' },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'orderBy' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'id' },
-                                  value: { kind: 'EnumValue', value: 'asc' },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'take' },
-                            value: { kind: 'IntValue', value: '10000' },
-                          },
-                        ],
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'customId' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'avatar' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'followerCount' },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'pick' },
-                        arguments: [
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'where' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'kind' },
-                                  value: {
-                                    kind: 'ObjectValue',
-                                    fields: [
-                                      {
-                                        kind: 'ObjectField',
-                                        name: { kind: 'Name', value: 'equals' },
-                                        value: {
-                                          kind: 'StringValue',
-                                          value: 'read',
-                                          block: false,
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'AND' },
-                                  value: {
-                                    kind: 'ListValue',
-                                    values: [
-                                      {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'is_active',
-                                            },
-                                            value: {
-                                              kind: 'ObjectValue',
-                                              fields: [
-                                                {
-                                                  kind: 'ObjectField',
-                                                  name: {
-                                                    kind: 'Name',
-                                                    value: 'equals',
-                                                  },
-                                                  value: {
-                                                    kind: 'BooleanValue',
-                                                    value: true,
-                                                  },
-                                                },
-                                              ],
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'orderBy' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'createdAt' },
-                                  value: { kind: 'EnumValue', value: 'desc' },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'take' },
-                            value: {
-                              kind: 'Variable',
-                              name: { kind: 'Name', value: 'takes' },
-                            },
-                          },
-                        ],
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'createdAt' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'story' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  {
-                                    kind: 'FragmentSpread',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'UserActionStory',
-                                    },
-                                  },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'comment' },
-                        arguments: [
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'orderBy' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'createdAt' },
-                                  value: { kind: 'EnumValue', value: 'desc' },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'Argument',
-                            name: { kind: 'Name', value: 'take' },
-                            value: {
-                              kind: 'Variable',
-                              name: { kind: 'Name', value: 'takes' },
-                            },
-                          },
-                        ],
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'createdAt' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'story' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  {
-                                    kind: 'FragmentSpread',
-                                    name: {
-                                      kind: 'Name',
-                                      value: 'UserActionStory',
-                                    },
-                                  },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'pick' },
-                  arguments: [
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'where' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'kind' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'StringValue',
-                                    value: 'read',
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'AND' },
-                            value: {
-                              kind: 'ListValue',
-                              values: [
-                                {
-                                  kind: 'ObjectValue',
-                                  fields: [
-                                    {
-                                      kind: 'ObjectField',
-                                      name: {
-                                        kind: 'Name',
-                                        value: 'is_active',
-                                      },
-                                      value: {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'equals',
-                                            },
-                                            value: {
-                                              kind: 'BooleanValue',
-                                              value: true,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'story' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'UserActionStory' },
-      typeCondition: {
-        kind: 'NamedType',
-        name: { kind: 'Name', value: 'Story' },
-      },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'og_description' } },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'source' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-              ],
-            },
-          },
-          { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'pick' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'member' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'avatar' },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          { kind: 'Field', name: { kind: 'Name', value: 'commentCount' } },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'comment' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'content' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'state' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'published_date' },
-                },
-                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'member' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'avatar' },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetMemberFollowingQuery,
-  GetMemberFollowingQueryVariables
 >
 export const GetMemberByFollowingCategoryDocument = {
   kind: 'Document',
@@ -13224,6 +13014,61 @@ export const GetCurrentUserMemberIdDocument = {
                     selections: [
                       { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                       { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'publishers' },
+                  name: { kind: 'Name', value: 'publisher' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'id' },
+                            value: { kind: 'EnumValue', value: 'asc' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                     ],
                   },
                 },
@@ -13810,6 +13655,61 @@ export const GetMemberProfileDocument = {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'objective' },
                       },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  alias: { kind: 'Name', value: 'publishers' },
+                  name: { kind: 'Name', value: 'publisher' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'orderBy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'id' },
+                            value: { kind: 'EnumValue', value: 'asc' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'logo' } },
                     ],
                   },
                 },
@@ -15256,6 +15156,7 @@ export const GetMemberFollowingListDocument = {
                 },
                 {
                   kind: 'Field',
+                  alias: { kind: 'Name', value: 'follow_publisher_count' },
                   name: { kind: 'Name', value: 'follow_publisherCount' },
                   arguments: [
                     {
@@ -15393,14 +15294,6 @@ export const GetMemberFollowingListDocument = {
                         ],
                       },
                     },
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'take' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'take' },
-                      },
-                    },
                   ],
                   selectionSet: {
                     kind: 'SelectionSet',
@@ -15429,6 +15322,119 @@ export const GetMemberFollowingListDocument = {
 } as unknown as DocumentNode<
   GetMemberFollowingListQuery,
   GetMemberFollowingListQueryVariables
+>
+export const GetMemberFollowingDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetMemberFollowing' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'member' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'followingCount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'following' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'take' },
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'skip' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'skip' },
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetMemberFollowingQuery,
+  GetMemberFollowingQueryVariables
 >
 export const GetMemberFollowerListDocument = {
   kind: 'Document',
@@ -19942,6 +19948,419 @@ export const GetPublisherWalletDocument = {
   GetPublisherWalletQuery,
   GetPublisherWalletQueryVariables
 >
+export const GetExchangePublisherInfoDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetExchangePublisherInfo' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'customId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'admin' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'wallet' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            alias: { kind: 'Name', value: 'officialWallet' },
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'StringValue',
+                              value: 'mesh',
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'admin' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'wallet' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetExchangePublisherInfoQuery,
+  GetExchangePublisherInfoQueryVariables
+>
+export const GetPublisherSponsorshipsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherSponsorships' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherCustomId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'gte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'lte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'sponsorshipsCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherCustomId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'sponsorships' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'publisher' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'publisherCustomId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: { kind: 'EnumValue', value: 'desc' },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'tid' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sponsor' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customId' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'fee' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherSponsorshipsQuery,
+  GetPublisherSponsorshipsQueryVariables
+>
 export const LatestStoriesDocument = {
   kind: 'Document',
   definitions: [
@@ -21652,4 +22071,327 @@ export const GetPodcastCommentsDocument = {
 } as unknown as DocumentNode<
   GetPodcastCommentsQuery,
   GetPodcastCommentsQueryVariables
+>
+export const GetPublisherTransactionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherTransactions' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherCustomId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'gte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'lte' } },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'DateTime' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'transactionsCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'policy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'publisher' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'customId' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'equals' },
+                                        value: {
+                                          kind: 'Variable',
+                                          name: {
+                                            kind: 'Name',
+                                            value: 'publisherCustomId',
+                                          },
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'transactions' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'policy' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'publisher' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'customId' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'equals' },
+                                        value: {
+                                          kind: 'Variable',
+                                          name: {
+                                            kind: 'Name',
+                                            value: 'publisherCustomId',
+                                          },
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'status' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'Success' },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'gte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'gte' },
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'lte' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'lte' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: { kind: 'EnumValue', value: 'desc' },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'tid' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'member' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'avatar' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'unlockStory' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'policy' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'charge' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'unlockSingle' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'explanation' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherTransactionsQuery,
+  GetPublisherTransactionsQueryVariables
 >

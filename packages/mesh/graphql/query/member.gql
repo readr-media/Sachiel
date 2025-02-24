@@ -1,56 +1,3 @@
-query GetMemberFollowing($memberId: ID!, $takes: Int!) {
-  member(where: { id: $memberId }) {
-    id
-    name
-    avatar
-    following {
-      id
-      customId
-      name
-      avatar
-      following(where: { id: { gte: 0 } }, orderBy: { id: asc }, take: 10000) {
-        id
-        customId
-        name
-        avatar
-        followerCount
-      }
-      pick(
-        where: {
-          kind: { equals: "read" }
-          AND: [{ is_active: { equals: true } }]
-        }
-        orderBy: { createdAt: desc }
-        take: $takes
-      ) {
-        id
-        createdAt
-        story {
-          ...UserActionStory
-        }
-      }
-      comment(orderBy: { createdAt: desc }, take: $takes) {
-        id
-        createdAt
-        story {
-          ...UserActionStory
-        }
-      }
-    }
-    pick(
-      where: {
-        kind: { equals: "read" }
-        AND: [{ is_active: { equals: true } }]
-      }
-    ) {
-      id
-      story {
-        id
-      }
-    }
-  }
-}
-
 query GetMemberByFollowingCategory($slugs: [ID!]!) {
   members(
     where: {
@@ -124,6 +71,14 @@ query GetCurrentUserMemberId($uid: String!) {
       id
       title
     }
+    publishers: publisher(
+      where: { is_active: { equals: true } }
+      orderBy: { id: asc }
+    ) {
+      title
+      customId
+      logo
+    }
   }
 }
 
@@ -186,6 +141,14 @@ query GetMemberProfile($customId: String, $takes: Int!) {
       }
       kind
       objective
+    }
+    publishers: publisher(
+      where: { is_active: { equals: true } }
+      orderBy: { id: asc }
+    ) {
+      title
+      customId
+      logo
     }
   }
   collections(
@@ -256,7 +219,7 @@ query GetMemberFollowingList($customId: String, $take: Int!) {
     name
     avatar
     followingCount
-    follow_publisherCount(
+    follow_publisher_count: follow_publisherCount(
       where: {
         is_active: { equals: true }
         source_type: { not: { equals: "empty" } }
@@ -273,13 +236,24 @@ query GetMemberFollowingList($customId: String, $take: Int!) {
         is_active: { equals: true }
         source_type: { not: { equals: "empty" } }
       }
-      take: $take
     ) {
       id
       customId
       title
       logo
       source_type
+    }
+  }
+}
+
+query GetMemberFollowing($customId: String, $take: Int!, $skip: Int!) {
+  member(where: { customId: $customId }) {
+    followingCount
+    following(take: $take, skip: $skip) {
+      id
+      customId
+      name
+      avatar
     }
   }
 }

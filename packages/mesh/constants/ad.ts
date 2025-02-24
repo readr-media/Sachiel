@@ -1,4 +1,4 @@
-import type { AdsenseUnits } from '@/types/ad'
+import type { AdsenseUnits, GamUnits } from '@/types/ad'
 
 export const ADSENSE_UNITS: AdsenseUnits = {
   media: {
@@ -100,4 +100,191 @@ export const ADSENSE_UNITS: AdsenseUnits = {
       adSize: [300, 250],
     },
   },
+  category: {
+    PC_B1: {
+      adUnit: 'Mesh_pc_category_728x90_B1',
+      adSlot: '5289618609',
+      adSize: [728, 90],
+    },
+    'PC_B2-1': {
+      adUnit: 'Mesh_pc_category_728x90_B2-1',
+      adSlot: '1454315376',
+      adSize: [600, 90],
+    },
+    'PC_B2-2': {
+      adUnit: 'Mesh_pc_category_728x90_B2-2',
+      adSlot: '6515070367',
+      adSize: [600, 90],
+    },
+    PC_B3: {
+      adUnit: 'Mesh_pc_category_160x600_B3',
+      adSlot: '4033969573',
+      adSize: [160, 600],
+    },
+    MB_B1: {
+      adUnit: 'Mesh_m_category_300x250_B1',
+      adSlot: '5391283272',
+      adSize: [300, 250],
+    },
+    'MB_B2-1': {
+      adUnit: 'Mesh_m_category_300x250_B2-1',
+      adSlot: '8075564042',
+      adSize: [300, 250],
+    },
+    'MB_B2-2': {
+      adUnit: 'Mesh_m_category_300x250_B2-2',
+      adSlot: '6704364943',
+      adSize: [300, 250],
+    },
+  },
 }
+
+export const GAM_UNITS: GamUnits = {
+  story: {
+    PC_E0: {
+      adUnit: 'mmesh_article_pc_300x600_rb',
+      adSlot: '1738637939769-0',
+      adSize: [300, 600],
+    },
+    PC_E1: {
+      adUnit: 'mmesh_article_pc_336x280_lb',
+      adSlot: '1738637965083-0',
+      adSize: [
+        [300, 250],
+        [336, 280],
+      ],
+    },
+    PC_E2: {
+      adUnit: 'mmesh_article_pc_336x280_rb',
+      adSlot: '1738637990207-0',
+      adSize: [
+        [300, 250],
+        [336, 280],
+      ],
+    },
+  },
+  social: {
+    PC_C1: {
+      adUnit: 'mmesh_social_pc_1x1_3',
+      adSlot: '1738639664687-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C2: {
+      adUnit: 'mmesh_social_pc_1x1_5_2',
+      adSlot: '1739860714470-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C3: {
+      adUnit: 'mmesh_social_pc_1x1_5_3',
+      adSlot: '1739860750551-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C4: {
+      adUnit: 'mmesh_social_pc_1x1_5_4',
+      adSlot: '1739860800213-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C5: {
+      adUnit: 'mmesh_social_pc_1x1_5_5',
+      adSlot: '1739860833132-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C6: {
+      adUnit: 'mmesh_social_pc_1x1_5_6',
+      adSlot: '1739860859805-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C7: {
+      adUnit: 'mmesh_social_pc_1x1_5_7',
+      adSlot: '1739860888303-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C8: {
+      adUnit: 'mmesh_social_pc_1x1_5_8',
+      adSlot: '1739860928561-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C9: {
+      adUnit: 'mmesh_social_pc_1x1_5_9',
+      adSlot: '1739860955097-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C10: {
+      adUnit: 'mmesh_social_pc_1x1_5_10',
+      adSlot: '1739860980709-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C11: {
+      adUnit: 'mmesh_social_pc_1x1_5_11',
+      adSlot: '1739861003492-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C12: {
+      adUnit: 'mmesh_social_pc_1x1_5_12',
+      adSlot: '1739861029856-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C13: {
+      adUnit: 'mmesh_social_pc_1x1_5_13',
+      adSlot: '1739861054041-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C14: {
+      adUnit: 'mmesh_social_pc_1x1_5_14',
+      adSlot: '1739861080460-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C15: {
+      adUnit: 'mmesh_social_pc_1x1_5_15',
+      adSlot: '1739861101943-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+  },
+}
+
+export const GPT_AD_NETWORK = '23277192286'

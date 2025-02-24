@@ -20,7 +20,12 @@ import NonMobileNavigation, {
   NonMobileNavigationType,
 } from './navigation/non-mobile-navigation'
 
-type LayoutType = 'default' | 'stateless' | 'article' | 'collection' | 'podcast'
+type LayoutType =
+  | 'default'
+  | 'stateless'
+  | 'article'
+  | 'collection'
+  | 'media-backstage'
 
 type CustomStyle = {
   background?: string
@@ -56,10 +61,8 @@ type LayoutTemplateProps = {
       mobileNavigation: MobileNavigationProps
     }
   | {
-      type: 'podcast'
-      mobileNavigation: MobileNavigationProps
-      nonMobileNavigation: ArticleNavigationProps
-      mobileActionBar?: MobileBottomActionBarProps
+      type: 'media-backstage'
+      publisherCustomId: string
     }
 )
 
@@ -108,15 +111,11 @@ export default function LayoutTemplate(props: LayoutTemplateProps) {
           {childrenJsx}
         </CollectionLayout>
       )
-    case 'podcast':
+    case 'media-backstage':
       return (
-        <PodcastLayout
-          mobileNavigation={props.mobileNavigation}
-          nonMobileNavigation={props.nonMobileNavigation}
-          mobileActionBar={props.mobileActionBar}
-        >
+        <MediaBackstageLayout publisherCustomId={props.publisherCustomId}>
           {childrenJsx}
-        </PodcastLayout>
+        </MediaBackstageLayout>
       )
     default:
       console.error('LayoutTemplate with unhandleType', type)
@@ -276,66 +275,23 @@ const CollectionLayout = ({
   )
 }
 
-const PodcastLayout = ({
-  mobileNavigation,
-  nonMobileNavigation,
-  mobileActionBar,
+const MediaBackstageLayout = ({
+  publisherCustomId,
   children,
 }: {
-  mobileNavigation: MobileNavigationProps
-  nonMobileNavigation: ArticleNavigationProps
-  mobileActionBar?: MobileBottomActionBarProps
+  publisherCustomId: string
   children: React.ReactNode
 }) => {
-  const [shouldShowNav, setShouldShowNav] = useState(false)
-  const showNav = () => {
-    setShouldShowNav(true)
-  }
-  const closeNav = () => {
-    setShouldShowNav(false)
-  }
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* fixed header */}
-      <Header type={HeaderType.Article} showNav={showNav} />
-      {/* block for non-fixed content, set padding for fixed blocks */}
-      <div className="primary-container-article">
-        <div className="flex grow flex-col items-center bg-white">
-          <div className="flex w-full grow justify-center xl:max-w-[theme(width.maxContent)]">
-            <main className="flex w-full max-w-[theme(width.articleMain)] flex-col sm:pb-10">
-              <div className="sticky top-[68px] z-[5] hidden size-full h-16 bg-white backdrop-blur-sm [background:linear-gradient(to_right,_rgb(255,255,255)_0%,_rgba(255,255,255,0.8)_3%,_rgba(255,255,255,0.8)_97%,_rgb(255,255,255)_100%)]  sm:flex">
-                <NonMobileNavigation
-                  type={NonMobileNavigationType.Article}
-                  {...nonMobileNavigation}
-                />
-              </div>
-              {children}
-            </main>
-          </div>
-        </div>
-        {/* footer after main content */}
-        <div className="pb-[84px]">
-          <Footer />
-        </div>
-        <div
-          id="desktop-audio-container"
-          className="fixed bottom-0 left-0 hidden sm:block"
-        ></div>
-      </div>
+    <div className="flex min-h-screen min-w-[1200px] flex-col bg-multi-layer-light">
+      <Header type={HeaderType.MediaBackstage} />
       <Nav
-        type={NavType.Article}
-        shouldShowNav={shouldShowNav}
-        closeNav={closeNav}
+        type={NavType.MediaBackstage}
+        publisherCustomId={publisherCustomId}
       />
-      {/* cover on mobile header */}
-      <MobileNavigation {...mobileNavigation} />
-      {/* cover on mobile bottom nav */}
-      <div
-        id="mobile-audio-container"
-        className="fixed inset-x-0 bottom-16 block sm:hidden"
-      ></div>
-      {mobileActionBar && <MobileBottomActionBar {...mobileActionBar} />}
+      <div className="flex grow flex-col pl-[theme(width.nav.xl)] pt-[theme(height.header.sm)] xl:pl-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
+        {children}
+      </div>
     </div>
   )
 }

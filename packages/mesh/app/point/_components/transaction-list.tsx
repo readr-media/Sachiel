@@ -66,7 +66,7 @@ export default function TransactionList({
                       borderRadius: '8px',
                       backgroundColor: '#E0E0E0',
                     }}
-                    fallbackCategory={ImageCategory.AVATAR}
+                    fallbackCategory={ImageCategory.PUBLISHER}
                   />
                   <div className="flex w-full flex-col gap-1">
                     <div className="subtitle-2 flex justify-between gap-4">
@@ -93,7 +93,7 @@ export default function TransactionList({
                         borderRadius: '8px',
                         backgroundColor: '#E0E0E0',
                       }}
-                      fallbackCategory={ImageCategory.AVATAR}
+                      fallbackCategory={ImageCategory.PUBLISHER}
                     />
                   ) : (
                     <Icon

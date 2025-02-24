@@ -382,11 +382,6 @@
 
       & .image-wrapper {
         position: relative;
-        height: 375px;
-
-        @media (min-width: 768px) {
-          height: 400px;
-        }
       }
       & figcaption {
         margin-top: 8px;

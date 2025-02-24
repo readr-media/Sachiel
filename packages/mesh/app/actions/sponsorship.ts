@@ -57,7 +57,7 @@ export async function getMemberTransactionRecord(
     GetMemberTransactionsDocument,
     { memberId, take },
     globalLogFields,
-    'Failed to get Transactions Data'
+    'Failed to get Member Transactions Data'
   )
 
   const totalSponsorCount = transactionsResponse?.member?.sponsorCount ?? 0
