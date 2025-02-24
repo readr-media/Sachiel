@@ -222,3 +222,6 @@ rubiconproject.com, 18304, RESELLER, 0bfd66d529a55807
 #Magnite 20230606
 telaria.com, 3h6dq-3tg53, DIRECT, 1a4e959a1b50034a
 tremorhub.com, 3h6dq-3tg53, DIRECT, 1a4e959a1b50034a
+
+google.com, pub-4787853163706839, DIRECT, f08c47fec0942fa0
+google.com, pub-4787853163706839, RESELLER, f08c47fec0942fa0
