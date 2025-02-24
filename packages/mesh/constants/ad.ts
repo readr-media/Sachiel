@@ -168,7 +168,119 @@ export const GAM_UNITS: GamUnits = {
       adUnit: 'mmesh_social_pc_1x1_3',
       adSlot: '1738639664687-0',
       adSize: [
-        [728, 90],
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C2: {
+      adUnit: 'mmesh_social_pc_1x1_5_2',
+      adSlot: '1739860714470-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C3: {
+      adUnit: 'mmesh_social_pc_1x1_5_3',
+      adSlot: '1739860750551-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C4: {
+      adUnit: 'mmesh_social_pc_1x1_5_4',
+      adSlot: '1739860800213-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C5: {
+      adUnit: 'mmesh_social_pc_1x1_5_5',
+      adSlot: '1739860833132-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C6: {
+      adUnit: 'mmesh_social_pc_1x1_5_6',
+      adSlot: '1739860859805-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C7: {
+      adUnit: 'mmesh_social_pc_1x1_5_7',
+      adSlot: '1739860888303-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C8: {
+      adUnit: 'mmesh_social_pc_1x1_5_8',
+      adSlot: '1739860928561-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C9: {
+      adUnit: 'mmesh_social_pc_1x1_5_9',
+      adSlot: '1739860955097-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C10: {
+      adUnit: 'mmesh_social_pc_1x1_5_10',
+      adSlot: '1739860980709-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C11: {
+      adUnit: 'mmesh_social_pc_1x1_5_11',
+      adSlot: '1739861003492-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C12: {
+      adUnit: 'mmesh_social_pc_1x1_5_12',
+      adSlot: '1739861029856-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C13: {
+      adUnit: 'mmesh_social_pc_1x1_5_13',
+      adSlot: '1739861054041-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C14: {
+      adUnit: 'mmesh_social_pc_1x1_5_14',
+      adSlot: '1739861080460-0',
+      adSize: [
+        [336, 280],
+        [1, 1],
+      ],
+    },
+    PC_C15: {
+      adUnit: 'mmesh_social_pc_1x1_5_15',
+      adSlot: '1739861101943-0',
+      adSize: [
+        [336, 280],
         [1, 1],
       ],
     },
