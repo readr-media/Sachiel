@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
+import AdManager from '@/components/ad/google-ad-manager/ad-manager-ad'
 import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import { type MongoDBResponse } from '@/utils/data-schema'
@@ -42,9 +43,22 @@ export default function MoreFeed({ feedsNumber }: { feedsNumber: number }) {
 
   return (
     <>
-      {moreStories.map((story) => (
-        <Feed key={story.id} story={story} />
-      ))}
+      {moreStories.map((story, index) => {
+        const shouldShowAd = (index + 1) % 5 === 0
+        return (
+          <Fragment key={story.id}>
+            <Feed story={story} />
+            {shouldShowAd && (
+              <div className="mx-auto">
+                <AdManager
+                  pageKey="social"
+                  adKey={`C${Math.floor((index + 1) / 5) + 2}`}
+                />
+              </div>
+            )}
+          </Fragment>
+        )
+      })}
       <div ref={scrollRef} className="h-0"></div>
     </>
   )

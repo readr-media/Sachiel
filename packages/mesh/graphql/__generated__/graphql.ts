@@ -1233,6 +1233,7 @@ export type Member = {
   invitedCount?: Maybe<Scalars['Int']['output']>
   invited_by?: Maybe<InvitationCode>
   is_active?: Maybe<Scalars['Boolean']['output']>
+  language?: Maybe<MemberLanguageType>
   member_like?: Maybe<Array<Comment>>
   member_likeCount?: Maybe<Scalars['Int']['output']>
   modify_collection?: Maybe<Array<CollectionMember>>
@@ -1463,6 +1464,7 @@ export type MemberCreateInput = {
   invited?: InputMaybe<InvitationCodeRelateToManyForCreateInput>
   invited_by?: InputMaybe<InvitationCodeRelateToOneForCreateInput>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
+  language?: InputMaybe<MemberLanguageType>
   member_like?: InputMaybe<CommentRelateToManyForCreateInput>
   modify_collection?: InputMaybe<CollectionMemberRelateToManyForCreateInput>
   name?: InputMaybe<Scalars['String']['input']>
@@ -1475,6 +1477,23 @@ export type MemberCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   verified?: InputMaybe<Scalars['Boolean']['input']>
   wallet?: InputMaybe<Scalars['String']['input']>
+}
+
+export enum MemberLanguageType {
+  DeDe = 'de_DE',
+  EnGb = 'en_GB',
+  EnUs = 'en_US',
+  FrFr = 'fr_FR',
+  JaJp = 'ja_JP',
+  ZhCn = 'zh_CN',
+  ZhTw = 'zh_TW',
+}
+
+export type MemberLanguageTypeNullableFilter = {
+  equals?: InputMaybe<MemberLanguageType>
+  in?: InputMaybe<Array<MemberLanguageType>>
+  not?: InputMaybe<MemberLanguageTypeNullableFilter>
+  notIn?: InputMaybe<Array<MemberLanguageType>>
 }
 
 export type MemberManyRelationFilter = {
@@ -1493,6 +1512,7 @@ export type MemberOrderByInput = {
   id?: InputMaybe<OrderDirection>
   intro?: InputMaybe<OrderDirection>
   is_active?: InputMaybe<OrderDirection>
+  language?: InputMaybe<OrderDirection>
   name?: InputMaybe<OrderDirection>
   nickname?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
@@ -1551,6 +1571,7 @@ export type MemberUpdateInput = {
   invited?: InputMaybe<InvitationCodeRelateToManyForUpdateInput>
   invited_by?: InputMaybe<InvitationCodeRelateToOneForUpdateInput>
   is_active?: InputMaybe<Scalars['Boolean']['input']>
+  language?: InputMaybe<MemberLanguageType>
   member_like?: InputMaybe<CommentRelateToManyForUpdateInput>
   modify_collection?: InputMaybe<CollectionMemberRelateToManyForUpdateInput>
   name?: InputMaybe<Scalars['String']['input']>
@@ -1592,6 +1613,7 @@ export type MemberWhereInput = {
   invited?: InputMaybe<InvitationCodeManyRelationFilter>
   invited_by?: InputMaybe<InvitationCodeWhereInput>
   is_active?: InputMaybe<BooleanFilter>
+  language?: InputMaybe<MemberLanguageTypeNullableFilter>
   member_like?: InputMaybe<CommentManyRelationFilter>
   modify_collection?: InputMaybe<CollectionMemberManyRelationFilter>
   name?: InputMaybe<StringFilter>
