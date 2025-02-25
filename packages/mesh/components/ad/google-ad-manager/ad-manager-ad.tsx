@@ -42,7 +42,7 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
     if (window.googletag && adSize && adDivId && adUnitPath) {
       window.googletag = window.googletag || { cmd: [] }
 
-      window.googletag?.cmd.push(() => {
+      window.googletag.cmd?.push(() => {
         const slot = window.googletag.defineSlot(adUnitPath, adSize, adDivId)
 
         if (slot) {
