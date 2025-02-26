@@ -9,8 +9,6 @@ export default async function MediaReportPage({
 }: {
   params: { publisherCustomId: string }
 }) {
-  if (!publisherCustomId) notFound()
-
   const publisherData = await getPublisherReports({ publisherCustomId })
 
   const publisherId = publisherData?.publishers?.[0]?.id
