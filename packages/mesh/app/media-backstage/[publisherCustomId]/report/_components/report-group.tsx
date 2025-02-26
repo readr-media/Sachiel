@@ -9,32 +9,32 @@ export default function ReportGroup({
   year,
   reports,
   signedCookie,
-  initialIsFolded,
+  initialIsExtend,
 }: {
   year: string
   reports: Report[]
   signedCookie: string
-  initialIsFolded: boolean
+  initialIsExtend: boolean
 }) {
-  const [isFolded, setIsFolded] = useState(initialIsFolded)
+  const [isExtend, setIsExtend] = useState(initialIsExtend)
   return (
     <div key={year} className="rounded-xl bg-white px-5 py-2 shadow-card">
       <div
         className="flex cursor-pointer justify-between"
-        onClick={() => setIsFolded(!isFolded)}
+        onClick={() => setIsExtend(!isExtend)}
       >
         <span className="list-title font-medium text-primary-700">
           {year} 收益報表
         </span>
         <span className="">
-          {isFolded ? (
+          {isExtend ? (
             <Icon iconName="icon-up-arrow" size="xl" />
           ) : (
             <Icon iconName="icon-down-arrow" size="xl" />
           )}
         </span>
       </div>
-      {isFolded && (
+      {isExtend && (
         <ul>
           {reports.map((report) => (
             <ReportRow
