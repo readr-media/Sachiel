@@ -1,7 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
 import AdManager from '@/components/ad/google-ad-manager/ad-manager-ad'
@@ -61,13 +61,25 @@ export default function Page() {
           {firstSectionStories.map((story) => {
             return <Feed key={story.id} story={story} />
           })}
-          <AdManager pageKey="social" adKey="C1" />
           <FollowSuggestionFeed
             suggestedFollowers={suggestedMembers}
             isNoFollowings={false}
           />
-          {secondSectionStories.map((story) => {
-            return <Feed key={story.id} story={story} />
+          {secondSectionStories.map((story, index) => {
+            const shouldShowAd = (index - 1) % 5 === 0
+            return (
+              <Fragment key={story.id}>
+                <Feed story={story} />
+                {shouldShowAd && (
+                  <div className="mx-auto">
+                    <AdManager
+                      pageKey="social"
+                      adKey={`C${Math.floor(index / 5) + 1}`}
+                    />
+                  </div>
+                )}
+              </Fragment>
+            )
           })}
           <MoreFeed feedsNumber={feedsNumber} />
         </div>
