@@ -114,6 +114,7 @@ export async function getCurrentUser() {
     )
     if (data?.member) {
       return {
+        accessToken: accessToken,
         memberId: data.member.id,
         customId: data.member.customId ?? '',
         name: data.member.name ?? '',
