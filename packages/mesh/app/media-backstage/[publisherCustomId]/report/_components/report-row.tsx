@@ -13,6 +13,7 @@ export type Report = NonNullable<
 
 export default function ReportRow({ report }: { report: Report }) {
   const isLoadingRef = useRef(false)
+  const fileBlobRef = useRef<Blob | null>(null)
   const { title, start_date, end_date, url } = report
 
   const fetchReportFile = async (fileUrl: string) => {
@@ -28,9 +29,13 @@ export default function ReportRow({ report }: { report: Report }) {
   const handleDownload = async (fileUrl: string | null | undefined) => {
     if (!fileUrl || isLoadingRef.current) return
     try {
-      const blob = await fetchReportFile(fileUrl)
+      if (!fileBlobRef.current) {
+        const blob = await fetchReportFile(fileUrl)
+        fileBlobRef.current = blob
+      }
+      const fileBlob = fileBlobRef.current
       const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-      const downloadUrl = window.URL.createObjectURL(blob)
+      const downloadUrl = window.URL.createObjectURL(fileBlob)
       const link = document.createElement('a')
       link.href = downloadUrl
       link.download = fileName
@@ -49,9 +54,13 @@ export default function ReportRow({ report }: { report: Report }) {
     if (!fileUrl || isLoadingRef.current) return
 
     try {
+      if (!fileBlobRef.current) {
+        const blob = await fetchReportFile(fileUrl)
+        fileBlobRef.current = blob
+      }
+      const fileBlob = fileBlobRef.current
+      const data = await fileBlob.arrayBuffer()
       const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-      const blob = await fetchReportFile(fileUrl)
-      const data = await blob.arrayBuffer()
       const workbook = XLSX.read(data, { type: 'array' })
       const sheetName = workbook.SheetNames[0]
       const worksheet = workbook.Sheets[sheetName]
