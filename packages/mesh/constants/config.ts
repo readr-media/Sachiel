@@ -161,7 +161,7 @@ const RESTFUL_ENDPOINTS = {
   invitationCodes: `${API_ORIGIN}/invitation_codes`,
   notifications: `${API_ORIGIN}/notifications`,
   publisherSignedCookie: (publisherId: string) =>
-    `${API_ORIGIN}/media/cookie/${publisherId}`,
+    `https://services-lb.mmesh.news/media/cookie/${publisherId}`,
 }
 
 const STATIC_FILE_ENDPOINTS = {

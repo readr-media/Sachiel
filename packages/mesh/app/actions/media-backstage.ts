@@ -1,8 +1,5 @@
 'use server'
 
-import { cookies } from 'next/headers'
-
-import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
   GetPublisherExchangesDocument,
   GetPublisherReportsDocument,
@@ -10,7 +7,6 @@ import {
   GetPublisherTransactionsDocument,
 } from '@/graphql/__generated__/graphql'
 import fetchGraphQL from '@/utils/fetch-graphql'
-import { fetchRestfulGet } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
 export async function getPublisherTransactions({
@@ -96,25 +92,5 @@ export async function getPublisherReports({
     globalLogFields,
     'Failed to get Publisher Reports'
   )
-  return response
-}
-
-export async function getPublisherSignedCookie({
-  publisherId,
-}: {
-  publisherId: string
-}) {
-  const url = RESTFUL_ENDPOINTS.publisherSignedCookie(publisherId)
-  const accessToken = cookies().get('token')?.value
-  const response = await fetchRestfulGet<string>(
-    url,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-    `Failed to get publisher id=${publisherId} signed cookie`
-  )
-
   return response
 }

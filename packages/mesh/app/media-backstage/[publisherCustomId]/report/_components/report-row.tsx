@@ -11,24 +11,14 @@ export type Report = NonNullable<
   >[number]
 >
 
-export default function ReportRow({
-  report,
-  signedCookie,
-}: {
-  report: Report
-  signedCookie: string
-}) {
+export default function ReportRow({ report }: { report: Report }) {
   const isLoadingRef = useRef(false)
   const { title, start_date, end_date, url } = report
 
   const fetchReportFile = async (fileUrl: string) => {
     isLoadingRef.current = true
-    const response = await fetch('/api/report', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileUrl, signedCookie }),
+    const response = await fetch(fileUrl, {
+      credentials: 'include',
     })
     if (!response.ok) throw new Error('Failed to download report file')
 

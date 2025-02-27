@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { getPublisherSignedCookie } from '@/app/actions/media-backstage'
+import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { HOUR } from '@/constants/time-unit'
+import { useUser } from '@/context/user'
 
 import ReportGroup from './report-group'
 import type { Report } from './report-row'
@@ -15,7 +16,9 @@ export default function Reports({
   reports: Report[]
   publisherId: string
 }) {
-  const [signedCookie, setSignedCookie] = useState('')
+  const {
+    user: { accessToken },
+  } = useUser()
 
   const { yearlyGroupedReports, years } = useMemo(() => {
     const yearlyGroupedReports = reports.reduce(
@@ -48,8 +51,13 @@ export default function Reports({
 
   useEffect(() => {
     const fetchSignedCookie = async () => {
-      const signedCookie = await getPublisherSignedCookie({ publisherId })
-      setSignedCookie(signedCookie ?? '')
+      // signed cookie set by response with set-cookie
+      await fetch(RESTFUL_ENDPOINTS.publisherSignedCookie(publisherId), {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        credentials: 'include',
+      })
     }
 
     fetchSignedCookie()
@@ -58,7 +66,7 @@ export default function Reports({
     }, 1 * HOUR)
 
     return () => clearInterval(timer)
-  }, [publisherId])
+  }, [accessToken, publisherId])
 
   if (!reports.length)
     return (
@@ -77,8 +85,7 @@ export default function Reports({
               key={year}
               year={year}
               reports={yearReports}
-              signedCookie={signedCookie}
-              initialIsFolded={i === 0}
+              initialIsExtend={i === 0}
             />
           )
         })}

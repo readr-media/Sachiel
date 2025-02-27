@@ -8,12 +8,10 @@ import ReportRow from './report-row'
 export default function ReportGroup({
   year,
   reports,
-  signedCookie,
   initialIsExtend,
 }: {
   year: string
   reports: Report[]
-  signedCookie: string
   initialIsExtend: boolean
 }) {
   const [isExtend, setIsExtend] = useState(initialIsExtend)
@@ -37,11 +35,7 @@ export default function ReportGroup({
       {isExtend && (
         <ul>
           {reports.map((report) => (
-            <ReportRow
-              key={report.id}
-              report={report}
-              signedCookie={signedCookie}
-            />
+            <ReportRow key={report.id} report={report} />
           ))}
         </ul>
       )}
