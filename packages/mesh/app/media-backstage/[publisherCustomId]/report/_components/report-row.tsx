@@ -17,25 +17,23 @@ export default function ReportRow({ report }: { report: Report }) {
   const { title, start_date, end_date, url } = report
 
   const fetchReportFile = async (fileUrl: string) => {
-    isLoadingRef.current = true
-    const response = await fetch(fileUrl, {
-      credentials: 'include',
-    })
-    if (!response.ok) throw new Error('Failed to download report file')
-
-    return await response.blob()
+    if (!fileBlobRef.current) {
+      isLoadingRef.current = true
+      const response = await fetch(fileUrl, {
+        credentials: 'include',
+      })
+      if (!response.ok) throw new Error('Failed to download report file')
+      fileBlobRef.current = await response.blob()
+    }
+    return fileBlobRef.current
   }
 
   const handleDownload = async (fileUrl: string | null | undefined) => {
     if (!fileUrl || isLoadingRef.current) return
     try {
-      if (!fileBlobRef.current) {
-        const blob = await fetchReportFile(fileUrl)
-        fileBlobRef.current = blob
-      }
-      const fileBlob = fileBlobRef.current
+      const blob = await fetchReportFile(fileUrl)
       const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
-      const downloadUrl = window.URL.createObjectURL(fileBlob)
+      const downloadUrl = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = downloadUrl
       link.download = fileName
@@ -54,12 +52,8 @@ export default function ReportRow({ report }: { report: Report }) {
     if (!fileUrl || isLoadingRef.current) return
 
     try {
-      if (!fileBlobRef.current) {
-        const blob = await fetchReportFile(fileUrl)
-        fileBlobRef.current = blob
-      }
-      const fileBlob = fileBlobRef.current
-      const data = await fileBlob.arrayBuffer()
+      const blob = await fetchReportFile(fileUrl)
+      const data = await blob.arrayBuffer()
       const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1)
       const workbook = XLSX.read(data, { type: 'array' })
       const sheetName = workbook.SheetNames[0]
