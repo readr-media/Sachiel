@@ -175,6 +175,11 @@ export type IconName =
   | 'icon-fold-month-picker'
   | 'icon-hide-publisher'
   | 'icon-open-in-browser'
+  | 'icon-file'
+  | 'icon-download'
+  | 'icon-download-hover'
+  | 'icon-print'
+  | 'icon-print-hover'
 
 export type IconProps = {
   size: Size

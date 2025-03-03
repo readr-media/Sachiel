@@ -20,6 +20,7 @@ type FollowingCategories = NonNullable<Member['followingCategories']>
 type FollowingPublishers = NonNullable<Member['followingPublishers']>
 
 export type User = {
+  accessToken: string
   memberId: string
   customId: string
   firebaseId: string
@@ -54,6 +55,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const guest: User = {
+  accessToken: '',
   memberId: '',
   avatarImageId: '',
   customId: '',

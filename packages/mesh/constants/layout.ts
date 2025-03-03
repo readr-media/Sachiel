@@ -224,17 +224,16 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
         `/media-backstage/${publisherCustomId}/point`,
       text: '點數兌換',
     },
-    // TODO: add report page when be is ready
-    // {
-    //   icon: {
-    //     default: 'icon-report',
-    //     hover: 'icon-report-hover',
-    //     on: 'icon-report-on',
-    //   },
-    //   hrefFn: (publisherCustomId: string) =>
-    //     `/media-backstage/${publisherCustomId}/report`,
-    //   text: '收益報表',
-    // },
+    {
+      icon: {
+        default: 'icon-report',
+        hover: 'icon-report-hover',
+        on: 'icon-report-on',
+      },
+      hrefFn: (publisherCustomId: string) =>
+        `/media-backstage/${publisherCustomId}/report`,
+      text: '收益報表',
+    },
   ],
   second: [
     {
