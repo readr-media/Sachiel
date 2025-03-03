@@ -10,8 +10,6 @@ enum RestfulMethod {
   Post = 'POST',
 }
 
-type ResponseType = 'json' | 'blob' | 'text' | 'arrayBuffer' | 'formData'
-
 type RequestUrl = string | URL | Request
 
 type PostRequestParam = {
@@ -28,15 +26,13 @@ type GetRequestParam = {
 export function fetchRestfulGet<T>(
   url: RequestUrl,
   init?: RequestInit,
-  errorMessage?: string,
-  responseType?: ResponseType
+  errorMessage?: string
 ) {
   return fetchRestful<T>({
     method: RestfulMethod.Get,
     url,
     init,
     errorMessage,
-    responseType,
   })
 }
 
@@ -44,8 +40,7 @@ export function fetchRestfulPost<T>(
   url: RequestUrl,
   body: object,
   init?: RequestInit,
-  errorMessage?: string,
-  responseType?: ResponseType
+  errorMessage?: string
 ) {
   return fetchRestful<T>({
     method: RestfulMethod.Post,
@@ -53,14 +48,12 @@ export function fetchRestfulPost<T>(
     body,
     init,
     errorMessage,
-    responseType,
   })
 }
 
 type Param = {
   init?: RequestInit
   errorMessage?: string
-  responseType?: ResponseType
 } & XOR<GetRequestParam, PostRequestParam>
 
 async function fetchRestful<T>({
@@ -69,7 +62,6 @@ async function fetchRestful<T>({
   body,
   init = { cache: 'no-cache' },
   errorMessage,
-  responseType = 'json',
 }: Param) {
   const idToken = cookies().get('token')?.value ?? ''
 
@@ -89,25 +81,7 @@ async function fetchRestful<T>({
       throw new Error(`Failed to fetch: ${response.statusText}`)
     }
 
-    let data: T
-    switch (responseType) {
-      case 'blob':
-        data = (await response.blob()) as T
-        break
-      case 'text':
-        data = (await response.text()) as T
-        break
-      case 'arrayBuffer':
-        data = (await response.arrayBuffer()) as T
-        break
-      case 'formData':
-        data = (await response.formData()) as T
-        break
-      case 'json':
-      default:
-        data = (await response.json()) as T
-    }
-    // const data: T = await response.json()
+    const data: T = await response.json()
     return data
   } catch (error) {
     const traceObject = getLogTraceObjectFromHeaders()
