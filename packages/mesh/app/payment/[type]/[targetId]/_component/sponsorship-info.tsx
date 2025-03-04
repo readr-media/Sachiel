@@ -23,6 +23,7 @@ import { debounce } from '@/utils/performance'
 import SponsorInput from './sponsor-input'
 import { type SponsorshipPoints } from './sponsor-option'
 import SponsorOption from './sponsor-option'
+import TransactionOngoing from './transaction-ongoing'
 
 export default function SponsorshipInfo({
   publisher,
@@ -42,6 +43,7 @@ export default function SponsorshipInfo({
   >(null)
   const [amount, setAmount] = useState(0)
   const [isSponsored, setIsSponsored] = useState(false)
+  const [isSponsoring, setIsSponsoring] = useState(false)
   const { addToast } = useToast()
   const createSponsorPayment: CreatePaymentProps = {
     action: 'sponsor_media',
@@ -83,7 +85,12 @@ export default function SponsorshipInfo({
     }
   }, 500)
 
-  const handleSponsorSuccess = () => {
+  const handleSponsorOnSend = () => {
+    setIsSponsoring(true)
+  }
+
+  const handleSponsorOnSuccess = () => {
+    setIsSponsoring(false)
     setIsSponsored(true)
     logSponsorEvent(userPayload, {
       sponsorId: user.memberId,
@@ -94,8 +101,12 @@ export default function SponsorshipInfo({
     })
   }
 
+  const handleSponsorOnError = () => {
+    setIsSponsoring(false)
+  }
+
   return (
-    <main className="flex flex-col items-center lg:items-start">
+    <main className="relative flex grow flex-col items-center lg:items-start">
       {isSponsored ? (
         <div className="flex h-[calc(100vh-130px)] w-full items-center justify-center">
           <div className="flex w-dvw max-w-[295px] flex-col items-center sm:max-w-[320px]">
@@ -140,7 +151,9 @@ export default function SponsorshipInfo({
               createPaymentPayload={createSponsorPayment}
               updatePaymentPayload={updateSponsorPayment}
               failPaymentPayload={failSponsorPayment}
-              onSuccess={handleSponsorSuccess}
+              onSend={handleSponsorOnSend}
+              onSuccess={handleSponsorOnSuccess}
+              onError={handleSponsorOnError}
             />
           ) : (
             <div className="flex w-full justify-center">
@@ -157,6 +170,9 @@ export default function SponsorshipInfo({
           )}
         </div>
       )}
+
+      {/* This UI only cover all other jsx cause the transction logic is inside SendTransaction component */}
+      {isSponsoring && <TransactionOngoing />}
     </main>
   )
 }
