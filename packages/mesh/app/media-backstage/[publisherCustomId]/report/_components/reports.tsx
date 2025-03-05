@@ -23,26 +23,29 @@ export default function Reports({
   const { yearlyGroupedReports, years } = useMemo(() => {
     const yearlyGroupedReports = reports.reduce(
       (acc: { [key: string]: Report[] }, report) => {
-        const reportStartDate = new Date(report.start_date)
-        const year = reportStartDate.getFullYear()
-        const month = reportStartDate.getMonth()
-        if (!acc[year]) acc[year] = []
-        // Find the index where the statement should be inserted to maintain order by month
-        const insertIndex = acc[year].findIndex(
-          (existingItem) => new Date(existingItem.start_date).getMonth() > month
-        )
+        const year = new Date(report.start_date).getFullYear()
 
-        if (insertIndex === -1) {
-          // If the index is -1, it means the statement should be inserted at the end
-          acc[year].push(report)
-        } else {
-          // Insert at the calculated index to keep the array sorted by month
-          acc[year].splice(insertIndex, 0, report)
-        }
+        if (!acc[year]) acc[year] = []
+        acc[year].push(report)
+
         return acc
       },
       {}
     )
+
+    Object.keys(yearlyGroupedReports).forEach((year) => {
+      yearlyGroupedReports[year].sort((a, b) => {
+        const monthA = new Date(a.start_date).getMonth()
+        const monthB = new Date(b.start_date).getMonth()
+
+        if (monthA !== monthB) {
+          return monthB - monthA
+        }
+
+        return Number(b.id) - Number(a.id)
+      })
+    })
+
     const years = Object.keys(yearlyGroupedReports).sort(
       (a, b) => Number(b) - Number(a)
     )
