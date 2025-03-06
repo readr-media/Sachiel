@@ -2,7 +2,7 @@ import {
   fetchAllCategory,
   fetchCategoryStory,
 } from '@/app/actions/get-homepage'
-import AdSense from '@/components/ad/google-adsense/adsense-ad'
+import AdSense from '@/components/ad/adsense-ad'
 
 import NavList from './nav-list'
 

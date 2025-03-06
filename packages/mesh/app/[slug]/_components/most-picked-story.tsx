@@ -1,5 +1,5 @@
 import FeaturedCard from '@/app/_components/featured-card'
-import AdSense from '@/components/ad/google-adsense/adsense-ad'
+import AdSense from '@/components/ad/adsense-ad'
 import type { CategoryStory } from '@/types/homepage'
 
 type Props = {
