@@ -93,7 +93,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
           <UserStatusList userStatusList={userStatusList} />
         </div>
       </section>
-      <Tab userType={userType} />
+      <Tab userType={userType} hasPodcast={!!podcastData.length} />
       <ArticleCardList
         items={tabData}
         userType={userType}
