@@ -29,7 +29,7 @@ export default function useProfileTab(userType: UserType) {
   )
 
   const handleTabClick = useCallback(
-    (tabKey: typeof tabOptions[number]['key']) => {
+    (tabKey: ProfileTabKey) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set('tab', tabKey)
       router.push(`?${params.toString()}`, { scroll: false })

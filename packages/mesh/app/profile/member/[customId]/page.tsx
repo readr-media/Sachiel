@@ -14,11 +14,10 @@ const Page = async (props: PageProps) => {
   const customId = params.customId
   const isCurrentUser = currentUser?.customId === customId
   const userType = isCurrentUser ? 'member' : 'visitor'
-  const profileCustomId = isCurrentUser ? currentUser?.customId : customId
 
   return (
     <div className="flex grow flex-col">
-      <ProfilePage userType={userType} profileCustomId={profileCustomId} />
+      <ProfilePage userType={userType} profileCustomId={customId} />
     </div>
   )
 }
