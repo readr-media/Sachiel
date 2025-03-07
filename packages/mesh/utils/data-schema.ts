@@ -160,6 +160,7 @@ export const MongoDBResponseSchema = z.object({
         title: z.string(),
       }),
       published_date: z.string(),
+      story_type: z.enum(['story', 'podcast']),
       og_title: z.string(),
       og_image: z.string(),
       full_screen_ad: FullScreenAdEnum,
