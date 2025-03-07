@@ -79,6 +79,7 @@ switch (ENV) {
       policyId: '2dd43a81-3e1c-4c74-aa5f-35135f24dfcd',
       meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
     }
+    GTM_ENV = 'GTM-MKLVHSGJ'
     break
   case 'dev':
     SITE_HOST = 'dev.mmesh.news'

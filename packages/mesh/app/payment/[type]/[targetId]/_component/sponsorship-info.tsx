@@ -17,12 +17,14 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
+import type { TransactionState } from '@/types/transaction'
 import { logSponsorEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
 import { type SponsorshipPoints } from './sponsor-option'
 import SponsorOption from './sponsor-option'
+import TransactionOngoing from './transaction-ongoing'
 
 export default function SponsorshipInfo({
   publisher,
@@ -41,8 +43,13 @@ export default function SponsorshipInfo({
     SponsorshipPoints | undefined | null
   >(null)
   const [amount, setAmount] = useState(0)
-  const [isSponsored, setIsSponsored] = useState(false)
+  const [transactionState, setTransactionState] =
+    useState<TransactionState>('idle')
   const { addToast } = useToast()
+
+  const isSponsored = transactionState === 'success'
+  const isSponsoring = transactionState === 'trading'
+
   const createSponsorPayment: CreatePaymentProps = {
     action: 'sponsor_media',
     memberId: user.memberId,
@@ -83,8 +90,12 @@ export default function SponsorshipInfo({
     }
   }, 500)
 
-  const handleSponsorSuccess = () => {
-    setIsSponsored(true)
+  const handleSponsorOnSend = () => {
+    setTransactionState('trading')
+  }
+
+  const handleSponsorOnSuccess = () => {
+    setTransactionState('success')
     logSponsorEvent(userPayload, {
       sponsorId: user.memberId,
       sponsorName: user.name,
@@ -94,8 +105,12 @@ export default function SponsorshipInfo({
     })
   }
 
+  const handleSponsorOnError = () => {
+    setTransactionState('error')
+  }
+
   return (
-    <main className="flex flex-col items-center lg:items-start">
+    <main className="relative flex grow flex-col items-center lg:items-start">
       {isSponsored ? (
         <div className="flex h-[calc(100vh-130px)] w-full items-center justify-center">
           <div className="flex w-dvw max-w-[295px] flex-col items-center sm:max-w-[320px]">
@@ -140,7 +155,9 @@ export default function SponsorshipInfo({
               createPaymentPayload={createSponsorPayment}
               updatePaymentPayload={updateSponsorPayment}
               failPaymentPayload={failSponsorPayment}
-              onSuccess={handleSponsorSuccess}
+              onSend={handleSponsorOnSend}
+              onSuccess={handleSponsorOnSuccess}
+              onError={handleSponsorOnError}
             />
           ) : (
             <div className="flex w-full justify-center">
@@ -157,6 +174,9 @@ export default function SponsorshipInfo({
           )}
         </div>
       )}
+
+      {/* This UI only cover all other jsx cause the transction logic is inside SendTransaction component */}
+      {isSponsoring && <TransactionOngoing />}
     </main>
   )
 }

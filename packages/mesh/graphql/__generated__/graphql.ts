@@ -4081,8 +4081,8 @@ export type StatementRelateToManyForUpdateInput = {
 }
 
 export enum StatementTypeType {
+  Media = 'media',
   Month = 'month',
-  Quarter = 'quarter',
   SemiAnnual = 'semi_annual',
 }
 
@@ -6889,6 +6889,7 @@ export type GetStoryQuery = {
     id: string
     title?: string | null
     summary?: string | null
+    full_content?: boolean | null
     url?: string | null
     og_image?: string | null
     published_date?: any | null
@@ -6904,7 +6905,6 @@ export type GetStoryQuery = {
       id: string
       title?: string | null
       customId?: string | null
-      full_content?: boolean | null
     } | null
     picks?: Array<{
       __typename?: 'Pick'
@@ -20161,10 +20161,7 @@ export const GetPublisherReportsDocument = {
                                 {
                                   kind: 'ObjectField',
                                   name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'EnumValue',
-                                    value: 'quarter',
-                                  },
+                                  value: { kind: 'EnumValue', value: 'media' },
                                 },
                               ],
                             },
@@ -20845,12 +20842,12 @@ export const GetStoryDocument = {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'customId' },
                       },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'full_content' },
-                      },
                     ],
                   },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'full_content' },
                 },
                 { kind: 'Field', name: { kind: 'Name', value: 'url' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },

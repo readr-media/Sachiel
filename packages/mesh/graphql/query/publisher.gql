@@ -67,7 +67,7 @@ query GetExchangePublisherInfo($customId: String) {
 query GetPublisherReports($publisherCustomId: String) {
   publishers(where: { customId: { equals: $publisherCustomId } }) {
     id
-    statements(where: { type: { equals: quarter } }) {
+    statements(where: { type: { equals: media } }) {
       id
       title
       type

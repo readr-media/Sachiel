@@ -55,8 +55,8 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
       id
       title
       customId
-      full_content
     }
+    full_content
     url
     og_image
     published_date

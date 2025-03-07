@@ -20,6 +20,7 @@ import { logStoryUnlockEvent } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
 
 import { type StoryUnlockPolicy } from '../page'
+import TransactionOngoing from './transaction-ongoing'
 
 export default function PaymentInfo({
   unlockPolicy,
@@ -38,6 +39,7 @@ export default function PaymentInfo({
   const [email, setEmail] = useState(user.email)
   const [isChecked, setIsChecked] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
+  const [isUnlocking, setIsUnlocking] = useState(false)
   const { addToast } = useToast()
   const isValid = isValidEmail(email)
   const createUnlockStorySinglePayment: CreatePaymentProps = {
@@ -61,7 +63,12 @@ export default function PaymentInfo({
     complement: 'Reason of failure',
   }
 
-  const handleUnlockStorySingleSuccess = () => {
+  const handleUnlockStorySingleOnSend = () => {
+    setIsUnlocking(true)
+  }
+
+  const handleUnlockStorySingleOnSuccess = () => {
+    setIsUnlocking(false)
     addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
     logStoryUnlockEvent(userPayload, {
       policyId: unlockPolicy[0].id,
@@ -75,8 +82,12 @@ export default function PaymentInfo({
     }, 300)
   }
 
+  const handleUnlockStorySingleOnError = () => {
+    setIsUnlocking(false)
+  }
+
   return (
-    <main className="p-5 py-4 lg:px-10">
+    <main className="relative grow p-5 py-4 lg:px-10">
       <div className="flex max-w-[600px] grow flex-col gap-10 sm:grow-0">
         <div className="flex flex-col gap-3">
           <p className="profile-title">訂單資訊</p>
@@ -162,9 +173,14 @@ export default function PaymentInfo({
           createPaymentPayload={createUnlockStorySinglePayment}
           updatePaymentPayload={updateUnlockStorySinglePayment}
           failPaymentPayload={failUnlockStorySinglePayment}
-          onSuccess={handleUnlockStorySingleSuccess}
+          onSend={handleUnlockStorySingleOnSend}
+          onSuccess={handleUnlockStorySingleOnSuccess}
+          onError={handleUnlockStorySingleOnError}
         />
       </div>
+
+      {/* This UI only cover all other jsx cause the transction logic is inside SendTransaction component */}
+      {isUnlocking && <TransactionOngoing />}
     </main>
   )
 }
