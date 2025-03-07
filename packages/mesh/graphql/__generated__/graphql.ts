@@ -4081,8 +4081,8 @@ export type StatementRelateToManyForUpdateInput = {
 }
 
 export enum StatementTypeType {
+  Media = 'media',
   Month = 'month',
-  Quarter = 'quarter',
   SemiAnnual = 'semi_annual',
 }
 
@@ -20124,10 +20124,7 @@ export const GetPublisherReportsDocument = {
                                 {
                                   kind: 'ObjectField',
                                   name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'EnumValue',
-                                    value: 'quarter',
-                                  },
+                                  value: { kind: 'EnumValue', value: 'media' },
                                 },
                               ],
                             },
