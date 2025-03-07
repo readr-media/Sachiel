@@ -17,6 +17,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
+import type { TransactionState } from '@/types/transaction'
 import { logSponsorEvent } from '@/utils/event-logs'
 import { debounce } from '@/utils/performance'
 
@@ -42,9 +43,13 @@ export default function SponsorshipInfo({
     SponsorshipPoints | undefined | null
   >(null)
   const [amount, setAmount] = useState(0)
-  const [isSponsored, setIsSponsored] = useState(false)
-  const [isSponsoring, setIsSponsoring] = useState(false)
+  const [transactionState, setTransactionState] =
+    useState<TransactionState>('idle')
   const { addToast } = useToast()
+
+  const isSponsored = transactionState === 'success'
+  const isSponsoring = transactionState === 'trading'
+
   const createSponsorPayment: CreatePaymentProps = {
     action: 'sponsor_media',
     memberId: user.memberId,
@@ -86,12 +91,11 @@ export default function SponsorshipInfo({
   }, 500)
 
   const handleSponsorOnSend = () => {
-    setIsSponsoring(true)
+    setTransactionState('trading')
   }
 
   const handleSponsorOnSuccess = () => {
-    setIsSponsoring(false)
-    setIsSponsored(true)
+    setTransactionState('success')
     logSponsorEvent(userPayload, {
       sponsorId: user.memberId,
       sponsorName: user.name,
@@ -102,7 +106,7 @@ export default function SponsorshipInfo({
   }
 
   const handleSponsorOnError = () => {
-    setIsSponsoring(false)
+    setTransactionState('error')
   }
 
   return (

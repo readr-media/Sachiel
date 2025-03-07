@@ -17,6 +17,7 @@ import { NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT } from '@/constants
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import type { TransactionState } from '@/types/transaction'
 // TODO: add user log to log exchange record
 // import useUserPayload from '@/hooks/use-user-payload'
 // import { logSponsor } from '@/utils/event-logs'
@@ -35,10 +36,14 @@ export default function ExchangeInfo({
 }) {
   const { user } = useUser()
   const [amount, setAmount] = useState(0)
-  const [isExchanged, setIsExchanged] = useState(false)
-  const [isExchanging, setIsExchanging] = useState(false)
+  const [transactionState, setTransactionState] =
+    useState<TransactionState>('idle')
   const [nextMonthNumber, setNextMonthNumber] = useState<number | null>(null)
   const { addToast } = useToast()
+
+  const isExchanged = transactionState === 'success'
+  const isExchanging = transactionState === 'trading'
+
   // TODO: add user log to log exchange record
   // const userPayload = useUserPayload()
   const createExchangePayment: CreatePaymentProps = {
@@ -72,19 +77,18 @@ export default function ExchangeInfo({
   }, 500)
 
   const handleExchangeOnSend = () => {
-    setIsExchanging(true)
+    setTransactionState('trading')
   }
 
   const handleExchangeOnSuccess = () => {
-    setIsExchanged(true)
-    setIsExchanging(false)
+    setTransactionState('success')
     setNextMonthNumber(getNextMonthNumber())
     // TODO: add user log to log exchange record
     // logSponsor(userPayload, publisher.title ?? '')
   }
 
   const handleExchangeOnError = () => {
-    setIsExchanging(false)
+    setTransactionState('error')
   }
 
   return (
