@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import StoryCard from '@/app/_components/story-card'
-import AdSense from '@/components/ad/adsense-ad'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import Spinner from '@/components/spinner'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
