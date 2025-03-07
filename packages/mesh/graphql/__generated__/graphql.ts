@@ -4816,6 +4816,7 @@ export type StoryInfoFragment = {
   paywall?: boolean | null
   full_screen_ad?: StoryFullScreenAdType | null
   published_date?: any | null
+  story_type?: StoryStoryTypeType | null
   source?: {
     __typename?: 'Publisher'
     title?: string | null
@@ -5635,6 +5636,7 @@ export type GetMemberProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -5740,6 +5742,7 @@ export type GetMemberProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -5874,6 +5877,7 @@ export type GetVisitorProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -6442,6 +6446,7 @@ export type GetMorePicksQuery = {
       paywall?: boolean | null
       full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
+      story_type?: StoryStoryTypeType | null
       comment?: Array<{
         __typename?: 'Comment'
         id: string
@@ -6557,6 +6562,7 @@ export type GetMoreBookmarksQuery = {
       paywall?: boolean | null
       full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
+      story_type?: StoryStoryTypeType | null
       comment?: Array<{
         __typename?: 'Comment'
         id: string
@@ -7034,6 +7040,32 @@ export type GetStoryPickersQuery = {
   } | null
 }
 
+export type GetPublisherPodcastsQueryVariables = Exact<{
+  customId?: InputMaybe<Scalars['String']['input']>
+  take?: InputMaybe<Scalars['Int']['input']>
+  skip?: InputMaybe<Scalars['Int']['input']>
+}>
+
+export type GetPublisherPodcastsQuery = {
+  __typename?: 'Query'
+  stories?: Array<{
+    __typename?: 'Story'
+    id: string
+    title?: string | null
+    og_image?: string | null
+    published_date?: any | null
+    paywall?: boolean | null
+    full_screen_ad?: StoryFullScreenAdType | null
+    story_type?: StoryStoryTypeType | null
+    pickCount?: number | null
+    source?: {
+      __typename?: 'Publisher'
+      id: string
+      title?: string | null
+    } | null
+  }> | null
+}
+
 export type GetPublisherTransactionsQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
@@ -7163,6 +7195,7 @@ export const StoryInfoFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -13957,6 +13990,7 @@ export const GetMemberProfileDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -14803,6 +14837,7 @@ export const GetVisitorProfileDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -18223,6 +18258,7 @@ export const GetMorePicksDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -18853,6 +18889,7 @@ export const GetMoreBookmarksDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -21809,6 +21846,159 @@ export const GetStoryPickersDocument = {
 } as unknown as DocumentNode<
   GetStoryPickersQuery,
   GetStoryPickersQueryVariables
+>
+export const GetPublisherPodcastsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherPodcasts' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'customId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'stories' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'source' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'customId' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: { kind: 'Name', value: 'customId' },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'story_type' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: { kind: 'EnumValue', value: 'podcast' },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'createdAt' },
+                      value: { kind: 'EnumValue', value: 'desc' },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'published_date' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'source' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'full_screen_ad' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pickCount' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherPodcastsQuery,
+  GetPublisherPodcastsQueryVariables
 >
 export const GetPublisherTransactionsDocument = {
   kind: 'Document',

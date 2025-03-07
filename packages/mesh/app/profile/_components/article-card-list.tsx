@@ -1,117 +1,88 @@
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
-import type { MutableRefObject } from 'react'
-import { useEffect } from 'react'
+import { useState } from 'react'
 
 import {
   getMoreMemberBookmarks,
   getMoreMemberCollections,
   getMoreMemberPicks,
 } from '@/app/actions/get-more-profile-data'
+import type { PublisherPodcasts } from '@/app/actions/get-publisher-profile'
+import { getPublisherPodcasts } from '@/app/actions/get-publisher-profile'
 import ArticleCard from '@/app/profile/_components/article-card'
-import * as profile from '@/types/profile'
+import { type ProfileTabKey } from '@/hooks/use-profile-tab'
+import type * as profile from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
 
+import EmptyTabState from './empty-tab-state'
+
 interface ArticleCardListProps {
-  tabCategory?: profile.TabCategoryType
+  activeTab: ProfileTabKey
   items:
     | profile.PickList
     | profile.Bookmarks
     | profile.Collections
     | PublisherProfile['stories']
-  emptyMessage: string
-  elementForEmpty?: React.ReactNode
+    | PublisherPodcasts
   memberId?: string
   avatar?: string
   name?: string
-  shouldShowComment: boolean
+  userType: profile.UserType
   customId?: string
-  hasMoreData?: MutableRefObject<{
-    PICKS: boolean
-    BOOKMARKS: boolean
-    COLLECTIONS: boolean
-  }>
 }
-
-const FETCH_FUNCTIONS = {
-  [profile.TabCategory.PICKS]: getMoreMemberPicks,
-  [profile.TabCategory.BOOKMARKS]: getMoreMemberBookmarks,
-  [profile.TabCategory.COLLECTIONS]: getMoreMemberCollections,
-} as const
 
 const PAGINATION_CONFIG = {
   PAGE_SIZE: 40,
   MAX_ELEMENTS: 200,
 } as const
 
-function ArticleCardList({
+export default function ArticleCardList({
   items,
-  shouldShowComment,
-  emptyMessage,
-  elementForEmpty,
   memberId,
   avatar,
   name,
   customId,
-  tabCategory,
-  hasMoreData,
+  activeTab,
+  userType,
 }: ArticleCardListProps) {
-  const updateHasMoreData = (hasMore: boolean) => {
-    if (!hasMoreData) return
-    if (!tabCategory) return
-    // TODO: publisher do not have infinite scroll
-    if (tabCategory === profile.TabCategory.PUBLISH) return
-    hasMoreData.current[tabCategory] = hasMore
-  }
-  useEffect(() => {
-    updateHasMoreData(true)
-  }, [tabCategory, items])
+  const [hasMoreData, setHasMoreData] = useState(true)
+  const shouldShowComment = activeTab === 'pick'
+  const isCollection = activeTab === 'collection'
 
   if (!items?.length) {
-    return (
-      <div className="flex grow flex-col">
-        <section className="flex h-full max-w-[theme(width.maxMain)] grow flex-col items-center justify-center whitespace-pre bg-primary-700-dark text-center text-base text-primary-400 sm:min-h-full">
-          <p className="mb-4 w-full">{emptyMessage}</p>
-          {elementForEmpty}
-        </section>
-      </div>
-    )
+    return <EmptyTabState tabKey={activeTab} userType={userType} />
   }
-
-  const isCollection = items.some((item) => item.__typename === 'Collection')
-
-  const fetchMorePicksInProfile = async (pageIndex: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fetchMoreItemsInProfile = async (pageIndex: number): Promise<any[]> => {
+    if (!customId) return []
     if (!hasMoreData) return []
-    if (!tabCategory) return []
-    // TODO: publisher do not have infinite scroll
-    if (tabCategory === profile.TabCategory.PUBLISH) return []
-    if (!hasMoreData.current[tabCategory]) return []
 
-    const fetchFunction =
-      FETCH_FUNCTIONS[tabCategory as keyof typeof FETCH_FUNCTIONS] ??
-      FETCH_FUNCTIONS[profile.TabCategory.PICKS]
-
+    const fetchFunction = fetchFunctionOption(activeTab)
     const moreItems = await fetchFunction({
-      customId: customId ?? '',
-      takes: PAGINATION_CONFIG.PAGE_SIZE * pageIndex,
+      customId: customId,
+      takes: PAGINATION_CONFIG.PAGE_SIZE,
       start: PAGINATION_CONFIG.PAGE_SIZE * (pageIndex - 1),
     })
 
-    updateHasMoreData(moreItems.length === PAGINATION_CONFIG.PAGE_SIZE)
-    return moreItems
+    if (moreItems.length) {
+      return moreItems
+    } else {
+      setHasMoreData(false)
+      return []
+    }
   }
   return (
     <>
-      {tabCategory === profile.TabCategory.PICKS && (
+      {activeTab === 'pick' && (
         <p className="list-title bg-white px-5 pt-4 text-primary-700 md:bg-primary-700-dark md:p-10 md:px-[70px] md:pb-1 md:pt-9 lg:px-10">
           精選文章
         </p>
       )}
       <InfiniteScrollList
-        key={tabCategory}
+        key={activeTab}
         initialList={items as profile.PickList}
         pageSize={PAGINATION_CONFIG.PAGE_SIZE}
         amountOfElements={PAGINATION_CONFIG.MAX_ELEMENTS}
-        fetchListInPage={fetchMorePicksInProfile}
+        fetchListInPage={fetchMoreItemsInProfile}
         isAutoFetch={true}
       >
         {(renderList) => {
@@ -180,4 +151,17 @@ function ArticleCardList({
   )
 }
 
-export default ArticleCardList
+const fetchFunctionOption = (activeTab: ProfileTabKey) => {
+  switch (activeTab) {
+    case 'pick':
+      return getMoreMemberPicks
+    case 'bookmark':
+      return getMoreMemberBookmarks
+    case 'collection':
+      return getMoreMemberCollections
+    case 'podcast':
+      return getPublisherPodcasts
+    default:
+      return getMoreMemberPicks
+  }
+}
