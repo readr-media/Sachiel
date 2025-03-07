@@ -2,8 +2,6 @@
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
-  GetPodcastCommentsDocument,
-  GetPodcastDocument,
   GetPublisherPolicyDocument,
   GetStoriesDocument,
   GetStoryDocument,
@@ -45,7 +43,7 @@ export async function getStory({ storyId }: { storyId: string }) {
     globalLogFields
   )
 
-  return response
+  return response?.story
 }
 
 export async function getRelatedStories({
@@ -132,34 +130,4 @@ export async function getStoryPickers(
     'Failed to getStoryPickers'
   )
   return getStoryPickersResponse?.story
-}
-
-export async function getPodcast(podcastId: string) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const response = await queryGraphQL(
-    GetPodcastDocument,
-    {
-      podcastId,
-    },
-    globalLogFields,
-    'Failed to get podcast data'
-  )
-
-  return response?.story
-}
-
-export type PodcastData = Awaited<ReturnType<typeof getPodcastComments>>
-export async function getPodcastComments(podcastId: string) {
-  const globalLogFields = getLogTraceObjectFromHeaders()
-  const commentsTake = 30
-  const response = await queryGraphQL(
-    GetPodcastCommentsDocument,
-    {
-      podcastId,
-      commentsTake,
-    },
-    globalLogFields,
-    'Failed to get podcast comments'
-  )
-  return response?.story
 }

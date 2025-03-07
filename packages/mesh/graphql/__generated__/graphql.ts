@@ -6897,6 +6897,7 @@ export type GetStoryQuery = {
     apiData?: any | null
     trimApiData?: any | null
     isMember?: boolean | null
+    story_type?: StoryStoryTypeType | null
     picksCount?: number | null
     commentsCount?: number | null
     category?: { __typename?: 'Category'; title?: string | null } | null
@@ -6935,6 +6936,16 @@ export type GetStoryQuery = {
         avatar?: string | null
       } | null
     }> | null
+    podcast?: {
+      __typename?: 'Podcast'
+      id: string
+      author?: string | null
+      url?: string | null
+      file_size?: number | null
+      mime_type?: string | null
+      duration?: string | null
+      createdAt?: any | null
+    } | null
   } | null
 }
 
@@ -7035,64 +7046,6 @@ export type GetStoryPickersQuery = {
         name?: string | null
         avatar?: string | null
         customId?: string | null
-      } | null
-    }> | null
-  } | null
-}
-
-export type GetPodcastQueryVariables = Exact<{
-  podcastId?: InputMaybe<Scalars['ID']['input']>
-}>
-
-export type GetPodcastQuery = {
-  __typename?: 'Query'
-  story?: {
-    __typename?: 'Story'
-    id: string
-    title?: string | null
-    og_image?: string | null
-    content?: string | null
-    story_type?: StoryStoryTypeType | null
-    podcast?: {
-      __typename?: 'Podcast'
-      id: string
-      author?: string | null
-      url?: string | null
-      file_size?: number | null
-      mime_type?: string | null
-      duration?: string | null
-      createdAt?: any | null
-    } | null
-  } | null
-}
-
-export type GetPodcastCommentsQueryVariables = Exact<{
-  podcastId?: InputMaybe<Scalars['ID']['input']>
-  commentsTake?: InputMaybe<Scalars['Int']['input']>
-}>
-
-export type GetPodcastCommentsQuery = {
-  __typename?: 'Query'
-  story?: {
-    __typename?: 'Story'
-    id: string
-    title?: string | null
-    commentsCount?: number | null
-    source?: { __typename?: 'Publisher'; id: string } | null
-    comments?: Array<{
-      __typename?: 'Comment'
-      id: string
-      createdAt?: any | null
-      likeCount?: number | null
-      content?: string | null
-      state?: string | null
-      like?: Array<{ __typename?: 'Member'; id: string }> | null
-      member?: {
-        __typename?: 'Member'
-        id: string
-        customId?: string | null
-        name?: string | null
-        avatar?: string | null
       } | null
     }> | null
   } | null
@@ -21232,6 +21185,38 @@ export const GetStoryDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'trimApiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'isMember' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'podcast' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'file_size' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'mime_type' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'duration' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -21904,346 +21889,6 @@ export const GetStoryPickersDocument = {
 } as unknown as DocumentNode<
   GetStoryPickersQuery,
   GetStoryPickersQueryVariables
->
-export const GetPodcastDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'GetPodcast' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'podcastId' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'story' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'podcastId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'og_image' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'content' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'podcast' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'author' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'file_size' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'mime_type' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'duration' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetPodcastQuery, GetPodcastQueryVariables>
-export const GetPodcastCommentsDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'GetPodcastComments' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'podcastId' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-        },
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'commentsTake' },
-          },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'story' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'id' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'podcastId' },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'source' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'Field',
-                  alias: { kind: 'Name', value: 'commentsCount' },
-                  name: { kind: 'Name', value: 'commentCount' },
-                  arguments: [
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'where' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'state' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'StringValue',
-                                    value: 'public',
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'is_active' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: { kind: 'BooleanValue', value: true },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-                {
-                  kind: 'Field',
-                  alias: { kind: 'Name', value: 'comments' },
-                  name: { kind: 'Name', value: 'comment' },
-                  arguments: [
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'where' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'state' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'StringValue',
-                                    value: 'public',
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'is_active' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: { kind: 'BooleanValue', value: true },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'orderBy' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'createdAt' },
-                            value: { kind: 'EnumValue', value: 'desc' },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: 'Argument',
-                      name: { kind: 'Name', value: 'take' },
-                      value: {
-                        kind: 'Variable',
-                        name: { kind: 'Name', value: 'commentsTake' },
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'createdAt' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'likeCount' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'like' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'member' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'id' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'customId' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'name' },
-                            },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'avatar' },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'content' },
-                      },
-                      { kind: 'Field', name: { kind: 'Name', value: 'state' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetPodcastCommentsQuery,
-  GetPodcastCommentsQueryVariables
 >
 export const GetPublisherPodcastsDocument = {
   kind: 'Document',

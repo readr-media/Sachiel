@@ -104,6 +104,16 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     apiData
     trimApiData
     isMember
+    story_type
+    podcast {
+      id
+      author
+      url
+      file_size
+      mime_type
+      duration
+      createdAt
+    }
   }
 }
 
@@ -219,57 +229,5 @@ query GetPublisherPodcasts($customId: String, $take: Int, $skip: Int) {
     full_screen_ad
     story_type
     pickCount
-  }
-}
-
-query GetPodcast($podcastId: ID) {
-  story(where: { id: $podcastId }) {
-    id
-    title
-    og_image
-    content
-    story_type
-    podcast {
-      id
-      author
-      url
-      file_size
-      mime_type
-      duration
-      createdAt
-    }
-  }
-}
-
-query GetPodcastComments($podcastId: ID, $commentsTake: Int) {
-  story(where: { id: $podcastId }) {
-    id
-    title,
-    source{
-      id
-    }
-    commentsCount: commentCount(
-      where: { state: { equals: "public" }, is_active: { equals: true } }
-    )
-    comments: comment(
-      where: { state: { equals: "public" }, is_active: { equals: true } }
-      orderBy: { createdAt: desc }
-      take: $commentsTake
-    ) {
-      id
-      createdAt
-      likeCount
-      like {
-        id
-      }
-      member {
-        id
-        customId
-        name
-        avatar
-      }
-      content
-      state
-    }
   }
 }

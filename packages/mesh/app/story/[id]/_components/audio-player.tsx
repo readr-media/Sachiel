@@ -103,10 +103,12 @@ export default function AudioPlayer({
 
   const handleSkipTime = (seconds: number) => {
     if (!audioRef.current) return
-    audioRef.current.currentTime = Math.min(
+    const newTime = Math.min(
       Math.max(audioRef.current.currentTime + seconds, 0),
       audioRef.current.duration
     )
+    audioRef.current.currentTime = newTime
+    setProgress((newTime / audioRef.current.duration) * 100)
   }
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
