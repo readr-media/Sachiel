@@ -140,6 +140,38 @@ export const ADSENSE_UNITS: AdsenseUnits = {
 }
 
 export const GAM_UNITS: GamUnits = {
+  homepage: {
+    PC_A1: {
+      adUnit: 'mmesh_home_pc_970x250_t',
+      adSlot: '1738637846429-0',
+      adSize: [970, 250],
+    },
+    PC_A3: {
+      adUnit: 'mmesh_home_pc_728x90_m',
+      adSlot: '1738637876551-0',
+      adSize: [728, 90],
+    },
+    PC_A4: {
+      adUnit: 'mmesh_home_pc_728x90_b',
+      adSlot: '1738637912352-0',
+      adSize: [728, 90],
+    },
+    MB_A1: {
+      adUnit: 'mmesh_home_mw_320x100_t',
+      adSlot: '1738638022009-0',
+      adSize: [320, 100],
+    },
+    MB_A2: {
+      adUnit: 'mmesh_home_mw_320x100_m',
+      adSlot: '1738638046912-0',
+      adSize: [320, 100],
+    },
+    MB_A3: {
+      adUnit: 'mmesh_home_mw_320x100_b',
+      adSlot: '1738638069956-0',
+      adSize: [320, 100],
+    },
+  },
   story: {
     PC_E0: {
       adUnit: 'mmesh_article_pc_300x600_rb',
