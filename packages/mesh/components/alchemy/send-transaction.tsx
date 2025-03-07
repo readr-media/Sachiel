@@ -29,7 +29,6 @@ import {
 } from '@/utils/alchemy'
 
 import Button from '../button'
-import Spinner from '../spinner'
 
 export default function SendTransaction({
   recipientAddress,
@@ -39,7 +38,9 @@ export default function SendTransaction({
   createPaymentPayload,
   updatePaymentPayload,
   failPaymentPayload,
+  onSend,
   onSuccess,
+  onError,
   actionText = '完成付款',
 }: {
   recipientAddress: Hex
@@ -49,13 +50,14 @@ export default function SendTransaction({
   createPaymentPayload: CreatePaymentProps
   updatePaymentPayload: UpdatePaymentProps
   failPaymentPayload: FailPaymentProps
+  onSend: () => void
   onSuccess: () => void
+  onError: () => void
   actionText?: string
 }) {
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
   const [paymentId, setPaymentId] = useState('')
-  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false)
   const isCmsPaymentInProgressRef = useRef(false)
   // use config values to initialize our smart account client
   const { client } = useSmartAccountClient({
@@ -98,7 +100,6 @@ export default function SendTransaction({
       if (!accessTokenResponse)
         throw new Error('Failed to refresh access token after user operation')
       onSuccess()
-      setIsPaymentProcessing(false)
     } catch (error) {
       console.error('Transaction failed:', error)
       addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
@@ -109,6 +110,7 @@ export default function SendTransaction({
           }`
         )
       }
+      onError()
     }
   }
 
@@ -131,6 +133,7 @@ export default function SendTransaction({
       turnCmsPaymentIntoFailure(
         `Transaction failed when alchemy on error, \n${error.message}`
       )
+      onError()
     },
   })
 
@@ -149,7 +152,7 @@ export default function SendTransaction({
 
   const send = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-    setIsPaymentProcessing(true)
+    onSend()
     try {
       if (!contractInterface) throw new Error('Contract interface is missing')
       if (!client) throw new Error('Smart account client is not initialized')
@@ -175,26 +178,23 @@ export default function SendTransaction({
     } catch (error) {
       console.error('Transaction failed:', error)
       addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      onError()
     }
   }
 
   return (
     <div className="flex shrink-0 grow flex-col items-center gap-1">
-      {isPaymentProcessing ? (
-        <Spinner />
-      ) : (
-        <form className="flex w-full justify-center" onSubmit={send}>
-          <div className="shrink-0 grow sm:max-w-[335px]">
-            <Button
-              type="submit"
-              size="lg"
-              color="primary"
-              text={actionText}
-              disabled={disabled || !client}
-            />
-          </div>
-        </form>
-      )}
+      <form className="flex w-full justify-center" onSubmit={send}>
+        <div className="shrink-0 grow sm:max-w-[335px]">
+          <Button
+            type="submit"
+            size="lg"
+            color="primary"
+            text={actionText}
+            disabled={disabled || !client}
+          />
+        </div>
+      </form>
     </div>
   )
 }

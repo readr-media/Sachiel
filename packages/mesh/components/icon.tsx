@@ -113,6 +113,7 @@ export type IconName =
   | 'icon-edit'
   | 'icon-edited'
   | 'icon-open-new-tab'
+  | 'icon-open-new-tab-gray'
   | 'icon-flag'
   | 'icon-404'
   | 'icon-500'
