@@ -4081,8 +4081,8 @@ export type StatementRelateToManyForUpdateInput = {
 }
 
 export enum StatementTypeType {
+  Media = 'media',
   Month = 'month',
-  Quarter = 'quarter',
   SemiAnnual = 'semi_annual',
 }
 
@@ -6773,6 +6773,27 @@ export type GetExchangePublisherInfoQuery = {
     id: string
     title?: string | null
     admin?: { __typename?: 'Member'; id: string; wallet?: string | null } | null
+  }> | null
+}
+
+export type GetPublisherReportsQueryVariables = Exact<{
+  publisherCustomId?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetPublisherReportsQuery = {
+  __typename?: 'Query'
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    statements?: Array<{
+      __typename?: 'Statement'
+      id: string
+      title?: string | null
+      type?: StatementTypeType | null
+      start_date?: any | null
+      end_date?: any | null
+      url?: string | null
+    }> | null
   }> | null
 }
 
@@ -20025,6 +20046,121 @@ export const GetExchangePublisherInfoDocument = {
 } as unknown as DocumentNode<
   GetExchangePublisherInfoQuery,
   GetExchangePublisherInfoQueryVariables
+>
+export const GetPublisherReportsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherReports' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherCustomId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'equals' },
+                            value: {
+                              kind: 'Variable',
+                              name: {
+                                kind: 'Name',
+                                value: 'publisherCustomId',
+                              },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'statements' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'where' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'type' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'EnumValue', value: 'media' },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'start_date' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'end_date' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherReportsQuery,
+  GetPublisherReportsQueryVariables
 >
 export const GetPublisherSponsorshipsDocument = {
   kind: 'Document',

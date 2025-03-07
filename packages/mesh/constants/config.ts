@@ -19,6 +19,7 @@ const NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE =
 let GTM_ENV = ''
 let ADSENSE_CLIENT = ''
 let API_ORIGIN = ''
+let SIGNED_COOKIE_API_ORIGIN = ''
 let STATIC_FILE_ORIGIN = ''
 let GCP_LOG_NAME = ''
 let PAYMENT_ORIGIN = ''
@@ -59,6 +60,7 @@ switch (ENV) {
   case 'local':
     SITE_HOST = 'localhost:3000'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
+    SIGNED_COOKIE_API_ORIGIN = 'https://services-lb.mmesh.news'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     PAYMENT_ORIGIN = 'https://mesh-payment-chain-dev-4g6paft7cq-de.a.run.app'
@@ -81,6 +83,7 @@ switch (ENV) {
   case 'dev':
     SITE_HOST = 'dev.mmesh.news'
     API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
+    SIGNED_COOKIE_API_ORIGIN = 'https://services-lb.mmesh.news'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
     GCP_LOG_NAME = 'mesh-next-userlog-dev'
@@ -113,6 +116,7 @@ switch (ENV) {
     SITE_HOST = 'www.mmesh.news'
     API_ORIGIN =
       'https://mesh-proxy-server-prod-1075249966777.asia-east1.run.app'
+    SIGNED_COOKIE_API_ORIGIN = 'https://services-prod-lb.mmesh.news'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-prod'
     GCP_LOG_NAME = 'mesh-next-userlog-prod'
@@ -160,6 +164,8 @@ const RESTFUL_ENDPOINTS = {
   socialPage: `${API_ORIGIN}/socialpage`,
   invitationCodes: `${API_ORIGIN}/invitation_codes`,
   notifications: `${API_ORIGIN}/notifications`,
+  publisherSignedCookie: (publisherId: string) =>
+    `${SIGNED_COOKIE_API_ORIGIN}/media/cookie/${publisherId}`,
 }
 
 const STATIC_FILE_ENDPOINTS = {
