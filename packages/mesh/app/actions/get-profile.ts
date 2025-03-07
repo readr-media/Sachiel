@@ -12,11 +12,11 @@ import { PickObjective } from '@/types/objective'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
-export async function getMemberProfile(memberId: string, takes: number) {
+export async function getMemberProfile(customId: string, takes: number) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const result = await queryGraphQL(GetMemberProfileDocument, {
-      customId: memberId,
+      customId,
       takes,
     })
     const memberData = result?.member
@@ -45,11 +45,11 @@ export async function getMemberProfile(memberId: string, takes: number) {
   }
 }
 
-export async function getVisitorProfile(visitorId: string, takes: number) {
+export async function getVisitorProfile(customId: string, takes: number) {
   const globalLogFields = getLogTraceObjectFromHeaders()
   try {
     const result = await queryGraphQL(GetVisitorProfileDocument, {
-      customId: visitorId,
+      customId,
       takes,
     })
     // if visitor data not found bubble this error to nextjs error handling

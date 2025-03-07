@@ -113,6 +113,7 @@ export type IconName =
   | 'icon-edit'
   | 'icon-edited'
   | 'icon-open-new-tab'
+  | 'icon-open-new-tab-gray'
   | 'icon-flag'
   | 'icon-404'
   | 'icon-500'
@@ -193,6 +194,11 @@ export type IconName =
   | 'icon-audio-back-10s-hover'
   | 'icon-audio-forward-30s'
   | 'icon-audio-forward-30s-hover'
+  | 'icon-file'
+  | 'icon-download'
+  | 'icon-download-hover'
+  | 'icon-print'
+  | 'icon-print-hover'
 
 export type IconProps = {
   size: Size

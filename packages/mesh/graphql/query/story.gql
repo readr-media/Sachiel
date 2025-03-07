@@ -55,8 +55,8 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
       id
       title
       customId
-      full_content
     }
+    full_content
     url
     og_image
     published_date
@@ -192,6 +192,33 @@ query GetStoryPickers($storyId: ID, $picksTake: Int, $picksSkip: Int) {
         customId
       }
     }
+  }
+}
+
+query GetPublisherPodcasts($customId: String, $take: Int, $skip: Int) {
+  stories(
+    where: {
+      source: { customId: { equals: $customId } }
+      story_type: { equals: podcast }
+    }
+    take: $take
+    skip: $skip
+    orderBy:  {
+       createdAt: desc
+    }
+  ) {
+    id
+    title
+    og_image
+    published_date
+    source {
+      id
+      title
+    }
+    paywall
+    full_screen_ad
+    story_type
+    pickCount
   }
 }
 

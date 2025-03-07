@@ -39,7 +39,7 @@ export type Publishers = NonNullable<Member['publishers']>
 export type PickListItem = NonNullable<PickList[number]['story']>
 export type BookmarkItem = PickListItem
 export type CollectionItem = Collections[number]
-export type PickCollections = NonNullable<PickList[number]['collection']>[]
+export type PickCollections = PickList[number]['collection'][]
 export type StoryData = NonNullable<Story>[]
 export type StoryDataItem = StoryData[number]
 
@@ -70,8 +70,8 @@ export interface ProfileTypes {
   avatar: string
   intro: string
   pickCount: number
-  followingCount: string
-  followerCount: string
+  followingCount: number
+  followerCount: number
   picksData: PickList
   bookmarks?: Bookmarks
   customId: string
@@ -83,7 +83,7 @@ export interface ProfileTypes {
 
 export interface EditProfileContextType {
   editProfileForm: EditProfileFormTypes
-  visitorProfile: ProfileTypes
+  profileData: ProfileTypes
   isFormValid: boolean
   errors: FormErrors
   isProfileLoading: boolean

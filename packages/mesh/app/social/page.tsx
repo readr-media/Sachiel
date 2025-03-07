@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
-import AdManager from '@/components/ad/google-ad-manager/ad-manager-ad'
+import AdManager from '@/components/ad/ad-manager-ad'
 import ErrorPage from '@/components/status/error-page'
 import { useUser } from '@/context/user'
 import { type MongoDBResponse } from '@/utils/data-schema'

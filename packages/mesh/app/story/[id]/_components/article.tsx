@@ -43,7 +43,7 @@ export default function Article({
   const { state: comment } = useComment()
   const getArticleContent = (story: Story, sourceCustomId: string) => {
     const isInHouseArticle = inHousePublisherCustomIds.includes(sourceCustomId)
-    const isLinkedArticle = story?.source?.full_content
+    const isLinkedArticle = !story?.full_content
 
     /**
      * There are two kind of sources, in-house and external,

@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react'
 
-import AdSense from '@/components/ad/google-adsense/adsense-ad'
+import AdSense from '@/components/ad/adsense-ad'
 import useInView from '@/hooks/use-in-view'
 
 import { type LatestStoriesInfo } from './media-stories'

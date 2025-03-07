@@ -47,11 +47,11 @@ export default function PointExchange({
   }
 
   return (
-    <div className="flex grow flex-col">
+    <div className="flex grow flex-col bg-white">
       <AlchemyAuth
         hasAlchemyAccount={true}
         renderComponent={
-          <div className="grow bg-white p-10">
+          <div className="flex max-w-[theme(width.maxMain)] grow flex-col p-10">
             <ExchangeInfo
               publisher={publisher}
               balance={balance}

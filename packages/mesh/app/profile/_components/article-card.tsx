@@ -113,6 +113,11 @@ const storyGetters = {
     collection: (data) => `/collection/${data.id}`,
     default: '',
   }),
+  storyType: createGetter<'story' | 'podcast'>({
+    story: (data) => data.story_type ?? 'story',
+    collection: () => 'story',
+    default: 'story',
+  }),
 } as const
 
 const ArticleCard = ({
@@ -271,6 +276,7 @@ const ArticleCard = ({
                     publishDate={storyGetters.publishedDate(storyData)}
                     paywall={storyGetters.paywall(storyData)}
                     fullScreenAd={storyGetters.fullScreenAd(storyData)}
+                    storyType={storyGetters.storyType(storyData)}
                   />
                 </span>
               </div>

@@ -1,4 +1,7 @@
 'use client'
+import { useMemo } from 'react'
+
+import type { PublisherPodcasts } from '@/app/actions/get-publisher-profile'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
@@ -6,8 +9,9 @@ import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
+import useProfileTab from '@/hooks/use-profile-tab'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
-import { type UserType, TabCategory, TabKey } from '@/types/profile'
+import { type UserType, TabKey } from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
 
 type PublisherPageProps = {
@@ -16,6 +20,7 @@ type PublisherPageProps = {
   intro: string
   userType: UserType
   storyData: PublisherProfile['stories']
+  podcastData: PublisherPodcasts
   publisherId: string
   publisherCustomId: string
   followerCount: string
@@ -28,6 +33,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   avatar,
   intro,
   storyData,
+  podcastData,
   userType,
   followerCount,
   sponsoredCount,
@@ -39,6 +45,16 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     publisherId,
     publisherName: name,
   })
+  const { activeTab } = useProfileTab(userType)
+
+  const tabData = useMemo(() => {
+    if (activeTab === 'story') {
+      return storyData
+    } else {
+      return podcastData
+    }
+  }, [activeTab, podcastData, storyData])
+
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
     {
@@ -77,11 +93,11 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
           <UserStatusList userStatusList={userStatusList} />
         </div>
       </section>
-      <Tab userType={userType} tabCategory={TabCategory.PUBLISH} />
+      <Tab userType={userType} hasPodcast={!!podcastData.length} />
       <ArticleCardList
-        items={storyData}
-        shouldShowComment={false}
-        emptyMessage="這個媒體還沒有發佈任何新聞"
+        items={tabData}
+        userType={userType}
+        activeTab={activeTab}
       />
     </>
   )

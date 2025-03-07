@@ -2,6 +2,7 @@
 
 import {
   GetPublisherExchangesDocument,
+  GetPublisherReportsDocument,
   GetPublisherSponsorshipsDocument,
   GetPublisherTransactionsDocument,
 } from '@/graphql/__generated__/graphql'
@@ -73,6 +74,23 @@ export async function getPublisherRedeems({
     { publisherCustomId, take, skip, gte, lte },
     globalLogFields,
     'Failed to get Publisher Transactions Data'
+  )
+  return response
+}
+
+export async function getPublisherReports({
+  publisherCustomId,
+}: {
+  publisherCustomId: string
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  const response = await fetchGraphQL(
+    GetPublisherReportsDocument,
+    {
+      publisherCustomId,
+    },
+    globalLogFields,
+    'Failed to get Publisher Reports'
   )
   return response
 }

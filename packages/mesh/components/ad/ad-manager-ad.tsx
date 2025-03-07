@@ -9,9 +9,15 @@ type Props = {
   pageKey?: string
   adKey?: string
   slot?: string
+  className?: string
 }
 
-export default function AdManager({ pageKey, adKey, slot }: Props) {
+export default function AdManager({
+  pageKey,
+  adKey,
+  slot,
+  className = '',
+}: Props) {
   const [adUnitPath, setAdUnitPath] = useState('')
   const [adDivId, setAdDivId] = useState('')
   const [adSize, setAdSize] = useState<[number, number] | [number, number][]>(
@@ -42,7 +48,7 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
     if (window.googletag && adSize && adDivId && adUnitPath) {
       window.googletag = window.googletag || { cmd: [] }
 
-      window.googletag.cmd.push(() => {
+      window.googletag.cmd?.push(() => {
         const slot = window.googletag.defineSlot(adUnitPath, adSize, adDivId)
 
         if (slot) {
@@ -56,5 +62,5 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
     }
   }, [adSize, adUnitPath, adDivId])
 
-  return <div id={adDivId} />
+  return <div id={adDivId} className={`mx-auto ${className}`} />
 }
