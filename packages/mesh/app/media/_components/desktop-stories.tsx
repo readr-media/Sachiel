@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
-import AdSense from '@/components/ad/adsense-ad'
+import AdSense from '@/components/ad/google-adsense/adsense-ad'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import DesktopInfiniteStories from './desktop-infinite-stories'

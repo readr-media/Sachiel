@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
-import AdManager from '@/components/ad/ad-manager-ad'
+import AdManager from '@/components/ad/google-ad-manager/ad-manager-ad'
 import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import { type MongoDBResponse } from '@/utils/data-schema'
