@@ -48,6 +48,7 @@ export default function Article({
      * There are two kind of sources, in-house and external,
      * If the full_content filed is false, then the article should be viewed in the original url.
      * In summary there are three conditions: linked article, in-house article and external article.
+     * When story_type is 'podcast', the story should be handled as an external article.
      */
     if (isLinkedArticle) {
       return (
