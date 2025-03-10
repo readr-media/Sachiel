@@ -43,7 +43,7 @@ export async function getStory({ storyId }: { storyId: string }) {
     globalLogFields
   )
 
-  return response
+  return response?.story
 }
 
 export async function getRelatedStories({
