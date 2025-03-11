@@ -383,3 +383,56 @@ export const PublisherListSchema = z.record(
     createdAt: z.string().datetime(),
   })
 )
+
+export type PodcastJSONType = z.infer<typeof PodcastJSONSchema>
+export const PodcastJSONSchema = z
+  .object({
+    source: z.object({
+      id: z.string(),
+      customId: z.string(),
+      title: z.string(),
+      official_site: z.string().url(),
+      logo: z.string().url(),
+      description: z.string(),
+      followerCount: z.number(),
+      sponsoredCount: z.number(),
+      picksCount: z.number(),
+    }),
+    stories: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        url: z.string().url(),
+        og_title: z.string(),
+        og_image: z.string().url(),
+        og_description: z.string(),
+        published_date: z.string().datetime(),
+        picks: z.array(
+          z.object({
+            createdAt: z.string().datetime(),
+            member: z.object({
+              id: z.string(),
+              name: z.string(),
+              avatar: z.string().url().or(z.literal('')),
+            }),
+          })
+        ),
+        picksCount: z.number(),
+        commentCount: z.number(),
+        paywall: z.boolean(),
+        full_screen_ad: z.string(),
+        full_content: z.boolean(),
+        story_type: z.enum(['podcast']).default('podcast'),
+      })
+    ),
+  })
+  .transform(({ source, stories }) =>
+    stories.map((s) => ({
+      ...s,
+      pickCount: s.picksCount,
+      source: {
+        id: source.id,
+        title: source.title,
+      },
+    }))
+  )

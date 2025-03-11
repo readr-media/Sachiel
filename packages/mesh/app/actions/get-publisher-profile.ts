@@ -1,11 +1,10 @@
 'use server'
 
 import { STATIC_FILE_ENDPOINTS } from '@/constants/config'
-import { GetPublisherPodcastsDocument } from '@/graphql/__generated__/graphql'
 import type { PublisherProfile } from '@/utils/data-schema'
-import queryGraphQL from '@/utils/fetch-graphql'
+import { type PodcastJSONType, PodcastJSONSchema } from '@/utils/data-schema'
 import fetchStatic from '@/utils/fetch-static'
-import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 export const publisherStoriesFn = async (publisherCustomId: string) => {
   const globalLogFields = getLogTraceObjectFromHeaders()
@@ -16,28 +15,20 @@ export const publisherStoriesFn = async (publisherCustomId: string) => {
   )
 }
 
-export type PublisherPodcasts = Awaited<ReturnType<typeof getPublisherPodcasts>>
-export async function getPublisherPodcasts({
-  customId,
-  takes,
-  start,
-}: {
-  customId: string
-  takes: number
-  start: number
-}) {
+export async function getPublisherPodcastJSON(publisherCustomId: string) {
   const globalLogFields = getLogTraceObjectFromHeaders()
 
-  const result = await queryGraphQL(
-    GetPublisherPodcastsDocument,
-    {
-      customId,
-      take: takes,
-      skip: start,
-    },
-    globalLogFields,
-    'Failed to get publisher podcasts'
-  )
-
-  return result?.stories ?? []
+  try {
+    const response = await fetchStatic<PodcastJSONType>(
+      STATIC_FILE_ENDPOINTS.publisherPodcastFn(publisherCustomId)
+    )
+    return PodcastJSONSchema.parse(response)
+  } catch (error) {
+    logServerSideError(
+      error,
+      `Error: Fail to get ${publisherCustomId} PodcastJSON`,
+      globalLogFields
+    )
+    return null
+  }
 }
