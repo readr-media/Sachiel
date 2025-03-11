@@ -1,7 +1,6 @@
 'use client'
 import { useMemo } from 'react'
 
-import type { PublisherPodcasts } from '@/app/actions/get-publisher-profile'
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
 import ProfileButtonList from '@/app/profile/_components/profile-button-list'
@@ -13,6 +12,7 @@ import useProfileTab from '@/hooks/use-profile-tab'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 import { type UserType, TabKey } from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
+import { type PodcastJSONType } from '@/utils/data-schema'
 
 type PublisherPageProps = {
   name: string
@@ -20,7 +20,7 @@ type PublisherPageProps = {
   intro: string
   userType: UserType
   storyData: PublisherProfile['stories']
-  podcastData: PublisherPodcasts
+  podcastData: PodcastJSONType
   publisherId: string
   publisherCustomId: string
   followerCount: string

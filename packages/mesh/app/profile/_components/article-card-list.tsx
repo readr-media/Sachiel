@@ -6,12 +6,11 @@ import {
   getMoreMemberCollections,
   getMoreMemberPicks,
 } from '@/app/actions/get-more-profile-data'
-import type { PublisherPodcasts } from '@/app/actions/get-publisher-profile'
-import { getPublisherPodcasts } from '@/app/actions/get-publisher-profile'
 import ArticleCard from '@/app/profile/_components/article-card'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
+import { type PodcastJSONType } from '@/utils/data-schema'
 
 import EmptyTabState from './empty-tab-state'
 
@@ -22,7 +21,7 @@ interface ArticleCardListProps {
     | profile.Bookmarks
     | profile.Collections
     | PublisherProfile['stories']
-    | PublisherPodcasts
+    | PodcastJSONType
   memberId?: string
   avatar?: string
   name?: string
@@ -159,8 +158,6 @@ const fetchFunctionOption = (activeTab: ProfileTabKey) => {
       return getMoreMemberBookmarks
     case 'collection':
       return getMoreMemberCollections
-    case 'podcast':
-      return getPublisherPodcasts
     default:
       return getMoreMemberPicks
   }

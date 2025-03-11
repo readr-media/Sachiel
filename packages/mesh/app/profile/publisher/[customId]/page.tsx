@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import {
-  getPublisherPodcasts,
+  getPublisherPodcastJSON,
   publisherStoriesFn,
 } from '@/app/actions/get-publisher-profile'
 import { formatFollowCount } from '@/utils/format-follow-count'
@@ -20,11 +20,7 @@ const Page = async ({ params }: PageProps) => {
 
   try {
     const storiesResponse = await publisherStoriesFn(customId)
-    const podcastData = await getPublisherPodcasts({
-      customId,
-      takes: 10,
-      start: 0,
-    })
+    const podcastJSON = await getPublisherPodcastJSON(customId)
 
     if (!storiesResponse) {
       notFound()
@@ -62,7 +58,7 @@ const Page = async ({ params }: PageProps) => {
           publisherId={publisherId}
           userType={userType}
           storyData={storyData}
-          podcastData={podcastData}
+          podcastData={podcastJSON || []}
         />
       </div>
     )
