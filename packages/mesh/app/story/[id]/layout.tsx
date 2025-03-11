@@ -22,15 +22,14 @@ export async function generateMetadata(
   const storyData = await getStory({
     storyId,
   })
+  if (!storyData) notFound()
 
   const previousImages = (await parent).openGraph?.images || []
-
-  const story = storyData?.story
-  const storyTitle = story?.title
-  const storyDescription = story?.summary
-  const storyImage = story?.og_image ?? ''
-  const storyCategory = story?.category?.title ?? ''
-  const storyPublishTime = story?.published_date ?? ''
+  const storyTitle = storyData.title
+  const storyDescription = storyData.summary
+  const storyImage = storyData.og_image ?? ''
+  const storyCategory = storyData.category?.title ?? ''
+  const storyPublishTime = storyData.published_date ?? ''
 
   const metaTitle = storyTitle ? `${storyTitle} | ${SITE_TITLE}` : SITE_TITLE
   const metaDescription = storyDescription || SITE_DESCRIPTION
@@ -65,18 +64,19 @@ export default async function StoryLayout({
   const storyId = params.id
   const storyData = await getStory({ storyId })
 
-  if (!storyData || !storyData?.story) {
-    notFound()
-  }
+  if (!storyData) notFound()
 
+  const storyType = storyData.story_type === 'story' ? 'story' : 'podcast'
   return (
     <CommentProvider
-      initialComments={storyData.story?.comments || []}
-      commentsCount={storyData.story.commentsCount ?? 0}
-      commentObjectiveData={storyData.story}
+      initialComments={storyData.comments || []}
+      commentsCount={storyData.commentsCount ?? 0}
+      commentObjectiveData={storyData}
       commentObjective={CommentObjective.Story}
     >
-      <ClientLayout story={storyData.story}>{children}</ClientLayout>
+      <ClientLayout story={storyData} storyType={storyType}>
+        {children}
+      </ClientLayout>
     </CommentProvider>
   )
 }

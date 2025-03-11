@@ -162,6 +162,17 @@ module.exports = {
         'light-box':
           '0px 0px 24px 0px rgba(0, 9, 40, 0.1),0px 2px 40px 0px rgba(0, 9, 40, 0.1)',
       },
+      animation: {
+        ['infinite-slider']: 'infiniteSlider 20s linear infinite',
+      },
+      keyframes: {
+        infiniteSlider: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': {
+            transform: 'translateX(calc(-250px * 2))',
+          },
+        },
+      },
     },
   },
   plugins: [

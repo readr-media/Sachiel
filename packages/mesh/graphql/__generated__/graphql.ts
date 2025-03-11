@@ -6897,6 +6897,7 @@ export type GetStoryQuery = {
     apiData?: any | null
     trimApiData?: any | null
     isMember?: boolean | null
+    story_type?: StoryStoryTypeType | null
     picksCount?: number | null
     commentsCount?: number | null
     category?: { __typename?: 'Category'; title?: string | null } | null
@@ -6935,6 +6936,16 @@ export type GetStoryQuery = {
         avatar?: string | null
       } | null
     }> | null
+    podcast?: {
+      __typename?: 'Podcast'
+      id: string
+      author?: string | null
+      url?: string | null
+      file_size?: number | null
+      mime_type?: string | null
+      duration?: string | null
+      createdAt?: any | null
+    } | null
   } | null
 }
 
@@ -21148,6 +21159,38 @@ export const GetStoryDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'trimApiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'isMember' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'podcast' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'file_size' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'mime_type' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'duration' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },

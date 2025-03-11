@@ -104,6 +104,16 @@ query GetStory($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     apiData
     trimApiData
     isMember
+    story_type
+    podcast {
+      id
+      author
+      url
+      file_size
+      mime_type
+      duration
+      createdAt
+    }
   }
 }
 

@@ -20,9 +20,11 @@ type Story = NonNullable<GetStoryQuery>['story']
 
 export default function ClientLayout({
   story,
+  storyType,
   children,
 }: {
   story: Story
+  storyType: 'story' | 'podcast'
   children: React.ReactNode
 }) {
   const { user } = useUser()
@@ -30,13 +32,14 @@ export default function ClientLayout({
   const isSinglePickByCurrentUser =
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
   const { state: comment } = useComment()
+  const navigationTitle = storyType === 'story' ? '新聞' : 'Podcast'
 
   return (
     <LayoutTemplate
       type="article"
       mobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '新聞',
+        title: navigationTitle,
         rightButtons: [
           <AddBookMarkButton
             key={0}
@@ -48,7 +51,7 @@ export default function ClientLayout({
       }}
       nonMobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '新聞',
+        title: navigationTitle,
         rightButtons: [
           <PublisherDonateButton
             key={0}

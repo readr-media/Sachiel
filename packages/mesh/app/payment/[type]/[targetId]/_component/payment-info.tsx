@@ -13,9 +13,9 @@ import {
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
-import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
+import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { logStoryUnlockEvent } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
 
@@ -40,7 +40,6 @@ export default function PaymentInfo({
   const [isChecked, setIsChecked] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const [isUnlocking, setIsUnlocking] = useState(false)
-  const { addToast } = useToast()
   const isValid = isValidEmail(email)
   const createUnlockStorySinglePayment: CreatePaymentProps = {
     action: 'unlock_story_single',
@@ -68,8 +67,6 @@ export default function PaymentInfo({
   }
 
   const handleUnlockStorySingleOnSuccess = () => {
-    setIsUnlocking(false)
-    addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
     logStoryUnlockEvent(userPayload, {
       policyId: unlockPolicy[0].id,
       policyName: unlockPolicy[0]?.name ?? '',
@@ -77,9 +74,11 @@ export default function PaymentInfo({
       publisherName: unlockPolicy[0].publisher?.title ?? '',
       storyId,
     })
-    setTimeout(() => {
-      router.push(`/story/${storyId}`)
-    }, 300)
+    setCrossPageToast({
+      status: 'success',
+      text: TOAST_MESSAGE.unlockStorySuccess,
+    })
+    router.push(`/story/${storyId}`)
   }
 
   const handleUnlockStorySingleOnError = () => {

@@ -44,11 +44,11 @@ export default function Article({
   const getArticleContent = (story: Story, sourceCustomId: string) => {
     const isInHouseArticle = inHousePublisherCustomIds.includes(sourceCustomId)
     const isLinkedArticle = !story?.full_content
-
     /**
      * There are two kind of sources, in-house and external,
      * If the full_content filed is false, then the article should be viewed in the original url.
-     * In summary there are three conditions: linked artile, in-house article and exteranl article.
+     * In summary there are three conditions: linked article, in-house article and external article.
+     * When story_type is 'podcast', the story should be handled as an external article.
      */
     if (isLinkedArticle) {
       return (
@@ -69,7 +69,7 @@ export default function Article({
           </Link>
         </div>
       )
-    } else if (isInHouseArticle) {
+    } else if (isInHouseArticle && story.story_type === 'story') {
       return (
         <>
           <SideIndex
