@@ -3,9 +3,12 @@ import { Fragment, useEffect } from 'react'
 import { type AllPublisherData } from '@/app/actions/publisher'
 import AdSense from '@/components/ad/adsense-ad'
 import useInView from '@/hooks/use-in-view'
-import type { MostSponsorPublisher } from '@/utils/data-schema'
 
-import type { LatestStoriesInfo, Story } from './media-stories'
+import type {
+  LatestStoriesInfo,
+  PublishersAndStories,
+  Story,
+} from './media-stories'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard from './publisher-card'
 import PublisherSuggestion from './publisher-suggestion'
@@ -19,7 +22,7 @@ export default function NonDesktopStories({
   loadMoreLatestStories,
 }: {
   mostPickedStory: Story | null | undefined
-  publishersAndStories: MostSponsorPublisher[]
+  publishersAndStories: PublishersAndStories
   latestStoriesInfo: LatestStoriesInfo
   publisherList: AllPublisherData
   loadMoreLatestStories: () => void

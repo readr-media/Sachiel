@@ -5,6 +5,7 @@ import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
+import { type PodcastType } from '@/app/actions/story'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
@@ -23,7 +24,7 @@ const StoryMetaWrapper = ({
   story,
   className,
 }: {
-  story: Story
+  story: Story | PodcastType
   className: string
 }) => {
   return (
@@ -34,6 +35,11 @@ const StoryMetaWrapper = ({
         publishDate={story.published_date}
         paywall={story.paywall ?? false}
         fullScreenAd={story.full_screen_ad ?? ''}
+        storyType={
+          'story_type' in story && story.story_type
+            ? story.story_type
+            : undefined
+        }
       />
     </div>
   )

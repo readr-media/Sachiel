@@ -2,6 +2,8 @@
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
+  type GetMediaPodcastsQuery,
+  GetMediaPodcastsDocument,
   GetPublisherPolicyDocument,
   GetStoriesDocument,
   GetStoryDocument,
@@ -130,4 +132,17 @@ export async function getStoryPickers(
     'Failed to getStoryPickers'
   )
   return getStoryPickersResponse?.story
+}
+
+export type PodcastType = NonNullable<GetMediaPodcastsQuery['stories']>[number]
+export async function getMediaPodcasts(): Promise<PodcastType[]> {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const response = await queryGraphQL(
+    GetMediaPodcastsDocument,
+    undefined,
+    globalLogFields
+  )
+
+  return response?.stories || []
 }

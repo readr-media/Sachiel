@@ -2,11 +2,12 @@ import { useMemo } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
 import AdSense from '@/components/ad/adsense-ad'
-import type { MostSponsorPublisher } from '@/utils/data-schema'
 
+import type { Category } from '../page'
 import DesktopInfiniteStories from './desktop-infinite-stories'
 import HeroStoryCard from './hero-story-card'
 import type { LatestStoriesInfo, Story } from './media-stories'
+import { type PublishersAndStories } from './media-stories'
 import MostPickedStoryCard from './most-picked-story-card'
 import PublisherCard from './publisher-card'
 import PublisherSuggestion from './publisher-suggestion'
@@ -18,40 +19,56 @@ export default function DesktopStories({
   latestStoriesInfo,
   publisherList,
   loadMoreLatestStories,
+  currentCategory,
 }: {
   mostPickedStory: Story | null | undefined
-  publishersAndStories: MostSponsorPublisher[]
+  publishersAndStories: PublishersAndStories
   latestStoriesInfo: LatestStoriesInfo
   publisherList: AllPublisherData
   loadMoreLatestStories: () => void
+  currentCategory: Category
 }) {
   const { stories } = latestStoriesInfo
-  const firstSectionCount = 5
+  const { slug } = currentCategory
+
+  const firstSectionCount = slug === 'podcast' ? 6 : 5
   const [firstSectionStories, secondSectionStories] = useMemo(() => {
     return [
       stories?.slice(0, firstSectionCount),
       stories.slice(firstSectionCount),
     ]
-  }, [stories])
+  }, [firstSectionCount, stories])
 
   return (
     <div className="hidden lg:block">
       <section className="grid grid-cols-2 gap-x-10 p-10 pt-0">
-        {firstSectionStories.map((story, i) =>
-          i === 0 ? (
-            <HeroStoryCard key={story.id} story={story} />
-          ) : (
-            <StoryCard
-              key={story.id}
-              story={story}
-              className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
-              gtmTags={{
-                story: 'GTM-media_click_category_article',
-                pick: 'GTM-media_pick_category_article',
-              }}
-            />
-          )
-        )}
+        {slug === 'podcast'
+          ? firstSectionStories.map((story, i) => (
+              <StoryCard
+                key={story.id}
+                story={story}
+                className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
+                gtmTags={{
+                  story: 'GTM-media_click_category_article',
+                  pick: 'GTM-media_pick_category_article',
+                }}
+              />
+            ))
+          : firstSectionStories.map((story, i) =>
+              i === 0 ? (
+                <HeroStoryCard key={story.id} story={story} />
+              ) : (
+                <StoryCard
+                  key={story.id}
+                  story={story}
+                  className={i >= firstSectionCount - 2 ? 'border-b-0' : ''}
+                  gtmTags={{
+                    story: 'GTM-media_click_category_article',
+                    pick: 'GTM-media_pick_category_article',
+                  }}
+                />
+              )
+            )}
       </section>
       <AdSense pageKey="media" adKey="D1" className="mb-10 mt-[-20px]" />
       {mostPickedStory && (

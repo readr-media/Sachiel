@@ -204,3 +204,64 @@ query GetStoryPickers($storyId: ID, $picksTake: Int, $picksSkip: Int) {
     }
   }
 }
+
+query GetMediaPodcasts {
+  stories(
+    where: { story_type: { equals: podcast } }
+    orderBy: { createdAt: desc }
+  ) {
+    id
+    title
+    og_image
+    paywall
+    full_screen_ad
+    published_date
+    story_type
+    source {
+      id
+      customId
+      title
+    }
+    picksCount: pickCount(
+      where: { kind: { equals: "read" }, is_active: { equals: true } }
+    )
+    commentCount(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+    )
+  }
+}
+
+query GetPublisherPodcastList {
+  publishers(where: { podcast_url: { not: { equals: "" } } }) {
+    id
+    customId
+    title
+  }
+}
+
+query GetPublisherAndPodcast($publisherId: [ID!]) {
+  stories(
+    where: {
+      source: { id: { in: $publisherId } }
+      story_type: { equals: podcast }
+    }
+  ) {
+    id
+    url
+    title
+    og_title
+    og_image
+    published_date
+    paywall
+    full_screen_ad
+    pickCount
+    commentCount
+    source {
+      id
+      customId
+      title
+      logo
+      sponsoredCount
+    }
+  }
+}

@@ -10,9 +10,9 @@ import getLatestStoriesInCategory, {
 import getMostPickedStoriesInCategory from '@/app/actions/get-most-picked-stories-in-category'
 import getMostSponsorPublishersAndStories from '@/app/actions/get-most-sponsor-publishers-and-stories'
 import { type AllPublisherData } from '@/app/actions/publisher'
+import { getMediaPodcasts } from '@/app/actions/story'
 import { categorySearchParamName } from '@/constants/search-param-names'
 import { useUser } from '@/context/user'
-import type { MostSponsorPublisher } from '@/utils/data-schema'
 import { replaceSearchParams } from '@/utils/search-params'
 
 import type { Category } from '../page'
@@ -24,6 +24,10 @@ import NonDesktopStories from './non-desktop-stories'
 
 export { type Story } from '@/app/actions/get-latest-stories-in-category'
 
+export type PublishersAndStories = NonNullable<
+  Awaited<ReturnType<typeof getMostSponsorPublishersAndStories>>
+>
+
 export type LatestStoriesInfo = {
   stories: Story[]
   totalCount: number
@@ -33,7 +37,7 @@ type PageData = {
   [key: string]: {
     mostPickedStory: Story | null
     latestStoriesInfo: LatestStoriesInfo
-    publishersAndStories: MostSponsorPublisher[]
+    publishersAndStories: PublishersAndStories
   }
 }
 
@@ -146,30 +150,28 @@ export default function MediaStories({
           mostPickedStoryResponse,
           latestStoriesResponse,
           publishersAndStoriesResponse,
+          podcastsResponse,
         ] = await Promise.all([
           getMostPickedStoriesInCategory(currentCategory?.slug ?? ''),
           getLatestStoriesInCategory(getLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(),
+          getMostSponsorPublishersAndStories({
+            slug: currentCategory?.slug ?? '',
+            displayPublisherCount,
+            displayPublisherStoriesCount,
+          }),
+          getMediaPodcasts(),
         ])
 
         // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
         const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
         const latestStoriesInfo: LatestStoriesInfo = {
-          stories: latestStoriesResponse?.stories ?? [],
+          stories: latestStoriesResponse?.stories.length
+            ? latestStoriesResponse.stories
+            : podcastsResponse,
           totalCount: latestStoriesResponse?.num_stories ?? 0,
           shouldLoadmore: true,
         }
-
-        const publishersAndStories =
-          publishersAndStoriesResponse
-            ?.slice(0, displayPublisherCount)
-            .map((publisherAndStories) => ({
-              publisher: publisherAndStories.publisher,
-              stories: publisherAndStories.stories.slice(
-                0,
-                displayPublisherStoriesCount
-              ),
-            })) ?? []
+        const publishersAndStories = publishersAndStoriesResponse ?? []
 
         setPageDataInCategories((oldPageData) => ({
           ...oldPageData,
@@ -207,6 +209,7 @@ export default function MediaStories({
     contentJsx = (
       <>
         <DesktopStories
+          currentCategory={currentCategory}
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}

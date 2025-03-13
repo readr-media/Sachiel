@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
+import { type PublisherStories } from '@/app/actions/get-most-sponsor-publishers-and-stories'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
@@ -9,7 +10,9 @@ import useUserPayload from '@/hooks/use-user-payload'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
 
-type Story = MostSponsorPublisher['stories'][number]
+import { type PublishersAndStories } from './media-stories'
+
+type Story = MostSponsorPublisher['stories'][number] | PublisherStories
 
 const PublisherStory = ({
   story,
@@ -33,7 +36,7 @@ const PublisherStory = ({
           logClickEvent(userPayload, 'click-story', {
             target: 'story',
             targetId: story.id,
-            targetTitle: story.title,
+            targetTitle: story.title ?? '',
             source: pageName,
             complementary: {
               publisherTarget: 'publisher',
@@ -48,7 +51,7 @@ const PublisherStory = ({
             <ImageWithFallback
               className="object-cover"
               src={story.og_image}
-              alt={story.title}
+              alt={story.title ?? ''}
               fill
               fallbackCategory={ImageCategory.STORY}
             />
@@ -61,10 +64,10 @@ const PublisherStory = ({
       <div className="caption-1 mt-1">
         <StoryMeta
           storyId={story.id}
-          commentCount={story.commentCount}
+          commentCount={story.commentCount ?? 0}
           publishDate={story.published_date}
-          paywall={story.paywall}
-          fullScreenAd={story.full_screen_ad}
+          paywall={story.paywall ?? false}
+          fullScreenAd={story.full_screen_ad ?? 'none'}
         />
       </div>
     </article>
@@ -74,7 +77,7 @@ const PublisherStory = ({
 export default function PublisherCard({
   publisherAndStories,
 }: {
-  publisherAndStories: MostSponsorPublisher
+  publisherAndStories: PublishersAndStories[number]
 }) {
   return (
     <section className="rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
