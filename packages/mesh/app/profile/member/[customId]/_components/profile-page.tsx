@@ -145,7 +145,7 @@ export default function ProfilePage({
         </div>
       </section>
       <Tab userType={userType} />
-      {activeTab === 'pick' && pickCollections.length && (
+      {activeTab === 'pick' && !!pickCollections.length && (
         <CollectionsCarousel pickCollections={pickCollections} />
       )}
       <ArticleCardList
