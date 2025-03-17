@@ -125,7 +125,7 @@ export default function ArticleCardList({
                       </li>
                     )
                   }
-                  const shouldShowAd = isCollection && (index - 1) % 3 === 0
+                  const shouldShowAd = isCollection && !((index + 1) % 3)
                   return (
                     <>
                       <li
