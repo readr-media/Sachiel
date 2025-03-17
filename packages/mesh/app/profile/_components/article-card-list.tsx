@@ -144,7 +144,7 @@ export default function ArticleCardList({
                         />
                       </li>
                       {shouldShowAd && (
-                        <div className="mx-auto">
+                        <div>
                           <AdManager
                             pageKey="profile"
                             adKey={`MB_C${Math.floor(index / 3) + 1}`}
