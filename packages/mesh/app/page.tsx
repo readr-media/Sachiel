@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import CategoryStorySection from './_components/category-story/section'
 import DailyHighlightSection from './_components/daily-highlight/section'
 import DataLayerLogger from './_components/data-layer-logger'
@@ -11,8 +13,10 @@ export const dynamic = 'force-static'
 export const revalidate = 600
 
 export default function Home() {
+  const t = useTranslations('Home')
   return (
     <main>
+      <h1>{t('title')}</h1>
       <DataLayerLogger />
       {/* @ts-expect-error Async Server Component */}
       <DailyHighlightSection />

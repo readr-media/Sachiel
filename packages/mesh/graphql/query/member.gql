@@ -23,6 +23,7 @@ query GetCurrentUserMemberId($uid: String!) {
     customId
     email
     avatar
+    language
     avatar_image {
       id
     }

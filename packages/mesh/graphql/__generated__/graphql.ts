@@ -5729,6 +5729,7 @@ export type GetCurrentUserMemberIdQuery = {
     customId?: string | null
     email?: string | null
     avatar?: string | null
+    language?: MemberLanguageType | null
     intro?: string | null
     wallet?: string | null
     avatar_image?: { __typename?: 'Photo'; id: string } | null
@@ -12843,6 +12844,7 @@ export const GetCurrentUserMemberIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'email' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'language' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'avatar_image' },

@@ -3,6 +3,8 @@ import '@/styles/global.css'
 import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
@@ -53,25 +55,33 @@ export default async function RootLayout({
 }>) {
   const user = await getCurrentUser()
 
+  const locale = await getLocale()
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages()
+
   return (
-    <html lang="zh-Hant" className={notoSans.className}>
+    <html lang={locale} className={notoSans.className}>
       <GoogleTagManager gtmId={GTM_ID} />
       <AdsenseScript />
       <AdManagerScript />
       <MisoAiScript />
       <body>
-        <UserProvider user={user}>
-          <ToastProvider>
-            <PickModalProvider>
-              <PickersModalProvider>
-                <RootLayoutWrapper>
-                  <UserBehaviorLogger />
-                  {children}
-                </RootLayoutWrapper>
-              </PickersModalProvider>
-            </PickModalProvider>
-          </ToastProvider>
-        </UserProvider>
+        <NextIntlClientProvider messages={messages}>
+          <UserProvider user={user}>
+            <ToastProvider>
+              <PickModalProvider>
+                <PickersModalProvider>
+                  <RootLayoutWrapper>
+                    <UserBehaviorLogger />
+                    {children}
+                  </RootLayoutWrapper>
+                </PickersModalProvider>
+              </PickModalProvider>
+            </ToastProvider>
+          </UserProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
