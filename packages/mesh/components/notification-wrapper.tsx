@@ -39,7 +39,7 @@ export default function NotificationWrapper() {
       getAnnouncement(),
     ])
 
-    if ((notificationResponse?.notifies ?? []).length > 0) {
+    if ((notificationResponse?.notifies ?? []).length) {
       const splittedData = splitNotification(notificationResponse)
       setNotificationData(splittedData)
       if (splittedData.current.length) {

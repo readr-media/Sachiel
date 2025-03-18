@@ -80,7 +80,7 @@ export default function CategoryEditor({
           <Button
             size="lg"
             color="primary"
-            text={selectingCategories.length === 0 ? '至少要選1個' : '儲存'}
+            text={!selectingCategories.length ? '至少要選1個' : '儲存'}
             disabled={selectingCategories.length === 0}
             onClick={() => {
               onFinish(selectingCategories)

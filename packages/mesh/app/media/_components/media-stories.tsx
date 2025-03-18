@@ -110,7 +110,7 @@ export default function MediaStories({
       ),
       totalCount: latestStoriesResponse.num_stories ?? 0,
       // only stop infinite scroll when response return empty array
-      shouldLoadmore: latestStoriesResponse.stories.length !== 0 ? true : false,
+      shouldLoadmore: latestStoriesResponse.stories.length ? true : false,
     }
 
     const currentPageData = pageDataInCategories[currentCategory?.slug ?? '']

@@ -72,7 +72,7 @@ export default function PickersModal() {
           return
         }
 
-        if (data.picks.length > 0) {
+        if (data.picks.length) {
           const nextPickers = data.picks.map((p) => ({
             id: p.member?.id ?? '',
             name: p.member?.name ?? '',

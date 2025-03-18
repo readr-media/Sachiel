@@ -38,7 +38,7 @@ export default function Comment({ comment }: Props) {
       const data = await fetchCommentLikes(commentId, memberId)
       if (data) {
         setLikeCount(data.likeCount || 0)
-        if (data.isLikedBySelf && data.isLikedBySelf.length !== 0) {
+        if (data.isLikedBySelf && data.isLikedBySelf.length) {
           setIsLikedBySelf(true)
         }
         setIsLoading(false)
