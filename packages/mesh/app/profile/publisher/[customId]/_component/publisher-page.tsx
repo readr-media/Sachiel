@@ -1,5 +1,4 @@
 'use client'
-import { useMemo } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
@@ -13,6 +12,8 @@ import useFollowPublisher from '@/hooks/use-publisher-follow'
 import { type UserType, TabKey } from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
 import { type PodcastJSONType } from '@/utils/data-schema'
+
+import PodcastList from './podcast-list'
 
 type PublisherPageProps = {
   name: string
@@ -46,14 +47,6 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     publisherName: name,
   })
   const { activeTab } = useProfileTab(userType)
-
-  const tabData = useMemo(() => {
-    if (activeTab === 'story') {
-      return storyData
-    } else {
-      return podcastData
-    }
-  }, [activeTab, podcastData, storyData])
 
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
@@ -94,11 +87,15 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
         </div>
       </section>
       <Tab userType={userType} hasPodcast={!!podcastData.length} />
-      <ArticleCardList
-        items={tabData}
-        userType={userType}
-        activeTab={activeTab}
-      />
+      {activeTab === 'story' ? (
+        <ArticleCardList
+          items={storyData}
+          userType={userType}
+          activeTab={activeTab}
+        />
+      ) : (
+        <PodcastList list={podcastData} />
+      )}
     </>
   )
 }
