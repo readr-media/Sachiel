@@ -96,7 +96,6 @@ export default function ArticleCardList({
                 }`}
               >
                 {renderList.map((item, index) => {
-                  console.log({ item })
                   const isLast = index === items.length - 1
                   if (!item) return null
                   if ('story' in item && !item.story) return null
@@ -144,7 +143,7 @@ export default function ArticleCardList({
                         />
                       </li>
                       {shouldShowAd && (
-                        <div>
+                        <div className="block md:hidden">
                           <AdManager
                             pageKey="profile"
                             adKey={`MB_C${Math.floor(index / 3) + 1}`}
