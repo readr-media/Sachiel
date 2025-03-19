@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import { displayTimeFromNow } from '@/utils/story-display'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 
 import { type LatestAction } from './feed'
 
@@ -39,7 +39,9 @@ export default function FeedComment({
           </div>
           <Icon iconName="icon-dot" size="s" />
           <div className="caption-1 text-primary-500">
-            <span>{displayTimeFromNow(comment.createdAt)}</span>
+            <span>
+              <DisplayTimeFromNow date={comment.createdAt} />
+            </span>
           </div>
         </span>
         <p className="body-3 text-primary-600">

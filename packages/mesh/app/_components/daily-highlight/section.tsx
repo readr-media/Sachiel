@@ -4,7 +4,7 @@ import {
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
 } from '@/app/actions/get-homepage'
-import { displayDateWithWeekday } from '@/utils/story-display'
+import { DisplayDateWithWeekday } from '@/components/story-time-display'
 
 import StoryCard from '../story-card'
 import { AdAfterMainGroup } from './ad-after-main-group'
@@ -27,7 +27,7 @@ export default async function DailyHighlight() {
           {t('DailyHighlight-title')}
         </h2>
         <time className="button text-primary-500">
-          {await displayDateWithWeekday()}
+          <DisplayDateWithWeekday />
         </time>
       </div>
       {groupStories && <MainGroup stories={groupStories} />}

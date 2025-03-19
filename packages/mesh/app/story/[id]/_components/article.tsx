@@ -51,7 +51,6 @@ export default function Article({
   const { state: comment } = useComment()
   const { interactions } = useStoryInteractions()
 
-  const publishDateInFormat = displayTime(story?.published_date)
   // TODO: handle login user's following situation like feed.tsx did
 
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -157,9 +156,9 @@ export default function Article({
             <h1 className="hero-title mt-1 text-primary-700">
               {story?.title ?? ''}
             </h1>
-            {publishDateInFormat && (
+            {story?.published_date && (
               <div className="footnote mt-3 text-primary-500">
-                更新時間：{publishDateInFormat}
+                更新時間：{displayTime(story?.published_date)}
               </div>
             )}
             <div className="mt-5 flex justify-between">

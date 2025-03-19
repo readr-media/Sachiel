@@ -53,6 +53,28 @@
       "copy-link": "複製連結",
       "share": "分享"
     },
+    "DisplayTimeFromNow": {
+      "mins-ago": " 分鐘前",
+      "hours-ago": " 小時前",
+      "days-ago": " 天前"
+    },
+    "DisplayExpireTimeFromNow": {
+      "one": "一",
+      "two": "二",
+      "three": "三",
+      "day-unit": "天"
+    },
+    "DisplayDateWithWeekday": {
+      "sunday": "日",
+      "monday": "一",
+      "tuesday": "二",
+      "wednesday": "三",
+      "thursday": "四",
+      "friday": "五",
+      "saturday": "六",
+      "month": "月",
+      "date": "日"
+    },
     "NotificationDropDown": {
       "h2": "通知",
       "announcement-title": "系統維修公告",
@@ -85,30 +107,6 @@
       "three-names-above-1": "、",
       "three-names-above-2": "及其他",
       "three-names-above-3": "人"
-    }
-  },
-  "Utils": {
-    "displayTimeFromNow": {
-      "mins-ago": " 分鐘前",
-      "hours-ago": " 小時前",
-      "days-ago": " 天前"
-    },
-    "displayExpireTimeFromNow": {
-      "one": "一",
-      "two": "二",
-      "three": "三",
-      "day-unit": "天"
-    },
-    "displayDateWithWeekday": {
-      "sunday": "日",
-      "monday": "一",
-      "tuesday": "二",
-      "wednesday": "三",
-      "thursday": "四",
-      "friday": "五",
-      "saturday": "六",
-      "month": "月",
-      "date": "日"
     }
   },
   "Others": {

@@ -6,13 +6,13 @@ import { useTranslations } from 'next-intl'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { useUser } from '@/context/user'
 import { useFollow } from '@/hooks/use-follow'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { Comment } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
-import { displayTimeFromNow } from '@/utils/story-display'
 
 type Props = {
   comment: Comment
@@ -125,7 +125,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
               <Icon iconName="icon-dot" size="s" />
               <p className="caption-1 text-primary-500">
-                {displayTimeFromNow(comment.story.published_date)}
+                <DisplayTimeFromNow date={comment.story.published_date} />
               </p>
             </div>
           </div>

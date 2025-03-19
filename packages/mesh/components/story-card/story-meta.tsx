@@ -1,9 +1,8 @@
 import { useTranslations } from 'next-intl'
 
-import { displayTimeFromNow } from '@/utils/story-display'
-
 import CommentCount from '../comment-count'
 import Icon from '../icon'
+import { DisplayTimeFromNow } from '../story-time-display'
 
 export default function StoryMeta({
   storyId,
@@ -27,7 +26,7 @@ export default function StoryMeta({
       <CommentCount objectiveId={storyId} initialCommentCounts={commentCount} />
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>
+        <span>{publishDate && <DisplayTimeFromNow date={publishDate} />}</span>
       </div>
       {paywall && (
         <div className="flex items-center">

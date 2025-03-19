@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 
-import { clientSideDisplayDateWithWeekday } from '@/utils/story-display'
+import { DisplayDateWithWeekday } from '@/components/story-time-display'
 
 export default function Loading() {
   const t = useTranslations('Pages.Home')
@@ -11,7 +11,7 @@ export default function Loading() {
           {t('DailyHighlight-title')}
         </h2>
         <time className="button text-primary-500">
-          {clientSideDisplayDateWithWeekday()}
+          <DisplayDateWithWeekday />
         </time>
       </div>
       <div className="mt-3 flex animate-pulse flex-col gap-3 sm:mt-4 lg:flex-row lg:items-center lg:gap-10">

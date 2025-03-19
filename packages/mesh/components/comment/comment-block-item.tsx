@@ -11,8 +11,8 @@ import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import { useCommentLike } from '@/hooks/use-comment-like'
 import useWindowDimensions from '@/hooks/use-window-dimension'
-import { displayTimeFromNow } from '@/utils/story-display'
 
+import { DisplayTimeFromNow } from '../story-time-display'
 import CommentEditor from './comment-editor'
 import DropdownMenu from './dropdown-menu'
 
@@ -105,7 +105,7 @@ const CommentBlockItem = ({
                 </p>
                 <div className="flex items-center">
                   <span className="caption-1 mr-1 text-primary-500">
-                    ·{displayTimeFromNow(commentData.createdAt)}
+                    ·<DisplayTimeFromNow date={commentData.createdAt} />
                   </span>
                   {comment.is_edited && (
                     <>

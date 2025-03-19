@@ -3,10 +3,10 @@ import { useRouter } from 'next/navigation'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { type CommentType } from '@/types/profile'
-import { displayTimeFromNow } from '@/utils/story-display'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
 type CommentProps = {
@@ -56,7 +56,7 @@ const Comment: React.FC<CommentProps> = ({
             extra="mr-2 min-w-[28px] min-h-[28px]"
           />
           <p className="caption-1 text-primary-500">
-            {displayTimeFromNow(data.createdAt)}
+            <DisplayTimeFromNow date={data.createdAt} />
           </p>
           <Icon iconName="icon-dot" size="s" />
 

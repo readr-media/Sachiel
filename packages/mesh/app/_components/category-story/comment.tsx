@@ -7,6 +7,7 @@ import { fetchCommentLikes } from '@/app/actions/get-homepage'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import Avatar from '@/components/story-card/avatar'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
@@ -14,7 +15,6 @@ import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import type { CategoryStory } from '@/types/homepage'
 import { debounce } from '@/utils/performance'
-import { displayTimeFromNow } from '@/utils/story-display'
 
 type NonEmptyObject<T> = T extends Record<string, never> ? never : T
 type Props = {
@@ -105,7 +105,7 @@ export default function Comment({ comment }: Props) {
 
           <Icon iconName="icon-dot" size="xxs" />
           <p className="caption-1 text-primary-500">
-            {displayTimeFromNow(comment.createdAt)}
+            <DisplayTimeFromNow date={comment.createdAt} />
           </p>
         </div>
 

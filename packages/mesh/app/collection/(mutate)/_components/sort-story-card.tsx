@@ -6,9 +6,9 @@ import type { MouseEventHandler } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import Icon from '@/components/icon'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { ImageCategory } from '@/constants/fallback-src'
 import { type MongoDBResponse } from '@/utils/data-schema'
-import { displayTimeFromNow } from '@/utils/story-display'
 
 import type { CollectionPickStory, UseCollection } from '../_types/collection'
 
@@ -72,8 +72,9 @@ export default function SortStoryCard({
               <span>{sourceTitle}</span>
               <Icon iconName="icon-dot" size="s" />
               <span>
-                {story?.published_date &&
-                  displayTimeFromNow(story.published_date)}
+                {story?.published_date && (
+                  <DisplayTimeFromNow date={story.published_date} />
+                )}
               </span>
             </div>
           </div>
@@ -93,7 +94,9 @@ export default function SortStoryCard({
           <span>{sourceTitle}</span>
           <Icon iconName="icon-dot" size="s" />
           <span>
-            {story?.published_date && displayTimeFromNow(story.published_date)}
+            {story?.published_date && (
+              <DisplayTimeFromNow date={story.published_date} />
+            )}
           </span>
         </div>
       </div>
