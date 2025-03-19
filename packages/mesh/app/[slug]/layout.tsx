@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-=======
-import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
->>>>>>> d7a33928 (fix(mesh): notFound error fall into this route)
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
-
-import { fetchCategoryInformation } from '../actions/get-homepage'
 
 export default async function SubpageLayout({
   children,
@@ -16,19 +11,15 @@ export default async function SubpageLayout({
   params: { slug: string }
 }) {
   const categorySlug = params.slug
-<<<<<<< HEAD
-  const result = await fetchCategoryInformation(categorySlug)
+  const t = await getTranslations('')
+  const categoryTitle = t(`Others.categories.${categorySlug}`)
+
   const title =
     categorySlug !== 'podcast'
-      ? `${result?.title}熱門`
-      : `${result?.title} 熱門`
-=======
-  const slugInfo = await fetchCategoryInformation(categorySlug)
-
-  if (!slugInfo) notFound()
-
-  const title = `${slugInfo.title}熱門`
->>>>>>> d7a33928 (fix(mesh): notFound error fall into this route)
+      ? t('Pages.Subpage.SubpageLayout-title', {
+          title: categoryTitle,
+        })
+      : t('Pages.Subpage.SubpageLayout-podcast-title', { title: categoryTitle })
 
   const navigationData = {
     title,

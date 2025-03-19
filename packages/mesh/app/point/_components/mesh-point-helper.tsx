@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import Icon from '@/components/icon'
 import { ENV } from '@/constants/config'
@@ -6,6 +7,7 @@ import { ENV } from '@/constants/config'
 import TooltipButton from './tooltip-button'
 
 export default function MeshPointHelper() {
+  const t = useTranslations('Pages.Point')
   return (
     <div className="inline-flex justify-center sm:justify-start">
       <TooltipButton
@@ -13,7 +15,9 @@ export default function MeshPointHelper() {
         direction="bottom"
         buttonContent={
           <>
-            <p className="profile-subtitle text-primary-500">讀選點數</p>
+            <p className="profile-subtitle text-primary-500">
+              {t('MeshPointHelper-mesh-point')}
+            </p>
             <Icon
               iconName="icon-question-mark-circle"
               size="m"
@@ -23,16 +27,14 @@ export default function MeshPointHelper() {
         }
         tooltipContent={
           <div className="flex flex-col items-start gap-2">
-            <p className="caption-1">
-              讀選點數（READR）能用來贊助媒體、支持你喜歡的報導。你可以透過閱讀新聞獲得讀選點數。
-            </p>
+            <p className="caption-1">{t('MeshPointHelper-tooltip')}</p>
             {/* TODO: 待點數說明頁面完成，更新連結 */}
             <Link
               href={ENV === 'prod' ? '/story/53192' : '/'}
               target="_blank"
               className="footnote"
             >
-              了解更多
+              {t('MeshPointHelper-learn-more')}
             </Link>
           </div>
         }

@@ -1,5 +1,6 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import LayoutTemplate from '@/components/layout-template'
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
@@ -12,10 +13,11 @@ const EditProfileLayout = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const t = useTranslations('Pages.Edit-Profile')
   const { user } = useUser()
   const params = useParams()
   const router = useRouter()
-  const title = '編輯個人檔案'
+  const title = t('Layout-title')
   const backToPreviousPage = () => {
     router.back()
   }
@@ -36,7 +38,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text="取消"
+            text={t('Layout-cancel')}
             color="gray"
             onClick={backToPreviousPage}
           />,
@@ -46,7 +48,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text="儲存"
+            text={t('Layout-save')}
             color={isFormValid && !isSubmitting ? 'blue' : 'gray'}
             onClick={handleSubmit}
           />,
@@ -54,7 +56,7 @@ const EditProfileLayout = ({
       }}
       nonMobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '編輯個人檔案',
+        title,
         rightButtons: [],
       }}
     >

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -18,6 +19,7 @@ type CollectionsCarouselElementProps = {
 const CollectionsCarouselElement = ({
   data,
 }: CollectionsCarouselElementProps) => {
+  const t = useTranslations('Page.Profile')
   const { profileData } = useEditProfile()
   const userPayload = useUserPayload()
   const pageName = usePageName()
@@ -52,7 +54,9 @@ const CollectionsCarouselElement = ({
           />
           <div className="absolute right-[6px] top-2 flex items-center rounded-md bg-black/50 px-[6px] py-[2.5px]">
             <Icon iconName="icon-collection-folder" size="s" />
-            <span className="caption-2 text-white">集錦</span>
+            <span className="caption-2 text-white">
+              {t('CollectionsCarouselElement-collection')}
+            </span>
           </div>
         </div>
       </Link>
@@ -80,7 +84,7 @@ const CollectionsCarouselElement = ({
           </div>
           <p className="footnote pb-2 text-primary-600">
             <span className="font-medium text-primary-700">{picksCount}</span>
-            人精選
+            {t('CollectionsCarouselElement-picks-count-detail')}
           </p>
         </Link>
         {shouldShowCollectionPickButton ? (

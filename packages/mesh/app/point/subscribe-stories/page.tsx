@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
@@ -10,6 +11,7 @@ export type SubscribeStories = Awaited<
 >
 
 export default async function Page() {
+  const t = await getTranslations('Page.Point-Subscribe-Stories')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   if (!memberId) redirect('/login')
@@ -23,7 +25,7 @@ export default async function Page() {
       {subscribeStories.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">
-            目前還沒有訂閱中的文章
+            {t('Page-no-record')}
           </p>
         </div>
       ) : (

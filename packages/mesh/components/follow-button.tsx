@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Button from '@/components/button'
 import { useFollow } from '@/hooks/use-follow'
 
@@ -10,16 +12,17 @@ export default function FollowButton({
   followingId: string
   gtmClassName?: string
 }) {
+  const t = useTranslations('Components.FollowButton')
   const { handleClickFollow, isFollowing } = useFollow(followingId)
 
   return (
     <Button
       size="sm"
       color="transparent"
-      text="追蹤"
+      text={t('follow')}
       activeState={{
         isActive: isFollowing,
-        activeText: '追蹤中',
+        activeText: t('following'),
       }}
       onClick={handleClickFollow}
       gtmClassName={gtmClassName}

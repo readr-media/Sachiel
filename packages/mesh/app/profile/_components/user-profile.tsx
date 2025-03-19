@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Avatar from '@/components/story-card/avatar'
@@ -20,6 +21,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   userType,
   pickedCount,
 }) => {
+  const t = useTranslations('Pages.Profile')
   const [showMore, setShowMore] = useState(false)
   const toggleShowMore = () => setShowMore((prev) => !prev)
   const handleOnClickShowMore = debounce(toggleShowMore)
@@ -27,17 +29,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
     if (userType === 'publisher') {
       return (
         <p className="footnote sm:profile-subtitle text-primary-500">
-          本週獲得
+          {t('UserProfile-publisher-get-picks-1')}
           <span className="text-primary-800">{pickedCount}</span>
-          次精選
+          {t('UserProfile-publisher-get-picks-2')}
         </p>
       )
     }
     return (
       <p className="footnote sm:profile-subtitle text-primary-500">
-        本週精選了
+        {t('UserProfile-member-picks-1')}
         <span className="text-primary-800">{pickCount}</span>
-        篇文章
+        {t('UserProfile-member-picks-2')}
       </p>
     )
   }

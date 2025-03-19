@@ -1,5 +1,7 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
+import FollowButton from '@/components/follow-button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import {
@@ -8,13 +10,13 @@ import {
 } from '@/utils/data-schema'
 
 import useSuggestedFollowers from '../_hooks/use-suggested-followers'
-import FollowButton from './follow-button'
 
 export default function FollowSuggestionWidget({
   suggestedFollowers,
 }: {
   suggestedFollowers: MongoDBResponse['members'] | MostFollowersMember[]
 }) {
+  const t = useTranslations('Pages.Social')
   const { displaySuggestedFollowers, setPage, hasNextPage } =
     useSuggestedFollowers(suggestedFollowers)
 
@@ -22,7 +24,9 @@ export default function FollowSuggestionWidget({
     <div className="hidden grow px-5 lg:block">
       <div className="top-[calc(theme(height.header.sm)+20px)] hidden lg:fixed lg:block lg:w-[220px] xl:w-[360px]">
         <div className=" flex justify-between pb-1">
-          <h2 className="list-title text-primary-700">推薦追蹤</h2>
+          <h2 className="list-title text-primary-700">
+            {t('FollowSuggestionFeed-title')}
+          </h2>
           <button
             className={`button mt-1 flex h-6 items-center text-primary-500 ${
               !hasNextPage ? 'hidden' : ''
@@ -30,7 +34,7 @@ export default function FollowSuggestionWidget({
             onClick={() => setPage((page) => page + 1)}
           >
             <Icon iconName="icon-refresh" size="l" />
-            重新推薦
+            {t('FollowSuggestionFeed-recommend-others')}
           </button>
         </div>
         {displaySuggestedFollowers?.map((member, index) => (
@@ -50,17 +54,14 @@ export default function FollowSuggestionWidget({
                     {member.name}
                   </Link>
                   <p className="caption-1 line-clamp-1 break-words text-primary-500">
-                    {'from' in member && member.from.name ? (
-                      <>
-                        <span>{member.from.name}</span>
-                        及其他<span> {member.followerCount} </span>
-                        人的追蹤對象
-                      </>
-                    ) : (
-                      <>
-                        有<span> {member.followerCount} </span>人正在追蹤
-                      </>
-                    )}
+                    {'from' in member && member.from.name
+                      ? t('FollowSuggestionFeed-follow-detail-with-name', {
+                          name: member.from.name,
+                          followerCount: member.followerCount,
+                        })
+                      : t('FollowSuggestionFeed-follow-detail', {
+                          followerCount: member.followerCount,
+                        })}
                   </p>
                 </div>
                 <div className="shrink-0 lg:ml-4">

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -14,6 +15,7 @@ export default function FeedComment({
 }: {
   comment: LatestAction['commentsData'][number]
 }) {
+  const t = useTranslations('Pages.Social')
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
   const maxTextLength = 60
@@ -55,7 +57,7 @@ export default function FeedComment({
                 onClick={toggleExpand}
                 className="body-3 pl-1 text-primary-400 hover-or-active:text-primary-700"
               >
-                看完整留言
+                {t('FeedComment-expand-comment')}
               </button>
             </>
           )}

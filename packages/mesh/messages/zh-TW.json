@@ -1,0 +1,274 @@
+{
+  "Pages": {
+    "Home": {
+      "DailyHighlight-title": "今日焦點",
+      "FeaturedCard-readr-title": "READr 最新報導",
+      "FeaturedCard-non-readr-title": "最多人精選",
+      "EmptyMessage-title": "找不到新聞",
+      "EmptyMessage-description": "請查看其他分類，或重新整理頁面",
+      "TopCollectorSection-title": "本週精選最多文章",
+      "TopCollectorCard-pick-detail-1": "本週已精選",
+      "TopCollectorCard-pick-detail-2": "篇文章",
+      "MostLikedCommentSection-title": "本週獲得最多愛心的留言",
+      "MostLikedCommentCard-like-detail-1": "留言獲得",
+      "MostLikedCommentCard-like-detail-2": "個愛心",
+      "TopPublisherSection-title": "獲得最多次贊助",
+      "TopPublisherCard-sponsor-detail-1": "已獲得",
+      "TopPublisherCard-sponsor-detail-2": "贊助",
+      "TopPublisherCard-sponsor-count-unit": "次"
+    },
+    "Subpage": {
+      "SubpageLayout-title": "{title}熱門",
+      "latest-news-title": "最新報導",
+      "PublisherCard-sponsor-count-1": "已獲得",
+      "PublisherCard-sponsor-count-2": "次贊助"
+    },
+    "Social": {
+      "NoFollowings-title": "咦？這裡好像還缺點什麼...",
+      "NoFollowings-action": "追蹤您喜愛的人",
+      "NoFollowings-action-detail": "看看他們都精選了什麼新聞 👀",
+      "FollowSuggestionFeed-title": "推薦追蹤",
+      "FollowSuggestionFeed-recommend-others": "重新推薦",
+      "FollowSuggestionFeed-follow-detail-with-name": "{name}及其他 {followerCount} 人的追蹤對象",
+      "FollowSuggestionFeed-follow-detail": "有 {followerCount} 人正在追蹤",
+      "FeedComment-expand-comment": "看完整留言",
+      "FeedLatestAction-single-comment": "在這篇文章留言",
+      "FeedLatestAction-two-comments-1": "及",
+      "FeedLatestAction-two-comments-2": "在這篇文章留言",
+      "FeedLatestAction-three-comments-1": "及其他",
+      "FeedLatestAction-three-comments-2": "人在這篇文章留言",
+      "FeedLatestAction-single-pick-story": "精選了這篇",
+      "FeedLatestAction-single-pick-podcast": "精選了這集 Podcast",
+      "FeedLatestAction-two-picks-1": "及",
+      "FeedLatestAction-two-picks-2-story": "精選了這篇文章",
+      "FeedLatestAction-two-picks-2-podcast": "精選了這集 Podcast",
+      "FeedLatestAction-three-picks-1": "及其他",
+      "FeedLatestAction-three-picks-2-story": "精選了這篇文章",
+      "FeedLatestAction-three-picks-2-podcast": "精選了這集 Podcast"
+    },
+    "Media": {
+      "NoStories-title": "這個分類沒有新文章",
+      "NoStories-description": "看看其他分類吧👆",
+      "CategorySelector-edit": "編輯",
+      "CategoryEditor-title": "編輯追蹤類別",
+      "CategoryEditor-hint": "請選擇您想追蹤的新聞類別",
+      "CategoryEditor-at-least-one": "至少要選1個",
+      "CategoryEditor-save": "儲存",
+      "MostPickedStoryCard-title": "最多人精選",
+      "PublisherSuggestion-title": "推薦追蹤",
+      "PublisherSuggestion-action": "查看全部",
+      "PublisherSuggestion-hidden": "已隱藏",
+      "PublisherSuggestion-status-hidden": "您不會再收到此推薦",
+      "PublisherSuggestion-status-new": "新加入",
+      "PublisherSuggestion-status-followers": "{followerCount}人追蹤",
+      "PublisherSuggestion-cancel": "取消",
+      "PublisherCard-sponsor-count-1": "已獲得",
+      "PublisherCard-sponsor-count-2": "次贊助"
+    },
+    "Profile": {
+      "ProfilePage-edit-profile": "編輯個人檔案",
+      "ProfilePage-media-backstage": "進入媒體後台",
+      "ProfilePage-follow": "追蹤",
+      "ProfilePage-following": "追蹤中",
+      "PublisherPage-sponsor-or-payment": "贊助/訂閱媒體",
+      "PublisherPage-sponsor-count": "{count}次",
+      "UserProfile-publisher-get-picks-1": "本週獲得",
+      "UserProfile-publisher-get-picks-2": "次精選",
+      "UserProfile-member-picks-1": "本週精選了",
+      "UserProfile-member-picks-2": "篇文章",
+      "TabKey-pick": "精選",
+      "TabKey-follower": "粉絲",
+      "TabKey-following": "追蹤中",
+      "TabKey-sponsored": "本月獲得贊助",
+      "TabOption-pick": "精選",
+      "TabOption-collection": "集錦",
+      "TabOption-bookmark": "書籤",
+      "TabOption-story": "報導",
+      "TabOption-podcast": "Podcast",
+      "ProfileMoreActionButton-actions-copy-link": "複製個人檔案連結",
+      "ProfileMoreActionButton-actions-share": "分享這個人的個人檔案",
+      "ProfileMoreActionButton-actions-report": "檢舉",
+      "ProfileMoreActionButton-actions-block": "封鎖",
+      "CollectionsCarousel": "精選集錦",
+      "CollectionsCarouselElement-collection": "集錦",
+      "CollectionsCarouselElement-picks-count-detail": "人精選",
+      "ArticleCardList-title": "精選文章",
+      "Comment-edit-comment": "編輯留言",
+      "Comment-no-comment": "沒有評論",
+      "Comment-delete-comment": "刪除留言",
+      "Comment-cancel-edit": "取消",
+      "Comment-confirm-delete": "確認要刪除留言？",
+      "Comment-delete-hint": "系統仍會保留您的精選記錄"
+    },
+    "Edit-Profile": {
+      "Layout-title": "編輯個人檔案",
+      "Layout-cancel": "取消",
+      "Layout-save": "儲存",
+      "EditProfile-change-avatar": "更換大頭貼照",
+      "EditProfile-name": "姓名",
+      "EditProfile-id": "更換大頭貼照",
+      "EditProfile-intro": "簡介",
+      "EditProfile-words": "字",
+      "EditProfile-intro-placeholder": "向大家介紹一下自己吧...",
+      "EditProfile-save": "儲存"
+    },
+    "Point": {
+      "Layout-sponsor": "已贊助媒體",
+      "Layout-subscribe-stories": "訂閱中文章",
+      "Layout-record": "點數紀錄",
+      "MeshPointHelper-mesh-point": "讀選點數",
+      "MeshPointHelper-tooltip": "讀選點數（READR）能用來贊助媒體、支持你喜歡的報導。你可以透過閱讀新聞獲得讀選點數。",
+      "MeshPointHelper-learn-more": "了解更多",
+      "MeshPoint-sponsor-unit": "次",
+      "MeshPoint-sponsor-count": "已贊助次數",
+      "MeshPoint-unlock-unit": "篇",
+      "MeshPoint-unlock-count": "訂閱中文章",
+      "MeshPoint-no-transaction": "沒有交易紀錄",
+      "LoadMoreTransaction-load-more": "載入更多記錄"
+    },
+    "Point-Record": {
+      "Page-receive-at-time": "在 {time} 收到",
+      "Page-pay-at-time": "在 {time} 送出",
+      "Page-name": "名稱",
+      "Page-balance": "讀選點數餘額"
+    },
+    "Point-Sponsorship": {
+      "Page-no-record": "目前還沒有贊助紀錄",
+      "Page-already-sponsored": "已贊助",
+      "Page-sponsor-count-unit": "次"
+    },
+    "Point-Subscribe-Stories": {
+      "Page-no-record": "目前還沒有訂閱中的文章",
+      "SubscribeStoriesList-due-day": "{time} 到期"
+    }
+  },
+  "Components": {
+    "LoginButton": {
+      "login": "登入"
+    },
+    "StoryMeta": {
+      "payall": "付費文章",
+      "full-screen-ad": "蓋板廣告",
+      "podcast": "Podcast"
+    },
+    "StoryPickButton": {
+      "pick": "精選",
+      "already-picked": "已精選"
+    },
+    "PublisherDonateButton": {
+      "donate": "贊助"
+    },
+    "ObjectivePickCount": {
+      "no-picks": "尚無人精選",
+      "pick-under-10000": "人精選",
+      "pick-over-10000": "萬人精選"
+    },
+    "ObjectiveCommentCount": {
+      "no-comment": "尚無人留言",
+      "comment-under-10000": "則留言",
+      "comment-over-10000": "萬則留言"
+    },
+    "FollowButton": {
+      "follow": "追蹤",
+      "following": "追蹤中"
+    },
+    "FollowPublisherButton": {
+      "follow": "追蹤",
+      "following": "追蹤中"
+    },
+    "StoryMoreActionButton": {
+      "donate": "贊助",
+      "add-bookmark": "加入書籤",
+      "remove-bookmark": "移除書籤",
+      "add-collection": "加入集錦",
+      "unfollow": "取消追蹤",
+      "copy-link": "複製連結",
+      "share": "分享"
+    },
+    "DisplayTimeFromNow": {
+      "mins-ago": " 分鐘前",
+      "hours-ago": " 小時前",
+      "days-ago": " 天前"
+    },
+    "DisplayExpireTimeFromNow": {
+      "one": "一",
+      "two": "二",
+      "three": "三",
+      "day-unit": "天"
+    },
+    "DisplayDateWithWeekday": {
+      "sunday": "日",
+      "monday": "一",
+      "tuesday": "二",
+      "wednesday": "三",
+      "thursday": "四",
+      "friday": "五",
+      "saturday": "六",
+      "month": "月",
+      "date": "日"
+    },
+    "NotificationDropDown": {
+      "h2": "通知",
+      "announcement-title": "系統維修公告",
+      "new-announcement-title": "新通知",
+      "no-new-announcement": "目前沒有新通知...",
+      "prev-notification": "之前的通知",
+      "notifier-follow-single": "開始追蹤你",
+      "notifier-follow-plural": "都開始追蹤你",
+      "notifier-pick-single": "精選了你的集錦",
+      "notifier-pick-plural": "都精選了你的集錦",
+      "notifier-collection-comment-single-1": "在你的集錦",
+      "notifier-collection-comment-single-2": "下留言",
+      "notifier-collection-comment-plural-1": "都在你的集錦",
+      "notifier-collection-comment-plural-2": "下留言",
+      "notifier-story-comment-single-1": "也在",
+      "notifier-story-comment-single-2": "下留言",
+      "notifier-story-comment-plural-1": "也在",
+      "notifier-story-comment-plural-2": "下留言",
+      "notifier-comment-like-single": "喜歡你的留言",
+      "notifier-comment-like-plural": "都喜歡你的留言",
+      "notifier-unknown": "Unknown Notification",
+      "notifier-sponsor-success-1": "你已成功贊助",
+      "notifier-sponsor-success-2": "讀選點數",
+      "notifier-collection-created": "建立了新的集錦",
+      "notifier-unlock-story": "你已成功解鎖",
+      "notifier-receive-airdrop": "你已收到 {depositVolume} 讀選點數的空投",
+      "expire-description-1": "這篇文章的閱讀期限只剩",
+      "expire-description-2": "哦：",
+      "two-names-and": "及",
+      "three-names-above-1": "、",
+      "three-names-above-2": "及其他",
+      "three-names-above-3": "人"
+    },
+    "ErrorPage": {
+      "404": "找不到這頁的資料...",
+      "500": "看來有哪裡出錯了...",
+      "retry": "重新嘗試"
+    }
+  },
+  "Others": {
+    "punctuation": {
+      "corner-quote-start": "「",
+      "corner-quote-end": "」"
+    },
+    "categories": {
+      "internation": "國際",
+      "politics": "政治",
+      "society": "社會",
+      "finance": "財經",
+      "technology": "科技",
+      "health": "醫療健康",
+      "sport": "體育",
+      "art": "藝文",
+      "entertainment": "娛樂",
+      "life": "生活",
+      "education": "教育",
+      "environment": "環境",
+      "test01": "測試空狀態",
+      "podcast": "Podcast"
+    },
+    "alchemy": {
+      "login-description": "您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。"
+    }
+  }
+}

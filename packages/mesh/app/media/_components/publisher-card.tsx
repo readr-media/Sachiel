@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -86,6 +87,7 @@ export default function PublisherCard({
   const { publisher, stories } = publisherAndStories
   const { id: publisherId, logo, title, customId, sponsoredCount } = publisher
 
+  const t = useTranslations('Pages.Media')
   return (
     <section className="w-full rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
       <div className="flex h-[68px] items-center justify-between gap-1">
@@ -108,9 +110,9 @@ export default function PublisherCard({
               </div>
             </Link>
             <div className="footnote line-clamp-1 text-primary-500">
-              已獲得
+              {t('PublisherCard-sponsor-count-1')}
               <span className="text-custom-blue">{` ${sponsoredCount} `}</span>
-              次贊助
+              {t('PublisherCard-sponsor-count-2')}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 
-import FollowButton from '@/app/social/_components/follow-button'
+import FollowButton from '@/components/follow-button'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'

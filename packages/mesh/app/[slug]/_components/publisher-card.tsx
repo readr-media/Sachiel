@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -82,6 +83,7 @@ type Props = {
 }
 
 export default function PublisherCard({ data }: Props) {
+  const t = useTranslations('Pages.Subpage')
   return (
     <div className="flex w-full flex-col rounded-lg border-[0.5px] border-primary-200 bg-primary-100 px-5 pb-2 pt-5 lg:self-start lg:pb-3 lg:pt-6 xl:px-8">
       <div className="mb-3 flex items-center justify-between">
@@ -105,11 +107,11 @@ export default function PublisherCard({ data }: Props) {
               </NextLink>
             </p>
             <p className="footnote text-primary-500">
-              已獲得
+              {t('PublisherCard-sponsor-count-1')}
               <span className="text-custom-blue">
-                {data.publisher.sponsoredCount}次
+                {data.publisher.sponsoredCount}
               </span>
-              贊助
+              {t('PublisherCard-sponsor-count-2')}
             </p>
           </div>
         </div>

@@ -7,10 +7,10 @@ import type {
 
 // 1. Base constants and their types
 export const TabKey = {
-  PICK: '精選',
-  FOLLOWER: '粉絲',
-  FOLLOWING: '追蹤中',
-  SPONSORED: '本月獲得贊助',
+  PICK: 'TabKey-pick',
+  FOLLOWER: 'TabKey-follower',
+  FOLLOWING: 'TabKey-following',
+  SPONSORED: 'TabKey-sponsored',
 } as const
 
 export type TabKeyType = typeof TabKey[keyof typeof TabKey]
@@ -52,7 +52,7 @@ export type FormErrors = Partial<Record<ProfileFormField, string>>
 
 // 7. Base interfaces without complex dependencies
 export interface TabItem {
-  tabName: TabKeyType
+  tabName: string
   count?: number | string
   redirectLink?: string
 }

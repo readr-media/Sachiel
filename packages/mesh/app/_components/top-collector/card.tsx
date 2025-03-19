@@ -16,7 +16,7 @@ type Props = {
 
 export default function TopCollectorCard({ person, rank }: Props) {
   const t = useTranslations('Pages.Home')
-  const otherT = useTranslations('Others.unorganized')
+  const followButtonT = useTranslations('Components.FollowButton')
   const { handleClickFollow, isFollowing } = useFollow(String(person.id))
   const { user } = useUser()
 
@@ -61,10 +61,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="sm"
               color="transparent"
-              text={otherT('follow')}
+              text={followButtonT('follow')}
               activeState={{
                 isActive: isFollowing,
-                activeText: otherT('following'),
+                activeText: followButtonT('following'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"
@@ -74,10 +74,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="md-large"
               color="transparent"
-              text={otherT('follow')}
+              text={followButtonT('follow')}
               activeState={{
                 isActive: isFollowing,
-                activeText: otherT('following'),
+                activeText: followButtonT('following'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"

@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import { LogInCard } from '@/components/alchemy/login-card'
@@ -7,6 +8,7 @@ import { getCurrentUser } from '../actions/auth'
 import MeshPoint from './_components/mesh-point'
 
 export default async function Page() {
+  const t = await getTranslations('Others.alchemy')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   let balance = undefined
@@ -25,7 +27,7 @@ export default async function Page() {
         <MeshPoint balance={balance} />
       ) : (
         <LogInCard
-          formDescription="您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。"
+          formDescription={t('login-description')}
           isHelperText={true}
         />
       )}

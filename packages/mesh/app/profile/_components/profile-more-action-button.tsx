@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import type { ForwardedRef, MouseEventHandler, RefObject } from 'react'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -162,10 +163,26 @@ enum ActionType {
 }
 
 const actions = [
-  { type: ActionType.CopyLink, text: '複製個人檔案連結', icon: 'icon-copy' },
-  { type: ActionType.Share, text: '分享這個人的個人檔案', icon: 'icon-share' },
-  { type: ActionType.REPORT, text: '檢舉', icon: 'icon-flag' },
-  { type: ActionType.BLOCK, text: '封鎖', icon: 'icon-forbidden' },
+  {
+    type: ActionType.CopyLink,
+    textKey: 'ProfileMoreActionButton-actions-copy-link',
+    icon: 'icon-copy',
+  },
+  {
+    type: ActionType.Share,
+    textKey: 'ProfileMoreActionButton-actions-share',
+    icon: 'icon-share',
+  },
+  {
+    type: ActionType.REPORT,
+    textKey: 'ProfileMoreActionButton-actions-report',
+    icon: 'icon-flag',
+  },
+  {
+    type: ActionType.BLOCK,
+    textKey: 'ProfileMoreActionButton-actions-block',
+    icon: 'icon-forbidden',
+  },
 ] as const
 
 const ActionSheet = forwardRef(function ActionSheet(
@@ -188,6 +205,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
+  const t = useTranslations('Pages.Profile')
   const hasPosition = isPositionValid(position)
   const sheetMinWidth = 180
   const sheetButtonOverlap = 20
@@ -269,7 +287,7 @@ const ActionSheet = forwardRef(function ActionSheet(
               >
                 <Icon iconName={action.icon} size="l" />
                 <span className="button-large shrink-0 text-primary-700">
-                  {action.text}
+                  {t(action.textKey)}
                 </span>
               </button>
             )

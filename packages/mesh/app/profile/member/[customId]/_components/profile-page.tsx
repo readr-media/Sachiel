@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
@@ -25,6 +26,7 @@ export default function ProfilePage({
   userType: UserType
   profileCustomId: string
 }) {
+  const t = useTranslations('Pages.Profile')
   const router = useRouter()
   const { user } = useUser()
   const {
@@ -82,14 +84,14 @@ export default function ProfilePage({
   }
 
   const userStatusList = [
-    { tabName: TabKey.PICK, count: pickCount },
+    { tabName: t(TabKey.PICK), count: pickCount },
     {
-      tabName: TabKey.FOLLOWER,
+      tabName: t(TabKey.FOLLOWER),
       count: followerCount,
       redirectLink: `${customId}/follower`,
     },
     {
-      tabName: TabKey.FOLLOWING,
+      tabName: t(TabKey.FOLLOWING),
       count: followingCount,
       redirectLink: `${customId}/following`,
     },
@@ -102,12 +104,12 @@ export default function ProfilePage({
       ? isMediaManager
         ? [
             {
-              text: { default: '編輯個人檔案', isActive: '' },
+              text: { default: t('ProfilePage-edit-profile'), isActive: '' },
               clickFn: () => router.push(`${customId}/edit-profile`),
               isActive: false,
             },
             {
-              text: { default: '進入媒體後台', isActive: '' },
+              text: { default: t('ProfilePage-media-backstage'), isActive: '' },
               color: 'primary',
               clickFn: () =>
                 router.push(`/media-backstage/${publisherCustomId}/point`),
@@ -116,14 +118,17 @@ export default function ProfilePage({
           ]
         : [
             {
-              text: { default: '編輯個人檔案', isActive: '' },
+              text: { default: t('ProfilePage-edit-profile'), isActive: '' },
               clickFn: () => router.push(`${customId}/edit-profile`),
               isActive: false,
             },
           ]
       : [
           {
-            text: { default: '追蹤', isActive: '追蹤中' },
+            text: {
+              default: t('ProfilePage-follow'),
+              isActive: t('ProfilePage-following'),
+            },
             clickFn: handleClickFollow,
             isActive: isFollowing,
           },

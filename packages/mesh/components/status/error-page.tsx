@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 import Button from '../button'
@@ -10,13 +11,13 @@ type ErrorPageProps = {
 
 const errorInfo = {
   404: {
-    message: '找不到這頁的資料...',
+    messageKey: '404',
     icon: (
       <Icon iconName="icon-404" size="2xl" className="aspect-square w-20" />
     ),
   },
   500: {
-    message: '看來有哪裡出錯了...',
+    messageKey: '500',
     icon: (
       <Icon iconName="icon-500" size="2xl" className="aspect-square w-20" />
     ),
@@ -24,6 +25,7 @@ const errorInfo = {
 }
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
+  const t = useTranslations('Components.ErrorPage')
   const handleRefresh = async () => {
     if (reset) return reset()
     return window.location.reload()
@@ -34,12 +36,12 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ statusCode, reset }) => {
       <section className="mb-6 flex flex-col items-center">
         <p className="title-1 mb-2">{statusCode}</p>
         <p className="body-3 text-primary-600">
-          {errorInfo[statusCode].message}
+          {t(errorInfo[statusCode].messageKey)}
         </p>
       </section>
       <Button
         onClick={handleRefresh}
-        text="重新嘗試"
+        text={t('retry')}
         size="md"
         color="primary-outlined"
       />

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import type { MouseEventHandler } from 'react'
 import { useRef, useState } from 'react'
 
@@ -46,6 +47,8 @@ export default function CategorySelector({
   allCategories: Category[]
   currentCategory?: Category
 }) {
+  const t = useTranslations('Pages.Media')
+  const categoriesT = useTranslations('Others.categories')
   const { user, setUser } = useUser()
   const displayCategories = user.followingCategories
   const { addToast } = useToast()
@@ -136,7 +139,7 @@ export default function CategorySelector({
                 <Button
                   size="xs"
                   color="nav-chip"
-                  text={category.title ?? ''}
+                  text={categoriesT(category.slug ?? '')}
                   activeState={{
                     isActive: category.slug === currentCategory?.slug,
                   }}
@@ -159,7 +162,7 @@ export default function CategorySelector({
               <Button
                 size="xs"
                 color="nav-button-add"
-                text="編輯"
+                text={t('CategorySelector-edit')}
                 icon={{
                   iconName: 'icon-add',
                   size: 'm',

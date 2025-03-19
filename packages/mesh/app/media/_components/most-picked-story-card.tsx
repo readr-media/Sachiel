@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
@@ -20,6 +21,7 @@ export default function MostPickedStoryCard({
   story: Story
   isDesktop: boolean
 }) {
+  const t = useTranslations('Pages.Media')
   const userPayload = useUserPayload()
   const pageName = usePageName()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
@@ -32,7 +34,7 @@ export default function MostPickedStoryCard({
             isDesktop ? 'title-1' : 'list-title'
           } text-primary-500 lg:h-8`}
         >
-          最多人精選
+          {t('MostPickedStoryCard-title')}
         </div>
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:size-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">

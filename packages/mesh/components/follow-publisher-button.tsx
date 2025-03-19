@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Button, { type ButtonSize } from '@/components/button'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 
@@ -12,6 +14,7 @@ export default function FollowPublisherButton({
   publisherId: string
   publisherName: string
 }) {
+  const t = useTranslations('Components.FollowPublisherButton')
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName,
@@ -22,10 +25,10 @@ export default function FollowPublisherButton({
       <Button
         size={size}
         color="transparent"
-        text="追蹤"
+        text={t('follow')}
         activeState={{
           isActive: isFollowing,
-          activeText: '追蹤中',
+          activeText: t('following'),
         }}
         onClick={handleFollowOnClick}
       />

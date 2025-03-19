@@ -3,13 +3,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getCollectionPickers } from '@/app/actions/collection'
 import { getStoryPickers } from '@/app/actions/story'
-import FollowButton from '@/app/social/_components/follow-button'
 import { usePickersModal } from '@/context/pickers-modal'
 import { type Picker } from '@/context/pickers-modal'
 import { useUser } from '@/context/user'
 import useInView from '@/hooks/use-in-view'
 import { PickObjective } from '@/types/objective'
 
+import FollowButton from './follow-button'
 import Icon from './icon'
 import Avatar from './story-card/avatar'
 

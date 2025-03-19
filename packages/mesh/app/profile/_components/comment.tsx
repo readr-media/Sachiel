@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import CommentModal from '@/components/comment/comment-modal'
 import MobileCommentEditDrawer from '@/components/comment/mobile-comment-section/mobile-comment-edit-drawer'
@@ -35,6 +36,7 @@ const Comment: React.FC<CommentProps> = ({
   //TODO: 之後有文章再更改成slug或id傳入做跳轉功能。
   redirectUrl = '',
 }) => {
+  const t = useTranslations('Pages.Profile')
   const { width } = useWindowDimensions()
   const { user } = useUser()
   const { memberId } = user
@@ -111,7 +113,7 @@ const Comment: React.FC<CommentProps> = ({
                   onClick={handleEditOnClick}
                   className="caption-1 text-primary-500"
                 >
-                  編輯留言
+                  {t('Comment-edit-comment')}
                 </button>
               </>
             )}
@@ -147,20 +149,21 @@ const Comment: React.FC<CommentProps> = ({
             } sm:line-clamp-1`}
             ref={commentRef}
           >
-            {state.commentList[0]?.content ?? (data.content || '沒有評論')}
+            {state.commentList[0]?.content ??
+              (data.content || t('Comment-no-comment'))}
           </p>
         </div>
       </section>
       <CommentModal
-        onConfirmText="刪除留言"
-        onCloseText="取消"
+        onConfirmText={t('Comment-delete-comment')}
+        onCloseText={t('Comment-cancel-edit')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">確認要刪除留言？</p>
-          <p className="body-3">系統仍會保留您的精選記錄</p>
+          <p className="title-2">{t('Comment-confirm-delete')}</p>
+          <p className="body-3">{t('Comment-delete-hint')}</p>
         </section>
       </CommentModal>
       <MobileCommentEditor />

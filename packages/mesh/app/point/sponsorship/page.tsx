@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { Fragment } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -8,6 +9,7 @@ import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import { ImageCategory } from '@/constants/fallback-src'
 
 export default async function Page() {
+  const t = await getTranslations('Pages.Point-Sponsorship')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   if (!memberId) redirect('/login')
@@ -19,7 +21,7 @@ export default async function Page() {
       {sponsorRecord.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">
-            目前還沒有贊助紀錄
+            {t('Page-no-record')}
           </p>
         </div>
       ) : (
@@ -51,9 +53,12 @@ export default async function Page() {
                         {record.publisherTitle}
                       </p>
                       <p className="caption-1">
-                        <span className="text-primary-500">已贊助</span>
+                        <span className="text-primary-500">
+                          {t('Page-already-sponsored')}
+                        </span>
                         <span className="text-custom-blue">
-                          {record.sponsoredCount}次
+                          {record.sponsoredCount}
+                          {t('Page-sponsor-count-unit')}
                         </span>
                       </p>
                     </div>

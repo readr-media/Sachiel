@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMeshPointBalance } from '@/app/actions/mesh-point'
@@ -9,6 +10,7 @@ import { displayTime } from '@/utils/story-display'
 import MeshPointHelper from '../../_components/mesh-point-helper'
 
 export default async function Page({ params }: { params: { id: string } }) {
+  const t = await getTranslations('Pages.Point-Record')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   let balance = undefined
@@ -45,19 +47,19 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
           <p className="footnote text-primary-400 sm:self-end">
             {data.isIncome
-              ? `在 ${displayTime(data.createdAt)} 收到`
-              : `在 ${displayTime(data.createdAt)} 送出`}
+              ? t('Page-receive-at-time', { time: displayTime(data.createdAt) })
+              : t('Page-pay-at-time', { time: displayTime(data.createdAt) })}
           </p>
         </section>
         <section className="flex flex-col gap-6 p-5 sm:p-10">
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">名稱</p>
+            <p className="subtitle-2 text-primary-500">{t('Page-name')}</p>
             <p className="subtitle-1 text-primary-700">
               {data.transactionTitle}
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">讀選點數餘額</p>
+            <p className="subtitle-2 text-primary-500">{t('Page-balance')}</p>
             <div className="flex flex-row items-center justify-start gap-1">
               <Icon iconName="icon-mesh-point" size="m" className="size-6" />
               <p className="subtitle-1 text-primary-700">

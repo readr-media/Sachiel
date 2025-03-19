@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
@@ -23,6 +24,7 @@ export default function DesktopStories({
   publishersAndStories,
   storyType,
 }: Props) {
+  const t = useTranslations('Pages.Subpage')
   const [visibleCount, setVisibleCount] = useState(15)
   const [isLoading, setIsLoading] = useState(false)
   const { targetRef: triggerLoadMoreRef, isIntersecting: shouldStartLoadMore } =
@@ -90,7 +92,9 @@ export default function DesktopStories({
       <div className="lg:flex lg:gap-x-10">
         {otherStories.length !== 0 && (
           <div className="w-articleMain shrink-0">
-            <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">最新報導</h2>
+            <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">
+              {t('latest-news-title')}
+            </h2>
             <div className="flex flex-col gap-y-5">{getStoriesContent()}</div>
           </div>
         )}

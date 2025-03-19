@@ -1,8 +1,11 @@
 'use client'
+import { useTranslations } from 'next-intl'
+
 import Button from '@/components/button'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 export default function LoadMoreTransaction() {
+  const t = useTranslations('Pages.Point')
   const { width } = useWindowDimensions()
 
   return (
@@ -12,7 +15,7 @@ export default function LoadMoreTransaction() {
           <Button
             size="md"
             color="white"
-            text="載入更多記錄"
+            text={t('LoadMoreTransaction-load-more')}
             onClick={() => {}}
           />
         ) : (
@@ -20,7 +23,7 @@ export default function LoadMoreTransaction() {
             <Button
               size="lg"
               color="white"
-              text="載入更多記錄"
+              text={t('LoadMoreTransaction-load-more')}
               onClick={() => {}}
             />
           </div>

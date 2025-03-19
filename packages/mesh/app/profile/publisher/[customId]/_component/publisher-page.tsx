@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
@@ -45,6 +46,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   publisherCustomId,
   publisherStoryType,
 }) => {
+  const t = useTranslations('Pages.Profile')
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName: name,
@@ -59,9 +61,12 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     : viewTabs
 
   const userStatusList = [
-    { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
     {
-      tabName: TabKey.FOLLOWER,
+      tabName: t(TabKey.SPONSORED),
+      count: t('PublisherPage-sponsor-count', { count: sponsoredCount }),
+    },
+    {
+      tabName: t(TabKey.FOLLOWER),
       count: followerCount,
       redirectLink: `${publisherCustomId}/follower`,
     },
@@ -69,12 +74,15 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   const buttonList: ProfileButton[] = [
     {
-      text: { default: '追蹤', isActive: '追蹤中' },
+      text: {
+        default: t('ProfilePage-follow'),
+        isActive: t('ProfilePage-following'),
+      },
       isActive: isFollowing,
       clickFn: handleFollowOnClick,
     },
     {
-      text: { default: '贊助/訂閱媒體', isActive: '' },
+      text: { default: t('PublisherPage-sponsor-or-payment'), isActive: '' },
       color: 'custom-blue',
       isActive: false,
       component: <PublisherDonateButton key={0} publisherId={publisherId} />,

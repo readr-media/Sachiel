@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -14,6 +15,7 @@ export default function PointLayout({
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('Pages.Point')
   const pathname = usePathname()
   const subPath = pathname.split('/')[2]
   const isNestedPage = ['sponsorship', 'subscribe-stories', 'record'].includes(
@@ -25,15 +27,15 @@ export default function PointLayout({
   if (isNestedPage) {
     switch (subPath) {
       case 'sponsorship':
-        subtitle = '已贊助媒體'
+        subtitle = t('Layout-sponsor')
         loadingJsx = <LoadingSponsorship />
         break
       case 'subscribe-stories':
-        subtitle = '訂閱中文章'
+        subtitle = t('Layout-subscribe-stories')
         loadingJsx = <LoadingSubscribeStories />
         break
       case 'record':
-        subtitle = '點數紀錄'
+        subtitle = t('Layout-record')
         break
       default:
         subtitle = ''
