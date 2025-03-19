@@ -243,7 +243,7 @@ const ArticleLayout = ({
         <Footer />
         <div
           id="desktop-audio-container"
-          className="fixed bottom-0 left-0 hidden sm:block"
+          className="fixed bottom-0 left-0 z-20 hidden sm:block"
         ></div>
       </div>
       <Nav
@@ -255,7 +255,7 @@ const ArticleLayout = ({
       <MobileNavigation {...mobileNavigation} />
       <div
         id="mobile-audio-container"
-        className="fixed inset-x-0 bottom-16 block sm:hidden"
+        className="fixed inset-x-0 bottom-16 z-20 block sm:hidden"
       ></div>
       {/* cover on mobile bottom nav */}
       {mobileActionBar && <MobileBottomActionBar {...mobileActionBar} />}

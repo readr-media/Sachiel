@@ -7,10 +7,10 @@ import {
   getMoreMemberPicks,
 } from '@/app/actions/get-more-profile-data'
 import ArticleCard from '@/app/profile/_components/article-card'
+import AdManager from '@/components/ad/ad-manager-ad'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { PublisherProfile } from '@/utils/data-schema'
-import { type PodcastJSONType } from '@/utils/data-schema'
 
 import EmptyTabState from './empty-tab-state'
 
@@ -21,7 +21,7 @@ interface ArticleCardListProps {
     | profile.Bookmarks
     | profile.Collections
     | PublisherProfile['stories']
-    | PodcastJSONType
+
   memberId?: string
   avatar?: string
   name?: string
@@ -123,22 +123,33 @@ export default function ArticleCardList({
                       </li>
                     )
                   }
+                  const shouldShowAd = isCollection && !((index + 1) % 3)
                   return (
-                    <li
-                      key={
-                        index +
-                        (item as NonNullable<profile.BookmarkItem>).id +
-                        (item as NonNullable<profile.BookmarkItem>).title +
-                        (item as NonNullable<profile.BookmarkItem>).createdAt
-                      }
-                      className="relative flex size-full grow bg-white md:h-full md:flex-col md:rounded-md md:drop-shadow"
-                    >
-                      <ArticleCard
-                        storyData={item as NonNullable<profile.BookmarkItem>}
-                        isLast={isLast}
-                        shouldShowComment={shouldShowComment}
-                      />
-                    </li>
+                    <>
+                      <li
+                        key={
+                          index +
+                          (item as NonNullable<profile.BookmarkItem>).id +
+                          (item as NonNullable<profile.BookmarkItem>).title +
+                          (item as NonNullable<profile.BookmarkItem>).createdAt
+                        }
+                        className="relative flex size-full grow bg-white md:h-full md:flex-col md:rounded-md md:drop-shadow"
+                      >
+                        <ArticleCard
+                          storyData={item as NonNullable<profile.BookmarkItem>}
+                          isLast={isLast}
+                          shouldShowComment={shouldShowComment}
+                        />
+                      </li>
+                      {shouldShowAd && (
+                        <div className="block md:hidden">
+                          <AdManager
+                            pageKey="profile"
+                            adKey={`MB_C${Math.floor(index / 3) + 1}`}
+                          />
+                        </div>
+                      )}
+                    </>
                   )
                 })}
               </ul>

@@ -132,7 +132,7 @@ export default function AudioPlayer({
         className="mr-6 hidden size-12 rounded object-cover sm:block"
         fallbackCategory={ImageCategory.PODCAST}
       />
-      <div className="inline-flex">
+      <div className="inline-flex gap-1">
         <button
           className="hidden h-12 w-10 items-center justify-center sm:flex"
           onClick={() => handleSkipTime(-10)}
@@ -185,7 +185,7 @@ export default function AudioPlayer({
           />
         </button>
       </div>
-      <div className="ml-3 mr-2 flex w-[203px] flex-col justify-center gap-2 overflow-hidden sm:ml-4 sm:mr-6 sm:w-[360px]">
+      <div className="ml-3 mr-2 flex w-[203px] flex-col justify-center gap-2 overflow-hidden sm:ml-4 sm:mr-6 sm:w-[360px] lg:w-[556px]">
         <p className="caption-1 animate-infinite-slider whitespace-nowrap">
           {audioTitle}
         </p>

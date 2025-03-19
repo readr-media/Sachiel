@@ -392,6 +392,58 @@ export const GAM_UNITS: GamUnits = {
       adSize: [300, 250],
     },
   },
+  profile: {
+    MB_C1: {
+      adUnit: 'mmesh_profile_MW_250x250_3',
+      adSlot: '1738638115149-0',
+      adSize: [250, 250],
+    },
+    MB_C2: {
+      adUnit: 'mmesh_profile_MW_250x250_3_2',
+      adSlot: '1740638529136-0',
+      adSize: [250, 250],
+    },
+    MB_C3: {
+      adUnit: 'mmesh_profile_MW_250x250_3_3',
+      adSlot: '1740638561268-0',
+      adSize: [250, 250],
+    },
+    MB_C4: {
+      adUnit: 'mmesh_profile_MW_250x250_3_4',
+      adSlot: '1740638585211-0',
+      adSize: [250, 250],
+    },
+    MB_C5: {
+      adUnit: 'mmesh_profile_MW_250x250_3_5',
+      adSlot: '1740638611741-0',
+      adSize: [250, 250],
+    },
+    MB_C6: {
+      adUnit: 'mmesh_profile_MW_250x250_3_6',
+      adSlot: '1740638634023-0',
+      adSize: [250, 250],
+    },
+    MB_C7: {
+      adUnit: 'mmesh_profile_MW_250x250_3_7',
+      adSlot: '1740638661589-0',
+      adSize: [250, 250],
+    },
+    MB_C8: {
+      adUnit: 'mmesh_profile_MW_250x250_3_8',
+      adSlot: '1740638696408-0',
+      adSize: [250, 250],
+    },
+    MB_C9: {
+      adUnit: 'mmesh_profile_MW_250x250_3_9',
+      adSlot: '1740638725365-0',
+      adSize: [250, 250],
+    },
+    MB_C10: {
+      adUnit: 'mmesh_profile_MW_250x250_3_10',
+      adSlot: 'div-gpt-ad-1740638753483-0',
+      adSize: [250, 250],
+    },
+  },
 }
 
 export const GPT_AD_NETWORK = '23277192286'
