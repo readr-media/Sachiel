@@ -231,18 +231,10 @@ query GetMediaPodcasts {
   }
 }
 
-query GetPublisherPodcastList {
-  publishers(where: { podcast_url: { not: { equals: "" } } }) {
-    id
-    customId
-    title
-  }
-}
-
-query GetPublisherAndPodcast($publisherId: [ID!]) {
+query GetPublisherPodcast($publisherIds: [ID!]) {
   stories(
     where: {
-      source: { id: { in: $publisherId } }
+      source: { id: { in: $publisherIds } }
       story_type: { equals: podcast }
     }
   ) {

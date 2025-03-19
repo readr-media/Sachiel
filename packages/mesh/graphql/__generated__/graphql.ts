@@ -6803,6 +6803,20 @@ export type GetPublisherReportsQuery = {
   }> | null
 }
 
+export type GetPublisherPodcastListQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type GetPublisherPodcastListQuery = {
+  __typename?: 'Query'
+  publishers?: Array<{
+    __typename?: 'Publisher'
+    id: string
+    customId?: string | null
+    title?: string | null
+  }> | null
+}
+
 export type GetPublisherSponsorshipsQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
@@ -7075,27 +7089,13 @@ export type GetMediaPodcastsQuery = {
   }> | null
 }
 
-export type GetPublisherPodcastListQueryVariables = Exact<{
-  [key: string]: never
-}>
-
-export type GetPublisherPodcastListQuery = {
-  __typename?: 'Query'
-  publishers?: Array<{
-    __typename?: 'Publisher'
-    id: string
-    customId?: string | null
-    title?: string | null
-  }> | null
-}
-
-export type GetPublisherAndPodcastQueryVariables = Exact<{
-  publisherId?: InputMaybe<
+export type GetPublisherPodcastQueryVariables = Exact<{
+  publisherIds?: InputMaybe<
     Array<Scalars['ID']['input']> | Scalars['ID']['input']
   >
 }>
 
-export type GetPublisherAndPodcastQuery = {
+export type GetPublisherPodcastQuery = {
   __typename?: 'Query'
   stories?: Array<{
     __typename?: 'Story'
@@ -20253,6 +20253,74 @@ export const GetPublisherReportsDocument = {
   GetPublisherReportsQuery,
   GetPublisherReportsQueryVariables
 >
+export const GetPublisherPodcastListDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherPodcastList' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publishers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'podcast_url' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'not' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: '',
+                                    block: false,
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherPodcastListQuery,
+  GetPublisherPodcastListQueryVariables
+>
 export const GetPublisherSponsorshipsDocument = {
   kind: 'Document',
   definitions: [
@@ -22122,87 +22190,19 @@ export const GetMediaPodcastsDocument = {
   GetMediaPodcastsQuery,
   GetMediaPodcastsQueryVariables
 >
-export const GetPublisherPodcastListDocument = {
+export const GetPublisherPodcastDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GetPublisherPodcastList' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'publishers' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'where' },
-                value: {
-                  kind: 'ObjectValue',
-                  fields: [
-                    {
-                      kind: 'ObjectField',
-                      name: { kind: 'Name', value: 'podcast_url' },
-                      value: {
-                        kind: 'ObjectValue',
-                        fields: [
-                          {
-                            kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'not' },
-                            value: {
-                              kind: 'ObjectValue',
-                              fields: [
-                                {
-                                  kind: 'ObjectField',
-                                  name: { kind: 'Name', value: 'equals' },
-                                  value: {
-                                    kind: 'StringValue',
-                                    value: '',
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'title' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetPublisherPodcastListQuery,
-  GetPublisherPodcastListQueryVariables
->
-export const GetPublisherAndPodcastDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'GetPublisherAndPodcast' },
+      name: { kind: 'Name', value: 'GetPublisherPodcast' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
           variable: {
             kind: 'Variable',
-            name: { kind: 'Name', value: 'publisherId' },
+            name: { kind: 'Name', value: 'publisherIds' },
           },
           type: {
             kind: 'ListType',
@@ -22245,7 +22245,7 @@ export const GetPublisherAndPodcastDocument = {
                                     kind: 'Variable',
                                     name: {
                                       kind: 'Name',
-                                      value: 'publisherId',
+                                      value: 'publisherIds',
                                     },
                                   },
                                 },
@@ -22323,8 +22323,8 @@ export const GetPublisherAndPodcastDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetPublisherAndPodcastQuery,
-  GetPublisherAndPodcastQueryVariables
+  GetPublisherPodcastQuery,
+  GetPublisherPodcastQueryVariables
 >
 export const GetPublisherTransactionsDocument = {
   kind: 'Document',

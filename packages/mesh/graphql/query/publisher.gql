@@ -77,3 +77,10 @@ query GetPublisherReports($publisherCustomId: String) {
     }
   }
 }
+query GetPublisherPodcastList {
+  publishers(where: { podcast_url: { not: { equals: "" } } }) {
+    id
+    customId
+    title
+  }
+}
