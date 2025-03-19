@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
@@ -14,6 +15,8 @@ type Props = {
 }
 
 export default function TopCollectorCard({ person, rank }: Props) {
+  const t = useTranslations('Pages.Home')
+  const otherT = useTranslations('Others.unorganized')
   const { handleClickFollow, isFollowing } = useFollow(String(person.id))
   const { user } = useUser()
 
@@ -45,9 +48,9 @@ export default function TopCollectorCard({ person, rank }: Props) {
             </NextLink>
           </p>
           <p className="caption-1 text-primary-500">
-            本週已精選
+            {t('TopCollectorCard-pick-detail-1')}
             <span className="text-primary-700"> {person.pickCount} </span>
-            篇文章
+            {t('TopCollectorCard-pick-detail-2')}
           </p>
         </div>
       </div>
@@ -58,10 +61,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="sm"
               color="transparent"
-              text="追蹤"
+              text={otherT('follow')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: otherT('following'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"
@@ -71,10 +74,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="md-large"
               color="transparent"
-              text="追蹤"
+              text={otherT('follow')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: otherT('following'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"

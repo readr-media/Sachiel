@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 export default function ObjectivePickCount({
   picksCount,
   onClickDisplayPicker,
@@ -7,8 +9,9 @@ export default function ObjectivePickCount({
   onClickDisplayPicker: () => void
   disabled: boolean
 }) {
+  const t = useTranslations('Components.ObjectivePickCount')
   if (picksCount === 0) {
-    return <span>尚無人精選</span>
+    return <span>{t('no-picks')}</span>
   }
 
   const displayCount =
@@ -23,7 +26,9 @@ export default function ObjectivePickCount({
       disabled={disabled}
     >
       <span className="pr-1 text-primary-700">{displayCount}</span>
-      <span>{picksCount < 10000 ? '人精選' : '萬人精選'}</span>
+      <span>
+        {picksCount < 10000 ? t('pick-under-10000') : t('pick-over-10000')}
+      </span>
     </button>
   )
 }

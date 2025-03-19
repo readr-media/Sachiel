@@ -1,5 +1,141 @@
 {
-  "Home": {
-    "title": "首頁"
+  "Pages": {
+    "Home": {
+      "DailyHighlight-title": "今日焦點",
+      "FeaturedCard-readr-title": "READr 最新報導",
+      "FeaturedCard-non-readr-title": "最多人精選",
+      "EmptyMessage-title": "找不到新聞",
+      "EmptyMessage-description": "請查看其他分類，或重新整理頁面",
+      "TopCollectorSection-title": "本週精選最多文章",
+      "TopCollectorCard-pick-detail-1": "本週已精選",
+      "TopCollectorCard-pick-detail-2": "篇文章",
+      "MostLikedCommentSection-title": "本週獲得最多愛心的留言",
+      "MostLikedCommentCard-like-detail-1": "留言獲得",
+      "MostLikedCommentCard-like-detail-2": "個愛心",
+      "TopPublisherSection-title": "獲得最多次贊助",
+      "TopPublisherCard-sponsor-detail-1": "已獲得",
+      "TopPublisherCard-sponsor-detail-2": "贊助",
+      "TopPublisherCard-sponsor-count-unit": "次"
+    }
+  },
+  "Components": {
+    "LoginButton": {
+      "login": "登入"
+    },
+    "StoryMeta": {
+      "payall": "付費文章",
+      "full-screen-ad": "蓋板廣告",
+      "podcast": "Podcast"
+    },
+    "StoryPickButton": {
+      "pick": "精選",
+      "already-picked": "已精選"
+    },
+    "PublisherDonateButton": {
+      "donate": "贊助"
+    },
+    "ObjectivePickCount": {
+      "no-picks": "尚無人精選",
+      "pick-under-10000": "人精選",
+      "pick-over-10000": "萬人精選"
+    },
+    "ObjectiveCommentCount": {
+      "no-comment": "尚無人留言",
+      "comment-under-10000": "則留言",
+      "comment-over-10000": "萬則留言"
+    },
+    "StoryMoreActionButton": {
+      "donate": "贊助",
+      "add-bookmark": "加入書籤",
+      "remove-bookmark": "移除書籤",
+      "add-collection": "加入集錦",
+      "unfollow": "取消追蹤",
+      "copy-link": "複製連結",
+      "share": "分享"
+    },
+    "NotificationDropDown": {
+      "h2": "通知",
+      "announcement-title": "系統維修公告",
+      "new-announcement-title": "新通知",
+      "no-new-announcement": "目前沒有新通知...",
+      "prev-notification": "之前的通知",
+      "notifier-follow-single": "開始追蹤你",
+      "notifier-follow-plural": "都開始追蹤你",
+      "notifier-pick-single": "精選了你的集錦",
+      "notifier-pick-plural": "都精選了你的集錦",
+      "notifier-collection-comment-single-1": "在你的集錦",
+      "notifier-collection-comment-single-2": "下留言",
+      "notifier-collection-comment-plural-1": "都在你的集錦",
+      "notifier-collection-comment-plural-2": "下留言",
+      "notifier-story-comment-single-1": "也在",
+      "notifier-story-comment-single-2": "下留言",
+      "notifier-story-comment-plural-1": "也在",
+      "notifier-story-comment-plural-2": "下留言",
+      "notifier-comment-like-single": "喜歡你的留言",
+      "notifier-comment-like-plural": "都喜歡你的留言",
+      "notifier-unknown": "Unknown Notification",
+      "notifier-sponsor-success-1": "你已成功贊助",
+      "notifier-sponsor-success-2": "讀選點數",
+      "notifier-collection-created": "建立了新的集錦",
+      "notifier-unlock-story": "你已成功解鎖",
+      "notifier-receive-airdrop": "你已收到 {depositVolume} 讀選點數的空投",
+      "expire-description-1": "這篇文章的閱讀期限只剩",
+      "expire-description-2": "哦：",
+      "two-names-and": "及",
+      "three-names-above-1": "、",
+      "three-names-above-2": "及其他",
+      "three-names-above-3": "人"
+    }
+  },
+  "Utils": {
+    "displayTimeFromNow": {
+      "mins-ago": " 分鐘前",
+      "hours-ago": " 小時前",
+      "days-ago": " 天前"
+    },
+    "displayExpireTimeFromNow": {
+      "one": "一",
+      "two": "二",
+      "three": "三",
+      "day-unit": "天"
+    },
+    "displayDateWithWeekday": {
+      "sunday": "日",
+      "monday": "一",
+      "tuesday": "二",
+      "wednesday": "三",
+      "thursday": "四",
+      "friday": "五",
+      "saturday": "六",
+      "month": "月",
+      "date": "日"
+    }
+  },
+  "Others": {
+    "punctuation": {
+      "corner-quote-start": "「",
+      "corner-quote-end": "」"
+    },
+    "categories": {
+      "internation": "國際",
+      "politics": "政治",
+      "society": "社會",
+      "finance": "財經",
+      "technology": "科技",
+      "health": "醫療健康",
+      "sport": "體育",
+      "art": "藝文",
+      "entertainment": "娛樂",
+      "life": "生活",
+      "education": "教育",
+      "environment": "環境",
+      "test01": "測試空狀態",
+      "podcast": "Podcast"
+    },
+    "unorganized": {
+      "follow": "追蹤",
+      "following": "追蹤中",
+      "login": "登入"
+    }
   }
 }

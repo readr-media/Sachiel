@@ -1,7 +1,12 @@
+import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
+
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
 import { type UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
 export const displayTimeFromNow = (date: string | Date) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const t = useTranslations('Utils.displayTimeFromNow')
   const differenceInMilliseconds = Date.now() - new Date(date).getTime()
   const differenceInMinutes = differenceInMilliseconds / MINUTE
   const differenceInHours = differenceInMilliseconds / HOUR
@@ -24,25 +29,28 @@ export const displayTimeFromNow = (date: string | Date) => {
   if (differenceInMilliseconds < 0) {
     return fullDisplayTime(date)
   } else if (differenceInMilliseconds < HOUR) {
-    return Math.floor(differenceInMinutes) + ' 分鐘前'
+    return Math.floor(differenceInMinutes) + t('mins-ago')
   } else if (differenceInMilliseconds < 24 * HOUR) {
-    return Math.floor(differenceInHours) + ' 小時前'
+    return Math.floor(differenceInHours) + t('hours-ago')
   } else if (differenceInMilliseconds < 7 * DAY) {
-    return Math.floor(differenceInDays) + ' 天前'
+    return Math.floor(differenceInDays) + t('days-ago')
   } else {
     return fullDisplayTime(date)
   }
 }
 
 export const displayExpireTimeFromNow = (date: string) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const t = useTranslations('Utils.displayExpireTimeFromNow')
+
   const differenceInMilliseconds = new Date(date).getTime() - Date.now()
   const differenceInDays = differenceInMilliseconds / DAY
   const daysToExpire = Math.max(1, Math.ceil(differenceInDays))
-  const chineseNumbers = ['', '一', '二', '三']
+  const chineseNumbers = ['', t('one'), t('two'), t('three')]
   const dayInChinese =
     chineseNumbers[daysToExpire] ?? chineseNumbers[chineseNumbers.length - 1]
 
-  return `${dayInChinese}天`
+  return `${dayInChinese}${t('day-unit')}`
 }
 
 type Picks = UserActionStoryFragment['pick']
@@ -80,15 +88,47 @@ export const displayTime = (date: string | Date) => {
   return `${year}/${month}/${day} ${hour}:${second}`
 }
 
-export const displayDateWithWeekday = () => {
+export const clientSideDisplayDateWithWeekday = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const t = useTranslations('Utils.displayDateWithWeekday')
   const today = new Date()
   const month = String(today.getMonth() + 1)
   const date = String(today.getDate())
   const day = today.getDay()
-  const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六']
-  const dayInChinese = daysOfWeek[day]
+  const daysOfWeek = [
+    t('sunday'),
+    t('monday'),
+    t('tuesday'),
+    t('wednesday'),
+    t('thursday'),
+    t('friday'),
+    t('saturday'),
+  ]
+  const dayString = daysOfWeek[day]
 
-  const currentTime = `${month}月${date}日(${dayInChinese})`
+  const currentTime = `${month}${t('month')}${date}${t('date')}(${dayString})`
+
+  return currentTime
+}
+
+export const displayDateWithWeekday = async () => {
+  const t = await getTranslations('Utils.displayDateWithWeekday')
+  const today = new Date()
+  const month = String(today.getMonth() + 1)
+  const date = String(today.getDate())
+  const day = today.getDay()
+  const daysOfWeek = [
+    t('sunday'),
+    t('monday'),
+    t('tuesday'),
+    t('wednesday'),
+    t('thursday'),
+    t('friday'),
+    t('saturday'),
+  ]
+  const dayString = daysOfWeek[day]
+
+  const currentTime = `${month}${t('month')}${date}${t('date')}(${dayString})`
 
   return currentTime
 }

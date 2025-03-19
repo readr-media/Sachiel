@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -19,6 +20,8 @@ type Props = {
 }
 
 export default function MostLikedCommentCard({ comment, rank }: Props) {
+  const t = useTranslations('Pages.Home')
+  const otherT = useTranslations('Others.unorganized')
   const { handleClickFollow, isFollowing } = useFollow(
     String(comment.member.id)
   )
@@ -61,9 +64,9 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 </Link>
               </p>
               <p className="footnote text-primary-500">
-                留言獲得{' '}
-                <span className="text-primary-800">{comment.likeCount}</span>{' '}
-                個愛心
+                {t('MostLikedCommentCard-like-detail-1') + ' '}
+                <span className="text-primary-800">{comment.likeCount}</span>
+                {' ' + t('MostLikedCommentCard-like-detail-1')}
               </p>
             </div>
           </div>
@@ -72,10 +75,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               <Button
                 size="sm"
                 color="transparent"
-                text="追蹤"
+                text={otherT('follow')}
                 activeState={{
                   isActive: isFollowing,
-                  activeText: '追蹤中',
+                  activeText: otherT('following'),
                 }}
                 onClick={handleClickFollow}
                 gtmClassName="GTM-homepage_click_popular_user_follow"

@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -32,6 +33,7 @@ export default function FeaturedCard({
   publisherId,
   gtmTags,
 }: Props) {
+  const t = useTranslations('Pages.Home')
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
   const pageName = usePageName()
@@ -39,7 +41,9 @@ export default function FeaturedCard({
   return (
     <section className="bg-primary-100 p-5 md:px-[70px] lg:px-10 lg:py-8">
       <h2 className="list-title lg:title-1 mb-2 text-primary-500 lg:mb-3">
-        {isReadrStory ? 'READr 最新報導' : '最多人精選'}
+        {isReadrStory
+          ? t('FeaturedCard-readr-title')
+          : t('FeaturedCard-non-readr-title')}
       </h2>
       <article className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-5 lg:gap-x-10">
         <NextLink href={`/story/${story.id}`} className={gtmTags.story}>

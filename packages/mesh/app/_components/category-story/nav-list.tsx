@@ -1,6 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import type { MouseEventHandler } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -40,6 +41,7 @@ type Props = {
 }
 
 export default function NavList({ categories, initialStories }: Props) {
+  const t = useTranslations('Others.categories')
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
   const userPayload = useUserPayload()
   const searchParams = useSearchParams()
@@ -96,7 +98,7 @@ export default function NavList({ categories, initialStories }: Props) {
                 <Button
                   size="xs"
                   color="nav-chip"
-                  text={category.title ?? ''}
+                  text={t(category.slug) ?? ''}
                   activeState={{
                     isActive: category === activeCategory,
                   }}
@@ -169,11 +171,7 @@ export default function NavList({ categories, initialStories }: Props) {
         </div>
       </div>
 
-      <StorySection
-        stories={data}
-        activeTitle={activeCategory?.title ?? ''}
-        slug={activeCategory?.slug ?? ''}
-      />
+      <StorySection stories={data} slug={activeCategory?.slug ?? ''} />
     </>
   )
 }
