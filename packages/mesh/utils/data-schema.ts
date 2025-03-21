@@ -393,7 +393,7 @@ export const PodcastJSONSchema = z
       customId: z.string(),
       title: z.string(),
       official_site: z.string().url(),
-      logo: z.string().url(),
+      logo: z.string(),
       description: z.string(),
       followerCount: z.number(),
       sponsoredCount: z.number(),
