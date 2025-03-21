@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -17,6 +18,7 @@ export default function PaymentWall({
   storyId: string
   policy: PublisherPolicy
 }) {
+  const t = useTranslations('Pages.Story')
   const router = useRouter()
   const { user } = useUser()
   const userId = user.memberId
@@ -29,20 +31,22 @@ export default function PaymentWall({
           <Icon iconName="icon-unlock" size={{ width: 80, height: 80 }} />
           <div className="flex flex-col items-center justify-center gap-1">
             <p className="profile-title-2">
-              以
+              {t('PaymentWall-unlock-with-point-1')}
               <span className="px-1 text-custom-blue">
-                {policy?.[0].charge} 讀選點數
+                {policy?.[0].charge} {t('PaymentWall-unlock-with-point-2')}
               </span>
-              解鎖文章
+              {t('PaymentWall-unlock-with-point-3')}
             </p>
             <p className="body-3 text-primary-500">
-              {policy?.[0].duration} 天內可無限閱讀
+              {t('PaymentWall-unlock-duration', {
+                duration: policy?.[0].duration,
+              })}
             </p>
           </div>
           <Button
             size="lg"
             color="custom-blue"
-            text="解鎖文章"
+            text={t('PaymentWall-unlock-story')}
             onClick={() =>
               router.push(
                 `/payment/${PaymentType.SubscriptionStory}/${storyId}`
@@ -51,10 +55,10 @@ export default function PaymentWall({
           />
           {userId ? null : (
             <p className="footnote text-primary-400">
-              還沒有帳號？
+              {t('PaymentWall-no-account-hint')}
               <Link href={'/login'}>
                 <span className="text-primary-700 underline underline-offset-2">
-                  免費註冊會員拿讀選點數
+                  {t('PaymentWall-signup-for-point')}
                 </span>
               </Link>
             </p>

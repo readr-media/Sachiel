@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import useAutoFocus from '@/hooks/use-auto-focus'
 
 import type { UseCollection } from '../_types/collection'
@@ -13,6 +15,7 @@ export default function EditSummary({
   autoFocus?: boolean
   useCollection: UseCollection
 }) {
+  const t = useTranslations('Pages.Collection')
   const { summary, setSummary } = useCollection()
   const textareaRef = useAutoFocus<HTMLTextAreaElement>({ disable: !autoFocus })
 
@@ -21,12 +24,15 @@ export default function EditSummary({
     <div className="flex grow flex-col p-5 sm:grow-0 sm:py-0 md:px-[70px] lg:grow lg:p-0">
       <div className="profile-subtitle hidden justify-between lg:flex">
         <label htmlFor="summary" className="text-primary-500">
-          敘述
+          {t('EditSummary-summary')}
         </label>
         <span
           className={`${tooManyWords ? 'text-custom-red' : 'text-primary-400'}`}
         >
-          {summary.length}/{maxSummaryLength}字
+          {t('EditSummary-current-length-to-max', {
+            currentCount: summary.length,
+            maxCount: maxSummaryLength,
+          })}
         </span>
       </div>
       <textarea
@@ -38,7 +44,7 @@ export default function EditSummary({
             : 'border-primary-200 focus:border-primary-600'
         }`}
         value={summary}
-        placeholder="這個集錦的內容主題是什麼..."
+        placeholder={t('EditSummary-placeholder')}
         onChange={(evt) => {
           setSummary(evt.target.value.trim())
         }}
@@ -46,7 +52,7 @@ export default function EditSummary({
       />
       {tooManyWords && (
         <div className="body-3 mt-2 text-custom-red-text">
-          字數不能超過 {maxSummaryLength} 字
+          {t('EditSummary-too-many-words', { length: maxSummaryLength })}
         </div>
       )}
     </div>

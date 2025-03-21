@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import Icon, { type IconName } from '@/components/icon'
 
 export enum SponsorshipPoints {
@@ -9,24 +11,28 @@ export enum SponsorshipPoints {
 const sponsorshipOptions: {
   iconName: IconName
   points: SponsorshipPoints | undefined
-  label: string
+  labelKey: string
 }[] = [
   {
     iconName: 'icon-sponsor-100',
     points: SponsorshipPoints.SPONSOR_100,
-    label: '讀選點數',
+    labelKey: 'SponsorOption-mesh-point',
   },
   {
     iconName: 'icon-sponsor-300',
     points: SponsorshipPoints.SPONSOR_300,
-    label: '讀選點數',
+    labelKey: 'SponsorOption-mesh-point',
   },
   {
     iconName: 'icon-sponsor-500',
     points: SponsorshipPoints.SPONSOR_500,
-    label: '讀選點數',
+    labelKey: 'SponsorOption-mesh-point',
   },
-  { iconName: 'icon-sponsor-input', points: undefined, label: '讀選點數' },
+  {
+    iconName: 'icon-sponsor-input',
+    points: undefined,
+    labelKey: 'SponsorOption-mesh-point',
+  },
 ]
 
 export default function SponsorOption({
@@ -38,21 +44,22 @@ export default function SponsorOption({
   selectedOption: SponsorshipPoints | undefined | null
   onClick: (value: SponsorshipPoints | undefined) => void
 }) {
+  const t = useTranslations('Pages.Payment')
   return (
     <div className="px-5 pt-5 sm:pb-10 sm:pt-4 lg:px-10">
       <div className="flex max-w-[600px] grow flex-col">
         <div className="flex flex-col gap-1">
           <p className="profile-title">
-            贊助
+            {t('SponsorOption-sponsor')}
             <span className="text-custom-blue">{publisherTitle}</span>
           </p>
           <p className="body-3 text-primary-500">
-            支持喜歡的媒體，做出更多優質報導！
+            {t('SponsorOption-support-publisher')}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 pb-5 pt-3 sm:grid-cols-4">
           {sponsorshipOptions.map((option, index) => {
-            const { iconName, points, label } = option
+            const { iconName, points, labelKey } = option
             const isSelected = points === selectedOption
             return (
               <div key={index}>
@@ -69,9 +76,9 @@ export default function SponsorOption({
                       className="pb-2"
                     />
                     <p className="profile-title-2 text-primary-600">
-                      {points ?? '自訂'}
+                      {points ?? t('SponsorOption-custom')}
                     </p>
-                    <p className="caption-1 text-primary-500">{label}</p>
+                    <p className="caption-1 text-primary-500">{t(labelKey)}</p>
                     <Icon
                       iconName={
                         isSelected
@@ -88,40 +95,30 @@ export default function SponsorOption({
           })}
         </div>
         <div className="flex flex-col gap-3 py-5">
-          <p className="profile-title">贊助須知</p>
+          <p className="profile-title">{t('SponsorOption-good-to-know')}</p>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="pr-3">1</span>
             <div className="flex flex-col gap-1">
-              <p>
-                贊助方式：您可以選擇平台提供的預設贊助點數金額，或是自行設置您想要的贊助額度，支持您喜愛的媒體。
-              </p>
+              <p>{t('SponsorOption-how-to-sponsor')}</p>
             </div>
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="pr-3">2</span>
             <div className="flex flex-col gap-1">
-              <p>
-                贊助用途：您的贊助將直接用於支持該媒體的內容創作、報導開支和平台運營，以維持優質內容的持續輸出。
-              </p>
+              <p>{t('SponsorOption-where-the-money-go')}</p>
             </div>
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="pr-3">3</span>
             <div className="flex flex-col gap-1">
-              <p>
-                贊助確認：每筆贊助完成後無法取消或退還，請確認贊助金額無誤後再提交。
-              </p>
+              <p>{t('SponsorOption-confirm-sponsor')}</p>
             </div>
           </div>
           <div className="body-3 flex flex-row text-primary-500">
             <span className="pr-3">4</span>
             <div className="flex flex-col gap-1">
-              <p>
-                紀錄查詢：您可以在個人帳戶的【讀選點數】頁面中查看已完成的贊助詳情，隨時掌握您的支付狀態。
-              </p>
-              <p>
-                若有任何疑問或遇到贊助問題，歡迎聯繫我們的客服團隊。我們將隨時為您提供協助。
-              </p>
+              <p>{t('SponsorOption-check-record')}</p>
+              <p>{t('SponsorOption-reach-us')}</p>
             </div>
           </div>
         </div>

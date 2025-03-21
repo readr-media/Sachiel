@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useEffect } from 'react'
 
 import useInViewDynamicRef from '@/hooks/use-in-view-dynamic-ref'
@@ -12,6 +13,7 @@ export default function RecordList({
   recordData: RecordData
   loadMoreRecords: () => void
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
   const { setTarget: triggerLoadmoreRef, isIntersecting: shouldStartLoadMore } =
     useInViewDynamicRef()
   const { records, totalCount, shouldLoadMore } = recordData
@@ -26,7 +28,7 @@ export default function RecordList({
     <section className="flex w-full grow flex-col px-10">
       {!totalCount ? (
         <p className="button-large flex grow items-center justify-center text-primary-400">
-          目前沒有紀錄
+          {t('RecordList-no-record')}
         </p>
       ) : (
         <ul>

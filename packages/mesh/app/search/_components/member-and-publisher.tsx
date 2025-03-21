@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import FollowButton from '@/components/follow-button'
 import FollowPublisherButton from '@/components/follow-publisher-button'
@@ -15,6 +16,7 @@ export default function MemberAndPublisher({
   memberResult: SearchResults['member']
   publisherResult: SearchResults['publisher']
 }) {
+  const t = useTranslations('Pages.Search')
   const { user } = useUser()
   const router = useRouter()
   const isNoResult = !memberResult.length && !publisherResult.length
@@ -23,7 +25,9 @@ export default function MemberAndPublisher({
     <>
       {memberResult.length ? (
         <>
-          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">人物</h2>
+          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+            {t('MemberAndPublisher-member')}
+          </h2>
           {memberResult.map((m, idx) => (
             <div
               key={m.id}
@@ -54,7 +58,9 @@ export default function MemberAndPublisher({
       ) : null}
       {publisherResult.length ? (
         <>
-          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">媒體</h2>
+          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+            {t('MemberAndPublisher-publisher')}
+          </h2>
           {publisherResult.map((p, idx) => (
             <div
               key={p.id}
@@ -74,7 +80,9 @@ export default function MemberAndPublisher({
                     {p.title}
                   </p>
                   <p className="body-3 text-primary-500">
-                    {p.followerCount} 人追蹤
+                    {t('MemberAndPublisher-follower-count', {
+                      followerCount: p.followerCount,
+                    })}
                   </p>
                 </div>
                 <FollowPublisherButton
@@ -90,9 +98,9 @@ export default function MemberAndPublisher({
 
       {isNoResult ? (
         <p className="pt-3 text-primary-500 sm:pt-5">
-          找不到包含「
+          {t('StoryAndCollection-cant-find-keyword-1')}
           <span className="text-primary-700">{query}</span>
-          」的個人檔案，請換個關鍵字，再試一次。
+          {t('StoryAndCollection-cant-find-keyword-2')}
         </p>
       ) : null}
     </>

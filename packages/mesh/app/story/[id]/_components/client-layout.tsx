@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import LayoutTemplate from '@/components/layout-template'
 import AddBookMarkButton from '@/components/navigation/add-bookmark-button'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -28,6 +30,7 @@ export default function ClientLayout({
   storyType: 'story' | 'podcast'
   children: React.ReactNode
 }) {
+  const t = useTranslations('Pages.Story')
   const { user } = useUser()
   const { interactions } = useStoryInteractions()
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -35,8 +38,10 @@ export default function ClientLayout({
 
   const isSinglePickByCurrentUser =
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
-  const navigationTitle = storyType === 'story' ? '新聞' : 'Podcast'
-
+  const navigationTitle =
+    storyType === 'story'
+      ? t('ClientLayout-story-title')
+      : t('ClientLayout-podcast-title')
   return (
     <LayoutTemplate
       type="article"

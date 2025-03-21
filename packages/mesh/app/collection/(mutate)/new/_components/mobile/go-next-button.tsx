@@ -1,11 +1,14 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import { useCreateCollection } from '@/context/create-collection'
 
 import { MobileCreateCollectionStep } from '../../_types/create-collection'
 
 export default function MobileGoNextButton() {
+  const t = useTranslations('Pages.Collection')
   const { mobileStepName, setStep, isMobileStepFullfilled, createCollection } =
     useCreateCollection()
 
@@ -18,18 +21,10 @@ export default function MobileGoNextButton() {
   switch (mobileStepName) {
     case MobileCreateCollectionStep.Step1SelectStories:
     case MobileCreateCollectionStep.Step2SetTitle:
-      return (
-        <MobileNavigationButton
-          text="下一步"
-          type="text"
-          onClick={goNextStep}
-          color="blue"
-        />
-      )
     case MobileCreateCollectionStep.Step3SetSummary:
       return (
         <MobileNavigationButton
-          text="下一步"
+          text={t('MobileGoNextButton-go-next')}
           type="text"
           onClick={goNextStep}
           color="blue"
@@ -38,7 +33,7 @@ export default function MobileGoNextButton() {
     case MobileCreateCollectionStep.Step4SortStories:
       return (
         <MobileNavigationButton
-          text="建立"
+          text={t('MobileGoNextButton-create')}
           type="text"
           onClick={createCollection}
           color="blue"

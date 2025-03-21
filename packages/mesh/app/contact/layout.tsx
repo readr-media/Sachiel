@@ -1,14 +1,13 @@
 'use client'
+import { useTranslations } from 'next-intl'
+
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 
-export default function SettingLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const t = useTranslations('Pages.Contact')
   const navigationData = {
-    title: '聯絡我們',
+    title: t('Layout-title'),
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }

@@ -5,6 +5,7 @@ import {
   useSmartAccountClient,
 } from '@alchemy/aa-alchemy/react'
 import { type Abi } from '@alchemy/aa-core'
+import { useTranslations } from 'next-intl'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
 import { type Hex, encodeFunctionData } from 'viem'
 
@@ -41,7 +42,7 @@ export default function SendTransaction({
   onSend,
   onSuccess,
   onError,
-  actionText = '完成付款',
+  actionText,
 }: {
   recipientAddress: Hex
   amount: number
@@ -53,8 +54,9 @@ export default function SendTransaction({
   onSend: () => void
   onSuccess: () => void
   onError: () => void
-  actionText?: string
+  actionText: string
 }) {
+  const toastT = useTranslations('Others.toast')
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
   const [paymentId, setPaymentId] = useState('')
@@ -102,7 +104,10 @@ export default function SendTransaction({
       onSuccess()
     } catch (error) {
       console.error('Transaction failed:', error)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedUnowknown),
+      })
       if (isCmsPaymentInProgressRef.current) {
         turnCmsPaymentIntoFailure(
           `Transaction failed when alchemy on success, \n${
@@ -128,7 +133,10 @@ export default function SendTransaction({
       })
     },
     onError: (error) => {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedUnowknown),
+      })
       console.error(error)
       turnCmsPaymentIntoFailure(
         `Transaction failed when alchemy on error, \n${error.message}`
@@ -177,7 +185,10 @@ export default function SendTransaction({
       })
     } catch (error) {
       console.error('Transaction failed:', error)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedUnowknown),
+      })
       onError()
     }
   }

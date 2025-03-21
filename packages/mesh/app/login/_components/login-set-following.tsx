@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { signUpMember } from '@/app/actions/auth'
@@ -12,6 +13,8 @@ import { auth } from '@/firebase/client'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
 
 export default function LoginSetFollowing() {
+  const t = useTranslations('Pages.Login')
+  const followT = useTranslations('Components.FollowButton')
   const { formData, setFormData, setStep } = useLogin()
   const { setUser } = useUser()
   const [recommend, setRecommend] =
@@ -83,7 +86,7 @@ export default function LoginSetFollowing() {
         <Icon iconName="icon-login-step-3" size={{ width: 335, height: 20 }} />
         <div className="w-full">
           <p className="subtitle-1 pb-3 text-center text-primary-500">
-            根據您的喜好，我們推薦您追蹤這些人物
+            {t('LoginSetFollowing-hint')}
           </p>
           <div className="flex h-15 items-center rounded-md border border-primary-200 bg-primary-100 px-4">
             <div className="flex flex-row items-center gap-2">
@@ -101,18 +104,20 @@ export default function LoginSetFollowing() {
                 <span className="inline-block w-15 truncate">
                   {recommend?.members?.[0].name}
                 </span>
-                等
+                {t('LoginSetFollowing-select-all-recommend-1')}
                 <span className="px-0.5 text-primary-700">
                   {recommend?.members?.length}
                 </span>
-                人
+                {t('LoginSetFollowing-select-all-recommend-2')}
               </div>
             </div>
             <button
               className="body-3 ml-auto text-custom-blue"
               onClick={handleFollowAllBtn}
             >
-              {isFollowAll ? '取消追蹤全部' : '一次追蹤全部'}
+              {isFollowAll
+                ? t('LoginSetFollowing-unfollow-all')
+                : t('LoginSetFollowing-follow-all')}
             </button>
           </div>
         </div>
@@ -129,10 +134,10 @@ export default function LoginSetFollowing() {
                   <Button
                     size="sm"
                     color="transparent"
-                    text="追蹤"
+                    text={followT('follow')}
                     activeState={{
                       isActive: formData.followings.includes(member.id),
-                      activeText: '追蹤中',
+                      activeText: followT('following'),
                     }}
                     onClick={() => handleFollowToggle(member.id)}
                   />
@@ -149,7 +154,7 @@ export default function LoginSetFollowing() {
         <Button
           size="lg"
           color="primary"
-          text="完成"
+          text={t('LoginSetFollowing-finish')}
           onClick={handleFinishSignUp}
           disabled={loading}
         />

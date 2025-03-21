@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -33,6 +34,8 @@ export default function PaymentInfo({
   balance: number | undefined
   recipientAddress: Hex
 }) {
+  const t = useTranslations('Pages.Payment')
+  const toastT = useTranslations('Others.toast')
   const { user } = useUser()
   const router = useRouter()
   const userPayload = useUserPayload()
@@ -76,7 +79,7 @@ export default function PaymentInfo({
     })
     setCrossPageToast({
       status: 'success',
-      text: TOAST_MESSAGE.unlockStorySuccess,
+      text: toastT(TOAST_MESSAGE.unlockStorySuccess),
     })
     router.push(`/story/${storyId}`)
   }
@@ -89,23 +92,29 @@ export default function PaymentInfo({
     <main className="relative grow p-5 py-4 lg:px-10">
       <div className="flex max-w-[600px] grow flex-col gap-10 sm:grow-0">
         <div className="flex flex-col gap-3">
-          <p className="profile-title">訂單資訊</p>
+          <p className="profile-title">{t('PaymentInfo-payment-info')}</p>
           <div className="flex flex-col gap-6 bg-multi-layer-light p-4">
             <div className="flex flex-col gap-2">
-              <p className="subtitle-2 text-primary-500">購買方案</p>
-              <p className="body-2">鏡週刊Basic會員（單篇）</p>
+              <p className="subtitle-2 text-primary-500">
+                {t('PaymentInfo-payment-type')}
+              </p>
+              <p className="body-2">{t('PaymentInfo-mm-single-story')}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="subtitle-2 text-primary-500">閱讀期限</p>
-              <p className="body-2">完成購買後可享 14 天無限瀏覽</p>
+              <p className="subtitle-2 text-primary-500">
+                {t('PaymentInfo-unlock-duration')}
+              </p>
+              <p className="body-2">{t('PaymentInfo-14-days')}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="subtitle-2 text-primary-500">方案費用</p>
+              <p className="subtitle-2 text-primary-500">
+                {t('PaymentInfo-price')}
+              </p>
               <div className="flex flex-row items-center">
                 <Icon iconName="icon-mesh-point" size="m" className="size-5" />
                 <p className="pl-1">{unlockPolicy[0].charge}</p>
                 <p className="body-3 pl-2 text-primary-500">
-                  (交易手續費依付款畫面為準)
+                  {t('PaymentInfo-payment-hint')}
                 </p>
               </div>
             </div>
@@ -113,9 +122,9 @@ export default function PaymentInfo({
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <p className="profile-title">Email</p>
+            <p className="profile-title">{t('PaymentInfo-email')}</p>
             <p className="body-3 text-primary-500">
-              我們會將訂單資訊寄至這個 Email。
+              {t('PaymentInfo-email-hint')}
             </p>
           </div>
           <div className="flex flex-col gap-2">
@@ -141,7 +150,7 @@ export default function PaymentInfo({
                   isValid ? 'text-custom-blue' : 'text-primary-500'
                 }`}
               >
-                Email 符合格式
+                {t('PaymentInfo-email-valid')}
               </p>
             </div>
           </div>
@@ -154,10 +163,10 @@ export default function PaymentInfo({
             onChange={() => setIsChecked(!isChecked)}
           />
           <p className="body-2 text-primary-500">
-            我接受與同意鏡傳媒的
+            {t('PaymentInfo-aceept-terms')}
             <Link href={'/policy/terms-of-service'}>
               <span className="text-primary-700 underline underline-offset-2">
-                《服務條款》
+                {t('PaymentInfo-terms')}
               </span>
             </Link>
           </p>
@@ -175,6 +184,7 @@ export default function PaymentInfo({
           onSend={handleUnlockStorySingleOnSend}
           onSuccess={handleUnlockStorySingleOnSuccess}
           onError={handleUnlockStorySingleOnError}
+          actionText={t('PaymentInfo-pay')}
         />
       </div>
 

@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 'use client'
 
+import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 import {
   createContext,
@@ -291,6 +292,7 @@ export function CommentProvider({
   commentObjectiveData: CommentObjectiveData
   commentObjective: CommentObjective
 }) {
+  const toastT = useTranslations('Others.toast')
   const [state, dispatch] = useReducer(commentReducer, {
     ...initialState,
     commentList: initialComments,
@@ -318,10 +320,13 @@ export function CommentProvider({
       })
       dispatch({ type: 'RESET_EDIT_DRAWER' })
       if (!deleteCommentResponse) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.deleteCommentFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.deleteCommentFailed),
+        })
       }
     },
-    [addToast, state.commentEditState]
+    [addToast, state.commentEditState, toastT]
   )
 
   const handleDeleteCommentModalOnCancel = useCallback(() => {
@@ -387,7 +392,10 @@ export function CommentProvider({
         })
         dispatch({ type: 'UPDATE_COMMENT_TEXT', payload: '' })
       } catch (error) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.addCommentFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.addCommentFailed),
+        })
         console.error('Error publishing comment:', error)
       } finally {
         dispatch({
@@ -402,6 +410,7 @@ export function CommentProvider({
       detectIfShouldRedirectToLogin,
       state.comment,
       state.commentList,
+      toastT,
     ]
   )
 
@@ -435,10 +444,18 @@ export function CommentProvider({
         content: state.commentEditState.content,
       })
       if (!editCommentResponse) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.editCommentFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.editCommentFailed),
+        })
       }
     },
-    [addToast, state.commentEditState.commentId, state.commentEditState.content]
+    [
+      addToast,
+      state.commentEditState.commentId,
+      state.commentEditState.content,
+      toastT,
+    ]
   )
   const handleDeleteComment = (e: React.MouseEvent<HTMLLIElement>) => {
     e.stopPropagation()

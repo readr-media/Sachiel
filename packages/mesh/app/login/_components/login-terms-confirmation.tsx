@@ -2,6 +2,7 @@
 
 import '../../../styles/accept-terms.css'
 
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import { fetchTermsOfService } from '@/app/actions/policy'
@@ -12,6 +13,7 @@ import { LoginState, useLogin } from '@/context/login'
 import { processPolicy } from '@/utils/process-policy'
 
 export default function LoginTermsConfirmation() {
+  const t = useTranslations('Pages.Login')
   const [terms, setTerms] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isChecked, setIsChecked] = useState(false)
@@ -70,7 +72,7 @@ export default function LoginTermsConfirmation() {
     <div className="flex size-full flex-col">
       <div className="flex flex-col items-center justify-center px-5 pt-5 sm:px-10">
         <p className="body-3 mb-5 text-primary-500">
-          繼續使用前，請先詳閱我們的服務條款及隱私權政策
+          {t('LoginTermsConfirmation-hint')}
         </p>
         <div
           className="boder-primary-200 mb-5 h-[410px] w-full overflow-auto rounded border p-4 sm:mb-6 sm:h-[247px]"
@@ -95,7 +97,9 @@ export default function LoginTermsConfirmation() {
             <Icon iconName="icon-checkbox-off" size="l" />
           )}
 
-          <p className="subtitle-1 text-primary-700">我同意以上條款</p>
+          <p className="subtitle-1 text-primary-700">
+            {t('LoginTermsConfirmation-agree-terms')}
+          </p>
         </div>
       </div>
 
@@ -103,7 +107,7 @@ export default function LoginTermsConfirmation() {
         <Button
           size="lg"
           color="primary"
-          text="下一步"
+          text={t('LoginTermsConfirmation-go-next')}
           onClick={handleSubmit}
           disabled={!isChecked}
         />

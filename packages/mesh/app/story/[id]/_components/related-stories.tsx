@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 
 import { getRelatedStories } from '@/app/actions/story'
@@ -28,10 +29,12 @@ export default function RelatedStories({
     fetchRelatedStories()
   }, [relatedKeyword])
 
+  const t = useTranslations('Pages.Story')
+
   return (
     <div className="mt-9 px-5 sm:mt-14 sm:px-0 ">
       <h2 className="list-title mb-3 text-primary-700 sm:mb-4 sm:border-b sm:pb-1">
-        相關報導
+        {t('RelatedStories-title')}
       </h2>
       <div>
         {stories.length ? (

@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import type { ButtonColor, ButtonSize } from '@/components/button'
 import Button from '@/components/button'
 import { usePickModal } from '@/context/pick-modal'
@@ -21,6 +23,7 @@ export default function CollectionPickButton({
   size?: ButtonSize
   gtmClassName?: string
 }) {
+  const t = useTranslations('Components.CollectionPickButton')
   const { user } = useUser()
   const { openPickModal } = usePickModal()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -42,12 +45,12 @@ export default function CollectionPickButton({
     <Button
       size={size}
       color={color}
-      text="精選"
+      text={t('pick')}
       icon={{ iconName: 'icon-star-primary', size: 's' }}
       onClick={handleClickPick}
       activeState={{
         isActive: isStoryPicked,
-        activeText: '已精選',
+        activeText: t('already-picked'),
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
       gtmClassName={gtmClassName}

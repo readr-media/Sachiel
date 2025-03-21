@@ -1,10 +1,14 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 
 export default function CopyCodeButton({ code }: { code: string }) {
+  const t = useTranslations('Pages.Invitation-Code')
+  const toastT = useTranslations('Others.toast')
   const { addToast } = useToast()
   return (
     <button
@@ -13,13 +17,13 @@ export default function CopyCodeButton({ code }: { code: string }) {
         navigator.clipboard.writeText(code).then(() => {
           addToast({
             status: 'success',
-            text: TOAST_MESSAGE.copyInvitationCode,
+            text: toastT(TOAST_MESSAGE.copyInvitationCode),
           })
         })
       }
     >
       <Icon iconName="icon-copy" size="s" />
-      <span className="button">複製邀請碼</span>
+      <span className="button">{t('CopyCodeButton-copy-code')}</span>
     </button>
   )
 }

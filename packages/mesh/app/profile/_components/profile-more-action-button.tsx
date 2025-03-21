@@ -206,6 +206,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const t = useTranslations('Pages.Profile')
+  const toastT = useTranslations('Others.toast')
   const hasPosition = isPositionValid(position)
   const sheetMinWidth = 180
   const sheetButtonOverlap = 20
@@ -213,7 +214,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 
   const onAction = async (type: ActionType) => {
     if (!customId) {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
+      addToast({ status: 'fail', text: toastT(TOAST_MESSAGE.moreActionError) })
       console.error(`more action on profile error,customId : ${customId}`)
       return
     }
@@ -225,7 +226,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           .then(() => {
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.copyStoryLinkSuccess,
+              text: toastT(TOAST_MESSAGE.copyStoryLinkSuccess),
             })
             onClose()
           })

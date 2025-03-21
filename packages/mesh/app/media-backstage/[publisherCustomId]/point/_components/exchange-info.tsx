@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -34,6 +35,8 @@ export default function ExchangeInfo({
   balance: number | undefined
   recipientAddress: Hex
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
+  const toastT = useTranslations('Others.toast')
   const { user } = useUser()
   const [amount, setAmount] = useState(0)
   const [transactionState, setTransactionState] =
@@ -72,7 +75,10 @@ export default function ExchangeInfo({
       setAmount(value)
     } else {
       setAmount(0)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedInsufficient })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+      })
     }
   }, 500)
 
@@ -101,16 +107,18 @@ export default function ExchangeInfo({
               size={{ width: 64, height: 64 }}
               className="pb-4"
             />
-            <p className="title-2 pb-1 text-primary-700">兌換成功</p>
+            <p className="title-2 pb-1 text-primary-700">
+              {t('ExchangeInfo-exchange-success')}
+            </p>
             {nextMonthNumber && (
               <p className="body-2 pb-6 text-primary-500">
-                {`收益將於 ${nextMonthNumber}/5 出報表`}
+                {t('ExchangeInfo-report-generation', { nextMonthNumber })}
               </p>
             )}
             <Button
               size="lg"
               color="white"
-              text="完成"
+              text={t('ExchangeInfo-finish')}
               onClick={() => {
                 window.location.reload()
               }}
@@ -138,7 +146,7 @@ export default function ExchangeInfo({
               onSend={handleExchangeOnSend}
               onSuccess={handleExchangeOnSuccess}
               onError={handleExchangeOnError}
-              actionText="兌換"
+              actionText={t('ExchangeInfo-exchange')}
             />
           </div>
         </>

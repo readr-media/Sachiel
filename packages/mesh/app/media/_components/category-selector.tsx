@@ -48,6 +48,7 @@ export default function CategorySelector({
   currentCategory?: Category
 }) {
   const t = useTranslations('Pages.Media')
+  const toastT = useTranslations('Others.toast')
   const categoriesT = useTranslations('Others.categories')
   const { user, setUser } = useUser()
   const displayCategories = user.followingCategories
@@ -86,7 +87,10 @@ export default function CategorySelector({
       if (!addCategoryResponse) {
         finalCategories = undoAddCategories(finalCategories, addedCategoryIds)
         console.error('send addedCategory to pubsub failed', addedCategoryIds)
-        addToast({ status: 'fail', text: TOAST_MESSAGE.followCategoryFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.followCategoryFailed),
+        })
       }
     }
     if (deletedCategoryIds.size) {
@@ -101,7 +105,10 @@ export default function CategorySelector({
           allCategories
         )
         console.error('send deleteCategory to pubsub failed', addedCategoryIds)
-        addToast({ status: 'fail', text: TOAST_MESSAGE.unfollowCategoryFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.unfollowCategoryFailed),
+        })
       }
     }
 

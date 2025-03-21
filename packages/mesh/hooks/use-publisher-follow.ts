@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import {
   addFollowPublisher,
   removeFollowPublisher,
@@ -18,6 +20,7 @@ const useFollowPublisher = ({
   publisherId,
   publisherName,
 }: UseFollowPublisherProps) => {
+  const toastT = useTranslations('Others.toast')
   const { user, setUser } = useUser()
   const { addToast } = useToast()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -40,7 +43,10 @@ const useFollowPublisher = ({
     if (isFollowing) {
       const response = await removeFollowPublisher(followPublisherArgs)
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.unfollowMemberFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.unfollowMemberFailed),
+        })
         throw new Error('Failed to unlike comment')
       }
       setUser((prev) => {
@@ -54,7 +60,10 @@ const useFollowPublisher = ({
     } else {
       const response = await addFollowPublisher(followPublisherArgs)
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.followMemberFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.followMemberFailed),
+        })
         throw new Error('Failed to unlike comment')
       }
       setUser((prev) => {

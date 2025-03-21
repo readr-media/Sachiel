@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import Button from '@/components/button'
@@ -11,6 +12,7 @@ import CommentBlock from '../comment-block'
 import CommentModal from '../comment-modal'
 
 export default function CommentBlocks({ targetId }: { targetId: string }) {
+  const t = useTranslations('Components.CommentBlocks')
   const { user } = useUser()
   const {
     state,
@@ -46,7 +48,7 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
             name="comment"
             id="comment"
             rows={4}
-            placeholder="有什麼要補充的嗎..."
+            placeholder={t('comment-placeholder')}
             onChange={handleTextChange}
             value={comment}
             className="grow rounded-md border border-primary-200 p-3 focus-visible:outline-none"
@@ -62,7 +64,7 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
               onClick={() => handleCommentPublish({ user, targetId })}
               size="md"
               color="primary"
-              text="發布"
+              text={t('comment-publish')}
               disabled={comment.trim() === ''}
             />
           )}
@@ -70,37 +72,37 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
       </div>
       {!!popularComments.length && (
         <CommentBlock
-          title="熱門留言"
+          title={t('comment-poular-comment')}
           type={EditDrawerBlockType.Popular}
           comments={popularComments}
         />
       )}
       <CommentBlock
-        title="所有留言"
+        title={t('comment-all-comments')}
         type={EditDrawerBlockType.All}
         comments={sortedAuthorComments}
       />
       <CommentModal
-        onConfirmText="刪除留言"
-        onCloseText="取消"
+        onConfirmText={t('comment-delete-comment')}
+        onCloseText={t('comment-cancel')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">確認要刪除留言？</p>
-          <p className="body-3">系統仍會保留您的精選記錄</p>
+          <p className="title-2">{t('comment-confirm-delete')}</p>
+          <p className="body-3">{t('comment-pick-will-stay')}</p>
         </section>
       </CommentModal>
       <CommentModal
         onConfirmText=""
-        onCloseText="返回留言"
+        onCloseText={t('comment-return-to-comment')}
         isOpen={isConfirmReportingModalOpen}
         onClose={handleReportOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">檢舉成功</p>
-          <p className="body-3">我們已收到您的檢舉，感謝提供資訊</p>
+          <p className="title-2">{t('comment-report-success')}</p>
+          <p className="body-3">{t('comment-report-success-detail')}</p>
         </section>
       </CommentModal>
     </>

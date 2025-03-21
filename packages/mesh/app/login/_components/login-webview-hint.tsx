@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
 import Button from '@/components/button'
@@ -5,6 +6,7 @@ import Icon from '@/components/icon'
 import { detectMobileOs } from '@/utils/login'
 
 export default function LoginWebviewHint() {
+  const t = useTranslations('Pages.Login')
   const intentURL = useRef('')
 
   useEffect(() => {
@@ -39,9 +41,11 @@ export default function LoginWebviewHint() {
           size={{ width: 64, height: 64 }}
         />
         <div className="flex flex-col items-center gap-1">
-          <div className="title-2 text-primary-700">以外部瀏覽器開啟</div>
+          <div className="title-2 text-primary-700">
+            {t('LoginWebviewHint-title')}
+          </div>
           <div className="body-2 text-primary-500">
-            請用瀏覽器開啟此網址以繼續登入
+            {t('LoginWebviewHint-detail')}
           </div>
         </div>
       </div>
@@ -49,7 +53,7 @@ export default function LoginWebviewHint() {
         <Button
           size="lg"
           color="primary"
-          text="以外部瀏覽器開啟"
+          text={t('LoginWebviewHint-action')}
           onClick={openInExternalBrowser}
         />
       </div>

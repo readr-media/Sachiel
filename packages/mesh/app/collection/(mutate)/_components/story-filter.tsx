@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Button from '@/components/button'
@@ -11,6 +12,7 @@ export default function StoryFilter({
 }: {
   useCollection: UseCollection
 }) {
+  const t = useTranslations('Pages.Collection')
   const [showFilter, setShowFilter] = useState(false)
 
   const { pickCandidates, bookmarkCandidates } = useCollection()
@@ -21,11 +23,11 @@ export default function StoryFilter({
 
   const filterTitle = (() => {
     if (pickCandidates.usedAsFilter && bookmarkCandidates.usedAsFilter) {
-      return '精選文章及書籤'
+      return t('StoryFilter-pick-and-bookmark')
     } else if (pickCandidates.usedAsFilter) {
-      return '精選文章'
+      return t('StoryFilter-pick')
     } else if (bookmarkCandidates.usedAsFilter) {
-      return '書籤'
+      return t('StoryFilter-bookmark')
     } else {
       return ''
     }
@@ -80,6 +82,7 @@ const DestktopFilter = ({
 }: {
   useCollection: UseCollection
 }) => {
+  const t = useTranslations('Pages.Collection')
   const [showError, setShowError] = useState(false)
 
   const {
@@ -109,7 +112,9 @@ const DestktopFilter = ({
           }}
         >
           <Checkbox isChecked={isPickSelected} />
-          <span className="body-2 text-primary-500">精選文章</span>
+          <span className="body-2 text-primary-500">
+            {t('StoryFilter-check-pick')}
+          </span>
         </button>
         <button
           className="flex"
@@ -126,11 +131,15 @@ const DestktopFilter = ({
           }}
         >
           <Checkbox isChecked={isBookmarkSelected} />
-          <span className="body-2 text-primary-500">書籤</span>
+          <span className="body-2 text-primary-500">
+            {t('StoryFilter-check-bookmark')}
+          </span>
         </button>
       </div>
       {showError && (
-        <div className="body-3 mt-2 text-custom-red">至少要選一個</div>
+        <div className="body-3 mt-2 text-custom-red">
+          {t('StoryFilter-pick-one')}
+        </div>
       )}
     </div>
   )
@@ -143,6 +152,7 @@ const MobileFilter = ({
   onClose: () => void
   useCollection: UseCollection
 }) => {
+  const t = useTranslations('Pages.Collection')
   const {
     pickCandidates,
     bookmarkCandidates,
@@ -183,10 +193,12 @@ const MobileFilter = ({
         }}
       >
         <div className="list-title flex items-center justify-center border-b border-[rgba(0,9,40,0.1)] py-[14px] text-primary-800">
-          篩選
+          {t('StoryFilter-filter')}
         </div>
         <div className="flex flex-col gap-6 border-b border-[rgba(0,9,40,0.1)] px-5 py-4">
-          <div className="footnote text-primary-500">新聞來源</div>
+          <div className="footnote text-primary-500">
+            {t('StoryFilter-story-source')}
+          </div>
           <div className="flex flex-col gap-4">
             <button
               className="flex gap-1"
@@ -195,7 +207,9 @@ const MobileFilter = ({
               }}
             >
               <Checkbox isChecked={isPickSelected} />
-              <span className="body-2 text-primary-500">精選文章</span>
+              <span className="body-2 text-primary-500">
+                {t('StoryFilter-check-pick')}
+              </span>
             </button>
             <button
               className="flex gap-1"
@@ -204,7 +218,9 @@ const MobileFilter = ({
               }}
             >
               <Checkbox isChecked={isBookmarkSelected} />
-              <span className="body-2 text-primary-500">書籤</span>
+              <span className="body-2 text-primary-500">
+                {t('StoryFilter-check-bookmark')}
+              </span>
             </button>
           </div>
         </div>
@@ -213,7 +229,11 @@ const MobileFilter = ({
             onClick={onFilter}
             size="lg"
             color="primary"
-            text={disableFilter ? '至少要選1個' : '篩選'}
+            text={
+              disableFilter
+                ? t('StoryFilter-pick-one')
+                : t('StoryFilter-filter')
+            }
             disabled={disableFilter}
           />
         </div>

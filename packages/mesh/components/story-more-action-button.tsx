@@ -247,6 +247,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const t = useTranslations('Components.StoryMoreActionButton')
+  const toastT = useTranslations('Others.toast')
   const router = useRouter()
   const { user, setUser } = useUser()
   const storyId = storyInfo.id
@@ -260,7 +261,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
+      addToast({ status: 'fail', text: toastT(TOAST_MESSAGE.moreActionError) })
       console.error(
         `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
       )
@@ -272,7 +273,10 @@ const ActionSheet = forwardRef(function ActionSheet(
           return
         }
         if (!publisherId) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
+          addToast({
+            status: 'fail',
+            text: toastT(TOAST_MESSAGE.moreActionError),
+          })
           console.error(
             `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
           )
@@ -301,12 +305,12 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.removeBookmarkSuccess,
+              text: toastT(TOAST_MESSAGE.removeBookmarkSuccess),
             })
           } else {
             addToast({
               status: 'fail',
-              text: TOAST_MESSAGE.deleteBookmarkFailed,
+              text: toastT(TOAST_MESSAGE.deleteBookmarkFailed),
             })
           }
           onClose()
@@ -322,7 +326,7 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.addBookmarkSuccess,
+              text: toastT(TOAST_MESSAGE.addBookmarkSuccess),
             })
             logStoryInteractionEvent(userPayolad, {
               type: 'bookmark',
@@ -333,7 +337,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           } else {
             addToast({
               status: 'fail',
-              text: TOAST_MESSAGE.addBookmarkFailed,
+              text: toastT(TOAST_MESSAGE.addBookmarkFailed),
             })
           }
           onClose()
@@ -363,7 +367,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           .then(() => {
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.copyStoryLinkSuccess,
+              text: toastT(TOAST_MESSAGE.copyStoryLinkSuccess),
             })
             onClose()
           })

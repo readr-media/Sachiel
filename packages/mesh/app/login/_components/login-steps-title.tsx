@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import Icon from '@/components/icon'
@@ -7,7 +8,7 @@ import { useUser } from '@/context/user'
 import { loginRedirectPathKey } from '@/hooks/use-redirect-login'
 
 const chevronMap: Pick<
-  Record<LoginStepsKey, { title: string; goBackTo: LoginStepsKey }>,
+  Record<LoginStepsKey, { titleKey: string; goBackTo: LoginStepsKey }>,
   | typeof LoginState.Email
   | typeof LoginState.TermsConfirmation
   | typeof LoginState.EmailConfirmation
@@ -16,32 +17,33 @@ const chevronMap: Pick<
   | typeof LoginState.WebviewHint
 > = {
   [LoginState.TermsConfirmation]: {
-    title: '服務條款',
+    titleKey: 'LoginStepsTitle-title-terms',
     goBackTo: LoginState.Entry,
   },
   [LoginState.Email]: {
-    title: 'Email',
+    titleKey: 'LoginStepsTitle-title-email',
     goBackTo: LoginState.Entry,
   },
   [LoginState.EmailConfirmation]: {
-    title: '確認收件匣',
+    titleKey: 'LoginStepsTitle-title-email-confirm',
     goBackTo: LoginState.Email,
   },
   [LoginState.SetCategory]: {
-    title: '新聞類別',
+    titleKey: 'LoginStepsTitle-title-set-category',
     goBackTo: LoginState.SetName,
   },
   [LoginState.SetFollowing]: {
-    title: '推薦追蹤',
+    titleKey: 'LoginStepsTitle-title-set-following',
     goBackTo: LoginState.SetCategory,
   },
   [LoginState.WebviewHint]: {
-    title: '註冊／登入',
+    titleKey: 'LoginStepsTitle-title-webview-hint',
     goBackTo: LoginState.Entry,
   },
 }
 
 export default function LoginStepsTitle() {
+  const t = useTranslations('Pages.Login')
   const { step, setStep } = useLogin()
   const router = useRouter()
   const { setUser } = useUser()
@@ -74,7 +76,7 @@ export default function LoginStepsTitle() {
     case LoginState.SetCategory:
     case LoginState.SetFollowing:
     case LoginState.WebviewHint: {
-      const { title, goBackTo } = chevronMap[step]
+      const { titleKey, goBackTo } = chevronMap[step]
       return (
         <>
           <button onClick={() => setStep(goBackTo)}>
@@ -84,23 +86,29 @@ export default function LoginStepsTitle() {
               className="ml-5"
             />
           </button>
-          <h2 className="list-title mx-auto">{title}</h2>
+          <h2 className="list-title mx-auto">{t(titleKey)}</h2>
           <div className="size-5 px-5"></div>
         </>
       )
     }
     case LoginState.SetName:
-      return <h2 className="list-title mx-auto">姓名</h2>
+      return (
+        <h2 className="list-title mx-auto">
+          {t('LoginStepsTitle-title-set-name')}
+        </h2>
+      )
     case LoginState.SetWallet:
       return (
         <div className="flex w-full px-5">
           <div className="w-9"></div>
-          <h2 className="list-title mx-auto">連結錢包</h2>
+          <h2 className="list-title mx-auto">
+            {t('LoginStepsTitle-title-set-wallet')}
+          </h2>
           <button
             className="list-title text-custom-blue"
             onClick={handleSkipButton}
           >
-            略過
+            {t('LoginStepsTitle-skip')}
           </button>
         </div>
       )

@@ -1,5 +1,6 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import type { ChangeEvent } from 'react'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
@@ -24,6 +25,7 @@ const EditProfileContext = createContext<EditProfileContextType | undefined>(
 export const EditProfileProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
+  const toastT = useTranslations('Others.toast')
   const router = useRouter()
   const { user, setUser } = useUser()
   const params = useParams()
@@ -171,7 +173,10 @@ export const EditProfileProvider: React.FC<{
       })
     } catch (error) {
       console.error('Failed to update profile:', error)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.updateProfileFailed })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.updateProfileFailed),
+      })
       router.push(`/profile/member/${user.customId}`)
     } finally {
       // 9. 清理狀態
@@ -184,6 +189,9 @@ export const EditProfileProvider: React.FC<{
     user.intro,
     user.customId,
     user.name,
+    resetForm,
+    resetErrors,
+    initialData,
   ])
 
   return (

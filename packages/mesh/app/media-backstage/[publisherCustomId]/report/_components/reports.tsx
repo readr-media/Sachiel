@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo } from 'react'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
@@ -16,6 +17,7 @@ export default function Reports({
   reports: Report[]
   publisherId: string
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
   const {
     user: { accessToken },
   } = useUser()
@@ -74,7 +76,7 @@ export default function Reports({
   if (!reports.length)
     return (
       <div className="button-large flex h-[600px] items-center justify-center rounded-xl bg-white text-primary-400 shadow-card">
-        目前沒有紀錄
+        {t('Reports-no-report')}
       </div>
     )
 

@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -9,9 +10,10 @@ export default function SettingLayout({
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('Pages.Setting')
   const pathname = usePathname()
   const navigationData = {
-    title: '設定',
+    title: t('SettingLayout-title'),
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }

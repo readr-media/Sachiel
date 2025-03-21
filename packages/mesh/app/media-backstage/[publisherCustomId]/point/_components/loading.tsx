@@ -1,4 +1,7 @@
+import { useTranslations } from 'next-intl'
+
 export default function Loading() {
+  const t = useTranslations('Pages.Media-Backstage')
   return (
     <div className="min-w-[800px] max-w-[1040px] p-10 pb-[134px]">
       <div className="animate-pulse pb-5">
@@ -9,7 +12,9 @@ export default function Loading() {
           <div className="flex flex-col items-center gap-2 sm:flex-col-reverse sm:items-start">
             <div className="h-8 w-[120px] rounded-sm bg-loading" />
             <div className="flex items-center">
-              <div className="profile-subtitle text-primary-500">讀選點數</div>
+              <div className="profile-subtitle text-primary-500">
+                {t('MeshPointInfo-title')}
+              </div>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { type Dispatch, type SetStateAction } from 'react'
 
 import type { PointRecordDate } from '@/types/media-backstage'
@@ -7,11 +8,11 @@ import DatePicker from './date-picker'
 
 const recordTypes = Object.values(RecordType)
 
-const recordTypeWordings = {
-  [RecordType.Sponsor]: '贊助',
-  [RecordType.Transaction]: '付費解鎖',
-  [RecordType.MutualFund]: '共同基金池',
-  [RecordType.Redeem]: '點數兌換',
+const recordTypeWordingKeys = {
+  [RecordType.Sponsor]: 'RecordController-record-type-sponsor',
+  [RecordType.Transaction]: 'RecordController-record-type-transaction',
+  [RecordType.MutualFund]: 'RecordController-record-type-mutual-fund',
+  [RecordType.Redeem]: 'RecordController-record-type-redeem',
 } as const
 
 export default function RecordController({
@@ -25,13 +26,14 @@ export default function RecordController({
   date: PointRecordDate
   setDate: Dispatch<SetStateAction<PointRecordDate>>
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
   return (
     <div className="flex justify-between">
       <nav className="flex gap-2">
         {recordTypes.map((recordType) => (
           <RecordFilter
             key={recordType}
-            text={recordTypeWordings[recordType]}
+            text={t(recordTypeWordingKeys[recordType])}
             isActive={currentRecordType === recordType}
             onClick={() => {
               setRecordType(recordType)

@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import Icon from '@/components/icon'
 import { useEditCollection } from '@/context/edit-collection'
 
@@ -7,6 +9,7 @@ import {
 } from '../_types/edit-collection'
 
 export default function AdditionalEditor() {
+  const t = useTranslations('Pages.Collection')
   const { setMobileEditType, setDesktopEditType } = useEditCollection()
 
   const turnOnAddStoryType = () => {
@@ -22,7 +25,7 @@ export default function AdditionalEditor() {
           onClick={turnOnAddStoryType}
         >
           <Icon iconName="icon-add-article" size="l" />
-          新增文章
+          {t('AdditionalEditor-add-story')}
         </button>
       </div>
     </div>

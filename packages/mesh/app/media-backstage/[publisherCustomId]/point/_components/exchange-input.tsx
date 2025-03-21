@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { type FormEvent, useState } from 'react'
 
 import {
@@ -12,6 +13,7 @@ export default function ExchangeInput({
   balance: number | undefined
   onChangeAmount: (value: number) => void
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
   const [userInput, setUserInput] = useState('')
   const [fullfillMinimum, setFullfillMimium] = useState(true)
   const maxAmount = balance ?? 0
@@ -63,21 +65,24 @@ export default function ExchangeInput({
             } text-[11px] font-normal text-white`}
             onClick={handleMaxClick}
           >
-            MAX
+            {t('ExchangeInput-set-max-amount')}
           </button>
         </div>
         {!fullfillMinimum && (
           <span className="body-3 mt-2 text-custom-red-text">
-            輸入金額不能少於 1000
+            {t('ExchangeInput-minimum-amount-hint', {
+              amount: NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
+            })}
           </span>
         )}
         <p className="footnote mt-6 flex flex-col text-primary-500">
-          <span>請輸入您要兌換的金額。</span>
-          <span>您的讀選點數餘額：${balance}</span>
+          <span>{t('ExchangeInput-enter-amount')}</span>
+          <span>{t('ExchangeInput-mesh-point-balance', { balance })}</span>
           <span className="mt-5 text-custom-blue">
-            {`點數最低兌換點數為 ${NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
-              NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100
-            }%。`}
+            {t('ExchangeInput-exchange-detail', {
+              amount: NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
+              feeRate: NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100,
+            })}
           </span>
         </p>
       </div>

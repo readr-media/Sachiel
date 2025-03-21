@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
@@ -22,6 +23,7 @@ type Props = {
 }
 
 export default function Comment({ comment }: Props) {
+  const toastT = useTranslations('Others.toast')
   const [isLikedBySelf, setIsLikedBySelf] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
@@ -54,7 +56,10 @@ export default function Comment({ comment }: Props) {
       try {
         const response = await unlikeComment({ memberId, commentId })
         if (!response) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.unlikeCommentFailed })
+          addToast({
+            status: 'fail',
+            text: toastT(TOAST_MESSAGE.unlikeCommentFailed),
+          })
           throw new Error(`Failed to unlike comment, comment id:${commentId}`)
         }
         setLikeCount((prev) => prev - 1)
@@ -68,7 +73,10 @@ export default function Comment({ comment }: Props) {
     try {
       const response = await likeComment({ memberId, commentId })
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.likeCommentFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.likeCommentFailed),
+        })
         throw new Error(`Failed to like comment, comment id:${commentId}`)
       }
       setLikeCount((prev) => prev + 1)

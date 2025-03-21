@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { getCollection, getCollectionStories } from '@/app/actions/collection'
 
@@ -11,6 +12,7 @@ export default async function CollectionPage({
 }: {
   params: { id: string }
 }) {
+  const t = await getTranslations('Pages.Collection')
   const collectionData = await getCollection({ collectionId })
   const collection = collectionData?.collections?.[0]
 
@@ -31,7 +33,7 @@ export default async function CollectionPage({
       <CollectionCard collection={collection} />
       <ArticleCardList
         items={collectionPicks ?? []}
-        emptyMessage={'從精選新聞或書籤中\n將數篇新聞打包成集錦'}
+        emptyMessage={t('ArticleCardList-empty-message')}
         avatar={collection.creator?.avatar ?? ''}
       />
     </main>

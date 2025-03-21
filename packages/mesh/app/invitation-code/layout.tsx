@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import Spinner from '@/components/spinner'
@@ -7,9 +9,10 @@ export default function InvitationCodeLayout({
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('Pages.Invitation-Code')
   const navigationData = {
     leftButtons: [<GoBackButton key={0} />],
-    title: '邀請碼',
+    title: t('InvitationCodeLayout-title'),
     rightButtons: [],
   }
 

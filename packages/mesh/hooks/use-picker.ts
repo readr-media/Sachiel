@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useCallback, useState } from 'react'
 
 import {
@@ -18,6 +19,7 @@ import usePageName from './use-page-name'
 import useUserPayload from './use-user-payload'
 
 export default function usePicker() {
+  const toastT = useTranslations('Others.toast')
   const { user, setUser } = useUser()
   const userPayload = useUserPayload()
   const [isLoading, setIsLoading] = useState(false)
@@ -47,7 +49,10 @@ export default function usePicker() {
         pickObjective,
       })
       if (!addPickResponse) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.pickStoryFailed),
+        })
         reverseMutation()
       }
       logStoryInteractionEvent(userPayload, {
@@ -89,12 +94,15 @@ export default function usePicker() {
       }
 
       if (!removePickResponse) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.deletePickFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.deletePickFailed),
+        })
         reverseMutation()
       }
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast]
+    [memberId, user, setUser, addToast, toastT]
   )
 
   const addPickAndComment = useCallback(
@@ -120,7 +128,10 @@ export default function usePicker() {
         comment,
       })
       if (!addPickResponse) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.pickStoryFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.pickStoryFailed),
+        })
         reverseMutation()
       }
       logStoryInteractionEvent(userPayload, {
@@ -131,7 +142,7 @@ export default function usePicker() {
       })
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast, pageName, userPayload]
+    [memberId, user, setUser, userPayload, pageName, addToast, toastT]
   )
 
   return {

@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { Fragment } from 'react'
 
 import Avatar from '@/components/story-card/avatar'
@@ -11,6 +12,7 @@ import {
 import CopyCodeButton from './_components/copy-code-button'
 
 export default async function Page() {
+  const t = await getTranslations('Pages.Invitation-Code')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   if (!memberId) redirect('/login')
@@ -35,14 +37,16 @@ export default async function Page() {
             ))
           ) : (
             <p className="button-large px-5 pb-5 pt-3 text-primary-400">
-              目前沒有可用的邀請碼...
+              {t('Page-no-codes')}
             </p>
           )}
         </div>
       </div>
       {usedCodeData.length ? (
         <div className="flex w-full max-w-[600px] flex-col rounded-md bg-white sm:w-articleMain sm:max-w-none sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] xl:w-[1040px]">
-          <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">已使用</h2>
+          <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">
+            {t('Page-already-used')}
+          </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 ">
             {usedCodeData.map((v, i) => (
               <Fragment key={i}>

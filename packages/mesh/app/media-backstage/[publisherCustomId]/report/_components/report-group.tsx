@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -14,6 +15,7 @@ export default function ReportGroup({
   reports: Report[]
   initialIsExtend: boolean
 }) {
+  const t = useTranslations('Pages.Media-Backstage')
   const [isExtend, setIsExtend] = useState(initialIsExtend)
   return (
     <div key={year} className="rounded-xl bg-white px-5 py-2 shadow-card">
@@ -22,7 +24,7 @@ export default function ReportGroup({
         onClick={() => setIsExtend(!isExtend)}
       >
         <span className="list-title font-medium text-primary-700">
-          {year} 收益報表
+          {t('ReportGroup-year-report', { year })}
         </span>
         <span className="">
           {isExtend ? (

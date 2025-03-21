@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
@@ -51,6 +52,7 @@ export const useCommentLike = ({
   const [commentData, setCommentData] = useState<
     CommentType | CommentTypeFromStory
   >(initialComment)
+  const toastT = useTranslations('Others.toast')
   const { user } = useUser()
   const { addToast } = useToast()
   const { updateCommentLikeStatus } = useComment()
@@ -82,7 +84,10 @@ export const useCommentLike = ({
       try {
         const response = await unlikeComment(likeCommentArgs)
         if (!response) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.unlikeCommentFailed })
+          addToast({
+            status: 'fail',
+            text: toastT(TOAST_MESSAGE.unlikeCommentFailed),
+          })
           throw new Error('Failed to unlike comment')
         }
         setCommentData((prev) => {
@@ -115,7 +120,10 @@ export const useCommentLike = ({
     try {
       const response = await likeComment(likeCommentArgs)
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.likeCommentFailed })
+        addToast({
+          status: 'fail',
+          text: toastT(TOAST_MESSAGE.likeCommentFailed),
+        })
         throw new Error('Failed to like comment')
       }
       setCommentData((prev) => {

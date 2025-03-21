@@ -1,15 +1,18 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import DesktopGoNextButton from '../go-next-button'
 import DesktopNavigation from '../navigtaion'
 
 export default function DesktopStep2SortStories() {
+  const t = useTranslations('Pages.Collection')
   return (
     <>
       <DesktopNavigation />
       <div className="flex h-full flex-col gap-6 px-5">
         <div className="body-2 text-primary-500">
-          預設是以加入集錦的時間排序新聞，你也可以拖動新聞，重新排列順序。
+          {t('DesktopStep2SortStories-detail')}
         </div>
       </div>
       <div className="px-5 py-3">

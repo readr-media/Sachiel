@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { getInvalidNameList } from '@/app/actions/get-invalid-names'
@@ -6,6 +7,7 @@ import Icon from '@/components/icon'
 import { LoginState, useLogin } from '@/context/login'
 
 export default function LoginSetName() {
+  const t = useTranslations('Pages.Login')
   const { formData, setFormData, setStep } = useLogin()
   const { name } = formData
   const [invalidNames, setInvalidNames] = useState<string[]>([])
@@ -68,19 +70,19 @@ export default function LoginSetName() {
                 }
                 size="m"
               />
-              <p className="body-3">{result.message}</p>
+              <p className="body-3">{t(result.messageKey)}</p>
             </div>
           ))}
         </div>
         <p className="footnote pt-3 text-primary-500">
-          輸入您想使用的公開顯示名稱。您隨時都能更改姓名。
+          {t('LoginSetName-hint')}
         </p>
       </div>
       <div className="w-full max-w-[320px] px-5">
         <Button
           size="lg"
           color="primary"
-          text="下一步"
+          text={t('LoginSetName-go-next')}
           onClick={handleSubmit}
           disabled={!isValid}
         />
@@ -91,17 +93,17 @@ export default function LoginSetName() {
 
 const validationRules = [
   {
-    message: '姓名在 2-32 字間',
+    messageKey: 'LoginSetName-rule-name-length',
     check: ({ name }: { name: string }) =>
       name.length >= 2 && name.length <= 32,
   },
   {
-    message: '不包含特殊符號',
+    messageKey: 'LoginSetName-rule-no-special-char',
     check: ({ name }: { name: string }) =>
       /^[a-zA-Z0-9\u4e00-\u9fa5\s]+$/.test(name),
   },
   {
-    message: '沒有跟媒體名稱重複',
+    messageKey: 'LoginSetName-rule-no-repetition',
     check: ({
       invalidNames,
       name,
@@ -126,12 +128,12 @@ const validateName = ({
 }) => {
   if (!name || !invalidNames.length) {
     return validationRules.map((rule) => ({
-      message: rule.message,
+      messageKey: rule.messageKey,
       isValid: false,
     }))
   }
   return validationRules.map((rule) => ({
-    message: rule.message,
+    messageKey: rule.messageKey,
     isValid: rule.check({ invalidNames, name }),
   }))
 }

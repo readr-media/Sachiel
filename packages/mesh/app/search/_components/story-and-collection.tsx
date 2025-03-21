@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { type SearchResults } from '@/utils/data-schema'
 
 import CarouselWrapper from './carousel-wrapper'
@@ -13,6 +15,7 @@ export default function StoryAndCollection({
   storyResult: SearchResults['story']
   collectionResult: SearchResults['collection']
 }) {
+  const t = useTranslations('Pages.Search')
   const isNoResult = !storyResult.length && !collectionResult.length
 
   return (
@@ -21,7 +24,9 @@ export default function StoryAndCollection({
         <>
           <div className="xl:hidden">
             <div className="flex flex-row items-center justify-between">
-              <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有集錦</h2>
+              <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+                {t('StoryAndCollection-all-collections')}
+              </h2>
             </div>
             <div className="flex w-full flex-row gap-3 overflow-auto">
               {collectionResult.map((collection) => (
@@ -36,7 +41,9 @@ export default function StoryAndCollection({
       ) : null}
       {storyResult.length ? (
         <>
-          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有新聞</h2>
+          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+            {t('StoryAndCollection-all-stories')}
+          </h2>
           {storyResult.map((story, idx) => (
             <StoryCard
               key={story.id}
@@ -48,9 +55,9 @@ export default function StoryAndCollection({
       ) : null}
       {isNoResult ? (
         <p className="pt-3 text-primary-500 sm:pt-5">
-          找不到包含「
+          {t('StoryAndCollection-cant-find-keyword-1')}
           <span className="text-primary-700">{query}</span>
-          」的新聞，請換個關鍵字，再試一次。
+          {t('StoryAndCollection-cant-find-keyword-2')}
         </p>
       ) : null}
     </>

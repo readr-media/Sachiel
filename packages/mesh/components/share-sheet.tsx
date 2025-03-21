@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { type MouseEventHandler } from 'react'
 
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
@@ -51,6 +52,7 @@ export default function ShareSheet({
     title: string
   }
 }) {
+  const t = useTranslations('Components.ShareSheet')
   useBlockBodyScroll(true)
   const onShareSheetContainerClicked: MouseEventHandler<HTMLDivElement> = (
     evt
@@ -74,7 +76,7 @@ export default function ShareSheet({
       >
         <div className="flex h-15 items-center justify-between border-b border-[rgba(0,9,40,0.1)] px-2">
           <div />
-          <div className="list-title text-primary-800">分享</div>
+          <div className="list-title text-primary-800">{t('share')}</div>
           <button
             className="flex size-11 items-center justify-center"
             onClick={onClose}

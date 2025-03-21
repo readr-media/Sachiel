@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -48,6 +49,7 @@ export default function Article({
   )
   const [hasPayed, setHasPayed] = useState(false)
   const { user } = useUser()
+  const t = useTranslations('Pages.Story')
   const { state: comment } = useComment()
   const { interactions } = useStoryInteractions()
 
@@ -90,7 +92,9 @@ export default function Article({
     if (isLinkedArticle) {
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
-          <div className="body-3 text-primary-500">本篇為外連文章</div>
+          <div className="body-3 text-primary-500">
+            {t('Article-linked-story')}
+          </div>
           <Link
             href={story?.url ?? ''}
             target="_blank"
@@ -99,7 +103,7 @@ export default function Article({
             <Button
               size="lg"
               color="primary"
-              text="閱讀原文"
+              text={t('Article-open-link')}
               icon={{ size: 'm', iconName: 'icon-open-new-tab' }}
               onClick={() => {}}
             />
@@ -158,7 +162,9 @@ export default function Article({
             </h1>
             {story?.published_date && (
               <div className="footnote mt-3 text-primary-500">
-                更新時間：{displayTime(story?.published_date)}
+                {t('Article-update-time', {
+                  time: displayTime(story?.published_date),
+                })}
               </div>
             )}
             <div className="mt-5 flex justify-between">

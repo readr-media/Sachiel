@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -12,6 +13,7 @@ import {
 import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
 import { ImageCategory } from '@/constants/fallback-src'
 import { collectionCreateParamName } from '@/constants/search-param-names'
+import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
@@ -37,6 +39,7 @@ export default function AddStoryToCollection({
   story: CollectionPickStory | MongoDBResponse['stories'][number]
   onClose: () => void
 }) {
+  const toastT = useTranslations('Others.toast')
   const [isLoading, setIsLoading] = useState(false)
   const [collections, setCollections] = useState<Collection[]>([])
   const [addedCollections, setAddedCollections] = useState<Collection[]>([])
@@ -62,7 +65,10 @@ export default function AddStoryToCollection({
       pickDate: getCurrentTimeInISOFormat(),
     })
     if (response) {
-      addToast({ status: 'success', text: '成功加入集錦' })
+      addToast({
+        status: 'success',
+        text: toastT(TOAST_MESSAGE.addStoryToCollectionSuccess),
+      })
       logStoryInteractionEvent(userPayload, {
         type: 'collection',
         storyId: story.id,
@@ -78,7 +84,10 @@ export default function AddStoryToCollection({
         },
       })
     } else {
-      addToast({ status: 'fail', text: '加入集錦失敗，請重新嘗試' })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.addStoryToCollectionFailed),
+      })
     }
     onClose()
   }

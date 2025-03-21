@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -23,6 +25,7 @@ export default function ClientLayout({
   collection: Collection
   children: React.ReactNode
 }) {
+  const t = useTranslations('Pages.Collection')
   const { user } = useUser()
   const isSinglePickByCurrentUser =
     collection.picks?.length === 1 &&
@@ -38,7 +41,7 @@ export default function ClientLayout({
       }}
       mobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '集錦',
+        title: t('ClientLayout-title'),
         rightButtons: [
           // TODO: for now bookmark pub/sub only support add story to bookmark, unlock the comment when pub/sub update
           // <AddBookMarkButton
@@ -54,7 +57,7 @@ export default function ClientLayout({
       }}
       nonMobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '集錦',
+        title: t('ClientLayout-title'),
         rightButtons: [
           <CollectionMoreActionButton key={2} collection={collection} />,
         ],

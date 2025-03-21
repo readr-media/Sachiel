@@ -1,11 +1,14 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Button from '@/components/button'
 import { useEditCollection } from '@/context/edit-collection'
 
 import { DesktopEditCollectionType } from '../../_types/edit-collection'
 
 export default function DesktopGoNextButton() {
+  const t = useTranslations('Pages.Collection')
   const {
     setDesktopEditType,
     desktopEditType,
@@ -25,7 +28,7 @@ export default function DesktopGoNextButton() {
           disabled={!isDesktopEditTypeFullfilled}
           size="lg"
           color="primary"
-          text="儲存"
+          text={t('DesktopGoNextButton-save')}
         />
       )
     case DesktopEditCollectionType.AddStories:
@@ -35,7 +38,7 @@ export default function DesktopGoNextButton() {
           disabled={!isDesktopEditTypeFullfilled}
           size="lg"
           color="primary"
-          text="完成"
+          text={t('DesktopGoNextButton-finish')}
         />
       )
 

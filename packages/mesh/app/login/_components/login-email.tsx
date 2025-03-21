@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { LoginState, useLogin } from '@/context/login'
@@ -6,6 +8,7 @@ import { debounce } from '@/utils/performance'
 import { isValidEmail } from '@/utils/validate-email'
 
 export default function LoginEmail() {
+  const t = useTranslations('Pages.Login')
   const { formData, setFormData, setStep, cachedEmail, setCachedEmail } =
     useLogin()
   const { email } = formData
@@ -54,17 +57,15 @@ export default function LoginEmail() {
             }
             size="m"
           />
-          <p className="body-3">Email 符合格式</p>
+          <p className="body-3">{t('LoginEmail-valid-email')}</p>
         </div>
-        <p className="footnote pt-3 text-primary-500">
-          我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。
-        </p>
+        <p className="footnote pt-3 text-primary-500">{t('LoginEmail-hint')}</p>
       </div>
       <div className="w-full max-w-[320px]">
         <Button
           size="lg"
           color="white"
-          text="送出"
+          text={t('LoginEmail-submit')}
           onClick={handleSubmit}
           disabled={!isValid}
         />

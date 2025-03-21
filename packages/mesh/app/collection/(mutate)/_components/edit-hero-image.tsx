@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -19,6 +20,7 @@ export default function EditHeroImage({
 }: {
   useCollection: UseCollection
 }) {
+  const t = useTranslations('Pages.Collection')
   const [showImageSelector, setShowImageSelector] = useState(false)
   const { heroImage, collectionPickStories } = useCollection()
 
@@ -50,7 +52,9 @@ export default function EditHeroImage({
           />
         </div>
         <div className="body-2 flex justify-center text-custom-blue">
-          <button onClick={openImageSelector}>更換封面照片</button>
+          <button onClick={openImageSelector}>
+            {t('EditHeroImage-change-image')}
+          </button>
         </div>
       </div>
       {showImageSelector && (

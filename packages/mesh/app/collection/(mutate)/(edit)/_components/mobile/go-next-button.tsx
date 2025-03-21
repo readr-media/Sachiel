@@ -1,11 +1,14 @@
 'use client'
 
+import { useTranslations } from 'use-intl'
+
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import { useEditCollection } from '@/context/edit-collection'
 
 import { MobileEditCollectionType } from '../../_types/edit-collection'
 
 export default function MobileGoNextButton() {
+  const t = useTranslations('Pages.Collection')
   const {
     mobileEditType,
     setMobileEditType,
@@ -25,7 +28,7 @@ export default function MobileGoNextButton() {
     case MobileEditCollectionType.EditTitle:
       return (
         <MobileNavigationButton
-          text="儲存"
+          text={t('MobileGoNextButton-save')}
           type="text"
           onClick={updateCollectionTitleAndHeroImage}
           color="blue"
@@ -34,7 +37,7 @@ export default function MobileGoNextButton() {
     case MobileEditCollectionType.EditSummary:
       return (
         <MobileNavigationButton
-          text="儲存"
+          text={t('MobileGoNextButton-save')}
           type="text"
           onClick={updateCollectionSummary}
           color="blue"
@@ -43,7 +46,7 @@ export default function MobileGoNextButton() {
     case MobileEditCollectionType.EditStories:
       return (
         <MobileNavigationButton
-          text="儲存"
+          text={t('MobileGoNextButton-save')}
           type="text"
           onClick={updateCollectionPicks}
           color="blue"
@@ -52,7 +55,7 @@ export default function MobileGoNextButton() {
     case MobileEditCollectionType.AddStories:
       return (
         <MobileNavigationButton
-          text="完成"
+          text={t('MobileGoNextButton-finish')}
           type="text"
           onClick={finishAddingStory}
           color="blue"

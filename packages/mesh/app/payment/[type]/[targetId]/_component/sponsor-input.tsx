@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { type FormEvent, useState } from 'react'
 
 export default function SponsorInput({
@@ -7,6 +8,7 @@ export default function SponsorInput({
   balance: number | undefined
   onChangeAmount: (value: number) => void
 }) {
+  const t = useTranslations('Pages.Payment')
   const [userInput, setUserInput] = useState('')
   const isMax = `${userInput}` === `${balance}`
 
@@ -44,12 +46,12 @@ export default function SponsorInput({
             } text-[11px] font-normal text-white`}
             onClick={handleMaxClick}
           >
-            MAX
+            {t('SponsorInput-set-max-amount')}
           </button>
         </div>
         <p className="footnote flex flex-col text-primary-500">
-          <span>請輸入您要贊助的金額。</span>
-          <span>您的讀選點數餘額：${balance}</span>
+          <span>{t('SponsorInput-enter-amount')}</span>
+          <span>{t('SponsorInput-mesh-balance', { balance })}</span>
         </p>
       </div>
     </div>

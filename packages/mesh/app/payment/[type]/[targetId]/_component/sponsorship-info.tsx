@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -35,6 +36,8 @@ export default function SponsorshipInfo({
   balance: number | undefined
   recipientAddress: Hex
 }) {
+  const toastT = useTranslations('Others.toast')
+  const t = useTranslations('Pages.Payment')
   const { user } = useUser()
   const router = useRouter()
   const userPayload = useUserPayload()
@@ -73,7 +76,10 @@ export default function SponsorshipInfo({
 
   const onClickOption = (value: SponsorshipPoints | undefined) => {
     if (value && balance && value > balance) {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedInsufficient })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+      })
       return
     }
     setSelectedOption(value)
@@ -86,7 +92,10 @@ export default function SponsorshipInfo({
       setAmount(value)
     } else {
       setAmount(0)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedInsufficient })
+      addToast({
+        status: 'fail',
+        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+      })
     }
   }, 500)
 
@@ -119,15 +128,17 @@ export default function SponsorshipInfo({
               size={{ width: 64, height: 64 }}
               className="pb-4"
             />
-            <p className="title-2 pb-1 text-primary-700">支付成功</p>
+            <p className="title-2 pb-1 text-primary-700">
+              {t('SponsorshipInfo-sponsor-success')}
+            </p>
             <p className="body-2 pb-6 text-primary-500">
-              您成功贊助了
+              {t('SponsorshipInfo-sponsor-detail')}
               <span className="text-custom-blue">{publisher.title}</span>
             </p>
             <Button
               size="lg"
               color="white"
-              text="完成"
+              text={t('SponsorshipInfo-finish')}
               onClick={() => {
                 router.push('/point')
               }}
@@ -158,13 +169,18 @@ export default function SponsorshipInfo({
               onSend={handleSponsorOnSend}
               onSuccess={handleSponsorOnSuccess}
               onError={handleSponsorOnError}
+              actionText={t('PaymentInfo-finish')}
             />
           ) : (
             <div className="flex w-full justify-center">
               <div className="shrink-0 grow sm:max-w-[335px]">
                 <Button
                   size="lg"
-                  text={isInputMode ? '上一步' : '下一步'}
+                  text={
+                    isInputMode
+                      ? t('SponsorshipInfo-go-back')
+                      : t('SponsorshipInfo-go-next')
+                  }
                   color="primary"
                   disabled={selectedOption !== undefined}
                   onClick={() => setIsInputMode(!isInputMode)}

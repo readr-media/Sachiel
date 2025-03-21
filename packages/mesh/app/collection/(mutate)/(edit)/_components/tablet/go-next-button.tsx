@@ -1,11 +1,14 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Button from '@/components/button'
 import { useEditCollection } from '@/context/edit-collection'
 
 import { MobileEditCollectionType } from '../../_types/edit-collection'
 
 export default function TabletGoNextButton() {
+  const t = useTranslations('Pages.Collection')
   const {
     mobileEditType,
     setMobileEditType,
@@ -23,7 +26,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditTitle:
       return (
         <Button
-          text="儲存"
+          text={t('TabletGoNextButton-save')}
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -33,7 +36,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditSummary:
       return (
         <Button
-          text="儲存"
+          text={t('TabletGoNextButton-save')}
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -43,7 +46,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditStories:
       return (
         <Button
-          text="儲存"
+          text={t('TabletGoNextButton-save')}
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -53,7 +56,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.AddStories:
       return (
         <Button
-          text="完成"
+          text={t('TabletGoNextButton-finish')}
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
