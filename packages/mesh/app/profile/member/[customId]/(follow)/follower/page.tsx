@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
@@ -7,6 +9,7 @@ import queryGraphQL from '@/utils/fetch-graphql'
 import type { PageProps } from '../../page'
 
 const FollowerPage = async ({ params }: PageProps) => {
+  const t = useTranslations('Pages.Profile')
   const takeCount = 20
   const user = await getCurrentUser()
   const isVisitor = params.customId !== user?.customId
@@ -20,7 +23,11 @@ const FollowerPage = async ({ params }: PageProps) => {
   if (!followList || !followList.length)
     return (
       <EmptyFollowStatus
-        content={isVisitor ? '這個人還沒有粉絲' : '目前還沒有粉絲'}
+        content={
+          isVisitor
+            ? t('FollowerPage-no-follower-for-other')
+            : t('FollowerPage-no-follower')
+        }
       />
     )
   return (

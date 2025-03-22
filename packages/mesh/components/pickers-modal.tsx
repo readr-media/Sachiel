@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { getCollectionPickers } from '@/app/actions/collection'
@@ -14,6 +15,7 @@ import Icon from './icon'
 import Avatar from './story-card/avatar'
 
 export default function PickersModal() {
+  const t = useTranslations('Components.PickersModal')
   const { user } = useUser()
   const { pickObjective, objectiveId, closePickersModal } = usePickersModal()
   const { targetRef: scrollRef, isIntersecting: isInView } = useInView()
@@ -107,7 +109,9 @@ export default function PickersModal() {
           <div className="relative max-h-[600px] w-full max-w-[480px] rounded-md bg-white text-left shadow-xl transition-all">
             <div className="flex h-15 flex-row items-center justify-center rounded-t-md border-[0.5px] border-primary-200 bg-white">
               <div className="size-11"></div>
-              <p className="list-title mx-auto text-primary-800">精選者</p>
+              <p className="list-title mx-auto text-primary-800">
+                {t('picker')}
+              </p>
               <button onClick={() => closePickersModal()}>
                 <Icon iconName="icon-modal-close" size="2xl" />
               </button>

@@ -1,4 +1,5 @@
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
@@ -15,6 +16,7 @@ export default function CollectionCard({
 }: {
   collection: NonNullable<SearchResults['collection']>[number]
 }) {
+  const t = useTranslations('Pages.Search')
   const { id, title, creator, heroImage, readsCount } = collection
   const { width } = useWindowDimensions()
   const buttonSize = width >= 1440 ? 'md' : 'sm'
@@ -47,7 +49,9 @@ export default function CollectionCard({
           />
           <div className="absolute right-[6px] top-2 flex items-center rounded-md bg-black/50 px-[6px] py-[2.5px]">
             <Icon iconName="icon-collection-folder" size="s" />
-            <span className="caption-2 text-white">集錦</span>
+            <span className="caption-2 text-white">
+              {t('CollectionCard-collection')}
+            </span>
           </div>
         </div>
       </NextLink>

@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberFollowingList } from '@/app/actions/get-profile'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
@@ -16,6 +18,7 @@ export type FollowingPublisherListType = NonNullable<
 >
 
 const FollowingPage = async ({ params: { customId } }: PageProps) => {
+  const t = useTranslations('Pages.Profile')
   const user = await getCurrentUser()
   const response = await getMemberFollowingList(customId, takeCount)
   const isVisitor = customId !== user?.customId
@@ -37,7 +40,9 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
     return (
       <EmptyFollowStatus
         content={
-          isVisitor ? '這個人還沒有追蹤中的對象' : '目前還沒有追蹤中的對象'
+          isVisitor
+            ? t('FollowingPage-no-follow-for-other')
+            : t('FollowingPage-no-follow')
         }
       />
     )
@@ -45,7 +50,7 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 lg:px-10 xl:w-maxMain">
       <FollowingList
-        title="媒體"
+        title={t('FollowingPage-publisher')}
         publisherCustomId={customId}
         followingList={followPublisherData}
         followingCount={followPublisherCount}
@@ -53,7 +58,7 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
         type="publisher"
       />
       <FollowingList
-        title="人物"
+        title={t('FollowingPage-member')}
         publisherCustomId={customId}
         followingList={followResponse}
         followingCount={followCount}

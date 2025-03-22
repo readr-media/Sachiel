@@ -1,6 +1,7 @@
 import NextLink from 'next/link'
 import { Fragment, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useTranslations } from 'use-intl'
 
 import useSearchSuggestion from '@/hooks/use-search-suggestion'
 
@@ -14,6 +15,7 @@ export default function SearchModal({
   isOpen: boolean
   onClose: () => void
 }) {
+  const t = useTranslations('Components.DesktopSearchBar')
   const inputRef = useRef<HTMLInputElement>(null)
   const {
     searchText,
@@ -71,7 +73,7 @@ export default function SearchModal({
         </div>
         {activeRender === 'recent' && (
           <div className="h-[calc(100vh-60px)] bg-white">
-            <p className="list-title px-5 pb-1 pt-4">搜尋歷史</p>
+            <p className="list-title px-5 pb-1 pt-4">{t('history')}</p>
             <ul className="h-[calc(100vh-112px)] overflow-y-auto">
               {recentSearch.map((record, index) => (
                 <Fragment key={index}>

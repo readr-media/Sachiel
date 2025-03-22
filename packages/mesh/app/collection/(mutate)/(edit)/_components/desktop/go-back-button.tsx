@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 
 import Dialog from '@/components/dialog'
@@ -10,6 +11,7 @@ import { useEditCollection } from '@/context/edit-collection'
 import { DesktopEditCollectionType } from '../../_types/edit-collection'
 
 export default function DesktopGoBackButton() {
+  const t = useTranslations('Pages.Collection')
   const dialogRef = useRef<HTMLDialogElement>(null)
   const router = useRouter()
   const { setDesktopEditType, desktopEditType } = useEditCollection()
@@ -27,16 +29,16 @@ export default function DesktopGoBackButton() {
       <GoBackButton customAction={onGoBackClicked} />
       <Dialog
         ref={dialogRef}
-        title="確認要退出編輯？"
-        description="系統不會儲存您所做的變更"
+        title={t('DesktopGoBackButton-confirm-leave')}
+        description={t('DesktopGoBackButton-leave-warning')}
         primaryAction={{
-          text: '繼續編輯',
+          text: t('DesktopGoBackButton-stay'),
           action: () => {
             dialogRef.current?.close()
           },
         }}
         secondaryAction={{
-          text: '退出',
+          text: t('DesktopGoBackButton-leave'),
           action: () => {
             router.back()
           },

@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef } from 'react'
 
 import Dots from '@/components/dots'
@@ -14,6 +15,7 @@ const MobileCommentFooter = ({
   targetId?: string
   comment: string
 }) => {
+  const t = useTranslations('Components.MobileCommentFooter')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const { user } = useUser()
   const { state, dispatch, handleCommentPublish } = useComment()
@@ -37,7 +39,7 @@ const MobileCommentFooter = ({
           ref={textareaRef}
           className="body-2 grow resize-none pl-2 pr-3 text-primary-700 focus:outline-none"
           rows={4}
-          placeholder="在這裡輸入留言..."
+          placeholder={t('placeholder')}
           value={comment}
           onChange={handleTextChange}
           style={{
@@ -50,7 +52,7 @@ const MobileCommentFooter = ({
             className="body-2 text-custom-blue transition-colors hover:bg-blue-600"
             onClick={() => handleCommentPublish({ user, targetId })}
           >
-            {state.isAddingComment ? <Dots /> : '發布'}
+            {state.isAddingComment ? <Dots /> : t('publish')}
           </button>
         </div>
       </div>

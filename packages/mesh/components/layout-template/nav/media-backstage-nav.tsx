@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -219,6 +220,7 @@ const NavIcon = ({
   iconInfo: IconInfo
   publisherCustomId: string
 }) => {
+  const t = useTranslations('Others.navs')
   const iconJsx = isOn ? (
     <Icon size="xl" iconName={iconInfo.icon.on} />
   ) : (
@@ -226,10 +228,10 @@ const NavIcon = ({
   )
 
   const textJsx = isOn ? (
-    <span className="title-1 blocktext-primary-700">{iconInfo.text}</span>
+    <span className="title-1 blocktext-primary-700">{t(iconInfo.text)}</span>
   ) : (
     <span className="title-1 block text-primary-600 group-hover:text-primary-700">
-      {iconInfo.text}
+      {t(iconInfo.text)}
     </span>
   )
 

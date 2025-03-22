@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import { getMemberForOG } from '@/app/actions/get-profile'
-import { metadata as rootMetadata } from '@/app/layout'
-import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import ClientLayout from './_components/client-layout'
 
@@ -11,34 +11,29 @@ export async function generateMetadata({
 }: {
   params: { customId: string }
 }): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
   const memberCustomId = params.customId
 
   const memberData = await getMemberForOG(memberCustomId)
   const memberName = memberData?.member?.name
   const memberAvatar =
     memberData?.member?.avatar ||
-    memberData?.member?.avatar_image?.resized?.original ||
-    SITE_OG_IMAGE
+    memberData?.member?.avatar_image?.resized?.original
 
-  const metaTitle = memberName ? `${memberName} | ${SITE_TITLE}` : SITE_TITLE
-  const metaDescription = memberName
-    ? `查看 ${memberName} 的個人檔案。追蹤他們精選的文章和製作的集錦。`
-    : '查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。'
-
-  return {
-    ...rootMetadata,
-    title: metaTitle,
-    description: metaDescription,
-    openGraph: {
-      ...rootMetadata.openGraph,
-      url: SITE_URL + `/profile/member/${memberCustomId}`,
-      title: metaTitle,
-      description: metaDescription,
-      images: {
-        url: memberAvatar,
-      },
-    },
-  }
+  const title = memberName
+    ? t('site-title-profile-member', { memberName })
+    : undefined
+  const description = memberName
+    ? t('site-description-profile-member', { memberName })
+    : t('site-description-profile-member-fallback')
+  const images = memberAvatar ?? undefined
+  const urlPath = `/profile/member/${memberCustomId}`
+  return getSiteMedadata(t, {
+    title,
+    description,
+    images,
+    urlPath,
+  })
 }
 
 export default function ProfileMemberLayout({

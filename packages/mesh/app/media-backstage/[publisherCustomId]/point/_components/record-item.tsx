@@ -75,7 +75,7 @@ const SponsorRecordItem = forwardRef(
     const { sponsor, fee, createdAt } = record
 
     const transactionTitle = t('RecordItem-sponsor-title', {
-      name: sponsor?.name ?? '會員',
+      name: sponsor?.name ?? t('RecordItem-sponsor-name-fallback'),
     })
     return (
       <li

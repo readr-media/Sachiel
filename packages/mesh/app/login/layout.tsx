@@ -1,22 +1,21 @@
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
-const pageTitle = `登入 | ${SITE_TITLE}`
-const pageDescription = '登入您的讀選帳號，開始精選你感興趣的新聞文章。'
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
 
-export const metadata: Metadata = {
-  ...rootMetadata,
-  title: pageTitle,
-  description: pageDescription,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: SITE_URL + '/login',
-    title: pageTitle,
-    description: pageDescription,
-  },
+  const title = t('site-title-login')
+  const description = t('site-description-login')
+  const urlPath = '/login'
+
+  return getSiteMedadata(t, {
+    title,
+    description,
+    urlPath,
+  })
 }
 
 export default function LoginLayout({

@@ -87,7 +87,11 @@ export const DisplayDateWithWeekday = () => {
     ]
     const dayString = daysOfWeek[day]
 
-    const currentTime = `${month}${t('month')}${date}${t('date')}(${dayString})`
+    const currentTime = t('time-template', {
+      month,
+      date,
+      dayString,
+    })
 
     return currentTime
   }, [t])

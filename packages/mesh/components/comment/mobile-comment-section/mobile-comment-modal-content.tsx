@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import { EditDrawerBlockType, useComment } from '@/context/comment'
@@ -20,6 +21,7 @@ export function MobileCommentModalContent({
 }: {
   data: CommentObjectiveData
 }) {
+  const t = useTranslations('Components.MobileCommentModalContent')
   const {
     state,
     dispatch,
@@ -73,13 +75,13 @@ export function MobileCommentModalContent({
         />
         {!!popularComments.length && (
           <CommentBlock
-            title="熱門留言"
+            title={t('poupular-comments')}
             type={EditDrawerBlockType.Popular}
             comments={popularComments}
           />
         )}
         <CommentBlock
-          title="所有留言"
+          title={t('all-comments')}
           type={EditDrawerBlockType.All}
           comments={sortedAuthorComments}
         />
@@ -87,37 +89,37 @@ export function MobileCommentModalContent({
       <MobileCommentFooter targetId={data?.id} comment={comment} />
       <CommentModal
         isOpen={isConfirmLeavingModalOpen}
-        onConfirmText="離開"
-        onCloseText="繼續輸入"
+        onConfirmText={t('leave')}
+        onCloseText={t('stay')}
         onConfirm={handleAddCommentModalOnLeave}
         onClose={handleAddCommentModalOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">離開留言區？</p>
-          <p className="body-3">系統將不會儲存您剛剛輸入的內容</p>
+          <p className="title-2">{t('leave-question')}</p>
+          <p className="body-3">{t('leave-detail')}</p>
         </section>
       </CommentModal>
       <CommentModal
-        onConfirmText="刪除留言"
-        onCloseText="取消"
+        onConfirmText={t('delete')}
+        onCloseText={t('cancel')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">確認要刪除留言？</p>
-          <p className="body-3">系統仍會保留您的精選記錄</p>
+          <p className="title-2">{t('delete-question')}</p>
+          <p className="body-3">{t('delete-detail')}</p>
         </section>
       </CommentModal>
       <CommentModal
         onConfirmText=""
-        onCloseText="返回留言"
+        onCloseText={t('close')}
         isOpen={isConfirmReportingModalOpen}
         onClose={handleReportOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">檢舉成功</p>
-          <p className="body-3">我們已收到您的檢舉，感謝提供資訊</p>
+          <p className="title-2">{t('report-success')}</p>
+          <p className="body-3">{t('report-success-detail')}</p>
         </section>
       </CommentModal>
       <MobileCommentEditDrawer />

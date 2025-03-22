@@ -1,24 +1,23 @@
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import Loading from './_components/loading'
 
-const pageTitle = `最新 | ${SITE_TITLE}`
-const pageDescription = '追蹤你感興趣的媒體，查看他們最新發布的各類文章。'
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
 
-export const metadata: Metadata = {
-  ...rootMetadata,
-  title: pageTitle,
-  description: pageDescription,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: SITE_URL + '/media',
-    title: pageTitle,
-    description: pageDescription,
-  },
+  const title = t('site-title-media')
+  const description = t('site-description-media')
+  const urlPath = '/media'
+
+  return getSiteMedadata(t, {
+    title,
+    description,
+    urlPath,
+  })
 }
 
 export default function MediaLayout({

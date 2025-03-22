@@ -24,7 +24,9 @@ export default async function Page() {
   return (
     <div className="flex flex-col items-center justify-center sm:gap-5 sm:p-5 xl:p-10">
       <div className="flex w-full max-w-[600px] flex-col rounded-md bg-white sm:w-articleMain sm:max-w-none sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] xl:w-[1040px]">
-        <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">{`可用的邀請碼（${validCode.length}）`}</h2>
+        <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">
+          {t('Page-valid-code', { count: validCode.length })}
+        </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 ">
           {validCode.length ? (
             validCode.map((v, i) => (

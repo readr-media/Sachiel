@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
@@ -29,6 +30,7 @@ const FollowListItem = forwardRef(
     }: FollowListItemProps,
     ref: ForwardedRef<HTMLLIElement>
   ) => {
+    const t = useTranslations('Components.FollowButton')
     const {
       handleClickFollow: handleClickFollowMember,
       isFollowing: isMemberFollowing,
@@ -67,10 +69,10 @@ const FollowListItem = forwardRef(
             color="white"
             onClick={handleFollowOnClick}
             size="sm"
-            text="追蹤"
+            text={t('follow')}
             activeState={{
               isActive: isFollowing,
-              activeText: '追蹤中',
+              activeText: t('following'),
             }}
           />
         </div>

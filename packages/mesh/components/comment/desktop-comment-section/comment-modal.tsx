@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import Icon from '@/components/icon'
 import { useComment } from '@/context/comment'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
@@ -9,6 +11,7 @@ export default function DesktopCommentModal({
 }: {
   targetId: string
 }) {
+  const t = useTranslations('Components.DesktopCommentModal')
   useBlockBodyScroll(true)
 
   const { dispatch } = useComment()
@@ -34,7 +37,9 @@ export default function DesktopCommentModal({
       >
         <div className="flex items-center justify-between border-b p-2">
           <div></div>
-          <div className="list-title text-primary-800">留言區</div>
+          <div className="list-title text-primary-800">
+            {t('comment-block')}
+          </div>
           <button
             className="flex size-11 items-center justify-center"
             onClick={closeDesktopModal}

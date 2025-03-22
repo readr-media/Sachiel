@@ -15,7 +15,8 @@
       "TopPublisherSection-title": "獲得最多次贊助",
       "TopPublisherCard-sponsor-detail-1": "已獲得",
       "TopPublisherCard-sponsor-detail-2": "贊助",
-      "TopPublisherCard-sponsor-count-unit": "次"
+      "TopPublisherCard-sponsor-count-unit": "次",
+      "Comment-show-more": "顯示更多"
     },
     "Subpage": {
       "SubpageLayout-title": "{title}熱門",
@@ -98,7 +99,34 @@
       "Comment-delete-comment": "刪除留言",
       "Comment-cancel-edit": "取消",
       "Comment-confirm-delete": "確認要刪除留言？",
-      "Comment-delete-hint": "系統仍會保留您的精選記錄"
+      "Comment-delete-hint": "系統仍會保留您的精選記錄",
+      "BlockSheet-title": "封鎖 {customId}？",
+      "BlockSheet-description": "你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。",
+      "BlockSheet-confirm": "好的",
+      "BlockSheet-cancel": "取消",
+      "EmptyTabState-no-pick": "這裡還空空的\n趕緊將喜愛的新聞加入精選吧",
+      "EmptyTabState-no-pick-for-other": "這個人還沒有精選新聞",
+      "EmptyTabState-no-bookmark": "沒有已儲存的書籤",
+      "EmptyTabState-no-collection": "從精選新聞或書籤中\n將數篇新聞打包成集錦",
+      "EmptyTabState-no-collection-for-other": "這個人還沒有建立集錦",
+      "EmptyTabState-no-story": "這個媒體還沒有發佈任何新聞",
+      "EmptyTabState-create-collection": "立即嘗試",
+      "ReportSheet-report-success": "檢舉成功",
+      "ReportSheet-description": "我們已收到您的檢舉，感謝提供資訊。",
+      "ReportSheet-confirm": "好的",
+      "FollowerPage-no-follower-for-other": "這個人還沒有粉絲",
+      "FollowerPage-no-follower": "目前還沒有粉絲",
+      "FollowingPage-no-follow-for-other": "這個人還沒有追蹤中的對象",
+      "FollowingPage-no-follow": "目前還沒有追蹤中的對象",
+      "FollowingPage-publisher": "媒體",
+      "FollowingPage-member": "人物",
+      "Loading-edit-profile": "編輯個人檔案",
+      "Loading-donate-publisher": "贊助媒體",
+      "Loading-follower": "粉絲",
+      "Loading-gain-donate": "本月獲得贊助",
+      "Loading-follow": "追蹤",
+      "Loading-story": "報導",
+      "FollowerLayout-title": "粉絲"
     },
     "Edit-Profile": {
       "Layout-title": "編輯個人檔案",
@@ -110,7 +138,11 @@
       "EditProfile-intro": "簡介",
       "EditProfile-words": "字",
       "EditProfile-intro-placeholder": "向大家介紹一下自己吧...",
-      "EditProfile-save": "儲存"
+      "EditProfile-save": "儲存",
+      "AvatarEditMenu-select-photo": "選擇相片",
+      "AvatarEditMenu-remove-avatar": "刪除大頭貼照",
+      "UploadImageErrorModal-file-too-big": "檔案過大",
+      "UploadImageErrorModal-file-limitation": "上傳的檔案大小須小於 10MB"
     },
     "Point": {
       "Layout-sponsor": "已贊助媒體",
@@ -153,6 +185,10 @@
       "MobileGoBackButton-leave-warning": "系統不會儲存您所做的變更",
       "MobileGoBackButton-stay": "繼續編輯",
       "MobileGoBackButton-leave": "退出",
+      "DesktopGoBackButton-confirm-leave": "確認要退出編輯？",
+      "DesktopGoBackButton-leave-warning": "系統不會儲存您所做的變更",
+      "DesktopGoBackButton-stay": "繼續編輯",
+      "DesktopGoBackButton-leave": "退出",
       "MobileGoNextButton-go-next": "下一步",
       "MobileGoNextButton-create": "建立",
       "MobileGoNextButton-save": "儲存",
@@ -206,7 +242,12 @@
       "EditCollectionProvider-desktop-edit-all": "編輯集錦",
       "EditCollectionProvider-desktop-add-stories": "加入新文章",
       "AdditionalEditor-add-story": "新增文章",
-      "DesktopAddStories-hint": "從你的精選文章、書籤或全站文章中，挑選要加入集錦的文章"
+      "DesktopAddStories-hint": "從你的精選文章、書籤或全站文章中，挑選要加入集錦的文章",
+      "ImageSelector-select-image": "選擇相片",
+      "Comment-edit-comment": "編輯留言",
+      "Comment-no-comment": "沒有評論",
+      "NotExist-title": "集錦不存在",
+      "NotExist-description": "這個集錦已經被刪除了"
     },
     "Contact": {
       "Page-description": "若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務（服務時間：星期一～星期五，10:00～18:00）",
@@ -216,6 +257,7 @@
       "Layout-title": "聯絡我們"
     },
     "Invitation-Code": {
+      "Page-valid-code": "可用的邀請碼（{count}）",
       "InvitationCodeLayout-title": "邀請碼",
       "Page-no-codes": "目前沒有可用的邀請碼...",
       "Page-already-used": "已使用",
@@ -265,7 +307,10 @@
       "LoginSetFollowing-finish": "完成",
       "LoginWebviewHint-title": "以外部瀏覽器開啟",
       "LoginWebviewHint-detail": "請用瀏覽器開啟此網址以繼續登入",
-      "LoginWebviewHint-action": "以外部瀏覽器開啟"
+      "LoginWebviewHint-action": "以外部瀏覽器開啟",
+      "LoginCode-invitaion-not-found": "找不到這個邀請碼，請重新輸入",
+      "LoginCode-enter-invitation-code": "請輸入邀請碼",
+      "LoginCode-enter-send": "送出"
     },
     "Media-Backstage": {
       "RecordController-record-type-sponsor": "贊助",
@@ -280,6 +325,7 @@
       "MeshPointInfo-exchange-point": "點數兌換",
       "RecordList-no-record": "目前沒有紀錄",
       "RecordItem-transaction-title": "{name} - 付費解鎖 - {title}",
+      "RecordItem-sponsor-name-fallback": "會員",
       "RecordItem-sponsor-title": "{name} - 贊助",
       "RecordItem-redeem-title": "點數兌換",
       "ExchangeInfo-exchange-success": "兌換成功",
@@ -294,7 +340,8 @@
       "Reports-no-report": "目前沒有紀錄",
       "ReportGroup-year-report": "{year} 收益報表",
       "ReportRow-download": "下載",
-      "ReportRow-print": "列印"
+      "ReportRow-print": "列印",
+      "ReportRow-month-range": "{startMonth}-{endMonth} 月"
     },
     "Payment": {
       "PaymentLayout-subtitle-subscribe": "解鎖",
@@ -343,10 +390,24 @@
       "StoryAndCollection-cant-find-keyword-2": "」的新聞，請換個關鍵字，再試一次。",
       "MemberAndPublisher-member": "人物",
       "MemberAndPublisher-publisher": "媒體",
-      "MemberAndPublisher-follower-count": "{followerCount} 人追蹤"
+      "MemberAndPublisher-follower-count": "{followerCount} 人追蹤",
+      "CarouselWrapper-all-collection": "所有集錦",
+      "CollectionCard-collection": "集錦"
     },
     "Setting": {
       "SettingLayout-title": "設定"
+    },
+    "Setting-Account-Deletion": {
+      "ConfirmationLayout-title": "刪除帳號",
+      "Confirmation-delete-confirm": "真的要刪除帳號嗎？",
+      "Confirmation-delete-warning": "提醒您：刪除帳號後，您的帳號資訊將永久刪除並無法復原。",
+      "Confirmation-cancel": "那我再想想",
+      "Confirmation-confirm": "確認刪除",
+      "Success-delete-success": "刪除帳號成功",
+      "Success-thanks": "謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)",
+      "Success-action": "回首頁",
+      "Failure-delete-success": "喔不，出錯了...",
+      "Failure-thanks": "刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@gmail.com 由專人為您服務。"
     },
     "Story": {
       "ClientLayout-story-title": "新聞",
@@ -431,8 +492,7 @@
       "thursday": "四",
       "friday": "五",
       "saturday": "六",
-      "month": "月",
-      "date": "日"
+      "time-template": "{month}月{date}日({dayString})"
     },
     "NotificationDropDown": {
       "h2": "通知",
@@ -498,6 +558,84 @@
       "comment-return-to-comment": "返回留言",
       "comment-report-success": "檢舉成功",
       "comment-report-success-detail": "我們已收到您的檢舉，感謝提供資訊"
+    },
+    "DesktopCommentModal": {
+      "comment-block": "留言區"
+    },
+    "MobileCommentEditDrawer": {
+      "report": "檢舉留言",
+      "edit": "編輯留言",
+      "delete": "刪除留言"
+    },
+    "MobileCommentEditor": {
+      "save": "儲存",
+      "submit": "送出",
+      "cancel": "取消編輯"
+    },
+    "MobileCommentFooter": {
+      "placeholder": "在這裡輸入留言...",
+      "publish": "發布"
+    },
+    "MobileCommentModalContent": {
+      "poupular-comments": "熱門留言",
+      "all-comments": "所有留言",
+      "leave": "離開",
+      "stay": "繼續輸入",
+      "leave-question": "離開留言區？",
+      "leave-detail": "系統將不會儲存您剛剛輸入的內容",
+      "delete": "刪除留言",
+      "cancel": "取消",
+      "delete-question": "確認要刪除留言？",
+      "delete-detail": "系統仍會保留您的精選記錄",
+      "close": "返回留言",
+      "report-success": "檢舉成功",
+      "report-success-detail": "我們已收到您的檢舉，感謝提供資訊"
+    },
+    "CommentBlockItem": {
+      "member": "使用者",
+      "edit-comment": "·編輯留言"
+    },
+    "CommentBlock": {
+      "no-comment": "還沒有人留言，快來搶頭香！"
+    },
+    "CommentEditor": {
+      "cancel": "取消",
+      "save": "儲存"
+    },
+    "DropdownMenu": {
+      "report": "檢舉留言",
+      "edit": "編輯留言",
+      "delete": "刪除留言"
+    },
+    "AddStoryToCollection": {
+      "no-collection": "你目前還沒有任何集錦...",
+      "story-alredy-added": "你之前已將這篇新聞加入你所有的集錦囉",
+      "added-detail-1": "你之前已將這篇新聞加入",
+      "added-detail-2-plural": "等{length}個集錦囉",
+      "added-detail-2-single": "集錦囉",
+      "add-to-collection": "加入集錦",
+      "create-new-collection": "建立新集錦"
+    },
+    "DesktopSearchBar": {
+      "history": "搜尋歷史"
+    },
+    "PickModal": {
+      "publish": "發布",
+      "pick": "直接加入精選",
+      "comment-for-pick-story": "留言分享你為什麼精選這篇文章...",
+      "comment-for-pick-collection": "留言分享你為什麼精選這個集錦...",
+      "add-pick": "加入精選",
+      "confirm-leave": "您輸入的資訊尚未儲存，是否離開此頁面?",
+      "stay": "留在此頁面",
+      "leave": "離開",
+      "remove-pick-story": "移除精選文章，將會一併移除您的留言",
+      "remove-pick-collection": "移除精選集錦，將會一併移除您的留言",
+      "confirm-delete": "確認要移除精選？",
+      "delete": "移除",
+      "cancel": "取消"
+    },
+    "PickersModal": {
+      "picker": "精選者"
     }
   },
   "Others": {
@@ -532,6 +670,47 @@
       "about": "關於",
       "logout": "登出",
       "delete-account": "刪除帳號"
+    },
+    "navs": {
+      "homepage": "首頁",
+      "social": "社群",
+      "media": "最新",
+      "profile": "個人檔案",
+      "point": "讀選點數",
+      "bookmark": "書籤",
+      "setting": "設定",
+      "media-backstage-point": "點數兌換",
+      "media-backstage-report": "收益報表",
+      "logout": "登出"
+    },
+    "footers": {
+      "about": "關於我們",
+      "contact": "聯絡我們",
+      "privacy": "隱私政策",
+      "terms": "服務條款",
+      "company-name": "精鏡傳媒股份有限公司",
+      "company-address": "114 台北市內湖區堤頂大道一段 365 號 7 樓",
+      "company-email": "readr@readr.tw",
+      "all-right-reserved": "All Rights Reserved"
+    },
+    "meta": {
+      "site-title": "READr Mesh 讀選",
+      "site-description": "在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。",
+      "site-title-collection": "集錦 | {collectionTitle}",
+      "site-title-collection-fallback": "集錦",
+      "site-title-profile-member": "{memberName} | READr Mesh 讀選",
+      "site-description-profile-member": "查看 {memberName} 的個人檔案。追蹤他們精選的文章和製作的集錦。",
+      "site-description-profile-member-fallback": "查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。",
+      "site-title-profile-publisher": "{publisherName} | READr Mesh 讀選",
+      "site-description-profile-publisher": "查看 {publisherName} 的媒體檔案。追蹤他們的媒體報導。",
+      "site-description-profile-publisher-fallback": "查看媒體檔案。追蹤他們的媒體報導。",
+      "site-title-story": "{storyTitle} | READr Mesh 讀選",
+      "site-title-login": "登入 | READr Mesh 讀選",
+      "site-description-login": "登入您的讀選帳號，開始精選你感興趣的新聞文章。",
+      "site-title-media": "最新 | READr Mesh 讀選",
+      "site-description-media": "追蹤你感興趣的媒體，查看他們最新發布的各類文章。",
+      "site-title-social": "社群 | READr Mesh 讀選",
+      "site-description-social": "追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。"
     },
     "toast": {
       "follow-category-failed": "新增類別失敗，請重新嘗試",

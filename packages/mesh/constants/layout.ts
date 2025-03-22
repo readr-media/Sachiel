@@ -32,15 +32,15 @@ const DOWNLOAD_APP_LINKS = [
 // TODO: update path
 const FOOTER_NAV_LINKS = [
   // TODO: Uncomment it when page is complete
-  // { text: '關於我們', href: '/' },
-  { text: '聯絡我們', href: '/contact', gtmName: 'contact' },
+  // { text: 'about', href: '/' },
+  { text: 'contact', href: '/contact', gtmName: 'contact' },
   {
-    text: '隱私政策',
+    text: 'privacy',
     href: '/policy/privacy-policy',
     gtmName: 'privacy_terms',
   },
   {
-    text: '服務條款',
+    text: 'terms',
     href: '/policy/terms-of-service',
     gtmName: 'service_terms',
   },
@@ -75,9 +75,9 @@ const FOOTER_SHARED_ICONS = [
 ] as const
 
 const FOOTER_COMPANY_INFOS = [
-  '精鏡傳媒股份有限公司',
-  '114 台北市內湖區堤頂大道一段 365 號 7 樓',
-  'readr@readr.tw',
+  'company-name',
+  'company-address',
+  'company-email',
 ] as const
 
 const NON_MOBILE_NAV_ICONS = {
@@ -89,7 +89,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-popular-lg-on',
       },
       href: '/',
-      text: '首頁',
+      text: 'homepage',
       gtmName: 'homepage',
     },
     {
@@ -99,7 +99,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-social-lg-on',
       },
       href: '/social',
-      text: '社群',
+      text: 'social',
       gtmName: 'social',
     },
     {
@@ -109,7 +109,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-latest-lg-on',
       },
       href: '/media',
-      text: '最新',
+      text: 'media',
       gtmName: 'media',
     },
   ],
@@ -121,7 +121,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-profile-lg-on',
       },
       href: '/profile',
-      text: '個人檔案',
+      text: 'profile',
       gtmName: 'profile',
     },
     {
@@ -131,7 +131,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-wallet-lg-on',
       },
       href: '/point',
-      text: '讀選點數',
+      text: 'point',
       gtmName: 'point',
     },
     {
@@ -141,7 +141,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-bookmark-lg-on',
       },
       href: '/profile',
-      text: '書籤',
+      text: 'bookmark',
       gtmName: 'bookmark',
     },
   ],
@@ -153,7 +153,7 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-setting-lg-on',
       },
       href: '/setting',
-      text: '設定',
+      text: 'setting',
       gtmName: 'setting',
     },
   ],
@@ -167,7 +167,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-popular-on',
     },
     href: '/',
-    text: '首頁',
+    text: 'homepage',
     gtmName: 'homepage',
   },
   {
@@ -177,7 +177,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-social-on',
     },
     href: '/social',
-    text: '社群',
+    text: 'social',
     gtmName: 'social',
   },
   {
@@ -187,7 +187,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-latest-on',
     },
     href: '/media',
-    text: '最新',
+    text: 'media',
     gtmName: 'media',
   },
   {
@@ -197,7 +197,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-wallet-on',
     },
     href: '/point',
-    text: '讀選點數',
+    text: 'point',
     gtmName: 'point',
   },
   {
@@ -207,7 +207,7 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-profile-on',
     },
     href: '/profile',
-    text: '個人檔案',
+    text: 'profile',
     gtmName: 'profile',
   },
 ] as const
@@ -222,7 +222,7 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
       },
       hrefFn: (publisherCustomId: string) =>
         `/media-backstage/${publisherCustomId}/point`,
-      text: '點數兌換',
+      text: 'media-backstage-point',
     },
     {
       icon: {
@@ -232,7 +232,7 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
       },
       hrefFn: (publisherCustomId: string) =>
         `/media-backstage/${publisherCustomId}/report`,
-      text: '收益報表',
+      text: 'media-backstage-report',
     },
   ],
   second: [
@@ -245,7 +245,7 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
       action: () => {
         logout()
       },
-      text: '登出',
+      text: 'logout',
     },
   ],
 } as const

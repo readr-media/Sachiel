@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 import Button from '@/components/button'
@@ -5,6 +6,7 @@ import { useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
 
 const CommentEditor = () => {
+  const t = useTranslations('Components.CommentEditor')
   const { state, dispatch, handleCommentEdit } = useComment()
   const { user } = useUser()
 
@@ -28,14 +30,14 @@ const CommentEditor = () => {
       <div className="flex items-center justify-end gap-1 focus-visible:outline-none">
         <Button
           onClick={handleAddCommentModalOnLeave}
-          text="取消"
+          text={t('cancel')}
           size="md"
           color="white"
         />
         <Button
           onClick={() => handleCommentEdit(user)}
           disabled={notChange}
-          text="儲存"
+          text={t('save')}
           size="md"
           color="white"
         />

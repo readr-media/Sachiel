@@ -39,6 +39,7 @@ export default function AddStoryToCollection({
   story: CollectionPickStory | MongoDBResponse['stories'][number]
   onClose: () => void
 }) {
+  const t = useTranslations('Components.AddStoryToCollection')
   const toastT = useTranslations('Others.toast')
   const [isLoading, setIsLoading] = useState(false)
   const [collections, setCollections] = useState<Collection[]>([])
@@ -133,24 +134,24 @@ export default function AddStoryToCollection({
     if (!collections.length && !addedCollections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          你目前還沒有任何集錦...
+          {t('no-collection')}
         </div>
       )
     if (!collections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          你之前已將這篇新聞加入你所有的集錦囉
+          {t('story-alredy-added')}
         </div>
       )
     if (!addedCollections.length) return null
     const endingText =
       addedCollections.length > 1
-        ? `等${addedCollections.length}個集錦囉`
-        : '集錦囉'
+        ? t('added-detail-2-plural', { length: addedCollections.length })
+        : t('added-detail-2-single')
 
     return (
       <div className="body-3 p-5 pb-0 text-primary-500">
-        你之前已將這篇新聞加入
+        {t('added-detail-1')}
         {addedCollections.map((collection, i) => (
           <React.Fragment key={i}>
             「
@@ -188,7 +189,9 @@ export default function AddStoryToCollection({
           >
             <Icon className="sm:hidden" iconName="icon-chevron-left" size="m" />
           </div>
-          <div className="list-title text-primary-800">加入集錦</div>
+          <div className="list-title text-primary-800">
+            {t('add-to-collection')}
+          </div>
           <div
             className="group pointer-events-none relative flex size-11 items-center justify-center sm:pointer-events-auto sm:cursor-pointer"
             onClick={onClose}
@@ -244,7 +247,7 @@ export default function AddStoryToCollection({
         <div className="border-t px-5 py-3 sm:py-5">
           <Button
             size="lg"
-            text="建立新集錦"
+            text={t('create-new-collection')}
             color="white"
             onClick={createCollection}
           />

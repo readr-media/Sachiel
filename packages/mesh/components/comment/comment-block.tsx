@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import React, { useEffect } from 'react'
 
 import { EditDrawerBlockType, useComment } from '@/context/comment'
@@ -18,6 +19,7 @@ const CommentBlock = ({
   comments?: Story['comment']
   type: EditDrawerBlockType
 }) => {
+  const t = useTranslations('Components.CommentBlock')
   const { state, dispatch } = useComment()
   const openCommentBlock = () => {
     dispatch({ type: 'TOGGLE_MOBILE_COMMENT_MODAL', payload: { isOpen: true } })
@@ -57,9 +59,7 @@ const CommentBlock = ({
         })
       ) : (
         <button onClick={openCommentBlock} disabled={width > 768}>
-          <p className="body-3 mx-5 text-primary-600">
-            還沒有人留言，快來搶頭香！
-          </p>
+          <p className="body-3 mx-5 text-primary-600">{t('no-comment')}</p>
         </button>
       )}
     </ul>

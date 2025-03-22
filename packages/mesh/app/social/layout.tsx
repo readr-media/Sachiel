@@ -1,22 +1,21 @@
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
-import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
-const pageTitle = `社群 | ${SITE_TITLE}`
-const pageDescription = '追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。'
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
 
-export const metadata: Metadata = {
-  ...rootMetadata,
-  title: pageTitle,
-  description: pageDescription,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: SITE_URL + '/social',
-    title: pageTitle,
-    description: pageDescription,
-  },
+  const title = t('site-title-social')
+  const description = t('site-description-social')
+  const urlPath = '/social'
+
+  return getSiteMedadata(t, {
+    title,
+    description,
+    urlPath,
+  })
 }
 
 export default function SocialLayout({

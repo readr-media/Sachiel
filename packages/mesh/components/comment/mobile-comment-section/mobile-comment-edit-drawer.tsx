@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import React, { useRef } from 'react'
 
 import Icon from '@/components/icon'
@@ -6,6 +7,7 @@ import { EditDrawerShowType, useComment } from '@/context/comment'
 import useClickOutside from '@/hooks/use-click-outside'
 
 const MobileCommentEditDrawer = () => {
+  const t = useTranslations('Components.MobileCommentEditDrawer')
   const {
     state,
     dispatch,
@@ -35,7 +37,7 @@ const MobileCommentEditDrawer = () => {
           className="button-large flex items-center gap-[6px]"
         >
           <Icon iconName="icon-flag" size="l" />
-          檢舉留言
+          {t('report')}
         </li>
       ) : (
         <>
@@ -45,14 +47,14 @@ const MobileCommentEditDrawer = () => {
             className="button-large flex items-center gap-[6px]"
           >
             <Icon iconName="icon-edit" size="l" />
-            編輯留言
+            {t('edit')}
           </li>
           <li
             onClick={handleDeleteComment}
             className="button-large flex items-center gap-[6px] text-custom-red-text"
           >
             <Icon iconName="icon-delete" size="l" />
-            刪除留言
+            {t('delete')}
           </li>
         </>
       )}

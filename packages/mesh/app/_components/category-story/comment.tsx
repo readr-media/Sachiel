@@ -23,6 +23,7 @@ type Props = {
 }
 
 export default function Comment({ comment }: Props) {
+  const t = useTranslations('Pages.Home')
   const toastT = useTranslations('Others.toast')
   const [isLikedBySelf, setIsLikedBySelf] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -147,7 +148,7 @@ export default function Comment({ comment }: Props) {
           {needClamp && (
             <span className="body-3 absolute bottom-0 right-0 bg-gradient-to-r from-transparent from-0% to-primary-100 to-10% pl-4">
               <span className="text-primary-600">... </span>
-              <span className="text-primary-400">顯示更多</span>
+              <span className="text-primary-400">{t('Comment-show-more')}</span>
             </span>
           )}
         </p>

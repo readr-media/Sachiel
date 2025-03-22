@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
@@ -77,7 +78,7 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案') {
+              if (iconInfo.text === 'profile') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
@@ -95,7 +96,7 @@ const NonMobileNav = ({
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === '書籤') {
+              } else if (iconInfo.text === 'bookmark') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
@@ -150,7 +151,8 @@ const NonMobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const t = useTranslations('Others.navs')
+  const showAvatar = iconInfo.text === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Avatar src={avatarUrl} size="s" />
@@ -162,11 +164,11 @@ const NonMobileNavIcon = ({
   )
   const textJsx = isOn ? (
     <span className="title-1 hidden md:block md:text-primary-700">
-      {iconInfo.text}
+      {t(iconInfo.text)}
     </span>
   ) : (
     <span className="title-1 hidden group-hover:text-primary-700 md:block md:text-primary-600">
-      {iconInfo.text}
+      {t(iconInfo.text)}
     </span>
   )
 
@@ -196,7 +198,7 @@ const MobileNav = ({
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
-          if (iconInfo.text === '個人檔案') {
+          if (iconInfo.text === 'profile') {
             return (
               <MobileNavIcon
                 key={iconInfo.icon.default}
@@ -237,7 +239,8 @@ const MobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const t = useTranslations('Others.navs')
+  const showAvatar = iconInfo.text === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-6 items-center justify-center">
       <Image
@@ -254,9 +257,9 @@ const MobileNavIcon = ({
     <InteractiveIcon icon={iconInfo.icon} size="l" />
   )
   const textJsx = isOn ? (
-    <span className="caption-1 text-primary-700">{iconInfo.text}</span>
+    <span className="caption-1 text-primary-700">{t(iconInfo.text)}</span>
   ) : (
-    <span className="caption-1 text-primary-600">{iconInfo.text}</span>
+    <span className="caption-1 text-primary-600">{t(iconInfo.text)}</span>
   )
 
   return (

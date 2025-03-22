@@ -1,58 +1,50 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { getStory } from '@/app/actions/story'
-import { metadata as rootMetadata } from '@/app/layout'
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import ClientLayout from './_components/client-layout'
 import CommentWrapper from './_components/comment-wrapper'
 import StoryInteractionsWrapper from './_components/story-interactions-wrapper'
 
-export async function generateMetadata(
-  {
-    params,
-  }: {
-    params: { id: string }
-  },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string }
+}): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
   const storyId = params.id
-
   const storyData = await getStory({
     storyId,
   })
 
   if (!storyData) notFound()
 
-  const previousImages = (await parent).openGraph?.images || []
-  const storyTitle = storyData.title
-  const storyDescription = storyData.summary
-  const storyImage = storyData.og_image ?? ''
-  const storyCategory = storyData.category?.title ?? ''
-  const storyPublishTime = storyData.published_date ?? ''
+  const storyTitle = storyData?.title
+  const storyDescription = storyData?.summary
+  const storyImage = storyData?.og_image
+  const storyCategory = storyData?.category?.title ?? ''
+  const storyPublishTime = storyData?.published_date ?? ''
 
-  const metaTitle = storyTitle ? `${storyTitle} | ${SITE_TITLE}` : SITE_TITLE
-  const metaDescription = storyDescription || SITE_DESCRIPTION
-  const metaImages = [storyImage, ...previousImages]
-
-  return {
-    ...rootMetadata,
-    title: metaTitle,
-    description: metaDescription,
-    openGraph: {
-      ...rootMetadata.openGraph,
-      url: SITE_URL + `/story/${storyId}`,
-      title: metaTitle,
-      description: metaDescription,
-      images: metaImages,
-    },
-    other: {
-      'dable:item_id': storyId,
-      'article:section': storyCategory,
-      'article:published_time': storyPublishTime,
-    },
+  const title = storyTitle ? t('site-title-story', { storyTitle }) : undefined
+  const description = storyDescription ? storyDescription : undefined
+  const images = storyImage ?? undefined
+  const urlPath = `/story/${storyId}`
+  const other = {
+    'dable:item_id': storyId,
+    'article:section': storyCategory,
+    'article:published_time': storyPublishTime,
   }
+
+  return getSiteMedadata(t, {
+    title,
+    description,
+    images,
+    urlPath,
+    other,
+  })
 }
 
 export default async function StoryLayout({

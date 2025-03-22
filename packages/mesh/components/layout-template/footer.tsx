@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { twMerge } from 'tailwind-merge'
 
 import Icon from '@/components/icon'
@@ -13,6 +14,7 @@ import {
 const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
+  const t = useTranslations('Others.footers')
   return (
     <footer
       className={twMerge(
@@ -68,7 +70,9 @@ export default function Footer({ className = '' }: { className?: string }) {
                 key={link.text}
                 className={`GTM-footer_click_${link.gtmName}`}
               >
-                <span className="button-large cursor-pointer">{link.text}</span>
+                <span className="button-large cursor-pointer">
+                  {t(link.text)}
+                </span>
               </Link>
             ))}
           </nav>
@@ -96,13 +100,13 @@ export default function Footer({ className = '' }: { className?: string }) {
                 key={info}
                 className="caption-1 text-primary-500 sm:border-l sm:border-primary-200 sm:px-[7.5px] sm:first-of-type:border-none"
               >
-                {info}
+                {t(info)}
               </p>
             ))}
           </address>
           <div className="caption-2 text-primary-400">
-            &copy; <time>{new Date().getFullYear()}</time> 精鏡傳媒股份有限公司
-            All Rights Reserved
+            &copy; <time>{new Date().getFullYear()}</time> {t('company-name')}{' '}
+            {t('all-right-reserved')}
           </div>
         </div>
       </div>

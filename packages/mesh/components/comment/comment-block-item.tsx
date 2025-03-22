@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 import Icon from '@/components/icon'
@@ -23,6 +24,7 @@ const CommentBlockItem = ({
   comment: Comment
   displayMode: EditDrawerBlockType
 }) => {
+  const t = useTranslations('Components.CommentBlockItem')
   const { state, dispatch } = useComment()
   const { user } = useUser()
   const { commentData, isCommentLiked, handleLikeComment } = useCommentLike({
@@ -100,7 +102,7 @@ const CommentBlockItem = ({
               <div className="flex max-w-[calc(100%_-_50px)] flex-wrap">
                 <p className="subtitle-2 max-w-full cursor-pointer truncate hover-or-active:underline">
                   <Link href={`/profile/member/${comment.member?.customId}`}>
-                    {commentData.member?.name || '使用者'}
+                    {commentData.member?.name || t('member')}
                   </Link>
                 </p>
                 <div className="flex items-center">
@@ -113,7 +115,7 @@ const CommentBlockItem = ({
                         <Icon iconName="icon-edited" size="m" />
                       </span>
                       <p className="caption-1 hidden text-primary-500 md:block">
-                        ·編輯留言
+                        {t('edit-comment')}
                       </p>
                     </>
                   )}

@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import Loading from '@/app/profile/member/[customId]/(follow)/_components/loading'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -9,7 +11,8 @@ export default function FollowerLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const title = '粉絲'
+  const t = useTranslations('Pages.Profile')
+  const title = t('FollowerLayout-title')
 
   const navigationData = {
     leftButtons: [<GoBackButton key={0} />],

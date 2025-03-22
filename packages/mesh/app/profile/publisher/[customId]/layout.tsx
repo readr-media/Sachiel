@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 import { getPublisherForOG } from '@/app/actions/get-profile'
-import { metadata as rootMetadata } from '@/app/layout'
-import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import ClientLayout from './_component/client-layout'
 
@@ -11,33 +11,28 @@ export async function generateMetadata({
 }: {
   params: { customId: string }
 }): Promise<Metadata> {
+  const t = await getTranslations('Others.meta')
   const publisherCustomId = params.customId
 
   const publisherData = await getPublisherForOG(publisherCustomId)
   const publisherName = publisherData?.publishers?.[0].title
-  const publisherLogo = publisherData?.publishers?.[0]?.logo || SITE_OG_IMAGE
+  const publisherLogo = publisherData?.publishers?.[0]?.logo
 
-  const metaTitle = publisherName
-    ? `${publisherName} | ${SITE_TITLE}`
-    : SITE_TITLE
-  const metaDescription = publisherName
-    ? `查看 ${publisherName} 的媒體檔案。追蹤他們的媒體報導。`
-    : '查看媒體檔案。追蹤他們的媒體報導'
+  const title = publisherName
+    ? t('site-title-profile-publisher', { publisherName })
+    : undefined
+  const description = publisherName
+    ? t('site-description-profile-publisher', { publisherName })
+    : t('site-description-profile-publisher-fallback')
+  const images = publisherLogo ?? undefined
+  const urlPath = `/profile/publisher/${publisherCustomId}`
 
-  return {
-    ...rootMetadata,
-    title: metaTitle,
-    description: metaDescription,
-    openGraph: {
-      ...rootMetadata.openGraph,
-      url: SITE_URL + `/profile/publisher/${publisherCustomId}`,
-      title: metaTitle,
-      description: metaDescription,
-      images: {
-        url: publisherLogo,
-      },
-    },
-  }
+  return getSiteMedadata(t, {
+    title,
+    description,
+    images,
+    urlPath,
+  })
 }
 
 export default function ProfilePublisherLayout({

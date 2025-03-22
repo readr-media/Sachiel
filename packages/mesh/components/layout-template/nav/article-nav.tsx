@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
@@ -18,7 +19,8 @@ const NonMobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const t = useTranslations('Others.navs')
+  const showAvatar = iconInfo.text === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Image
@@ -35,10 +37,10 @@ const NonMobileNavIcon = ({
     <InteractiveIcon size="xl" icon={iconInfo.icon} />
   )
   const textJsx = isOn ? (
-    <span className="title-1 block text-primary-700">{iconInfo.text}</span>
+    <span className="title-1 block text-primary-700">{t(iconInfo.text)}</span>
   ) : (
     <span className="title-1 block text-primary-600 group-hover:text-primary-700">
-      {iconInfo.text}
+      {t(iconInfo.text)}
     </span>
   )
 
@@ -98,7 +100,7 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col gap-2 pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案') {
+              if (iconInfo.text === 'profile') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
@@ -110,7 +112,7 @@ const NonMobileNav = ({
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === '書籤') {
+              } else if (iconInfo.text === 'bookmark') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}

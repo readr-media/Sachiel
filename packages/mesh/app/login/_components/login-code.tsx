@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   type ClipboardEvent,
   type FormEvent,
@@ -18,6 +19,7 @@ import { LoginState, useLogin } from '@/context/login'
  * Please use the standard login flow instead.
  */
 export default function LoginCode() {
+  const t = useTranslations('Pages.Login')
   const codeDigits = 6
   const { setFormData, setStep } = useLogin()
   const [values, setValues] = useState<string[]>(Array(codeDigits).fill(''))
@@ -123,11 +125,11 @@ export default function LoginCode() {
         </div>
         {isValidationError ? (
           <p className="body-3 pb-5 pt-2 text-center text-custom-red-text sm:pb-10">
-            找不到這個邀請碼，請重新輸入
+            {t('LoginCode-invitaion-not-found')}
           </p>
         ) : (
           <p className="footnote pb-5 pt-3 text-center text-primary-500 sm:pb-10">
-            請輸入邀請碼
+            {t('LoginCode-enter-invitation-code')}
           </p>
         )}
         {isSubmitting ? (
@@ -136,7 +138,7 @@ export default function LoginCode() {
           <Button
             size="lg"
             color="primary"
-            text="送出"
+            text={t('LoginCode-enter-send')}
             onClick={handleSubmit}
             disabled={!isReadyToSubmit}
           />

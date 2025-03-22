@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 
 import Icon from '@/components/icon'
@@ -13,6 +14,7 @@ export default function AvatarEditMenu({
   hideBottomMenu,
   handleDeletePhoto,
 }: AvatarEditMenu) {
+  const t = useTranslations('Pages.Edit-Profile')
   const { user } = useUser()
   const menuRef = useRef(null)
   useClickOutside(menuRef, hideBottomMenu)
@@ -27,7 +29,7 @@ export default function AvatarEditMenu({
       <li className="button-large text-primary-700">
         <label htmlFor="avatar" className="flex cursor-pointer gap-1">
           <Icon iconName="icon-photo" size="l" />
-          選擇相片
+          {t('AvatarEditMenu-select-photo')}
         </label>
       </li>
       {user.avatarImageId && (
@@ -36,7 +38,7 @@ export default function AvatarEditMenu({
           onClick={handleDeletePhoto}
         >
           <Icon iconName="icon-delete" size="l" />
-          刪除大頭貼照
+          {t('AvatarEditMenu-remove-avatar')}
         </li>
       )}
     </ul>

@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useTranslations } from 'next-intl'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -14,6 +15,7 @@ export default function DesktopSearchBar({
 }: {
   className?: string
 }) {
+  const t = useTranslations('Components.DesktopSearchBar')
   const inputRef = useRef<HTMLInputElement>(null)
   const {
     searchText,
@@ -103,7 +105,7 @@ export default function DesktopSearchBar({
       />
       {activeDropdown === 'recent' && (
         <div className="absolute left-0 top-full z-modal mt-1 w-full rounded-md bg-white shadow-md">
-          <p className="list-title px-5 pb-3 pt-4">搜尋歷史</p>
+          <p className="list-title px-5 pb-3 pt-4">{t('history')}</p>
           <ul className="max-h-[520px] overflow-y-auto">
             {recentSearch.map((record, index) => (
               <Fragment key={index}>
