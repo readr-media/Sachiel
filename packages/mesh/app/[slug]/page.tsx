@@ -11,61 +11,104 @@ import {
 import DesktopStories from './_components/desktop-stories'
 import MostPickedStory from './_components/most-picked-story'
 import NonDesktopStories from './_components/non-desktop-stories'
+import TopPodcastSection from './_components/top-podcast-section'
 import TopStoriesSection from './_components/top-stories-section'
 
 export const revalidate = NEXT_PAGES_REVALIDATE.homepage
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const categorySlug = params.slug
+  const storyType = categorySlug === 'podcast' ? 'podcast' : 'story'
   const slugInfo = await fetchCategoryInformation(categorySlug)
   if (!slugInfo) notFound()
 
-  const [storiesResult, publishersAndStoriesResult, mostPickedStoriesResult] =
-    await Promise.allSettled([
-      fetchGroupAndOtherStories(categorySlug),
-      fetchMostSponsoredPublishersByCategory(categorySlug),
-      fetchCategoryStory(categorySlug),
-    ])
+  const { stories, publishersAndStories, mostPickedStories } =
+    await fetchSlugPageData(categorySlug)
 
-  const stories =
-    storiesResult.status === 'fulfilled' ? storiesResult.value : null
-
-  const publishersAndStories =
-    publishersAndStoriesResult.status === 'fulfilled'
-      ? publishersAndStoriesResult.value
-      : null
-
-  const mostPickedStories =
-    mostPickedStoriesResult.status === 'fulfilled'
-      ? mostPickedStoriesResult.value
-      : null
-  const mostPickedStory = mostPickedStories?.[0]
-
-  const filteredOtherStories =
-    stories && mostPickedStory
-      ? stories.others.filter((story) => story.id !== mostPickedStory.id)
-      : stories?.others
-
-  const filteredGroupStories =
-    stories && mostPickedStory
-      ? stories.group?.filter((story) => story.id !== mostPickedStory.id)
-      : stories?.group
+  const { otherStories, groupStories, mostPickedStory } = transformStories({
+    stories,
+    mostPickedStories,
+    storyType,
+  })
 
   return (
     <main>
-      <TopStoriesSection
-        otherStories={filteredOtherStories}
-        groupStories={filteredGroupStories}
-      />
-      <MostPickedStory story={mostPickedStory} />
-      <NonDesktopStories
-        stories={filteredOtherStories}
-        publishersAndStories={publishersAndStories}
-      />
-      <DesktopStories
-        stories={filteredOtherStories}
-        publishersAndStories={publishersAndStories}
-      />
+      <>
+        {categorySlug !== 'podcast' ? (
+          <TopStoriesSection
+            otherStories={otherStories}
+            groupStories={groupStories}
+          />
+        ) : (
+          <TopPodcastSection otherStories={otherStories} />
+        )}
+        <MostPickedStory story={mostPickedStory} storyType={storyType} />
+        <NonDesktopStories
+          stories={otherStories}
+          publishersAndStories={publishersAndStories}
+          storyType={storyType}
+        />
+        <DesktopStories
+          stories={otherStories}
+          publishersAndStories={publishersAndStories}
+          storyType={storyType}
+        />
+      </>
     </main>
   )
+}
+
+function getResult<T>(result: PromiseSettledResult<T>): T | null {
+  return result.status === 'fulfilled' ? result.value : null
+}
+
+async function fetchSlugPageData(slug: string) {
+  const [storiesResult, publishersAndStoriesResult, mostPickedStoriesResult] =
+    await Promise.allSettled([
+      fetchGroupAndOtherStories(slug),
+      fetchMostSponsoredPublishersByCategory(slug),
+      fetchCategoryStory(slug),
+    ])
+
+  return {
+    stories: getResult(storiesResult),
+    publishersAndStories: getResult(publishersAndStoriesResult),
+    mostPickedStories: getResult(mostPickedStoriesResult),
+  }
+}
+
+function transformStories({
+  stories,
+  mostPickedStories,
+  storyType,
+}: {
+  stories: Awaited<ReturnType<typeof fetchGroupAndOtherStories>> | null
+  mostPickedStories: Awaited<ReturnType<typeof fetchCategoryStory>> | null
+  storyType: 'podcast' | 'story'
+}) {
+  const mostPickedStory = mostPickedStories ? mostPickedStories[0] : null
+
+  if (!stories)
+    return { otherStories: [], groupStories: undefined, mostPickedStory }
+
+  const { others, group } = stories
+
+  if (mostPickedStory) {
+    const otherStories = others
+      .filter((story) => story.id !== mostPickedStory.id)
+      .map((story) => ({
+        ...story,
+        story_type: storyType,
+      }))
+    const groupStories = group
+      ? group.filter((story) => story.id !== mostPickedStory.id)
+      : undefined
+    return { otherStories, groupStories, mostPickedStory }
+  } else {
+    return {
+      otherStories: others,
+      groupStories: group,
+      mostPickedStory,
+    }
+  }
 }
