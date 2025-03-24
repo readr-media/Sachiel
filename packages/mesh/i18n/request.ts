@@ -1,12 +1,13 @@
 import { getRequestConfig } from 'next-intl/server'
 
-import { getCurrentUser } from '@/app/actions/auth'
+// import { getCurrentUser } from '@/app/actions/auth'
 
 export default getRequestConfig(async () => {
   // Provide a static locale, fetch a user setting,
   // read from `cookies()`, `headers()`, etc.
-  const user = await getCurrentUser()
-  const locale = user?.language ?? 'en_US'
+  // TODO: handle lang require logic including getCurrentUser and lang queryString
+  // const user = await getCurrentUser()
+  const locale = 'zh-TW'
 
   return {
     locale,
