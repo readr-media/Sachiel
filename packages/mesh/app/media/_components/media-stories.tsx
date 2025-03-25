@@ -149,7 +149,7 @@ export default function MediaStories({
         ] = await Promise.all([
           getMostPickedStoriesInCategory(currentCategory?.slug ?? ''),
           getLatestStoriesInCategory(getLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(),
+          getMostSponsorPublishersAndStories(currentCategory?.slug ?? ''),
         ])
 
         // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
@@ -212,6 +212,7 @@ export default function MediaStories({
           publishersAndStories={publishersAndStories}
           publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
+          slug={currentCategorySlug ?? ''}
         />
         <NonDesktopStories
           key={latestStoriesInfo.stories.length}

@@ -23,17 +23,26 @@ const PublisherStory = ({
   const userPayload = useUserPayload()
   const pageName = usePageName()
   const { publisherId, publisherName } = publisherInfo
+  const {
+    id,
+    title,
+    og_image,
+    published_date,
+    commentCount,
+    isMember,
+    full_screen_ad,
+  } = story
 
   return (
     <article className="border-b py-3 last-of-type:border-b-0">
       <Link
-        href={`/story/${story.id}`}
+        href={`/story/${id}`}
         className="GTM-media_click_media_article"
         onClick={() =>
           logClickEvent(userPayload, 'click-story', {
             target: 'story',
-            targetId: story.id,
-            targetTitle: story.title,
+            targetId: id,
+            targetTitle: title,
             source: pageName,
             complementary: {
               publisherTarget: 'publisher',
@@ -43,28 +52,26 @@ const PublisherStory = ({
           })
         }
       >
-        {showImage && story.og_image && (
+        {showImage && og_image && (
           <div className="relative mb-3 aspect-[2/1]">
             <ImageWithFallback
               className="object-cover"
-              src={story.og_image}
-              alt={story.title}
+              src={og_image}
+              alt={title}
               fill
               fallbackCategory={ImageCategory.STORY}
             />
           </div>
         )}
-        <div className="subtitle-2 hover-or-active:underline">
-          {story.title}
-        </div>
+        <div className="subtitle-2 hover-or-active:underline">{title}</div>
       </Link>
       <div className="caption-1 mt-1">
         <StoryMeta
-          storyId={story.id}
-          commentCount={story.commentCount}
-          publishDate={story.published_date}
-          paywall={story.paywall}
-          fullScreenAd={story.full_screen_ad}
+          storyId={id}
+          commentCount={commentCount}
+          publishDate={published_date}
+          paywall={isMember}
+          fullScreenAd={full_screen_ad}
         />
       </div>
     </article>
@@ -76,49 +83,52 @@ export default function PublisherCard({
 }: {
   publisherAndStories: MostSponsorPublisher
 }) {
+  const { publisher, stories } = publisherAndStories
+  const { id: publisherId, logo, title, customId, sponsoredCount } = publisher
+
   return (
     <section className="rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
       <div className="flex h-[68px] items-center justify-between gap-1">
         <div className="flex gap-3">
           <div className="relative size-11 overflow-hidden rounded-lg">
             <ImageWithFallback
-              src={publisherAndStories.publisher.logo ?? ''}
+              src={logo}
               fill
-              alt={publisherAndStories.publisher.title}
+              alt={title}
               fallbackCategory={ImageCategory.PUBLISHER}
             />
           </div>
           <div>
             <Link
-              href={`/profile/publisher/${publisherAndStories.publisher.customId}`}
+              href={`/profile/publisher/${customId}`}
               className="GTM-media_click_media_file"
             >
               <div className="subtitle-2 text-primary-700 hover-or-active:underline">
-                {publisherAndStories.publisher.title}
+                {title}
               </div>
             </Link>
             <div className="footnote line-clamp-1 text-primary-500">
               已獲得
-              <span className="text-custom-blue">
-                {` ${publisherAndStories.publisher.sponsorCount} `}
-              </span>
+              <span className="text-custom-blue">{` ${sponsoredCount} `}</span>
               次贊助
             </div>
           </div>
         </div>
-        <PublisherDonateButton
-          publisherId={publisherAndStories.publisher.id}
-          gtmClassName="GTM-media_click_media_sponsor"
-        />
+        <div className="flex shrink-0">
+          <PublisherDonateButton
+            publisherId={publisherId}
+            gtmClassName="GTM-media_click_media_sponsor"
+          />
+        </div>
       </div>
-      {publisherAndStories.stories.map((story, i) => (
+      {stories.map((story, i) => (
         <PublisherStory
           key={story.id}
           story={story}
           showImage={i === 0}
           publisherInfo={{
-            publisherName: publisherAndStories.publisher.title,
-            publisherId: publisherAndStories.publisher.id,
+            publisherName: title,
+            publisherId,
           }}
         />
       ))}

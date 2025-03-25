@@ -6840,6 +6840,7 @@ export type LatestStoriesQuery = {
     id: string
     url?: string | null
     title?: string | null
+    story_type?: StoryStoryTypeType | null
     published_date?: any | null
     summary?: string | null
     content?: string | null
@@ -20555,6 +20556,7 @@ export const LatestStoriesDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'url' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'category' },
