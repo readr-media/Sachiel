@@ -30,9 +30,12 @@ export default forwardRef(function PodcastSlugCard(
     <div ref={ref}>
       <div className="grow md:py-4 lg:py-3">
         <div className="flex h-6 flex-row items-center justify-between">
-          <h4 className="caption-1 line-clamp-1 text-primary-500">
+          <Link
+            href={`/profile/publisher/${data.source.customId}`}
+            className="caption-1 line-clamp-1 text-primary-500 hover-or-active:text-primary-700"
+          >
             {data.source.title}
-          </h4>
+          </Link>
           <StoryMoreActionButton
             story={data}
             publisherId={data.source.id}
@@ -41,10 +44,11 @@ export default forwardRef(function PodcastSlugCard(
         </div>
         <div className="flex flex-row justify-between gap-3">
           <div className="flex flex-col gap-2">
-            <Link href={`/story/${data.id}`}>
-              <h2 className="subtitle-1 line-clamp-2 break-words hover-or-active:underline">
-                {data.title}
-              </h2>
+            <Link
+              href={`/story/${data.id}`}
+              className="subtitle-1 line-clamp-2 break-words hover-or-active:underline"
+            >
+              {data.title}
             </Link>
             <div className="caption-1">
               <StoryMeta
