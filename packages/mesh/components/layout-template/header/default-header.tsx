@@ -6,7 +6,6 @@ import { twMerge } from 'tailwind-merge'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import NotificationWrapper from '@/components/notification-wrapper'
 import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import useRedirectLogin from '@/hooks/use-redirect-login'
@@ -21,6 +20,10 @@ const MobileSearchWrapper = dynamic(
   {
     ssr: false,
   }
+)
+const NotificationWrapper = dynamic(
+  () => import('@/components/notification-wrapper'),
+  { ssr: false }
 )
 
 export default function DefaultHeader() {

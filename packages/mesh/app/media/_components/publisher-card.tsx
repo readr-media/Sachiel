@@ -87,7 +87,7 @@ export default function PublisherCard({
   const { id: publisherId, logo, title, customId, sponsoredCount } = publisher
 
   return (
-    <section className="rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
+    <section className="w-full rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
       <div className="flex h-[68px] items-center justify-between gap-1">
         <div className="flex gap-3">
           <div className="relative size-11 overflow-hidden rounded-lg">
