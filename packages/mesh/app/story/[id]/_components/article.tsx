@@ -16,7 +16,6 @@ import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
 
-import { type PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
 import PaymentWall from './payment-wall'
@@ -31,14 +30,12 @@ export default function Article({
   renderData,
   isMemberStory,
   hasPayed,
-  policy,
 }: {
   story: Story
   sourceCustomId: string
   renderData: ApiData
   isMemberStory: boolean
   hasPayed: boolean
-  policy: PublisherPolicy
 }) {
   const { state: comment } = useComment()
   const getArticleContent = (story: Story, sourceCustomId: string) => {
@@ -102,6 +99,7 @@ export default function Article({
       objectiveId: story?.id || '',
       initialCount: comment.commentsCount,
     })
+
   useEffect(() => {
     setDisplayCommentCount(Math.max(comment.commentsCount, displayCommentCount))
   }, [comment.commentsCount, displayCommentCount, setDisplayCommentCount])
@@ -173,7 +171,10 @@ export default function Article({
           <div className="relative overflow-hidden">
             {getArticleContent(story, sourceCustomId)}
             {isMemberStory && !hasPayed ? (
-              <PaymentWall storyId={story?.id ?? ''} policy={policy} />
+              <PaymentWall
+                storyId={story?.id ?? ''}
+                publisherCustomId={sourceCustomId}
+              />
             ) : null}
           </div>
         </div>
