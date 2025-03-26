@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 
 import {
-  getPublisherPodcastJSON,
-  publisherStoriesFn,
+  getPublisherProfileJSON,
+  getPublisherStoryType,
 } from '@/app/actions/get-publisher-profile'
 import { formatFollowCount } from '@/utils/format-follow-count'
 
@@ -17,55 +17,49 @@ export type PageProps = {
 const Page = async ({ params }: PageProps) => {
   const { customId } = params
   const userType = 'publisher'
+  const [profileJSON, publisherStoryType] = await Promise.all([
+    getPublisherProfileJSON(customId),
+    getPublisherStoryType(customId),
+  ])
 
-  try {
-    const storiesResponse = await publisherStoriesFn(customId)
-    const podcastJSON = await getPublisherPodcastJSON(customId)
+  if (!profileJSON) return notFound()
 
-    if (!storiesResponse) {
-      notFound()
-    }
+  const { source, stories, podcasts } = profileJSON
+  const userName = source.title || '使用者名稱'
+  const userLogo = source.logo || ''
+  const userIntro = source.description || '使用者介紹'
+  const publisherId = source.id
+  const storyData =
+    stories.map((data) => ({
+      ...data,
+      source: {
+        id: source.id,
+        title: source.title,
+      },
+    })) || []
+  const convertedFollowerCount = formatFollowCount(source.followerCount)
+  const convertedSponsoredCount = formatFollowCount(source.sponsoredCount)
+  const pickedCount = parseInt(formatFollowCount(source.picksCount))
 
-    const userData = storiesResponse?.source
-    const userName = userData?.title || '使用者名稱'
-    const userLogo = userData?.logo || ''
-    const userIntro = userData?.description || '使用者介紹'
-    const followerCount = userData?.followerCount || 0
-    const publisherId = storiesResponse.source.id
-
-    const storyData =
-      storiesResponse?.stories?.map((data) => ({
-        ...data,
-        source: {
-          id: userData.id,
-          title: userData.title,
-        },
-      })) || []
-    const convertedFollowerCount = formatFollowCount(followerCount)
-    const convertedSponsoredCount = formatFollowCount(userData.sponsoredCount)
-    const pickedCount = parseInt(formatFollowCount(userData.picksCount ?? 0))
-
-    return (
-      <div className="flex grow flex-col">
-        <PublisherPage
-          pickedCount={pickedCount}
-          sponsoredCount={convertedSponsoredCount}
-          followerCount={convertedFollowerCount}
-          name={userName}
-          avatar={userLogo}
-          intro={userIntro}
-          publisherCustomId={customId}
-          publisherId={publisherId}
-          userType={userType}
-          storyData={storyData}
-          podcastData={podcastJSON || []}
-        />
-      </div>
-    )
-  } catch (error) {
-    console.error('Error fetching publisher data:', error)
-    notFound()
-  }
+  return (
+    <div className="flex grow flex-col">
+      <PublisherPage
+        pickedCount={pickedCount}
+        sponsoredCount={convertedSponsoredCount}
+        followerCount={convertedFollowerCount}
+        name={userName}
+        avatar={userLogo}
+        intro={userIntro}
+        publisherCustomId={customId}
+        publisherId={publisherId}
+        publisherStoryType={publisherStoryType}
+        userType={userType}
+        storyData={storyData}
+        podcastData={podcasts}
+        source={source}
+      />
+    </div>
+  )
 }
 
 export default Page

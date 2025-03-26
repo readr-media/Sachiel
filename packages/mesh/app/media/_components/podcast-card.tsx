@@ -27,9 +27,12 @@ export default forwardRef(function PodcastCard(
     <div ref={ref}>
       <div className="grow md:py-4 lg:py-3">
         <div className="flex h-6 flex-row items-center justify-between">
-          <h4 className="caption-1 line-clamp-1 text-primary-500">
+          <Link
+            href={`/profile/publisher/${data.source?.customId}`}
+            className="caption-1 line-clamp-1 text-primary-500 hover-or-active:text-primary-700"
+          >
             {data.source?.title}
-          </h4>
+          </Link>
           <StoryMoreActionButton
             story={data}
             publisherId={data.source?.id ?? ''}

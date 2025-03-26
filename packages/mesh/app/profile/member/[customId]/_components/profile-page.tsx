@@ -35,7 +35,7 @@ export default function ProfilePage({
     customId: profileCustomId,
     takesCount: 20,
   })
-  const { activeTab } = useProfileTab(userType)
+  const { activeTab, viewTabs, handleTabClick } = useProfileTab({ userType })
   const { handleClickFollow, isFollowing } = useFollow(
     String(profileData.memberId)
   )
@@ -144,7 +144,11 @@ export default function ProfilePage({
           <UserStatusList userStatusList={userStatusList} />
         </div>
       </section>
-      <Tab userType={userType} />
+      <Tab
+        viewTabs={viewTabs}
+        activeTab={activeTab}
+        handleTabClick={handleTabClick}
+      />
       {activeTab === 'pick' && !!pickCollections.length && (
         <CollectionsCarousel pickCollections={pickCollections} />
       )}

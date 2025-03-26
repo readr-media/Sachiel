@@ -7,12 +7,14 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
-import { type PodcastJSONType } from '@/utils/data-schema'
+import { type ProfileJSONType } from '@/utils/data-schema'
 
 export default function PodcastCard({
   data,
+  source,
 }: {
-  data: PodcastJSONType[number]
+  data: ProfileJSONType['podcasts'][number]
+  source: ProfileJSONType['source']
 }) {
   const { displayPicks, displayPicksCount } = useDisplayPicks(data)
 
@@ -30,11 +32,11 @@ export default function PodcastCard({
       <div className="grow md:px-5 md:py-4 lg:py-3">
         <div className="flex h-6 flex-row items-center justify-between">
           <h4 className="caption-1 line-clamp-1 text-primary-500">
-            {data.source.title}
+            {source.title}
           </h4>
           <StoryMoreActionButton
             story={data}
-            publisherId={data.source.id}
+            publisherId={source.id}
             canUnFollowPublisher={true}
           />
         </div>

@@ -7,11 +7,10 @@ import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
-import useProfileTab from '@/hooks/use-profile-tab'
+import useProfileTab, { type PublisherStoryType } from '@/hooks/use-profile-tab'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 import { type UserType, TabKey } from '@/types/profile'
-import type { PublisherProfile } from '@/utils/data-schema'
-import { type PodcastJSONType } from '@/utils/data-schema'
+import { type ProfileJSONType } from '@/utils/data-schema'
 
 import PodcastList from './podcast-list'
 
@@ -20,10 +19,12 @@ type PublisherPageProps = {
   avatar: string
   intro: string
   userType: UserType
-  storyData: PublisherProfile['stories']
-  podcastData: PodcastJSONType
+  source: ProfileJSONType['source']
+  storyData: ProfileJSONType['stories']
+  podcastData: ProfileJSONType['podcasts']
   publisherId: string
   publisherCustomId: string
+  publisherStoryType: PublisherStoryType
   followerCount: string
   sponsoredCount: string
   pickedCount: number
@@ -33,6 +34,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   name,
   avatar,
   intro,
+  source,
   storyData,
   podcastData,
   userType,
@@ -41,12 +43,20 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   pickedCount,
   publisherId,
   publisherCustomId,
+  publisherStoryType,
 }) => {
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName: name,
   })
-  const { activeTab } = useProfileTab(userType)
+  const { activeTab, viewTabs, handleTabClick } = useProfileTab({
+    userType,
+    publisherStoryType,
+  })
+
+  const filteredViewTabs = !podcastData.length
+    ? viewTabs.filter(({ key }) => key !== 'podcast')
+    : viewTabs
 
   const userStatusList = [
     { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
@@ -86,7 +96,11 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
           <UserStatusList userStatusList={userStatusList} />
         </div>
       </section>
-      <Tab userType={userType} hasPodcast={!!podcastData.length} />
+      <Tab
+        viewTabs={filteredViewTabs}
+        activeTab={activeTab}
+        handleTabClick={handleTabClick}
+      />
       {activeTab === 'story' ? (
         <ArticleCardList
           items={storyData}
@@ -94,7 +108,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
           activeTab={activeTab}
         />
       ) : (
-        <PodcastList list={podcastData} />
+        <PodcastList list={podcastData} source={source} />
       )}
     </>
   )

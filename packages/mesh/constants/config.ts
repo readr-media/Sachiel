@@ -186,10 +186,8 @@ const STATIC_FILE_ENDPOINTS = {
   categoryMostSponsoredPublishersfn: (categoryName: string) =>
     `${STATIC_FILE_ORIGIN}/data/${categoryName}_recommend_sponsors.json`,
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
-  publisherStoriesFn: (publisherCustomId: string) =>
-    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_stories.json`,
-  publisherPodcastFn: (publisherCustomId: string) =>
-    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_podcasts.json`,
+  publisherProfileFn: (publisherCustomId: string) =>
+    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_profile.json`,
   invalidNameList: `${STATIC_FILE_ORIGIN}/data/invalid_names.json`,
   termsOfService: `${STATIC_FILE_ORIGIN}/policies/terms-of-service.html`,
   privacyPolicy: `${STATIC_FILE_ORIGIN}/policies/privacy-policy.html`,

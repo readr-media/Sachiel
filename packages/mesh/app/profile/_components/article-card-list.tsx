@@ -10,7 +10,7 @@ import ArticleCard from '@/app/profile/_components/article-card'
 import AdManager from '@/components/ad/ad-manager-ad'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
-import type { PublisherProfile } from '@/utils/data-schema'
+import type { ProfileJSONType } from '@/utils/data-schema'
 
 import EmptyTabState from './empty-tab-state'
 
@@ -20,7 +20,7 @@ interface ArticleCardListProps {
     | profile.PickList
     | profile.Bookmarks
     | profile.Collections
-    | PublisherProfile['stories']
+    | ProfileJSONType['stories']
 
   memberId?: string
   avatar?: string
