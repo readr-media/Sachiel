@@ -9,6 +9,7 @@ import ReadrStorySection from './_components/readr-story'
 import TopCollectorSection from './_components/top-collector/section'
 import TopPublisherSection from './_components/top-publisher/section'
 
+export const dynamic = 'force-static'
 export const revalidate = NEXT_PAGES_REVALIDATE.homepage
 
 export default function Home() {
