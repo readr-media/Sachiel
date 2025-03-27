@@ -106,10 +106,9 @@ export default function CategoriesAndRelatedPosts({
       >
         <span>{category.title}</span>
       </NextLink>
-      <RelatedListInHeader
-        show={activeCatgoryId === category.id}
-        relatedList={category.relatedList}
-      />
+      {activeCatgoryId === category.id && (
+        <RelatedListInHeader relatedList={category.relatedList} />
+      )}
     </CategoryItem>
   ))
 
