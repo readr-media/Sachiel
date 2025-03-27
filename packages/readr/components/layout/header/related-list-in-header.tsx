@@ -9,7 +9,7 @@ import ArticleListCard from '~/components/shared/article-list-card'
 import type { ArticleCard } from '~/types/component'
 import * as gtag from '~/utils/gtag'
 
-const Container = styled.div<{ $show: boolean }>`
+const Container = styled.div`
   position: absolute;
   left: 0;
   right: 0;
@@ -19,24 +19,11 @@ const Container = styled.div<{ $show: boolean }>`
 
   ${({ theme }) => theme.breakpoint.lg} {
     background-color: #fff;
-
-    // This is a trick to 'hide' elements.
-    // By using this trick, user can navigate to items in list by keyboard.
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-
-    ${({ $show }) =>
-      $show &&
-      `
-        width: auto;
-        height: auto;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
-      `}
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
 
   ul {
@@ -58,12 +45,10 @@ const Divider = styled.div`
 `
 
 type RelatedListInHeaderProps = {
-  show?: boolean
   relatedList: ArticleCard[]
 }
 
 export default function RelatedListInHeader({
-  show = true,
   relatedList,
 }: RelatedListInHeaderProps) {
   const articleItems = relatedList.map((article) => (
@@ -81,7 +66,7 @@ export default function RelatedListInHeader({
   ))
 
   return (
-    <Container $show={show} className="related-list-in-header">
+    <Container className="related-list-in-header">
       <Divider />
       <ul>{articleItems}</ul>
     </Container>
