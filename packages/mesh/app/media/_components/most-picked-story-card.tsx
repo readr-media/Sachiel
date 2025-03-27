@@ -104,6 +104,7 @@ export default function MostPickedStoryCard({
                   publishDate={story.published_date}
                   paywall={story.paywall ?? false}
                   fullScreenAd={story.full_screen_ad ?? ''}
+                  storyType={story.story_type ?? 'story'}
                 />
               </div>
             </div>
