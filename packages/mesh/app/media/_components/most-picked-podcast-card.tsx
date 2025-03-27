@@ -25,6 +25,7 @@ export default function MostPickedPodcastCard({ story }: { story: Story }) {
     published_date,
     paywall,
     full_screen_ad,
+    story_type,
   } = story
 
   return (
@@ -66,7 +67,7 @@ export default function MostPickedPodcastCard({ story }: { story: Story }) {
                   publishDate={published_date}
                   paywall={paywall ?? false}
                   fullScreenAd={full_screen_ad ?? 'none'}
-                  storyType={'podcast'}
+                  storyType={story_type ?? 'podcast'}
                 />
               </div>
             </div>
