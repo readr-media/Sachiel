@@ -30,7 +30,7 @@ export default function MoreFeed({ feedsNumber }: { feedsNumber: number }) {
         if (!nextPageDataResponse) return
         const { stories: nextStories } = nextPageDataResponse
 
-        if (nextStories.length > 0) {
+        if (nextStories.length) {
           setMoreStories((prevStories) => [...prevStories, ...nextStories])
           setPage((prevPage) => prevPage + 1)
         }

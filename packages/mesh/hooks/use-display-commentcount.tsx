@@ -14,7 +14,7 @@ export function useDisplayCommentCount({
 
   useEffect(() => {
     if (
-      interactCommentStack.length > 0 &&
+      interactCommentStack.length &&
       objectiveId &&
       interactCommentStack.includes(objectiveId)
     ) {

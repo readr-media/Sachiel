@@ -25,7 +25,7 @@ export default function SearchModal({
   } = useSearchSuggestion(inputRef)
   const activeRender = useMemo(() => {
     if (searchSuggestion) return 'suggestion'
-    if (recentSearch.length > 0) return 'recent'
+    if (recentSearch.length) return 'recent'
     return null
   }, [recentSearch.length, searchSuggestion])
 

@@ -20,7 +20,7 @@ export default async function queryGraphQL<
       variables,
     })
 
-    if (gqlErrors && gqlErrors.length > 0) {
+    if (gqlErrors && gqlErrors.length) {
       throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
     }
     return data
@@ -47,7 +47,7 @@ export async function mutateGraphQL<
       mutation,
       variables,
     })
-    if (gqlErrors && gqlErrors.length > 0) {
+    if (gqlErrors && gqlErrors.length) {
       throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
     }
     return data || null

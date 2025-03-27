@@ -32,7 +32,7 @@ export function sortAndFilterComments(comments: Comment[]): Comment[] {
   const validComments = comments.filter((comment) => !!comment.likeCount)
 
   // 如果沒有有效的 likeCount，返回空陣列
-  if (validComments.length === 0) {
+  if (!validComments.length) {
     return []
   }
 

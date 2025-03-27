@@ -26,7 +26,7 @@ export const useForm = <T extends Record<string, unknown>>(
   const validateForm = async () => {
     const newErrors = await validateFormFn(form)
     setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return !Object.keys(newErrors).length
   }
 
   const resetErrors = () => setErrors({})
@@ -53,7 +53,7 @@ export const useForm = <T extends Record<string, unknown>>(
     return false
   }
 
-  const isFormValid = Object.keys(errors).length === 0 && hasChange()
+  const isFormValid = !Object.keys(errors).length && hasChange()
 
   return {
     form,

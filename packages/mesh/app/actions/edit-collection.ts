@@ -72,10 +72,10 @@ async function updateCollection({
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const isAllDefaults =
-    Object.keys(updateCollectionData).length === 0 &&
-    createCollectionPicksData.length === 0 &&
-    updateCollectionPicksData.length === 0 &&
-    deleteCollectionPicksData.length === 0
+    !Object.keys(updateCollectionData).length &&
+    !createCollectionPicksData.length &&
+    !updateCollectionPicksData.length &&
+    !deleteCollectionPicksData.length
 
   if (isAllDefaults) {
     logServerSideError(
@@ -121,7 +121,7 @@ export async function updateCollectionTitle({
       },
     }
   }
-  if (Object.keys(updateCollectionData).length === 0) return null
+  if (!Object.keys(updateCollectionData).length) return null
   return await updateCollection({
     collectionId,
     updateCollectionData,

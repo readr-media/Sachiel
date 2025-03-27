@@ -28,7 +28,7 @@ export default function DesktopSearchBar({
   const activeDropdown = useMemo(() => {
     if (!isFocused) return null
     if (searchSuggestion) return 'suggestion'
-    if (recentSearch.length > 0) return 'recent'
+    if (recentSearch.length) return 'recent'
     return null
   }, [isFocused, recentSearch.length, searchSuggestion])
 

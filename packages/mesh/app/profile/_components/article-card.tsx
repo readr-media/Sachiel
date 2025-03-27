@@ -135,22 +135,21 @@ const ArticleCard = ({
    * GetPublisherProfile 不會取用留言，因為Publisher不會顯示留言
    */
   const commentList = (hasComment(storyData) && storyData.comment) || []
-  const authorComment =
-    commentList.length !== 0
-      ? commentList[0]
-      : {
-          __typename: 'Comment',
-          id: '',
-          content: '',
-          createdAt: '',
-          likeCount: 0,
-          member: {
-            __typename: 'Member',
-            id: memberId,
-            name,
-            avatar,
-          },
-        }
+  const authorComment = commentList.length
+    ? commentList[0]
+    : {
+        __typename: 'Comment',
+        id: '',
+        content: '',
+        createdAt: '',
+        likeCount: 0,
+        member: {
+          __typename: 'Member',
+          id: memberId,
+          name,
+          avatar,
+        },
+      }
 
   const { displayPicks, displayPicksCount } = useDisplayPicks({
     id: storyData.id,

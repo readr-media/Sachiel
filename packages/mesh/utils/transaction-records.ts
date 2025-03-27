@@ -1,9 +1,9 @@
 import { type GetMemberSingleTransactionQuery } from '@/graphql/__generated__/graphql'
 
 export const recordSelector = (data: GetMemberSingleTransactionQuery) => {
-  if (data.member?.transaction && data.member.transaction.length > 0) {
+  if (data.member?.transaction && data.member.transaction.length) {
     return data.member?.transaction?.[0]
-  } else if (data.member?.sponsor && data.member.sponsor.length > 0) {
+  } else if (data.member?.sponsor && data.member.sponsor.length) {
     return data.member?.sponsor?.[0]
   }
   return null
