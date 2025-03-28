@@ -12,11 +12,12 @@ const Page = async (props: PageProps) => {
   const currentUser = await getCurrentUser()
   const params = props.params
   const customId = params.customId
-  const isMember = currentUser?.customId === customId
+  const isCurrentUser = currentUser?.customId === customId
+  const userType = isCurrentUser ? 'member' : 'visitor'
 
   return (
     <div className="flex grow flex-col">
-      <ProfilePage isMember={isMember} />
+      <ProfilePage userType={userType} profileCustomId={customId} />
     </div>
   )
 }

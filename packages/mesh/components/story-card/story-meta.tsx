@@ -9,12 +9,14 @@ export default function StoryMeta({
   publishDate,
   paywall,
   fullScreenAd,
+  storyType = 'story',
 }: {
   storyId: string
   commentCount: number
   publishDate: string
   paywall: boolean
   fullScreenAd: string
+  storyType?: 'story' | 'podcast'
 }) {
   return (
     <div className="flex items-center text-primary-500">
@@ -36,6 +38,12 @@ export default function StoryMeta({
           蓋板廣告
         </div>
       )}
+      {storyType === 'podcast' ? (
+        <div className="flex items-center">
+          <Icon iconName="icon-dot" size="s" />
+          Podcast
+        </div>
+      ) : null}
     </div>
   )
 }

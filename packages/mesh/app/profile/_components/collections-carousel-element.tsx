@@ -18,12 +18,12 @@ type CollectionsCarouselElementProps = {
 const CollectionsCarouselElement = ({
   data,
 }: CollectionsCarouselElementProps) => {
-  const { visitorProfile } = useEditProfile()
+  const { profileData } = useEditProfile()
   const userPayload = useUserPayload()
   const pageName = usePageName()
   if (!data) return <></>
   const { heroImage, title, creator, picksCount, id } = data
-  const shouldShowCollectionPickButton = visitorProfile.customId
+  const shouldShowCollectionPickButton = profileData.customId
   return (
     <div className="flex h-full w-[150px] flex-col rounded border bg-white md:w-full">
       <Link

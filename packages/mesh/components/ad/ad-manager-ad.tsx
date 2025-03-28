@@ -9,9 +9,15 @@ type Props = {
   pageKey?: string
   adKey?: string
   slot?: string
+  className?: string
 }
 
-export default function AdManager({ pageKey, adKey, slot }: Props) {
+export default function AdManager({
+  pageKey,
+  adKey,
+  slot,
+  className = '',
+}: Props) {
   const [adUnitPath, setAdUnitPath] = useState('')
   const [adDivId, setAdDivId] = useState('')
   const [adSize, setAdSize] = useState<[number, number] | [number, number][]>(
@@ -56,5 +62,5 @@ export default function AdManager({ pageKey, adKey, slot }: Props) {
     }
   }, [adSize, adUnitPath, adDivId])
 
-  return <div id={adDivId} />
+  return <div id={adDivId} className={`mx-auto ${className}`} />
 }

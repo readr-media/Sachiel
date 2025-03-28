@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary-700: theme('colors.primary.700.DEFAULT');
+  --color-primary-200: theme('colors.primary.200.DEFAULT');
+}
+
 @layer base {
   input,
   input:focus {
@@ -95,6 +100,81 @@
   .primary-container-collection {
     @apply flex min-h-screen flex-col items-center pt-[theme(height.header.default)];
     @apply sm:pt-[theme(height.header.sm)];
+  }
+
+  .dot-flashing {
+    @apply relative h-2 w-2 rounded-full bg-custom-blue;
+    animation: dot-flashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+  }
+
+  .dot-flashing::before,
+  .dot-flashing::after {
+    content: '';
+    @apply absolute top-0 h-2 w-2 rounded-full bg-custom-blue;
+  }
+
+  .dot-flashing::before {
+    @apply left-[-16px];
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 0s;
+  }
+
+  .dot-flashing::after {
+    @apply left-4;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 1s;
+  }
+
+  @keyframes dot-flashing {
+    0% {
+      background-color: theme('colors.custom-blue.DEFAULT');
+    }
+    50%,
+    100% {
+      background-color: theme('colors.custom-blue.DEFAULT / 20%');
+    }
+  }
+
+  .custom-duration-slider {
+    @apply h-[6px] w-full cursor-pointer appearance-none rounded;
+    /* Track */
+    &::-webkit-slider-runnable-track {
+      @apply h-[6px] rounded;
+    }
+    &::-moz-range-track {
+      @apply h-[6px] rounded;
+    }
+    /* Thumb */
+    &::-webkit-slider-thumb {
+      @apply size-3 rounded-full bg-primary-700 drop-shadow;
+      appearance: none;
+      transform: translateY(-25%);
+    }
+    &::-moz-range-thumb {
+      @apply size-3 rounded-full border-none bg-primary-700 drop-shadow;
+      appearance: none;
+    }
+  }
+
+  .custom-volume-slider {
+    @apply ml-1 hidden h-[6px] w-[72px] cursor-pointer appearance-none self-center rounded lg:block;
+    /* Track */
+    &::-webkit-slider-runnable-track {
+      @apply h-[6px] rounded;
+    }
+    &::-moz-range-track {
+      @apply h-[6px] rounded;
+    }
+    /* Thumb */
+    &::-webkit-slider-thumb {
+      @apply size-0;
+      appearance: none;
+    }
+    &::-moz-range-thumb {
+      @apply size-0 border-none;
+      appearance: none;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 'use client'
-import AdManager from '@/components/ad/google-ad-manager/ad-manager-ad'
+import AdManager from '@/components/ad/ad-manager-ad'
 
 export default function AsideAd() {
   return (

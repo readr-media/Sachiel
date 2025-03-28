@@ -77,3 +77,14 @@ query GetPublisherReports($publisherCustomId: String) {
     }
   }
 }
+
+query GetPublisherStoryType($publisherCustomId: String) {
+  publisher(where: { customId: $publisherCustomId }) {
+    id
+    customId
+    story_type {
+      id
+      name
+    }
+  }
+}

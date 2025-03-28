@@ -160,6 +160,7 @@ export const MongoDBResponseSchema = z.object({
         title: z.string(),
       }),
       published_date: z.string(),
+      story_type: z.enum(['story', 'podcast']),
       og_title: z.string(),
       og_image: z.string(),
       full_screen_ad: FullScreenAdEnum,
@@ -199,70 +200,75 @@ export type MostFollowersMember = z.infer<
   typeof mostFollowersMemberSchema
 >[number]
 
+export type ProfileJSONType = z.infer<typeof publisherProfileSchema>
 export const publisherProfileSchema = z.object({
-  id: z.string().min(1),
-  url: z.string().url(),
-  title: z.string().min(1),
-  published_date: z.string().datetime(),
-  summary: z.string(),
-  og_title: z.string(),
-  og_image: z.string().url(),
-  og_description: z.string(),
-  full_content: z.boolean(),
-  commentCount: z.number().int().nonnegative(),
-  paywall: z.boolean(),
-  full_screen_ad: FullScreenAdEnum,
-  isMember: z.boolean(),
-  pickCount: z.number().int().nonnegative(),
-  picks: z.array(
-    z.object({
-      createdAt: z.string().datetime().optional(),
-      member: memberSchema.nullable(),
-    })
-  ),
   source: z.object({
-    id: z.string().min(1),
-    customId: z.string().min(1),
-    title: z.string().min(1),
-    official_site: z.string().url(),
-    logo: z.string().url(),
+    id: z.string(),
+    customId: z.string(),
+    title: z.string(),
+    official_site: z.string(),
+    logo: z.string(),
     description: z.string(),
-    followerCount: z.number().int().nonnegative(),
-    sponsoredCount: z.number().int().nonnegative(),
-    picksCount: z.number().int().nonnegative(),
+    followerCount: z.number(),
+    sponsoredCount: z.number(),
+    picksCount: z.number(),
   }),
   stories: z.array(
     z.object({
-      __typename: z.enum(['Pick', 'Collection']),
-      id: z.string().min(1),
-      title: z.string().min(1),
-      url: z.string().url(),
+      id: z.string(),
+      title: z.string(),
+      url: z.string(),
       og_title: z.string(),
-      og_image: z.string().url(),
+      og_image: z.string(),
       og_description: z.string(),
       published_date: z.string().datetime(),
       picks: z.array(
         z.object({
           createdAt: z.string().datetime(),
           member: z.object({
-            picksCount: z.number().int().nonnegative(),
-            commentCount: z.number().int().nonnegative(),
-            paywall: z.boolean(),
-            full_screen_ad: FullScreenAdEnum,
-            full_content: z.boolean(),
-            users: z.array(memberSchema),
+            id: z.string(),
+            name: z.string(),
+            avatar: z.string().url().or(z.literal('')),
           }),
         })
       ),
-      picksCount: z.number().int().nonnegative(),
-      commentCount: z.number().int().nonnegative(),
+      picksCount: z.number(),
+      commentCount: z.number(),
       paywall: z.boolean(),
       full_screen_ad: FullScreenAdEnum,
       full_content: z.boolean(),
+      story_type: z.enum(['story', 'podcast']),
+    })
+  ),
+  podcasts: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      url: z.string(),
+      og_title: z.string(),
+      og_image: z.string(),
+      og_description: z.string(),
+      published_date: z.string().datetime(),
+      picks: z.array(
+        z.object({
+          createdAt: z.string().datetime(),
+          member: z.object({
+            id: z.string(),
+            name: z.string(),
+            avatar: z.string().url().or(z.literal('')),
+          }),
+        })
+      ),
+      picksCount: z.number(),
+      commentCount: z.number(),
+      paywall: z.boolean(),
+      full_screen_ad: FullScreenAdEnum,
+      full_content: z.boolean(),
+      story_type: z.enum(['story', 'podcast']),
     })
   ),
 })
-export type PublisherProfile = z.infer<typeof publisherProfileSchema>
+
 /**
  * most sponsored publishers and their stories for media page
  */
@@ -272,28 +278,18 @@ export const mostSponsorPublishersSchema = z.array(
       id: z.string(),
       customId: z.string(),
       title: z.string(),
-      official_site: z.string(),
       logo: z.string(),
-      full_content: z.boolean(),
-      paywall: z.boolean(),
-      sponsorCount: z.number(),
+      sponsoredCount: z.number(),
     }),
     stories: z.array(
       z.object({
         id: z.string(),
-        url: z.string(),
         title: z.string(),
         published_date: z.string(),
-        og_title: z.string(),
         og_image: z.string(),
-        og_description: z.string(),
-        isMember: z.boolean(),
-        category: categorySchema.nullable(),
-        readsCount: z.number(),
         commentCount: z.number(),
-        paywall: z.boolean(),
-        full_screen_ad: z.string(),
-        source: sourceSchema,
+        isMember: z.boolean(),
+        full_screen_ad: FullScreenAdEnum,
       })
     ),
   })

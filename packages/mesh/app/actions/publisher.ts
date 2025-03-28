@@ -24,7 +24,10 @@ export type AllPublisherData = Awaited<ReturnType<typeof getAllPublishers>>
 async function getAllPublishers(limit?: number) {
   const itemCount = limit ? Math.floor(Math.abs(limit)) : undefined
   const response = await fetchStatic<z.infer<typeof PublisherListSchema>>(
-    STATIC_FILE_ENDPOINTS.publisherList
+    STATIC_FILE_ENDPOINTS.publisherList,
+    {
+      cache: 'no-cache',
+    }
   )
   const publisherListJSON = PublisherListSchema.parse(response)
   const rawData = Object.values(publisherListJSON)

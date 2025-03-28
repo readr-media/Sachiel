@@ -38,8 +38,11 @@ export type Announcement = {
   __typename?: 'Announcement'
   createdAt?: Maybe<Scalars['DateTime']['output']>
   createdBy?: Maybe<User>
+  endDate?: Maybe<Scalars['DateTime']['output']>
   id: Scalars['ID']['output']
+  isActive?: Maybe<Scalars['Boolean']['output']>
   name?: Maybe<Scalars['String']['output']>
+  startDate?: Maybe<Scalars['DateTime']['output']>
   status?: Maybe<Scalars['String']['output']>
   type?: Maybe<Scalars['String']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -49,7 +52,9 @@ export type Announcement = {
 export type AnnouncementCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  endDate?: InputMaybe<Scalars['DateTime']['input']>
   name?: InputMaybe<Scalars['String']['input']>
+  startDate?: InputMaybe<Scalars['DateTime']['input']>
   status?: InputMaybe<Scalars['String']['input']>
   type?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -58,8 +63,10 @@ export type AnnouncementCreateInput = {
 
 export type AnnouncementOrderByInput = {
   createdAt?: InputMaybe<OrderDirection>
+  endDate?: InputMaybe<OrderDirection>
   id?: InputMaybe<OrderDirection>
   name?: InputMaybe<OrderDirection>
+  startDate?: InputMaybe<OrderDirection>
   status?: InputMaybe<OrderDirection>
   type?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
@@ -73,7 +80,9 @@ export type AnnouncementUpdateArgs = {
 export type AnnouncementUpdateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']['input']>
   createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  endDate?: InputMaybe<Scalars['DateTime']['input']>
   name?: InputMaybe<Scalars['String']['input']>
+  startDate?: InputMaybe<Scalars['DateTime']['input']>
   status?: InputMaybe<Scalars['String']['input']>
   type?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -86,8 +95,10 @@ export type AnnouncementWhereInput = {
   OR?: InputMaybe<Array<AnnouncementWhereInput>>
   createdAt?: InputMaybe<DateTimeNullableFilter>
   createdBy?: InputMaybe<UserWhereInput>
+  endDate?: InputMaybe<DateTimeNullableFilter>
   id?: InputMaybe<IdFilter>
   name?: InputMaybe<StringFilter>
+  startDate?: InputMaybe<DateTimeNullableFilter>
   status?: InputMaybe<StringNullableFilter>
   type?: InputMaybe<StringNullableFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -1683,6 +1694,8 @@ export type Mutation = {
   createStatements?: Maybe<Array<Maybe<Statement>>>
   createStories?: Maybe<Array<Maybe<Story>>>
   createStory?: Maybe<Story>
+  createStoryType?: Maybe<StoryType>
+  createStoryTypes?: Maybe<Array<Maybe<StoryType>>>
   createTag?: Maybe<Tag>
   createTags?: Maybe<Array<Maybe<Tag>>>
   createTransaction?: Maybe<Transaction>
@@ -1733,6 +1746,8 @@ export type Mutation = {
   deleteStatements?: Maybe<Array<Maybe<Statement>>>
   deleteStories?: Maybe<Array<Maybe<Story>>>
   deleteStory?: Maybe<Story>
+  deleteStoryType?: Maybe<StoryType>
+  deleteStoryTypes?: Maybe<Array<Maybe<StoryType>>>
   deleteTag?: Maybe<Tag>
   deleteTags?: Maybe<Array<Maybe<Tag>>>
   deleteTransaction?: Maybe<Transaction>
@@ -1784,6 +1799,8 @@ export type Mutation = {
   updateStatements?: Maybe<Array<Maybe<Statement>>>
   updateStories?: Maybe<Array<Maybe<Story>>>
   updateStory?: Maybe<Story>
+  updateStoryType?: Maybe<StoryType>
+  updateStoryTypes?: Maybe<Array<Maybe<StoryType>>>
   updateTag?: Maybe<Tag>
   updateTags?: Maybe<Array<Maybe<Tag>>>
   updateTransaction?: Maybe<Transaction>
@@ -1975,6 +1992,14 @@ export type MutationCreateStoriesArgs = {
 
 export type MutationCreateStoryArgs = {
   data: StoryCreateInput
+}
+
+export type MutationCreateStoryTypeArgs = {
+  data: StoryTypeCreateInput
+}
+
+export type MutationCreateStoryTypesArgs = {
+  data: Array<StoryTypeCreateInput>
 }
 
 export type MutationCreateTagArgs = {
@@ -2175,6 +2200,14 @@ export type MutationDeleteStoriesArgs = {
 
 export type MutationDeleteStoryArgs = {
   where: StoryWhereUniqueInput
+}
+
+export type MutationDeleteStoryTypeArgs = {
+  where: StoryTypeWhereUniqueInput
+}
+
+export type MutationDeleteStoryTypesArgs = {
+  where: Array<StoryTypeWhereUniqueInput>
 }
 
 export type MutationDeleteTagArgs = {
@@ -2397,6 +2430,15 @@ export type MutationUpdateStoriesArgs = {
 export type MutationUpdateStoryArgs = {
   data: StoryUpdateInput
   where: StoryWhereUniqueInput
+}
+
+export type MutationUpdateStoryTypeArgs = {
+  data: StoryTypeUpdateInput
+  where: StoryTypeWhereUniqueInput
+}
+
+export type MutationUpdateStoryTypesArgs = {
+  data: Array<StoryTypeUpdateArgs>
 }
 
 export type MutationUpdateTagArgs = {
@@ -2980,6 +3022,8 @@ export type Publisher = {
   sponsoredCount?: Maybe<Scalars['Int']['output']>
   statements?: Maybe<Array<Statement>>
   statementsCount?: Maybe<Scalars['Int']['output']>
+  story_type?: Maybe<Array<StoryType>>
+  story_typeCount?: Maybe<Scalars['Int']['output']>
   summary?: Maybe<Scalars['String']['output']>
   title?: Maybe<Scalars['String']['output']>
   updatedAt?: Maybe<Scalars['DateTime']['output']>
@@ -3044,6 +3088,17 @@ export type PublisherStatementsCountArgs = {
   where?: StatementWhereInput
 }
 
+export type PublisherStory_TypeArgs = {
+  orderBy?: Array<StoryTypeOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: StoryTypeWhereInput
+}
+
+export type PublisherStory_TypeCountArgs = {
+  where?: StoryTypeWhereInput
+}
+
 export type PublisherUserArgs = {
   orderBy?: Array<UserOrderByInput>
   skip?: Scalars['Int']['input']
@@ -3077,6 +3132,7 @@ export type PublisherCreateInput = {
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForCreateInput>
   statements?: InputMaybe<StatementRelateToManyForCreateInput>
+  story_type?: InputMaybe<StoryTypeRelateToManyForCreateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -3162,6 +3218,7 @@ export type PublisherUpdateInput = {
   source_type?: InputMaybe<Scalars['String']['input']>
   sponsored?: InputMaybe<SponsorshipRelateToManyForUpdateInput>
   statements?: InputMaybe<StatementRelateToManyForUpdateInput>
+  story_type?: InputMaybe<StoryTypeRelateToManyForUpdateInput>
   summary?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>
@@ -3196,6 +3253,7 @@ export type PublisherWhereInput = {
   source_type?: InputMaybe<StringNullableFilter>
   sponsored?: InputMaybe<SponsorshipManyRelationFilter>
   statements?: InputMaybe<StatementManyRelationFilter>
+  story_type?: InputMaybe<StoryTypeManyRelationFilter>
   summary?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeNullableFilter>
@@ -3279,6 +3337,9 @@ export type Query = {
   stories?: Maybe<Array<Story>>
   storiesCount?: Maybe<Scalars['Int']['output']>
   story?: Maybe<Story>
+  storyType?: Maybe<StoryType>
+  storyTypes?: Maybe<Array<StoryType>>
+  storyTypesCount?: Maybe<Scalars['Int']['output']>
   tag?: Maybe<Tag>
   tags?: Maybe<Array<Tag>>
   tagsCount?: Maybe<Scalars['Int']['output']>
@@ -3618,6 +3679,21 @@ export type QueryStoriesCountArgs = {
 
 export type QueryStoryArgs = {
   where: StoryWhereUniqueInput
+}
+
+export type QueryStoryTypeArgs = {
+  where: StoryTypeWhereUniqueInput
+}
+
+export type QueryStoryTypesArgs = {
+  orderBy?: Array<StoryTypeOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: StoryTypeWhereInput
+}
+
+export type QueryStoryTypesCountArgs = {
+  where?: StoryTypeWhereInput
 }
 
 export type QueryTagArgs = {
@@ -4328,6 +4404,95 @@ export type StoryStoryTypeTypeNullableFilter = {
   notIn?: InputMaybe<Array<StoryStoryTypeType>>
 }
 
+export type StoryType = {
+  __typename?: 'StoryType'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  id: Scalars['ID']['output']
+  name?: Maybe<Scalars['String']['output']>
+  publisher?: Maybe<Array<Publisher>>
+  publisherCount?: Maybe<Scalars['Int']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type StoryTypePublisherArgs = {
+  orderBy?: Array<PublisherOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: PublisherWhereInput
+}
+
+export type StoryTypePublisherCountArgs = {
+  where?: PublisherWhereInput
+}
+
+export type StoryTypeCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  name?: InputMaybe<Scalars['String']['input']>
+  publisher?: InputMaybe<PublisherRelateToManyForCreateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type StoryTypeManyRelationFilter = {
+  every?: InputMaybe<StoryTypeWhereInput>
+  none?: InputMaybe<StoryTypeWhereInput>
+  some?: InputMaybe<StoryTypeWhereInput>
+}
+
+export type StoryTypeOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  name?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type StoryTypeRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<StoryTypeWhereUniqueInput>>
+  create?: InputMaybe<Array<StoryTypeCreateInput>>
+}
+
+export type StoryTypeRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<StoryTypeWhereUniqueInput>>
+  create?: InputMaybe<Array<StoryTypeCreateInput>>
+  disconnect?: InputMaybe<Array<StoryTypeWhereUniqueInput>>
+  set?: InputMaybe<Array<StoryTypeWhereUniqueInput>>
+}
+
+export type StoryTypeUpdateArgs = {
+  data: StoryTypeUpdateInput
+  where: StoryTypeWhereUniqueInput
+}
+
+export type StoryTypeUpdateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  name?: InputMaybe<Scalars['String']['input']>
+  publisher?: InputMaybe<PublisherRelateToManyForUpdateInput>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type StoryTypeWhereInput = {
+  AND?: InputMaybe<Array<StoryTypeWhereInput>>
+  NOT?: InputMaybe<Array<StoryTypeWhereInput>>
+  OR?: InputMaybe<Array<StoryTypeWhereInput>>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  id?: InputMaybe<IdFilter>
+  name?: InputMaybe<StringFilter>
+  publisher?: InputMaybe<PublisherManyRelationFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type StoryTypeWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+}
+
 export type StoryUpdateArgs = {
   data: StoryUpdateInput
   where: StoryWhereUniqueInput
@@ -4816,6 +4981,7 @@ export type StoryInfoFragment = {
   paywall?: boolean | null
   full_screen_ad?: StoryFullScreenAdType | null
   published_date?: any | null
+  story_type?: StoryStoryTypeType | null
   source?: {
     __typename?: 'Publisher'
     title?: string | null
@@ -5635,6 +5801,7 @@ export type GetMemberProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -5740,6 +5907,7 @@ export type GetMemberProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -5874,6 +6042,7 @@ export type GetVisitorProfileQuery = {
         paywall?: boolean | null
         full_screen_ad?: StoryFullScreenAdType | null
         published_date?: any | null
+        story_type?: StoryStoryTypeType | null
         comment?: Array<{
           __typename?: 'Comment'
           id: string
@@ -6442,6 +6611,7 @@ export type GetMorePicksQuery = {
       paywall?: boolean | null
       full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
+      story_type?: StoryStoryTypeType | null
       comment?: Array<{
         __typename?: 'Comment'
         id: string
@@ -6557,6 +6727,7 @@ export type GetMoreBookmarksQuery = {
       paywall?: boolean | null
       full_screen_ad?: StoryFullScreenAdType | null
       published_date?: any | null
+      story_type?: StoryStoryTypeType | null
       comment?: Array<{
         __typename?: 'Comment'
         id: string
@@ -6797,6 +6968,24 @@ export type GetPublisherReportsQuery = {
   }> | null
 }
 
+export type GetPublisherStoryTypeQueryVariables = Exact<{
+  publisherCustomId?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type GetPublisherStoryTypeQuery = {
+  __typename?: 'Query'
+  publisher?: {
+    __typename?: 'Publisher'
+    id: string
+    customId?: string | null
+    story_type?: Array<{
+      __typename?: 'StoryType'
+      id: string
+      name?: string | null
+    }> | null
+  } | null
+}
+
 export type GetPublisherSponsorshipsQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
@@ -6834,6 +7023,7 @@ export type LatestStoriesQuery = {
     id: string
     url?: string | null
     title?: string | null
+    story_type?: StoryStoryTypeType | null
     published_date?: any | null
     summary?: string | null
     content?: string | null
@@ -6891,6 +7081,7 @@ export type GetStoryQuery = {
     apiData?: any | null
     trimApiData?: any | null
     isMember?: boolean | null
+    story_type?: StoryStoryTypeType | null
     picksCount?: number | null
     commentsCount?: number | null
     category?: { __typename?: 'Category'; title?: string | null } | null
@@ -6929,6 +7120,16 @@ export type GetStoryQuery = {
         avatar?: string | null
       } | null
     }> | null
+    podcast?: {
+      __typename?: 'Podcast'
+      id: string
+      author?: string | null
+      url?: string | null
+      file_size?: number | null
+      mime_type?: string | null
+      duration?: string | null
+      createdAt?: any | null
+    } | null
   } | null
 }
 
@@ -7163,6 +7364,7 @@ export const StoryInfoFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -13957,6 +14159,7 @@ export const GetMemberProfileDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -14803,6 +15006,7 @@ export const GetVisitorProfileDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -18223,6 +18427,7 @@ export const GetMorePicksDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -18853,6 +19058,7 @@ export const GetMoreBookmarksDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'paywall' } },
           { kind: 'Field', name: { kind: 'Name', value: 'full_screen_ad' } },
           { kind: 'Field', name: { kind: 'Name', value: 'published_date' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
         ],
       },
     },
@@ -20162,6 +20368,75 @@ export const GetPublisherReportsDocument = {
   GetPublisherReportsQuery,
   GetPublisherReportsQueryVariables
 >
+export const GetPublisherStoryTypeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetPublisherStoryType' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'publisherCustomId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'publisher' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'customId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'publisherCustomId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'story_type' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetPublisherStoryTypeQuery,
+  GetPublisherStoryTypeQueryVariables
+>
 export const GetPublisherSponsorshipsDocument = {
   kind: 'Document',
   definitions: [
@@ -20533,6 +20808,7 @@ export const LatestStoriesDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'url' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'category' },
@@ -21137,6 +21413,38 @@ export const GetStoryDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'trimApiData' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'isMember' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'story_type' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'podcast' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'author' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'file_size' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'mime_type' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'duration' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },

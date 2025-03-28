@@ -9,6 +9,7 @@ import type {
   UpdatePaymentProps,
 } from '@/app/actions/payment'
 import { type PublisherData } from '@/app/actions/publisher'
+import TransactionOngoing from '@/app/payment/[type]/[targetId]/_component/transaction-ongoing'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
@@ -16,6 +17,7 @@ import { NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT } from '@/constants
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import type { TransactionState } from '@/types/transaction'
 // TODO: add user log to log exchange record
 // import useUserPayload from '@/hooks/use-user-payload'
 // import { logSponsor } from '@/utils/event-logs'
@@ -34,9 +36,14 @@ export default function ExchangeInfo({
 }) {
   const { user } = useUser()
   const [amount, setAmount] = useState(0)
-  const [isSponsored, setIsSponsored] = useState(false)
+  const [transactionState, setTransactionState] =
+    useState<TransactionState>('idle')
   const [nextMonthNumber, setNextMonthNumber] = useState<number | null>(null)
   const { addToast } = useToast()
+
+  const isExchanged = transactionState === 'success'
+  const isExchanging = transactionState === 'trading'
+
   // TODO: add user log to log exchange record
   // const userPayload = useUserPayload()
   const createExchangePayment: CreatePaymentProps = {
@@ -69,16 +76,24 @@ export default function ExchangeInfo({
     }
   }, 500)
 
-  const handleSponsorSuccess = () => {
-    setIsSponsored(true)
+  const handleExchangeOnSend = () => {
+    setTransactionState('trading')
+  }
+
+  const handleExchangeOnSuccess = () => {
+    setTransactionState('success')
     setNextMonthNumber(getNextMonthNumber())
     // TODO: add user log to log exchange record
     // logSponsor(userPayload, publisher.title ?? '')
   }
 
+  const handleExchangeOnError = () => {
+    setTransactionState('error')
+  }
+
   return (
-    <main className="flex flex-col items-center lg:items-start">
-      {isSponsored ? (
+    <div className="relative flex grow flex-col items-center lg:items-start">
+      {isExchanged ? (
         <div className="flex h-[calc(100vh-130px)] w-full items-center justify-center">
           <div className="flex w-dvw max-w-[295px] flex-col items-center sm:max-w-[320px]">
             <Icon
@@ -120,13 +135,18 @@ export default function ExchangeInfo({
               createPaymentPayload={createExchangePayment}
               updatePaymentPayload={updateExchangePayment}
               failPaymentPayload={failExchangePayment}
-              onSuccess={handleSponsorSuccess}
+              onSend={handleExchangeOnSend}
+              onSuccess={handleExchangeOnSuccess}
+              onError={handleExchangeOnError}
               actionText="兌換"
             />
           </div>
         </>
       )}
-    </main>
+
+      {/* This UI only cover all other jsx cause the transction logic is inside SendTransaction component */}
+      {isExchanging && <TransactionOngoing />}
+    </div>
   )
 }
 

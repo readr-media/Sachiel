@@ -13,13 +13,14 @@ import {
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
-import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
+import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { logStoryUnlockEvent } from '@/utils/event-logs'
 import { isValidEmail } from '@/utils/validate-email'
 
 import { type StoryUnlockPolicy } from '../page'
+import TransactionOngoing from './transaction-ongoing'
 
 export default function PaymentInfo({
   unlockPolicy,
@@ -38,7 +39,7 @@ export default function PaymentInfo({
   const [email, setEmail] = useState(user.email)
   const [isChecked, setIsChecked] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
-  const { addToast } = useToast()
+  const [isUnlocking, setIsUnlocking] = useState(false)
   const isValid = isValidEmail(email)
   const createUnlockStorySinglePayment: CreatePaymentProps = {
     action: 'unlock_story_single',
@@ -61,8 +62,11 @@ export default function PaymentInfo({
     complement: 'Reason of failure',
   }
 
-  const handleUnlockStorySingleSuccess = () => {
-    addToast({ status: 'success', text: TOAST_MESSAGE.unlockStorySuccess })
+  const handleUnlockStorySingleOnSend = () => {
+    setIsUnlocking(true)
+  }
+
+  const handleUnlockStorySingleOnSuccess = () => {
     logStoryUnlockEvent(userPayload, {
       policyId: unlockPolicy[0].id,
       policyName: unlockPolicy[0]?.name ?? '',
@@ -70,13 +74,19 @@ export default function PaymentInfo({
       publisherName: unlockPolicy[0].publisher?.title ?? '',
       storyId,
     })
-    setTimeout(() => {
-      router.push(`/story/${storyId}`)
-    }, 300)
+    setCrossPageToast({
+      status: 'success',
+      text: TOAST_MESSAGE.unlockStorySuccess,
+    })
+    router.push(`/story/${storyId}`)
+  }
+
+  const handleUnlockStorySingleOnError = () => {
+    setIsUnlocking(false)
   }
 
   return (
-    <main className="p-5 py-4 lg:px-10">
+    <main className="relative grow p-5 py-4 lg:px-10">
       <div className="flex max-w-[600px] grow flex-col gap-10 sm:grow-0">
         <div className="flex flex-col gap-3">
           <p className="profile-title">訂單資訊</p>
@@ -162,9 +172,14 @@ export default function PaymentInfo({
           createPaymentPayload={createUnlockStorySinglePayment}
           updatePaymentPayload={updateUnlockStorySinglePayment}
           failPaymentPayload={failUnlockStorySinglePayment}
-          onSuccess={handleUnlockStorySingleSuccess}
+          onSend={handleUnlockStorySingleOnSend}
+          onSuccess={handleUnlockStorySingleOnSuccess}
+          onError={handleUnlockStorySingleOnError}
         />
       </div>
+
+      {/* This UI only cover all other jsx cause the transction logic is inside SendTransaction component */}
+      {isUnlocking && <TransactionOngoing />}
     </main>
   )
 }
