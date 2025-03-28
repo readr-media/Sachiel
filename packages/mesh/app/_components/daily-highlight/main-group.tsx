@@ -14,7 +14,7 @@ export default function MainGroup({ stories }: Props) {
   const restStories = stories.slice(1, 5)
 
   return (
-    <article className="mb-6 sm:mb-10">
+    <article className="mb-6 lg:mb-10">
       <div className="mb-4 sm:mb-5">
         <MainCard
           story={story}

@@ -1,12 +1,14 @@
 import { Fragment, useEffect } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
-import AdSense from '@/components/ad/google-adsense/adsense-ad'
+import AdSense from '@/components/ad/adsense-ad'
 import useInView from '@/hooks/use-in-view'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
 
 import type { LatestStoriesInfo, Story } from './media-stories'
+import MostPickedPodcastCard from './most-picked-podcast-card'
 import MostPickedStoryCard from './most-picked-story-card'
+import PodcastCard from './podcast-card'
 import PublisherCard from './publisher-card'
 import PublisherSuggestion from './publisher-suggestion'
 import StoryCard from './story-card'
@@ -38,24 +40,43 @@ export default function NonDesktopStories({
 
   return (
     <div className="flex flex-col sm:pb-10 lg:hidden">
-      {firstSectionStories.map((story, i) => (
-        <StoryCard
-          key={story.id}
-          className={`mx-5 first:pt-0 ${
-            i === firstSectionStories.length - 1 ? 'border-b-0' : ''
-          } md:mx-[70px]`}
-          story={story}
-          ref={undefined}
-          gtmTags={{
-            story: 'GTM-media_click_category_article',
-            pick: 'GTM-media_pick_category_article',
-          }}
-        />
-      ))}
+      {firstSectionStories.map((story, i) => {
+        if (story.story_type === 'story') {
+          return (
+            <StoryCard
+              key={story.id}
+              className={`mx-5 first:pt-0 ${
+                i === firstSectionStories.length - 1 ? 'border-b-0' : ''
+              } md:mx-[70px]`}
+              story={story}
+              ref={undefined}
+              gtmTags={{
+                story: 'GTM-media_click_category_article',
+                pick: 'GTM-media_pick_category_article',
+              }}
+            />
+          )
+        } else {
+          return (
+            <div
+              key={story.id}
+              className={`mx-5 border-b pb-4 pt-5 first:pt-0 last:border-b-0 ${
+                i === firstSectionStories.length - 1 ? 'border-b-0' : ''
+              }`}
+            >
+              <PodcastCard data={story} />
+            </div>
+          )
+        }
+      })}
       <PublisherSuggestion publisherSuggestion={publisherList} />
       <AdSense pageKey="media" adKey="D1" className="my-5" />
       {mostPickedStory ? (
-        <MostPickedStoryCard story={mostPickedStory} isDesktop={false} />
+        mostPickedStory.story_type === 'story' ? (
+          <MostPickedStoryCard story={mostPickedStory} isDesktop={false} />
+        ) : (
+          <MostPickedPodcastCard story={mostPickedStory} />
+        )
       ) : null}
       {secondSectionStories.map((story, i) => {
         const specialBlock =
@@ -63,17 +84,27 @@ export default function NonDesktopStories({
         const shouldSetTriggerRef = i === secondSectionStories.length - 5
         return (
           <Fragment key={story.id}>
-            <StoryCard
-              className={`mx-5 first:pt-0 ${
-                i % 5 === 4 ? 'border-b-0' : ''
-              } md:mx-[70px]`}
-              story={story}
-              ref={shouldSetTriggerRef ? triggerLoadmoreRef : undefined}
-              gtmTags={{
-                story: 'GTM-media_click_category_article',
-                pick: 'GTM-media_pick_category_article',
-              }}
-            />
+            {story.story_type === 'story' ? (
+              <StoryCard
+                className={`mx-5 first:pt-0 ${
+                  i % 5 === 4 ? 'border-b-0' : ''
+                } md:mx-[70px]`}
+                story={story}
+                ref={shouldSetTriggerRef ? triggerLoadmoreRef : undefined}
+                gtmTags={{
+                  story: 'GTM-media_click_category_article',
+                  pick: 'GTM-media_pick_category_article',
+                }}
+              />
+            ) : (
+              <div
+                className={`mx-5 border-b pb-4 pt-5 first:pt-0 last:border-b-0 ${
+                  i % 5 === 4 ? 'border-b-0' : ''
+                }`}
+              >
+                <PodcastCard data={story} />
+              </div>
+            )}
             {specialBlock && (
               <>
                 <AdSense

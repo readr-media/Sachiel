@@ -2,13 +2,16 @@ import Link from 'next/link'
 
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
+import { type MongoDBResponse } from '@/utils/data-schema'
 
 import { type LatestAction } from './feed'
 
 export default function FeedLatestAction({
   actions,
+  storyType,
 }: {
   actions: LatestAction
+  storyType: MongoDBResponse['stories'][number]['story_type']
 }) {
   const { picksNum, commentsNum, picksData, commentsData } = actions
   const maxNameBytes = 9
@@ -118,7 +121,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          精選了這篇
+          {storyType === 'story' ? '精選了這篇' : '精選了這集 Podcast'}
         </div>
       </div>
     )
@@ -153,7 +156,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          精選了這篇文章
+          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
         </div>
       </div>
     )
@@ -173,8 +176,8 @@ export default function FeedLatestAction({
             </Link>
           </span>
           及其他
-          <span className="px-1 text-primary-700">{picksNum - 1}</span>
-          人精選了這篇文章
+          <span className="px-1 text-primary-700">{picksNum - 1}</span>人
+          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
         </div>
       </div>
     )

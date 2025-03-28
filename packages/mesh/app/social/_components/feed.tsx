@@ -27,6 +27,7 @@ export default function Feed({
   const { displayPicks, displayPicksCount } = useDisplayPicks(storyWithPicks)
   const { following_actions } = story
   const storyActions = processStoryActions(following_actions)
+  const { story_type: storyType } = story
   const userPayload = useUserPayload()
   const pageName = usePageName()
   const actionTypeMap = {
@@ -54,7 +55,7 @@ export default function Feed({
   return (
     <div className="flex w-screen min-w-[375px] max-w-[600px] flex-col bg-white drop-shadow sm:rounded-md">
       <div className="flex items-center justify-between px-5 py-3">
-        <FeedLatestAction actions={storyActions} />
+        <FeedLatestAction actions={storyActions} storyType={storyType} />
         <StoryMoreActionButton story={story} publisherId={story.publisher.id} />
       </div>
       {story.og_image ? (
@@ -120,6 +121,7 @@ export default function Feed({
             publishDate={story.published_date}
             paywall={story.isMember}
             fullScreenAd={story.full_screen_ad}
+            storyType={storyType}
           />
         </div>
         <div className="flex flex-col gap-4">

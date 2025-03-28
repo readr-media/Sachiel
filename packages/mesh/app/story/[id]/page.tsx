@@ -1,5 +1,6 @@
 import './_style/article.css'
 
+import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
 
 import {
@@ -16,6 +17,9 @@ import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
 import RelatedStories from './_components/related-stories'
 import StoryEndAd from './_components/story-end-ad'
+const AudioPlayer = dynamic(() => import('./_components/audio-player'), {
+  ssr: false,
+})
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
@@ -27,27 +31,36 @@ export default async function Page({ params }: { params: { id: string } }) {
   let policy: PublisherPolicy = []
   let hasPayed = false
 
-  if (!storyData || !storyData.story || !storyData.story.title) {
+  if (!storyData || !storyData.title) {
     notFound()
   }
+  const {
+    title,
+    story_type,
+    source,
+    isMember,
+    apiData,
+    trimApiData,
+    podcast,
+    og_image,
+  } = storyData
   const relatedStories = await getRelatedStories({
-    storyTitle: storyData.story.title,
+    storyTitle: title,
   })
-
-  const sourceCustomId = storyData.story.source?.customId ?? ''
-  const isMemberStory = storyData.story.isMember ?? false
-  const renderData: ApiData =
-    storyData.story.apiData ?? storyData.story.trimApiData
+  const storyType = story_type === 'story' ? 'story' : 'podcast'
+  const sourceCustomId = source?.customId ?? ''
+  const isMemberStory = isMember ?? false
+  const renderData: ApiData = apiData ?? trimApiData
 
   if (isMemberStory && sourceCustomId) {
     policy = await getPublisherPolicy(sourceCustomId)
-    hasPayed = !!storyData.story.apiData
+    hasPayed = !!apiData
   }
 
   return (
     <>
       <Article
-        story={storyData.story}
+        story={storyData}
         sourceCustomId={sourceCustomId}
         renderData={renderData}
         isMemberStory={isMemberStory}
@@ -55,21 +68,25 @@ export default async function Page({ params }: { params: { id: string } }) {
         policy={policy}
       />
       <StoryEndAd />
-      <RelatedStories
-        sourceStoryId={storyData.story.id}
-        relatedStories={relatedStories}
-      />
+      <RelatedStories sourceStoryId={storyId} relatedStories={relatedStories} />
       <Comment targetId={storyId} />
       <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] lg:flex-col xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
-        {!isMemberStory && (
+        {!isMemberStory && storyType === 'story' && (
           <SideIndex
-            apiData={storyData.story?.apiData as ApiData}
+            apiData={apiData as ApiData}
             sourceCustomId={sourceCustomId}
             isInArticle={false}
           />
         )}
       </aside>
       <AsideAd />
+      {storyType === 'podcast' && (
+        <AudioPlayer
+          audioSrc={podcast?.url || ''}
+          audioLogoSrc={og_image || ''}
+          audioTitle={title}
+        />
+      )}
     </>
   )
 }

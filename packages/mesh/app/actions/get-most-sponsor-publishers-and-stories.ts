@@ -8,18 +8,27 @@ import {
 import fetchStatic from '@/utils/fetch-static'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
-export default async function getMostSponsorPublishersAndStories() {
+export default async function getMostSponsorPublishersAndStories(slug: string) {
+  if (!slug) return null
   const globalLogFields = getLogTraceObjectFromHeaders()
-
   try {
-    const response = await fetchStatic<MostSponsorPublisher[]>(
-      STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
-      {
-        next: { revalidate: 10 },
-      },
-      globalLogFields
-    )
-    return mostSponsorPublishersSchema.parse(response)
+    if (slug === 'podcast') {
+      const response = await fetchStatic<MostSponsorPublisher[]>(
+        STATIC_FILE_ENDPOINTS.categoryMostSponsoredPublishersfn(slug),
+        {},
+        globalLogFields
+      )
+      return mostSponsorPublishersSchema.parse(response)
+    } else {
+      const response = await fetchStatic<MostSponsorPublisher[]>(
+        STATIC_FILE_ENDPOINTS.mostSponsorPublishers,
+        {
+          next: { revalidate: 10 },
+        },
+        globalLogFields
+      )
+      return mostSponsorPublishersSchema.parse(response)
+    }
   } catch (error) {
     logServerSideError(
       error,

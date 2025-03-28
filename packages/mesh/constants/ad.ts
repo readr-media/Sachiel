@@ -140,6 +140,38 @@ export const ADSENSE_UNITS: AdsenseUnits = {
 }
 
 export const GAM_UNITS: GamUnits = {
+  homepage: {
+    PC_A1: {
+      adUnit: 'mmesh_home_pc_970x250_t',
+      adSlot: '1738637846429-0',
+      adSize: [970, 250],
+    },
+    PC_A3: {
+      adUnit: 'mmesh_home_pc_728x90_m',
+      adSlot: '1738637876551-0',
+      adSize: [728, 90],
+    },
+    PC_A4: {
+      adUnit: 'mmesh_home_pc_728x90_b',
+      adSlot: '1738637912352-0',
+      adSize: [728, 90],
+    },
+    MB_A1: {
+      adUnit: 'mmesh_home_mw_320x100_t',
+      adSlot: '1738638022009-0',
+      adSize: [320, 100],
+    },
+    MB_A2: {
+      adUnit: 'mmesh_home_mw_320x100_m',
+      adSlot: '1738638046912-0',
+      adSize: [320, 100],
+    },
+    MB_A3: {
+      adUnit: 'mmesh_home_mw_320x100_b',
+      adSlot: '1738638069956-0',
+      adSize: [320, 100],
+    },
+  },
   story: {
     PC_E0: {
       adUnit: 'mmesh_article_pc_300x600_rb',
@@ -358,6 +390,58 @@ export const GAM_UNITS: GamUnits = {
       adUnit: 'mmesh_social_mw_300x250_3_15',
       adSlot: '1739861467762-0',
       adSize: [300, 250],
+    },
+  },
+  profile: {
+    MB_C1: {
+      adUnit: 'mmesh_profile_MW_250x250_3',
+      adSlot: '1738638115149-0',
+      adSize: [250, 250],
+    },
+    MB_C2: {
+      adUnit: 'mmesh_profile_MW_250x250_3_2',
+      adSlot: '1740638529136-0',
+      adSize: [250, 250],
+    },
+    MB_C3: {
+      adUnit: 'mmesh_profile_MW_250x250_3_3',
+      adSlot: '1740638561268-0',
+      adSize: [250, 250],
+    },
+    MB_C4: {
+      adUnit: 'mmesh_profile_MW_250x250_3_4',
+      adSlot: '1740638585211-0',
+      adSize: [250, 250],
+    },
+    MB_C5: {
+      adUnit: 'mmesh_profile_MW_250x250_3_5',
+      adSlot: '1740638611741-0',
+      adSize: [250, 250],
+    },
+    MB_C6: {
+      adUnit: 'mmesh_profile_MW_250x250_3_6',
+      adSlot: '1740638634023-0',
+      adSize: [250, 250],
+    },
+    MB_C7: {
+      adUnit: 'mmesh_profile_MW_250x250_3_7',
+      adSlot: '1740638661589-0',
+      adSize: [250, 250],
+    },
+    MB_C8: {
+      adUnit: 'mmesh_profile_MW_250x250_3_8',
+      adSlot: '1740638696408-0',
+      adSize: [250, 250],
+    },
+    MB_C9: {
+      adUnit: 'mmesh_profile_MW_250x250_3_9',
+      adSlot: '1740638725365-0',
+      adSize: [250, 250],
+    },
+    MB_C10: {
+      adUnit: 'mmesh_profile_MW_250x250_3_10',
+      adSlot: 'div-gpt-ad-1740638753483-0',
+      adSize: [250, 250],
     },
   },
 }

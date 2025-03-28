@@ -1,13 +1,9 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
 
-export default function SubpageLayout({
+export default async function SubpageLayout({
   children,
   params,
 }: {
@@ -15,17 +11,11 @@ export default function SubpageLayout({
   params: { slug: string }
 }) {
   const categorySlug = params.slug
-  const [title, setTitle] = useState('')
-
-  useEffect(() => {
-    const fetchSlugInfo = async () => {
-      const result = await fetchCategoryInformation(categorySlug)
-      if (!result) return null
-
-      setTitle(`${result.title}熱門`)
-    }
-    fetchSlugInfo()
-  }, [categorySlug])
+  const result = await fetchCategoryInformation(categorySlug)
+  const title =
+    categorySlug !== 'podcast'
+      ? `${result?.title}熱門`
+      : `${result?.title} 熱門`
 
   const navigationData = {
     title,

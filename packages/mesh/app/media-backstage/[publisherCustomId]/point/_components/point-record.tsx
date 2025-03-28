@@ -208,7 +208,7 @@ export default function PointRecord({
   ])
 
   return (
-    <div className="flex min-w-[800px] max-w-[1040px] grow flex-col gap-5 p-10 pb-[134px]">
+    <div className="flex min-w-[800px] max-w-[theme(width.maxMain)] grow flex-col gap-5 p-10 pb-[134px]">
       <RecordController
         currentRecordType={recordType}
         setRecordType={setRecordType}

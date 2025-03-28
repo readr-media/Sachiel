@@ -4,21 +4,24 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import StoryCard from '@/app/_components/story-card'
-import AdSense from '@/components/ad/google-adsense/adsense-ad'
+import AdSense from '@/components/ad/adsense-ad'
 import Spinner from '@/components/spinner'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
 
+import PodcastSlugCard from './podcast-slug-card'
 import PublisherCard from './publisher-card'
 
 type Props = {
   stories: DailyStory[] | undefined
   publishersAndStories: SponsoredStoryByCategory[] | null
+  storyType: 'podcast' | 'story'
 }
 
 export default function NonDesktopStories({
   stories,
   publishersAndStories,
+  storyType,
 }: Props) {
   const [visibleCount, setVisibleCount] = useState(15)
   const [isLoading, setIsLoading] = useState(false)
@@ -49,24 +52,34 @@ export default function NonDesktopStories({
         remainingStories === 9 || remainingStories === 0
       const shouldRenderAd = index === 4 || index === 9
 
-      elements.push(
-        <StoryCard
-          key={story.id}
-          story={story}
-          ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
-          className={`${
-            (index + 1) % 5 === 0 ||
-            (publishersAndStories &&
-              publisherIndex < publishersAndStories.length)
-              ? 'shadow-none'
-              : ''
-          }`}
-          gtmTags={{
-            story: 'GTM-categorypage_click_latest_article',
-            pick: 'GTM-categorypage_pick_latest_article',
-          }}
-        />
-      )
+      if (storyType === 'story') {
+        elements.push(
+          <StoryCard
+            key={story.id}
+            story={story}
+            ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
+            className={`${
+              (index + 1) % 5 === 0 ||
+              (publishersAndStories &&
+                publisherIndex < publishersAndStories.length)
+                ? 'shadow-none'
+                : ''
+            }`}
+            gtmTags={{
+              story: 'GTM-categorypage_click_latest_article',
+              pick: 'GTM-categorypage_pick_latest_article',
+            }}
+          />
+        )
+      } else {
+        elements.push(
+          <PodcastSlugCard
+            key={story.id}
+            data={story}
+            ref={shouldSetTriggerRef ? triggerLoadMoreRef : undefined}
+          />
+        )
+      }
 
       if (shouldRenderAd) {
         elements.push(

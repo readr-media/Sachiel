@@ -79,6 +79,7 @@ switch (ENV) {
       policyId: '2dd43a81-3e1c-4c74-aa5f-35135f24dfcd',
       meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
     }
+    GTM_ENV = 'GTM-MKLVHSGJ'
     break
   case 'dev':
     SITE_HOST = 'dev.mmesh.news'
@@ -185,8 +186,8 @@ const STATIC_FILE_ENDPOINTS = {
   categoryMostSponsoredPublishersfn: (categoryName: string) =>
     `${STATIC_FILE_ORIGIN}/data/${categoryName}_recommend_sponsors.json`,
   contract: `${STATIC_FILE_ORIGIN}/contracts/MeshPoint.json`,
-  publisherStoriesFn: (publisherCustomId: string) =>
-    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_stories.json`,
+  publisherProfileFn: (publisherCustomId: string) =>
+    `${STATIC_FILE_ORIGIN}/data/${publisherCustomId}_profile.json`,
   invalidNameList: `${STATIC_FILE_ORIGIN}/data/invalid_names.json`,
   termsOfService: `${STATIC_FILE_ORIGIN}/policies/terms-of-service.html`,
   privacyPolicy: `${STATIC_FILE_ORIGIN}/policies/privacy-policy.html`,

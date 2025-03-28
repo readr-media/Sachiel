@@ -47,6 +47,7 @@ fragment StoryInfo on Story {
   paywall
   full_screen_ad
   published_date
+  story_type
 }
 
 fragment CollectionInfo on Collection {
