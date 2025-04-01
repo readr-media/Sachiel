@@ -9,6 +9,7 @@ import {
   GetPublisherPolicyDocument,
   GetStoriesDocument,
   GetStoryDocument,
+  GetStoryInteractionsDocument,
   GetStoryPickersDocument,
   GetStorySourceDocument,
 } from '@/graphql/__generated__/graphql'
@@ -37,13 +38,11 @@ type SearchedResult = {
 }
 
 export async function getStory({ storyId }: { storyId: string }) {
-  const picksTake = 5
-  const commentsTake = 30
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const response = await queryGraphQL(
     GetStoryDocument,
-    { storyId, picksTake, commentsTake },
+    { storyId },
     globalLogFields
   )
 
@@ -164,4 +163,18 @@ export async function tryToGetFullStory(storyId: string) {
   if (!canGetFullStory) return null
 
   return await getFullStory(storyId)
+}
+
+export async function getStoryInteractions(storyId: string) {
+  const picksTake = 5
+  const commentsTake = 30
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const response = await queryGraphQL(
+    GetStoryInteractionsDocument,
+    { storyId, picksTake, commentsTake },
+    globalLogFields
+  )
+
+  return response?.story
 }

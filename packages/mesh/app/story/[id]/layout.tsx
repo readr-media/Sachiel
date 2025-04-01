@@ -4,8 +4,7 @@ import { notFound } from 'next/navigation'
 import { getStory } from '@/app/actions/story'
 import { metadata as rootMetadata } from '@/app/layout'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
-import { CommentProvider } from '@/context/comment'
-import { CommentObjective } from '@/types/objective'
+import { StoryInteractionsProvider } from '@/context/story-interactions'
 
 import ClientLayout from './_components/client-layout'
 
@@ -22,6 +21,7 @@ export async function generateMetadata(
   const storyData = await getStory({
     storyId,
   })
+
   if (!storyData) notFound()
 
   const previousImages = (await parent).openGraph?.images || []
@@ -63,20 +63,14 @@ export default async function StoryLayout({
 }) {
   const storyId = params.id
   const storyData = await getStory({ storyId })
-
   if (!storyData) notFound()
 
   const storyType = storyData.story_type === 'story' ? 'story' : 'podcast'
   return (
-    <CommentProvider
-      initialComments={storyData.comments || []}
-      commentsCount={storyData.commentsCount ?? 0}
-      commentObjectiveData={storyData}
-      commentObjective={CommentObjective.Story}
-    >
+    <StoryInteractionsProvider storyId={storyId}>
       <ClientLayout story={storyData} storyType={storyType}>
         {children}
       </ClientLayout>
-    </CommentProvider>
+    </StoryInteractionsProvider>
   )
 }

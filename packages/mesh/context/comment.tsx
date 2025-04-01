@@ -16,10 +16,9 @@ import DesktopCommentModal from '@/components/comment/desktop-comment-section/co
 import { MobileCommentModalContent } from '@/components/comment/mobile-comment-section/mobile-comment-modal-content'
 import TOAST_MESSAGE from '@/constants/toast'
 import { type User } from '@/context/user'
-import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
-import type { CommentObjectiveData } from '@/types/comment'
+import type { CommentObjectiveData, StoryInteractions } from '@/types/comment'
 import { CommentObjective } from '@/types/objective'
 import type { PickListItem } from '@/types/profile'
 import { sleep } from '@/utils/sleep'
@@ -31,8 +30,7 @@ import { useToast } from './toast'
 const SLEEP_TIME = 1500
 
 // Types
-type Story = NonNullable<NonNullable<GetStoryQuery>['story']>
-type Comment = NonNullable<Story['comments']>[number]
+type Comment = NonNullable<StoryInteractions['comments']>[number]
 
 export enum EditDrawerShowType {
   Empty = '',
@@ -73,6 +71,10 @@ interface State {
 }
 
 type Action =
+  | {
+      type: 'SETUP_COMMENT'
+      payload: { comments: Comment[]; commentsCount: number }
+    }
   | { type: 'TOGGLE_MOBILE_COMMENT_MODAL'; payload: { isOpen: boolean } }
   | { type: 'TOGGLE_DESKTOP_COMMENT_MODAL'; payload: { isOpen: boolean } }
   | { type: 'TOGGLE_COMMENT_EDITOR'; payload: { isEditing: boolean } }
@@ -125,6 +127,12 @@ const initialState: State = {
 
 function commentReducer(state: State, action: Action): State {
   switch (action.type) {
+    case 'SETUP_COMMENT':
+      return {
+        ...state,
+        commentList: action.payload.comments,
+        commentsCount: action.payload.commentsCount,
+      }
     case 'TOGGLE_MOBILE_COMMENT_MODAL':
       return {
         ...state,
@@ -273,20 +281,20 @@ const CommentContext = createContext<CommentContextType | undefined>(undefined)
 export function CommentProvider({
   children,
   initialComments,
-  commentsCount,
+  initialCommentsCount,
   commentObjectiveData,
   commentObjective,
 }: {
   children: ReactNode
   initialComments: Comment[] | NonNullable<NonNullable<PickListItem>['comment']>
-  commentsCount: number
+  initialCommentsCount: number
   commentObjectiveData: CommentObjectiveData
   commentObjective: CommentObjective
 }) {
   const [state, dispatch] = useReducer(commentReducer, {
     ...initialState,
     commentList: initialComments,
-    commentsCount,
+    commentsCount: initialCommentsCount,
     commentObjective,
   })
   const { addToast } = useToast()
@@ -514,6 +522,18 @@ export function CommentProvider({
       }
     }
   }, [state.isDesktopCommentModalOpen, state.isMobileCommentModalOpen, width])
+
+  useEffect(() => {
+    if (initialCommentsCount) {
+      dispatch({
+        type: 'SETUP_COMMENT',
+        payload: {
+          comments: initialComments,
+          commentsCount: initialCommentsCount,
+        },
+      })
+    }
+  }, [initialComments, initialCommentsCount])
 
   return (
     <CommentContext.Provider value={contextValue}>

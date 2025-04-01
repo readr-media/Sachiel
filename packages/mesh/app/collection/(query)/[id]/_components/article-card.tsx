@@ -17,7 +17,7 @@ import { logClickEvent } from '@/utils/event-logs'
 import type { CollectionPick } from '../../_types/collection'
 import Comment from './comment'
 
-type CollectionPickStory = NonNullable<CollectionPick>['story']
+type CollectionPickStory = NonNullable<NonNullable<CollectionPick>['story']>
 
 type ArticleCardProps = {
   story: CollectionPickStory

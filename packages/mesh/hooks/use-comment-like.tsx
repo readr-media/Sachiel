@@ -5,7 +5,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useComment } from '@/context/comment'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
-import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
+import type { GetStoryInteractionsQuery } from '@/graphql/__generated__/graphql'
 import { type CommentType } from '@/types/profile'
 import { debounce } from '@/utils/performance'
 
@@ -13,7 +13,7 @@ import useRedirectLogin from './use-redirect-login'
 
 // 從 Story Query 中提取 Comment 型別
 type CommentTypeFromStory = NonNullable<
-  NonNullable<GetStoryQuery['story']>['comments']
+  NonNullable<GetStoryInteractionsQuery['story']>['comments']
 >[0]
 
 // 定義共同的 Member 型別
