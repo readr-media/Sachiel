@@ -18,6 +18,7 @@ import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
 
+import type { PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
 import PaymentWall from './payment-wall'
@@ -30,10 +31,12 @@ export default function Article({
   story,
   sourceCustomId,
   isMemberStory,
+  policy,
 }: {
   story: Story
   sourceCustomId: string
   isMemberStory: boolean
+  policy: PublisherPolicy
 }) {
   const [apiData, setApiData] = useState<ApiData>(
     story?.apiData ?? story?.trimApiData
@@ -189,10 +192,7 @@ export default function Article({
           <div className="relative overflow-hidden">
             {getArticleContent(story, sourceCustomId)}
             {isMemberStory && !hasPayed ? (
-              <PaymentWall
-                storyId={story?.id ?? ''}
-                publisherCustomId={sourceCustomId}
-              />
+              <PaymentWall storyId={story?.id ?? ''} policy={policy} />
             ) : null}
           </div>
         </div>

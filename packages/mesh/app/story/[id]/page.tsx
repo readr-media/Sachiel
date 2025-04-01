@@ -3,7 +3,7 @@ import './_style/article.css'
 import dynamicImport from 'next/dynamic'
 import { notFound } from 'next/navigation'
 
-import type { getPublisherPolicy } from '@/app/actions/story'
+import { getPublisherPolicy } from '@/app/actions/story'
 import { getStory } from '@/app/actions/story'
 import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 
@@ -39,12 +39,18 @@ export default async function Page({ params }: { params: { id: string } }) {
   const sourceCustomId = source?.customId ?? ''
   const isMemberStory = isMember ?? false
 
+  let policy: PublisherPolicy = []
+  if (isMemberStory && sourceCustomId) {
+    policy = await getPublisherPolicy(sourceCustomId)
+  }
+
   return (
     <>
       <Article
         story={storyData}
         sourceCustomId={sourceCustomId}
         isMemberStory={isMemberStory}
+        policy={policy}
       />
       <StoryEndAd />
       <RelatedStories relatedKeyword={title} sourceStoryId={storyId} />

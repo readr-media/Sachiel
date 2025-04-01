@@ -2,9 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
-import { getPublisherPolicy } from '@/app/actions/story'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { useUser } from '@/context/user'
@@ -14,30 +12,14 @@ import { type PublisherPolicy } from '../page'
 
 export default function PaymentWall({
   storyId,
-  publisherCustomId,
+  policy,
 }: {
   storyId: string
-  publisherCustomId: string
+  policy: PublisherPolicy
 }) {
   const router = useRouter()
   const { user } = useUser()
   const userId = user.memberId
-  const [policy, setPolicy] = useState<PublisherPolicy | null>(null)
-
-  useEffect(() => {
-    const fetchPolicy = async () => {
-      if (!publisherCustomId)
-        return console.error(
-          `fetch policy with empty publisherCustomId: ${publisherCustomId}`
-        )
-      const policy = await getPublisherPolicy(publisherCustomId)
-      setPolicy(policy)
-    }
-
-    fetchPolicy()
-  }, [publisherCustomId])
-
-  if (!policy) return null
 
   return (
     <div className="absolute inset-x-0 bottom-0">
