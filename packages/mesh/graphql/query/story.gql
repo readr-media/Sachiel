@@ -205,3 +205,10 @@ query GetStoryPickers($storyId: ID, $picksTake: Int, $picksSkip: Int) {
     }
   }
 }
+
+query GetFullStory($storyId: ID) {
+  story(where: { id: $storyId }) {
+    apiData
+    trimApiData
+  }
+}

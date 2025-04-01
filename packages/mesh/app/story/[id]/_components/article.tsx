@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
+import { tryToGetFullStory } from '@/app/actions/story'
 import Button from '@/components/button'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -11,6 +12,7 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useComment } from '@/context/comment'
+import { useUser } from '@/context/user'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
@@ -27,16 +29,17 @@ const inHousePublisherCustomIds = ['mirrormedia', 'readr']
 export default function Article({
   story,
   sourceCustomId,
-  renderData,
   isMemberStory,
-  hasPayed,
 }: {
   story: Story
   sourceCustomId: string
-  renderData: ApiData
   isMemberStory: boolean
-  hasPayed: boolean
 }) {
+  const [apiData, setApiData] = useState<ApiData>(
+    story?.apiData ?? story?.trimApiData
+  )
+  const [hasPayed, setHasPayed] = useState(false)
+  const { user } = useUser()
   const { state: comment } = useComment()
   const getArticleContent = (story: Story, sourceCustomId: string) => {
     const isInHouseArticle = inHousePublisherCustomIds.includes(sourceCustomId)
@@ -70,12 +73,13 @@ export default function Article({
       return (
         <>
           <SideIndex
-            apiData={renderData}
+            apiData={apiData}
             sourceCustomId={sourceCustomId}
             isInArticle={true}
           />
           <ApiDataRenderer
-            apiData={renderData}
+            key={JSON.stringify(apiData)}
+            apiData={apiData}
             sourceCustomId={sourceCustomId}
           />
         </>
@@ -103,6 +107,20 @@ export default function Article({
   useEffect(() => {
     setDisplayCommentCount(Math.max(comment.commentsCount, displayCommentCount))
   }, [comment.commentsCount, displayCommentCount, setDisplayCommentCount])
+
+  useEffect(() => {
+    const getFullStory = async (storyId: string) => {
+      const fullStory = await tryToGetFullStory(storyId)
+      if (fullStory && fullStory.apiData) {
+        setApiData(fullStory.apiData)
+        setHasPayed(true)
+      }
+    }
+
+    if (isMemberStory && user.memberId && story?.id) {
+      getFullStory(story.id)
+    }
+  }, [isMemberStory, story?.id, user.memberId])
 
   return (
     <div>

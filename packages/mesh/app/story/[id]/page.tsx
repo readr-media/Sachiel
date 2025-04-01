@@ -1,6 +1,6 @@
 import './_style/article.css'
 
-import dynamic from 'next/dynamic'
+import dynamicImport from 'next/dynamic'
 import { notFound } from 'next/navigation'
 
 import type { getPublisherPolicy } from '@/app/actions/story'
@@ -13,13 +13,16 @@ import Article from './_components/article'
 import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
 import StoryEndAd from './_components/story-end-ad'
-const RelatedStories = dynamic(() => import('./_components/related-stories'))
-const AudioPlayer = dynamic(() => import('./_components/audio-player'), {
+const RelatedStories = dynamicImport(
+  () => import('./_components/related-stories')
+)
+const AudioPlayer = dynamicImport(() => import('./_components/audio-player'), {
   ssr: false,
 })
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
+export const dynamic = 'force-static'
 export const revalidate = NEXT_PAGES_REVALIDATE.story
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -29,31 +32,19 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!storyData || !storyData.title) {
     notFound()
   }
-  const {
-    title,
-    story_type,
-    source,
-    isMember,
-    apiData,
-    trimApiData,
-    podcast,
-    og_image,
-  } = storyData
+  const { title, story_type, source, isMember, apiData, podcast, og_image } =
+    storyData
 
   const storyType = story_type === 'story' ? 'story' : 'podcast'
   const sourceCustomId = source?.customId ?? ''
   const isMemberStory = isMember ?? false
-  const renderData: ApiData = apiData ?? trimApiData
-  const hasPayed = !!apiData
 
   return (
     <>
       <Article
         story={storyData}
         sourceCustomId={sourceCustomId}
-        renderData={renderData}
         isMemberStory={isMemberStory}
-        hasPayed={hasPayed}
       />
       <StoryEndAd />
       <RelatedStories relatedKeyword={title} sourceStoryId={storyId} />

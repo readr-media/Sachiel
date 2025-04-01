@@ -1,7 +1,11 @@
 'use server'
 
+import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers'
+
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
+  GetFullStoryDocument,
   GetPublisherPolicyDocument,
   GetStoriesDocument,
   GetStoryDocument,
@@ -130,4 +134,34 @@ export async function getStoryPickers(
     'Failed to getStoryPickers'
   )
   return getStoryPickersResponse?.story
+}
+
+async function getFullStory(storyId: string) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+
+  const response = await queryGraphQL(
+    GetFullStoryDocument,
+    { storyId },
+    globalLogFields
+  )
+
+  return response?.story ?? null
+}
+
+type UnlockStory = [string, number]
+export async function tryToGetFullStory(storyId: string) {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get('token')?.value ?? ''
+
+  if (!accessToken) return null
+
+  const decodedAccessToken = jwt.decode(accessToken, { json: true })
+  if (!decodedAccessToken?.story) return null
+
+  const unlockStories: UnlockStory[] = decodedAccessToken?.story ?? []
+  const canGetFullStory = unlockStories.some(([id]) => id === storyId)
+
+  if (!canGetFullStory) return null
+
+  return await getFullStory(storyId)
 }

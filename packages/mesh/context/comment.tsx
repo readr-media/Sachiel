@@ -388,7 +388,13 @@ export function CommentProvider({
         })
       }
     },
-    [addToast, commentObjective, state.comment, state.commentList]
+    [
+      addToast,
+      commentObjective,
+      detectIfShouldRedirectToLogin,
+      state.comment,
+      state.commentList,
+    ]
   )
 
   const handleTextChange = useCallback(

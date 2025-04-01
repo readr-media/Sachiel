@@ -7235,6 +7235,19 @@ export type GetStoryPickersQuery = {
   } | null
 }
 
+export type GetFullStoryQueryVariables = Exact<{
+  storyId?: InputMaybe<Scalars['ID']['input']>
+}>
+
+export type GetFullStoryQuery = {
+  __typename?: 'Query'
+  story?: {
+    __typename?: 'Story'
+    apiData?: any | null
+    trimApiData?: any | null
+  } | null
+}
+
 export type GetPublisherTransactionsQueryVariables = Exact<{
   publisherCustomId?: InputMaybe<Scalars['String']['input']>
   take?: InputMaybe<Scalars['Int']['input']>
@@ -22118,6 +22131,61 @@ export const GetStoryPickersDocument = {
   GetStoryPickersQuery,
   GetStoryPickersQueryVariables
 >
+export const GetFullStoryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetFullStory' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'storyId' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'story' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'storyId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'apiData' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'trimApiData' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetFullStoryQuery, GetFullStoryQueryVariables>
 export const GetPublisherTransactionsDocument = {
   kind: 'Document',
   definitions: [
