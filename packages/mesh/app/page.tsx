@@ -1,5 +1,3 @@
-import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
-
 import CategoryStorySection from './_components/category-story/section'
 import DailyHighlightSection from './_components/daily-highlight/section'
 import DataLayerLogger from './_components/data-layer-logger'
@@ -10,7 +8,7 @@ import TopCollectorSection from './_components/top-collector/section'
 import TopPublisherSection from './_components/top-publisher/section'
 
 export const dynamic = 'force-static'
-export const revalidate = NEXT_PAGES_REVALIDATE.homepage
+export const revalidate = 600
 
 export default function Home() {
   const ABConst = Math.random() < 0.5 ? 'A' : 'B'

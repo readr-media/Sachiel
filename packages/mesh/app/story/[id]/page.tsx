@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation'
 
 import { getPublisherPolicy } from '@/app/actions/story'
 import { getStory } from '@/app/actions/story'
-import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
@@ -23,7 +22,7 @@ const AudioPlayer = dynamicImport(() => import('./_components/audio-player'), {
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
 export const dynamic = 'force-static'
-export const revalidate = NEXT_PAGES_REVALIDATE.story
+export const revalidate = 600
 
 export default async function Page({ params }: { params: { id: string } }) {
   const storyId = params.id
