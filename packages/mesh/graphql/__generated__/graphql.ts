@@ -5333,6 +5333,7 @@ export type GetAnnouncementsQuery = {
   announcements?: Array<{
     __typename?: 'Announcement'
     id: string
+    isActive?: boolean | null
     name?: string | null
     status?: string | null
     type?: string | null
@@ -9939,6 +9940,7 @@ export const GetAnnouncementsDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'isActive' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'status' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'type' } },
