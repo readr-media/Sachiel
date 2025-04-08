@@ -48,14 +48,28 @@ export default function NotificationDropdown({
             <Icon iconName="icon-close" size="l" />
           </button>
         </div>
-        {announcement && announcement.length > 0 ? (
-          <div className="flex flex-col gap-1 rounded-t-md bg-highlight-red p-5">
-            <p className="subtitle-2 text-primary-700">系統維修公告</p>
-            <p className="body-3 max-w-[335px] text-primary-600">
-              {announcement[0].name}
-            </p>
-          </div>
-        ) : null}
+        {announcement && announcement.length > 0
+          ? announcement
+              .filter((a) => a.isActive)
+              .map((a) => {
+                const { id, name, type } = a
+                return (
+                  <div
+                    key={id}
+                    className={`flex flex-col gap-1 rounded-t-md p-5 ${getAnnouncementBgColor(
+                      type
+                    )}`}
+                  >
+                    <h4 className="subtitle-2 text-primary-700">
+                      {getAnnouncementTitle(type)}
+                    </h4>
+                    <p className="body-3 max-w-[335px] text-primary-600">
+                      {name}
+                    </p>
+                  </div>
+                )
+              })
+          : null}
         {notification?.current.length ? (
           <>
             <div className="h-15 px-5 pb-3 pt-4">
@@ -387,4 +401,21 @@ const renderNotifierText = (
         {pluralText}
       </p>
     )
+}
+
+const getAnnouncementTitle = (type: string | undefined | null) => {
+  switch (type) {
+    case 'features':
+      return '新功能上線'
+    case 'new-media':
+      return '新媒體上架'
+    case 'maintain':
+      return '系統維修公告'
+    default:
+      return ''
+  }
+}
+
+const getAnnouncementBgColor = (type: string | undefined | null) => {
+  return type === 'maintain' ? 'bg-highlight-red' : 'bg-highlight-blue'
 }

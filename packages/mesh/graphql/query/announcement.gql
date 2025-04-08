@@ -6,6 +6,7 @@ query GetAnnouncements($take: Int) {
     orderBy: { createdAt: desc }
   ) {
     id
+    isActive
     name
     status
     type
