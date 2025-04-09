@@ -1,13 +1,21 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import {
   type Dispatch,
   type SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from 'react'
 
+import {
+  getAccessToken,
+  getCurrentUser,
+  validateIdToken,
+} from '@/app/actions/auth'
+import { auth } from '@/firebase/client'
 import type { GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 import { type GetCurrentUserMemberIdQuery } from '@/graphql/__generated__/graphql'
 import type { ProfileTypes } from '@/types/profile'
@@ -86,7 +94,54 @@ export function UserProvider({
   user: User | undefined
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
   const [currentUser, setCurrentUser] = useState<User>(user ?? guest)
+
+  useEffect(() => {
+    if (currentUser.memberId || pathname === '/login') return
+
+    let unsubscribe: (() => void) | null = null
+
+    const getUser = async () => {
+      // Try1: get user if accessToken exist in cookie
+      const user = await getCurrentUser()
+      if (user) {
+        setCurrentUser(user)
+      } else {
+        // Try2: get accessToken again to get user if possible
+        unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
+          if (!firebaseUser) return
+
+          try {
+            const idTokenResult = await firebaseUser.getIdTokenResult()
+            const idToken = idTokenResult.token
+            const { status } = await validateIdToken(idToken)
+            if (status === 'verified') {
+              await getAccessToken(idToken)
+              const user = await getCurrentUser()
+              user && setCurrentUser(user)
+            }
+          } catch (error) {
+            console.error('error revalidate firebase idToken', error)
+
+            if (
+              error instanceof Error &&
+              'code' in error &&
+              error.code === 'auth/user-token-expired'
+            ) {
+              auth.signOut()
+            }
+          }
+        })
+      }
+    }
+
+    getUser()
+
+    return () => {
+      if (unsubscribe) unsubscribe()
+    }
+  }, [currentUser, pathname])
 
   return (
     <UserContext.Provider

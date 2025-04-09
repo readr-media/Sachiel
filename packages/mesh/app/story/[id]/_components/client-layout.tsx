@@ -8,6 +8,7 @@ import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { useComment } from '@/context/comment'
+import { useStoryInteractions } from '@/context/story-interactions'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
@@ -16,7 +17,7 @@ import { getStoryUrl } from '@/utils/get-url'
 
 import Loading from './loading'
 
-type Story = NonNullable<GetStoryQuery>['story']
+export type Story = NonNullable<NonNullable<GetStoryQuery>['story']>
 
 export default function ClientLayout({
   story,
@@ -28,10 +29,12 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const { user } = useUser()
-  const { displayPicks, displayPicksCount } = useDisplayPicks(story)
+  const { interactions } = useStoryInteractions()
+  const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
+  const { state } = useComment()
+
   const isSinglePickByCurrentUser =
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
-  const { state: comment } = useComment()
   const navigationTitle = storyType === 'story' ? '新聞' : 'Podcast'
 
   return (
@@ -76,7 +79,7 @@ export default function ClientLayout({
       mobileActionBar={{
         pickObjective: PickObjective.Story,
         objectiveId: story?.id ?? '',
-        commentsCount: comment.commentsCount,
+        commentsCount: state.commentsCount,
         picksCount: displayPicksCount,
         displayPicks: displayPicks,
         actions: [
