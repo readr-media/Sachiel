@@ -12,6 +12,7 @@ import NonDesktopStories from './_components/non-desktop-stories'
 import TopPodcastSection from './_components/top-podcast-section'
 import TopStoriesSection from './_components/top-stories-section'
 
+export const dynamic = 'force-static'
 export const revalidate = 600
 
 export default async function Page({ params }: { params: { slug: string } }) {
