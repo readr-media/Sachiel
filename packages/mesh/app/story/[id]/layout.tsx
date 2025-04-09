@@ -4,9 +4,10 @@ import { notFound } from 'next/navigation'
 import { getStory } from '@/app/actions/story'
 import { metadata as rootMetadata } from '@/app/layout'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
-import { StoryInteractionsProvider } from '@/context/story-interactions'
 
 import ClientLayout from './_components/client-layout'
+import CommentWrapper from './_components/comment-wrapper'
+import StoryInteractionsWrapper from './_components/story-interactions-wrapper'
 
 export async function generateMetadata(
   {
@@ -67,10 +68,12 @@ export default async function StoryLayout({
 
   const storyType = storyData.story_type === 'story' ? 'story' : 'podcast'
   return (
-    <StoryInteractionsProvider storyId={storyId}>
-      <ClientLayout story={storyData} storyType={storyType}>
-        {children}
-      </ClientLayout>
-    </StoryInteractionsProvider>
+    <StoryInteractionsWrapper storyId={storyId}>
+      <CommentWrapper story={storyData}>
+        <ClientLayout story={storyData} storyType={storyType}>
+          {children}
+        </ClientLayout>
+      </CommentWrapper>
+    </StoryInteractionsWrapper>
   )
 }
