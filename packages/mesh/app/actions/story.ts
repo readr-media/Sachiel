@@ -149,7 +149,7 @@ async function getFullStory(storyId: string) {
 
 type UnlockStory = [string, number]
 export async function tryToGetFullStory(storyId: string) {
-  const cookieStore = await cookies()
+  const cookieStore = cookies()
   const accessToken = cookieStore.get('token')?.value ?? ''
 
   if (!accessToken) return null
