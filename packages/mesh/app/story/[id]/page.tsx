@@ -13,7 +13,10 @@ import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
 import StoryEndAd from './_components/story-end-ad'
 const RelatedStories = dynamicImport(
-  () => import('./_components/related-stories')
+  () => import('./_components/related-stories'),
+  {
+    ssr: false,
+  }
 )
 const AudioPlayer = dynamicImport(() => import('./_components/audio-player'), {
   ssr: false,
