@@ -1,17 +1,11 @@
 import { fetchMostSponsoredPublisher } from '@/app/actions/get-homepage'
-import AdManager from '@/components/ad/ad-manager-ad'
 
+import { Ad } from './ad'
 import TopPublisherCard from './card'
 
-type Props = {
-  version: 'A' | 'B'
-}
-
-export default async function TopPublisherSection({ version }: Props) {
+export default async function TopPublisherSection() {
   const data = await fetchMostSponsoredPublisher()
   if (!data) return null
-
-  const shouldShowGAMAds = version === 'B'
 
   return (
     <section className="px-5 pb-10 pt-8 sm:pb-[22px] md:px-[70px] lg:px-10 lg:pb-15 lg:pt-10 xxl:pb-[43px]">
@@ -24,9 +18,7 @@ export default async function TopPublisherSection({ version }: Props) {
       >
         {data.map((publisher, index) => (
           <>
-            {index === 2 && shouldShowGAMAds && (
-              <AdManager pageKey="homepage" adKey="A4" className="col-span-2" />
-            )}
+            {index === 2 && <Ad />}
             <TopPublisherCard key={publisher.id} publisher={publisher} />
           </>
         ))}
