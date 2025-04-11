@@ -11,7 +11,6 @@ const ABTestContext = createContext<{ version: TestVersion } | undefined>(
 
 export function ABTestProvider({ children }: { children: ReactNode }) {
   const [testVersion, setTestVersion] = useState<TestVersion>(null)
-  console.log(testVersion)
   useEffect(() => {
     setTestVersion(Math.random() < 0.5 ? 'A' : 'B')
   }, [])
