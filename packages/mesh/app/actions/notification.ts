@@ -46,12 +46,12 @@ export async function getNotification({
 }
 
 export type AnnouncementData = Awaited<ReturnType<typeof getAnnouncement>>
-export async function getAnnouncement(take: number = 1) {
+export async function getAnnouncement() {
   const globalLogFields = getLogTraceObjectFromHeaders()
 
   const data = await queryGraphQL(
     GetAnnouncementsDocument,
-    { take },
+    undefined,
     globalLogFields
   )
 

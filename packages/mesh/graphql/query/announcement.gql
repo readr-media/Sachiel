@@ -1,14 +1,14 @@
-query GetAnnouncements($take: Int) {
+query GetAnnouncements {
   announcements(
     where: { status: { equals: "published" } }
-    skip: 0
-    take: $take
     orderBy: { createdAt: desc }
   ) {
     id
+    isActive
     name
     status
     type
     createdAt
   }
 }
+ 

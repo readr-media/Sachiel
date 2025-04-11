@@ -104,15 +104,18 @@ export default function useHandleSignIn() {
   }, [checkUserSession])
 
   useEffect(() => {
+    let unsubscribe: (() => void) | null = null
+
     const init = async () => {
       await auth.authStateReady()
       await handleSignInRedirect()
-      const unsubscribe = await initializeAuthListener()
-      return () => {
-        unsubscribe()
-      }
+      unsubscribe = await initializeAuthListener()
     }
     init()
+
+    return () => {
+      if (unsubscribe) unsubscribe()
+    }
   }, [handleSignInRedirect, initializeAuthListener])
 
   return { authStatus }

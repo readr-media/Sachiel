@@ -11,11 +11,11 @@ import { PaymentType } from '@/types/payment'
 import { type PublisherPolicy } from '../page'
 
 export default function PaymentWall({
-  policy,
   storyId,
+  policy,
 }: {
-  policy: PublisherPolicy
   storyId: string
+  policy: PublisherPolicy
 }) {
   const router = useRouter()
   const { user } = useUser()

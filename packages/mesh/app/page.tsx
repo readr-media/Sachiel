@@ -1,5 +1,3 @@
-import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
-
 import CategoryStorySection from './_components/category-story/section'
 import DailyHighlightSection from './_components/daily-highlight/section'
 import DataLayerLogger from './_components/data-layer-logger'
@@ -9,28 +7,27 @@ import ReadrStorySection from './_components/readr-story'
 import TopCollectorSection from './_components/top-collector/section'
 import TopPublisherSection from './_components/top-publisher/section'
 
-export const revalidate = NEXT_PAGES_REVALIDATE.homepage
+export const dynamic = 'force-static'
+export const revalidate = 600
 
 export default function Home() {
-  const ABConst = Math.random() < 0.5 ? 'A' : 'B'
-
   return (
     <main>
-      <DataLayerLogger version={ABConst} />
+      <DataLayerLogger />
       {/* @ts-expect-error Async Server Component */}
-      <DailyHighlightSection version={ABConst} />
+      <DailyHighlightSection />
       {/* @ts-expect-error Async Server Component */}
       <MostPickedStorySection />
       {/* @ts-expect-error Async Server Component */}
-      <CategoryStorySection version={ABConst} />
+      <CategoryStorySection />
       {/* @ts-expect-error Async Server Component */}
       <TopCollectorSection />
       {/* @ts-expect-error Async Server Component */}
       <MostLikedCommentSection />
       {/* @ts-expect-error Async Server Component */}
-      <ReadrStorySection version={ABConst} />
+      <ReadrStorySection />
       {/* @ts-expect-error Async Server Component */}
-      <TopPublisherSection version={ABConst} />
+      <TopPublisherSection />
     </main>
   )
 }

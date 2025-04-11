@@ -1,21 +1,15 @@
 import { fetchRecentReadrStory } from '@/app/actions/get-homepage'
-import AdSense from '@/components/ad/adsense-ad'
 
 import FeaturedCard from './featured-card'
+import { ReadrStoryAd } from './readr-story-ad'
 
-type Props = {
-  version: 'A' | 'B'
-}
-
-export default async function ReadrStory({ version }: Props) {
+export default async function ReadrStory() {
   const data = await fetchRecentReadrStory()
   if (!data) return null
   const story = data.stories[0]
   const customId = data.customId
   const publisher = data.title
   const publisherId = data.id
-
-  const shouldShowGAMAds = version === 'B'
 
   return (
     <>
@@ -30,9 +24,7 @@ export default async function ReadrStory({ version }: Props) {
           pick: 'GTM-homepage_pick_readr_latest_ article',
         }}
       />
-      {!shouldShowGAMAds && (
-        <AdSense pageKey="homepage" adKey="A3" className="mt-5 lg:mt-10" />
-      )}
+      <ReadrStoryAd />
     </>
   )
 }

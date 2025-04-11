@@ -4,10 +4,10 @@ import { notFound } from 'next/navigation'
 import { getStory } from '@/app/actions/story'
 import { metadata as rootMetadata } from '@/app/layout'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
-import { CommentProvider } from '@/context/comment'
-import { CommentObjective } from '@/types/objective'
 
 import ClientLayout from './_components/client-layout'
+import CommentWrapper from './_components/comment-wrapper'
+import StoryInteractionsWrapper from './_components/story-interactions-wrapper'
 
 export async function generateMetadata(
   {
@@ -22,6 +22,7 @@ export async function generateMetadata(
   const storyData = await getStory({
     storyId,
   })
+
   if (!storyData) notFound()
 
   const previousImages = (await parent).openGraph?.images || []
@@ -63,20 +64,16 @@ export default async function StoryLayout({
 }) {
   const storyId = params.id
   const storyData = await getStory({ storyId })
-
   if (!storyData) notFound()
 
   const storyType = storyData.story_type === 'story' ? 'story' : 'podcast'
   return (
-    <CommentProvider
-      initialComments={storyData.comments || []}
-      commentsCount={storyData.commentsCount ?? 0}
-      commentObjectiveData={storyData}
-      commentObjective={CommentObjective.Story}
-    >
-      <ClientLayout story={storyData} storyType={storyType}>
-        {children}
-      </ClientLayout>
-    </CommentProvider>
+    <StoryInteractionsWrapper storyId={storyId}>
+      <CommentWrapper story={storyData}>
+        <ClientLayout story={storyData} storyType={storyType}>
+          {children}
+        </ClientLayout>
+      </CommentWrapper>
+    </StoryInteractionsWrapper>
   )
 }

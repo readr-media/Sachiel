@@ -41,15 +41,11 @@ let ALCHEMY_ADDRESS: {
   meshPoint: '0x',
 }
 let NEXT_PAGES_REVALIDATE: {
-  homepage: number
   social: number
   media: number
-  story: number
 } = {
-  homepage: 0,
   social: 0,
   media: 0,
-  story: 0,
 }
 let SITE_HOST = ''
 const SITE_TITLE = 'READr Mesh 讀選'
@@ -104,10 +100,8 @@ switch (ENV) {
       meshPoint: '0xe00473f0236D2a23796C71b3678833a821bFab95',
     }
     NEXT_PAGES_REVALIDATE = {
-      homepage: 1 * 60 * 1000,
-      social: 1 * 60 * 1000,
-      media: 1 * 60 * 1000,
-      story: 1 * 60 * 1000,
+      social: 60,
+      media: 60,
     }
     GTM_ENV = 'GTM-MKLVHSGJ'
 
@@ -139,10 +133,8 @@ switch (ENV) {
       meshPoint: '0x791dd9BcDA32483803c8417Fe38394d9a25eFD20',
     }
     NEXT_PAGES_REVALIDATE = {
-      homepage: 20 * 60 * 1000,
-      social: 10 * 60 * 1000,
-      media: 10 * 60 * 1000,
-      story: 20 * 60 * 1000,
+      social: 600,
+      media: 600,
     }
     GTM_ENV = 'GTM-WPC2M99H'
 
