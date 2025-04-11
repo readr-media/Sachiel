@@ -11,25 +11,23 @@ export const dynamic = 'force-static'
 export const revalidate = 600
 
 export default function Home() {
-  const ABConst = Math.random() < 0.5 ? 'A' : 'B'
-
   return (
     <main>
-      <DataLayerLogger version={ABConst} />
+      <DataLayerLogger />
       {/* @ts-expect-error Async Server Component */}
-      <DailyHighlightSection version={ABConst} />
+      <DailyHighlightSection />
       {/* @ts-expect-error Async Server Component */}
       <MostPickedStorySection />
       {/* @ts-expect-error Async Server Component */}
-      <CategoryStorySection version={ABConst} />
+      <CategoryStorySection />
       {/* @ts-expect-error Async Server Component */}
       <TopCollectorSection />
       {/* @ts-expect-error Async Server Component */}
       <MostLikedCommentSection />
       {/* @ts-expect-error Async Server Component */}
-      <ReadrStorySection version={ABConst} />
+      <ReadrStorySection />
       {/* @ts-expect-error Async Server Component */}
-      <TopPublisherSection version={ABConst} />
+      <TopPublisherSection />
     </main>
   )
 }

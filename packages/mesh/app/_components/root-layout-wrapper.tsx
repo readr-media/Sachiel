@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
+import { ABTestProvider } from '@/context/ab-test'
 
 import Loading from './loading'
 
@@ -16,9 +17,11 @@ export default function RootLayoutWrapper({
   let childrenJsx = <>{children}</>
   if (pathname === '/') {
     childrenJsx = (
-      <LayoutTemplate type="default" suspenseFallback={<Loading />}>
-        {children}
-      </LayoutTemplate>
+      <ABTestProvider>
+        <LayoutTemplate type="default" suspenseFallback={<Loading />}>
+          {children}
+        </LayoutTemplate>
+      </ABTestProvider>
     )
   }
 
