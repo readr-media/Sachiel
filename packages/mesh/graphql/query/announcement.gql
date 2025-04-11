@@ -1,8 +1,6 @@
-query GetAnnouncements($take: Int) {
+query GetAnnouncements {
   announcements(
     where: { status: { equals: "published" } }
-    skip: 0
-    take: $take
     orderBy: { createdAt: desc }
   ) {
     id
@@ -13,3 +11,4 @@ query GetAnnouncements($take: Int) {
     createdAt
   }
 }
+ 

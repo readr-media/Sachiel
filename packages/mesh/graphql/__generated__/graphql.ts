@@ -5324,9 +5324,7 @@ export type RemoveExcludePublisherMutation = {
   } | null
 }
 
-export type GetAnnouncementsQueryVariables = Exact<{
-  take?: InputMaybe<Scalars['Int']['input']>
-}>
+export type GetAnnouncementsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAnnouncementsQuery = {
   __typename?: 'Query'
@@ -9892,13 +9890,6 @@ export const GetAnnouncementsDocument = {
       kind: 'OperationDefinition',
       operation: 'query',
       name: { kind: 'Name', value: 'GetAnnouncements' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
-        },
-      ],
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
@@ -9931,19 +9922,6 @@ export const GetAnnouncementsDocument = {
                       },
                     },
                   ],
-                },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'skip' },
-                value: { kind: 'IntValue', value: '0' },
-              },
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'take' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'take' },
                 },
               },
               {
