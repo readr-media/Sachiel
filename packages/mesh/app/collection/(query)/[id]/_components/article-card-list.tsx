@@ -27,6 +27,7 @@ function ArticleCardList({
       <ul className="max-w-[theme(width.maxMain)] bg-primary-700-dark md:grid md:grid-cols-2 md:items-center md:gap-5 md:px-[70px] md:py-10 lg:grid-cols-3 lg:px-10 xxl:pt-[70px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
+          if (!item.story) return null
           return (
             <li
               key={index}

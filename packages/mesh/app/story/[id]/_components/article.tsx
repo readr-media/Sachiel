@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
+import { tryToGetFullStory } from '@/app/actions/story'
 import Button from '@/components/button'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
@@ -11,36 +12,73 @@ import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useComment } from '@/context/comment'
+import { useStoryInteractions } from '@/context/story-interactions'
+import { useUser } from '@/context/user'
+import type { GetStoryInteractionsQuery } from '@/graphql/__generated__/graphql'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
 
-import { type PublisherPolicy } from '../page'
+import type { PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
 import SideIndex from './api-data-renderer/side-index'
 import PaymentWall from './payment-wall'
 
-export type Story = NonNullable<GetStoryQuery>['story']
+type Story = NonNullable<GetStoryQuery>['story']
+export type StoryInteractions = NonNullable<
+  NonNullable<GetStoryInteractionsQuery>['story']
+>
 
 const inHousePublisherCustomIds = ['mirrormedia', 'readr']
 
 export default function Article({
   story,
   sourceCustomId,
-  renderData,
   isMemberStory,
-  hasPayed,
   policy,
 }: {
   story: Story
   sourceCustomId: string
-  renderData: ApiData
   isMemberStory: boolean
-  hasPayed: boolean
   policy: PublisherPolicy
 }) {
+  const [apiData, setApiData] = useState<ApiData>(
+    story?.apiData ?? story?.trimApiData
+  )
+  const [hasPayed, setHasPayed] = useState(false)
+  const { user } = useUser()
   const { state: comment } = useComment()
+  const { interactions } = useStoryInteractions()
+
+  const publishDateInFormat = displayTime(story?.published_date)
+  // TODO: handle login user's following situation like feed.tsx did
+
+  const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
+  const { displayCommentCount, setDisplayCommentCount } =
+    useDisplayCommentCount({
+      objectiveId: story?.id || '',
+      initialCount: comment.commentsCount,
+    })
+
+  useEffect(() => {
+    setDisplayCommentCount(Math.max(comment.commentsCount, displayCommentCount))
+  }, [comment.commentsCount, displayCommentCount, setDisplayCommentCount])
+
+  useEffect(() => {
+    const getFullStory = async (storyId: string) => {
+      const fullStory = await tryToGetFullStory(storyId)
+      if (fullStory && fullStory.apiData) {
+        setApiData(fullStory.apiData)
+        setHasPayed(true)
+      }
+    }
+
+    if (isMemberStory && user.memberId && story?.id) {
+      getFullStory(story.id)
+    }
+  }, [isMemberStory, story?.id, user.memberId])
+
   const getArticleContent = (story: Story, sourceCustomId: string) => {
     const isInHouseArticle = inHousePublisherCustomIds.includes(sourceCustomId)
     const isLinkedArticle = !story?.full_content
@@ -73,12 +111,13 @@ export default function Article({
       return (
         <>
           <SideIndex
-            apiData={renderData}
+            apiData={apiData}
             sourceCustomId={sourceCustomId}
             isInArticle={true}
           />
           <ApiDataRenderer
-            apiData={renderData}
+            key={JSON.stringify(apiData)}
+            apiData={apiData}
             sourceCustomId={sourceCustomId}
           />
         </>
@@ -92,19 +131,6 @@ export default function Article({
       )
     }
   }
-
-  const publishDateInFormat = displayTime(story?.published_date)
-  // TODO: handle login user's following situation like feed.tsx did
-
-  const { displayPicks, displayPicksCount } = useDisplayPicks(story)
-  const { displayCommentCount, setDisplayCommentCount } =
-    useDisplayCommentCount({
-      objectiveId: story?.id || '',
-      initialCount: comment.commentsCount,
-    })
-  useEffect(() => {
-    setDisplayCommentCount(Math.max(comment.commentsCount, displayCommentCount))
-  }, [comment.commentsCount, displayCommentCount, setDisplayCommentCount])
 
   return (
     <div>

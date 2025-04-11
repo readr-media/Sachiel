@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { type Story as LatestStory } from '@/app/actions/get-latest-stories-in-category'
 import { type Collection } from '@/app/collection/(query)/_types/collection'
 import type { SocialStoryPicks } from '@/app/social/_components/feed'
-import { type Story as ArticleStory } from '@/app/story/[id]/_components/article'
+import { type StoryInteractions } from '@/app/story/[id]/_components/article'
 import { useUser } from '@/context/user'
 import type {
   CategoryStory,
@@ -18,7 +18,7 @@ export function useDisplayPicks(
     | DailyStory
     | HomepageStory
     | SocialStoryPicks
-    | ArticleStory
+    | StoryInteractions
     | LatestStory
     | Collection,
   objectiveType: PickObjective = PickObjective.Story

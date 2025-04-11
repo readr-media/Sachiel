@@ -1,60 +1,49 @@
 import './_style/article.css'
 
-import dynamic from 'next/dynamic'
+import dynamicImport from 'next/dynamic'
 import { notFound } from 'next/navigation'
 
-import {
-  getPublisherPolicy,
-  getRelatedStories,
-  getStory,
-} from '@/app/actions/story'
-import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
+import { getPublisherPolicy } from '@/app/actions/story'
+import { getStory } from '@/app/actions/story'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
 import Article from './_components/article'
 import AsideAd from './_components/aside-ad'
 import Comment from './_components/comment'
-import RelatedStories from './_components/related-stories'
 import StoryEndAd from './_components/story-end-ad'
-const AudioPlayer = dynamic(() => import('./_components/audio-player'), {
+const RelatedStories = dynamicImport(
+  () => import('./_components/related-stories'),
+  {
+    ssr: false,
+  }
+)
+const AudioPlayer = dynamicImport(() => import('./_components/audio-player'), {
   ssr: false,
 })
 
 export type PublisherPolicy = Awaited<ReturnType<typeof getPublisherPolicy>>
 
-export const revalidate = NEXT_PAGES_REVALIDATE.story
+export const dynamic = 'force-static'
+export const revalidate = 600
 
 export default async function Page({ params }: { params: { id: string } }) {
   const storyId = params.id
   const storyData = await getStory({ storyId })
-  let policy: PublisherPolicy = []
-  let hasPayed = false
 
   if (!storyData || !storyData.title) {
     notFound()
   }
-  const {
-    title,
-    story_type,
-    source,
-    isMember,
-    apiData,
-    trimApiData,
-    podcast,
-    og_image,
-  } = storyData
-  const relatedStories = await getRelatedStories({
-    storyTitle: title,
-  })
+  const { title, story_type, source, isMember, apiData, podcast, og_image } =
+    storyData
+
   const storyType = story_type === 'story' ? 'story' : 'podcast'
   const sourceCustomId = source?.customId ?? ''
   const isMemberStory = isMember ?? false
-  const renderData: ApiData = apiData ?? trimApiData
 
+  let policy: PublisherPolicy = []
   if (isMemberStory && sourceCustomId) {
     policy = await getPublisherPolicy(sourceCustomId)
-    hasPayed = !!apiData
   }
 
   return (
@@ -62,13 +51,11 @@ export default async function Page({ params }: { params: { id: string } }) {
       <Article
         story={storyData}
         sourceCustomId={sourceCustomId}
-        renderData={renderData}
         isMemberStory={isMemberStory}
-        hasPayed={hasPayed}
         policy={policy}
       />
       <StoryEndAd />
-      <RelatedStories sourceStoryId={storyId} relatedStories={relatedStories} />
+      <RelatedStories relatedKeyword={title} sourceStoryId={storyId} />
       <Comment targetId={storyId} />
       <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] lg:flex-col xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
         {!isMemberStory && storyType === 'story' && (

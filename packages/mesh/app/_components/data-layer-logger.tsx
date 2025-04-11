@@ -3,23 +3,25 @@
 import { useEffect } from 'react'
 import TagManager from 'react-gtm-module'
 
-type Props = {
-  version: 'A' | 'B'
-}
+import { useABTest } from '@/context/ab-test'
 
-export default function DataLayerLogger({ version }: Props) {
+export default function DataLayerLogger() {
+  const { version } = useABTest()
+
   useEffect(() => {
-    const tagManagerArgs = {
-      dataLayer: {
-        event: 'pageview',
-        page: {
-          title: document.title,
-          url: window.location.pathname,
-          adsDisplayVersion: version,
+    if (version) {
+      const tagManagerArgs = {
+        dataLayer: {
+          event: 'pageview',
+          page: {
+            title: document.title,
+            url: window.location.pathname,
+            adsDisplayVersion: version,
+          },
         },
-      },
+      }
+      TagManager.dataLayer(tagManagerArgs)
     }
-    TagManager.dataLayer(tagManagerArgs)
   }, [version])
 
   return null
