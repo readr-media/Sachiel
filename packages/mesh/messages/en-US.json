@@ -20,6 +20,7 @@
     },
     "Subpage": {
       "SubpageLayout-title": "{title}熱門",
+      "SubpageLayout-podcast-title": "{title} 熱門",
       "latest-news-title": "最新報導",
       "PublisherCard-sponsor-count-1": "已獲得",
       "PublisherCard-sponsor-count-2": "次贊助"
@@ -497,6 +498,9 @@
     "NotificationDropDown": {
       "h2": "通知",
       "announcement-title": "系統維修公告",
+      "announcement-title-maintain": "系統維修公告",
+      "announcement-title-new-media": "新媒體上架",
+      "announcement-title-features": "新功能上線",
       "new-announcement-title": "新通知",
       "no-new-announcement": "目前沒有新通知...",
       "prev-notification": "之前的通知",
