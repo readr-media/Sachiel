@@ -1,3 +1,5 @@
+'use client'
+
 import { useTranslations } from 'next-intl'
 
 import { DisplayDateWithWeekday } from '@/components/story-time-display'
