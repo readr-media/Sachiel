@@ -3,6 +3,7 @@ const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
 // 這裡管理的是在 runtime 時，可被設定的環境變數 (通常沒有 `NEXT_PUBLIC_` 作為開頭)
 const USE_MOCK_SERVER = (process.env.USE_MOCK_SERVER ?? 'false') === 'true'
 const MOCK_API_SERVER_PORT = Number(process.env.MOCK_API_SERVER_PORT ?? 4000)
+const MISO_API_KEY = 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT'
 
 // Google OAuth Client
 const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID ?? ''
@@ -43,6 +44,7 @@ if (USE_MOCK_SERVER) API_ENDPOINT = `http://localhost:${MOCK_API_SERVER_PORT}/`
 export {
   API_ENDPOINT,
   EDITOOLS_API_ENDPOINT,
+  MISO_API_KEY,
   MOCK_API_SERVER_PORT,
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET,
