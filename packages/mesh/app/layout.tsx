@@ -8,6 +8,7 @@ import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
+import I18nProvider from '@/components/i18n-provider'
 import MisoAiScript from '@/components/miso-ai-script'
 import UserBehaviorLogger from '@/components/user-behavior-logger'
 import { GTM_ID } from '@/constants/config'
@@ -51,18 +52,20 @@ export default async function RootLayout({
       <MisoAiScript />
       <body>
         <NextIntlClientProvider messages={messages}>
-          <UserProvider user={user}>
-            <ToastProvider>
-              <PickModalProvider>
-                <PickersModalProvider>
-                  <RootLayoutWrapper>
-                    <UserBehaviorLogger />
-                    {children}
-                  </RootLayoutWrapper>
-                </PickersModalProvider>
-              </PickModalProvider>
-            </ToastProvider>
-          </UserProvider>
+          <I18nProvider>
+            <UserProvider user={user}>
+              <ToastProvider>
+                <PickModalProvider>
+                  <PickersModalProvider>
+                    <RootLayoutWrapper>
+                      <UserBehaviorLogger />
+                      {children}
+                    </RootLayoutWrapper>
+                  </PickersModalProvider>
+                </PickModalProvider>
+              </ToastProvider>
+            </UserProvider>
+          </I18nProvider>
         </NextIntlClientProvider>
       </body>
     </html>
