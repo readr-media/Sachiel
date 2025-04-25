@@ -9,6 +9,7 @@ import Blank from '~/components/post/article-type/blank'
 import Frame from '~/components/post/article-type/frame'
 import News from '~/components/post/article-type/news'
 import ScrollableVideo from '~/components/post/article-type/scrollable-video'
+import MisoPageView from '~/components/shared/miso-pageview'
 import { SITE_TITLE } from '~/constants/constant'
 import { LATEST_POSTS_URL, SITE_URL } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
@@ -100,6 +101,7 @@ const Post: NextPageWithLayout<PageProps> = ({ postData, latestPosts }) => {
         description={ogDescription}
         imageUrl={ogImageUrl}
       />
+      <MisoPageView productIds={postData.id} />
       {articleType}
     </>
   )

@@ -97,6 +97,11 @@ export default class MyDocument extends Document {
               })(window,document,'script','dataLayer','${GTM_ID}');`,
             }}
           />
+          <Script
+            async
+            strategy="beforeInteractive"
+            src="https://cdn.jsdelivr.net/npm/@miso.ai/client-sdk@1.11.5/dist/umd/miso.min.js"
+          />
 
           <AdsenseScript />
         </Head>

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 
 import { getPublisherPolicy } from '@/app/actions/story'
 import { getStory } from '@/app/actions/story'
+import MisoPageView from '@/components/miso-page-view'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
@@ -48,6 +49,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
+      <MisoPageView productIds={`story_${storyId}`} />
       <Article
         story={storyData}
         sourceCustomId={sourceCustomId}

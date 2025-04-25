@@ -3,6 +3,7 @@ import { type Chain, type Hex } from 'viem'
 
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const MISO_API_KEY = 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT'
 
 const FIREBASE_CLIENT_EMAIL =
   process.env.FIREBASE_CLIENT_EMAIL || 'admin-sdk-service-account-keys'
@@ -201,6 +202,7 @@ export {
   GCP_PROJECT_ID,
   GQL_ENDPOINT,
   GTM_ID,
+  MISO_API_KEY,
   NEXT_PAGES_REVALIDATE,
   NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
