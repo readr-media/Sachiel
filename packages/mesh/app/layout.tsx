@@ -6,6 +6,7 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
+import MisoAiScript from '@/components/miso-ai-script'
 import UserBehaviorLogger from '@/components/user-behavior-logger'
 import {
   GTM_ID,
@@ -57,6 +58,7 @@ export default async function RootLayout({
       <GoogleTagManager gtmId={GTM_ID} />
       <AdsenseScript />
       <AdManagerScript />
+      <MisoAiScript />
       <body>
         <UserProvider user={user}>
           <ToastProvider>
