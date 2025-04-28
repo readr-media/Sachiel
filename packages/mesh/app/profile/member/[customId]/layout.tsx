@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
 
 import { getMemberForOG } from '@/app/actions/get-profile'
 import { getSiteMedadata } from '@/utils/site-meta'
@@ -11,7 +10,6 @@ export async function generateMetadata({
 }: {
   params: { customId: string }
 }): Promise<Metadata> {
-  const t = await getTranslations('Others.meta')
   const memberCustomId = params.customId
 
   const memberData = await getMemberForOG(memberCustomId)
@@ -20,15 +18,13 @@ export async function generateMetadata({
     memberData?.member?.avatar ||
     memberData?.member?.avatar_image?.resized?.original
 
-  const title = memberName
-    ? t('site-title-profile-member', { memberName })
-    : undefined
+  const title = memberName ? `${memberName} | READr Mesh 讀選` : undefined
   const description = memberName
-    ? t('site-description-profile-member', { memberName })
-    : t('site-description-profile-member-fallback')
+    ? `查看 ${memberName} 的個人檔案。追蹤他們精選的文章和製作的集錦。`
+    : '查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。'
   const images = memberAvatar ?? undefined
   const urlPath = `/profile/member/${memberCustomId}`
-  return getSiteMedadata(t, {
+  return getSiteMedadata({
     title,
     description,
     images,

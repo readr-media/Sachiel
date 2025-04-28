@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import { getCollection } from '@/app/actions/collection'
 import { CommentProvider } from '@/context/comment'
@@ -14,7 +13,6 @@ export async function generateMetadata({
 }: {
   params: { id: string }
 }): Promise<Metadata> {
-  const t = await getTranslations('Others.meta')
   const collectionId = params.id
   const collectionData = await getCollection({
     collectionId,
@@ -29,14 +27,12 @@ export async function generateMetadata({
     height: collection?.heroImage?.file?.height,
   }
 
-  const title = collectionTitle
-    ? t('site-title-collection', { collectionTitle })
-    : t('site-title-collection-fallback')
+  const title = collectionTitle ? `集錦 | ${collectionTitle}` : '集錦'
   const description = collectionDescription ?? undefined
   const images = collectionImageInfo
   const urlPath = `/collection/${collectionId}`
 
-  return getSiteMedadata(t, {
+  return getSiteMedadata({
     title,
     description,
     images,

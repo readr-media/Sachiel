@@ -1,17 +1,14 @@
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
 
 import LayoutTemplate from '@/components/layout-template'
 import { getSiteMedadata } from '@/utils/site-meta'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Others.meta')
-
-  const title = t('site-title-social')
-  const description = t('site-description-social')
+  const title = '社群 | READr Mesh 讀選'
+  const description = '追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。'
   const urlPath = '/social'
 
-  return getSiteMedadata(t, {
+  return getSiteMedadata({
     title,
     description,
     urlPath,

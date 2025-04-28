@@ -49,8 +49,9 @@ let NEXT_PAGES_REVALIDATE: {
   media: 0,
 }
 let SITE_HOST = ''
-const SITE_TITLE_KEY = 'site-title'
-const SITE_DESCRIPTION_KEY = 'site-description'
+const SITE_TITLE = 'READr Mesh 讀選'
+const SITE_DESCRIPTION =
+  'site-在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。'
 
 switch (ENV) {
   case 'local':
@@ -207,10 +208,10 @@ export {
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
   PAYMENT_CHAIN,
   RESTFUL_ENDPOINTS,
-  SITE_DESCRIPTION_KEY,
+  SITE_DESCRIPTION,
   SITE_HOST,
   SITE_OG_IMAGE,
-  SITE_TITLE_KEY,
+  SITE_TITLE,
   SITE_URL,
   STATIC_FILE_ENDPOINTS,
 }

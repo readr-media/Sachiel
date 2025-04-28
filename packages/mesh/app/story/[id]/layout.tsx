@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import { getStory } from '@/app/actions/story'
 import { getSiteMedadata } from '@/utils/site-meta'
@@ -14,7 +13,6 @@ export async function generateMetadata({
 }: {
   params: { id: string }
 }): Promise<Metadata> {
-  const t = await getTranslations('Others.meta')
   const storyId = params.id
   const storyData = await getStory({
     storyId,
@@ -28,7 +26,7 @@ export async function generateMetadata({
   const storyCategory = storyData?.category?.title ?? ''
   const storyPublishTime = storyData?.published_date ?? ''
 
-  const title = storyTitle ? t('site-title-story', { storyTitle }) : undefined
+  const title = storyTitle ? `${storyTitle} | READr Mesh 讀選` : undefined
   const description = storyDescription ? storyDescription : undefined
   const images = storyImage ?? undefined
   const urlPath = `/story/${storyId}`
@@ -38,7 +36,7 @@ export async function generateMetadata({
     'article:published_time': storyPublishTime,
   }
 
-  return getSiteMedadata(t, {
+  return getSiteMedadata({
     title,
     description,
     images,

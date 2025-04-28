@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
 import {
-  SITE_DESCRIPTION_KEY,
+  SITE_DESCRIPTION,
   SITE_OG_IMAGE,
-  SITE_TITLE_KEY,
+  SITE_TITLE,
   SITE_URL,
 } from '@/constants/config'
 
@@ -21,12 +21,15 @@ type MetaDataConfig = {
   other?: Other
 }
 
-export function getSiteMedadata(
-  t: (k: string) => string,
-  { title, description, urlPath, images, other }: MetaDataConfig = {}
-): Metadata {
-  const siteTitle = title ?? t(SITE_TITLE_KEY)
-  const siteDescription = description ?? t(SITE_DESCRIPTION_KEY)
+export function getSiteMedadata({
+  title,
+  description,
+  urlPath,
+  images,
+  other,
+}: MetaDataConfig = {}): Metadata {
+  const siteTitle = title ?? SITE_TITLE
+  const siteDescription = description ?? SITE_DESCRIPTION
   const siteUrl = SITE_URL + (urlPath ?? '')
   const baseOgImage = {
     url: SITE_OG_IMAGE,

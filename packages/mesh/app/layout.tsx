@@ -4,7 +4,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Noto_Sans_TC } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages, getTranslations } from 'next-intl/server'
+import { getLocale, getMessages } from 'next-intl/server'
 
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
@@ -22,8 +22,7 @@ import RootLayoutWrapper from './_components/root-layout-wrapper'
 import { getCurrentUser } from './actions/auth'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('Others.meta')
-  return getSiteMedadata(t)
+  return getSiteMedadata()
 }
 
 const notoSans = Noto_Sans_TC({
