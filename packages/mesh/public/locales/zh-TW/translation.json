@@ -19,8 +19,8 @@
       "Comment-show-more": "顯示更多"
     },
     "Subpage": {
-      "SubpageLayout-title": "{title}熱門",
-      "SubpageLayout-podcast-title": "{title} 熱門",
+      "SubpageLayout-title": "{{title}}熱門",
+      "SubpageLayout-podcast-title": "{{title}} 熱門",
       "latest-news-title": "最新報導",
       "PublisherCard-sponsor-count-1": "已獲得",
       "PublisherCard-sponsor-count-2": "次贊助"
@@ -31,8 +31,8 @@
       "NoFollowings-action-detail": "看看他們都精選了什麼新聞 👀",
       "FollowSuggestionFeed-title": "推薦追蹤",
       "FollowSuggestionFeed-recommend-others": "重新推薦",
-      "FollowSuggestionFeed-follow-detail-with-name": "{name}及其他 {followerCount} 人的追蹤對象",
-      "FollowSuggestionFeed-follow-detail": "有 {followerCount} 人正在追蹤",
+      "FollowSuggestionFeed-follow-detail-with-name": "{{name}}及其他 {{followerCount}} 人的追蹤對象",
+      "FollowSuggestionFeed-follow-detail": "有 {{followerCount}} 人正在追蹤",
       "FeedComment-expand-comment": "看完整留言",
       "FeedLatestAction-single-comment": "在這篇文章留言",
       "FeedLatestAction-two-comments-1": "及",
@@ -62,7 +62,7 @@
       "PublisherSuggestion-hidden": "已隱藏",
       "PublisherSuggestion-status-hidden": "您不會再收到此推薦",
       "PublisherSuggestion-status-new": "新加入",
-      "PublisherSuggestion-status-followers": "{followerCount}人追蹤",
+      "PublisherSuggestion-status-followers": "{{followerCount}}人追蹤",
       "PublisherSuggestion-cancel": "取消",
       "PublisherCard-sponsor-count-1": "已獲得",
       "PublisherCard-sponsor-count-2": "次贊助"
@@ -73,7 +73,7 @@
       "ProfilePage-follow": "追蹤",
       "ProfilePage-following": "追蹤中",
       "PublisherPage-sponsor-or-payment": "贊助/訂閱媒體",
-      "PublisherPage-sponsor-count": "{count}次",
+      "PublisherPage-sponsor-count": "{{count}}次",
       "UserProfile-publisher-get-picks-1": "本週獲得",
       "UserProfile-publisher-get-picks-2": "次精選",
       "UserProfile-member-picks-1": "本週精選了",
@@ -101,14 +101,14 @@
       "Comment-cancel-edit": "取消",
       "Comment-confirm-delete": "確認要刪除留言？",
       "Comment-delete-hint": "系統仍會保留您的精選記錄",
-      "BlockSheet-title": "封鎖 {customId}？",
+      "BlockSheet-title": "封鎖 {{customId}}？",
       "BlockSheet-description": "你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。",
       "BlockSheet-confirm": "好的",
       "BlockSheet-cancel": "取消",
-      "EmptyTabState-no-pick": "這裡還空空的\n趕緊將喜愛的新聞加入精選吧",
+      "EmptyTabState-no-pick": "這裡還空空的\r\n趕緊將喜愛的新聞加入精選吧",
       "EmptyTabState-no-pick-for-other": "這個人還沒有精選新聞",
       "EmptyTabState-no-bookmark": "沒有已儲存的書籤",
-      "EmptyTabState-no-collection": "從精選新聞或書籤中\n將數篇新聞打包成集錦",
+      "EmptyTabState-no-collection": "從精選新聞或書籤中\r\n將數篇新聞打包成集錦",
       "EmptyTabState-no-collection-for-other": "這個人還沒有建立集錦",
       "EmptyTabState-no-story": "這個媒體還沒有發佈任何新聞",
       "EmptyTabState-create-collection": "立即嘗試",
@@ -160,8 +160,8 @@
       "LoadMoreTransaction-load-more": "載入更多記錄"
     },
     "Point-Record": {
-      "Page-receive-at-time": "在 {time} 收到",
-      "Page-pay-at-time": "在 {time} 送出",
+      "Page-receive-at-time": "在 {{time}} 收到",
+      "Page-pay-at-time": "在 {{time}} 送出",
       "Page-name": "名稱",
       "Page-balance": "讀選點數餘額"
     },
@@ -172,10 +172,10 @@
     },
     "Point-Subscribe-Stories": {
       "Page-no-record": "目前還沒有訂閱中的文章",
-      "SubscribeStoriesList-due-day": "{time} 到期"
+      "SubscribeStoriesList-due-day": "{{time}} 到期"
     },
     "Collection": {
-      "CreateCollectionProvider-mobile-step1-title-1": "已選{count}篇",
+      "CreateCollectionProvider-mobile-step1-title-1": "已選{{count}}篇",
       "CreateCollectionProvider-mobile-step1-title-2": "選擇文章",
       "CreateCollectionProvider-mobile-step2-title": "標題",
       "CreateCollectionProvider-mobile-step3-title": "敘述",
@@ -214,9 +214,9 @@
       "EditTitle-label": "標題*",
       "EditTitle-input-placeholder": "輸入集錦標題",
       "EditSummary-summary": "敘述",
-      "EditSummary-current-length-to-max": "{currentCount}/{maxCount}字",
+      "EditSummary-current-length-to-max": "{{currentCount}}/{{maxCount}}字",
       "EditSummary-placeholder": "這個集錦的內容主題是什麼...",
-      "EditSummary-too-many-words": "字數不能超過 {length} 字",
+      "EditSummary-too-many-words": "字數不能超過 {{length}} 字",
       "DesktopStep2SortStories-detail": "預設是以加入集錦的時間排序新聞，你也可以拖動新聞，重新排列順序。",
       "ClientLayout-title": "集錦",
       "CollectionMoreActionButton-delete-title": "確認刪除集錦",
@@ -235,7 +235,7 @@
       "CollectionMoreActionButton-action-report": "檢舉",
       "CollectionCard-collection": "集錦",
       "CollectionCard-expand": "...展開更多",
-      "ArticleCardList-empty-message": "從精選新聞或書籤中\n將數篇新聞打包成集錦",
+      "ArticleCardList-empty-message": "從精選新聞或書籤中\r\n將數篇新聞打包成集錦",
       "EditCollectionProvider-mobile-edit-title": "修改標題",
       "EditCollectionProvider-mobile-edit-summary": "修改敘述",
       "EditCollectionProvider-mobile-edit-stories": "編輯排序",
@@ -258,7 +258,7 @@
       "Layout-title": "聯絡我們"
     },
     "Invitation-Code": {
-      "Page-valid-code": "可用的邀請碼（{count}）",
+      "Page-valid-code": "可用的邀請碼（{{count}}）",
       "InvitationCodeLayout-title": "邀請碼",
       "Page-no-codes": "目前沒有可用的邀請碼...",
       "Page-already-used": "已使用",
@@ -280,14 +280,14 @@
       "LoginEntry-hint-2": "《服務條款》",
       "LoginEntry-hint-3": "及",
       "LoginEntry-hint-4": "《隱私政策》",
-      "LoginEntry-continue-with-text": "以 {text} 帳號繼續",
+      "LoginEntry-continue-with-text": "以 {{text}} 帳號繼續",
       "LoginEmail-valid-email": "Email 符合格式",
       "LoginEmail-hint": "我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。",
       "LoginEmail-submit": "送出",
       "LoginTermsConfirmation-hint": "繼續使用前，請先詳閱我們的服務條款及隱私權政策",
       "LoginTermsConfirmation-agree-terms": "我同意以上條款",
       "LoginTermsConfirmation-go-next": "下一步",
-      "LoginEmailConfirmation-hint-1": "我們已將登入連結寄到 {email}，請點擊信件中的連結登入。",
+      "LoginEmailConfirmation-hint-1": "我們已將登入連結寄到 {{email}}，請點擊信件中的連結登入。",
       "LoginEmailConfirmation-hint-2": "沒收到信件？請檢查垃圾信件匣",
       "LoginEmailConfirmation-hint-3": "或",
       "LoginEmailConfirmation-hint-4": "重新發送信件",
@@ -318,31 +318,31 @@
       "RecordController-record-type-transaction": "付費解鎖",
       "RecordController-record-type-mutual-fund": "共同基金池",
       "RecordController-record-type-redeem": "點數兌換",
-      "DatePicker-date-format": "{year} 年 {month} 月",
+      "DatePicker-date-format": "{{year}} 年 {{month}} 月",
       "MeshPointInfo-title": "讀選點數",
       "MeshPointInfo-point-hint": "此為所有管理帳號的點數總額",
       "MeshPointInfo-settlement-hint-1": "收益每兩個月結算一次，結算日為雙數月的最後一天，請於結算日前兌換，否則收益將計入下一期報表",
       "MeshPointInfo-settlement-hint-2": "123例：1-2 月收益，應於 2/28前兌換，若未兌換，收益將記入下個結算日（5/5）之報表",
       "MeshPointInfo-exchange-point": "點數兌換",
       "RecordList-no-record": "目前沒有紀錄",
-      "RecordItem-transaction-title": "{name} - 付費解鎖 - {title}",
+      "RecordItem-transaction-title": "{{name}} - 付費解鎖 - {{title}}",
       "RecordItem-sponsor-name-fallback": "會員",
-      "RecordItem-sponsor-title": "{name} - 贊助",
+      "RecordItem-sponsor-title": "{{name}} - 贊助",
       "RecordItem-redeem-title": "點數兌換",
       "ExchangeInfo-exchange-success": "兌換成功",
-      "ExchangeInfo-report-generation": "收益將於 {nextMonthNumber}/5 出報表",
+      "ExchangeInfo-report-generation": "收益將於 {{nextMonthNumber}}/5 出報表",
       "ExchangeInfo-finish": "完成",
       "ExchangeInfo-exchange": "兌換",
       "ExchangeInput-set-max-amount": "MAX",
-      "ExchangeInput-minimum-amount-hint": "輸入金額不能少於 {amount}",
+      "ExchangeInput-minimum-amount-hint": "輸入金額不能少於 {{amount}}",
       "ExchangeInput-enter-amount": "請輸入您要兌換的金額。",
-      "ExchangeInput-mesh-point-balance": "您的讀選點數餘額：${balance}",
-      "ExchangeInput-exchange-detail": "點數最低兌換點數為 {amount} 點，單筆兌換手續費為 {feeRate}%。",
+      "ExchangeInput-mesh-point-balance": "您的讀選點數餘額：${{balance}}",
+      "ExchangeInput-exchange-detail": "點數最低兌換點數為 {{amount}} 點，單筆兌換手續費為 {{feeRate}}%。",
       "Reports-no-report": "目前沒有紀錄",
-      "ReportGroup-year-report": "{year} 收益報表",
+      "ReportGroup-year-report": "{{year}} 收益報表",
       "ReportRow-download": "下載",
       "ReportRow-print": "列印",
-      "ReportRow-month-range": "{startMonth}-{endMonth} 月"
+      "ReportRow-month-range": "{{startMonth}}-{{endMonth}} 月"
     },
     "Payment": {
       "PaymentLayout-subtitle-subscribe": "解鎖",
@@ -366,7 +366,7 @@
       "SponsorshipInfo-go-back": "上一步",
       "SponsorshipInfo-go-next": "下一步",
       "SponsorInput-enter-amount": "請輸入您要贊助的金額。",
-      "SponsorInput-mesh-balance": "您的讀選點數餘額：${balance}",
+      "SponsorInput-mesh-balance": "您的讀選點數餘額：${{balance}}",
       "SponsorInput-set-max-amount": "MAX",
       "SponsorOption-sponsor": "贊助",
       "SponsorOption-support-publisher": "支持喜歡的媒體，做出更多優質報導！",
@@ -382,7 +382,7 @@
     "Publisher-List": {
       "PublisherListLayout-title": "媒體列表",
       "PublisherList-new-publisher": "新加入",
-      "PublisherList-follower-count": "{followerCount}人追蹤"
+      "PublisherList-follower-count": "{{followerCount}}人追蹤"
     },
     "Search": {
       "StoryAndCollection-all-collections": "所有集錦",
@@ -391,7 +391,7 @@
       "StoryAndCollection-cant-find-keyword-2": "」的新聞，請換個關鍵字，再試一次。",
       "MemberAndPublisher-member": "人物",
       "MemberAndPublisher-publisher": "媒體",
-      "MemberAndPublisher-follower-count": "{followerCount} 人追蹤",
+      "MemberAndPublisher-follower-count": "{{followerCount}} 人追蹤",
       "CarouselWrapper-all-collection": "所有集錦",
       "CollectionCard-collection": "集錦"
     },
@@ -419,7 +419,7 @@
       "PaymentWall-unlock-with-point-1": "以",
       "PaymentWall-unlock-with-point-2": "讀選點數",
       "PaymentWall-unlock-with-point-3": "解鎖文章",
-      "PaymentWall-unlock-duration": "{duration} 天內可無限閱讀",
+      "PaymentWall-unlock-duration": "{{duration}} 天內可無限閱讀",
       "PaymentWall-unlock-story": "解鎖文章",
       "PaymentWall-no-account-hint": "還沒有帳號？",
       "PaymentWall-signup-for-point": "免費註冊會員拿讀選點數",
@@ -475,9 +475,9 @@
       "share": "分享"
     },
     "DisplayTimeFromNow": {
-      "mins-ago": " 分鐘前",
-      "hours-ago": " 小時前",
-      "days-ago": " 天前"
+      "mins-ago": "分鐘前",
+      "hours-ago": "小時前",
+      "days-ago": "天前"
     },
     "DisplayExpireTimeFromNow": {
       "one": "一",
@@ -493,14 +493,11 @@
       "thursday": "四",
       "friday": "五",
       "saturday": "六",
-      "time-template": "{month}月{date}日({dayString})"
+      "time-template": "{{month}}月{{date}}日({{dayString}})"
     },
     "NotificationDropDown": {
       "h2": "通知",
       "announcement-title": "系統維修公告",
-      "announcement-title-maintain": "系統維修公告",
-      "announcement-title-new-media": "新媒體上架",
-      "announcement-title-features": "新功能上線",
       "new-announcement-title": "新通知",
       "no-new-announcement": "目前沒有新通知...",
       "prev-notification": "之前的通知",
@@ -523,13 +520,16 @@
       "notifier-sponsor-success-2": "讀選點數",
       "notifier-collection-created": "建立了新的集錦",
       "notifier-unlock-story": "你已成功解鎖",
-      "notifier-receive-airdrop": "你已收到 {depositVolume} 讀選點數的空投",
+      "notifier-receive-airdrop": "你已收到 {{depositVolume}} 讀選點數的空投",
       "expire-description-1": "這篇文章的閱讀期限只剩",
       "expire-description-2": "哦：",
       "two-names-and": "及",
       "three-names-above-1": "、",
       "three-names-above-2": "及其他",
-      "three-names-above-3": "人"
+      "three-names-above-3": "人",
+      "announcement-title-maintain": "系統維修公告",
+      "announcement-title-new-media": "新媒體上架",
+      "announcement-title-features": "新功能上線"
     },
     "ErrorPage": {
       "404": "找不到這頁的資料...",
@@ -537,7 +537,7 @@
       "retry": "重新嘗試"
     },
     "LogInCard": {
-      "login-mail-has-sent": "我們已將錢包登入連結寄到 {email}，請點擊信件中的連結。",
+      "login-mail-has-sent": "我們已將錢包登入連結寄到 {{email}}，請點擊信件中的連結。",
       "login-again": "重新登入錢包",
       "resend-login-mail": "發送登入連結",
       "what-is-mesh-point": "讀選點數是什麼？",
@@ -615,7 +615,7 @@
       "no-collection": "你目前還沒有任何集錦...",
       "story-alredy-added": "你之前已將這篇新聞加入你所有的集錦囉",
       "added-detail-1": "你之前已將這篇新聞加入",
-      "added-detail-2-plural": "等{length}個集錦囉",
+      "added-detail-2-plural": "等{{length}}個集錦囉",
       "added-detail-2-single": "集錦囉",
       "add-to-collection": "加入集錦",
       "create-new-collection": "建立新集錦"
@@ -700,15 +700,15 @@
     "meta": {
       "site-title": "READr Mesh 讀選",
       "site-description": "在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。",
-      "site-title-collection": "集錦 | {collectionTitle}",
+      "site-title-collection": "集錦 | {{collectionTitle}}",
       "site-title-collection-fallback": "集錦",
-      "site-title-profile-member": "{memberName} | READr Mesh 讀選",
-      "site-description-profile-member": "查看 {memberName} 的個人檔案。追蹤他們精選的文章和製作的集錦。",
+      "site-title-profile-member": "{{memberName}} | READr Mesh 讀選",
+      "site-description-profile-member": "查看 {{memberName}} 的個人檔案。追蹤他們精選的文章和製作的集錦。",
       "site-description-profile-member-fallback": "查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。",
-      "site-title-profile-publisher": "{publisherName} | READr Mesh 讀選",
-      "site-description-profile-publisher": "查看 {publisherName} 的媒體檔案。追蹤他們的媒體報導。",
+      "site-title-profile-publisher": "{{publisherName}} | READr Mesh 讀選",
+      "site-description-profile-publisher": "查看 {{publisherName}} 的媒體檔案。追蹤他們的媒體報導。",
       "site-description-profile-publisher-fallback": "查看媒體檔案。追蹤他們的媒體報導。",
-      "site-title-story": "{storyTitle} | READr Mesh 讀選",
+      "site-title-story": "{{storyTitle}} | READr Mesh 讀選",
       "site-title-login": "登入 | READr Mesh 讀選",
       "site-description-login": "登入您的讀選帳號，開始精選你感興趣的新聞文章。",
       "site-title-media": "最新 | READr Mesh 讀選",
