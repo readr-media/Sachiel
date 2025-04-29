@@ -18,7 +18,7 @@ export default function SettingLayout({
     rightButtons: [],
   }
   if (pathname.startsWith('/setting/account-deletion')) {
-    return <body className="min-h-screen">{children}</body>
+    return <>{children}</>
   }
 
   return (
