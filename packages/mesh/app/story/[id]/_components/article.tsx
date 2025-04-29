@@ -93,7 +93,13 @@ export default function Article({
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
           <div className="body-3 text-primary-500">
-            {i18nT('Pages.Story.Article-linked-story')}
+            {i18nT('Pages.Subpage.SubpageLayout-title', '{{title}}熱門', {
+              title: '大爆炸',
+            })}
+            {i18nT(
+              'Pages.Story.Article-linked-story',
+              '這是一段 default value'
+            )}
           </div>
           <Link
             href={story?.url ?? ''}
