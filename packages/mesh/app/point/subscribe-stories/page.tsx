@@ -1,17 +1,16 @@
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
 
 import SubscribeStoriesList from '../_components/subscribe-stories-list'
+import NoRecord from './_components/no-record'
 
 export type SubscribeStories = Awaited<
   ReturnType<typeof getMemberUnlockStories>
 >
 
 export default async function Page() {
-  const t = await getTranslations('Page.Point-Subscribe-Stories')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   if (!memberId) redirect('/login')
@@ -23,11 +22,7 @@ export default async function Page() {
   return (
     <>
       {subscribeStories.length === 0 ? (
-        <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
-          <p className="button-large w-dvw text-center text-primary-400">
-            {t('Page-no-record')}
-          </p>
-        </div>
+        <NoRecord />
       ) : (
         <SubscribeStoriesList
           initialList={subscribeStories}

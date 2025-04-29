@@ -1,5 +1,4 @@
 import { notFound, redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
 import { Fragment } from 'react'
 
 import Avatar from '@/components/story-card/avatar'
@@ -10,9 +9,11 @@ import {
   getValidInvitationCodes,
 } from '../actions/invitation-code'
 import CopyCodeButton from './_components/copy-code-button'
+import NoCodes from './_components/no-codes'
+import UsedCodesTitle from './_components/used-codes.title'
+import ValidCodesTitle from './_components/valid-codes-title'
 
 export default async function Page() {
-  const t = await getTranslations('Pages.Invitation-Code')
   const user = await getCurrentUser()
   const memberId = user?.memberId
   if (!memberId) redirect('/login')
@@ -24,9 +25,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col items-center justify-center sm:gap-5 sm:p-5 xl:p-10">
       <div className="flex w-full max-w-[600px] flex-col rounded-md bg-white sm:w-articleMain sm:max-w-none sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] xl:w-[1040px]">
-        <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">
-          {t('Page-valid-code', { count: validCode.length })}
-        </h2>
+        <ValidCodesTitle count={validCode.length} />
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 ">
           {validCode.length ? (
             validCode.map((v, i) => (
@@ -38,17 +37,13 @@ export default async function Page() {
               </Fragment>
             ))
           ) : (
-            <p className="button-large px-5 pb-5 pt-3 text-primary-400">
-              {t('Page-no-codes')}
-            </p>
+            <NoCodes />
           )}
         </div>
       </div>
       {usedCodeData.length ? (
         <div className="flex w-full max-w-[600px] flex-col rounded-md bg-white sm:w-articleMain sm:max-w-none sm:px-5 sm:py-2 sm:drop-shadow lg:w-[900px] xl:w-[1040px]">
-          <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">
-            {t('Page-already-used')}
-          </h2>
+          <UsedCodesTitle />
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-5 ">
             {usedCodeData.map((v, i) => (
               <Fragment key={i}>

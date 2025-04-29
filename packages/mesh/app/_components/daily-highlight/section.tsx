@@ -1,5 +1,3 @@
-import { getTranslations } from 'next-intl/server'
-
 import {
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
@@ -10,10 +8,9 @@ import StoryCard from '../story-card'
 import { AdAfterMainGroup } from './ad-after-main-group'
 import { AdAfterNoGroup } from './ad-after-no-group'
 import MainGroup from './main-group'
+import Title from './title'
 
 export default async function DailyHighlight() {
-  const t = await getTranslations('Pages.Home')
-
   const groupData = await fetchDailyHighlightGroup()
   const noGroupData = await fetchDailyHighlightNoGroup()
 
@@ -23,9 +20,7 @@ export default async function DailyHighlight() {
   return (
     <section className="flex flex-col px-5 pt-4 sm:pt-5 md:px-[70px] lg:px-10 lg:pb-10">
       <div className="mb-3 flex items-center justify-between sm:mb-4">
-        <h2 className="list-title lg:title-1 text-primary-700">
-          {t('DailyHighlight-title')}
-        </h2>
+        <Title />
         <time className="button text-primary-500">
           <DisplayDateWithWeekday />
         </time>

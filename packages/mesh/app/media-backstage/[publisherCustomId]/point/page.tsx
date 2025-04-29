@@ -1,9 +1,7 @@
-import { getTranslations } from 'next-intl/server'
-
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMeshPointBalance } from '@/app/actions/mesh-point'
-import { LogInCard } from '@/components/alchemy/login-card'
 
+import MediaPointLoginCard from './_components/media-point-login-card'
 import MeshPoint from './_components/mesh-point'
 
 export default async function MediaPointPage({
@@ -11,7 +9,6 @@ export default async function MediaPointPage({
 }: {
   params: { publisherCustomId: string }
 }) {
-  const t = await getTranslations('Others.alchemy')
   const user = await getCurrentUser()
   const hasAlchemyAccount = !!user?.wallet
   let balance = undefined
@@ -26,10 +23,7 @@ export default async function MediaPointPage({
       {hasAlchemyAccount ? (
         <MeshPoint balance={balance} publisherCustomId={publisherCustomId} />
       ) : (
-        <LogInCard
-          formDescription={t('login-description')}
-          isHelperText={true}
-        />
+        <MediaPointLoginCard />
       )}
     </main>
   )
