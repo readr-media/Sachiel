@@ -1,8 +1,10 @@
 import type { IconName } from '@/components/icon'
+import { MemberLanguageType } from '@/graphql/__generated__/graphql'
 
 //TODO: Skip "Block List" and "About" for now
 const ACTION_NAMES = [
   // { nameKey: 'block-list', href: '/' },
+  { nameKey: 'language', href: '/setting/language' },
   { nameKey: 'contact-us', href: '/contact' },
   // { nameKey: 'about', href: '/' },
   { nameKey: 'logout', href: '' },
@@ -21,4 +23,9 @@ const DELETION_STEP = {
   FAILURE: 'failure',
 } as const
 
-export { ACTION_NAMES, DELETION_STEP, ICON_MAP }
+const LANGUAGE_OPTIONS = [
+  { langKey: MemberLanguageType.ZhTw, name: '繁體中文' },
+  { langKey: MemberLanguageType.EnUs, name: 'English' },
+] as const
+
+export { ACTION_NAMES, DELETION_STEP, ICON_MAP, LANGUAGE_OPTIONS }

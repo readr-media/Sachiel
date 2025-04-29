@@ -12,6 +12,7 @@ import { getAdminAuth } from '@/firebase/server'
 import {
   type MemberCreateInput,
   GetCurrentUserMemberIdDocument,
+  MemberLanguageType,
   SignUpMemberDocument,
   UpdateWalletAddressDocument,
 } from '@/graphql/__generated__/graphql'
@@ -154,7 +155,7 @@ export async function getCurrentUser() {
         followingCategories: data.member.followingCategories ?? [],
         followingPublishers: data.member.followingPublishers ?? [],
         publishers: data.member.publishers ?? [],
-        language: data.member.language ?? 'zh_TW',
+        language: data.member.language ?? MemberLanguageType.ZhTw,
       }
     } else {
       return undefined

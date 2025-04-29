@@ -17,7 +17,10 @@ import {
 } from '@/app/actions/auth'
 import { auth } from '@/firebase/client'
 import type { GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
-import { type GetCurrentUserMemberIdQuery } from '@/graphql/__generated__/graphql'
+import {
+  type GetCurrentUserMemberIdQuery,
+  MemberLanguageType,
+} from '@/graphql/__generated__/graphql'
 import type { ProfileTypes } from '@/types/profile'
 
 type Member = NonNullable<NonNullable<GetCurrentUserMemberIdQuery>['member']>
@@ -53,7 +56,7 @@ export type User = {
   collections?: Collections
   pickCollections?: ProfileTypes['picksData']
   publishers?: ProfileTypes['publishers']
-  language: string
+  language: MemberLanguageType
 }
 
 type UserContextType = {
@@ -86,7 +89,7 @@ export const guest: User = {
   followingCount: 0,
   picksData: [],
   bookmarks: [],
-  language: 'zh_TW',
+  language: MemberLanguageType.ZhTw,
 }
 
 export function UserProvider({

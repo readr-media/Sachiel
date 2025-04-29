@@ -33,13 +33,13 @@ export default function MobileAccountActions() {
 
   return (
     <section className="body-2 flex flex-col gap-y-3 text-primary-700 sm:hidden">
-      <div className="border-y-[0.5px] border-y-primary-800 border-opacity-10 bg-single-layer px-5 py-4 first:border-t-0">
+      <div className="border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 first:border-t-0">
         <div className="flex justify-between">
           <p>{user.email}</p>
           {iconName && <Icon iconName={iconName} size="m" />}
         </div>
       </div>
-      <div className="flex cursor-pointer items-center justify-between border-y-[0.5px] border-y-primary-800 border-opacity-10 bg-single-layer px-5 py-4 hover-or-active:text-primary-500">
+      <div className="flex cursor-pointer items-center justify-between border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 hover-or-active:text-primary-500">
         <Link href={ACTION_NAMES[0].href as string}>
           {t(ACTION_NAMES[0].nameKey)}
         </Link>
@@ -51,7 +51,7 @@ export default function MobileAccountActions() {
           }}
         />
       </div>
-      <div className="border-y-[0.5px] border-y-primary-800 border-opacity-10 bg-single-layer px-5 py-4">
+      <div className="border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4">
         <div className="group cursor-pointer">
           <button
             onClick={logout}
@@ -61,7 +61,7 @@ export default function MobileAccountActions() {
           </button>
         </div>
 
-        <hr className="my-4 border-t-[0.5px] border-t-primary-800 border-opacity-10" />
+        <hr className="my-4 border-t-[0.5px] border-t-primary-800/10" />
 
         <Link
           href={ACTION_NAMES[2].href as string}
