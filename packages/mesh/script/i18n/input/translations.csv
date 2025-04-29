@@ -1,4 +1,4 @@
-type,sub-type,key,note,zh-TW,en-US
+type,sub-type,key,note,zh_TW,en_US
 Pages,Home,DailyHighlight-title,,今日焦點,Top stories today
 Pages,Home,FeaturedCard-readr-title,,READr 最新報導,Latest from READr
 Pages,Home,FeaturedCard-non-readr-title,,最多人精選,Top picks by users this week
@@ -483,9 +483,9 @@ Components,NotificationDropDown,two-names-and,,及,and
 Components,NotificationDropDown,three-names-above-1,,、,","
 Components,NotificationDropDown,three-names-above-2,,及其他,and other
 Components,NotificationDropDown,three-names-above-3,,人,people
-Components,NotificationDropDown,announcement-title-maintain,,系統維修公告,
-Components,NotificationDropDown,announcement-title-new-media,,新媒體上架,
-Components,NotificationDropDown,announcement-title-features,,新功能上線,
+Components,NotificationDropDown,announcement-title-maintain,,系統維修公告,System maintenance notice
+Components,NotificationDropDown,announcement-title-new-media,,新媒體上架,New media available
+Components,NotificationDropDown,announcement-title-features,,新功能上線,New feature released
 Components,ErrorPage,404,,找不到這頁的資料...,Page not found...
 Components,ErrorPage,500,,看來有哪裡出錯了...,Something went wrong...
 Components,ErrorPage,retry,,重新嘗試,Try again
@@ -584,6 +584,7 @@ Others,setting,contact-us,,聯絡我們,Contact us
 Others,setting,about,,關於,About
 Others,setting,logout,,登出,Log out
 Others,setting,delete-account,,刪除帳號,Delete account
+Others,setting,language,,語言,Language
 Others,navs,homepage,,首頁,Home
 Others,navs,social,,社群,Community
 Others,navs,media,,最新,Media

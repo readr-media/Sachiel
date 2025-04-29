@@ -51,8 +51,8 @@ export default async function RootLayout({
       <MisoAiScript />
       <body>
         <NextIntlClientProvider messages={messages}>
-          <I18nProvider>
-            <UserProvider user={user}>
+          <UserProvider user={user}>
+            <I18nProvider>
               <ToastProvider>
                 <PickModalProvider>
                   <PickersModalProvider>
@@ -63,8 +63,8 @@ export default async function RootLayout({
                   </PickersModalProvider>
                 </PickModalProvider>
               </ToastProvider>
-            </UserProvider>
-          </I18nProvider>
+            </I18nProvider>
+          </UserProvider>
         </NextIntlClientProvider>
       </body>
     </html>

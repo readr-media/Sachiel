@@ -105,7 +105,7 @@
       "BlockSheet-description": "You will no longer see their picked articles, collections, comments, or related updates. If you're following this user, blocking them will also unfollow them.",
       "BlockSheet-confirm": "Got it",
       "BlockSheet-cancel": "Cancel",
-      "EmptyTabState-no-pick": "It's still empty here\r\nStart picking your favorite articles now!",
+      "EmptyTabState-no-pick": "It's still empty here\nStart picking your favorite articles now!",
       "EmptyTabState-no-pick-for-other": "This user hasn't picked any articles yet",
       "EmptyTabState-no-bookmark": "No saved bookmarks",
       "EmptyTabState-no-collection": "Bundle several picked or bookmarked articles into a collection",
@@ -527,9 +527,9 @@
       "three-names-above-1": ",",
       "three-names-above-2": "and other",
       "three-names-above-3": "people",
-      "announcement-title-maintain": "",
-      "announcement-title-new-media": "",
-      "announcement-title-features": ""
+      "announcement-title-maintain": "System maintenance notice",
+      "announcement-title-new-media": "New media available",
+      "announcement-title-features": "New feature released"
     },
     "ErrorPage": {
       "404": "Page not found...",
@@ -673,7 +673,8 @@
       "contact-us": "Contact us",
       "about": "About",
       "logout": "Log out",
-      "delete-account": "Delete account"
+      "delete-account": "Delete account",
+      "language": "Language"
     },
     "navs": {
       "homepage": "Home",

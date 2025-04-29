@@ -136,10 +136,10 @@ export default function Article({
   }
 
   const changeLanguage = () => {
-    if (i18n.language === 'zh-TW') {
-      i18n.changeLanguage('en-US')
+    if (i18n.language === 'zh_TW') {
+      i18n.changeLanguage('en_US')
     } else {
-      i18n.changeLanguage('zh-TW')
+      i18n.changeLanguage('zh_TW')
     }
   }
 

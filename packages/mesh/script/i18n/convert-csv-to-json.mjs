@@ -22,8 +22,8 @@ fs.createReadStream(inputFile)
     const type = row['type']
     const subType = row['sub-type']
     const key = row['key']
-    const zhTW = row['zh-TW']
-    const enUS = row['en-US']
+    const zhTW = row['zh_TW']
+    const enUS = row['en_US']
 
     if (!outputZh[type]) outputZh[type] = {}
     if (!outputZh[type][subType]) outputZh[type][subType] = {}
@@ -36,8 +36,8 @@ fs.createReadStream(inputFile)
     }
   })
   .on('end', () => {
-    const zhTWDir = path.join(outputBaseDir, 'zh-TW')
-    const enUSDir = path.join(outputBaseDir, 'en-US')
+    const zhTWDir = path.join(outputBaseDir, 'zh_TW')
+    const enUSDir = path.join(outputBaseDir, 'en_US')
 
     // 建立輸出資料夾
     fs.mkdirSync(zhTWDir, { recursive: true })
@@ -55,6 +55,6 @@ fs.createReadStream(inputFile)
     )
 
     console.log(
-      '✅ Translation files generated at output/zh-TW/ and output/en-US/'
+      '✅ Translation files generated at output/zh_TW/ and output/en_US/'
     )
   })

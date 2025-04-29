@@ -10,9 +10,9 @@ i18n
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
     },
-    supportedLngs: ['zh-TW', 'en-US'],
-    lng: 'zh-TW',
-    fallbackLng: 'zh-TW',
+    supportedLngs: ['zh_TW', 'en_US'],
+    lng: 'zh_TW',
+    fallbackLng: 'zh_TW',
     interpolation: {
       escapeValue: false,
     },

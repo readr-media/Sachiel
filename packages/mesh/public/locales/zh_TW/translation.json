@@ -105,10 +105,10 @@
       "BlockSheet-description": "你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。",
       "BlockSheet-confirm": "好的",
       "BlockSheet-cancel": "取消",
-      "EmptyTabState-no-pick": "這裡還空空的\r\n趕緊將喜愛的新聞加入精選吧",
+      "EmptyTabState-no-pick": "這裡還空空的\n趕緊將喜愛的新聞加入精選吧",
       "EmptyTabState-no-pick-for-other": "這個人還沒有精選新聞",
       "EmptyTabState-no-bookmark": "沒有已儲存的書籤",
-      "EmptyTabState-no-collection": "從精選新聞或書籤中\r\n將數篇新聞打包成集錦",
+      "EmptyTabState-no-collection": "從精選新聞或書籤中\n將數篇新聞打包成集錦",
       "EmptyTabState-no-collection-for-other": "這個人還沒有建立集錦",
       "EmptyTabState-no-story": "這個媒體還沒有發佈任何新聞",
       "EmptyTabState-create-collection": "立即嘗試",
@@ -235,7 +235,7 @@
       "CollectionMoreActionButton-action-report": "檢舉",
       "CollectionCard-collection": "集錦",
       "CollectionCard-expand": "...展開更多",
-      "ArticleCardList-empty-message": "從精選新聞或書籤中\r\n將數篇新聞打包成集錦",
+      "ArticleCardList-empty-message": "從精選新聞或書籤中\n將數篇新聞打包成集錦",
       "EditCollectionProvider-mobile-edit-title": "修改標題",
       "EditCollectionProvider-mobile-edit-summary": "修改敘述",
       "EditCollectionProvider-mobile-edit-stories": "編輯排序",
@@ -673,7 +673,8 @@
       "contact-us": "聯絡我們",
       "about": "關於",
       "logout": "登出",
-      "delete-account": "刪除帳號"
+      "delete-account": "刪除帳號",
+      "language": "語言"
     },
     "navs": {
       "homepage": "首頁",

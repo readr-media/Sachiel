@@ -30,9 +30,9 @@ node convert-csv-to-json.mjs
 
 ```
 output/
-├── zh-TW/
+├── zh_TW/
 │   └── translation.json
-└── en-US/
+└── en_US/
     └── translation.json
 ```
 
@@ -41,14 +41,14 @@ output/
 執行完 script 後，請將 output/ 資料夾中的翻譯檔案覆蓋掉專案內 /public/locales/ 中的翻譯檔案：
 
 ```bash
-cp -r output/zh-TW ../../public/locales/
-cp -r output/en-US ../../public/locales/
+cp -r output/zh_TW ../../public/locales/
+cp -r output/en_US ../../public/locales/
 ```
 
 ### 4. CSV 格式說明
 
 CSV 檔案的欄位格式如下：
-| type | sub-type | key | note | zh-TW | en-US |
+| type | sub-type | key | note | zh_TW | en_US |
 |-------|----------|----------------------|------|-----------|--------------------|
 | Pages | Home | DailyHighlight-title | | 今日焦點 | Top stories today |
 
@@ -66,7 +66,7 @@ CSV 檔案的欄位格式如下：
 
 ### 5. ⚠️ 注意事項
 
-請確認欄位名稱必須為：`type`, `sub-type`, `key`, `zh-TW`, `en-US`
+請確認欄位名稱必須為：`type`, `sub-type`, `key`, `zh_TW`, `en_US`
 
 若某語系的欄位為空值，仍會建立 key，值為空字串 ""
 
