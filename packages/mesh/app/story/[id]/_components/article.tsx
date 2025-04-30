@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import { tryToGetFullStory } from '@/app/actions/story'
@@ -17,6 +16,7 @@ import { useStoryInteractions } from '@/context/story-interactions'
 import { useUser } from '@/context/user'
 import type { GetStoryInteractionsQuery } from '@/graphql/__generated__/graphql'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
@@ -44,6 +44,7 @@ export default function Article({
   isMemberStory: boolean
   policy: PublisherPolicy
 }) {
+  const { t } = useCustomTranslation()
   const [apiData, setApiData] = useState<ApiData>(
     story?.apiData ?? story?.trimApiData
   )
@@ -51,7 +52,6 @@ export default function Article({
   const { user } = useUser()
   const { state: comment } = useComment()
   const { interactions } = useStoryInteractions()
-  const { t: i18nT, i18n } = useTranslation()
 
   // TODO: handle login user's following situation like feed.tsx did
 
@@ -93,13 +93,7 @@ export default function Article({
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
           <div className="body-3 text-primary-500">
-            {i18nT('Pages.Subpage.SubpageLayout-title', '{{title}}熱門', {
-              title: '大爆炸',
-            })}
-            {i18nT(
-              'Pages.Story.Article-linked-story',
-              '這是一段 default value'
-            )}
+            {t('Pages.Story.Article-linked-story', '本篇為外連文章')}
           </div>
           <Link
             href={story?.url ?? ''}
@@ -109,7 +103,7 @@ export default function Article({
             <Button
               size="lg"
               color="primary"
-              text={i18nT('Pages.Story.Article-open-link')}
+              text={t('Pages.Story.Article-open-link', '閱讀原文')}
               icon={{ size: 'm', iconName: 'icon-open-new-tab' }}
               onClick={() => {}}
             />
@@ -141,18 +135,9 @@ export default function Article({
     }
   }
 
-  const changeLanguage = () => {
-    if (i18n.language === 'zh_TW') {
-      i18n.changeLanguage('en_US')
-    } else {
-      i18n.changeLanguage('zh_TW')
-    }
-  }
-
   return (
     <div>
-      <h1>{i18nT('Pages.Home.DailyHighlight-title')}</h1>
-      <button onClick={changeLanguage}>切換語言</button>
+      <h1>{t('Pages.Home.DailyHighlight-title', '今日焦點')}</h1>
       <div>
         {story?.og_image && (
           <div className="relative mb-6 aspect-[2/1]">
@@ -178,7 +163,7 @@ export default function Article({
             </h1>
             {story?.published_date && (
               <div className="footnote mt-3 text-primary-500">
-                {i18nT('Pages.Story.Article-update-time', {
+                {t('Pages.Story.Article-update-time', '更新時間：{{time}}', {
                   time: displayTime(story?.published_date),
                 })}
               </div>

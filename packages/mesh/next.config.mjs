@@ -1,8 +1,5 @@
-import createNextIntlPlugin from 'next-intl/plugin'
 import * as tsImport from 'ts-import'
 const { FIREBASE_DOMAIN } = await tsImport.load('./constants/config.ts')
-
-const withNextIntl = createNextIntlPlugin()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -48,4 +45,4 @@ const nextConfig = {
   },
 }
 
-export default withNextIntl(nextConfig)
+export default nextConfig
