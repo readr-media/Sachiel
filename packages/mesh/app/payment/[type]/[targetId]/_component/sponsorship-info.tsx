@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -17,6 +16,7 @@ import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { TransactionState } from '@/types/transaction'
 import { logSponsorEvent } from '@/utils/event-logs'
@@ -36,8 +36,7 @@ export default function SponsorshipInfo({
   balance: number | undefined
   recipientAddress: Hex
 }) {
-  const toastT = useTranslations('Others.toast')
-  const t = useTranslations('Pages.Payment')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const router = useRouter()
   const userPayload = useUserPayload()
@@ -78,7 +77,10 @@ export default function SponsorshipInfo({
     if (value && balance && value > balance) {
       addToast({
         status: 'fail',
-        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedInsufficient}`,
+          '讀選點數餘額不足'
+        ),
       })
       return
     }
@@ -94,7 +96,10 @@ export default function SponsorshipInfo({
       setAmount(0)
       addToast({
         status: 'fail',
-        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedInsufficient}`,
+          '讀選點數餘額不足'
+        ),
       })
     }
   }, 500)
@@ -129,16 +134,19 @@ export default function SponsorshipInfo({
               className="pb-4"
             />
             <p className="title-2 pb-1 text-primary-700">
-              {t('SponsorshipInfo-sponsor-success')}
+              {t('Pages.Payment.SponsorshipInfo-sponsor-success', '支付成功')}
             </p>
             <p className="body-2 pb-6 text-primary-500">
-              {t('SponsorshipInfo-sponsor-detail')}
+              {t(
+                'Pages.Payment.SponsorshipInfo-sponsor-detail',
+                '您成功贊助了'
+              )}
               <span className="text-custom-blue">{publisher.title}</span>
             </p>
             <Button
               size="lg"
               color="white"
-              text={t('SponsorshipInfo-finish')}
+              text={t('Pages.Payment.SponsorshipInfo-finish', '完成')}
               onClick={() => {
                 router.push('/point')
               }}
@@ -169,7 +177,7 @@ export default function SponsorshipInfo({
               onSend={handleSponsorOnSend}
               onSuccess={handleSponsorOnSuccess}
               onError={handleSponsorOnError}
-              actionText={t('PaymentInfo-finish')}
+              actionText={t('Pages.Payment.SponsorshipInfo-finish', '完成')}
             />
           ) : (
             <div className="flex w-full justify-center">
@@ -178,8 +186,8 @@ export default function SponsorshipInfo({
                   size="lg"
                   text={
                     isInputMode
-                      ? t('SponsorshipInfo-go-back')
-                      : t('SponsorshipInfo-go-next')
+                      ? t('Pages.Payment.SponsorshipInfo-go-back', '上一步')
+                      : t('Pages.Payment.SponsorshipInfo-go-next', '下一步')
                   }
                   color="primary"
                   disabled={selectedOption !== undefined}

@@ -1,5 +1,3 @@
-import { useTranslations } from 'next-intl'
-
 import {
   addFollowPublisher,
   removeFollowPublisher,
@@ -9,6 +7,7 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
+import { useCustomTranslation } from './use-custom-translation'
 import useRedirectLogin from './use-redirect-login'
 
 type UseFollowPublisherProps = {
@@ -20,7 +19,7 @@ const useFollowPublisher = ({
   publisherId,
   publisherName,
 }: UseFollowPublisherProps) => {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const { user, setUser } = useUser()
   const { addToast } = useToast()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -45,7 +44,10 @@ const useFollowPublisher = ({
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.unfollowMemberFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.unfollowMemberFailed}`,
+            '取消追蹤失敗，請重新嘗試'
+          ),
         })
         throw new Error('Failed to unlike comment')
       }
@@ -62,7 +64,10 @@ const useFollowPublisher = ({
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.followMemberFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.followMemberFailed}`,
+            '追蹤失敗，請重新嘗試'
+          ),
         })
         throw new Error('Failed to unlike comment')
       }

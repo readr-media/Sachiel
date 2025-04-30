@@ -1,10 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import type { getMemberSingleTransaction } from '@/app/actions/transaction'
 import MeshPointHelper from '@/app/point/_components/mesh-point-helper'
 import Icon from '@/components/icon'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { displayTime } from '@/utils/story-display'
 
 type SigleTransactionData = NonNullable<
@@ -18,7 +17,8 @@ export default function ClientPage({
   data: SigleTransactionData
   balance?: number
 }) {
-  const t = useTranslations('Pages.Point-Record')
+  const { t } = useCustomTranslation()
+
   return (
     <main className="sm:p-5 xl:p-10">
       <div className="bg-white sm:rounded-md sm:drop-shadow">
@@ -40,19 +40,31 @@ export default function ClientPage({
           </div>
           <p className="footnote text-primary-400 sm:self-end">
             {data.isIncome
-              ? t('Page-receive-at-time', { time: displayTime(data.createdAt) })
-              : t('Page-pay-at-time', { time: displayTime(data.createdAt) })}
+              ? t(
+                  'Pages.Point-Record.Page-receive-at-time',
+                  '在 {{time}} 收到',
+                  {
+                    time: displayTime(data.createdAt),
+                  }
+                )
+              : t('Pages.Point-Record.Page-pay-at-time', '在 {{time}} 送出', {
+                  time: displayTime(data.createdAt),
+                })}
           </p>
         </section>
         <section className="flex flex-col gap-6 p-5 sm:p-10">
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">{t('Page-name')}</p>
+            <p className="subtitle-2 text-primary-500">
+              {t('Pages.Point-Record.Page-name', '名稱')}
+            </p>
             <p className="subtitle-1 text-primary-700">
               {data.transactionTitle}
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">{t('Page-balance')}</p>
+            <p className="subtitle-2 text-primary-500">
+              {t('Pages.Point-Record.Page-balance', '讀選點數餘額')}
+            </p>
             <div className="flex flex-row items-center justify-start gap-1">
               <Icon iconName="icon-mesh-point" size="m" className="size-6" />
               <p className="subtitle-1 text-primary-700">

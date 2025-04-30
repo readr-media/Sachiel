@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
@@ -13,6 +12,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import type { CategoryStory } from '@/types/homepage'
 import { debounce } from '@/utils/performance'
@@ -23,8 +23,7 @@ type Props = {
 }
 
 export default function Comment({ comment }: Props) {
-  const t = useTranslations('Pages.Home')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const [isLikedBySelf, setIsLikedBySelf] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
@@ -59,7 +58,10 @@ export default function Comment({ comment }: Props) {
         if (!response) {
           addToast({
             status: 'fail',
-            text: toastT(TOAST_MESSAGE.unlikeCommentFailed),
+            text: t(
+              `Others.toast.${TOAST_MESSAGE.unlikeCommentFailed}`,
+              '取消按讚留言失敗，請重新嘗試'
+            ),
           })
           throw new Error(`Failed to unlike comment, comment id:${commentId}`)
         }
@@ -76,7 +78,10 @@ export default function Comment({ comment }: Props) {
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.likeCommentFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.likeCommentFailed}`,
+            '按讚留言失敗，請重新嘗試'
+          ),
         })
         throw new Error(`Failed to like comment, comment id:${commentId}`)
       }
@@ -148,7 +153,9 @@ export default function Comment({ comment }: Props) {
           {needClamp && (
             <span className="body-3 absolute bottom-0 right-0 bg-gradient-to-r from-transparent from-0% to-primary-100 to-10% pl-4">
               <span className="text-primary-600">... </span>
-              <span className="text-primary-400">{t('Comment-show-more')}</span>
+              <span className="text-primary-400">
+                {t('Pages.Home.Comment-show-more', '顯示更多')}
+              </span>
             </span>
           )}
         </p>

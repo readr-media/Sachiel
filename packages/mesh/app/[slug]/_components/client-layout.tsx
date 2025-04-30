@@ -1,9 +1,8 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function ClientLayout({
   categorySlug,
@@ -12,15 +11,18 @@ export default function ClientLayout({
   categorySlug: string
   children: React.ReactNode
 }) {
-  const t = useTranslations('')
-  const categoryTitle = t(`Others.categories.${categorySlug}`)
+  const { t } = useCustomTranslation()
+
+  const categoryTitle = t(`Others.categories.${categorySlug}`, '')
 
   const title =
     categorySlug !== 'podcast'
-      ? t('Pages.Subpage.SubpageLayout-title', {
+      ? t('Pages.Subpage.SubpageLayout-title', '{{title}}熱門', {
           title: categoryTitle,
         })
-      : t('Pages.Subpage.SubpageLayout-podcast-title', { title: categoryTitle })
+      : t('Pages.Subpage.SubpageLayout-podcast-title', '{{title}} 熱門', {
+          title: categoryTitle,
+        })
 
   const navigationData = {
     title,

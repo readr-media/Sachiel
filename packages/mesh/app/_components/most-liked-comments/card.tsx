@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -20,8 +20,7 @@ type Props = {
 }
 
 export default function MostLikedCommentCard({ comment, rank }: Props) {
-  const t = useTranslations('Pages.Home')
-  const followButtonT = useTranslations('Components.FollowButton')
+  const { t } = useCustomTranslation()
   const { handleClickFollow, isFollowing } = useFollow(
     String(comment.member.id)
   )
@@ -64,9 +63,13 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 </Link>
               </p>
               <p className="footnote text-primary-500">
-                {t('MostLikedCommentCard-like-detail-1') + ' '}
+                {t(
+                  'Pages.Home.MostLikedCommentCard-like-detail-1',
+                  '留言獲得'
+                ) + ' '}
                 <span className="text-primary-800">{comment.likeCount}</span>
-                {' ' + t('MostLikedCommentCard-like-detail-1')}
+                {' ' +
+                  t('Pages.Home.MostLikedCommentCard-like-detail-2', '個愛心')}
               </p>
             </div>
           </div>
@@ -75,10 +78,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               <Button
                 size="sm"
                 color="transparent"
-                text={followButtonT('follow')}
+                text={t('Components.FollowButton.follow', '追蹤')}
                 activeState={{
                   isActive: isFollowing,
-                  activeText: followButtonT('following'),
+                  activeText: t('Components.FollowButton.following', '追蹤中'),
                 }}
                 onClick={handleClickFollow}
                 gtmClassName="GTM-homepage_click_popular_user_follow"

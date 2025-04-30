@@ -1,7 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import LayoutTemplate from '@/components/layout-template'
 import AddBookMarkButton from '@/components/navigation/add-bookmark-button'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -13,6 +11,7 @@ import { useComment } from '@/context/comment'
 import { useStoryInteractions } from '@/context/story-interactions'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { BookmarkObjective, PickObjective } from '@/types/objective'
 import { getStoryUrl } from '@/utils/get-url'
@@ -30,7 +29,7 @@ export default function ClientLayout({
   storyType: 'story' | 'podcast'
   children: React.ReactNode
 }) {
-  const t = useTranslations('Pages.Story')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { interactions } = useStoryInteractions()
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -40,8 +39,8 @@ export default function ClientLayout({
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
   const navigationTitle =
     storyType === 'story'
-      ? t('ClientLayout-story-title')
-      : t('ClientLayout-podcast-title')
+      ? t('Pages.Story.ClientLayout-story-title', '新聞')
+      : t('Pages.Story.ClientLayout-podcast-title', 'Podcast')
   return (
     <LayoutTemplate
       type="article"

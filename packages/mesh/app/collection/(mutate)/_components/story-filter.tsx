@@ -1,8 +1,8 @@
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { UseCollection } from '../_types/collection'
 import Checkbox from './checkbox'
@@ -12,7 +12,7 @@ export default function StoryFilter({
 }: {
   useCollection: UseCollection
 }) {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const [showFilter, setShowFilter] = useState(false)
 
   const { pickCandidates, bookmarkCandidates } = useCollection()
@@ -23,11 +23,14 @@ export default function StoryFilter({
 
   const filterTitle = (() => {
     if (pickCandidates.usedAsFilter && bookmarkCandidates.usedAsFilter) {
-      return t('StoryFilter-pick-and-bookmark')
+      return t(
+        'Pages.Collection.StoryFilter-pick-and-bookmark',
+        '精選文章及書籤'
+      )
     } else if (pickCandidates.usedAsFilter) {
-      return t('StoryFilter-pick')
+      return t('Pages.Collection.StoryFilter-pick', '精選文章')
     } else if (bookmarkCandidates.usedAsFilter) {
-      return t('StoryFilter-bookmark')
+      return t('Pages.Collection.StoryFilter-bookmark', '書籤')
     } else {
       return ''
     }
@@ -82,7 +85,7 @@ const DestktopFilter = ({
 }: {
   useCollection: UseCollection
 }) => {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const [showError, setShowError] = useState(false)
 
   const {
@@ -113,7 +116,7 @@ const DestktopFilter = ({
         >
           <Checkbox isChecked={isPickSelected} />
           <span className="body-2 text-primary-500">
-            {t('StoryFilter-check-pick')}
+            {t('Pages.Collection.StoryFilter-check-pick', '精選文章')}
           </span>
         </button>
         <button
@@ -132,13 +135,13 @@ const DestktopFilter = ({
         >
           <Checkbox isChecked={isBookmarkSelected} />
           <span className="body-2 text-primary-500">
-            {t('StoryFilter-check-bookmark')}
+            {t('Pages.Collection.StoryFilter-check-bookmark', '書籤')}
           </span>
         </button>
       </div>
       {showError && (
         <div className="body-3 mt-2 text-custom-red">
-          {t('StoryFilter-pick-one')}
+          {t('Pages.Collection.StoryFilter-pick-one', '至少要選一個')}
         </div>
       )}
     </div>
@@ -152,7 +155,7 @@ const MobileFilter = ({
   onClose: () => void
   useCollection: UseCollection
 }) => {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const {
     pickCandidates,
     bookmarkCandidates,
@@ -193,11 +196,11 @@ const MobileFilter = ({
         }}
       >
         <div className="list-title flex items-center justify-center border-b border-[rgba(0,9,40,0.1)] py-[14px] text-primary-800">
-          {t('StoryFilter-filter')}
+          {t('Pages.Collection.StoryFilter-filter', '篩選')}
         </div>
         <div className="flex flex-col gap-6 border-b border-[rgba(0,9,40,0.1)] px-5 py-4">
           <div className="footnote text-primary-500">
-            {t('StoryFilter-story-source')}
+            {t('Pages.Collection.StoryFilter-story-source', '新聞來源')}
           </div>
           <div className="flex flex-col gap-4">
             <button
@@ -208,7 +211,7 @@ const MobileFilter = ({
             >
               <Checkbox isChecked={isPickSelected} />
               <span className="body-2 text-primary-500">
-                {t('StoryFilter-check-pick')}
+                {t('Pages.Collection.StoryFilter-check-pick', '精選文章')}
               </span>
             </button>
             <button
@@ -219,7 +222,7 @@ const MobileFilter = ({
             >
               <Checkbox isChecked={isBookmarkSelected} />
               <span className="body-2 text-primary-500">
-                {t('StoryFilter-check-bookmark')}
+                {t('Pages.Collection.StoryFilter-check-bookmark', '書籤')}
               </span>
             </button>
           </div>
@@ -231,8 +234,8 @@ const MobileFilter = ({
             color="primary"
             text={
               disableFilter
-                ? t('StoryFilter-pick-one')
-                : t('StoryFilter-filter')
+                ? t('Pages.Collection.StoryFilter-pick-one', '至少要選一個')
+                : t('Pages.Collection.StoryFilter-filter', '篩選')
             }
             disabled={disableFilter}
           />

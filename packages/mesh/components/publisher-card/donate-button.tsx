@@ -1,10 +1,10 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import { getPublisherWallet } from '@/app/actions/publisher'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PaymentType } from '@/types/payment'
 
@@ -17,7 +17,7 @@ export default function PublisherDonateButton({
   publisherId: string
   gtmClassName?: string
 }) {
-  const t = useTranslations('Components.PublisherDonateButton')
+  const { t } = useCustomTranslation()
   const router = useRouter()
   const [isWalletAvailable, setIsWalletAvailable] = useState(false)
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -43,7 +43,7 @@ export default function PublisherDonateButton({
       size="sm"
       color="custom-blue"
       icon={{ iconName: 'icon-donate', size: 's' }}
-      text={t('donate')}
+      text={t('Components.PublisherDonateButton.donate', '贊助')}
       onClick={handleClickDonate}
       disabled={!isWalletAvailable}
       gtmClassName={gtmClassName}

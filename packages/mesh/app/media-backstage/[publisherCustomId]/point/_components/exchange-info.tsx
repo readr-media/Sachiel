@@ -1,6 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -18,6 +17,7 @@ import { NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT } from '@/constants
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { TransactionState } from '@/types/transaction'
 // TODO: add user log to log exchange record
 // import useUserPayload from '@/hooks/use-user-payload'
@@ -35,8 +35,7 @@ export default function ExchangeInfo({
   balance: number | undefined
   recipientAddress: Hex
 }) {
-  const t = useTranslations('Pages.Media-Backstage')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const [amount, setAmount] = useState(0)
   const [transactionState, setTransactionState] =
@@ -77,7 +76,10 @@ export default function ExchangeInfo({
       setAmount(0)
       addToast({
         status: 'fail',
-        text: toastT(TOAST_MESSAGE.payFailedInsufficient),
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedInsufficient}`,
+          '讀選點數餘額不足'
+        ),
       })
     }
   }, 500)
@@ -108,17 +110,26 @@ export default function ExchangeInfo({
               className="pb-4"
             />
             <p className="title-2 pb-1 text-primary-700">
-              {t('ExchangeInfo-exchange-success')}
+              {t(
+                'Pages.Media-Backstage.ExchangeInfo-exchange-success',
+                '兌換成功'
+              )}
             </p>
             {nextMonthNumber && (
               <p className="body-2 pb-6 text-primary-500">
-                {t('ExchangeInfo-report-generation', { nextMonthNumber })}
+                {t(
+                  'Pages.Media-Backstage.ExchangeInfo-report-generation',
+                  '收益將於 {{nextMonthNumber}}/5 出報表',
+                  {
+                    nextMonthNumber,
+                  }
+                )}
               </p>
             )}
             <Button
               size="lg"
               color="white"
-              text={t('ExchangeInfo-finish')}
+              text={t('Pages.Media-Backstage.ExchangeInfo-finish', '完成')}
               onClick={() => {
                 window.location.reload()
               }}
@@ -146,7 +157,10 @@ export default function ExchangeInfo({
               onSend={handleExchangeOnSend}
               onSuccess={handleExchangeOnSuccess}
               onError={handleExchangeOnError}
-              actionText={t('ExchangeInfo-exchange')}
+              actionText={t(
+                'Pages.Media-Backstage.ExchangeInfo-exchange',
+                '兌換'
+              )}
             />
           </div>
         </>

@@ -2,7 +2,6 @@
 
 import { onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -10,10 +9,11 @@ import InteractiveIcon from '@/components/interactive-icon'
 import { ACTION_NAMES, ICON_MAP } from '@/constants/setting'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 
 export default function MobileAccountActions() {
-  const t = useTranslations('Others.setting')
+  const { t } = useCustomTranslation()
   const [logInMethodName, setLogInMethodName] = useState('')
   const { user } = useUser()
 
@@ -41,7 +41,7 @@ export default function MobileAccountActions() {
       </div>
       <div className="flex cursor-pointer items-center justify-between border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 hover-or-active:text-primary-500">
         <Link href={ACTION_NAMES[0].href as string}>
-          {t(ACTION_NAMES[0].nameKey)}
+          {t(`Others.setting.${ACTION_NAMES[0].nameKey}`, ACTION_NAMES[0].name)}
         </Link>
         <InteractiveIcon
           size={{ width: 20, height: 20 }}
@@ -57,7 +57,10 @@ export default function MobileAccountActions() {
             onClick={logout}
             className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
           >
-            {t(ACTION_NAMES[1].nameKey)}
+            {t(
+              `Others.setting.${ACTION_NAMES[1].nameKey}`,
+              ACTION_NAMES[1].name
+            )}
           </button>
         </div>
 
@@ -67,7 +70,13 @@ export default function MobileAccountActions() {
           href={ACTION_NAMES[2].href as string}
           className="text-custom-red-text hover-or-active:text-custom-red"
         >
-          <div className="cursor-pointer"> {t(ACTION_NAMES[2].nameKey)}</div>
+          <div className="cursor-pointer">
+            {' '}
+            {t(
+              `Others.setting.${ACTION_NAMES[2].nameKey}`,
+              ACTION_NAMES[2].name
+            )}
+          </div>
         </Link>
       </div>
     </section>

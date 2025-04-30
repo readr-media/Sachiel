@@ -1,9 +1,9 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import React, { useEffect } from 'react'
 
 import { EditDrawerBlockType, useComment } from '@/context/comment'
 import { type Story } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 import CommentBlockItem from './comment-block-item'
@@ -19,7 +19,7 @@ const CommentBlock = ({
   comments?: Story['comment']
   type: EditDrawerBlockType
 }) => {
-  const t = useTranslations('Components.CommentBlock')
+  const { t } = useCustomTranslation()
   const { state, dispatch } = useComment()
   const openCommentBlock = () => {
     dispatch({ type: 'TOGGLE_MOBILE_COMMENT_MODAL', payload: { isOpen: true } })
@@ -59,7 +59,12 @@ const CommentBlock = ({
         })
       ) : (
         <button onClick={openCommentBlock} disabled={width > 768}>
-          <p className="body-3 mx-5 text-primary-600">{t('no-comment')}</p>
+          <p className="body-3 mx-5 text-primary-600">
+            {t(
+              'Components.CommentBlock.no-comment',
+              '還沒有人留言，快來搶頭香！'
+            )}
+          </p>
         </button>
       )}
     </ul>

@@ -1,5 +1,5 @@
+/* eslint-disable max-lines */
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { type ReactNode, Fragment } from 'react'
 import { createPortal } from 'react-dom'
 import type { z } from 'zod'
@@ -12,6 +12,7 @@ import {
 import { DEFAULT_IMAGES } from '@/constants/fallback-src'
 import { useUser } from '@/context/user'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import {
   type ContentSchemaMapKey,
   contentSchemaMap,
@@ -34,15 +35,17 @@ export default function NotificationDropdown({
   notification: SplitNotificationResult | null
   announcement: AnnouncementData
 }) {
+  const { t } = useCustomTranslation()
   useBlockBodyScroll(true)
-  const t = useTranslations('Components.NotificationDropDown')
 
   return createPortal(
     <div className="fixed inset-0 z-modal size-full bg-white transition-transform duration-300 sm:inset-auto sm:right-[40px] sm:top-[60px] sm:h-fit sm:w-[400px] sm:rounded-md sm:shadow-lg">
       <div className="flex h-dvh flex-col overflow-y-scroll sm:h-auto sm:max-h-[calc(95vh-60px)]">
         <div className="flex h-15 flex-row items-center border-b-[0.5px] p-2 sm:hidden">
           <div className="size-11"></div>
-          <h2 className="list-title mx-auto text-primary-800">{t('h2')}</h2>
+          <h2 className="list-title mx-auto text-primary-800">
+            {t('Components.NotificationDropDown.h2', '通知')}
+          </h2>
           <button
             className="flex size-11 items-center justify-center"
             onClick={onClose}
@@ -63,7 +66,12 @@ export default function NotificationDropdown({
                     )}`}
                   >
                     <h4 className="subtitle-2 text-primary-700">
-                      {t(getAnnouncementTitle(type))}
+                      {t(
+                        `Components.NotificationDropDown.${getAnnouncementTitle(
+                          type
+                        )}`,
+                        ''
+                      )}
                     </h4>
                     <p className="body-3 max-w-[335px] text-primary-600">
                       {name}
@@ -75,31 +83,49 @@ export default function NotificationDropdown({
         {notification?.current.length ? (
           <>
             <div className="h-15 px-5 pb-3 pt-4">
-              <h4 className="list-title">{t('new-announcement-title')}</h4>
+              <h4 className="list-title">
+                {t(
+                  'Components.NotificationDropDown.new-announcement-title',
+                  '新通知'
+                )}
+              </h4>
             </div>
             {notification.current.map((n) => (
               <Fragment key={n.uuid}>
-                <div className="bg-highlight-blue">{renderNotification(n)}</div>
+                <div className="bg-highlight-blue">{Notification(n)}</div>
               </Fragment>
             ))}
           </>
         ) : (
           <>
             <div className="h-15 px-5 pb-3 pt-4">
-              <h4 className="list-title">{t('new-announcement-title')}</h4>
+              <h4 className="list-title">
+                {t(
+                  'Components.NotificationDropDown.new-announcement-title',
+                  '新通知'
+                )}
+              </h4>
             </div>
             <p className="body-3 px-5 pb-5 text-primary-500">
-              {t('no-new-announcement')}
+              {t(
+                'Components.NotificationDropDown.no-new-announcement',
+                '目前沒有新通知...'
+              )}
             </p>
           </>
         )}
         {notification?.prev.length ? (
           <>
             <div className="h-15 px-5 pb-3 pt-4">
-              <h4 className="list-title">{t('prev-notification')}</h4>
+              <h4 className="list-title">
+                {t(
+                  'Components.NotificationDropDown.prev-notification',
+                  '之前的通知'
+                )}
+              </h4>
             </div>
             {notification.prev.map((n) => (
-              <Fragment key={n.uuid}>{renderNotification(n)}</Fragment>
+              <Fragment key={n.uuid}>{Notification(n)}</Fragment>
             ))}
           </>
         ) : null}
@@ -109,13 +135,10 @@ export default function NotificationDropdown({
   )
 }
 
-const renderNotification = (
+const Notification = (
   notification: NonNullable<NotificationData>['notifies'][number]
 ) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const t = useTranslations('Component.NotificationDropDown')
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const otherT = useTranslations('Others.punctuation')
+  const { t } = useCustomTranslation()
   const { action, objective, ts, content, notifiers, uuid } = notification
   const notificationType = `${action}:${objective}` as ContentSchemaMapKey
   const timeJsx = <DisplayTimeFromNow date={new Date(ts * 1000)} />
@@ -126,10 +149,20 @@ const renderNotification = (
   if (notificationType === 'add_follow:member') {
     return CommonContainer(
       <Avatar size="l" src={notifiers?.[0].avatar || DEFAULT_IMAGES.avatar} />,
-      renderNotifierText(
+      RenderNotifierText(
         notifiers,
-        <span className="text-primary-600">{t('notifier-follow-single')}</span>,
-        <span className="text-primary-600">{t('notifier-follow-plural')}</span>
+        <span className="text-primary-600">
+          {t(
+            'Component.NotificationDropDown.notifier-follow-single',
+            '開始追蹤你'
+          )}
+        </span>,
+        <span className="text-primary-600">
+          {t(
+            'Component.NotificationDropDown.notifier-follow-plural',
+            '都開始追蹤你'
+          )}
+        </span>
       ),
       timeJsx,
       `/profile/member/${notifiers?.[0].customId}`,
@@ -149,13 +182,20 @@ const renderNotification = (
             className="size-11"
           />,
           <p className="body-3 text-primary-600">
-            {t('expire-description-1')}
-            {otherT('corner-quote-start')}
+            {t(
+              'Component.NotificationDropDown.expire-description-1',
+              '這篇文章的閱讀期限只剩'
+            )}
+            {t('Others.punctuation.corner-quote-start', '「')}
             <span className="subtitle-2 text-primary-700">
               {parsedContent.publisher.title}
             </span>
-            {otherT('corner-quote-end')}
-            {parsedContent.fee} {t('notifier-sponsor-success-2')}
+            {t('Others.punctuation.corner-quote-end', '」')}
+            {parsedContent.fee}{' '}
+            {t(
+              'Component.NotificationDropDown.notifier-sponsor-success-2',
+              '讀選點數'
+            )}
           </p>,
           timeJsx,
           `/point/record/${notification.tid}`,
@@ -172,10 +212,15 @@ const renderNotification = (
           />,
           <p className="body-3 text-primary-700">
             {notifiers?.[0].name}
-            <span className="text-primary-600">{t('建立了新的集錦')}</span>
-            {otherT('corner-quote-start')}
+            <span className="text-primary-600">
+              {t(
+                'Component.NotificationDropDown.notifier-collection-created',
+                '建立了新的集錦'
+              )}
+            </span>
+            {t('Others.punctuation.corner-quote-start', '「')}
             {parsedContent.title}
-            {otherT('corner-quote-end')}
+            {t('Others.punctuation.corner-quote-end', '」')}
           </p>,
           timeJsx,
           `/collection/${parsedContent.id}`,
@@ -192,16 +237,19 @@ const renderNotification = (
             className="size-11"
           />,
           <p className="body-3 text-primary-600">
-            {t('expire-description-1')}
+            {t(
+              'Component.NotificationDropDown.expire-description-1',
+              '這篇文章的閱讀期限只剩'
+            )}
             <span>
               <DisplayExpireTimeFromNow date={parsedContent.expireDate} />
             </span>
-            {t('expire-description-2')}
-            {otherT('corner-quote-start')}
+            {t('Component.NotificationDropDown.expire-description-2', '哦：')}
+            {t('Others.punctuation.corner-quote-start', '「')}
             <span className="subtitle-2 text-primary-700">
               {parsedContent.unlockStory.title}
             </span>
-            {otherT('corner-quote-end')}
+            {t('Others.punctuation.corner-quote-end', '」')}
           </p>,
           timeJsx,
           `/story/${parsedContent.unlockStory.id}`,
@@ -221,12 +269,15 @@ const renderNotification = (
             className="size-11"
           />,
           <p className="body-3 text-primary-600">
-            {t('notifier-unlock-story')}
-            {otherT('corner-quote-start')}
+            {t(
+              'Component.NotificationDropDown.notifier-unlock-story',
+              '你已成功解鎖'
+            )}
+            {t('Others.punctuation.corner-quote-start', '「')}
             <span className="subtitle-2 text-primary-700">
               {parsedContent.unlockStory?.title}
             </span>
-            {otherT('corner-quote-end')}
+            {t('Others.punctuation.corner-quote-end', '」')}
           </p>,
           timeJsx,
           `/story/${parsedContent.unlockStory?.id}`,
@@ -243,9 +294,13 @@ const renderNotification = (
             className="size-11"
           />,
           <p className="body-3 text-primary-600">
-            {t('notifier-receive-airdrop', {
-              depositVolume: parsedContent.depositVolume,
-            })}
+            {t(
+              'Component.NotificationDropDown.notifier-receive-airdrop',
+              '你已收到 {{depositVolume}} 讀選點數的空投',
+              {
+                depositVolume: parsedContent.depositVolume,
+              }
+            )}
           </p>,
           timeJsx,
           `/point/record/${notification.tid}`,
@@ -260,23 +315,29 @@ const renderNotification = (
             size="l"
             src={notifiers?.[0].avatar || DEFAULT_IMAGES.avatar}
           />,
-          renderNotifierText(
+          RenderNotifierText(
             notifiers,
             <>
               <span className="text-primary-600">
-                {t('notifier-pick-single')}
+                {t(
+                  'Component.NotificationDropDown.notifier-pick-single',
+                  '精選了你的集錦'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
             </>,
             <>
               <span className="text-primary-600">
-                {t('notifier-pick-plural')}
+                {t(
+                  'Component.NotificationDropDown.notifier-pick-plural',
+                  '都精選了你的集錦'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
             </>
           ),
           timeJsx,
@@ -292,25 +353,37 @@ const renderNotification = (
             size="l"
             src={notifiers?.[0].avatar || DEFAULT_IMAGES.avatar}
           />,
-          renderNotifierText(
+          RenderNotifierText(
             notifiers,
             <>
               <span className="text-primary-600">
-                {t('notifier-collection-comment-single-1')}
+                {t(
+                  'Component.NotificationDropDown.notifier-collection-comment-single-1',
+                  '在你的集錦'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
-              {t('notifier-collection-comment-single-2')}
+              {t('Others.punctuation.corner-quote-end', '」')}
+              {t(
+                'Component.NotificationDropDown.notifier-collection-comment-single-2',
+                '下留言'
+              )}
             </>,
             <>
               <span className="text-primary-600">
-                {t('notifier-collection-comment-plural-1')}
+                {t(
+                  'Component.NotificationDropDown.notifier-collection-comment-plural-1',
+                  '都在你的集錦'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
-              {t('notifier-collection-comment-plural-2')}
+              {t('Others.punctuation.corner-quote-end', '」')}
+              {t(
+                'Component.NotificationDropDown.notifier-collection-comment-plural-2',
+                '下留言'
+              )}
             </>
           ),
           timeJsx,
@@ -326,28 +399,40 @@ const renderNotification = (
             size="l"
             src={notifiers?.[0].avatar || DEFAULT_IMAGES.avatar}
           />,
-          renderNotifierText(
+          RenderNotifierText(
             notifiers,
             <>
               <span className="text-primary-600">
-                {t('notifier-story-comment-single-1')}
+                {t(
+                  'Component.NotificationDropDown.notifier-story-comment-single-1',
+                  '也在'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
               <span className="text-primary-600">
-                {t('notifier-story-comment-single-2')}
+                {t(
+                  'Component.NotificationDropDown.notifier-story-comment-single-2',
+                  '下留言'
+                )}
               </span>
             </>,
             <>
               <span className="text-primary-600">
-                {t('notifier-story-comment-plural-1')}
+                {t(
+                  'Component.NotificationDropDown.notifier-story-comment-plural-1',
+                  '也在'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.title}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
               <span className="text-primary-600">
-                {t('notifier-story-comment-plural-2')}
+                {t(
+                  'Component.NotificationDropDown.notifier-story-comment-plural-2',
+                  '下留言'
+                )}
               </span>
             </>
           ),
@@ -364,23 +449,29 @@ const renderNotification = (
             size="l"
             src={notifiers?.[0].avatar || DEFAULT_IMAGES.avatar}
           />,
-          renderNotifierText(
+          RenderNotifierText(
             notifiers,
             <>
               <span className="text-primary-600">
-                {t('notifier-comment-like-single')}
+                {t(
+                  'Component.NotificationDropDown.notifier-comment-like-single',
+                  '喜歡你的留言'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.content}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
             </>,
             <>
               <span className="text-primary-600">
-                {t('notifier-comment-like-plural')}
+                {t(
+                  'Component.NotificationDropDown.notifier-comment-like-plural',
+                  '都喜歡你的留言'
+                )}
               </span>
-              {otherT('corner-quote-start')}
+              {t('Others.punctuation.corner-quote-start', '「')}
               <span className="subtitle-2">{parsedContent.content}</span>
-              {otherT('corner-quote-end')}
+              {t('Others.punctuation.corner-quote-end', '」')}
             </>
           ),
           timeJsx,
@@ -393,7 +484,10 @@ const renderNotification = (
     default:
       return (
         <span className="mx-5 border-b-[0.5px] py-5 text-center">
-          {t('notifier-unknown')}
+          {t(
+            'Component.NotificationDropDown.notifier-unknown',
+            'Unknown Notification'
+          )}
         </span>
       )
   }
@@ -427,13 +521,13 @@ const CommonContainer = (
   )
 }
 
-const renderNotifierText = (
+const RenderNotifierText = (
   notifiers: NonNullable<NotificationData>['notifies'][number]['notifiers'],
   singleText: ReactNode,
   pluralText: ReactNode
 ) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const t = useTranslations('Components.NotificationDropDown')
+  const { t } = useCustomTranslation()
+
   if (!notifiers) return null
   if (notifiers.length === 1)
     return (
@@ -446,7 +540,7 @@ const renderNotifierText = (
     return (
       <p className="body-3 text-primary-700">
         {notifiers[0].name}
-        {t('two-names-and')}
+        {t('Components.NotificationDropDown.two-names-and', '及')}
         {notifiers[1].name}
         {pluralText}
       </p>
@@ -455,11 +549,11 @@ const renderNotifierText = (
     return (
       <p className="body-3 text-primary-700">
         {notifiers[0].name}
-        {t('three-names-above-1')}
+        {t('Components.NotificationDropDown.three-names-above-1', '、')}
         {notifiers[1].name}
-        {t('three-names-above-2')}
+        {t('Components.NotificationDropDown.three-names-above-2', '及其他')}
         {notifiers.length - 2}
-        {t('three-names-above-3')}
+        {t('Components.NotificationDropDown.three-names-above-3', '人')}
         {pluralText}
       </p>
     )

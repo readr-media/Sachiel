@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { DisplayTimeFromNow } from '@/components/story-time-display'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { type LatestAction } from './feed'
 
@@ -15,7 +15,7 @@ export default function FeedComment({
 }: {
   comment: LatestAction['commentsData'][number]
 }) {
-  const t = useTranslations('Pages.Social')
+  const { t } = useCustomTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
   const maxTextLength = 60
@@ -57,7 +57,7 @@ export default function FeedComment({
                 onClick={toggleExpand}
                 className="body-3 pl-1 text-primary-400 hover-or-active:text-primary-700"
               >
-                {t('FeedComment-expand-comment')}
+                {t('Pages.Social.FeedComment-expand-comment', '看完整留言')}
               </button>
             </>
           )}

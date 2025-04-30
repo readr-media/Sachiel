@@ -1,13 +1,13 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { displayTime } from '@/utils/story-display'
 
 export const DisplayTimeFromNow = ({ date }: { date: string | Date }) => {
-  const t = useTranslations('Components.DisplayTimeFromNow')
+  const { t } = useCustomTranslation()
 
   const displayTime = useMemo(() => {
     const differenceInMilliseconds = Date.now() - new Date(date).getTime()
@@ -32,11 +32,20 @@ export const DisplayTimeFromNow = ({ date }: { date: string | Date }) => {
     if (differenceInMilliseconds < 0) {
       return fullDisplayTime(date)
     } else if (differenceInMilliseconds < HOUR) {
-      return Math.floor(differenceInMinutes) + t('mins-ago')
+      return (
+        Math.floor(differenceInMinutes) +
+        t('Components.DisplayTimeFromNow.mins-ago', '分鐘前')
+      )
     } else if (differenceInMilliseconds < 24 * HOUR) {
-      return Math.floor(differenceInHours) + t('hours-ago')
+      return (
+        Math.floor(differenceInHours) +
+        t('Components.DisplayTimeFromNow.hours-ago', '小時前')
+      )
     } else if (differenceInMilliseconds < 7 * DAY) {
-      return Math.floor(differenceInDays) + t('days-ago')
+      return (
+        Math.floor(differenceInDays) +
+        t('Components.DisplayTimeFromNow.days-ago', '天前')
+      )
     } else {
       return fullDisplayTime(date)
     }
@@ -46,17 +55,25 @@ export const DisplayTimeFromNow = ({ date }: { date: string | Date }) => {
 }
 
 export const DisplayExpireTimeFromNow = ({ date }: { date: string | Date }) => {
-  const t = useTranslations('Components.DisplayExpireTimeFromNow')
+  const { t } = useCustomTranslation()
 
   const displayTime = useMemo(() => {
     const differenceInMilliseconds = new Date(date).getTime() - Date.now()
     const differenceInDays = differenceInMilliseconds / DAY
     const daysToExpire = Math.max(1, Math.ceil(differenceInDays))
-    const chineseNumbers = ['', t('one'), t('two'), t('three')]
+    const chineseNumbers = [
+      '',
+      t('Components.DisplayExpireTimeFromNow.one', '一'),
+      t('Components.DisplayExpireTimeFromNow.two', '二'),
+      t('Components.DisplayExpireTimeFromNow.three', '三'),
+    ]
     const dayInChinese =
       chineseNumbers[daysToExpire] ?? chineseNumbers[chineseNumbers.length - 1]
 
-    return `${dayInChinese}${t('day-unit')}`
+    return `${dayInChinese}${t(
+      'Components.DisplayExpireTimeFromNow.day-unit',
+      '天'
+    )}`
   }, [date, t])
 
   return <>{displayTime}</>
@@ -69,7 +86,7 @@ export const DisplayTime = ({ date }: { date: string | Date }) => {
 }
 
 export const DisplayDateWithWeekday = () => {
-  const t = useTranslations('Components.DisplayDateWithWeekday')
+  const { t } = useCustomTranslation()
 
   const displayDate = useMemo(() => {
     const today = new Date()
@@ -77,21 +94,25 @@ export const DisplayDateWithWeekday = () => {
     const date = String(today.getDate())
     const day = today.getDay()
     const daysOfWeek = [
-      t('sunday'),
-      t('monday'),
-      t('tuesday'),
-      t('wednesday'),
-      t('thursday'),
-      t('friday'),
-      t('saturday'),
+      t('Components.DisplayDateWithWeekday.sunday', '日'),
+      t('Components.DisplayDateWithWeekday.monday', '一'),
+      t('Components.DisplayDateWithWeekday.tuesday', '二'),
+      t('Components.DisplayDateWithWeekday.wednesday', '三'),
+      t('Components.DisplayDateWithWeekday.thursday', '四'),
+      t('Components.DisplayDateWithWeekday.friday', '五'),
+      t('Components.DisplayDateWithWeekday.saturday', '六'),
     ]
     const dayString = daysOfWeek[day]
 
-    const currentTime = t('time-template', {
-      month,
-      date,
-      dayString,
-    })
+    const currentTime = t(
+      'Components.DisplayDateWithWeekday.time-template',
+      '{{month}}月{{date}}日({{dayString}})',
+      {
+        month,
+        date,
+        dayString,
+      }
+    )
 
     return currentTime
   }, [t])

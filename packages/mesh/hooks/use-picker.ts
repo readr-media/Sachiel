@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl'
 import { useCallback, useState } from 'react'
 
 import {
@@ -15,11 +14,12 @@ import type { PickObjective } from '@/types/objective'
 import { logStoryInteractionEvent } from '@/utils/event-logs'
 import { addPickToUser, removePickFromUser } from '@/utils/mutate-user-pick-ids'
 
+import { useCustomTranslation } from './use-custom-translation'
 import usePageName from './use-page-name'
 import useUserPayload from './use-user-payload'
 
 export default function usePicker() {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const { user, setUser } = useUser()
   const userPayload = useUserPayload()
   const [isLoading, setIsLoading] = useState(false)
@@ -51,7 +51,10 @@ export default function usePicker() {
       if (!addPickResponse) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.pickStoryFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.pickStoryFailed}`,
+            '加入精選失敗，請重新嘗試'
+          ),
         })
         reverseMutation()
       }
@@ -63,7 +66,7 @@ export default function usePicker() {
       })
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast, pageName, userPayload]
+    [memberId, user, setUser, userPayload, pageName, addToast, t]
   )
 
   const removePick = useCallback(
@@ -96,13 +99,16 @@ export default function usePicker() {
       if (!removePickResponse) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.deletePickFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.deletePickFailed}`,
+            '移除精選失敗，請重新嘗試'
+          ),
         })
         reverseMutation()
       }
       setIsLoading(false)
     },
-    [memberId, user, setUser, addToast, toastT]
+    [memberId, user, setUser, addToast, t]
   )
 
   const addPickAndComment = useCallback(
@@ -130,7 +136,10 @@ export default function usePicker() {
       if (!addPickResponse) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.pickStoryFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.pickStoryFailed}`,
+            '加入精選失敗，請重新嘗試'
+          ),
         })
         reverseMutation()
       }
@@ -142,7 +151,7 @@ export default function usePicker() {
       })
       setIsLoading(false)
     },
-    [memberId, user, setUser, userPayload, pageName, addToast, toastT]
+    [memberId, user, setUser, userPayload, pageName, addToast, t]
   )
 
   return {

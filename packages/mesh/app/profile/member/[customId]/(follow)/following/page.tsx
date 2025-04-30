@@ -1,10 +1,9 @@
-import { useTranslations } from 'next-intl'
-
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberFollowingList } from '@/app/actions/get-profile'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import { takeCount } from '@/constants/profile-following'
 import type { GetMemberFollowingListQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { PageProps } from '../../page'
 import FollowingList from './_components/following-list'
@@ -18,7 +17,7 @@ export type FollowingPublisherListType = NonNullable<
 >
 
 const FollowingPage = async ({ params: { customId } }: PageProps) => {
-  const t = useTranslations('Pages.Profile')
+  const { t } = useCustomTranslation()
   const user = await getCurrentUser()
   const response = await getMemberFollowingList(customId, takeCount)
   const isVisitor = customId !== user?.customId
@@ -41,8 +40,14 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
       <EmptyFollowStatus
         content={
           isVisitor
-            ? t('FollowingPage-no-follow-for-other')
-            : t('FollowingPage-no-follow')
+            ? t(
+                'Pages.Profile.FollowingPage-no-follow-for-other',
+                '這個人還沒有追蹤中的對象'
+              )
+            : t(
+                'Pages.Profile.FollowingPage-no-follow',
+                '目前還沒有追蹤中的對象'
+              )
         }
       />
     )
@@ -50,7 +55,7 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 lg:px-10 xl:w-maxMain">
       <FollowingList
-        title={t('FollowingPage-publisher')}
+        title={t('Pages.Profile.FollowingPage-publisher', '媒體')}
         publisherCustomId={customId}
         followingList={followPublisherData}
         followingCount={followPublisherCount}
@@ -58,7 +63,7 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
         type="publisher"
       />
       <FollowingList
-        title={t('FollowingPage-member')}
+        title={t('Pages.Profile.FollowingPage-member', '人物')}
         publisherCustomId={customId}
         followingList={followResponse}
         followingCount={followCount}

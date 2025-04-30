@@ -1,12 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import React, { useEffect, useState } from 'react'
 
 import { getRelatedStories } from '@/app/actions/story'
 import StoryCard from '@/app/media/_components/story-card'
 import Spinner from '@/components/spinner'
 import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 type Story = NonNullable<GetStoriesQuery['stories']>[number]
 
@@ -17,6 +17,7 @@ export default function RelatedStories({
   relatedKeyword: string
   sourceStoryId: string
 }) {
+  const { t } = useCustomTranslation()
   const [stories, setStories] = useState<Story[]>([])
   useEffect(() => {
     const fetchRelatedStories = async () => {
@@ -29,12 +30,10 @@ export default function RelatedStories({
     fetchRelatedStories()
   }, [relatedKeyword])
 
-  const t = useTranslations('Pages.Story')
-
   return (
     <div className="mt-9 px-5 sm:mt-14 sm:px-0 ">
       <h2 className="list-title mb-3 text-primary-700 sm:mb-4 sm:border-b sm:pb-1">
-        {t('RelatedStories-title')}
+        {t('Pages.Story.RelatedStories-title', '相關報導')}
       </h2>
       <div>
         {stories.length ? (

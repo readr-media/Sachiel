@@ -1,14 +1,13 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import Button from '@/components/button'
 import { useCreateCollection } from '@/context/create-collection'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { MobileCreateCollectionStep } from '../../_types/create-collection'
 
 export default function TabletGoNextButton() {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const { mobileStepName, setStep, isMobileStepFullfilled, createCollection } =
     useCreateCollection()
 
@@ -22,7 +21,7 @@ export default function TabletGoNextButton() {
     case MobileCreateCollectionStep.Step3SetSummary:
       return (
         <Button
-          text={t('TabletGoNextButton-go-next')}
+          text={t('Pages.Collection.TabletGoNextButton-go-next', '下一步')}
           size="lg"
           color="primary"
           disabled={!isMobileStepFullfilled}
@@ -32,7 +31,7 @@ export default function TabletGoNextButton() {
     case MobileCreateCollectionStep.Step4SortStories:
       return (
         <Button
-          text={t('TabletGoNextButton-create')}
+          text={t('Pages.Collection.TabletGoNextButton-create', '建立')}
           size="lg"
           color="primary"
           disabled={!isMobileStepFullfilled}

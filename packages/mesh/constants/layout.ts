@@ -32,15 +32,17 @@ const DOWNLOAD_APP_LINKS = [
 // TODO: update path
 const FOOTER_NAV_LINKS = [
   // TODO: Uncomment it when page is complete
-  // { text: 'about', href: '/' },
-  { text: 'contact', href: '/contact', gtmName: 'contact' },
+  // { key: 'about', text:"關於我們", href: '/' },
+  { key: 'contact', text: '聯絡我們', href: '/contact', gtmName: 'contact' },
   {
-    text: 'privacy',
+    key: 'privacy',
+    text: '隱私政策',
     href: '/policy/privacy-policy',
     gtmName: 'privacy_terms',
   },
   {
-    text: 'terms',
+    key: 'terms',
+    text: '服務條款',
     href: '/policy/terms-of-service',
     gtmName: 'service_terms',
   },
@@ -75,9 +77,9 @@ const FOOTER_SHARED_ICONS = [
 ] as const
 
 const FOOTER_COMPANY_INFOS = [
-  'company-name',
-  'company-address',
-  'company-email',
+  { key: 'company-name', text: '精鏡傳媒股份有限公司' },
+  { key: 'company-address', text: '114 台北市內湖區堤頂大道一段 365 號 7 樓' },
+  { key: 'company-email', text: 'readr@readr.tw' },
 ] as const
 
 const NON_MOBILE_NAV_ICONS = {
@@ -89,7 +91,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-popular-lg-on',
       },
       href: '/',
-      text: 'homepage',
+      key: 'homepage',
+      text: '首頁',
       gtmName: 'homepage',
     },
     {
@@ -99,7 +102,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-social-lg-on',
       },
       href: '/social',
-      text: 'social',
+      key: 'social',
+      text: '社群',
       gtmName: 'social',
     },
     {
@@ -109,7 +113,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-latest-lg-on',
       },
       href: '/media',
-      text: 'media',
+      key: 'media',
+      text: '最新',
       gtmName: 'media',
     },
   ],
@@ -121,7 +126,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-profile-lg-on',
       },
       href: '/profile',
-      text: 'profile',
+      key: 'profile',
+      text: '個人檔案',
       gtmName: 'profile',
     },
     {
@@ -131,7 +137,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-wallet-lg-on',
       },
       href: '/point',
-      text: 'point',
+      key: 'point',
+      text: '讀選點數',
       gtmName: 'point',
     },
     {
@@ -141,7 +148,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-bookmark-lg-on',
       },
       href: '/profile',
-      text: 'bookmark',
+      key: 'bookmark',
+      text: '書籤',
       gtmName: 'bookmark',
     },
   ],
@@ -153,7 +161,8 @@ const NON_MOBILE_NAV_ICONS = {
         on: 'icon-setting-lg-on',
       },
       href: '/setting',
-      text: 'setting',
+      key: 'setting',
+      text: '設定',
       gtmName: 'setting',
     },
   ],
@@ -167,7 +176,8 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-popular-on',
     },
     href: '/',
-    text: 'homepage',
+    key: 'homepage',
+    text: '首頁',
     gtmName: 'homepage',
   },
   {
@@ -177,7 +187,8 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-social-on',
     },
     href: '/social',
-    text: 'social',
+    key: 'social',
+    text: '社群',
     gtmName: 'social',
   },
   {
@@ -187,7 +198,8 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-latest-on',
     },
     href: '/media',
-    text: 'media',
+    key: 'media',
+    text: '最新',
     gtmName: 'media',
   },
   {
@@ -197,7 +209,8 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-wallet-on',
     },
     href: '/point',
-    text: 'point',
+    key: 'point',
+    text: '讀選點數',
     gtmName: 'point',
   },
   {
@@ -207,7 +220,8 @@ const MOBILE_NAV_ICONS = [
       on: 'icon-profile-on',
     },
     href: '/profile',
-    text: 'profile',
+    key: 'profile',
+    text: '個人檔案',
     gtmName: 'profile',
   },
 ] as const
@@ -222,7 +236,9 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
       },
       hrefFn: (publisherCustomId: string) =>
         `/media-backstage/${publisherCustomId}/point`,
-      text: 'media-backstage-point',
+      action: null,
+      key: 'media-backstage-point',
+      text: '點數兌換',
     },
     {
       icon: {
@@ -232,7 +248,9 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
       },
       hrefFn: (publisherCustomId: string) =>
         `/media-backstage/${publisherCustomId}/report`,
-      text: 'media-backstage-report',
+      action: null,
+      key: 'media-backstage-report',
+      text: '收益報表',
     },
   ],
   second: [
@@ -242,10 +260,12 @@ const MEDIA_BACKSTAGE_NAV_ICONS = {
         hover: 'icon-logout-hover',
         on: 'icon-logout',
       },
+      hrefFn: null,
       action: () => {
         logout()
       },
-      text: 'logout',
+      key: 'logout',
+      text: '登出',
     },
   ],
 } as const

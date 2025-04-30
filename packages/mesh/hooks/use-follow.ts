@@ -1,7 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import {
   addMemberFollowing,
   removeMemberFollowing,
@@ -11,10 +9,11 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
+import { useCustomTranslation } from './use-custom-translation'
 import useRedirectLogin from './use-redirect-login'
 
 export const useFollow = (followingId: string) => {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const { user, setUser } = useUser()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const memberId = user.memberId
@@ -38,7 +37,10 @@ export const useFollow = (followingId: string) => {
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.followMemberFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.followMemberFailed}`,
+            '追蹤失敗，請重新嘗試'
+          ),
         })
         // TODO: simplify the mutation
         newFollowingMemberIds.delete(followingId)
@@ -59,7 +61,10 @@ export const useFollow = (followingId: string) => {
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.unfollowMemberFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.unfollowMemberFailed}`,
+            '取消追蹤失敗，請重新嘗試'
+          ),
         })
         // TODO: simplify the mutation
         newFollowingMemberIds.add(followingId)

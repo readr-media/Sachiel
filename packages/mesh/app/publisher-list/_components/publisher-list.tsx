@@ -1,20 +1,21 @@
 'use client'
 
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import { type AllPublisherData } from '@/app/actions/publisher'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { DAY } from '@/constants/time-unit'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function PublisherList({
   publishers,
 }: {
   publishers: AllPublisherData
 }) {
-  const t = useTranslations('Pages.Publisher-List')
+  const { t } = useCustomTranslation()
+
   return (
     <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 sm:px-5 sm:py-8 md:px-[70px] lg:grid-cols-5 lg:px-10">
       {publishers.map((publisher) => {
@@ -29,8 +30,14 @@ export default function PublisherList({
 
         const publisherStatus =
           createdAt > Date.now() - 30 * DAY
-            ? t('PublisherList-new-publisher')
-            : t('PublisherList-follower-count', { followerCount })
+            ? t('Pages.Publisher-List.PublisherList-new-publisher', '新加入')
+            : t(
+                'Pages.Publisher-List.PublisherList-follower-count',
+                '{{followerCount}}人追蹤',
+                {
+                  followerCount,
+                }
+              )
         return (
           <div
             key={id}

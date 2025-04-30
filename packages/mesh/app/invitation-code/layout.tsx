@@ -1,20 +1,19 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import Spinner from '@/components/spinner'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function InvitationCodeLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const t = useTranslations('Pages.Invitation-Code')
+  const { t } = useCustomTranslation()
   const navigationData = {
     leftButtons: [<GoBackButton key={0} />],
-    title: t('InvitationCodeLayout-title'),
+    title: t('Pages.Invitation-Code.InvitationCodeLayout-title', '邀請碼'),
     rightButtons: [],
   }
 

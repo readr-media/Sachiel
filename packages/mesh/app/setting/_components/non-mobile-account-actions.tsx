@@ -2,7 +2,6 @@
 
 import { onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -10,10 +9,11 @@ import InteractiveIcon from '@/components/interactive-icon'
 import { ACTION_NAMES, ICON_MAP } from '@/constants/setting'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 
 export default function NonMobileAccountActions() {
-  const t = useTranslations('Others.setting')
+  const { t } = useCustomTranslation()
   const [logInMethodName, setLogInMethodName] = useState('')
   const { user } = useUser()
 
@@ -38,7 +38,7 @@ export default function NonMobileAccountActions() {
         {iconName && <Icon iconName={iconName} size="m" />}
       </div>
       <div>
-        {ACTION_NAMES.map(({ nameKey, href }, index) => (
+        {ACTION_NAMES.map(({ nameKey, name, href }, index) => (
           <div
             key={nameKey}
             className="cursor-pointer border-b-[0.5px] border-b-primary-800/10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"
@@ -46,7 +46,7 @@ export default function NonMobileAccountActions() {
             {href ? (
               <Link href={href}>
                 <div className="flex items-center justify-between">
-                  {t(nameKey)}
+                  {t(`Others.setting.${nameKey}`, name)}
                   {index === 0 && (
                     <InteractiveIcon
                       size={{ width: 20, height: 20 }}
@@ -60,7 +60,7 @@ export default function NonMobileAccountActions() {
               </Link>
             ) : (
               <button onClick={logout} className="flex w-full justify-start">
-                {t(nameKey)}
+                {t(`Others.setting.${nameKey}`, name)}
               </button>
             )}
           </div>

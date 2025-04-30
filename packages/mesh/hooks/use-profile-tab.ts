@@ -4,11 +4,11 @@ import { useCallback, useMemo } from 'react'
 import type { UserType } from '@/types/profile'
 
 const tabOptions = [
-  { key: 'pick', labelKey: 'TabOption-pick' },
-  { key: 'collection', labelKey: 'TabOption-collection' },
-  { key: 'bookmark', labelKey: 'TabOption-bookmark' },
-  { key: 'story', labelKey: 'TabOption-story' },
-  { key: 'podcast', labelKey: 'TabOption-podcast' },
+  { key: 'pick', labelKey: 'TabOption-pick', label: '精選' },
+  { key: 'collection', labelKey: 'TabOption-collection', label: '集錦' },
+  { key: 'bookmark', labelKey: 'TabOption-bookmark', label: '書籤' },
+  { key: 'story', labelKey: 'TabOption-story', label: '報導' },
+  { key: 'podcast', labelKey: 'TabOption-podcast', label: 'Podcast' },
 ] as const
 
 export type TabOption = typeof tabOptions

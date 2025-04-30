@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl'
 import {
   type ClipboardEvent,
   type FormEvent,
@@ -12,6 +11,7 @@ import { isInvitationCodeValid } from '@/app/actions/invitation-code'
 import Button from '@/components/button'
 import Spinner from '@/components/spinner'
 import { LoginState, useLogin } from '@/context/login'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 /**
  * @deprecated This component has been deprecated as the beta version has ended.
@@ -19,7 +19,7 @@ import { LoginState, useLogin } from '@/context/login'
  * Please use the standard login flow instead.
  */
 export default function LoginCode() {
-  const t = useTranslations('Pages.Login')
+  const { t } = useCustomTranslation()
   const codeDigits = 6
   const { setFormData, setStep } = useLogin()
   const [values, setValues] = useState<string[]>(Array(codeDigits).fill(''))
@@ -125,11 +125,14 @@ export default function LoginCode() {
         </div>
         {isValidationError ? (
           <p className="body-3 pb-5 pt-2 text-center text-custom-red-text sm:pb-10">
-            {t('LoginCode-invitaion-not-found')}
+            {t(
+              'Pages.Login.LoginCode-invitaion-not-found',
+              '找不到這個邀請碼，請重新輸入'
+            )}
           </p>
         ) : (
           <p className="footnote pb-5 pt-3 text-center text-primary-500 sm:pb-10">
-            {t('LoginCode-enter-invitation-code')}
+            {t('Pages.Login.LoginCode-enter-invitation-code', '請輸入邀請碼')}
           </p>
         )}
         {isSubmitting ? (
@@ -138,7 +141,7 @@ export default function LoginCode() {
           <Button
             size="lg"
             color="primary"
-            text={t('LoginCode-enter-send')}
+            text={t('Pages.Login.LoginCode-enter-send', '送出')}
             onClick={handleSubmit}
             disabled={!isReadyToSubmit}
           />

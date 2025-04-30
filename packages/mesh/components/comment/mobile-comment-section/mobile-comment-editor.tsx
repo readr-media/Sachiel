@@ -1,5 +1,4 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -7,9 +6,10 @@ import Avatar from '@/components/story-card/avatar'
 import { EditDrawerBlockType, useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const MobileCommentEditor = () => {
-  const t = useTranslations('Components.MobileCommentEditor')
+  const { t } = useCustomTranslation()
   const { state, dispatch, handleCommentEdit } = useComment()
   const { isEditingComment } = state
   const { user } = useUser()
@@ -57,9 +57,9 @@ const MobileCommentEditor = () => {
         >
           {state.commentEditState.content.trim()
             ? isEditingInProfile
-              ? t('save')
-              : t('submit')
-            : t('cancel')}
+              ? t('Components.MobileCommentEditor.save', '儲存')
+              : t('Components.MobileCommentEditor.submit', '送出')
+            : t('Components.MobileCommentEditor.cancel', '取消編輯')}
         </section>
       </div>
     </>

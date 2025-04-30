@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 
@@ -30,7 +30,7 @@ const FollowListItem = forwardRef(
     }: FollowListItemProps,
     ref: ForwardedRef<HTMLLIElement>
   ) => {
-    const t = useTranslations('Components.FollowButton')
+    const { t } = useCustomTranslation()
     const {
       handleClickFollow: handleClickFollowMember,
       isFollowing: isMemberFollowing,
@@ -69,10 +69,10 @@ const FollowListItem = forwardRef(
             color="white"
             onClick={handleFollowOnClick}
             size="sm"
-            text={t('follow')}
+            text={t('Components.FollowButton.follow', '追蹤')}
             activeState={{
               isActive: isFollowing,
-              activeText: t('following'),
+              activeText: t('Components.FollowButton.following', '追蹤中'),
             }}
           />
         </div>

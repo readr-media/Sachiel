@@ -1,6 +1,6 @@
-import { useTranslations } from 'next-intl'
 import { type Dispatch, type SetStateAction } from 'react'
 
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { PointRecordDate } from '@/types/media-backstage'
 import { RecordType } from '@/types/media-backstage'
 
@@ -9,10 +9,22 @@ import DatePicker from './date-picker'
 const recordTypes = Object.values(RecordType)
 
 const recordTypeWordingKeys = {
-  [RecordType.Sponsor]: 'RecordController-record-type-sponsor',
-  [RecordType.Transaction]: 'RecordController-record-type-transaction',
-  [RecordType.MutualFund]: 'RecordController-record-type-mutual-fund',
-  [RecordType.Redeem]: 'RecordController-record-type-redeem',
+  [RecordType.Sponsor]: {
+    key: 'RecordController-record-type-sponsor',
+    name: '贊助',
+  },
+  [RecordType.Transaction]: {
+    key: 'RecordController-record-type-transaction',
+    name: '付費解鎖',
+  },
+  [RecordType.MutualFund]: {
+    key: 'RecordController-record-type-mutual-fund',
+    name: '共同基金池',
+  },
+  [RecordType.Redeem]: {
+    key: 'RecordController-record-type-redeem',
+    name: '點數兌換',
+  },
 } as const
 
 export default function RecordController({
@@ -26,14 +38,18 @@ export default function RecordController({
   date: PointRecordDate
   setDate: Dispatch<SetStateAction<PointRecordDate>>
 }) {
-  const t = useTranslations('Pages.Media-Backstage')
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex justify-between">
       <nav className="flex gap-2">
         {recordTypes.map((recordType) => (
           <RecordFilter
             key={recordType}
-            text={t(recordTypeWordingKeys[recordType])}
+            text={t(
+              `Pages.Media-Backstage.${recordTypeWordingKeys[recordType].key}`,
+              recordTypeWordingKeys[recordType].name
+            )}
             isActive={currentRecordType === recordType}
             onClick={() => {
               setRecordType(recordType)

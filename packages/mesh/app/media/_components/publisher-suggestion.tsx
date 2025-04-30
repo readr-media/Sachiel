@@ -1,5 +1,4 @@
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
@@ -11,13 +10,14 @@ import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { DAY } from '@/constants/time-unit'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function PublisherSuggestion({
   publisherSuggestion,
 }: {
   publisherSuggestion: AllPublisherData
 }) {
-  const t = useTranslations('Pages.Media')
+  const { t } = useCustomTranslation()
   const [followSuggestions, setFollowSuggestions] =
     useState(publisherSuggestion)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -39,11 +39,11 @@ export default function PublisherSuggestion({
     <div className="flex flex-col gap-3 py-4 lg:w-full lg:rounded-lg lg:bg-primary-100 lg:px-5 lg:py-3">
       <div className="flex flex-row items-center justify-between px-5 md:px-[70px] lg:px-3 lg:pt-3">
         <p className="list-title text-primary-700">
-          {t('PublisherSuggestion-title')}
+          {t('Pages.Media.PublisherSuggestion-title', '推薦追蹤')}
         </p>
         <NextLink href={'/publisher-list'}>
           <span className="button text-primary-500">
-            {t('PublisherSuggestion-action')}
+            {t('Pages.Media.PublisherSuggestion-action', '查看全部')}
           </span>
         </NextLink>
       </div>
@@ -61,13 +61,22 @@ export default function PublisherSuggestion({
               isHidden,
             } = publisher
             const publisherName = isHidden
-              ? t('PublisherSuggestion-hidden')
+              ? t('Pages.Media.PublisherSuggestion-hidden', '已隱藏')
               : title
             const publisherStatus = isHidden
-              ? t('PublisherSuggestion-status-hidden')
+              ? t(
+                  'Pages.Media.PublisherSuggestion-status-hidden',
+                  '您不會再收到此推薦'
+                )
               : createdAt > Date.now() - 30 * DAY
-              ? t('PublisherSuggestion-status-new')
-              : t('PublisherSuggestion-status-followers', { followerCount })
+              ? t('Pages.Media.PublisherSuggestion-status-new', '新加入')
+              : t(
+                  'Pages.Media.PublisherSuggestion-status-followers',
+                  '{{followerCount}}人追蹤',
+                  {
+                    followerCount,
+                  }
+                )
 
             return (
               <div
@@ -119,7 +128,7 @@ export default function PublisherSuggestion({
                     <Button
                       size="md-large"
                       color="transparent"
-                      text={t('PublisherSuggestion-cancel')}
+                      text={t('Pages.Media.PublisherSuggestion-cancel', '取消')}
                       onClick={() => toggleSuggestionVisibility(id, false)}
                     />
                   </div>
@@ -149,13 +158,17 @@ export default function PublisherSuggestion({
           } = publisher
 
           const publisherName = isHidden
-            ? t('PublisherSuggestion-hidden')
+            ? t('PublisherSuggestion-hidden', '已隱藏')
             : title
           const publisherStatus = isHidden
-            ? t('PublisherSuggestion-status-hidden')
+            ? t('PublisherSuggestion-status-hidden', '您不會再收到此推薦')
             : createdAt > Date.now() - 30 * DAY
-            ? t('PublisherSuggestion-status-new')
-            : t('PublisherSuggestion-status-followers', { followerCount })
+            ? t('PublisherSuggestion-status-new', '新加入')
+            : t(
+                'PublisherSuggestion-status-followers',
+                '{{followerCount}}人追蹤',
+                { followerCount }
+              )
 
           return (
             <div
@@ -194,7 +207,7 @@ export default function PublisherSuggestion({
                   <Button
                     size="md-large"
                     color="transparent"
-                    text={t('PublisherSuggestion-cancel')}
+                    text={t('PublisherSuggestion-cancel', '取消')}
                     onClick={() => toggleSuggestionVisibility(id, false)}
                   />
                 </div>

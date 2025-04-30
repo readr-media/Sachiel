@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import type { ForwardedRef, MouseEventHandler, RefObject } from 'react'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -14,6 +13,7 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -49,8 +49,7 @@ export default function CollectionMoreActionButton({
   nestedScrollContainerRef?: RefObject<HTMLElement>
   className?: string
 }) {
-  const t = useTranslations('Pages.Collection')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
   const [position, setPosition] = useState<Position>({
     top: Infinity,
@@ -95,16 +94,28 @@ export default function CollectionMoreActionButton({
 
   const dialogInfos = {
     [ActionType.Delete]: {
-      title: t('CollectionMoreActionButton-delete-title'),
-      description: t('CollectionMoreActionButton-delete-warning'),
+      title: t(
+        'Pages.Collection.CollectionMoreActionButton-delete-title',
+        '確認刪除集錦'
+      ),
+      description: t(
+        'Pages.Collection.CollectionMoreActionButton-delete-warning',
+        '此動作無法還原'
+      ),
       primaryAction: {
-        text: t('CollectionMoreActionButton-delete-cancel'),
+        text: t(
+          'Pages.Collection.CollectionMoreActionButton-delete-cancel',
+          '取消'
+        ),
         action: () => {
           dialogRef.current?.close()
         },
       },
       secondaryAction: {
-        text: t('CollectionMoreActionButton-delete'),
+        text: t(
+          'Pages.Collection.CollectionMoreActionButton-delete',
+          '刪除集錦'
+        ),
         action: async () => {
           const response = await removeCollection({
             collectionId: collection.id,
@@ -116,7 +127,10 @@ export default function CollectionMoreActionButton({
           } else {
             addToast({
               status: 'fail',
-              text: toastT(TOAST_MESSAGE.deleteCollectionFailed),
+              text: t(
+                `Others.toast.${TOAST_MESSAGE.deleteCollectionFailed}`,
+                '刪除集錦失敗，請重新嘗試'
+              ),
             })
           }
           dialogRef.current?.close()
@@ -124,10 +138,19 @@ export default function CollectionMoreActionButton({
       },
     },
     [ActionType.Report]: {
-      title: t('CollectionMoreActionButton-report-title'),
-      description: t('CollectionMoreActionButton-report-detail'),
+      title: t(
+        'Pages.Collection.CollectionMoreActionButton-report-title',
+        '檢舉成功'
+      ),
+      description: t(
+        'Pages.Collection.CollectionMoreActionButton-report-detail',
+        '我們已收到您的檢舉，感謝提供資訊。'
+      ),
       primaryAction: {
-        text: t('CollectionMoreActionButton-report-confirm'),
+        text: t(
+          'Pages.Collection.CollectionMoreActionButton-report-confirm',
+          '好的'
+        ),
         action: () => {
           dialogRef.current?.close()
         },
@@ -256,8 +279,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const t = useTranslations('Pages.Collection')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user } = useUser()
   const { addToast } = useToast()
@@ -269,7 +291,13 @@ const ActionSheet = forwardRef(function ActionSheet(
   const actions = isCreator ? creatorActions : visitorActions
   const onAction = async (type: ActionType) => {
     if (!collection) {
-      addToast({ status: 'fail', text: toastT(TOAST_MESSAGE.moreActionError) })
+      addToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.moreActionError}`,
+          '有點怪怪的，請稍後再試'
+        ),
+      })
       console.error(
         `more action on collection error, collection: ${collection}`
       )
@@ -333,7 +361,7 @@ const ActionSheet = forwardRef(function ActionSheet(
               >
                 <Icon iconName={action.icon} size="l" />
                 <span className="button-large shrink-0">
-                  {t(action.textKey)}
+                  {t(`Pages.Collection.${action.textKey}`, '')}
                 </span>
               </button>
             )

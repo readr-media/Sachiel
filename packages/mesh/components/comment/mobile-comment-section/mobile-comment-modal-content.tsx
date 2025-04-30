@@ -1,9 +1,9 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
 import { EditDrawerBlockType, useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import type { CommentObjectiveData } from '@/types/comment'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
@@ -21,7 +21,7 @@ export function MobileCommentModalContent({
 }: {
   data: CommentObjectiveData
 }) {
-  const t = useTranslations('Components.MobileCommentModalContent')
+  const { t } = useCustomTranslation()
   const {
     state,
     dispatch,
@@ -75,13 +75,19 @@ export function MobileCommentModalContent({
         />
         {!!popularComments.length && (
           <CommentBlock
-            title={t('poupular-comments')}
+            title={t(
+              'Components.MobileCommentModalContent.poupular-comments',
+              '熱門留言'
+            )}
             type={EditDrawerBlockType.Popular}
             comments={popularComments}
           />
         )}
         <CommentBlock
-          title={t('all-comments')}
+          title={t(
+            'Components.MobileCommentModalContent.all-comments',
+            '所有留言'
+          )}
           type={EditDrawerBlockType.All}
           comments={sortedAuthorComments}
         />
@@ -89,37 +95,73 @@ export function MobileCommentModalContent({
       <MobileCommentFooter targetId={data?.id} comment={comment} />
       <CommentModal
         isOpen={isConfirmLeavingModalOpen}
-        onConfirmText={t('leave')}
-        onCloseText={t('stay')}
+        onConfirmText={t('Components.MobileCommentModalContent.leave', '離開')}
+        onCloseText={t('Components.MobileCommentModalContent.stay', '繼續輸入')}
         onConfirm={handleAddCommentModalOnLeave}
         onClose={handleAddCommentModalOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">{t('leave-question')}</p>
-          <p className="body-3">{t('leave-detail')}</p>
+          <p className="title-2">
+            {t(
+              'Components.MobileCommentModalContent.leave-question',
+              '離開留言區？'
+            )}
+          </p>
+          <p className="body-3">
+            {t(
+              'Components.MobileCommentModalContent.leave-detail',
+              '系統將不會儲存您剛剛輸入的內容'
+            )}
+          </p>
         </section>
       </CommentModal>
       <CommentModal
-        onConfirmText={t('delete')}
-        onCloseText={t('cancel')}
+        onConfirmText={t(
+          'Components.MobileCommentModalContent.delete',
+          '刪除留言'
+        )}
+        onCloseText={t('Components.MobileCommentModalContent.cancel', '取消')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">{t('delete-question')}</p>
-          <p className="body-3">{t('delete-detail')}</p>
+          <p className="title-2">
+            {t(
+              'Components.MobileCommentModalContent.delete-question',
+              '確認要刪除留言？'
+            )}
+          </p>
+          <p className="body-3">
+            {t(
+              'Components.MobileCommentModalContent.delete-detail',
+              '系統仍會保留您的精選記錄'
+            )}
+          </p>
         </section>
       </CommentModal>
       <CommentModal
         onConfirmText=""
-        onCloseText={t('close')}
+        onCloseText={t(
+          'Components.MobileCommentModalContent.close',
+          '返回留言'
+        )}
         isOpen={isConfirmReportingModalOpen}
         onClose={handleReportOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">{t('report-success')}</p>
-          <p className="body-3">{t('report-success-detail')}</p>
+          <p className="title-2">
+            {t(
+              'Components.MobileCommentModalContent.report-success',
+              '檢舉成功'
+            )}
+          </p>
+          <p className="body-3">
+            {t(
+              'Components.MobileCommentModalContent.report-success-detail',
+              '我們已收到您的檢舉，感謝提供資訊'
+            )}
+          </p>
         </section>
       </CommentModal>
       <MobileCommentEditDrawer />

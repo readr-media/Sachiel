@@ -1,12 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { Fragment } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import type { getMemberSponsorRecord } from '@/app/actions/sponsorship'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 type SponsorRecords = Awaited<ReturnType<typeof getMemberSponsorRecord>>
 
@@ -15,13 +15,17 @@ export default function ClientPage({
 }: {
   sponsorRecords: SponsorRecords
 }) {
-  const t = useTranslations('Pages.Point-Sponsorship')
+  const { t } = useCustomTranslation()
+
   return (
     <div>
       {sponsorRecords.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">
-            {t('Page-no-record')}
+            {t(
+              'Pages.Point-Sponsorship.Page-no-record',
+              '目前還沒有訂閱中的文章'
+            )}
           </p>
         </div>
       ) : (
@@ -54,11 +58,17 @@ export default function ClientPage({
                       </p>
                       <p className="caption-1">
                         <span className="text-primary-500">
-                          {t('Page-already-sponsored')}
+                          {t(
+                            'Pages.Point-Sponsorship.Page-already-sponsored',
+                            '已贊助'
+                          )}
                         </span>
                         <span className="text-custom-blue">
                           {record.sponsoredCount}
-                          {t('Page-sponsor-count-unit')}
+                          {t(
+                            'Pages.Point-Sponsorship.Page-sponsor-count-unit',
+                            '次'
+                          )}
                         </span>
                       </p>
                     </div>

@@ -1,7 +1,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 
 import Button from '@/components/button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import { type UserType } from '@/types/profile'
@@ -13,7 +13,7 @@ export default function EmptyTabState({
   tabKey: ProfileTabKey
   userType: UserType
 }) {
-  const t = useTranslations('Pages.Profile')
+  const { t } = useCustomTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
   const pageName = usePageName()
@@ -35,7 +35,7 @@ export default function EmptyTabState({
     story: 'EmptyTabState-no-story',
     podcast: '',
   }
-  const emptyMessage = t(messages[tabKey] || '')
+  const emptyMessage = t(`Pages.Profile.${messages[tabKey]}`, '')
 
   return (
     <div className="flex grow flex-col">
@@ -45,7 +45,10 @@ export default function EmptyTabState({
           <Button
             size="md"
             color="transparent"
-            text={t('EmptyTabState-create-collection')}
+            text={t(
+              'Pages.Profile.EmptyTabState-create-collection',
+              '立即嘗試'
+            )}
             onClick={handleNavigate}
           />
         )}

@@ -1,9 +1,9 @@
-import { useTranslations } from 'next-intl'
 import type { Dispatch, SetStateAction } from 'react'
 import { useMemo, useRef, useState } from 'react'
 
 import Icon from '@/components/icon'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { PointRecordDate } from '@/types/media-backstage'
 
 import { getDatesToPick } from '../_utils/date'
@@ -59,7 +59,7 @@ const MonthPickerDropdown = ({
 }: {
   onClick: (date: PointRecordDate) => void
 }) => {
-  const t = useTranslations('Pages.Media-Backstage')
+  const { t } = useCustomTranslation()
   const dates = useMemo(() => {
     return getDatesToPick()
   }, [])
@@ -71,10 +71,14 @@ const MonthPickerDropdown = ({
       }}
     >
       {dates.map((date) => {
-        const dateStr = t('DatePicker-date-format', {
-          year: date.year,
-          month: date.month,
-        })
+        const dateStr = t(
+          'Pages.Media-Backstage.DatePicker-date-format',
+          '{{year}} 年 {{month}} 月',
+          {
+            year: date.year,
+            month: date.month,
+          }
+        )
         return (
           <MonthPickerDropdownItem
             key={dateStr}

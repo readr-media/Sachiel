@@ -1,14 +1,13 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import Button from '@/components/button'
 import { useCreateCollection } from '@/context/create-collection'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { DesktopCreateCollectionStep } from '../../_types/create-collection'
 
 export default function DesktopGoNextButton() {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const {
     setStep,
     desktopStepName,
@@ -28,7 +27,7 @@ export default function DesktopGoNextButton() {
           disabled={!isDesktopStepFullfilled}
           size="lg"
           color="primary"
-          text={t('DesktopGoNextButton-go-next')}
+          text={t('Pages.Collection.DesktopGoNextButton-go-next', '下一步')}
         />
       )
     case DesktopCreateCollectionStep.Step2SortStories:
@@ -38,7 +37,7 @@ export default function DesktopGoNextButton() {
           disabled={!isDesktopStepFullfilled}
           size="lg"
           color="primary"
-          text={t('DesktopGoNextButton-create')}
+          text={t('Pages.Collection.DesktopGoNextButton-create', '建立')}
         />
       )
 

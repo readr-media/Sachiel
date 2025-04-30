@@ -1,7 +1,5 @@
 'use client'
 
-import { useTranslations } from 'use-intl'
-
 import Footer from '@/components/layout-template/footer'
 import Header, { HeaderType } from '@/components/layout-template/header'
 import Nav, { NavType } from '@/components/layout-template/nav'
@@ -10,15 +8,19 @@ import NonMobileNavigation, {
   NonMobileNavigationType,
 } from '@/components/layout-template/navigation/non-mobile-navigation'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function ConfirmationLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const t = useTranslations('Pages.Setting-Account-Deletion')
+  const { t } = useCustomTranslation()
   const navigationData = {
-    title: t('ConfirmationLayout-title'),
+    title: t(
+      'Pages.Setting-Account-Deletion.ConfirmationLayout-title',
+      '刪除帳號'
+    ),
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }

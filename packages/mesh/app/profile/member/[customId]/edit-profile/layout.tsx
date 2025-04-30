@@ -1,23 +1,23 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 
 import LayoutTemplate from '@/components/layout-template'
 import MobileNavigationButton from '@/components/layout-template/navigation/mobile-navigation/mobile-navigation-button'
 import GoBackButton from '@/components/navigation/go-back-button'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const EditProfileLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) => {
-  const t = useTranslations('Pages.Edit-Profile')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const params = useParams()
   const router = useRouter()
-  const title = t('Layout-title')
+  const title = t('Pages.Edit-Profile.Layout-title', '編輯個人檔案')
   const backToPreviousPage = () => {
     router.back()
   }
@@ -38,7 +38,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text={t('Layout-cancel')}
+            text={t('Pages.Edit-Profile.Layout-cancel', '取消')}
             color="gray"
             onClick={backToPreviousPage}
           />,
@@ -48,7 +48,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text={t('Layout-save')}
+            text={t('Pages.Edit-Profile.Layout-save', '儲存')}
             color={isFormValid && !isSubmitting ? 'blue' : 'gray'}
             onClick={handleSubmit}
           />,

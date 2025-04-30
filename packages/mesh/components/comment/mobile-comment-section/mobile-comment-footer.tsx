@@ -1,11 +1,11 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef } from 'react'
 
 import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
 import { useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { createAdjustTextareaHeight } from '@/utils/adjust-textarea-height'
 
 const MobileCommentFooter = ({
@@ -15,7 +15,7 @@ const MobileCommentFooter = ({
   targetId?: string
   comment: string
 }) => {
-  const t = useTranslations('Components.MobileCommentFooter')
+  const { t } = useCustomTranslation()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const { user } = useUser()
   const { state, dispatch, handleCommentPublish } = useComment()
@@ -39,7 +39,10 @@ const MobileCommentFooter = ({
           ref={textareaRef}
           className="body-2 grow resize-none pl-2 pr-3 text-primary-700 focus:outline-none"
           rows={4}
-          placeholder={t('placeholder')}
+          placeholder={t(
+            'Components.MobileCommentFooter.placeholder',
+            '在這裡輸入留言...'
+          )}
           value={comment}
           onChange={handleTextChange}
           style={{
@@ -52,7 +55,11 @@ const MobileCommentFooter = ({
             className="body-2 text-custom-blue transition-colors hover:bg-blue-600"
             onClick={() => handleCommentPublish({ user, targetId })}
           >
-            {state.isAddingComment ? <Dots /> : t('publish')}
+            {state.isAddingComment ? (
+              <Dots />
+            ) : (
+              t('Components.MobileCommentFooter.publish', '發布')
+            )}
           </button>
         </div>
       </div>

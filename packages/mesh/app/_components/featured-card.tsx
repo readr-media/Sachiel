@@ -1,13 +1,13 @@
 'use client'
 
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -33,7 +33,7 @@ export default function FeaturedCard({
   publisherId,
   gtmTags,
 }: Props) {
-  const t = useTranslations('Pages.Home')
+  const { t } = useCustomTranslation()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
   const pageName = usePageName()
@@ -42,8 +42,8 @@ export default function FeaturedCard({
     <section className="bg-primary-100 p-5 md:px-[70px] lg:px-10 lg:py-8">
       <h2 className="list-title lg:title-1 mb-2 text-primary-500 lg:mb-3">
         {isReadrStory
-          ? t('FeaturedCard-readr-title')
-          : t('FeaturedCard-non-readr-title')}
+          ? t('Pages.Home.FeaturedCard-readr-title', 'READr 最新報導')
+          : t('Pages.Home.FeaturedCard-non-readr-title', '最多人精選')}
       </h2>
       <article className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-5 lg:gap-x-10">
         <NextLink href={`/story/${story.id}`} className={gtmTags.story}>

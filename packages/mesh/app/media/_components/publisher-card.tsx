@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
@@ -86,8 +86,8 @@ export default function PublisherCard({
 }) {
   const { publisher, stories } = publisherAndStories
   const { id: publisherId, logo, title, customId, sponsoredCount } = publisher
+  const { t } = useCustomTranslation()
 
-  const t = useTranslations('Pages.Media')
   return (
     <section className="w-full rounded-lg bg-primary-100 px-5 py-2 lg:py-3 xl:px-8">
       <div className="flex h-[68px] items-center justify-between gap-1">
@@ -110,9 +110,9 @@ export default function PublisherCard({
               </div>
             </Link>
             <div className="footnote line-clamp-1 text-primary-500">
-              {t('PublisherCard-sponsor-count-1')}
+              {t('Pages.Media.PublisherCard-sponsor-count-1', '已獲得')}
               <span className="text-custom-blue">{` ${sponsoredCount} `}</span>
-              {t('PublisherCard-sponsor-count-2')}
+              {t('Pages.Media.PublisherCard-sponsor-count-2', '次贊助')}
             </div>
           </div>
         </div>

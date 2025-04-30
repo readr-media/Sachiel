@@ -1,26 +1,32 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
-import type { IconInfo } from '@/types/layout'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { TabCategory } from '@/types/profile'
+
+type IconInfo = typeof NON_MOBILE_NAV_ICONS[
+  | 'first'
+  | 'second'
+  | 'third'][number]
 
 const NonMobileNavIcon = ({
   isOn,
   iconInfo,
+  href,
   avatarUrl,
 }: {
   isOn: boolean
   iconInfo: IconInfo
+  href?: string
   avatarUrl?: string
 }) => {
-  const t = useTranslations('Others.navs')
-  const showAvatar = iconInfo.text === 'profile' && avatarUrl
+  const { t } = useCustomTranslation()
+  const showAvatar = iconInfo.key === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Image
@@ -37,17 +43,19 @@ const NonMobileNavIcon = ({
     <InteractiveIcon size="xl" icon={iconInfo.icon} />
   )
   const textJsx = isOn ? (
-    <span className="title-1 block text-primary-700">{t(iconInfo.text)}</span>
+    <span className="title-1 block text-primary-700">
+      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
+    </span>
   ) : (
     <span className="title-1 block text-primary-600 group-hover:text-primary-700">
-      {t(iconInfo.text)}
+      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
     </span>
   )
 
   return (
     <Link
       key={iconInfo.text}
-      href={iconInfo.href}
+      href={href ?? iconInfo.href}
       className="group flex h-14 items-center gap-3 rounded-md pl-2 hover:bg-primary-100"
     >
       {iconJsx}
@@ -92,7 +100,7 @@ const NonMobileNav = ({
           <div className="flex flex-col gap-2 border-b pb-5">
             {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.key}
                 isOn={path === iconInfo.href}
                 iconInfo={iconInfo}
               />
@@ -100,36 +108,33 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col gap-2 pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.text === 'profile') {
+              if (iconInfo.key === 'profile') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.key}
                     isOn={path.startsWith(iconInfo.href)}
-                    iconInfo={{
-                      ...iconInfo,
-                      href: iconInfo.href + `/member/${userCustomId}`,
-                    }}
+                    iconInfo={iconInfo}
+                    href={iconInfo.href + `/member/${userCustomId}`}
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === 'bookmark') {
+              } else if (iconInfo.key === 'bookmark') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.key}
                     isOn={path.startsWith(iconInfo.href)}
-                    iconInfo={{
-                      ...iconInfo,
-                      href:
-                        iconInfo.href +
-                        `/member/${userCustomId}?tab=${TabCategory.BOOKMARKS}`,
-                    }}
+                    iconInfo={iconInfo}
+                    href={
+                      iconInfo.href +
+                      `/member/${userCustomId}?tab=${TabCategory.BOOKMARKS}`
+                    }
                     avatarUrl={avatarUrl}
                   />
                 )
               } else {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.key}
                     isOn={path.startsWith(iconInfo.href)}
                     iconInfo={iconInfo}
                   />

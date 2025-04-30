@@ -1,4 +1,3 @@
-import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
@@ -10,6 +9,7 @@ import type { GetStoryInteractionsQuery } from '@/graphql/__generated__/graphql'
 import { type CommentType } from '@/types/profile'
 import { debounce } from '@/utils/performance'
 
+import { useCustomTranslation } from './use-custom-translation'
 import useRedirectLogin from './use-redirect-login'
 
 // 從 Story Query 中提取 Comment 型別
@@ -49,10 +49,10 @@ function isCommentTypeFromStory(
 export const useCommentLike = ({
   initialComment,
 }: UseCommentLikeProps): UseCommentLikeReturn => {
+  const { t } = useCustomTranslation()
   const [commentData, setCommentData] = useState<
     CommentType | CommentTypeFromStory
   >(initialComment)
-  const toastT = useTranslations('Others.toast')
   const { user } = useUser()
   const { addToast } = useToast()
   const { updateCommentLikeStatus } = useComment()
@@ -86,7 +86,10 @@ export const useCommentLike = ({
         if (!response) {
           addToast({
             status: 'fail',
-            text: toastT(TOAST_MESSAGE.unlikeCommentFailed),
+            text: t(
+              `Others.toast.${TOAST_MESSAGE.unlikeCommentFailed}`,
+              '取消按讚留言失敗，請重新嘗試'
+            ),
           })
           throw new Error('Failed to unlike comment')
         }
@@ -122,7 +125,10 @@ export const useCommentLike = ({
       if (!response) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.likeCommentFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.likeCommentFailed}`,
+            '按讚留言失敗，請重新嘗試'
+          ),
         })
         throw new Error('Failed to like comment')
       }

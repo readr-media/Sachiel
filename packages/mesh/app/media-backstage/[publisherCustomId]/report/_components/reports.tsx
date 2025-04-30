@@ -1,11 +1,11 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { useEffect, useMemo } from 'react'
 
 import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import { HOUR } from '@/constants/time-unit'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import ReportGroup from './report-group'
 import type { Report } from './report-row'
@@ -17,7 +17,7 @@ export default function Reports({
   reports: Report[]
   publisherId: string
 }) {
-  const t = useTranslations('Pages.Media-Backstage')
+  const { t } = useCustomTranslation()
   const {
     user: { accessToken },
   } = useUser()
@@ -76,7 +76,7 @@ export default function Reports({
   if (!reports.length)
     return (
       <div className="button-large flex h-[600px] items-center justify-center rounded-xl bg-white text-primary-400 shadow-card">
-        {t('Reports-no-report')}
+        {t('Pages.Media-Backstage.Reports-no-report', '目前沒有紀錄')}
       </div>
     )
 

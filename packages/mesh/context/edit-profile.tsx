@@ -1,12 +1,12 @@
 'use client'
 import { useParams, useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import type { ChangeEvent } from 'react'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
 import TOAST_MESSAGE from '@/constants/toast'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useForm } from '@/hooks/use-form'
 import useProfileState from '@/hooks/use-profile-state'
 import type {
@@ -25,7 +25,7 @@ const EditProfileContext = createContext<EditProfileContextType | undefined>(
 export const EditProfileProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user, setUser } = useUser()
   const params = useParams()
@@ -175,7 +175,10 @@ export const EditProfileProvider: React.FC<{
       console.error('Failed to update profile:', error)
       addToast({
         status: 'fail',
-        text: toastT(TOAST_MESSAGE.updateProfileFailed),
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.updateProfileFailed}`,
+          '編輯個人檔案失敗，請重新嘗試'
+        ),
       })
       router.push(`/profile/member/${user.customId}`)
     } finally {

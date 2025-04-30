@@ -1,13 +1,13 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import React, { useRef } from 'react'
 
 import Icon from '@/components/icon'
 import { EditDrawerShowType, useComment } from '@/context/comment'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const MobileCommentEditDrawer = () => {
-  const t = useTranslations('Components.MobileCommentEditDrawer')
+  const { t } = useCustomTranslation()
   const {
     state,
     dispatch,
@@ -37,7 +37,7 @@ const MobileCommentEditDrawer = () => {
           className="button-large flex items-center gap-[6px]"
         >
           <Icon iconName="icon-flag" size="l" />
-          {t('report')}
+          {t('Components.MobileCommentEditDrawer.report', '檢舉留言')}
         </li>
       ) : (
         <>
@@ -47,14 +47,14 @@ const MobileCommentEditDrawer = () => {
             className="button-large flex items-center gap-[6px]"
           >
             <Icon iconName="icon-edit" size="l" />
-            {t('edit')}
+            {t('Components.MobileCommentEditDrawer.edit', '編輯留言')}
           </li>
           <li
             onClick={handleDeleteComment}
             className="button-large flex items-center gap-[6px] text-custom-red-text"
           >
             <Icon iconName="icon-delete" size="l" />
-            {t('delete')}
+            {t('Components.MobileCommentEditDrawer.delete', '刪除留言')}
           </li>
         </>
       )}

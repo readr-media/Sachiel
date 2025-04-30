@@ -1,12 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import StoryCard from '@/app/_components/story-card'
 import AdSense from '@/components/ad/adsense-ad'
 import Spinner from '@/components/spinner'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
 
@@ -24,7 +24,7 @@ export default function NonDesktopStories({
   publishersAndStories,
   storyType,
 }: Props) {
-  const t = useTranslations('Pages.Subpage')
+  const { t } = useCustomTranslation()
   const [visibleCount, setVisibleCount] = useState(15)
   const [isLoading, setIsLoading] = useState(false)
   const { targetRef: triggerLoadMoreRef, isIntersecting: shouldStartLoadMore } =
@@ -127,7 +127,7 @@ export default function NonDesktopStories({
   return (
     <section className="px-5 pt-6 sm:pb-10 md:px-[70px] lg:hidden">
       <h2 className="list-title mb-8 text-primary-700">
-        {t('latest-news-title')}
+        {t('Pages.Subpage.latest-news-title', '最新報導')}
       </h2>
       <div className="flex flex-col gap-y-5">
         {getStoriesAndPublishersGroup()}

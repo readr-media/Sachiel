@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { CollectionPick } from '../_types/collection'
 import ArticleCardList from './_components/article-card-list'
@@ -12,11 +12,15 @@ export default function CollectionArticleList({
   items: CollectionPick[]
   avatar: string
 }) {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
+
   return (
     <ArticleCardList
       items={items}
-      emptyMessage={t('ArticleCardList-empty-message')}
+      emptyMessage={t(
+        'Pages.Collection.ArticleCardList-empty-message',
+        '從精選新聞或書籤中\n將數篇新聞打包成集錦'
+      )}
       avatar={avatar}
     />
   )

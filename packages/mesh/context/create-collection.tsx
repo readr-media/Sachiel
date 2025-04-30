@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import type { CreateCollectionParams } from '@/app/actions/collection'
@@ -18,6 +17,7 @@ import {
 } from '@/app/collection/(mutate)/new/_types/create-collection'
 import { collectionCreateParamName } from '@/constants/search-param-names'
 import TOAST_MESSAGE from '@/constants/toast'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useUserPayload from '@/hooks/use-user-payload'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { clearCreateCollectionStoryLS } from '@/utils/cross-page-create-collection'
@@ -76,8 +76,7 @@ export default function CreateCollectionProvider({
 }: {
   children: React.ReactNode
 }) {
-  const t = useTranslations('Pages.Collection')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const [step, setStep] = useState(0)
   const [title, setTitle] = useState('')
   const [summary, setSummary] = useState('')
@@ -135,30 +134,58 @@ export default function CreateCollectionProvider({
       case MobileCreateCollectionStep.Step1SelectStories: {
         const pickedStoryCount = collectionPickStories.length
         return pickedStoryCount
-          ? t('CreateCollectionProvider-mobile-step1-title-1', {
-              count: pickedStoryCount,
-            })
-          : t('CreateCollectionProvider-mobile-step1-title-2')
+          ? t(
+              'Pages.Collection.CreateCollectionProvider-mobile-step1-title-1',
+              '已選{{count}}篇',
+              {
+                count: pickedStoryCount,
+              }
+            )
+          : t(
+              'Pages.Collection.CreateCollectionProvider-mobile-step1-title-2',
+              '選擇文章'
+            )
       }
       case MobileCreateCollectionStep.Step2SetTitle:
-        return t('CreateCollectionProvider-mobile-step2-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step2-title',
+          '標題'
+        )
       case MobileCreateCollectionStep.Step3SetSummary:
-        return t('CreateCollectionProvider-mobile-step3-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step3-title',
+          '敘述'
+        )
       case MobileCreateCollectionStep.Step4SortStories:
-        return t('CreateCollectionProvider-mobile-step4-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step4-title',
+          '排序'
+        )
       default:
-        return t('CreateCollectionProvider-desktop-step1-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
     }
   }, [collectionPickStories.length, mobileStepName, t])
 
   const desktopTitle = useMemo(() => {
     switch (desktopStepName) {
       case DesktopCreateCollectionStep.Step1EditAll:
-        return t('CreateCollectionProvider-desktop-step1-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
       case DesktopCreateCollectionStep.Step2SortStories:
-        return t('CreateCollectionProvider-desktop-step2-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step2-title',
+          '排序'
+        )
       default:
-        return t('CreateCollectionProvider-desktop-step1-title')
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
     }
   }, [desktopStepName, t])
 
@@ -215,7 +242,10 @@ export default function CreateCollectionProvider({
     } else {
       setCrossPageToast({
         status: 'fail',
-        text: toastT(TOAST_MESSAGE.createCollectionFailed),
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.createCollectionFailed}`,
+          '建立集錦失敗，請重新嘗試'
+        ),
       })
       router.push(`/profile/member/${user.customId}`)
     }

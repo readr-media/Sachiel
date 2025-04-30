@@ -1,5 +1,4 @@
 'use client'
-import { useTranslations } from 'next-intl'
 
 import ArticleCardList from '@/app/profile/_components/article-card-list'
 import type { ProfileButton } from '@/app/profile/_components/profile-button-list'
@@ -8,6 +7,7 @@ import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useProfileTab, { type PublisherStoryType } from '@/hooks/use-profile-tab'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 import { type UserType, TabKey } from '@/types/profile'
@@ -46,7 +46,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   publisherCustomId,
   publisherStoryType,
 }) => {
-  const t = useTranslations('Pages.Profile')
+  const { t } = useCustomTranslation()
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName: name,
@@ -62,11 +62,17 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   const userStatusList = [
     {
-      tabName: t(TabKey.SPONSORED),
-      count: t('PublisherPage-sponsor-count', { count: sponsoredCount }),
+      tabName: t(`Pages.Profile.${TabKey.SPONSORED}`, '本月獲得贊助'),
+      count: t(
+        'Pages.Profile.PublisherPage-sponsor-count',
+        '{{sponsoredCount}}次',
+        {
+          sponsoredCount,
+        }
+      ),
     },
     {
-      tabName: t(TabKey.FOLLOWER),
+      tabName: t(`Pages.Profile.${TabKey.FOLLOWER}`, '粉絲'),
       count: followerCount,
       redirectLink: `${publisherCustomId}/follower`,
     },
@@ -75,14 +81,20 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   const buttonList: ProfileButton[] = [
     {
       text: {
-        default: t('ProfilePage-follow'),
-        isActive: t('ProfilePage-following'),
+        default: t('Pages.Profile.ProfilePage-follow', '追蹤'),
+        isActive: t('Pages.Profile.ProfilePage-following', '追蹤中'),
       },
       isActive: isFollowing,
       clickFn: handleFollowOnClick,
     },
     {
-      text: { default: t('PublisherPage-sponsor-or-payment'), isActive: '' },
+      text: {
+        default: t(
+          'Pages.Profile.PublisherPage-sponsor-or-payment',
+          '贊助/訂閱媒體'
+        ),
+        isActive: '',
+      },
       color: 'custom-blue',
       isActive: false,
       component: <PublisherDonateButton key={0} publisherId={publisherId} />,

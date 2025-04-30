@@ -1,10 +1,10 @@
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 
 import FollowButton from '@/components/follow-button'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type SearchResults } from '@/utils/data-schema'
 
 export default function MemberAndPublisher({
@@ -16,7 +16,7 @@ export default function MemberAndPublisher({
   memberResult: SearchResults['member']
   publisherResult: SearchResults['publisher']
 }) {
-  const t = useTranslations('Pages.Search')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const router = useRouter()
   const isNoResult = !memberResult.length && !publisherResult.length
@@ -26,7 +26,7 @@ export default function MemberAndPublisher({
       {memberResult.length ? (
         <>
           <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
-            {t('MemberAndPublisher-member')}
+            {t('Pages.Search.MemberAndPublisher-member', '人物')}
           </h2>
           {memberResult.map((m, idx) => (
             <div
@@ -59,7 +59,7 @@ export default function MemberAndPublisher({
       {publisherResult.length ? (
         <>
           <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
-            {t('MemberAndPublisher-publisher')}
+            {t('Pages.Search.MemberAndPublisher-publisher', '媒體')}
           </h2>
           {publisherResult.map((p, idx) => (
             <div
@@ -80,9 +80,13 @@ export default function MemberAndPublisher({
                     {p.title}
                   </p>
                   <p className="body-3 text-primary-500">
-                    {t('MemberAndPublisher-follower-count', {
-                      followerCount: p.followerCount,
-                    })}
+                    {t(
+                      'Pages.Search.MemberAndPublisher-follower-count',
+                      '{{followerCount}} 人追蹤',
+                      {
+                        followerCount: p.followerCount,
+                      }
+                    )}
                   </p>
                 </div>
                 <FollowPublisherButton
@@ -98,9 +102,15 @@ export default function MemberAndPublisher({
 
       {isNoResult ? (
         <p className="pt-3 text-primary-500 sm:pt-5">
-          {t('StoryAndCollection-cant-find-keyword-1')}
+          {t(
+            'Pages.Search.StoryAndCollection-cant-find-keyword-1',
+            '找不到包含「'
+          )}
           <span className="text-primary-700">{query}</span>
-          {t('StoryAndCollection-cant-find-keyword-2')}
+          {t(
+            'Pages.Search.StoryAndCollection-cant-find-keyword-2',
+            '」的新聞，請換個關鍵字，再試一次。'
+          )}
         </p>
       ) : null}
     </>

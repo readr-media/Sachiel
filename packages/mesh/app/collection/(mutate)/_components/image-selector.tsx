@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
 import type { ChangeEventHandler, RefObject } from 'react'
 import { useRef, useState } from 'react'
 
@@ -9,6 +8,7 @@ import Icon from '@/components/icon'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { getImageFileFromImageElement } from '@/utils/image-blob'
 
 import type { UseCollection } from '../_types/collection'
@@ -176,7 +176,7 @@ const CustomActionMenu = ({
   onClose: () => void
   onImageFileSelected: (imageFile: File) => void
 }) => {
-  const t = useTranslations('Pages.Collection')
+  const { t } = useCustomTranslation()
   const menuRef = useRef<HTMLDivElement>(null)
   useClickOutside(menuRef, onClose)
 
@@ -203,7 +203,7 @@ const CustomActionMenu = ({
           >
             <Icon iconName="icon-select-image" size="l" />
             <span className="button-large shrink-0 text-primary-700">
-              {t('ImageSelector-select-image')}
+              {t('Pages.Collection.ImageSelector-select-image', '選擇相片')}
             </span>
           </label>
         </li>
@@ -214,7 +214,7 @@ const CustomActionMenu = ({
           <label htmlFor="image" className="flex gap-1 px-5 py-4">
             <Icon iconName="icon-select-image" size="l" />
             <span className="button-large shrink-0 text-primary-700">
-              {t('ImageSelector-select-image')}
+              {t('Pages.Collection.ImageSelector-select-image', '選擇相片')}
             </span>
           </label>
         </li>

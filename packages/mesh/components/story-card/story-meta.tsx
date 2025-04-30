@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import CommentCount from '../comment-count'
 import Icon from '../icon'
@@ -19,7 +19,8 @@ export default function StoryMeta({
   fullScreenAd: string
   storyType?: 'story' | 'podcast'
 }) {
-  const t = useTranslations('Components.StoryMeta')
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex items-center text-primary-500">
       <Icon iconName="icon-chat-bubble" size="s" />
@@ -31,19 +32,19 @@ export default function StoryMeta({
       {paywall && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          {t('payall')}
+          {t('Components.StoryMeta.payall', '付費文章')}
         </div>
       )}
       {fullScreenAd && fullScreenAd !== 'none' && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          {t('full-screen-ad')}
+          {t('Components.StoryMeta.full-screen-ad', '蓋板廣告')}
         </div>
       )}
       {storyType === 'podcast' ? (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          {t('podcast')}
+          {t('Components.StoryMeta.podcast', 'Podcast')}
         </div>
       ) : null}
     </div>

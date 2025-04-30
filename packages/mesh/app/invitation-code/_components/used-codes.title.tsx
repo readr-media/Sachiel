@@ -1,13 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function UsedCodesTitle() {
-  const t = useTranslations('Pages.Invitation-Code')
-
+  const { t } = useCustomTranslation()
   return (
     <h2 className="list-title px-5 pb-1 pt-4 text-primary-700">
-      {t('Page-already-used')}
+      {t('Pages.Invitation-Code.Page-already-used', '已使用')}
     </h2>
   )
 }

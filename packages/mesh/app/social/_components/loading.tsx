@@ -1,9 +1,10 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function Loading() {
-  const t = useTranslations('Pages.Social')
+  const { t } = useCustomTranslation()
+
   return (
     <main className="flex grow justify-center gap-10 sm:p-5 lg:justify-start lg:px-10">
       <div className="flex w-full max-w-[600px] animate-pulse flex-col gap-4">
@@ -22,7 +23,7 @@ export default function Loading() {
       </div>
       <div className="hidden flex-col px-5 lg:flex">
         <h2 className="list-title text-primary-700">
-          {t('FollowSuggestionFeed-title')}
+          {t('Pages.Social.FollowSuggestionFeed-title', '推薦追蹤')}
         </h2>
         <div className="mt-1 animate-pulse">
           {Array.from(Array(5)).map((_, i) => (

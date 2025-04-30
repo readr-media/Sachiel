@@ -1,11 +1,10 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import { BookmarkObjective } from '@/types/objective'
 
@@ -18,7 +17,7 @@ export default function AddBookMarkButton({
   bookmarkObjective: BookmarkObjective
   targetId: string
 }) {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const { addToast } = useToast()
   const { user, setUser } = useUser()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -50,7 +49,10 @@ export default function AddBookMarkButton({
       } else {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.deleteBookmarkFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.deleteBookmarkFailed}`,
+            '刪除書籤失敗，請重新嘗試'
+          ),
         })
       }
     } else {
@@ -70,7 +72,10 @@ export default function AddBookMarkButton({
       } else {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.addBookmarkFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.addBookmarkFailed}`,
+            '加入書籤失敗，請重新嘗試'
+          ),
         })
       }
     }

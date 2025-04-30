@@ -4,11 +4,15 @@ import { MemberLanguageType } from '@/graphql/__generated__/graphql'
 //TODO: Skip "Block List" and "About" for now
 const ACTION_NAMES = [
   // { nameKey: 'block-list', href: '/' },
-  { nameKey: 'language', href: '/setting/language' },
-  { nameKey: 'contact-us', href: '/contact' },
+  { nameKey: 'language', name: '語言', href: '/setting/language' },
+  { nameKey: 'contact-us', name: '聯絡我們', href: '/contact' },
   // { nameKey: 'about', href: '/' },
-  { nameKey: 'logout', href: '' },
-  { nameKey: 'delete-account', href: '/setting/account-deletion' },
+  { nameKey: 'logout', name: '登出', href: '' },
+  {
+    nameKey: 'delete-account',
+    name: '刪除帳號',
+    href: '/setting/account-deletion',
+  },
 ] as const
 
 const ICON_MAP: { [key: string]: IconName } = {

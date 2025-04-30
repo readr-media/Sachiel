@@ -1,6 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import type { ForwardedRef, MouseEventHandler, RefObject } from 'react'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -11,6 +10,7 @@ import ShareSheet from '@/components/share-sheet'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { getMemberProfileUrl } from '@/utils/get-url'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
@@ -166,21 +166,25 @@ const actions = [
   {
     type: ActionType.CopyLink,
     textKey: 'ProfileMoreActionButton-actions-copy-link',
+    text: '複製個人檔案連結',
     icon: 'icon-copy',
   },
   {
     type: ActionType.Share,
     textKey: 'ProfileMoreActionButton-actions-share',
+    text: '分享這個人的個人檔案',
     icon: 'icon-share',
   },
   {
     type: ActionType.REPORT,
     textKey: 'ProfileMoreActionButton-actions-report',
+    text: '檢舉',
     icon: 'icon-flag',
   },
   {
     type: ActionType.BLOCK,
     textKey: 'ProfileMoreActionButton-actions-block',
+    text: '封鎖',
     icon: 'icon-forbidden',
   },
 ] as const
@@ -205,8 +209,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const t = useTranslations('Pages.Profile')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const hasPosition = isPositionValid(position)
   const sheetMinWidth = 180
   const sheetButtonOverlap = 20
@@ -214,7 +217,13 @@ const ActionSheet = forwardRef(function ActionSheet(
 
   const onAction = async (type: ActionType) => {
     if (!customId) {
-      addToast({ status: 'fail', text: toastT(TOAST_MESSAGE.moreActionError) })
+      addToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.moreActionError}`,
+          '有點怪怪的，請稍後再試'
+        ),
+      })
       console.error(`more action on profile error,customId : ${customId}`)
       return
     }
@@ -226,7 +235,10 @@ const ActionSheet = forwardRef(function ActionSheet(
           .then(() => {
             addToast({
               status: 'success',
-              text: toastT(TOAST_MESSAGE.copyStoryLinkSuccess),
+              text: t(
+                `Others.toast.${TOAST_MESSAGE.copyStoryLinkSuccess}`,
+                '已複製連結'
+              ),
             })
             onClose()
           })
@@ -288,7 +300,7 @@ const ActionSheet = forwardRef(function ActionSheet(
               >
                 <Icon iconName={action.icon} size="l" />
                 <span className="button-large shrink-0 text-primary-700">
-                  {t(action.textKey)}
+                  {t(`Pages.Profile.${action.textKey}`, action.text)}
                 </span>
               </button>
             )

@@ -3,13 +3,13 @@
 import { useAuthenticate, useSignerStatus } from '@alchemy/aa-alchemy/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { type FormEvent } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { ENV } from '@/constants/config'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { Card } from './card'
 
@@ -20,7 +20,7 @@ export const LogInCard = ({
   formDescription: string
   isHelperText: boolean
 }) => {
-  const t = useTranslations('Components.LogInCard')
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { authenticate } = useAuthenticate()
   const { status } = useSignerStatus()
@@ -45,7 +45,11 @@ export const LogInCard = ({
               size={{ width: 64, height: 64 }}
             />
             <p className="subtitle-1 text-center">
-              {t('login-mail-has-sent', { email })}
+              {t(
+                'Components.LogInCard.login-mail-has-sent',
+                '我們已將錢包登入連結寄到 {{email}}，請點擊信件中的連結。',
+                { email }
+              )}
             </p>
           </div>
         </div>
@@ -58,7 +62,7 @@ export const LogInCard = ({
           <div className="flex flex-col gap-1">
             {isHelperText ? null : (
               <p className="title-2 text-center text-primary-700">
-                {t('login-again')}
+                {t('Components.LogInCard.login-again', '重新登入錢包')}
               </p>
             )}
             <p className="body-2 text-center text-primary-500">
@@ -72,17 +76,20 @@ export const LogInCard = ({
                 type="submit"
                 size="lg"
                 color="primary"
-                text={t('resend-login-mail')}
+                text={t(
+                  'Components.LogInCard.resend-login-mail',
+                  '發送登入連結'
+                )}
               />
             </div>
           </div>
           {isHelperText ? (
             <p className="footnote text-center text-primary-400">
-              {t('what-is-mesh-point')}
+              {t('Components.LogInCard.what-is-mesh-point', '讀選點數是什麼？')}
               {/* TODO: 待點數說明頁面完成，更新連結 */}
               <Link href={ENV === 'prod' ? '/story/53192' : '/'}>
                 <span className="text-primary-700 underline underline-offset-2">
-                  {t('learn-more')}
+                  {t('Components.LogInCard.learn-more', '了解更多')}
                 </span>
               </Link>
             </p>

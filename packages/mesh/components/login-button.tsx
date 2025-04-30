@@ -1,11 +1,10 @@
-import { useTranslations } from 'next-intl'
-
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 
 import Button from './button'
 
 export default function LoginButton() {
-  const t = useTranslations('Components.LoginButton')
+  const { t } = useCustomTranslation()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   return (
@@ -13,7 +12,7 @@ export default function LoginButton() {
       <Button
         size="sm"
         color="white"
-        text={t('login')}
+        text={t('Components.LoginButton.login', '登入')}
         onClick={detectIfShouldRedirectToLogin}
       />
     </div>

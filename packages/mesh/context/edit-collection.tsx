@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import {
@@ -29,6 +28,7 @@ import {
   MobileEditCollectionType,
 } from '@/app/collection/(mutate)/(edit)/_types/edit-collection'
 import TOAST_MESSAGE from '@/constants/toast'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -82,8 +82,7 @@ export default function EditCollectionProvider({
   initialMobileEditType?: MobileEditCollectionType
   initialCollection: Collection
 }) {
-  const t = useTranslations('Pages.Collection')
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const [desktopEditType, setDesktopEditType] = useState(
     initialDesktopEditType ?? DesktopEditCollectionType.EditAll
   )
@@ -154,13 +153,25 @@ export default function EditCollectionProvider({
   const mobileTitle = useMemo(() => {
     switch (mobileEditType) {
       case MobileEditCollectionType.EditTitle:
-        return t('EditCollectionProvider-mobile-edit-title')
+        return t(
+          'Pages.Collection.EditCollectionProvider-mobile-edit-title',
+          '修改標題'
+        )
       case MobileEditCollectionType.EditSummary:
-        return t('EditCollectionProvider-mobile-edit-summary')
+        return t(
+          'Pages.Collection.EditCollectionProvider-mobile-edit-summary',
+          '修改敘述'
+        )
       case MobileEditCollectionType.EditStories:
-        return t('EditCollectionProvider-mobile-edit-stories')
+        return t(
+          'Pages.Collection.EditCollectionProvider-mobile-edit-stories',
+          '編輯排序'
+        )
       case MobileEditCollectionType.AddStories:
-        return t('EditCollectionProvider-mobile-add-stories')
+        return t(
+          'Pages.Collection.EditCollectionProvider-mobile-add-stories',
+          '加入新文章'
+        )
       default:
         return ''
     }
@@ -169,9 +180,15 @@ export default function EditCollectionProvider({
   const desktopTitle = useMemo(() => {
     switch (desktopEditType) {
       case DesktopEditCollectionType.EditAll:
-        return t('EditCollectionProvider-desktop-edit-all')
+        return t(
+          'Pages.Collection.EditCollectionProvider-desktop-edit-all',
+          '編輯集錦'
+        )
       case DesktopEditCollectionType.AddStories:
-        return t('EditCollectionProvider-desktop-add-stories')
+        return t(
+          'Pages.Collection.EditCollectionProvider-desktop-add-stories',
+          '加入新文章'
+        )
       default:
         return ''
     }
@@ -180,7 +197,10 @@ export default function EditCollectionProvider({
   const hintUserUpdateCollectionError = () => {
     setCrossPageToast({
       status: 'fail',
-      text: toastT(TOAST_MESSAGE.editCollectionFailed),
+      text: t(
+        `Others.toast.${TOAST_MESSAGE.editCollectionFailed}`,
+        '編輯集錦失敗，請重新嘗試'
+      ),
     })
   }
 

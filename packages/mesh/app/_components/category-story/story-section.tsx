@@ -1,7 +1,7 @@
 import NextLink from 'next/link'
-import { useTranslations } from 'next-intl'
 
 import InteractiveIcon from '@/components/interactive-icon'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { CategoryStory } from '@/types/homepage'
 
 import StoryCard from '../story-card'
@@ -17,14 +17,14 @@ type NonEmptyObject<T> = T extends Record<string, never> ? never : T
 type CommentType = NonEmptyObject<Exclude<CategoryStory['comment'], undefined>>
 
 export default function StorySection({ stories, slug }: Props) {
-  const t = useTranslations('Others.categories')
+  const { t } = useCustomTranslation()
 
   return (
     <div>
       <NextLink href={`/${slug}`} className="GTM-homepage_click_categorypage">
         <div className="group flex pb-3 pt-2 lg:pb-4">
           <h3 className="list-title lg:title-1 text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-            {t(slug)}
+            {t(`Others.categories.${slug}`, '')}
           </h3>
           <div className="flex items-center">
             <InteractiveIcon

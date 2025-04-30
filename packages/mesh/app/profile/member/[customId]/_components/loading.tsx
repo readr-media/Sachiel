@@ -1,9 +1,10 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function Loading() {
-  const t = useTranslations('Pages.Profile')
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex grow flex-col">
       <div className="flex animate-pulse items-center gap-4 p-5 pb-6 sm:gap-6 sm:pb-4 sm:pt-2 md:px-[70px] lg:px-10">
@@ -11,49 +12,49 @@ export default function Loading() {
         <div className="h-8 w-[120px] rounded-sm bg-loading sm:w-[200px]" />
       </div>
       <div className="button-large mx-5 flex items-center justify-center rounded-md border border-primary-800 py-[13px] sm:hidden">
-        {t('ProfilePage-edit-profile')}
+        {t('Pages.Profile.ProfilePage-edit-profile', '編輯個人檔案')}
       </div>
       <div className="flex animate-pulse items-center justify-center sm:justify-start">
         <div className="mb-8 mt-6 flex items-center gap-3 sm:m-0 sm:mb-6 sm:gap-5 sm:px-5 md:px-[70px] lg:px-10">
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
             <div className="profile-subtitle text-primary-500">
-              {t('TabKey-pick')}
+              {t('Pages.Profile.TabKey-pick', '精選')}
             </div>
           </div>
           <div className="h-5 w-[0.5px] bg-primary-200 sm:hidden" />
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
             <div className="profile-subtitle text-primary-500">
-              {t('TabKey-follower')}
+              {t('Pages.Profile.TabKey-follower', '粉絲')}
             </div>
           </div>
           <div className="h-5 w-[0.5px] bg-primary-200 sm:hidden" />
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
             <div className="profile-subtitle text-primary-500">
-              {t('TabKey-following')}
+              {t('Pages.Profile.TabKey-following', '追蹤中')}
             </div>
           </div>
         </div>
       </div>
       <div className="button-large mb-4 ml-5 hidden w-[180px] items-center justify-center rounded-md border border-primary-800 py-[13px] sm:flex md:ml-[70px] lg:ml-10">
-        {t('ProfilePage-edit-profile')}
+        {t('Pages.Profile.ProfilePage-edit-profile', '編輯個人檔案')}
       </div>
       <div className="flex animate-pulse border-y border-[rgba(0,9,40,0.1)] sm:gap-2 sm:border-t-0 sm:px-5 md:px-[70px] lg:px-10">
         <div className="flex flex-1 justify-center sm:flex-none">
           <div className="button-large flex h-12 w-15 items-center justify-center border-b border-[rgba(0,9,40,0.87)] text-primary-700 sm:w-24">
-            {t('TabOption-pick')}
+            {t('Pages.Profile.TabOption-pick', '精選')}
           </div>
         </div>
         <div className="flex flex-1 justify-center  sm:flex-none">
           <div className="button-large flex h-12 w-15 items-center justify-center text-primary-400 sm:w-24">
-            {t('TabOption-collection')}
+            {t('Pages.Profile.TabOption-collection', '集錦')}
           </div>
         </div>
         <div className="flex flex-1 justify-center  sm:flex-none">
           <div className="button-large flex h-12 w-15 items-center justify-center text-primary-400 sm:w-24">
-            {t('TabOption-bookmark')}
+            {t('Pages.Profile.TabOption-bookmark', '書籤')}
           </div>
         </div>
       </div>

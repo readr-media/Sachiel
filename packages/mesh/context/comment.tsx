@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 'use client'
 
-import { useTranslations } from 'next-intl'
 import type { ReactNode } from 'react'
 import {
   createContext,
@@ -17,6 +16,7 @@ import DesktopCommentModal from '@/components/comment/desktop-comment-section/co
 import { MobileCommentModalContent } from '@/components/comment/mobile-comment-section/mobile-comment-modal-content'
 import TOAST_MESSAGE from '@/constants/toast'
 import { type User } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import type { CommentObjectiveData, StoryInteractions } from '@/types/comment'
@@ -292,7 +292,7 @@ export function CommentProvider({
   commentObjectiveData: CommentObjectiveData
   commentObjective: CommentObjective
 }) {
-  const toastT = useTranslations('Others.toast')
+  const { t } = useCustomTranslation()
   const [state, dispatch] = useReducer(commentReducer, {
     ...initialState,
     commentList: initialComments,
@@ -322,11 +322,14 @@ export function CommentProvider({
       if (!deleteCommentResponse) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.deleteCommentFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.deleteCommentFailed}`,
+            '刪除留言失敗，請重新嘗試'
+          ),
         })
       }
     },
-    [addToast, state.commentEditState, toastT]
+    [addToast, state.commentEditState, t]
   )
 
   const handleDeleteCommentModalOnCancel = useCallback(() => {
@@ -394,7 +397,10 @@ export function CommentProvider({
       } catch (error) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.addCommentFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.addCommentFailed}`,
+            '發布留言失敗，請重新嘗試'
+          ),
         })
         console.error('Error publishing comment:', error)
       } finally {
@@ -410,7 +416,7 @@ export function CommentProvider({
       detectIfShouldRedirectToLogin,
       state.comment,
       state.commentList,
-      toastT,
+      t,
     ]
   )
 
@@ -446,7 +452,10 @@ export function CommentProvider({
       if (!editCommentResponse) {
         addToast({
           status: 'fail',
-          text: toastT(TOAST_MESSAGE.editCommentFailed),
+          text: t(
+            `Others.toast.${TOAST_MESSAGE.editCommentFailed}`,
+            '編輯留言失敗，請重新嘗試'
+          ),
         })
       }
     },
@@ -454,7 +463,7 @@ export function CommentProvider({
       addToast,
       state.commentEditState.commentId,
       state.commentEditState.content,
-      toastT,
+      t,
     ]
   )
   const handleDeleteComment = (e: React.MouseEvent<HTMLLIElement>) => {
