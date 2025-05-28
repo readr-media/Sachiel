@@ -78,6 +78,17 @@ export default function MediaStories({
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     getInitialPageData(allCategories)
   )
+
+  // Helper function to check if category data is considered "loaded"
+  const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
+    if (!data) return false;
+    // Considered loaded if it's not in the pristine initial state
+    return !(data.mostPickedStory === null &&
+             data.latestStoriesInfo.stories.length === 0 &&
+             data.latestStoriesInfo.totalCount === 0 &&
+             data.latestStoriesInfo.shouldLoadmore === true);
+  };
+  )
   const searchParams = useSearchParams()
 
   const initialActiveCategory = useMemo(() => {
@@ -361,60 +372,73 @@ export default function MediaStories({
   // Effect 3: User Navigation (Load Current Category Data)
   useEffect(() => {
     const loadCurrentCategoryData = async () => {
+    const loadCurrentCategoryData = async () => {
       if (!currentCategory?.slug || !initialLoadComplete) {
         if (!currentCategory && user.followingCategories.length === 0) {
-            setIsLoading(false);
+          setIsLoading(false);
         }
-        return;
-      }
-      
-      if (currentCategory.slug === initialActiveCategory?.slug) {
-        // Data handled by initial load, ensure loading is false
-        setIsLoading(false); 
         return;
       }
 
       const categorySlug = currentCategory.slug;
 
-      // Try to load from cache first
-      const cachedData = getCachedCategoryData(categorySlug, CATEGORY_CACHE_TTL_MS);
-      if (cachedData) {
-        setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: cachedData }));
-        setIsLoading(false);
-        
-        // Stale-while-revalidate: Fetch in background
-        fetchCategoryData(currentCategory).then((networkResult) => {
-          if (networkResult && 
-              JSON.stringify(networkResult) !== JSON.stringify(cachedData)) {
-            setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
-          }
-        }).catch(error => {
-          console.error(`SWR failed for current category ${categorySlug}:`, error);
-        });
-        return; // Return after setting cached data and initiating SWR
-      }
-
-      // If not in cache, check if already in state (e.g. from background prefetch or previous action)
-      const existingDataInState = pageDataInCategories[categorySlug];
-      if (existingDataInState && !(existingDataInState.mostPickedStory === null &&
-                             existingDataInState.latestStoriesInfo.stories.length === 0 &&
-                             existingDataInState.latestStoriesInfo.totalCount === 0 &&
-                             existingDataInState.latestStoriesInfo.shouldLoadmore === true)) {
-        setIsLoading(false);
+      if (categorySlug === initialActiveCategory?.slug) {
+        // Data handled by initial load effect, or SWR from it.
+        // Ensure isLoading is false if data is indeed loaded.
+        if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
+            setIsLoading(false);
+        }
+        // If initial load is still happening for this category (e.g. no cache, slow network),
+        // Effect 1's isLoading will manage it.
         return;
       }
 
-      // Full load: not in cache, not valid in state
-      setIsLoading(true);
-      try {
-        const result = await fetchCategoryData(currentCategory);
-        if (result) {
-          setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
+      const categoryDataFromState = pageDataInCategories[categorySlug];
+
+      if (!isCategoryDataLoaded(categoryDataFromState)) {
+        // Data not loaded in state, set loading true immediately
+        setIsLoading(true);
+
+        const cachedData = getCachedCategoryData(categorySlug, CATEGORY_CACHE_TTL_MS);
+        if (cachedData) {
+          // Fresh cache hit
+          setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: cachedData }));
+          setIsLoading(false); // Display cached data, remove loading
+
+          // SWR: Fetch in background
+          fetchCategoryData(currentCategory).then((networkResult) => {
+            if (networkResult && JSON.stringify(networkResult) !== JSON.stringify(cachedData)) {
+              setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
+            }
+          }).catch(error => {
+            console.error(`SWR failed for current category ${categorySlug}:`, error);
+          });
+        } else {
+          // Cache miss or stale: isLoading is already true, proceed to network fetch
+          try {
+            const result = await fetchCategoryData(currentCategory);
+            if (result) {
+              setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
+            }
+          } catch (error) {
+            console.error(`Error fetching current category ${categorySlug}:`, error);
+          } finally {
+            setIsLoading(false);
+          }
         }
-      } catch (error) {
-        console.error(`Error fetching current category ${categorySlug}:`, error);
-      } finally {
-        setIsLoading(false);
+      } else {
+        // Data IS loaded in state (e.g., from background prefetch or previous navigation)
+        setIsLoading(false); // Ensure loading is false
+
+        // SWR: Fetch in background
+        fetchCategoryData(currentCategory).then((networkResult) => {
+          if (networkResult && categoryDataFromState && // Ensure categoryDataFromState is not null for comparison
+              JSON.stringify(networkResult) !== JSON.stringify(categoryDataFromState)) {
+            setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
+          }
+        }).catch(error => {
+          console.error(`SWR failed for current category ${categorySlug} (already in state):`, error);
+        });
       }
     }
 
