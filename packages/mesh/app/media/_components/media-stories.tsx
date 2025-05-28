@@ -89,7 +89,7 @@ export default function MediaStories({
              data.latestStoriesInfo.totalCount === 0 &&
              data.latestStoriesInfo.shouldLoadmore === true);
   };
-  )
+  // Stray ')' removed from here
   const searchParams = useSearchParams()
 
   const initialActiveCategory = useMemo(() => {
