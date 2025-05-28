@@ -68,132 +68,221 @@ export default function MediaStories({
 }) {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false)
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     getInitialPageData(allCategories)
   )
   const searchParams = useSearchParams()
-  const currentCategorySlug = searchParams.get(categorySearchParamName)
-  const currentCategory = user.followingCategories.find(
-    (category) => category.slug === currentCategorySlug
-  )
+
+  const initialActiveCategory = useMemo(() => {
+    const slugFromParams = searchParams.get(categorySearchParamName)
+    if (slugFromParams) {
+      const categoryFromSlug = user.followingCategories.find(
+        (category) => category.slug === slugFromParams
+      )
+      if (categoryFromSlug) return categoryFromSlug
+    }
+    return user.followingCategories[0] || null
+  }, [searchParams, user.followingCategories])
+  
+  // currentCategory is the category currently reflected in the URL/selected by user
+  const currentCategory = useMemo(() => {
+    const slugFromParams = searchParams.get(categorySearchParamName)
+    if (slugFromParams) {
+      return user.followingCategories.find(
+        (category) => category.slug === slugFromParams
+      )
+    }
+    // Fallback to initialActiveCategory if no slug, so UI doesn't break
+    // If initialActiveCategory is also null (no followed categories), currentCategory will be null.
+    return initialActiveCategory 
+  }, [searchParams, user.followingCategories, initialActiveCategory])
+
+  const currentCategorySlug = currentCategory?.slug // Used for rendering, derived from currentCategory
 
   const followingPublisherIds = useMemo(
     () => user.followingPublishers.map((publisher) => publisher.id),
     [user.followingPublishers]
   )
   const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
-    pageDataInCategories[
-      (currentCategory?.slug || user.followingCategories[0].slug) ?? ''
-    ]
-  const getLatestStoriesfetchBody = useMemo(
-    () => ({
-      publishers: followingPublisherIds,
-      category: currentCategory?.id ?? '',
-      index: 0,
-      take: latestStoryPageCount,
-    }),
-    [currentCategory?.id, followingPublisherIds]
+    pageDataInCategories[currentCategorySlug ?? ''] || {
+      mostPickedStory: null,
+      latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
+      publishersAndStories: [],
+    }
+
+  // Define a generic fetch function for a single category's data
+  const fetchCategoryData = useCallback(
+    async (categoryToFetch: Category) => {
+      if (!categoryToFetch?.slug || !categoryToFetch?.id) return null
+
+      const categorySlug = categoryToFetch.slug
+      const categoryId = categoryToFetch.id
+
+      const categoryLatestStoriesfetchBody = {
+        publishers: followingPublisherIds,
+        category: categoryId,
+        index: 0,
+        take: latestStoryPageCount,
+      }
+
+      const [
+        mostPickedStoryResponse,
+        latestStoriesResponse,
+        publishersAndStoriesResponse,
+      ] = await Promise.all([
+        getMostPickedStoriesInCategory(categorySlug),
+        getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
+        getMostSponsorPublishersAndStories(categorySlug),
+      ])
+
+      const loadedMostPickedStory = mostPickedStoryResponse?.[0] ?? null
+      const loadedLatestStoriesInfo: LatestStoriesInfo = {
+        stories: latestStoriesResponse?.stories ?? [],
+        totalCount: latestStoriesResponse?.num_stories ?? 0,
+        shouldLoadmore:
+          (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
+      }
+      const loadedPublishersAndStories =
+        publishersAndStoriesResponse
+          ?.slice(0, displayPublisherCount)
+          .map((publisherAndStory) => ({
+            publisher: publisherAndStory.publisher,
+            stories: publisherAndStory.stories.slice(
+              0,
+              displayPublisherStoriesCount
+            ),
+          })) ?? []
+
+      return {
+        slug: categorySlug,
+        data: {
+          mostPickedStory: loadedMostPickedStory,
+          latestStoriesInfo: loadedLatestStoriesInfo,
+          publishersAndStories: loadedPublishersAndStories,
+        },
+      }
+    },
+    [followingPublisherIds]
   )
 
   const loadMoreLatestStories = useCallback(async () => {
-    const latestStoriesResponse = await getLatestStoriesInCategory({
-      ...getLatestStoriesfetchBody,
-      index: latestStoriesInfo.stories.length,
-    })
+    if (!currentCategory || !currentCategory.id) return;
 
-    // do nothing to error response
-    if (!latestStoriesResponse) return
+    const currentCategoryLatestStoriesfetchBody = {
+      publishers: followingPublisherIds,
+      category: currentCategory.id,
+      index: latestStoriesInfo.stories.length, // Use current length for pagination
+      take: latestStoryPageCount,
+    };
+
+    const latestStoriesResponse = await getLatestStoriesInCategory(currentCategoryLatestStoriesfetchBody)
+
+    if (!latestStoriesResponse?.stories) return
 
     const newLatestStoriesInfo: LatestStoriesInfo = {
-      stories: latestStoriesInfo.stories.concat(
-        latestStoriesResponse.stories ?? []
-      ),
-      totalCount: latestStoriesResponse.num_stories ?? 0,
-      // only stop infinite scroll when response return empty array
-      shouldLoadmore: latestStoriesResponse.stories.length !== 0 ? true : false,
+      stories: latestStoriesInfo.stories.concat(latestStoriesResponse.stories),
+      totalCount: latestStoriesResponse.num_stories ?? latestStoriesInfo.totalCount,
+      shouldLoadmore: latestStoriesResponse.stories.length >= latestStoryPageCount,
     }
-
-    const currentPageData = pageDataInCategories[currentCategory?.slug ?? '']
-    setPageDataInCategories((oldPageData) => {
-      return {
+    
+    if (currentCategory.slug) {
+      setPageDataInCategories((oldPageData) => ({
         ...oldPageData,
-        [currentCategory?.slug ?? '']: {
-          ...currentPageData,
+        [currentCategory.slug!]: { // currentCategory.slug known to be defined here
+          ...(oldPageData[currentCategory.slug!] || {}), // Spread existing data for the category
           latestStoriesInfo: newLatestStoriesInfo,
         },
-      }
-    })
+      }))
+    }
   }, [
-    currentCategory?.slug,
-    getLatestStoriesfetchBody,
-    latestStoriesInfo.stories,
-    pageDataInCategories,
+    currentCategory,
+    followingPublisherIds,
+    latestStoriesInfo.stories, // Ensure it reacts to changes in story length
+    latestStoriesInfo.totalCount, // Ensure it reacts to changes in totalCount
+    pageDataInCategories, // To access existing data if needed, though direct set is better
   ])
 
+  // Effect to set initial URL slug if not present
   useEffect(() => {
-    if (!currentCategorySlug) {
-      replaceSearchParams(
-        categorySearchParamName,
-        user.followingCategories[0].slug ?? ''
-      )
+    if (!searchParams.get(categorySearchParamName) && initialActiveCategory?.slug) {
+      replaceSearchParams(categorySearchParamName, initialActiveCategory.slug)
     }
-  }, [currentCategorySlug, user.followingCategories])
+  }, [searchParams, initialActiveCategory])
 
-  // Effect for proactive data fetching for all followed categories on mount
+
+  // 1. Effect for Initial Active Category Load
   useEffect(() => {
-    const prefetchAllCategoriesData = async () => {
-      // setIsLoading(true) // No longer setting global loading for prefetch
+    const loadInitialCategory = async () => {
+      if (!initialActiveCategory?.slug) {
+        if (user.followingCategories.length === 0) {
+          setIsLoading(false)
+        }
+        setInitialLoadComplete(true)
+        return
+      }
+
+      const slug = initialActiveCategory.slug
+      const existingData = pageDataInCategories[slug]
+      if (existingData && !(existingData.mostPickedStory === null &&
+                           existingData.latestStoriesInfo.stories.length === 0 &&
+                           existingData.latestStoriesInfo.totalCount === 0 &&
+                           existingData.latestStoriesInfo.shouldLoadmore === true)) {
+        setIsLoading(false)
+        setInitialLoadComplete(true)
+        return
+      }
+      
+      setIsLoading(true)
       try {
-        const allCategoryDataPromises = user.followingCategories.map(
-          async (category) => {
-            if (!category.slug) return null // Should not happen with valid data
+        const result = await fetchCategoryData(initialActiveCategory)
+        if (result) {
+          setPageDataInCategories((prev) => ({ ...prev, [result.slug]: result.data }))
+        }
+      } catch (error) {
+        console.error(`Error fetching initial category ${initialActiveCategory.slug}:`, error)
+      } finally {
+        setIsLoading(false)
+        setInitialLoadComplete(true)
+      }
+    }
 
-            const categoryLatestStoriesfetchBody = {
-              publishers: followingPublisherIds,
-              category: category.id ?? '',
-              index: 0,
-              take: latestStoryPageCount,
+    if (!initialLoadComplete) {
+      loadInitialCategory()
+    }
+  }, [
+    initialActiveCategory, 
+    fetchCategoryData, 
+    pageDataInCategories, 
+    initialLoadComplete, 
+    user.followingCategories.length
+  ])
+
+
+  // 2. Effect for Background Prefetching Other Categories
+  useEffect(() => {
+    const prefetchAllOtherCategories = async () => {
+      const categoriesToFetch = user.followingCategories.filter(
+        (category) => category.slug !== initialActiveCategory?.slug
+      )
+
+      if (categoriesToFetch.length === 0) return
+
+      try {
+        const results = await Promise.all(
+          categoriesToFetch.map(category => {
+            // Avoid re-fetching if data already seems loaded (e.g. by quick user navigation)
+            const existingData = pageDataInCategories[category.slug];
+            if (existingData && !(existingData.mostPickedStory === null &&
+                                 existingData.latestStoriesInfo.stories.length === 0 &&
+                                 existingData.latestStoriesInfo.totalCount === 0 &&
+                                 existingData.latestStoriesInfo.shouldLoadmore === true)) {
+              return Promise.resolve(null); // Already loaded or being loaded, skip prefetch
             }
-
-            const [
-              mostPickedStoryResponse,
-              latestStoriesResponse,
-              publishersAndStoriesResponse,
-            ] = await Promise.all([
-              getMostPickedStoriesInCategory(category.slug),
-              getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
-              getMostSponsorPublishersAndStories(category.slug),
-            ])
-
-            const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
-            const latestStoriesInfo: LatestStoriesInfo = {
-              stories: latestStoriesResponse?.stories ?? [],
-              totalCount: latestStoriesResponse?.num_stories ?? 0,
-              shouldLoadmore: (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
-            }
-            const publishersAndStories =
-              publishersAndStoriesResponse
-                ?.slice(0, displayPublisherCount)
-                .map((publisherAndStories) => ({
-                  publisher: publisherAndStories.publisher,
-                  stories: publisherAndStories.stories.slice(
-                    0,
-                    displayPublisherStoriesCount
-                  ),
-                })) ?? []
-
-            return {
-              slug: category.slug,
-              data: {
-                mostPickedStory,
-                latestStoriesInfo,
-                publishersAndStories,
-              },
-            }
-          }
+            return fetchCategoryData(category);
+          })
         )
-
-        const results = await Promise.all(allCategoryDataPromises)
+        
         const newPageData = results.reduce((acc, result) => {
           if (result?.slug) {
             acc[result.slug] = result.data
@@ -201,130 +290,88 @@ export default function MediaStories({
           return acc
         }, {} as PageData)
 
-        setPageDataInCategories((prevData) => ({ ...prevData, ...newPageData }))
+        if (Object.keys(newPageData).length > 0) {
+          setPageDataInCategories((prevData) => ({ ...prevData, ...newPageData }))
+        }
       } catch (error) {
-        console.error('Error prefetching all categories data:', error)
-        // Even if some categories fail, we might have partial data.
-        // Consider how to handle errors more gracefully, e.g., per-category error states.
-      } finally {
-        // setIsLoading(false) // No longer setting global loading for prefetch
+        console.error('Error prefetching other categories data:', error)
       }
     }
 
-    if (user.followingCategories.length > 0) {
-      prefetchAllCategoriesData()
+    if (initialLoadComplete && user.followingCategories.length > 0) {
+      prefetchAllOtherCategories()
     }
-    // else if there are no categories to follow, isLoading is handled by the other effect
-    // or by its initial state if currentCategory also doesn't resolve.
-    // The second effect has a condition:
-    // } else if (user.followingCategories.length === 0) {
-	  //   setIsLoading(false) 
-	  // }
-    // This will correctly set isLoading to false if there's nothing to load at all.
+  }, [
+    initialLoadComplete, 
+    user.followingCategories, 
+    fetchCategoryData, 
+    initialActiveCategory,
+    pageDataInCategories // Dependency to re-evaluate if specific categories need fetching
+  ])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.followingCategories, followingPublisherIds]) // Removed getLatestStoriesfetchBody as it's category specific
 
-  // Effect for fetching data for the current category if not already loaded
+  // 3. Effect for Handling Subsequent currentCategory (URL-driven) Changes
   useEffect(() => {
-    const fetchCurrentCategoryData = async () => {
-      if (!currentCategory || !currentCategory.slug) return
+    const loadCurrentCategoryData = async () => {
+      if (!currentCategory?.slug || !initialLoadComplete) {
+        // If no current category or initial load isn't done, do nothing.
+        // If initial load isn't complete, the initial load effect handles its category.
+        // If no current category (e.g. no followed cats), ensure loading is false.
+        if (!currentCategory && user.followingCategories.length === 0) {
+            setIsLoading(false);
+        }
+        return;
+      }
+      
+      // If currentCategory is the one that was initially loaded, its data should be there.
+      // No need to re-fetch unless specific conditions arise (e.g. stale data, not handled here)
+      if (currentCategory.slug === initialActiveCategory?.slug) {
+        setIsLoading(false); // Data was handled by initial load effect
+        return;
+      }
 
-      // Check if data for the current category is already present
-      if (
-        pageDataInCategories[currentCategory.slug]?.mostPickedStory ||
-        pageDataInCategories[currentCategory.slug]?.latestStoriesInfo?.stories?.length > 0
-      ) {
-        setIsLoading(false) // Data likely pre-fetched or already loaded
+      const categoryData = pageDataInCategories[currentCategory.slug]
+      // Check if data is in initial (unfetched) state
+      if (categoryData && !(categoryData.mostPickedStory === null &&
+                             categoryData.latestStoriesInfo.stories.length === 0 &&
+                             categoryData.latestStoriesInfo.totalCount === 0 &&
+                             categoryData.latestStoriesInfo.shouldLoadmore === true)) {
+        setIsLoading(false) // Data is already loaded (e.g., by background prefetch)
         return
       }
 
       setIsLoading(true)
       try {
-        const currentCategoryLatestStoriesfetchBody = {
-          publishers: followingPublisherIds,
-          category: currentCategory.id ?? '',
-          index: 0,
-          take: latestStoryPageCount,
+        const result = await fetchCategoryData(currentCategory)
+        if (result) {
+          setPageDataInCategories((prev) => ({ ...prev, [result.slug]: result.data }))
         }
-        const [
-          mostPickedStoryResponse,
-          latestStoriesResponse,
-          publishersAndStoriesResponse,
-        ] = await Promise.all([
-          getMostPickedStoriesInCategory(currentCategory.slug),
-          getLatestStoriesInCategory(currentCategoryLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(currentCategory.slug),
-        ])
-
-        const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
-        const latestStoriesInfo: LatestStoriesInfo = {
-          stories: latestStoriesResponse?.stories ?? [],
-          totalCount: latestStoriesResponse?.num_stories ?? 0,
-          shouldLoadmore: (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
-        }
-        const publishersAndStories =
-          publishersAndStoriesResponse
-            ?.slice(0, displayPublisherCount)
-            .map((publisherAndStories) => ({
-              publisher: publisherAndStories.publisher,
-              stories: publisherAndStories.stories.slice(
-                0,
-                displayPublisherStoriesCount
-              ),
-            })) ?? []
-
-        setPageDataInCategories((oldPageData) => ({
-          ...oldPageData,
-          [currentCategory.slug ?? '']: {
-            mostPickedStory,
-            latestStoriesInfo,
-            publishersAndStories,
-          },
-        }))
       } catch (error) {
-        console.error('fetchCurrentCategoryData error', error)
+        console.error(`Error fetching current category ${currentCategory.slug}:`, error)
       } finally {
         setIsLoading(false)
       }
     }
 
-    if (currentCategory?.slug) {
-      const categoryData = pageDataInCategories[currentCategory.slug]
-
-      // Fetch if:
-      // 1. categoryData doesn't exist (slug not in pageDataInCategories yet - defensive)
-      // 2. OR Data is in its initial, unfetched state, indicated by:
-      //    - mostPickedStory is null
-      //    - latestStoriesInfo.stories is empty
-      //    - latestStoriesInfo.totalCount is 0
-      //    - latestStoriesInfo.shouldLoadmore is true (this is key to differentiate from a fetched-empty state)
-      if (
-        !categoryData ||
-        (categoryData.mostPickedStory === null &&
-          categoryData.latestStoriesInfo.stories.length === 0 &&
-          categoryData.latestStoriesInfo.totalCount === 0 &&
-          categoryData.latestStoriesInfo.shouldLoadmore === true)
-      ) {
-        fetchCurrentCategoryData()
-      } else {
-        // Data is already loaded/fetched (or confirmed empty and fetched)
-        setIsLoading(false)
-      }
-    } else if (user.followingCategories.length === 0) {
-		setIsLoading(false) // No categories to load anything for
-	}
+    // Only run this effect if the initial load sequence has completed.
+    // The initial load effect handles the very first category.
+    if (initialLoadComplete) {
+      loadCurrentCategoryData()
+    }
   }, [
-    currentCategory,
-    followingPublisherIds, // Added as it's used in fetchCurrentCategoryData
-    pageDataInCategories, // Added to re-evaluate if data becomes available
+    currentCategory, 
+    fetchCategoryData, 
+    pageDataInCategories, 
+    initialLoadComplete, 
+    initialActiveCategory, // To compare with currentCategory
+    user.followingCategories.length // For the no-categories case
   ])
 
   let contentJsx: JSX.Element
 
-  if (isLoading || !currentCategory) {
+  if (isLoading || !currentCategory) { // currentCategory check for no-followed-categories scenario
     contentJsx = <Loading withCategory={false} />
-  } else if (!latestStoriesInfo?.stories.length) {
+  } else if (!latestStoriesInfo?.stories.length && !mostPickedStory) { // Check both
     contentJsx = <NoStories />
   } else {
     contentJsx = (
@@ -359,3 +406,4 @@ export default function MediaStories({
     </main>
   )
 }
+// No changes to the rendering logic (contentJsx, return statement) from the previous correct version.
