@@ -320,43 +320,31 @@ export default function MediaStories({
 
       if (needsNetworkFetch.length === 0) return;
 
-      try {
-        const results = await Promise.all(
-          needsNetworkFetch.map(category => fetchCategoryData(category))
-        );
-        
-        const newPageData = results.filter(Boolean).reduce((acc, resultWithSlug) => {
-          // fetchCategoryData now returns the data directly, not {slug, data}
-          // This needs adjustment if fetchCategoryData's return type changed.
-          // Assuming fetchCategoryData returns PageData | null for this category.
-          // The structure of `result` needs to be aligned with what `fetchCategoryData` returns.
-          // For now, let's assume `fetchCategoryData` was intended to return { slug, data }
-          // but the previous change made it return data directly.
-          // Re-adjusting this part assuming fetchCategoryData returns {slug, data} or just data.
-          // Let's stick to the current `fetchCategoryData` which returns the data for the category directly.
-          // The calling effect is responsible for knowing the slug.
-          // This part of Effect 2 needs to be smarter.
-          // The forEach loop was simpler for individual updates. Let's revert to that simplicity for now for Effect 2
-          // or correctly map slugs.
-          // Given the current structure of fetchCategoryData (returns data, not {slug, data}),
-          // we need to process results carefully.
-          // The original forEach was simpler for direct updates.
-          // Let's use a less batchy update for network results here to simplify:
-          console.error('Error: Batching network results in Effect 2 needs slug association. Refactoring required here if batching is kept.')
-        } catch (error) {
-            console.error('Error in network prefetching other categories data:', error)
-        }
-      // Fallback to individual fetches for simplicity in this step due to result structure
-      needsNetworkFetch.forEach(async (category) => {
-        try {
-            const result = await fetchCategoryData(category);
-            if (result && category.slug) { // category.slug should be valid here
-                setPageDataInCategories((prev) => ({ ...prev, [category.slug!]: result }));
+      const prefetchPromises = needsNetworkFetch.map(category => fetchCategoryData(category));
+      
+      Promise.allSettled(prefetchPromises)
+        .then(results => {
+          const successfullyFetchedData: PageData = {};
+          results.forEach((result, index) => {
+            const category = needsNetworkFetch[index]; // Get the corresponding category
+            if (!category?.slug) return; // Should not happen if needsNetworkFetch is filtered correctly
+
+            if (result.status === 'fulfilled' && result.value) {
+              successfullyFetchedData[category.slug] = result.value;
+            } else if (result.status === 'rejected') {
+              console.error(`Failed to prefetch category ${category.slug}:`, result.reason);
             }
-        } catch (error) {
-            console.error(`Error prefetching category ${category.slug}:`, error);
-        }
-      });
+          });
+
+          if (Object.keys(successfullyFetchedData).length > 0) {
+            setPageDataInCategories(prevData => ({ ...prevData, ...successfullyFetchedData }));
+          }
+        })
+        .catch(error => {
+          // This catch is for Promise.allSettled itself, which should ideally not be hit
+          // as individual promise rejections are handled above.
+          console.error('Unexpected error in Promise.allSettled for background prefetch:', error);
+        });
     }
 
     if (initialLoadComplete && user.followingCategories.length > 0) {
