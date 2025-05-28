@@ -79,6 +79,7 @@ export default function MediaStories({
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     getInitialPageData(allCategories)
   )
+  const followingCategoriesCount = user.followingCategories.length; // Define the count variable
 
   // Helper function to check if category data is considered "loaded"
   const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
@@ -292,7 +293,7 @@ export default function MediaStories({
     fetchCategoryData, 
     pageDataInCategories, 
     initialLoadComplete, 
-    user.followingCategories.length
+    followingCategoriesCount // Use the variable here
   ])
 
   // Effect 2: Background Prefetching Other Categories
@@ -452,7 +453,7 @@ export default function MediaStories({
     pageDataInCategories, 
     initialLoadComplete, 
     initialActiveCategory,
-    user.followingCategories.length
+    followingCategoriesCount // Use the variable here
   ]);
 
   // Define the handler for refocus/visibility using useCallback
