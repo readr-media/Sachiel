@@ -139,27 +139,130 @@ export default function MediaStories({
     }
   }, [currentCategorySlug, user.followingCategories])
 
+  // Effect for proactive data fetching for all followed categories on mount
   useEffect(() => {
-    const fetchPageData = async () => {
+    const prefetchAllCategoriesData = async () => {
+      // setIsLoading(true) // No longer setting global loading for prefetch
       try {
+        const allCategoryDataPromises = user.followingCategories.map(
+          async (category) => {
+            if (!category.slug) return null // Should not happen with valid data
+
+            const categoryLatestStoriesfetchBody = {
+              publishers: followingPublisherIds,
+              category: category.id ?? '',
+              index: 0,
+              take: latestStoryPageCount,
+            }
+
+            const [
+              mostPickedStoryResponse,
+              latestStoriesResponse,
+              publishersAndStoriesResponse,
+            ] = await Promise.all([
+              getMostPickedStoriesInCategory(category.slug),
+              getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
+              getMostSponsorPublishersAndStories(category.slug),
+            ])
+
+            const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
+            const latestStoriesInfo: LatestStoriesInfo = {
+              stories: latestStoriesResponse?.stories ?? [],
+              totalCount: latestStoriesResponse?.num_stories ?? 0,
+              shouldLoadmore: (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
+            }
+            const publishersAndStories =
+              publishersAndStoriesResponse
+                ?.slice(0, displayPublisherCount)
+                .map((publisherAndStories) => ({
+                  publisher: publisherAndStories.publisher,
+                  stories: publisherAndStories.stories.slice(
+                    0,
+                    displayPublisherStoriesCount
+                  ),
+                })) ?? []
+
+            return {
+              slug: category.slug,
+              data: {
+                mostPickedStory,
+                latestStoriesInfo,
+                publishersAndStories,
+              },
+            }
+          }
+        )
+
+        const results = await Promise.all(allCategoryDataPromises)
+        const newPageData = results.reduce((acc, result) => {
+          if (result?.slug) {
+            acc[result.slug] = result.data
+          }
+          return acc
+        }, {} as PageData)
+
+        setPageDataInCategories((prevData) => ({ ...prevData, ...newPageData }))
+      } catch (error) {
+        console.error('Error prefetching all categories data:', error)
+        // Even if some categories fail, we might have partial data.
+        // Consider how to handle errors more gracefully, e.g., per-category error states.
+      } finally {
+        // setIsLoading(false) // No longer setting global loading for prefetch
+      }
+    }
+
+    if (user.followingCategories.length > 0) {
+      prefetchAllCategoriesData()
+    }
+    // else if there are no categories to follow, isLoading is handled by the other effect
+    // or by its initial state if currentCategory also doesn't resolve.
+    // The second effect has a condition:
+    // } else if (user.followingCategories.length === 0) {
+	  //   setIsLoading(false) 
+	  // }
+    // This will correctly set isLoading to false if there's nothing to load at all.
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.followingCategories, followingPublisherIds]) // Removed getLatestStoriesfetchBody as it's category specific
+
+  // Effect for fetching data for the current category if not already loaded
+  useEffect(() => {
+    const fetchCurrentCategoryData = async () => {
+      if (!currentCategory || !currentCategory.slug) return
+
+      // Check if data for the current category is already present
+      if (
+        pageDataInCategories[currentCategory.slug]?.mostPickedStory ||
+        pageDataInCategories[currentCategory.slug]?.latestStoriesInfo?.stories?.length > 0
+      ) {
+        setIsLoading(false) // Data likely pre-fetched or already loaded
+        return
+      }
+
+      setIsLoading(true)
+      try {
+        const currentCategoryLatestStoriesfetchBody = {
+          publishers: followingPublisherIds,
+          category: currentCategory.id ?? '',
+          index: 0,
+          take: latestStoryPageCount,
+        }
         const [
           mostPickedStoryResponse,
           latestStoriesResponse,
           publishersAndStoriesResponse,
         ] = await Promise.all([
-          getMostPickedStoriesInCategory(currentCategory?.slug ?? ''),
-          getLatestStoriesInCategory(getLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(currentCategory?.slug ?? ''),
+          getMostPickedStoriesInCategory(currentCategory.slug),
+          getLatestStoriesInCategory(currentCategoryLatestStoriesfetchBody),
+          getMostSponsorPublishersAndStories(currentCategory.slug),
         ])
 
-        // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
         const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
         const latestStoriesInfo: LatestStoriesInfo = {
           stories: latestStoriesResponse?.stories ?? [],
           totalCount: latestStoriesResponse?.num_stories ?? 0,
-          shouldLoadmore: true,
+          shouldLoadmore: (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
         }
-
         const publishersAndStories =
           publishersAndStoriesResponse
             ?.slice(0, displayPublisherCount)
@@ -173,28 +276,48 @@ export default function MediaStories({
 
         setPageDataInCategories((oldPageData) => ({
           ...oldPageData,
-          [currentCategory?.slug ?? '']: {
+          [currentCategory.slug ?? '']: {
             mostPickedStory,
             latestStoriesInfo,
             publishersAndStories,
           },
         }))
-
-        setIsLoading(false)
       } catch (error) {
-        console.error('fetchPageData error', error)
+        console.error('fetchCurrentCategoryData error', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    if (!mostPickedStory && currentCategory) {
-      setIsLoading(true)
-      fetchPageData()
-    }
+    if (currentCategory?.slug) {
+      const categoryData = pageDataInCategories[currentCategory.slug]
+
+      // Fetch if:
+      // 1. categoryData doesn't exist (slug not in pageDataInCategories yet - defensive)
+      // 2. OR Data is in its initial, unfetched state, indicated by:
+      //    - mostPickedStory is null
+      //    - latestStoriesInfo.stories is empty
+      //    - latestStoriesInfo.totalCount is 0
+      //    - latestStoriesInfo.shouldLoadmore is true (this is key to differentiate from a fetched-empty state)
+      if (
+        !categoryData ||
+        (categoryData.mostPickedStory === null &&
+          categoryData.latestStoriesInfo.stories.length === 0 &&
+          categoryData.latestStoriesInfo.totalCount === 0 &&
+          categoryData.latestStoriesInfo.shouldLoadmore === true)
+      ) {
+        fetchCurrentCategoryData()
+      } else {
+        // Data is already loaded/fetched (or confirmed empty and fetched)
+        setIsLoading(false)
+      }
+    } else if (user.followingCategories.length === 0) {
+		setIsLoading(false) // No categories to load anything for
+	}
   }, [
     currentCategory,
-    currentCategory?.slug,
-    getLatestStoriesfetchBody,
-    mostPickedStory,
+    followingPublisherIds, // Added as it's used in fetchCurrentCategoryData
+    pageDataInCategories, // Added to re-evaluate if data becomes available
   ])
 
   let contentJsx: JSX.Element
