@@ -374,7 +374,7 @@ export default function MediaStories({
   // Effect 3: User Navigation (Load Current Category Data)
   useEffect(() => {
     const loadCurrentCategoryData = async () => {
-    const loadCurrentCategoryData = async () => {
+      // Removed redundant nested definition of loadCurrentCategoryData
       if (!currentCategory?.slug || !initialLoadComplete) {
         if (!currentCategory && user.followingCategories.length === 0) {
           setIsLoading(false);
@@ -442,7 +442,8 @@ export default function MediaStories({
           console.error(`SWR failed for current category ${categorySlug} (already in state):`, error);
         });
       }
-    }
+    // Removed redundant closing brace for the inner function
+    // The outer function `loadCurrentCategoryData` continues here.
 
     if (initialLoadComplete) {
       loadCurrentCategoryData();
