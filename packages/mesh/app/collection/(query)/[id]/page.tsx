@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { getCollection, getCollectionStories } from '@/app/actions/collection'
+import MisoPageView from '@/components/miso-page-view'
 
 import ArticleCardList from './_components/article-card-list'
 import CollectionCard from './_components/collection-card'
@@ -28,6 +29,7 @@ export default async function CollectionPage({
 
   return (
     <main className="flex grow flex-col">
+      <MisoPageView productIds={`profile_collection_${collectionId}`} />
       <CollectionCard collection={collection} />
       <ArticleCardList
         items={collectionPicks ?? []}

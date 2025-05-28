@@ -1,4 +1,5 @@
 import { getCurrentUser } from '@/app/actions/auth'
+import MisoPageView from '@/components/miso-page-view'
 
 import ProfilePage from './_components/profile-page'
 
@@ -17,6 +18,7 @@ const Page = async (props: PageProps) => {
 
   return (
     <div className="flex grow flex-col">
+      <MisoPageView productIds={`profile_member_${customId}`} />
       <ProfilePage userType={userType} profileCustomId={customId} />
     </div>
   )
