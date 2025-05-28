@@ -271,6 +271,9 @@ export default function MediaStories({
       try {
         const results = await Promise.all(
           categoriesToFetch.map(category => {
+            if (!category.slug) { // Add null/undefined check for category.slug
+              return Promise.resolve(null); 
+            }
             // Avoid re-fetching if data already seems loaded (e.g. by quick user navigation)
             const existingData = pageDataInCategories[category.slug];
             if (existingData && !(existingData.mostPickedStory === null &&

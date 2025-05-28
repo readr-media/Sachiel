@@ -1,7 +1,7 @@
 module.exports = {
   //TODO: ESLint: Failed to load config "../../.eslintrc" to extend from. Referenced from: /app/.eslintrc.json
   extends: [
-    '../../.eslintrc',
+    '../../.eslintrc.js',
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
