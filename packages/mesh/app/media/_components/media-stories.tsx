@@ -75,6 +75,7 @@ export default function MediaStories({
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
+  const [focusRefetchingSlug, setFocusRefetchingSlug] = useState<string | null>(null);
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     getInitialPageData(allCategories)
   )
@@ -88,7 +89,7 @@ export default function MediaStories({
              data.latestStoriesInfo.totalCount === 0 &&
              data.latestStoriesInfo.shouldLoadmore === true);
   };
-  )
+  // Stray ')' removed from here
   const searchParams = useSearchParams()
 
   const initialActiveCategory = useMemo(() => {
@@ -453,6 +454,82 @@ export default function MediaStories({
     initialActiveCategory,
     user.followingCategories.length
   ]);
+
+  // Define the handler for refocus/visibility using useCallback
+  const handleReFocusOrVisible = useCallback(() => {
+    const categoryToRefresh = currentCategory || initialActiveCategory;
+
+    if (categoryToRefresh && categoryToRefresh.slug) {
+      const slugToRefresh = categoryToRefresh.slug;
+
+      if (focusRefetchingSlug === slugToRefresh) {
+        console.log(`Focus refetch for ${slugToRefresh} already in progress.`);
+        return;
+      }
+
+      console.log(`Refocus/Visible: Attempting to revalidate data for ${slugToRefresh}.`);
+      setFocusRefetchingSlug(slugToRefresh);
+      
+      // Do not set global isLoading for this background fetch
+      fetchCategoryData(categoryToRefresh)
+        .then(networkData => {
+          if (networkData) {
+            const existingData = pageDataInCategories[slugToRefresh];
+            
+            if (JSON.stringify(networkData) !== JSON.stringify(existingData)) {
+              console.log(`Refocus/Visible: Data for ${slugToRefresh} changed, updating UI.`);
+              setPageDataInCategories(prev => ({
+                ...prev,
+                [slugToRefresh]: networkData,
+              }));
+            } else {
+              console.log(`Refocus/Visible: Data for ${slugToRefresh} is unchanged.`);
+            }
+          }
+        })
+        .catch(error => {
+          console.error(`Error revalidating category ${slugToRefresh} on refocus/visibility:`, error);
+        })
+        .finally(() => {
+          setFocusRefetchingSlug(prevSlug => (prevSlug === slugToRefresh ? null : prevSlug));
+        });
+    } else {
+      console.log('Refocus/Visible: No current category to revalidate.');
+    }
+  }, [
+    currentCategory, 
+    initialActiveCategory, 
+    fetchCategoryData, 
+    pageDataInCategories,
+    focusRefetchingSlug, // Add new state to dependency array
+    // setFocusRefetchingSlug is stable, not strictly needed but good practice if used directly in effect
+  ]);
+
+  // Effect 4: Handle window focus and document visibility changes for revalidation
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        handleReFocusOrVisible();
+      }
+    };
+
+    // Check for `document` and `window` existence for environments like SSR
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('focus', handleReFocusOrVisible);
+    }
+
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      }
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('focus', handleReFocusOrVisible);
+      }
+    };
+  }, [handleReFocusOrVisible]); // Now depends on the memoized handler
 
   let contentJsx: JSX.Element
 
