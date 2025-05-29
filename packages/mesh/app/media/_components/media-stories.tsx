@@ -527,7 +527,7 @@ const handleReFocusOrVisible = useCallback(() => {
 
   // Effect 5: Update prevCurrentCategorySlugRef after currentCategory.slug changes
   useEffect(() => {
-    prevCurrentCategorySlugRef.current = currentCategory?.slug;
+    prevCurrentCategorySlugRef.current = currentCategory?.slug ?? undefined;
   }, [currentCategory?.slug]);
 
 
