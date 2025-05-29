@@ -1,8 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import getLatestStoriesInCategory, {
   type Story,
@@ -80,6 +79,7 @@ export default function MediaStories({
     getInitialPageData(allCategories)
   )
   const followingCategoriesCount = user.followingCategories.length; // Define the count variable
+  const prevCurrentCategorySlugRef = useRef<string | undefined>();
 
   // Helper function to check if category data is considered "loaded"
   const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
@@ -525,33 +525,54 @@ const handleReFocusOrVisible = useCallback(() => {
     };
   }, [handleReFocusOrVisible]); // Now depends on the memoized handler
 
-  let contentJsx: JSX.Element
+  // Effect 5: Update prevCurrentCategorySlugRef after currentCategory.slug changes
+  useEffect(() => {
+    prevCurrentCategorySlugRef.current = currentCategory?.slug ?? undefined;
+  }, [currentCategory?.slug]);
 
-  if (isLoading || !currentCategory) {
-    contentJsx = <Loading withCategory={false} />
-  } else if (!latestStoriesInfo?.stories.length && !mostPickedStory) {
-    contentJsx = <NoStories />
+
+  let contentJsx: JSX.Element;
+  
+  // Determine data for the current render cycle to avoid inconsistencies
+  const currentSlugForRender = currentCategory?.slug;
+  const categoryDataForRender = currentSlugForRender ? pageDataInCategories[currentSlugForRender] : undefined;
+  const isDataActuallyLoadedForRender = currentSlugForRender ? isCategoryDataLoaded(categoryDataForRender) : false;
+
+  let showLoadingIndicator = isLoading;
+
+  if (currentSlugForRender && 
+      prevCurrentCategorySlugRef.current !== currentSlugForRender && 
+      !isDataActuallyLoadedForRender) {
+    showLoadingIndicator = true;
+  }
+
+  if (showLoadingIndicator || !currentCategory) {
+    contentJsx = <Loading withCategory={false} />;
+  } else if (!isDataActuallyLoadedForRender || (!categoryDataForRender?.latestStoriesInfo?.stories.length && !categoryDataForRender?.mostPickedStory)) {
+    // If data is not considered loaded (e.g. still pristine), or if loaded but genuinely empty
+    contentJsx = <NoStories />;
   } else {
+    // Data is loaded and not empty
     contentJsx = (
       <>
         <DesktopStories
-          latestStoriesInfo={latestStoriesInfo}
-          mostPickedStory={mostPickedStory}
-          publishersAndStories={publishersAndStories}
+          latestStoriesInfo={categoryDataForRender.latestStoriesInfo}
+          mostPickedStory={categoryDataForRender.mostPickedStory}
+          publishersAndStories={categoryDataForRender.publishersAndStories}
           publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
-          slug={currentCategorySlug ?? ''}
+          slug={currentSlugForRender ?? ''}
         />
         <NonDesktopStories
-          key={latestStoriesInfo.stories.length}
-          latestStoriesInfo={latestStoriesInfo}
-          mostPickedStory={mostPickedStory}
-          publishersAndStories={publishersAndStories}
+          key={categoryDataForRender.latestStoriesInfo.stories.length}
+          latestStoriesInfo={categoryDataForRender.latestStoriesInfo}
+          mostPickedStory={categoryDataForRender.mostPickedStory}
+          publishersAndStories={categoryDataForRender.publishersAndStories}
           publisherList={publisherList}
           loadMoreLatestStories={loadMoreLatestStories}
         />
       </>
-    )
+    );
   }
 
   return (
