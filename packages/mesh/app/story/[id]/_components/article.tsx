@@ -196,7 +196,7 @@ export default function Article({
               {story?.summary}
             </div>
           )}
-          <div className="relative overflow-hidden">
+          <div className="relative">
             {getArticleContent(story, sourceCustomId)}
             {isMemberStory && !hasPayed ? (
               <PaymentWall storyId={story?.id ?? ''} policy={policy} />
