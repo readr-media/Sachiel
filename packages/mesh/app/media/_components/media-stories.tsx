@@ -331,7 +331,9 @@ export default function MediaStories({
         console.error(`Error fetching current category ${categorySlug}:`, error);
       } finally {
         setIsLoading(false);
-=======
+      }
+    };
+
   // Effect for proactive data fetching for all followed categories on mount
   useEffect(() => {
     const prefetchAllCategoriesData = async () => {
