@@ -68,141 +68,291 @@ export default function MediaStories({
 }) {
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false)
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
-    getInitialPageData(allCategories)
+    getInitialPageData(allCategories) // Use allCategories for initial map structure
   )
+  const followingCategoriesCount = user.followingCategories.length;
+
+  const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
+    if (!data) return false;
+    return !(data.mostPickedStory === null &&
+             data.latestStoriesInfo.stories.length === 0 &&
+             data.latestStoriesInfo.totalCount === 0 &&
+             data.latestStoriesInfo.shouldLoadmore === true);
+  };
+
   const searchParams = useSearchParams()
-  const currentCategorySlug = searchParams.get(categorySearchParamName)
-  const currentCategory = user.followingCategories.find(
-    (category) => category.slug === currentCategorySlug
-  )
+
+  const initialActiveCategory = useMemo(() => {
+    const slugFromParams = searchParams.get(categorySearchParamName)
+    if (slugFromParams) {
+      const categoryFromSlug = user.followingCategories.find(
+        (category) => category.slug === slugFromParams
+      )
+      if (categoryFromSlug) return categoryFromSlug
+    }
+    return user.followingCategories[0] || null
+  }, [searchParams, user.followingCategories])
+
+  const currentCategory = useMemo(() => {
+    const slugFromParams = searchParams.get(categorySearchParamName)
+    if (slugFromParams) {
+      return user.followingCategories.find(
+        (category) => category.slug === slugFromParams
+      )
+    }
+    return initialActiveCategory
+  }, [searchParams, user.followingCategories, initialActiveCategory])
+
+  const currentCategorySlug = currentCategory?.slug
 
   const followingPublisherIds = useMemo(
     () => user.followingPublishers.map((publisher) => publisher.id),
     [user.followingPublishers]
   )
+
+  // Data for rendering is derived from currentCategorySlug and pageDataInCategories
   const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
-    pageDataInCategories[
-      (currentCategory?.slug || user.followingCategories[0].slug) ?? ''
-    ]
-  const getLatestStoriesfetchBody = useMemo(
-    () => ({
-      publishers: followingPublisherIds,
-      category: currentCategory?.id ?? '',
-      index: 0,
-      take: latestStoryPageCount,
-    }),
-    [currentCategory?.id, followingPublisherIds]
-  )
+    pageDataInCategories[currentCategorySlug ?? ''] || {
+      mostPickedStory: null,
+      latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
+      publishersAndStories: [],
+    }
+
+  const fetchCategoryData = useCallback(
+    async (categoryToFetch: Category) => {
+      if (!categoryToFetch?.slug || !categoryToFetch?.id) return null;
+
+      const categorySlugVal = categoryToFetch.slug; // Ensure it's a value not a function call
+      const categoryIdVal = categoryToFetch.id;
+
+      const categoryLatestStoriesfetchBody = {
+        publishers: followingPublisherIds,
+        category: categoryIdVal,
+        index: 0,
+        take: latestStoryPageCount,
+      };
+
+      const [
+        mostPickedStoryResponse,
+        latestStoriesResponse,
+        publishersAndStoriesResponse,
+      ] = await Promise.all([
+        getMostPickedStoriesInCategory(categorySlugVal),
+        getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
+        getMostSponsorPublishersAndStories(categorySlugVal),
+      ]);
+
+      const loadedMostPickedStory = mostPickedStoryResponse?.[0] ?? null;
+      const loadedLatestStoriesInfo: LatestStoriesInfo = {
+        stories: latestStoriesResponse?.stories ?? [],
+        totalCount: latestStoriesResponse?.num_stories ?? 0,
+        shouldLoadmore: (latestStoriesResponse?.stories?.length ?? 0) >= latestStoryPageCount,
+      };
+      const loadedPublishersAndStories =
+        publishersAndStoriesResponse
+          ?.slice(0, displayPublisherCount)
+          .map((ps) => ({
+            publisher: ps.publisher,
+            stories: ps.stories.slice(0, displayPublisherStoriesCount),
+          })) ?? [];
+      
+      return {
+        mostPickedStory: loadedMostPickedStory,
+        latestStoriesInfo: loadedLatestStoriesInfo,
+        publishersAndStories: loadedPublishersAndStories,
+      };
+    },
+    [followingPublisherIds]
+  );
 
   const loadMoreLatestStories = useCallback(async () => {
-    const latestStoriesResponse = await getLatestStoriesInCategory({
-      ...getLatestStoriesfetchBody,
-      index: latestStoriesInfo.stories.length,
-    })
+    if (!currentCategory || !currentCategory.id || !currentCategory.slug) return;
 
-    // do nothing to error response
-    if (!latestStoriesResponse) return
+    const currentCategoryLatestStoriesfetchBody = {
+      publishers: followingPublisherIds,
+      category: currentCategory.id,
+      index: latestStoriesInfo.stories.length, 
+      take: latestStoryPageCount,
+    };
+
+    const latestStoriesResponse = await getLatestStoriesInCategory(currentCategoryLatestStoriesfetchBody);
+
+    if (!latestStoriesResponse?.stories) return;
 
     const newLatestStoriesInfo: LatestStoriesInfo = {
-      stories: latestStoriesInfo.stories.concat(
-        latestStoriesResponse.stories ?? []
-      ),
-      totalCount: latestStoriesResponse.num_stories ?? 0,
-      // only stop infinite scroll when response return empty array
-      shouldLoadmore: latestStoriesResponse.stories.length !== 0 ? true : false,
-    }
-
-    const currentPageData = pageDataInCategories[currentCategory?.slug ?? '']
-    setPageDataInCategories((oldPageData) => {
-      return {
-        ...oldPageData,
-        [currentCategory?.slug ?? '']: {
-          ...currentPageData,
-          latestStoriesInfo: newLatestStoriesInfo,
-        },
-      }
-    })
-  }, [
-    currentCategory?.slug,
-    getLatestStoriesfetchBody,
-    latestStoriesInfo.stories,
-    pageDataInCategories,
-  ])
-
-  useEffect(() => {
-    if (!currentCategorySlug) {
-      replaceSearchParams(
-        categorySearchParamName,
-        user.followingCategories[0].slug ?? ''
-      )
-    }
-  }, [currentCategorySlug, user.followingCategories])
-
-  useEffect(() => {
-    const fetchPageData = async () => {
-      try {
-        const [
-          mostPickedStoryResponse,
-          latestStoriesResponse,
-          publishersAndStoriesResponse,
-        ] = await Promise.all([
-          getMostPickedStoriesInCategory(currentCategory?.slug ?? ''),
-          getLatestStoriesInCategory(getLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(currentCategory?.slug ?? ''),
-        ])
-
-        // TODO: handle page display stories no repeated in mostPicked, latest, publisher stories
-        const mostPickedStory = mostPickedStoryResponse?.[0] ?? null
-        const latestStoriesInfo: LatestStoriesInfo = {
-          stories: latestStoriesResponse?.stories ?? [],
-          totalCount: latestStoriesResponse?.num_stories ?? 0,
-          shouldLoadmore: true,
-        }
-
-        const publishersAndStories =
-          publishersAndStoriesResponse
-            ?.slice(0, displayPublisherCount)
-            .map((publisherAndStories) => ({
-              publisher: publisherAndStories.publisher,
-              stories: publisherAndStories.stories.slice(
-                0,
-                displayPublisherStoriesCount
-              ),
-            })) ?? []
-
-        setPageDataInCategories((oldPageData) => ({
-          ...oldPageData,
-          [currentCategory?.slug ?? '']: {
-            mostPickedStory,
-            latestStoriesInfo,
-            publishersAndStories,
-          },
-        }))
-
-        setIsLoading(false)
-      } catch (error) {
-        console.error('fetchPageData error', error)
-      }
-    }
-
-    if (!mostPickedStory && currentCategory) {
-      setIsLoading(true)
-      fetchPageData()
-    }
+      stories: latestStoriesInfo.stories.concat(latestStoriesResponse.stories),
+      totalCount: latestStoriesResponse.num_stories ?? latestStoriesInfo.totalCount,
+      shouldLoadmore: latestStoriesResponse.stories.length >= latestStoryPageCount,
+    };
+    
+    setPageDataInCategories((oldPageData) => ({
+      ...oldPageData,
+      [currentCategory.slug!]: {
+        ...(oldPageData[currentCategory.slug!] || { // Ensure existing data for other fields is not lost
+            mostPickedStory: null, // Provide default if not present
+            publishersAndStories: [] // Provide default if not present
+        }), 
+        latestStoriesInfo: newLatestStoriesInfo,
+      },
+    }));
   }, [
     currentCategory,
-    currentCategory?.slug,
-    getLatestStoriesfetchBody,
-    mostPickedStory,
-  ])
+    followingPublisherIds,
+    latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
+    latestStoriesInfo?.totalCount,
+  ]);
+  
+  useEffect(() => {
+    if (!searchParams.get(categorySearchParamName) && initialActiveCategory?.slug) {
+      replaceSearchParams(categorySearchParamName, initialActiveCategory.slug);
+    }
+  }, [searchParams, initialActiveCategory]);
 
-  let contentJsx: JSX.Element
+  // Effect 1: Initial Active Category Load
+  useEffect(() => {
+    const loadInitialCategoryData = async () => {
+      if (!initialActiveCategory?.slug) {
+        if (followingCategoriesCount === 0) {
+          setIsLoading(false);
+        }
+        setInitialLoadComplete(true);
+        return;
+      }
+
+      const slug = initialActiveCategory.slug;
+      if (isCategoryDataLoaded(pageDataInCategories[slug])) {
+        setIsLoading(false);
+        setInitialLoadComplete(true);
+        return;
+      }
+      
+      setIsLoading(true);
+      try {
+        const result = await fetchCategoryData(initialActiveCategory);
+        if (result) {
+          setPageDataInCategories((prev) => ({ ...prev, [slug]: result }));
+        }
+      } catch (error) {
+        console.error(`Error fetching initial category ${slug}:`, error);
+      } finally {
+        setIsLoading(false);
+        setInitialLoadComplete(true);
+      }
+    };
+
+    if (!initialLoadComplete) {
+      loadInitialCategoryData();
+    }
+  }, [
+    initialActiveCategory, 
+    fetchCategoryData, 
+    pageDataInCategories, // To re-check if data got populated by other means (though unlikely for initial)
+    initialLoadComplete, 
+    followingCategoriesCount,
+    isCategoryDataLoaded // Added as it's used
+  ]);
+
+  // Effect 2: Background Prefetching Other Categories
+  useEffect(() => {
+    const prefetchAllOtherCategoriesData = async () => {
+      const categoriesToPrefetch = user.followingCategories.filter(
+        (category) => category.slug && category.slug !== initialActiveCategory?.slug && !isCategoryDataLoaded(pageDataInCategories[category.slug])
+      );
+
+      if (categoriesToPrefetch.length === 0) return;
+
+      const prefetchPromises = categoriesToPrefetch.map(category => 
+        fetchCategoryData(category).then(data => ({ slug: category.slug, data }))
+      );
+      
+      const results = await Promise.allSettled(prefetchPromises);
+      
+      const successfullyFetchedData: PageData = {};
+      results.forEach((result) => {
+        if (result.status === 'fulfilled' && result.value?.data && result.value.slug) {
+          successfullyFetchedData[result.value.slug] = result.value.data;
+        } else if (result.status === 'rejected') {
+          // Find which category failed for better logging, if possible, or log generic error
+          console.error(`Failed to prefetch a category:`, result.reason);
+        }
+      });
+
+      if (Object.keys(successfullyFetchedData).length > 0) {
+        setPageDataInCategories(prevData => ({ ...prevData, ...successfullyFetchedData }));
+      }
+    };
+
+    if (initialLoadComplete && user.followingCategories.length > 0) {
+      prefetchAllOtherCategoriesData();
+    }
+  }, [
+    initialLoadComplete, 
+    user.followingCategories, 
+    fetchCategoryData, 
+    initialActiveCategory,
+    pageDataInCategories,
+    isCategoryDataLoaded // Added as it's used
+  ]);
+
+  // Effect 3: User Navigation (Load Current Category Data)
+  useEffect(() => {
+    const loadCurrentCategoryDataInternal = async () => {
+      if (!currentCategory?.slug || !initialLoadComplete) {
+        if (!currentCategory && followingCategoriesCount === 0) {
+          setIsLoading(false);
+        }
+        return;
+      }
+      
+      const categorySlug = currentCategory.slug;
+
+      if (categorySlug === initialActiveCategory?.slug) {
+        // Data handled by initial load effect. Ensure isLoading is false if data is loaded.
+        if(isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
+        setIsLoading(false); // Data already loaded
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const result = await fetchCategoryData(currentCategory);
+        if (result) {
+          setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
+        }
+      } catch (error) {
+        console.error(`Error fetching current category ${categorySlug}:`, error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (initialLoadComplete) {
+      loadCurrentCategoryDataInternal();
+    }
+  }, [
+    currentCategory, 
+    initialLoadComplete, 
+    initialActiveCategory, 
+    fetchCategoryData, 
+    pageDataInCategories,
+    followingCategoriesCount,
+    isCategoryDataLoaded // Added as it's used
+  ]);
+
+  let contentJsx: JSX.Element;
 
   if (isLoading || !currentCategory) {
-    contentJsx = <Loading withCategory={false} />
-  } else if (!latestStoriesInfo?.stories.length) {
-    contentJsx = <NoStories />
+    contentJsx = <Loading withCategory={false} />;
+  } else if (!latestStoriesInfo?.stories.length && !mostPickedStory) { 
+    contentJsx = <NoStories />;
   } else {
     contentJsx = (
       <>
@@ -215,7 +365,7 @@ export default function MediaStories({
           slug={currentCategorySlug ?? ''}
         />
         <NonDesktopStories
-          key={latestStoriesInfo.stories.length}
+          key={latestStoriesInfo?.stories.length} // Added optional chaining
           latestStoriesInfo={latestStoriesInfo}
           mostPickedStory={mostPickedStory}
           publishersAndStories={publishersAndStories}
