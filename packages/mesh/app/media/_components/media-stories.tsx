@@ -372,140 +372,132 @@ export default function MediaStories({
   ])
 
   // Effect 3: User Navigation (Load Current Category Data)
-  useEffect(() => {
-    const loadCurrentCategoryData = async () => {
-      // Inner redundant 'const loadCurrentCategoryData = async () => {' removed.
-      if (!currentCategory?.slug || !initialLoadComplete) {
-        if (!currentCategory && user.followingCategories.length === 0) {
-          setIsLoading(false);
-        }
-        return;
+useEffect(() => {
+  const loadCurrentCategoryData = async () => {
+    // Ensure user and its properties are accessed safely, assuming 'user' is from useUser() and stable or a dependency
+    if (!currentCategory?.slug || !initialLoadComplete) {
+      if (!currentCategory && user && user.followingCategories && user.followingCategories.length === 0) { // Added safe access for user
+        setIsLoading(false);
       }
+      return;
+    }
 
-      const categorySlug = currentCategory.slug;
+    const categorySlug = currentCategory.slug;
 
-      if (categorySlug === initialActiveCategory?.slug) {
-        // Data handled by initial load effect, or SWR from it.
-        // Ensure isLoading is false if data is indeed loaded.
-        if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
-            setIsLoading(false);
-        }
-        // If initial load is still happening for this category (e.g. no cache, slow network),
-        // Effect 1's isLoading will manage it.
-        return;
+    if (categorySlug === initialActiveCategory?.slug) {
+      if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
+        setIsLoading(false);
       }
+      return;
+    }
 
-      const categoryDataFromState = pageDataInCategories[categorySlug];
+    const categoryDataFromState = pageDataInCategories[categorySlug];
 
-      if (!isCategoryDataLoaded(categoryDataFromState)) {
-        // Data not loaded in state, set loading true immediately
-        setIsLoading(true);
+    if (!isCategoryDataLoaded(categoryDataFromState)) {
+      setIsLoading(true); 
+      const cachedData = getCachedCategoryData(categorySlug, CATEGORY_CACHE_TTL_MS);
 
-        const cachedData = getCachedCategoryData(categorySlug, CATEGORY_CACHE_TTL_MS);
-        if (cachedData) {
-          // Fresh cache hit
-          setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: cachedData }));
-          setIsLoading(false); // Display cached data, remove loading
+      if (cachedData) {
+        setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: cachedData }));
+        setIsLoading(false); 
 
-          // SWR: Fetch in background
-          fetchCategoryData(currentCategory).then((networkResult) => {
+        fetchCategoryData(currentCategory)
+          .then((networkResult) => {
             if (networkResult && JSON.stringify(networkResult) !== JSON.stringify(cachedData)) {
               setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
             }
-          }).catch(error => {
+          })
+          .catch(error => {
             console.error(`SWR failed for current category ${categorySlug}:`, error);
           });
-        } else {
-          // Cache miss or stale: isLoading is already true, proceed to network fetch
-          try {
-            const result = await fetchCategoryData(currentCategory);
+      } else {
+        fetchCategoryData(currentCategory)
+          .then(result => {
             if (result) {
               setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
             }
-          } catch (error) {
+          })
+          .catch(error => {
             console.error(`Error fetching current category ${categorySlug}:`, error);
-          } finally {
+          })
+          .finally(() => {
             setIsLoading(false);
-          }
-        }
-      } else {
-        // Data IS loaded in state (e.g., from background prefetch or previous navigation)
-        setIsLoading(false); // Ensure loading is false
-
-        // SWR: Fetch in background
-        fetchCategoryData(currentCategory).then((networkResult) => {
-          if (networkResult && categoryDataFromState && // Ensure categoryDataFromState is not null for comparison
+          });
+      }
+    } else {
+      setIsLoading(false); 
+      fetchCategoryData(currentCategory)
+        .then((networkResult) => {
+          if (networkResult && categoryDataFromState &&
               JSON.stringify(networkResult) !== JSON.stringify(categoryDataFromState)) {
             setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
           }
-        }).catch(error => {
-          console.error(`SWR failed for current category ${categorySlug} (already in state):`, error);
-        });
-      }
-    // Removed redundant closing brace for the inner function
-    // The outer function `loadCurrentCategoryData` continues here.
-
-    if (initialLoadComplete) {
-      loadCurrentCategoryData();
-    }
-  }, [
-    currentCategory, 
-    fetchCategoryData, 
-    pageDataInCategories, 
-    initialLoadComplete, 
-    initialActiveCategory,
-    followingCategoriesCount // Use the variable here
-  ]);
-
-  // Define the handler for refocus/visibility using useCallback
-  const handleReFocusOrVisible = useCallback(() => {
-    const categoryToRefresh = currentCategory || initialActiveCategory;
-
-    if (categoryToRefresh && categoryToRefresh.slug) {
-      const slugToRefresh = categoryToRefresh.slug;
-
-      if (focusRefetchingSlug === slugToRefresh) {
-        console.log(`Focus refetch for ${slugToRefresh} already in progress.`);
-        return;
-      }
-
-      console.log(`Refocus/Visible: Attempting to revalidate data for ${slugToRefresh}.`);
-      setFocusRefetchingSlug(slugToRefresh);
-      
-      // Do not set global isLoading for this background fetch
-      fetchCategoryData(categoryToRefresh)
-        .then(networkData => {
-          if (networkData) {
-            const existingData = pageDataInCategories[slugToRefresh];
-            
-            if (JSON.stringify(networkData) !== JSON.stringify(existingData)) {
-              console.log(`Refocus/Visible: Data for ${slugToRefresh} changed, updating UI.`);
-              setPageDataInCategories(prev => ({
-                ...prev,
-                [slugToRefresh]: networkData,
-              }));
-            } else {
-              console.log(`Refocus/Visible: Data for ${slugToRefresh} is unchanged.`);
-            }
-          }
         })
         .catch(error => {
-          console.error(`Error revalidating category ${slugToRefresh} on refocus/visibility:`, error);
-        })
-        .finally(() => {
-          setFocusRefetchingSlug(prevSlug => (prevSlug === slugToRefresh ? null : prevSlug));
+          console.error(`SWR failed for current category ${categorySlug} (already in state):`, error);
         });
-    } else {
-      console.log('Refocus/Visible: No current category to revalidate.');
     }
-  }, [
-    currentCategory, 
-    initialActiveCategory, 
-    fetchCategoryData, 
-    pageDataInCategories,
-    focusRefetchingSlug, // Add new state to dependency array
-    // setFocusRefetchingSlug is stable, not strictly needed but good practice if used directly in effect
-  ]);
+  }; 
+
+  if (initialLoadComplete) {
+    loadCurrentCategoryData();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [
+  currentCategory,
+  initialLoadComplete,
+  initialActiveCategory,
+  followingCategoriesCount, 
+  pageDataInCategories, 
+  fetchCategoryData,
+  user, // Added user as it's accessed: user.followingCategories
+  isCategoryDataLoaded, // Added isCategoryDataLoaded as it's used
+  setIsLoading, // Added setIsLoading
+  getCachedCategoryData, // Added getCachedCategoryData
+  CATEGORY_CACHE_TTL_MS // Added CATEGORY_CACHE_TTL_MS
+]);
+
+const handleReFocusOrVisible = useCallback(() => {
+  const categoryToRefresh = currentCategory || initialActiveCategory;
+
+  if (categoryToRefresh && categoryToRefresh.slug) {
+    const slugToRefresh = categoryToRefresh.slug;
+
+    if (focusRefetchingSlug === slugToRefresh) {
+      return;
+    }
+
+    setFocusRefetchingSlug(slugToRefresh);
+    
+    fetchCategoryData(categoryToRefresh)
+      .then(networkData => {
+        if (networkData) {
+          const existingData = pageDataInCategories[slugToRefresh];
+          
+          if (JSON.stringify(networkData) !== JSON.stringify(existingData)) {
+            setPageDataInCategories(prev => ({
+              ...prev,
+              [slugToRefresh]: networkData,
+            }));
+          }
+        }
+      })
+      .catch(error => {
+        console.error(`Error revalidating category ${slugToRefresh} on refocus/visibility:`, error);
+      })
+      .finally(() => {
+        setFocusRefetchingSlug(prevSlug => (prevSlug === slugToRefresh ? null : prevSlug));
+      });
+  }
+}, [
+  currentCategory, 
+  initialActiveCategory, 
+  fetchCategoryData, 
+  pageDataInCategories,
+  focusRefetchingSlug,
+  // setFocusRefetchingSlug, // Stable from useState
+  // setPageDataInCategories // Stable from useState
+]);
 
   // Effect 4: Handle window focus and document visibility changes for revalidation
   useEffect(() => {
