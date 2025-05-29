@@ -79,7 +79,7 @@ export default function MediaStories({
     getInitialPageData(allCategories)
   )
   const followingCategoriesCount = user.followingCategories.length; // Define the count variable
-  const prevCurrentCategorySlugRef = useRef<string | null | undefined>();
+  const prevCurrentCategorySlugRef = useRef<string | undefined>();
 
   // Helper function to check if category data is considered "loaded"
   const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
