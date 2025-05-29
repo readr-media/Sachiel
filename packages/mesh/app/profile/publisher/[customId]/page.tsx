@@ -4,6 +4,7 @@ import {
   getPublisherProfileJSON,
   getPublisherStoryType,
 } from '@/app/actions/get-publisher-profile'
+import MisoPageView from '@/components/miso-page-view'
 import { formatFollowCount } from '@/utils/format-follow-count'
 
 import PublisherPage from './_component/publisher-page'
@@ -43,6 +44,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div className="flex grow flex-col">
+      <MisoPageView productIds={`publisher_${customId}`} />
       <PublisherPage
         pickedCount={pickedCount}
         sponsoredCount={convertedSponsoredCount}
