@@ -75,9 +75,22 @@ export default function MediaStories({
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
+  const [focusRefetchingSlug, setFocusRefetchingSlug] = useState<string | null>(null);
   const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
     getInitialPageData(allCategories)
   )
+  const followingCategoriesCount = user.followingCategories.length; // Define the count variable
+
+  // Helper function to check if category data is considered "loaded"
+  const isCategoryDataLoaded = (data: PageData[string] | undefined): boolean => {
+    if (!data) return false;
+    // Considered loaded if it's not in the pristine initial state
+    return !(data.mostPickedStory === null &&
+             data.latestStoriesInfo.stories.length === 0 &&
+             data.latestStoriesInfo.totalCount === 0 &&
+             data.latestStoriesInfo.shouldLoadmore === true);
+  };
+  // Stray ')' removed from here
   const searchParams = useSearchParams()
 
   const initialActiveCategory = useMemo(() => {
@@ -280,7 +293,7 @@ export default function MediaStories({
     fetchCategoryData, 
     pageDataInCategories, 
     initialLoadComplete, 
-    user.followingCategories.length
+    followingCategoriesCount // Use the variable here
   ])
 
   // Effect 2: Background Prefetching Other Categories
@@ -359,76 +372,158 @@ export default function MediaStories({
   ])
 
   // Effect 3: User Navigation (Load Current Category Data)
-  useEffect(() => {
-    const loadCurrentCategoryData = async () => {
-      if (!currentCategory?.slug || !initialLoadComplete) {
-        if (!currentCategory && user.followingCategories.length === 0) {
-            setIsLoading(false);
-        }
-        return;
+useEffect(() => {
+  const loadCurrentCategoryData = async () => {
+    // Ensure user and its properties are accessed safely, assuming 'user' is from useUser() and stable or a dependency
+    if (!currentCategory?.slug || !initialLoadComplete) {
+      if (!currentCategory && user && user.followingCategories && user.followingCategories.length === 0) { // Added safe access for user
+        setIsLoading(false);
       }
-      
-      if (currentCategory.slug === initialActiveCategory?.slug) {
-        // Data handled by initial load, ensure loading is false
-        setIsLoading(false); 
-        return;
+      return;
+    }
+
+    const categorySlug = currentCategory.slug;
+
+    if (categorySlug === initialActiveCategory?.slug) {
+      if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
+        setIsLoading(false);
       }
+      return;
+    }
 
-      const categorySlug = currentCategory.slug;
+    const categoryDataFromState = pageDataInCategories[categorySlug];
 
-      // Try to load from cache first
+    if (!isCategoryDataLoaded(categoryDataFromState)) {
+      setIsLoading(true); 
       const cachedData = getCachedCategoryData(categorySlug, CATEGORY_CACHE_TTL_MS);
+
       if (cachedData) {
         setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: cachedData }));
-        setIsLoading(false);
-        
-        // Stale-while-revalidate: Fetch in background
-        fetchCategoryData(currentCategory).then((networkResult) => {
-          if (networkResult && 
-              JSON.stringify(networkResult) !== JSON.stringify(cachedData)) {
+        setIsLoading(false); 
+
+        fetchCategoryData(currentCategory)
+          .then((networkResult) => {
+            if (networkResult && JSON.stringify(networkResult) !== JSON.stringify(cachedData)) {
+              setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
+            }
+          })
+          .catch(error => {
+            console.error(`SWR failed for current category ${categorySlug}:`, error);
+          });
+      } else {
+        fetchCategoryData(currentCategory)
+          .then(result => {
+            if (result) {
+              setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
+            }
+          })
+          .catch(error => {
+            console.error(`Error fetching current category ${categorySlug}:`, error);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+    } else {
+      setIsLoading(false); 
+      fetchCategoryData(currentCategory)
+        .then((networkResult) => {
+          if (networkResult && categoryDataFromState &&
+              JSON.stringify(networkResult) !== JSON.stringify(categoryDataFromState)) {
             setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: networkResult }));
           }
-        }).catch(error => {
-          console.error(`SWR failed for current category ${categorySlug}:`, error);
+        })
+        .catch(error => {
+          console.error(`SWR failed for current category ${categorySlug} (already in state):`, error);
         });
-        return; // Return after setting cached data and initiating SWR
-      }
+    }
+  }; 
 
-      // If not in cache, check if already in state (e.g. from background prefetch or previous action)
-      const existingDataInState = pageDataInCategories[categorySlug];
-      if (existingDataInState && !(existingDataInState.mostPickedStory === null &&
-                             existingDataInState.latestStoriesInfo.stories.length === 0 &&
-                             existingDataInState.latestStoriesInfo.totalCount === 0 &&
-                             existingDataInState.latestStoriesInfo.shouldLoadmore === true)) {
-        setIsLoading(false);
-        return;
-      }
+  if (initialLoadComplete) {
+    loadCurrentCategoryData();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [
+  currentCategory,
+  initialLoadComplete,
+  initialActiveCategory,
+  followingCategoriesCount, 
+  pageDataInCategories, 
+  fetchCategoryData,
+  user, // Added user as it's accessed: user.followingCategories
+  isCategoryDataLoaded, // Added isCategoryDataLoaded as it's used
+  setIsLoading, // Added setIsLoading
+  getCachedCategoryData, // Added getCachedCategoryData
+  CATEGORY_CACHE_TTL_MS // Added CATEGORY_CACHE_TTL_MS
+]);
 
-      // Full load: not in cache, not valid in state
-      setIsLoading(true);
-      try {
-        const result = await fetchCategoryData(currentCategory);
-        if (result) {
-          setPageDataInCategories((prev) => ({ ...prev, [categorySlug]: result }));
+const handleReFocusOrVisible = useCallback(() => {
+  const categoryToRefresh = currentCategory || initialActiveCategory;
+
+  if (categoryToRefresh && categoryToRefresh.slug) {
+    const slugToRefresh = categoryToRefresh.slug;
+
+    if (focusRefetchingSlug === slugToRefresh) {
+      return;
+    }
+
+    setFocusRefetchingSlug(slugToRefresh);
+    
+    fetchCategoryData(categoryToRefresh)
+      .then(networkData => {
+        if (networkData) {
+          const existingData = pageDataInCategories[slugToRefresh];
+          
+          if (JSON.stringify(networkData) !== JSON.stringify(existingData)) {
+            setPageDataInCategories(prev => ({
+              ...prev,
+              [slugToRefresh]: networkData,
+            }));
+          }
         }
-      } catch (error) {
-        console.error(`Error fetching current category ${categorySlug}:`, error);
-      } finally {
-        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error(`Error revalidating category ${slugToRefresh} on refocus/visibility:`, error);
+      })
+      .finally(() => {
+        setFocusRefetchingSlug(prevSlug => (prevSlug === slugToRefresh ? null : prevSlug));
+      });
+  }
+}, [
+  currentCategory, 
+  initialActiveCategory, 
+  fetchCategoryData, 
+  pageDataInCategories,
+  focusRefetchingSlug,
+  // setFocusRefetchingSlug, // Stable from useState
+  // setPageDataInCategories // Stable from useState
+]);
+
+  // Effect 4: Handle window focus and document visibility changes for revalidation
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        handleReFocusOrVisible();
       }
+    };
+
+    // Check for `document` and `window` existence for environments like SSR
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('focus', handleReFocusOrVisible);
     }
 
-    if (initialLoadComplete) {
-      loadCurrentCategoryData();
-    }
-  }, [
-    currentCategory, 
-    fetchCategoryData, 
-    pageDataInCategories, 
-    initialLoadComplete, 
-    initialActiveCategory,
-    user.followingCategories.length
-  ]);
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      }
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('focus', handleReFocusOrVisible);
+      }
+    };
+  }, [handleReFocusOrVisible]); // Now depends on the memoized handler
 
   let contentJsx: JSX.Element
 
