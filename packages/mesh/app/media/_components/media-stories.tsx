@@ -1,8 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import getLatestStoriesInCategory, {
   type Story,
