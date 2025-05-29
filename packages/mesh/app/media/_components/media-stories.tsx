@@ -374,7 +374,7 @@ export default function MediaStories({
   // Effect 3: User Navigation (Load Current Category Data)
   useEffect(() => {
     const loadCurrentCategoryData = async () => {
-      // Removed redundant nested definition of loadCurrentCategoryData
+      // Inner redundant 'const loadCurrentCategoryData = async () => {' removed.
       if (!currentCategory?.slug || !initialLoadComplete) {
         if (!currentCategory && user.followingCategories.length === 0) {
           setIsLoading(false);
