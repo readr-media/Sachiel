@@ -344,8 +344,22 @@ export default function MediaStories({
 
   // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
   useEffect(() => {
+    console.log(
+      '[Effect 3 Hook Start] initialLoadComplete:',
+      initialLoadComplete,
+      'currentCategory:',
+      currentCategory?.slug,
+      'initialActiveCategory:',
+      initialActiveCategory?.slug
+    )
     const loadCurrentCategoryDataIfNeeded = async () => {
       if (!currentCategory?.slug || !initialLoadComplete) {
+        console.log(
+          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because !currentCategory?.slug or !initialLoadComplete. currentCategory?.slug:',
+          currentCategory?.slug,
+          'initialLoadComplete:',
+          initialLoadComplete
+        )
         if (!currentCategory && followingCategoriesCount === 0 && !isLoading) {
           // Prevent multiple setIsLoading(false)
           setIsLoading(false)
@@ -354,12 +368,15 @@ export default function MediaStories({
       }
 
       const categorySlug = currentCategory.slug
-      console.log("[Effect 3] Processing category: ${categorySlug}")
-
+      console.log(`[Effect 3] Processing category: ${categorySlug}`)
 
       // If it's the initial category, Effect 1 handles it.
       // isLoading will be set by Effect 1.
       if (categorySlug === initialActiveCategory?.slug) {
+        console.log(
+          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because categorySlug === initialActiveCategory?.slug. categorySlug:',
+          categorySlug
+        )
         if (
           isCategoryDataLoaded(pageDataInCategories[categorySlug]) &&
           isLoading
@@ -429,12 +446,12 @@ export default function MediaStories({
         }
       } catch (error) {
         console.error(
-          "[Effect 3] Error fetching navigated category ${categorySlug}:",
+          `[Effect 3] Error fetching navigated category ${categorySlug}:`,
           error
         )
       } finally {
         console.log(
-          "[Effect 3] Fetch attempt finished for ${categorySlug}. Setting isLoading to false."
+          `[Effect 3] Fetch attempt finished for ${categorySlug}. Setting isLoading to false.`
         )
         setIsLoading(false)
       }
