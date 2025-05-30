@@ -488,7 +488,7 @@ export default function MediaStories({
             }))
           }
         } catch (error) {
-          console.error("Error refreshing category "${categorySlug}:", error)
+          console.error("Error refreshing category ${categorySlug}:", error)
         } finally {
           // Consider unsetting loading state
         }
