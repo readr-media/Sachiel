@@ -34,12 +34,16 @@ type PageData = {
     mostPickedStory: Story | null
     latestStoriesInfo: LatestStoriesInfo
     publishersAndStories: MostSponsorPublisher[]
+    timestamp: number // New field
   }
 }
 
 const latestStoryPageCount = 20
 const displayPublisherCount = 5
 const displayPublisherStoriesCount = 3
+
+const TEN_MINUTES_MS = 10 * 60 * 1000
+const REFRESH_CHECK_INTERVAL_MS = 1 * 60 * 1000
 
 const getInitialPageData = (allCategories: Category[]) => {
   return allCategories.reduce((acc, curr) => {
@@ -53,6 +57,7 @@ const getInitialPageData = (allCategories: Category[]) => {
           shouldLoadmore: true,
         },
         publishersAndStories: [],
+        timestamp: 0, // Initialize timestamp
       }
     }
     return acc
@@ -167,6 +172,7 @@ export default function MediaStories({
         mostPickedStory: loadedMostPickedStory,
         latestStoriesInfo: loadedLatestStoriesInfo,
         publishersAndStories: loadedPublishersAndStories,
+        timestamp: Date.now(), // Add current timestamp here
       }
     },
     [followingPublisherIds]
@@ -271,10 +277,26 @@ export default function MediaStories({
   useEffect(() => {
     const prefetchAllOtherCategoriesData = async () => {
       const categoriesToPrefetch = user.followingCategories.filter(
-        (category) =>
-          category.slug &&
-          category.slug !== initialActiveCategory?.slug &&
-          !isCategoryDataLoaded(pageDataInCategories[category.slug])
+        (category) => {
+          if (!category.slug || category.slug === initialActiveCategory?.slug) {
+            return false
+          }
+          const categoryData = pageDataInCategories[category.slug]
+          const isDataCurrentlyLoaded = isCategoryDataLoaded(categoryData)
+          // Prefetch if not loaded OR if loaded but stale
+          if (!isDataCurrentlyLoaded) {
+            return true // Needs prefetching because it's not loaded
+          }
+          // If loaded, check for staleness
+          if (
+            categoryData.timestamp &&
+            Date.now() - categoryData.timestamp > TEN_MINUTES_MS
+          ) {
+            // console.log(`Prefetching stale data for background category: ${category.slug}`); // Optional: for debugging
+            return true // Needs prefetching because it's stale
+          }
+          return false // Already loaded and not stale
+        }
       )
 
       if (categoriesToPrefetch.length === 0) return
@@ -347,12 +369,27 @@ export default function MediaStories({
       }
 
       // If data is already loaded (e.g., by Effect 2 or previous navigation)
-      if (isCategoryDataLoaded(pageDataInCategories[categorySlug])) {
-        if (isLoading) setIsLoading(false)
-        return
+      const categoryData = pageDataInCategories[categorySlug]
+      if (isCategoryDataLoaded(categoryData)) {
+        // Check if the data is stale
+        if (
+          categoryData.timestamp &&
+          Date.now() - categoryData.timestamp > TEN_MINUTES_MS
+        ) {
+          // Data is stale, proceed to fetch
+          // console.log(`Data for navigated category ${categorySlug} is stale. Refreshing.`); // Optional: for debugging
+          // The existing logic below this 'if' block (setIsLoading(true), fetchCategoryData) will handle the fetch.
+          // So, we effectively "fall through" to the fetching logic if data is stale.
+        } else {
+          // Data is not stale, use cached data
+          if (isLoading) setIsLoading(false)
+          return // Return only if data is loaded AND not stale
+        }
       }
-
-      // If we reach here, data for the current, non-initial category needs to be fetched.
+      // If we reach here, it means:
+      // 1. Data was not loaded OR
+      // 2. Data was loaded but found to be stale.
+      // So, proceed to fetch:
       setIsLoading(true)
       try {
         const result = await fetchCategoryData(currentCategory)
@@ -393,6 +430,48 @@ export default function MediaStories({
       setIsLoading(false)
     }
   }, [user.followingCategories.length, initialLoadComplete])
+
+  // Effect 4: Periodic Refresh of Active Category Data
+  useEffect(() => {
+    if (!initialLoadComplete || !currentCategory?.slug) {
+      return
+    }
+
+    const intervalId = setInterval(async () => {
+      const categorySlug = currentCategory.slug
+      if (!categorySlug) return
+
+      const currentCategoryData = pageDataInCategories[categorySlug]
+
+      if (
+        currentCategoryData &&
+        Date.now() - currentCategoryData.timestamp > TEN_MINUTES_MS
+      ) {
+        // console.log(`Refreshing data for active category: ${categorySlug}`); // Optional: for debugging
+        try {
+          // Consider setting a loading state if there's a global or per-category loading indicator
+          const result = await fetchCategoryData(currentCategory)
+          if (result) {
+            setPageDataInCategories((prev) => ({
+              ...prev,
+              [categorySlug]: result, // result already includes the new timestamp
+            }))
+          }
+        } catch (error) {
+          console.error(`Error refreshing category ${categorySlug}:`, error)
+        } finally {
+          // Consider unsetting loading state
+        }
+      }
+    }, REFRESH_CHECK_INTERVAL_MS)
+
+    return () => clearInterval(intervalId)
+  }, [
+    currentCategory,
+    fetchCategoryData,
+    pageDataInCategories,
+    initialLoadComplete,
+  ])
 
   let contentJsx: JSX.Element
 
