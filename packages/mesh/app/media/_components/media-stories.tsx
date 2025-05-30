@@ -345,8 +345,22 @@ export default function MediaStories({
 
   // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
   useEffect(() => {
+    console.log(
+      '[Effect 3 Hook Start] initialLoadComplete:',
+      initialLoadComplete,
+      'currentCategory:',
+      currentCategory?.slug,
+      'initialActiveCategory:',
+      initialActiveCategory?.slug
+    )
     const loadCurrentCategoryDataIfNeeded = async () => {
       if (!currentCategory?.slug || !initialLoadComplete) {
+        console.log(
+          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because !currentCategory?.slug or !initialLoadComplete. currentCategory?.slug:',
+          currentCategory?.slug,
+          'initialLoadComplete:',
+          initialLoadComplete
+        )
         if (!currentCategory && followingCategoriesCount === 0 && !isLoading) {
           // Prevent multiple setIsLoading(false)
           setIsLoading(false)
@@ -355,10 +369,15 @@ export default function MediaStories({
       }
 
       const categorySlug = currentCategory.slug
+      console.log(`[Effect 3] Processing category: ${categorySlug}`)
 
       // If it's the initial category, Effect 1 handles it.
       // isLoading will be set by Effect 1.
       if (categorySlug === initialActiveCategory?.slug) {
+        console.log(
+          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because categorySlug === initialActiveCategory?.slug. categorySlug:',
+          categorySlug
+        )
         if (
           isCategoryDataLoaded(pageDataInCategories[categorySlug]) &&
           isLoading
@@ -370,26 +389,53 @@ export default function MediaStories({
 
       // If data is already loaded (e.g., by Effect 2 or previous navigation)
       const categoryData = pageDataInCategories[categorySlug]
-      if (isCategoryDataLoaded(categoryData)) {
+      console.log(
+        '[Effect 3] Existing categoryData - stories.length:',
+        categoryData?.latestStoriesInfo?.stories?.length,
+        'timestamp:',
+        categoryData?.timestamp,
+        'shouldLoadmore:',
+        categoryData?.latestStoriesInfo?.shouldLoadmore,
+        'totalCount:',
+        categoryData?.latestStoriesInfo?.totalCount,
+        'mostPickedStory:',
+        categoryData?.mostPickedStory !== null
+      )
+      const isLoaded = isCategoryDataLoaded(categoryData)
+      console.log('[Effect 3] isCategoryDataLoaded result:', isLoaded)
+      if (isLoaded) {
         // Check if the data is stale
-        if (
+        const isStale =
           categoryData.timestamp &&
           Date.now() - categoryData.timestamp > TEN_MINUTES_MS
-        ) {
+        console.log('[Effect 3] Is data stale?', isStale)
+        if (isStale) {
+          console.log(
+            '[Effect 3] Decision: Data is loaded but stale. Proceeding to fetch.'
+          )
           // Data is stale, proceed to fetch
-          // console.log(`Data for navigated category ${categorySlug} is stale. Refreshing.`); // Optional: for debugging
           // The existing logic below this 'if' block (setIsLoading(true), fetchCategoryData) will handle the fetch.
           // So, we effectively "fall through" to the fetching logic if data is stale.
         } else {
+          console.log(
+            '[Effect 3] Decision: Data is loaded and not stale. Using cached data.'
+          )
           // Data is not stale, use cached data
           if (isLoading) setIsLoading(false)
           return // Return only if data is loaded AND not stale
         }
+      } else {
+        console.log(
+          '[Effect 3] Decision: Data is not loaded. Proceeding to fetch.'
+        )
       }
       // If we reach here, it means:
       // 1. Data was not loaded OR
       // 2. Data was loaded but found to be stale.
       // So, proceed to fetch:
+      console.log(
+        '[Effect 3] Action: Calling setIsLoading(true) and preparing to fetch.'
+      )
       setIsLoading(true)
       try {
         const result = await fetchCategoryData(currentCategory)
@@ -401,10 +447,13 @@ export default function MediaStories({
         }
       } catch (error) {
         console.error(
-          `Error fetching navigated category ${categorySlug}:`,
+          `[Effect 3] Error fetching navigated category ${categorySlug}:`,
           error
         )
       } finally {
+        console.log(
+          `[Effect 3] Fetch attempt finished for ${categorySlug}. Setting isLoading to false.`
+        )
         setIsLoading(false)
       }
     }
