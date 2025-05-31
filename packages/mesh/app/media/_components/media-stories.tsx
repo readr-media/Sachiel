@@ -198,31 +198,47 @@ export default function MediaStories({
     )
 
     if (!latestStoriesResponse?.stories) return
+    const categorySlug = currentCategory.slug! // currentCategory is checked at the beginning
 
-    const newLatestStoriesInfo: LatestStoriesInfo = {
-      stories: latestStoriesInfo.stories.concat(latestStoriesResponse.stories),
-      totalCount:
-        latestStoriesResponse.num_stories ?? latestStoriesInfo.totalCount,
-      shouldLoadmore:
-        latestStoriesResponse.stories.length >= latestStoryPageCount,
-    }
+    setPageDataInCategories((oldPageData) => {
+      // If oldPageData is null, initialize it with the default structure for all categories.
+      const basePageData = oldPageData ?? getInitialPageData(allCategories)
 
-    setPageDataInCategories((oldPageData) => ({
-      ...oldPageData,
-      [currentCategory.slug!]: {
-        ...(oldPageData[currentCategory.slug!] || {
-          // Ensure existing data for other fields is not lost
-          mostPickedStory: null, // Provide default if not present
-          publishersAndStories: [], // Provide default if not present
-        }),
-        latestStoriesInfo: newLatestStoriesInfo,
-      },
-    }))
+      // Get the specific data for the current category from this base.
+      // If categorySlug somehow wasn't in basePageData provide a default structure.
+      const categoryDataToUpdate = basePageData[categorySlug] ?? {
+        mostPickedStory: null,
+        latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
+        publishersAndStories: [],
+        timestamp: 0,
+      }
+
+      const newLatestStoriesInfo: LatestStoriesInfo = {
+        stories: categoryDataToUpdate.latestStoriesInfo.stories.concat(
+          latestStoriesResponse.stories
+        ),
+        totalCount:
+          latestStoriesResponse.num_stories ??
+          categoryDataToUpdate.latestStoriesInfo.totalCount,
+        shouldLoadmore:
+          latestStoriesResponse.stories.length >= latestStoryPageCount,
+      }
+
+      return {
+        ...basePageData, // Spread all other categories from the base
+        [categorySlug]: {
+          // Update the specific category
+          ...categoryDataToUpdate, // Preserve its other fields (mostPickedStory, publishersAndStories, timestamp)
+          latestStoriesInfo: newLatestStoriesInfo, // Set the new stories info
+        },
+      }
+    })
   }, [
     currentCategory,
     followingPublisherIds,
     latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
     latestStoriesInfo?.totalCount,
+    allCategories, // Added allCategories to dependency array
   ])
 
   useEffect(() => {
