@@ -44,6 +44,7 @@ const displayPublisherStoriesCount = 3
 
 const TEN_MINUTES_MS = 10 * 60 * 1000
 const REFRESH_CHECK_INTERVAL_MS = 1 * 60 * 1000
+const MEDIA_STORIES_CACHE_KEY = 'mediaStoriesPageDataCache'
 
 const getInitialPageData = (allCategories: Category[]) => {
   return allCategories.reduce((acc, curr) => {
@@ -74,9 +75,8 @@ export default function MediaStories({
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
-  const [pageDataInCategories, setPageDataInCategories] = useState<PageData>(
-    getInitialPageData(allCategories) // Use allCategories for initial map structure
-  )
+  const [pageDataInCategories, setPageDataInCategories] =
+    useState<PageData | null>(null)
   const followingCategoriesCount = user.followingCategories.length
 
   const isCategoryDataLoaded = (
@@ -122,11 +122,16 @@ export default function MediaStories({
   )
 
   // Data for rendering is derived from currentCategorySlug and pageDataInCategories
+  const currentCategoryData =
+    pageDataInCategories && currentCategorySlug
+      ? pageDataInCategories[currentCategorySlug]
+      : null
   const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
-    pageDataInCategories[currentCategorySlug ?? ''] || {
+    currentCategoryData || {
       mostPickedStory: null,
       latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
       publishersAndStories: [],
+      timestamp: 0, // Ensure timestamp is part of default
     }
 
   const fetchCategoryData = useCallback(
@@ -229,8 +234,58 @@ export default function MediaStories({
     }
   }, [searchParams, initialActiveCategory])
 
+  // Effect 0: Load initial pageDataInCategories from localStorage or defaults
+  useEffect(() => {
+    let initialData: PageData = getInitialPageData(allCategories) // Start with default structure
+    try {
+      const cachedItem = localStorage.getItem(MEDIA_STORIES_CACHE_KEY)
+      if (cachedItem) {
+        const cachedPageData = JSON.parse(cachedItem) as PageData
+        if (cachedPageData) {
+          console.log(
+            '[MediaStories] Successfully loaded PageData from localStorage.'
+          )
+          const freshDefaultData = getInitialPageData(allCategories)
+          const mergedData = { ...freshDefaultData } // Start with defaults for all current categories
+          for (const slug in cachedPageData) {
+            if (
+              Object.prototype.hasOwnProperty.call(cachedPageData, slug) &&
+              mergedData[slug]
+            ) {
+              // If slug is valid in current allCategories
+              mergedData[slug] = cachedPageData[slug] // Overwrite with cached value
+            }
+          }
+          initialData = mergedData
+        } else {
+          console.log(
+            '[MediaStories] localStorage item found but parsed to null/undefined. Using default.'
+          )
+        }
+      } else {
+        console.log(
+          '[MediaStories] No PageData found in localStorage. Using default.'
+        )
+      }
+    } catch (error) {
+      console.error(
+        '[MediaStories] Error reading PageData from localStorage:',
+        error
+      )
+      // initialData is already getInitialPageData(allCategories) in this case
+    }
+    setPageDataInCategories(initialData)
+  }, [allCategories]) // Dependency on allCategories
+
   // Effect 1: Initial Active Category Load
   useEffect(() => {
+    // Ensure pageDataInCategories is populated before this effect runs critical logic
+    if (!pageDataInCategories) {
+      console.log(
+        '[Effect 1] Waiting for pageDataInCategories to be initialized.'
+      )
+      return
+    }
     const loadInitialCategoryData = async () => {
       if (!initialActiveCategory?.slug) {
         if (followingCategoriesCount === 0) {
@@ -595,6 +650,24 @@ export default function MediaStories({
     pageDataInCategories,
     initialLoadComplete,
   ])
+
+  // Effect 5: Save pageDataInCategories to localStorage whenever it changes
+  useEffect(() => {
+    if (pageDataInCategories !== null) {
+      try {
+        console.log('[MediaStories] Saving updated PageData to localStorage.')
+        localStorage.setItem(
+          MEDIA_STORIES_CACHE_KEY,
+          JSON.stringify(pageDataInCategories)
+        )
+      } catch (error) {
+        console.error(
+          '[MediaStories] Error saving PageData to localStorage:',
+          error
+        )
+      }
+    }
+  }, [pageDataInCategories])
 
   let contentJsx: JSX.Element
 
