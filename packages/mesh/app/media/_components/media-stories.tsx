@@ -241,23 +241,69 @@ export default function MediaStories({
       }
 
       const slug = initialActiveCategory.slug
-      if (isCategoryDataLoaded(pageDataInCategories[slug])) {
-        setIsLoading(false)
-        setInitialLoadComplete(true)
-        return
+      const existingData = pageDataInCategories[slug] // Get existing data directly
+      let shouldFetchInBackground = false
+
+      if (existingData) {
+        // If any data object exists for this slug
+        console.log(
+          '[Effect 1] Initial category data exists in state. Rendering from cache first.',
+          existingData
+        )
+        setIsLoading(false) // <<< IMPORTANT: Allow rendering of this cached data immediately
+
+        // Decide if a background fetch is needed for this existing data
+        if (
+          !existingData.timestamp ||
+          Date.now() - existingData.timestamp > TEN_MINUTES_MS ||
+          existingData.latestStoriesInfo.stories.length === 0
+        ) {
+          // Fetch if no timestamp, or stale, or has no stories (even if not stale, maybe prefetch was empty)
+          console.log(
+            '[Effect 1] Cached data is stale, empty, or untimestamped. Scheduling background fetch.'
+          )
+          shouldFetchInBackground = true
+        } else {
+          // Data exists and is fresh enough, no immediate background fetch needed from Effect 1
+          console.log(
+            '[Effect 1] Cached data is fresh. No immediate background fetch.'
+          )
+        }
+        setInitialLoadComplete(true) // Mark initial load as "complete" as we've decided what to do.
+        // The background fetch will happen without blocking this.
+      } else {
+        // No data whatsoever for this slug
+        console.log(
+          '[Effect 1] No data found for initial category. Fetching with loading screen.'
+        )
+        setIsLoading(true) // Show loading screen as there's nothing to display
+        shouldFetchInBackground = true // We must fetch
       }
 
-      setIsLoading(true)
-      try {
-        const result = await fetchCategoryData(initialActiveCategory)
-        if (result) {
-          setPageDataInCategories((prev) => ({ ...prev, [slug]: result }))
+      if (shouldFetchInBackground) {
+        console.log('[Effect 1] Initiating fetch for initial category:', slug)
+        try {
+          const result = await fetchCategoryData(initialActiveCategory)
+          if (result) {
+            setPageDataInCategories((prev) => ({ ...prev, [slug]: result }))
+            console.log(
+              '[Effect 1] Background fetch complete, data updated for',
+              slug
+            )
+          }
+        } catch (error) {
+          console.error(
+            `[Effect 1] Error fetching initial category ${slug} in background:`,
+            error
+          )
+        } finally {
+          if (!existingData) {
+            // If there was no initial data, we were in a loading state
+            setIsLoading(false)
+          }
+          // If there was existing data, isLoading was already false. The update will just re-render.
+          setInitialLoadComplete(true) // Ensure this is set after the fetch attempt too
         }
-      } catch (error) {
-        console.error("Error fetching initial category ${slug}:", error)
-      } finally {
-        setIsLoading(false)
-        setInitialLoadComplete(true)
       }
     }
 
@@ -386,74 +432,104 @@ export default function MediaStories({
         return
       }
 
-      // If data is already loaded (e.g., by Effect 2 or previous navigation)
-      const categoryData = pageDataInCategories[categorySlug]
+      // Cache-First Logic for Navigated Category
+      const existingData = pageDataInCategories[categorySlug]
+      let shouldFetchInBackground = false
+
+      // Keeping the detailed log for existingData as per previous subtask
       console.log(
         '[Effect 3] Existing categoryData - stories.length:',
-        categoryData?.latestStoriesInfo?.stories?.length,
+        existingData?.latestStoriesInfo?.stories?.length,
         'timestamp:',
-        categoryData?.timestamp,
+        existingData?.timestamp,
         'shouldLoadmore:',
-        categoryData?.latestStoriesInfo?.shouldLoadmore,
+        existingData?.latestStoriesInfo?.shouldLoadmore,
         'totalCount:',
-        categoryData?.latestStoriesInfo?.totalCount,
+        existingData?.latestStoriesInfo?.totalCount,
         'mostPickedStory:',
-        categoryData?.mostPickedStory !== null
+        existingData?.mostPickedStory !== null
       )
-      const isLoaded = isCategoryDataLoaded(categoryData)
-      console.log('[Effect 3] isCategoryDataLoaded result:', isLoaded)
-      if (isLoaded) {
-        // Check if the data is stale
-        const isStale =
-          categoryData.timestamp &&
-          Date.now() - categoryData.timestamp > TEN_MINUTES_MS
-        console.log('[Effect 3] Is data stale?', isStale)
-        if (isStale) {
+
+      if (existingData) {
+        console.log(
+          '[Effect 3] Category data exists in state for navigated category. Rendering from cache first.',
+          categorySlug
+        )
+        setIsLoading(false) // Show cached data immediately
+
+        // Decide if a background fetch is needed
+        if (
+          !existingData.timestamp ||
+          Date.now() - existingData.timestamp > TEN_MINUTES_MS ||
+          existingData.latestStoriesInfo.stories.length === 0
+        ) {
           console.log(
-            '[Effect 3] Decision: Data is loaded but stale. Proceeding to fetch.'
+            '[Effect 3] Cached data for navigated category is stale, empty, or untimestamped. Scheduling background fetch.',
+            categorySlug
           )
-          // Data is stale, proceed to fetch
-          // The existing logic below this 'if' block (setIsLoading(true), fetchCategoryData) will handle the fetch.
-          // So, we effectively "fall through" to the fetching logic if data is stale.
+          shouldFetchInBackground = true
         } else {
           console.log(
-            '[Effect 3] Decision: Data is loaded and not stale. Using cached data.'
+            '[Effect 3] Cached data for navigated category is fresh. No background fetch.',
+            categorySlug
           )
-          // Data is not stale, use cached data
-          if (isLoading) setIsLoading(false)
-          return // Return only if data is loaded AND not stale
         }
       } else {
+        // No data for this navigated category
         console.log(
-          '[Effect 3] Decision: Data is not loaded. Proceeding to fetch.'
+          '[Effect 3] No data found for navigated category. Fetching with loading screen.',
+          categorySlug
         )
+        setIsLoading(true) // Show loading screen
+        shouldFetchInBackground = true // Must fetch
       }
-      // If we reach here, it means:
-      // 1. Data was not loaded OR
-      // 2. Data was loaded but found to be stale.
-      // So, proceed to fetch:
-      console.log(
-        '[Effect 3] Action: Calling setIsLoading(true) and preparing to fetch.'
-      )
-      setIsLoading(true)
-      try {
-        const result = await fetchCategoryData(currentCategory)
-        if (result) {
-          setPageDataInCategories((prev) => ({
-            ...prev,
-            [categorySlug]: result,
-          }))
-        }
-      } catch (error) {
-        console.error(
-          `[Effect 3] Error fetching navigated category ${categorySlug}:`,
-          error
-        )
-      } finally {
+
+      if (shouldFetchInBackground) {
         console.log(
-          `[Effect 3] Fetch attempt finished for ${categorySlug}. Setting isLoading to false.`
+          '[Effect 3] Initiating fetch for navigated category:',
+          categorySlug
         )
-        setIsLoading(false)
+
+        // Revised isLoading management for fetch block:
+        if (!existingData) {
+          // This condition ensures setIsLoading(true) was called if no cache.
+          // If existingData was present, setIsLoading(false) was called, so this fetch is background.
+        } else {
+          // If existingData was present and we are fetching in background,
+          // ensure isLoading is false.
+          if (isLoading) setIsLoading(false)
+        }
+
+        try {
+          const result = await fetchCategoryData(currentCategory)
+          if (result) {
+            setPageDataInCategories((prev) => ({
+              ...prev,
+              [categorySlug]: result,
+            }))
+            console.log(
+              '[Effect 3] Background fetch complete, data updated for navigated category:',
+              categorySlug
+            )
+          }
+        } catch (error) {
+          console.error(
+            `[Effect 3] Error fetching navigated category ${categorySlug}:`,
+            error
+          )
+        } finally {
+          // Only set isLoading to false if we actually set it to true for this fetch (i.e., !existingData).
+          if (!existingData) {
+            console.log(
+              `[Effect 3] Fetch attempt finished for ${categorySlug} (was loading). Setting isLoading to false.`
+            )
+            setIsLoading(false)
+          } else {
+            console.log(
+              `[Effect 3] Background fetch attempt finished for ${categorySlug} (was not loading). isLoading remains false.`
+            )
+          }
+        }
       }
     }
 
@@ -505,7 +581,7 @@ export default function MediaStories({
             }))
           }
         } catch (error) {
-          console.error("Error refreshing category ${categorySlug}:", error)
+          console.error(`Error refreshing category ${categorySlug}:`, error)
         } finally {
           // Consider unsetting loading state
         }
