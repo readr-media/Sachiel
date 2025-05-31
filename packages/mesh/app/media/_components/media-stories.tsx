@@ -392,6 +392,11 @@ export default function MediaStories({
 
   // Effect 2: Background Prefetching Other Categories
   useEffect(() => {
+    if (!initialLoadComplete || !pageDataInCategories) {
+      // Primary guard
+      return
+    }
+
     const prefetchAllOtherCategoriesData = async () => {
       const categoriesToPrefetch = user.followingCategories.filter(
         (category) => {
@@ -447,7 +452,8 @@ export default function MediaStories({
       }
     }
 
-    if (initialLoadComplete && user.followingCategories.length > 0) {
+    // The original condition for running prefetch:
+    if (user.followingCategories.length > 0) {
       prefetchAllOtherCategoriesData()
     }
   }, [
