@@ -652,8 +652,15 @@ export default function MediaStories({
     }
 
     const intervalId = setInterval(async () => {
-      const categorySlug = currentCategory.slug
-      if (!categorySlug) return
+      const categorySlug = currentCategory.slug // currentCategory is guaranteed by the outer check
+
+      // Add a null check for pageDataInCategories inside the setInterval callback
+      if (!pageDataInCategories || !categorySlug) {
+        console.warn(
+          '[Effect 4] Periodic refresh skipped: pageDataInCategories is null or categorySlug is missing unexpectedly.'
+        )
+        return
+      }
 
       const currentCategoryData = pageDataInCategories[categorySlug]
 
@@ -661,19 +668,25 @@ export default function MediaStories({
         currentCategoryData &&
         Date.now() - currentCategoryData.timestamp > TEN_MINUTES_MS
       ) {
+        console.log(
+          `[Effect 4] Refreshing data for active category: ${categorySlug}`
+        )
         try {
-          // Consider setting a loading state if there's a global or per-category loading indicator
-          const result = await fetchCategoryData(currentCategory)
+          const result = await fetchCategoryData(currentCategory) // currentCategory is from outer scope
           if (result) {
-            setPageDataInCategories((prev) => ({
-              ...prev,
-              [categorySlug]: result, // result already includes the new timestamp
-            }))
+            setPageDataInCategories((prevPageData) => {
+              if (!prevPageData) return null // Should not happen if outer logic is correct, but defensive
+              return {
+                ...prevPageData,
+                [categorySlug]: result,
+              }
+            })
           }
         } catch (error) {
-          console.error(`Error refreshing category ${categorySlug}:`, error)
-        } finally {
-          // Consider unsetting loading state
+          console.error(
+            `[Effect 4] Error refreshing category ${categorySlug}:`,
+            error
+          )
         }
       }
     }, REFRESH_CHECK_INTERVAL_MS)
@@ -682,7 +695,7 @@ export default function MediaStories({
   }, [
     currentCategory,
     fetchCategoryData,
-    pageDataInCategories,
+    pageDataInCategories, // pageDataInCategories is a dependency
     initialLoadComplete,
   ])
 
