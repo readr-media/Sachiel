@@ -403,7 +403,6 @@ export default function MediaStories({
           if (!category.slug || category.slug === initialActiveCategory?.slug) {
             return false
           }
-          // pageDataInCategories is guaranteed to be non-null here
           const categoryData = pageDataInCategories[category.slug]
           const isDataCurrentlyLoaded = isCategoryDataLoaded(categoryData)
           // Prefetch if not loaded OR if loaded but stale
@@ -415,7 +414,6 @@ export default function MediaStories({
             categoryData.timestamp &&
             Date.now() - categoryData.timestamp > TEN_MINUTES_MS
           ) {
-            // console.log(`Prefetching stale data for background category: ${category.slug}`); // Optional: for debugging
             return true // Needs prefetching because it's stale
           }
           return false // Already loaded and not stale
@@ -442,7 +440,7 @@ export default function MediaStories({
         ) {
           successfullyFetchedData[result.value.slug] = result.value.data
         } else if (result.status === 'rejected') {
-          console.error(`Failed to prefetch a category:`, result.reason)
+          console.error("Failed to prefetch a category:", result.reason)
         }
       })
 
