@@ -501,6 +501,7 @@ export default function MediaStories({
           categorySlug
         )
         if (
+          pageDataInCategories && // <<< Ensure pageDataInCategories is not null
           isCategoryDataLoaded(pageDataInCategories[categorySlug]) &&
           isLoading
         ) {
@@ -510,6 +511,18 @@ export default function MediaStories({
       }
 
       // Cache-First Logic for Navigated Category
+      // Ensure pageDataInCategories is not null before accessing it.
+      // This should be guaranteed by the initialLoadComplete check, which depends on Effect 1,
+      // which in turn waits for pageDataInCategories from Effect 0.
+      // However, being extremely defensive for direct access patterns:
+      if (!pageDataInCategories) {
+        console.error(
+          '[Effect 3] pageDataInCategories is unexpectedly null after initialActiveCategory check.'
+        )
+        // Potentially set an error state or isLoading true and return
+        setIsLoading(true) // Fallback to loading state
+        return
+      }
       const existingData = pageDataInCategories[categorySlug]
       let shouldFetchInBackground = false
 
