@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { getMemberProfile, getVisitorProfile } from '@/app/actions/get-profile'
+import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
 import { useUser } from '@/context/user'
 import { PickObjective } from '@/types/objective'
 import type { ProfileTypes } from '@/types/profile'
@@ -9,6 +10,8 @@ type ProfileConfigType = {
   customId: string
   takesCount: number
 }
+
+const USER_PROFILE_CACHE_KEY_PREFIX = 'userProfile-'
 
 const initialProfileState: ProfileTypes = {
   name: '',
@@ -38,11 +41,32 @@ export default function useProfileState({
   const isCurrentUser = customId === user.customId
 
   const fetchMemberProfile = useCallback(async () => {
-    const memberProfileResult = await getMemberProfile(customId, takesCount)
-    if (!memberProfileResult) {
-      throw new Error('Failed to fetch member profile')
+    const cacheKey = `${USER_PROFILE_CACHE_KEY_PREFIX}${customId}`
+    const cachedData = getLocalStorage(cacheKey, null)
+
+    if (cachedData) {
+      setProfileData({ ...user, ...cachedData })
+      // setIsLoading(false); // Decide if needed here or rely on finally
     }
-    setProfileData({ ...user, ...memberProfileResult })
+
+    try {
+      const memberProfileResult = await getMemberProfile(customId, takesCount)
+      if (!memberProfileResult) {
+        throw new Error('Failed to fetch member profile')
+      }
+      setLocalStorage(cacheKey, memberProfileResult)
+      setProfileData({ ...user, ...memberProfileResult })
+    } catch (error) {
+      // If fetching fresh data fails, and we had cached data,
+      // we might want to ensure the UI isn't stuck in a loading state
+      // or revert to cached data if not already set.
+      // For now, we'll let the main error handling take over.
+      if (!cachedData) {
+        // Only throw if there's no cache, otherwise we've already set profile data
+        throw error
+      }
+      console.error('Failed to fetch fresh profile, using cached data if available', error)
+    }
   }, [customId, takesCount, user])
 
   const fetchVisitorProfile = useCallback(async () => {
