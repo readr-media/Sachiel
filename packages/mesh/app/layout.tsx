@@ -48,13 +48,17 @@ const notoSans = Noto_Sans_TC({
 
 export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   const user = await getCurrentUser()
 
   return (
-    <html lang="zh-TW" className={notoSans.className}>
+    <html lang="zh-Hant" className={notoSans.className}>
+      <GoogleTagManager gtmId={GTM_ID} />
+      <AdsenseScript />
+      <AdManagerScript />
+      <MisoAiScript />
       <body>
         <UserProvider user={user}>
           <ToastProvider>

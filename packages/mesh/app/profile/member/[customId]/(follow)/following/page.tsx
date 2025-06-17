@@ -1,5 +1,3 @@
-'use client'
-
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberFollowingList } from '@/app/actions/get-profile'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
