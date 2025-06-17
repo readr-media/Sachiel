@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 type TranslationFunction = (key: string, options?: any) => string
 
-export default function useCustomTranslation() {
+export function useCustomTranslation() {
   const { t, i18n } = useTranslation()
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
 

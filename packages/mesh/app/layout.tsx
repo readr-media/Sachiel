@@ -1,4 +1,7 @@
+'use client'
+
 import '@/styles/global.css'
+import './i18n'
 
 import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
