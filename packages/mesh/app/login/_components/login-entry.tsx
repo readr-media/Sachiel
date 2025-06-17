@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import Button from '@/components/button'
 import { LoginState, useLogin } from '@/context/login'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import {
   type LoginMethod,
   handleAuthProvider,
@@ -11,6 +12,7 @@ import {
 import { isInAppBrowser } from '@/utils/login'
 
 export default function LoginEntry() {
+  const { t } = useCustomTranslation()
   const [isWebView, setIsWebView] = useState(false)
   const { setStep } = useLogin()
 
@@ -33,9 +35,14 @@ export default function LoginEntry() {
   return (
     <div className="flex flex-col gap-6 p-10">
       <div className="flex flex-col items-center gap-2">
-        <h2 className="title-1 text-primary-700">註冊/登入會員</h2>
+        <h2 className="title-1 text-primary-700">
+          {t('Pages.Login.LoginEntry-title', '註冊/登入會員')}
+        </h2>
         <p className="body-3 text-primary-500">
-          加入討論，並享受個人化新聞選讀體驗
+          {t(
+            'Pages.Login.LoginEntry-description',
+            '加入討論，並享受個人化新聞選讀體驗'
+          )}
         </p>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-3">
@@ -54,7 +61,17 @@ export default function LoginEntry() {
               <Button
                 size="lg"
                 color="white"
-                text={transformedBtnText(option.method)}
+                text={
+                  option.method
+                    ? t(
+                        'Pages.Login.LoginEntry-continue-with-text',
+                        '以 {{text}} 帳號繼續',
+                        {
+                          text: transformedBtnText(option.method),
+                        }
+                      )
+                    : ''
+                }
                 icon={{ iconName: option.iconName, size: 'm' }}
                 onClick={() => onClickLoginMethod(option.method)}
               />
@@ -62,16 +79,16 @@ export default function LoginEntry() {
           ))}
       </div>
       <p className="footnote text-center text-primary-400">
-        繼續使用代表您同意與接受我們的
+        {t('Pages.Login.LoginEntry-hint-1', '繼續使用代表您同意與接受我們的')}
         <Link href={'/policy/terms-of-service'}>
           <span className="text-primary-700 underline underline-offset-2">
-            《服務條款》
+            {t('Pages.Login.LoginEntry-hint-2', '《服務條款》')}
           </span>
         </Link>
-        及
+        {t('Pages.Login.LoginEntry-hint-3', '及')}
         <Link href={'/policy/privacy-policy'}>
           <span className="text-primary-700 underline underline-offset-2">
-            《隱私政策》
+            {t('Pages.Login.LoginEntry-hint-4', '《隱私政策》')}
           </span>
         </Link>
       </p>
@@ -82,5 +99,5 @@ export default function LoginEntry() {
 function transformedBtnText(text: string) {
   if (!text) return ''
   const capitalizeFirstLetter = text.charAt(0).toUpperCase() + text.slice(1)
-  return `以 ${capitalizeFirstLetter} 帳號繼續`
+  return capitalizeFirstLetter
 }

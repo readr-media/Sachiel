@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { getMostFollowersData } from '@/app/actions/get-member-followings'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type MostFollowersMember } from '@/utils/data-schema'
 
 import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
 export default function NoFollowings() {
+  const { t } = useCustomTranslation()
   const [suggestedFollowers, setSuggestedFollowers] = useState<
     MostFollowersMember[] | null
   >(null)
@@ -32,12 +34,20 @@ export default function NoFollowings() {
             <Icon iconName="icon-user-dash" size={{ width: 80, height: 78 }} />
             <div className="flex flex-col items-center gap-2">
               <p className="title-1 text-primary-700">
-                咦？這裡好像還缺點什麼...
+                {t(
+                  'Pages.Social.NoFollowings-title',
+                  '咦？這裡好像還缺點什麼...'
+                )}
               </p>
               <div className="flex flex-col items-center">
-                <p className="body-2 text-primary-500">追蹤您喜愛的人</p>
                 <p className="body-2 text-primary-500">
-                  看看他們都精選了什麼新聞 👀
+                  {t('Pages.Social.NoFollowings-action', '追蹤您喜愛的人')}
+                </p>
+                <p className="body-2 text-primary-500">
+                  {t(
+                    'Pages.Social.NoFollowings-action-detail',
+                    '看看他們都精選了什麼新聞 👀'
+                  )}
                 </p>
               </div>
             </div>

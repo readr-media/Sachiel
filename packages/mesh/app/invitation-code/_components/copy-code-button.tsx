@@ -3,8 +3,10 @@
 import Icon from '@/components/icon'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function CopyCodeButton({ code }: { code: string }) {
+  const { t } = useCustomTranslation()
   const { addToast } = useToast()
   return (
     <button
@@ -13,13 +15,18 @@ export default function CopyCodeButton({ code }: { code: string }) {
         navigator.clipboard.writeText(code).then(() => {
           addToast({
             status: 'success',
-            text: TOAST_MESSAGE.copyInvitationCode,
+            text: t(
+              `Others.toast.${TOAST_MESSAGE.copyInvitationCode}`,
+              '已複製邀請碼'
+            ),
           })
         })
       }
     >
       <Icon iconName="icon-copy" size="s" />
-      <span className="button">複製邀請碼</span>
+      <span className="button">
+        {t('Pages.Invitation-Code.CopyCodeButton-copy-code', '複製邀請碼')}
+      </span>
     </button>
   )
 }

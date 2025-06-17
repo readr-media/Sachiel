@@ -1,24 +1,20 @@
 import type { Metadata } from 'next'
 
-import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import Loading from './_components/loading'
 
-const pageTitle = `最新 | ${SITE_TITLE}`
-const pageDescription = '追蹤你感興趣的媒體，查看他們最新發布的各類文章。'
+export async function generateMetadata(): Promise<Metadata> {
+  const title = '最新 | READr Mesh 讀選'
+  const description = '追蹤你感興趣的媒體，查看他們最新發布的各類文章。'
+  const urlPath = '/media'
 
-export const metadata: Metadata = {
-  ...rootMetadata,
-  title: pageTitle,
-  description: pageDescription,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: SITE_URL + '/media',
-    title: pageTitle,
-    description: pageDescription,
-  },
+  return getSiteMedadata({
+    title,
+    description,
+    urlPath,
+  })
 }
 
 export default function MediaLayout({

@@ -1,5 +1,6 @@
 import Icon from '@/components/icon'
 import { useEditCollection } from '@/context/edit-collection'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import {
   DesktopEditCollectionType,
@@ -7,6 +8,7 @@ import {
 } from '../_types/edit-collection'
 
 export default function AdditionalEditor() {
+  const { t } = useCustomTranslation()
   const { setMobileEditType, setDesktopEditType } = useEditCollection()
 
   const turnOnAddStoryType = () => {
@@ -22,7 +24,7 @@ export default function AdditionalEditor() {
           onClick={turnOnAddStoryType}
         >
           <Icon iconName="icon-add-article" size="l" />
-          新增文章
+          {t('Pages.Collection.AdditionalEditor-add-story', '新增文章')}
         </button>
       </div>
     </div>

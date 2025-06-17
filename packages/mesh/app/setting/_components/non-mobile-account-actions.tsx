@@ -9,9 +9,11 @@ import InteractiveIcon from '@/components/interactive-icon'
 import { ACTION_NAMES, ICON_MAP } from '@/constants/setting'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 
 export default function NonMobileAccountActions() {
+  const { t } = useCustomTranslation()
   const [logInMethodName, setLogInMethodName] = useState('')
   const { user } = useUser()
 
@@ -31,20 +33,20 @@ export default function NonMobileAccountActions() {
 
   return (
     <section className="body-2 hidden w-articleMain rounded-xl bg-single-layer text-primary-700 shadow-[0_0_4px_0_rgba(0,9,40,0.1),0_2px_2px_0_rgba(0,9,40,0.1)] sm:block">
-      <div className="flex justify-between border-b-[0.5px] border-b-primary-800 border-opacity-10 px-10 py-8">
+      <div className="flex justify-between border-b-[0.5px] border-b-primary-800/10 px-10 py-8">
         <p>{user.email}</p>
         {iconName && <Icon iconName={iconName} size="m" />}
       </div>
       <div>
-        {ACTION_NAMES.map(({ name, href }, index) => (
+        {ACTION_NAMES.map(({ nameKey, name, href }, index) => (
           <div
-            key={name}
-            className="cursor-pointer border-b-[0.5px] border-b-primary-800 border-opacity-10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"
+            key={nameKey}
+            className="cursor-pointer border-b-[0.5px] border-b-primary-800/10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"
           >
             {href ? (
               <Link href={href}>
                 <div className="flex items-center justify-between">
-                  {name}
+                  {t(`Others.setting.${nameKey}`, name)}
                   {index === 0 && (
                     <InteractiveIcon
                       size={{ width: 20, height: 20 }}
@@ -58,7 +60,7 @@ export default function NonMobileAccountActions() {
               </Link>
             ) : (
               <button onClick={logout} className="flex w-full justify-start">
-                {name}
+                {t(`Others.setting.${nameKey}`, name)}
               </button>
             )}
           </div>

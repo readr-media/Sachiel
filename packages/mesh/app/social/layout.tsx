@@ -1,22 +1,18 @@
 import type { Metadata } from 'next'
 
-import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getSiteMedadata } from '@/utils/site-meta'
 
-const pageTitle = `社群 | ${SITE_TITLE}`
-const pageDescription = '追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。'
+export async function generateMetadata(): Promise<Metadata> {
+  const title = '社群 | READr Mesh 讀選'
+  const description = '追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。'
+  const urlPath = '/social'
 
-export const metadata: Metadata = {
-  ...rootMetadata,
-  title: pageTitle,
-  description: pageDescription,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: SITE_URL + '/social',
-    title: pageTitle,
-    description: pageDescription,
-  },
+  return getSiteMedadata({
+    title,
+    description,
+    urlPath,
+  })
 }
 
 export default function SocialLayout({

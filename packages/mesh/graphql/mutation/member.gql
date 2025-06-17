@@ -101,3 +101,9 @@ mutation RemoveExcludePublisher($memberId: ID, $publisherId: ID) {
     }
   }
 }
+
+mutation SetMemberLanguage($userId: ID!, $language: MemberLanguageType) {
+  updateMember(where: { id: $userId }, data: { language: $language }) {
+    language
+  }
+}

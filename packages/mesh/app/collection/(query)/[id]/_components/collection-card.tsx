@@ -10,6 +10,7 @@ import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useComment } from '@/context/comment'
 import useClamp from '@/hooks/use-clamp'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { PickObjective } from '@/types/objective'
@@ -21,6 +22,7 @@ export default function CollectionCard({
 }: {
   collection: Collection
 }) {
+  const { t } = useCustomTranslation()
   const { isTooLong, isExpanded, domRef, toggleClamp } = useClamp()
   const { displayPicks, displayPicksCount } = useDisplayPicks(
     collection,
@@ -53,7 +55,9 @@ export default function CollectionCard({
             />
             <div className="absolute right-3 top-2 hidden items-center rounded-md bg-black/50 px-1 py-[2px] sm:flex">
               <Icon iconName="icon-collection-folder" size="m" />
-              <span className="caption-1 text-white">集錦</span>
+              <span className="caption-1 text-white">
+                {t('Pages.Collection.CollectionCard-collection', '集錦')}
+              </span>
             </div>
           </div>
           <div className="mt-3 flex flex-col px-5 sm:px-0 lg:order-1 lg:mt-0 lg:w-[640px] lg:shrink-0 xl:w-articleMain">
@@ -81,7 +85,7 @@ export default function CollectionCard({
                   isTooLong && !isExpanded ? '' : 'hidden'
                 }`}
               >
-                ...展開更多
+                {t('Pages.Collection.CollectionCard-expand', '...展開更多')}
               </span>
               {collection.summary ?? ''}
             </div>

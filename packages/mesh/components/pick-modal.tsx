@@ -8,6 +8,7 @@ import {
 
 import { usePickModal } from '@/context/pick-modal'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePicker from '@/hooks/use-picker'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { PickObjective } from '@/types/objective'
@@ -26,6 +27,7 @@ export default function PickModal() {
 }
 
 const AddPickModal = () => {
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { width } = useWindowDimensions()
   const {
@@ -42,7 +44,9 @@ const AddPickModal = () => {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
   const textAreaMaxHeight = width < 768 ? 104 : 600
   const [value, setValue] = useState('')
-  const buttonText = value ? '發佈' : '直接加入精選'
+  const buttonText = value
+    ? t('Components.PickModal.publish', '發布')
+    : t('Components.PickModal.pick', '直接加入精選')
 
   const handleInput = (
     e: FormEvent<HTMLTextAreaElement>,
@@ -80,8 +84,14 @@ const AddPickModal = () => {
 
   const textareaPlaceHolder =
     pickObjective === PickObjective.Story
-      ? '留言分享你為什麼精選這篇文章...'
-      : '留言分享你為什麼精選這個集錦...'
+      ? t(
+          'Components.PickModal.comment-for-pick-story',
+          '留言分享你為什麼精選這篇文章...'
+        )
+      : t(
+          'Components.PickModal.comment-for-pick-collection',
+          '留言分享你為什麼精選這個集錦...'
+        )
 
   return (
     <>
@@ -141,7 +151,9 @@ const AddPickModal = () => {
             <div className="relative overflow-hidden rounded-md bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="flex h-15 flex-row items-center justify-center border-[0.5px] border-primary-200 bg-white">
                 <div className="size-11"></div>
-                <p className="list-title mx-auto text-primary-800">加入精選</p>
+                <p className="list-title mx-auto text-primary-800">
+                  {t('Components.PickModal.add-pick', '加入精選')}
+                </p>
                 <button onClick={handleConfirmLeave}>
                   <Icon iconName="icon-modal-close" size="2xl" />
                 </button>
@@ -172,18 +184,23 @@ const AddPickModal = () => {
         ref={dialogRef}
         className="max-w-80 rounded-lg border p-6 text-left"
       >
-        <p className="body-2 pb-3">您輸入的資訊尚未儲存，是否離開此頁面?</p>
+        <p className="body-2 pb-3">
+          {t(
+            'Components.PickModal.confirm-leave',
+            '您輸入的資訊尚未儲存，是否離開此頁面?'
+          )}
+        </p>
         <div className="flex flex-row items-center justify-end gap-1">
           <Button
             size="sm"
             color="transparent-blue"
-            text="留在此頁面"
+            text={t('Components.PickModal.stay', '留在此頁面')}
             onClick={() => dialogRef.current?.close()}
           />
           <Button
             size="sm"
             color="custom-blue"
-            text="離開"
+            text={t('Components.PickModal.leave', '離開')}
             onClick={() => {
               dialogRef.current?.close()
               closePickModal()
@@ -196,14 +213,21 @@ const AddPickModal = () => {
 }
 
 const RemovePickModal = () => {
+  const { t } = useCustomTranslation()
   const removeDialogRef = useRef<HTMLDialogElement | null>(null)
   const { objectId, closePickModal, pickObjective } = usePickModal()
   const { removePick } = usePicker()
 
   const description =
     pickObjective === PickObjective.Story
-      ? '移除精選文章，將會一併移除您的留言'
-      : '移除精選集錦，將會一併移除您的留言'
+      ? t(
+          'Components.PickModal.remove-pick-story',
+          '移除精選文章，將會一併移除您的留言'
+        )
+      : t(
+          'Components.PickModal.remove-pick-collection',
+          '移除精選集錦，將會一併移除您的留言'
+        )
 
   useEffect(() => {
     if (removeDialogRef.current) {
@@ -230,19 +254,21 @@ const RemovePickModal = () => {
         ref={removeDialogRef}
         className="w-[280px] rounded-lg border px-5 py-4 text-center sm:w-[400px] sm:px-8 sm:py-6"
       >
-        <p className="title-2 text-left">確認要移除精選？</p>
+        <p className="title-2 text-left">
+          {t('Components.PickModal.confirm-delete', '確認要移除精選？')}
+        </p>
         <p className="body-3 text-left">{description}</p>
         <div className="flex flex-row items-center justify-end gap-1 pt-5">
           <Button
             size="sm"
             color="transparent-blue"
-            text="移除"
+            text={t('Components.PickModal.delete', '移除')}
             onClick={handleRemovePick}
           />
           <Button
             size="sm"
             color="custom-blue"
-            text="取消"
+            text={t('Components.PickModal.cancel', '取消')}
             onClick={() => {
               removeDialogRef.current?.close()
               closePickModal()

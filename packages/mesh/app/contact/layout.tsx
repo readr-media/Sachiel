@@ -1,14 +1,13 @@
 'use client'
+
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
-export default function SettingLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useCustomTranslation()
   const navigationData = {
-    title: '聯絡我們',
+    title: t('Pages.Contact.Layout-title', '聯絡我們'),
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }

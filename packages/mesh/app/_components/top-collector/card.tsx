@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import type { Collector } from '@/types/homepage'
 
@@ -14,6 +15,7 @@ type Props = {
 }
 
 export default function TopCollectorCard({ person, rank }: Props) {
+  const { t } = useCustomTranslation()
   const { handleClickFollow, isFollowing } = useFollow(String(person.id))
   const { user } = useUser()
 
@@ -45,9 +47,9 @@ export default function TopCollectorCard({ person, rank }: Props) {
             </NextLink>
           </p>
           <p className="caption-1 text-primary-500">
-            本週已精選
+            {t('Pages.Home.TopCollectorCard-pick-detail-1', '本週已精選')}
             <span className="text-primary-700"> {person.pickCount} </span>
-            篇文章
+            {t('Pages.Home.TopCollectorCard-pick-detail-2', '篇文章')}
           </p>
         </div>
       </div>
@@ -58,10 +60,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="sm"
               color="transparent"
-              text="追蹤"
+              text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: t('Components.FollowButton.following', '追蹤中'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"
@@ -71,10 +73,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="md-large"
               color="transparent"
-              text="追蹤"
+              text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: t('Components.FollowButton.following', '追蹤中'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"

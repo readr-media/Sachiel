@@ -5,13 +5,14 @@ import Link from 'next/link'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { Comment } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
-import { displayTimeFromNow } from '@/utils/story-display'
 
 type Props = {
   comment: Comment
@@ -19,6 +20,7 @@ type Props = {
 }
 
 export default function MostLikedCommentCard({ comment, rank }: Props) {
+  const { t } = useCustomTranslation()
   const { handleClickFollow, isFollowing } = useFollow(
     String(comment.member.id)
   )
@@ -61,9 +63,13 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 </Link>
               </p>
               <p className="footnote text-primary-500">
-                留言獲得{' '}
-                <span className="text-primary-800">{comment.likeCount}</span>{' '}
-                個愛心
+                {t(
+                  'Pages.Home.MostLikedCommentCard-like-detail-1',
+                  '留言獲得'
+                ) + ' '}
+                <span className="text-primary-800">{comment.likeCount}</span>
+                {' ' +
+                  t('Pages.Home.MostLikedCommentCard-like-detail-2', '個愛心')}
               </p>
             </div>
           </div>
@@ -72,10 +78,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               <Button
                 size="sm"
                 color="transparent"
-                text="追蹤"
+                text={t('Components.FollowButton.follow', '追蹤')}
                 activeState={{
                   isActive: isFollowing,
-                  activeText: '追蹤中',
+                  activeText: t('Components.FollowButton.following', '追蹤中'),
                 }}
                 onClick={handleClickFollow}
                 gtmClassName="GTM-homepage_click_popular_user_follow"
@@ -122,7 +128,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               </p>
               <Icon iconName="icon-dot" size="s" />
               <p className="caption-1 text-primary-500">
-                {displayTimeFromNow(comment.story.published_date)}
+                <DisplayTimeFromNow date={comment.story.published_date} />
               </p>
             </div>
           </div>

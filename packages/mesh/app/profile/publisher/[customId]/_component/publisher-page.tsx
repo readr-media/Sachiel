@@ -7,6 +7,7 @@ import Tab from '@/app/profile/_components/tab'
 import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useProfileTab, { type PublisherStoryType } from '@/hooks/use-profile-tab'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 import { type UserType, TabKey } from '@/types/profile'
@@ -45,6 +46,7 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
   publisherCustomId,
   publisherStoryType,
 }) => {
+  const { t } = useCustomTranslation()
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName: name,
@@ -59,9 +61,18 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
     : viewTabs
 
   const userStatusList = [
-    { tabName: TabKey.SPONSORED, count: `${sponsoredCount}次` },
     {
-      tabName: TabKey.FOLLOWER,
+      tabName: t(`Pages.Profile.${TabKey.SPONSORED}`, '本月獲得贊助'),
+      count: t(
+        'Pages.Profile.PublisherPage-sponsor-count',
+        '{{sponsoredCount}}次',
+        {
+          sponsoredCount,
+        }
+      ),
+    },
+    {
+      tabName: t(`Pages.Profile.${TabKey.FOLLOWER}`, '粉絲'),
       count: followerCount,
       redirectLink: `${publisherCustomId}/follower`,
     },
@@ -69,12 +80,21 @@ const PublisherPage: React.FC<PublisherPageProps> = ({
 
   const buttonList: ProfileButton[] = [
     {
-      text: { default: '追蹤', isActive: '追蹤中' },
+      text: {
+        default: t('Pages.Profile.ProfilePage-follow', '追蹤'),
+        isActive: t('Pages.Profile.ProfilePage-following', '追蹤中'),
+      },
       isActive: isFollowing,
       clickFn: handleFollowOnClick,
     },
     {
-      text: { default: '贊助/訂閱媒體', isActive: '' },
+      text: {
+        default: t(
+          'Pages.Profile.PublisherPage-sponsor-or-payment',
+          '贊助/訂閱媒體'
+        ),
+        isActive: '',
+      },
       color: 'custom-blue',
       isActive: false,
       component: <PublisherDonateButton key={0} publisherId={publisherId} />,

@@ -1,13 +1,19 @@
 import type { IconName } from '@/components/icon'
+import { MemberLanguageType } from '@/graphql/__generated__/graphql'
 
 //TODO: Skip "Block List" and "About" for now
 const ACTION_NAMES = [
-  // { name: '封鎖名單', href: '/' },
-  { name: '聯絡我們', href: '/contact' },
-  // { name: '關於', href: '/' },
-  { name: '登出' },
-  { name: '刪除帳號', href: '/setting/account-deletion' },
-]
+  // { nameKey: 'block-list', href: '/' },
+  { nameKey: 'language', name: '語言', href: '/setting/language' },
+  { nameKey: 'contact-us', name: '聯絡我們', href: '/contact' },
+  // { nameKey: 'about', href: '/' },
+  { nameKey: 'logout', name: '登出', href: '' },
+  {
+    nameKey: 'delete-account',
+    name: '刪除帳號',
+    href: '/setting/account-deletion',
+  },
+] as const
 
 const ICON_MAP: { [key: string]: IconName } = {
   'google.com': 'icon-google',
@@ -21,4 +27,9 @@ const DELETION_STEP = {
   FAILURE: 'failure',
 } as const
 
-export { ACTION_NAMES, DELETION_STEP, ICON_MAP }
+const LANGUAGE_OPTIONS = [
+  { langKey: MemberLanguageType.ZhTw, name: '繁體中文' },
+  { langKey: MemberLanguageType.EnUs, name: 'English' },
+] as const
+
+export { ACTION_NAMES, DELETION_STEP, ICON_MAP, LANGUAGE_OPTIONS }

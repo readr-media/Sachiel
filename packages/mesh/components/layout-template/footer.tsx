@@ -10,9 +10,12 @@ import {
   FOOTER_SHARED_ICONS,
   LOGO_ICONS,
 } from '@/constants/layout'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
+  const { t } = useCustomTranslation()
+
   return (
     <footer
       className={twMerge(
@@ -68,7 +71,9 @@ export default function Footer({ className = '' }: { className?: string }) {
                 key={link.text}
                 className={`GTM-footer_click_${link.gtmName}`}
               >
-                <span className="button-large cursor-pointer">{link.text}</span>
+                <span className="button-large cursor-pointer">
+                  {t(`Others.footers.${link.key}`, link.text)}
+                </span>
               </Link>
             ))}
           </nav>
@@ -93,16 +98,17 @@ export default function Footer({ className = '' }: { className?: string }) {
           <address className="flex flex-col items-center gap-1 not-italic sm:flex-row sm:justify-center sm:gap-0">
             {FOOTER_COMPANY_INFOS.map((info) => (
               <p
-                key={info}
+                key={info.key}
                 className="caption-1 text-primary-500 sm:border-l sm:border-primary-200 sm:px-[7.5px] sm:first-of-type:border-none"
               >
-                {info}
+                {t(`Others.footers.${info.key}`, info.text)}
               </p>
             ))}
           </address>
           <div className="caption-2 text-primary-400">
-            &copy; <time>{new Date().getFullYear()}</time> 精鏡傳媒股份有限公司
-            All Rights Reserved
+            &copy; <time>{new Date().getFullYear()}</time>{' '}
+            {t('Others.footers.company-name', '精鏡傳媒股份有限公司')}{' '}
+            {t('Others.footers.all-right-reserved', 'All Rights Reserved')}
           </div>
         </div>
       </div>

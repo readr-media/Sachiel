@@ -1,4 +1,5 @@
 import { useComment } from '@/context/comment'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { CommentObjective } from '@/types/objective'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -10,6 +11,7 @@ export default function ObjectiveCommentCount({
   commentsCount: number
   commentObjective?: CommentObjective
 }) {
+  const { t } = useCustomTranslation()
   const { dispatch } = useComment()
   const { width } = useWindowDimensions()
   const openCommentBlock = () => {
@@ -42,11 +44,23 @@ export default function ObjectiveCommentCount({
       return (
         <span>
           <span className="pr-1 text-primary-700">{displayCount}</span>
-          {commentsCount < 10000 ? '則留言' : '萬則留言'}
+          {commentsCount < 10000
+            ? t(
+                'Components.ObjectiveCommentCount.comment-under-10000',
+                '則留言'
+              )
+            : t(
+                'Components.ObjectiveCommentCount.comment-over-10000',
+                '萬則留言'
+              )}
         </span>
       )
     } else {
-      return <span>尚無人留言</span>
+      return (
+        <span>
+          {t('Components.ObjectiveCommentCount.no-comment', '尚無人留言')}
+        </span>
+      )
     }
   })()
 

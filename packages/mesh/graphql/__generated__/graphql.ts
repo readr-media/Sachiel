@@ -5324,6 +5324,19 @@ export type RemoveExcludePublisherMutation = {
   } | null
 }
 
+export type SetMemberLanguageMutationVariables = Exact<{
+  userId: Scalars['ID']['input']
+  language?: InputMaybe<MemberLanguageType>
+}>
+
+export type SetMemberLanguageMutation = {
+  __typename?: 'Mutation'
+  updateMember?: {
+    __typename?: 'Member'
+    language?: MemberLanguageType | null
+  } | null
+}
+
 export type GetAnnouncementsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAnnouncementsQuery = {
@@ -5729,6 +5742,7 @@ export type GetCurrentUserMemberIdQuery = {
     customId?: string | null
     email?: string | null
     avatar?: string | null
+    language?: MemberLanguageType | null
     intro?: string | null
     wallet?: string | null
     avatar_image?: { __typename?: 'Photo'; id: string } | null
@@ -9883,6 +9897,94 @@ export const RemoveExcludePublisherDocument = {
   RemoveExcludePublisherMutation,
   RemoveExcludePublisherMutationVariables
 >
+export const SetMemberLanguageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'SetMemberLanguage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'userId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'language' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'MemberLanguageType' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateMember' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'userId' },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'data' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'language' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'language' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'language' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SetMemberLanguageMutation,
+  SetMemberLanguageMutationVariables
+>
 export const GetAnnouncementsDocument = {
   kind: 'Document',
   definitions: [
@@ -12843,6 +12945,7 @@ export const GetCurrentUserMemberIdDocument = {
                 { kind: 'Field', name: { kind: 'Name', value: 'customId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'email' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'avatar' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'language' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'avatar_image' },

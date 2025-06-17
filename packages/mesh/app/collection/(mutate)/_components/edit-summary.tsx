@@ -1,6 +1,7 @@
 'use client'
 
 import useAutoFocus from '@/hooks/use-auto-focus'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { UseCollection } from '../_types/collection'
 
@@ -13,6 +14,7 @@ export default function EditSummary({
   autoFocus?: boolean
   useCollection: UseCollection
 }) {
+  const { t } = useCustomTranslation()
   const { summary, setSummary } = useCollection()
   const textareaRef = useAutoFocus<HTMLTextAreaElement>({ disable: !autoFocus })
 
@@ -21,12 +23,19 @@ export default function EditSummary({
     <div className="flex grow flex-col p-5 sm:grow-0 sm:py-0 md:px-[70px] lg:grow lg:p-0">
       <div className="profile-subtitle hidden justify-between lg:flex">
         <label htmlFor="summary" className="text-primary-500">
-          敘述
+          {t('Pages.Collection.EditSummary-summary', '敘述')}
         </label>
         <span
           className={`${tooManyWords ? 'text-custom-red' : 'text-primary-400'}`}
         >
-          {summary.length}/{maxSummaryLength}字
+          {t(
+            'Pages.Collection.EditSummary-current-length-to-max',
+            '{{currentCount}}/{{maxCount}}字',
+            {
+              currentCount: summary.length,
+              maxCount: maxSummaryLength,
+            }
+          )}
         </span>
       </div>
       <textarea
@@ -38,7 +47,10 @@ export default function EditSummary({
             : 'border-primary-200 focus:border-primary-600'
         }`}
         value={summary}
-        placeholder="這個集錦的內容主題是什麼..."
+        placeholder={t(
+          'Pages.Collection.EditSummary-placeholder',
+          '這個集錦的內容主題是什麼...'
+        )}
         onChange={(evt) => {
           setSummary(evt.target.value.trim())
         }}
@@ -46,7 +58,13 @@ export default function EditSummary({
       />
       {tooManyWords && (
         <div className="body-3 mt-2 text-custom-red-text">
-          字數不能超過 {maxSummaryLength} 字
+          {t(
+            'Pages.Collection.EditSummary-too-many-words',
+            '字數不能超過 {{length}} 字',
+            {
+              length: maxSummaryLength,
+            }
+          )}
         </div>
       )}
     </div>

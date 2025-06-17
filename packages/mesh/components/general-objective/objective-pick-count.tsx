@@ -1,3 +1,5 @@
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
+
 export default function ObjectivePickCount({
   picksCount,
   onClickDisplayPicker,
@@ -7,8 +9,12 @@ export default function ObjectivePickCount({
   onClickDisplayPicker: () => void
   disabled: boolean
 }) {
+  const { t } = useCustomTranslation()
+
   if (picksCount === 0) {
-    return <span>尚無人精選</span>
+    return (
+      <span>{t('Components.ObjectivePickCount.no-picks', '尚無人精選')}</span>
+    )
   }
 
   const displayCount =
@@ -23,7 +29,11 @@ export default function ObjectivePickCount({
       disabled={disabled}
     >
       <span className="pr-1 text-primary-700">{displayCount}</span>
-      <span>{picksCount < 10000 ? '人精選' : '萬人精選'}</span>
+      <span>
+        {picksCount < 10000
+          ? t('Components.ObjectivePickCount.pick-under-10000', '人精選')
+          : t('Components.ObjectivePickCount.pick-over-10000', '萬人精選')}
+      </span>
     </button>
   )
 }

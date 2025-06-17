@@ -1,6 +1,6 @@
 import CommentCount from '@/components/comment-count'
 import Icon from '@/components/icon'
-import { displayTimeFromNow } from '@/utils/story-display'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 
 export default function CollectionMeta({
   collectionId,
@@ -20,7 +20,7 @@ export default function CollectionMeta({
       />
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{updateAt ? displayTimeFromNow(updateAt) : null}</span>
+        <span>{updateAt && <DisplayTimeFromNow date={updateAt} />}</span>
       </div>
     </div>
   )

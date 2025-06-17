@@ -3,6 +3,7 @@ import { forwardRef } from 'react'
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import Avatar from '@/components/story-card/avatar'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type {
   Record,
   RedeemRecord,
@@ -30,6 +31,7 @@ export default forwardRef(function RecordItem(
 
 const TransactionRecordItem = forwardRef(
   ({ record }: { record: TransactionRecord }, ref) => {
+    const { t } = useCustomTranslation()
     const { member, policy, unlockStory, createdAt } = record
 
     if (!(policy?.type === 'unlock_one_publisher' && policy.unlockSingle)) {
@@ -40,9 +42,14 @@ const TransactionRecordItem = forwardRef(
       return null
     }
 
-    const transactionTitle = `${member?.name ?? '會員'} - 付費解鎖 - ${
-      unlockStory?.title ?? '文章'
-    }`
+    const transactionTitle = t(
+      'Pages.Media-Backstage.RecordItem-transaction-title',
+      '{{name}} - 付費解鎖 - {{title}}',
+      {
+        name: member?.name ?? '會員',
+        title: unlockStory?.title ?? '文章',
+      }
+    )
     return (
       <li
         className="flex gap-2 py-5"
@@ -68,9 +75,18 @@ TransactionRecordItem.displayName = 'TransactionRecordItem'
 
 const SponsorRecordItem = forwardRef(
   ({ record }: { record: SponsorRecord }, ref) => {
+    const { t } = useCustomTranslation()
     const { sponsor, fee, createdAt } = record
 
-    const transactionTitle = `${sponsor?.name ?? '會員'} - 贊助`
+    const transactionTitle = t(
+      'Pages.Media-Backstage.RecordItem-sponsor-title',
+      '{{name}} - 贊助',
+      {
+        name:
+          sponsor?.name ??
+          t('Pages.Media-Backstage.RecordItem-sponsor-name-fallback', '會員'),
+      }
+    )
     return (
       <li
         className="flex gap-2 py-5"
@@ -97,9 +113,13 @@ SponsorRecordItem.displayName = 'SponsorRecordItem'
 
 const RedeemRecordItem = forwardRef(
   ({ record }: { record: RedeemRecord }, ref) => {
+    const { t } = useCustomTranslation()
     const { publisher, exchangeVolume, createdAt } = record
 
-    const transactionTitle = '點數兌換'
+    const transactionTitle = t(
+      'Pages.Media-Backstage.RecordItem-redeem-title',
+      '點數兌換'
+    )
     return (
       <li
         className="flex gap-2 py-5"

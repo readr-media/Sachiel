@@ -6,39 +6,21 @@ import { Noto_Sans_TC } from 'next/font/google'
 
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
+import I18nProvider from '@/components/i18n-provider'
 import MisoAiScript from '@/components/miso-ai-script'
 import UserBehaviorLogger from '@/components/user-behavior-logger'
-import {
-  GTM_ID,
-  SITE_DESCRIPTION,
-  SITE_OG_IMAGE,
-  SITE_TITLE,
-  SITE_URL,
-} from '@/constants/config'
+import { GTM_ID } from '@/constants/config'
 import { PickModalProvider } from '@/context/pick-modal'
 import { PickersModalProvider } from '@/context/pickers-modal'
 import { ToastProvider } from '@/context/toast'
 import { UserProvider } from '@/context/user'
+import { getSiteMedadata } from '@/utils/site-meta'
 
 import RootLayoutWrapper from './_components/root-layout-wrapper'
 import { getCurrentUser } from './actions/auth'
 
-export const metadata: Metadata = {
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION,
-  openGraph: {
-    type: 'website',
-    url: SITE_URL,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    siteName: SITE_TITLE,
-    locale: 'zh_TW',
-    images: {
-      url: SITE_OG_IMAGE,
-      width: 1200,
-      height: 630,
-    },
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  return getSiteMedadata()
 }
 
 const notoSans = Noto_Sans_TC({
@@ -61,16 +43,18 @@ export default async function RootLayout({
       <MisoAiScript />
       <body>
         <UserProvider user={user}>
-          <ToastProvider>
-            <PickModalProvider>
-              <PickersModalProvider>
-                <RootLayoutWrapper>
-                  <UserBehaviorLogger />
-                  {children}
-                </RootLayoutWrapper>
-              </PickersModalProvider>
-            </PickModalProvider>
-          </ToastProvider>
+          <I18nProvider>
+            <ToastProvider>
+              <PickModalProvider>
+                <PickersModalProvider>
+                  <RootLayoutWrapper>
+                    <UserBehaviorLogger />
+                    {children}
+                  </RootLayoutWrapper>
+                </PickersModalProvider>
+              </PickModalProvider>
+            </ToastProvider>
+          </I18nProvider>
         </UserProvider>
       </body>
     </html>

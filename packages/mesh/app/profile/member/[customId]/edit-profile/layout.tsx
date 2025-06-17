@@ -6,16 +6,18 @@ import MobileNavigationButton from '@/components/layout-template/navigation/mobi
 import GoBackButton from '@/components/navigation/go-back-button'
 import { useEditProfile } from '@/context/edit-profile'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const EditProfileLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const params = useParams()
   const router = useRouter()
-  const title = '編輯個人檔案'
+  const title = t('Pages.Edit-Profile.Layout-title', '編輯個人檔案')
   const backToPreviousPage = () => {
     router.back()
   }
@@ -36,7 +38,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text="取消"
+            text={t('Pages.Edit-Profile.Layout-cancel', '取消')}
             color="gray"
             onClick={backToPreviousPage}
           />,
@@ -46,7 +48,7 @@ const EditProfileLayout = ({
           <MobileNavigationButton
             key={0}
             type="text"
-            text="儲存"
+            text={t('Pages.Edit-Profile.Layout-save', '儲存')}
             color={isFormValid && !isSubmitting ? 'blue' : 'gray'}
             onClick={handleSubmit}
           />,
@@ -54,7 +56,7 @@ const EditProfileLayout = ({
       }}
       nonMobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: '編輯個人檔案',
+        title,
         rightButtons: [],
       }}
     >

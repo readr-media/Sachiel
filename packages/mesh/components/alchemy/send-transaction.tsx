@@ -22,6 +22,7 @@ import { ALCHEMY_ADDRESS } from '@/constants/config'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { auth } from '@/firebase/client'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import {
   accountClientOptions as opts,
   accountType,
@@ -41,7 +42,7 @@ export default function SendTransaction({
   onSend,
   onSuccess,
   onError,
-  actionText = '完成付款',
+  actionText,
 }: {
   recipientAddress: Hex
   amount: number
@@ -53,8 +54,9 @@ export default function SendTransaction({
   onSend: () => void
   onSuccess: () => void
   onError: () => void
-  actionText?: string
+  actionText: string
 }) {
+  const { t } = useCustomTranslation()
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
   const [paymentId, setPaymentId] = useState('')
@@ -102,7 +104,13 @@ export default function SendTransaction({
       onSuccess()
     } catch (error) {
       console.error('Transaction failed:', error)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedUnowknown}`,
+          '支付失敗，請重新嘗試'
+        ),
+      })
       if (isCmsPaymentInProgressRef.current) {
         turnCmsPaymentIntoFailure(
           `Transaction failed when alchemy on success, \n${
@@ -128,7 +136,13 @@ export default function SendTransaction({
       })
     },
     onError: (error) => {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedUnowknown}`,
+          '支付失敗，請重新嘗試'
+        ),
+      })
       console.error(error)
       turnCmsPaymentIntoFailure(
         `Transaction failed when alchemy on error, \n${error.message}`
@@ -177,7 +191,13 @@ export default function SendTransaction({
       })
     } catch (error) {
       console.error('Transaction failed:', error)
-      addToast({ status: 'fail', text: TOAST_MESSAGE.payFailedUnowknown })
+      addToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.payFailedUnowknown}`,
+          '支付失敗，請重新嘗試'
+        ),
+      })
       onError()
     }
   }

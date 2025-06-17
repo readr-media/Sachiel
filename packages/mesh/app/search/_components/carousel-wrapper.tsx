@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import Icon from '@/components/icon'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type SearchResults } from '@/utils/data-schema'
 
 import CollectionCard from './collection-card'
@@ -10,6 +11,7 @@ export default function CarouselWrapper({
 }: {
   collections: SearchResults['collection']
 }) {
+  const { t } = useCustomTranslation()
   const [hoveredButton, setHoveredButton] = useState<'prev' | 'next' | null>(
     null
   )
@@ -44,7 +46,9 @@ export default function CarouselWrapper({
       {collections?.length ? (
         <>
           <div className="flex max-w-[1040px] flex-row items-center justify-between">
-            <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有集錦</h2>
+            <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+              {t('Pages.Search.CarouselWrapper-all-collection', '所有集錦')}
+            </h2>
             <div className="inline-flex items-center">
               <button
                 disabled={isPrevDisabled}

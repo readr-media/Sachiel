@@ -7,6 +7,7 @@ import { useState } from 'react'
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { displayTime } from '@/utils/story-display'
 
 import { type SubscribeStories } from '../subscribe-stories/page'
@@ -22,6 +23,7 @@ export default function SubscribeStoriesList({
   amountOfElements: number
   memberId: string
 }) {
+  const { t } = useCustomTranslation()
   const [hasMoreData, setHasMoreData] = useState(true)
   const fetchMoreSubscribeStories = async (pageIndex: number) => {
     if (!hasMoreData) return []
@@ -58,7 +60,13 @@ export default function SubscribeStoriesList({
                     <div className="flex flex-col gap-2 sm:gap-1">
                       <p className="subtitle-1 sm:title-2">{story?.title}</p>
                       <p className="caption-1 text-primary-500">
-                        {displayTime(story?.expireDate)}到期
+                        {t(
+                          'Pages.Point-Subscribe-Stories.SubscribeStoriesList-due-day',
+                          '{{time}} 到期',
+                          {
+                            time: displayTime(story?.expireDate),
+                          }
+                        )}
                       </p>
                     </div>
                     <div className="w-24 shrink-0 sm:w-40">
@@ -106,7 +114,13 @@ export default function SubscribeStoriesList({
                   <div className="flex grow flex-col justify-between gap-2 px-5 pb-5 pt-4">
                     <p className="subtitle-1">{story?.title}</p>
                     <p className="caption-1 text-primary-500">
-                      {displayTime(story?.expireDate)}到期
+                      {t(
+                        'Pages.Point-Subscribe-Stories.SubscribeStoriesList-due-day',
+                        '{{time}} 到期',
+                        {
+                          time: displayTime(story?.expireDate),
+                        }
+                      )}
                     </p>
                   </div>
                 </Link>

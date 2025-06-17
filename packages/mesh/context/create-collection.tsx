@@ -16,6 +16,8 @@ import {
   MobileCreateCollectionStep,
 } from '@/app/collection/(mutate)/new/_types/create-collection'
 import { collectionCreateParamName } from '@/constants/search-param-names'
+import TOAST_MESSAGE from '@/constants/toast'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useUserPayload from '@/hooks/use-user-payload'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { clearCreateCollectionStoryLS } from '@/utils/cross-page-create-collection'
@@ -74,6 +76,7 @@ export default function CreateCollectionProvider({
 }: {
   children: React.ReactNode
 }) {
+  const { t } = useCustomTranslation()
   const [step, setStep] = useState(0)
   const [title, setTitle] = useState('')
   const [summary, setSummary] = useState('')
@@ -130,29 +133,61 @@ export default function CreateCollectionProvider({
     switch (mobileStepName) {
       case MobileCreateCollectionStep.Step1SelectStories: {
         const pickedStoryCount = collectionPickStories.length
-        return pickedStoryCount ? `已選${pickedStoryCount}篇` : '選擇文章'
+        return pickedStoryCount
+          ? t(
+              'Pages.Collection.CreateCollectionProvider-mobile-step1-title-1',
+              '已選{{count}}篇',
+              {
+                count: pickedStoryCount,
+              }
+            )
+          : t(
+              'Pages.Collection.CreateCollectionProvider-mobile-step1-title-2',
+              '選擇文章'
+            )
       }
       case MobileCreateCollectionStep.Step2SetTitle:
-        return '標題'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step2-title',
+          '標題'
+        )
       case MobileCreateCollectionStep.Step3SetSummary:
-        return '敘述'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step3-title',
+          '敘述'
+        )
       case MobileCreateCollectionStep.Step4SortStories:
-        return '排序'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-mobile-step4-title',
+          '排序'
+        )
       default:
-        return '建立集錦'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
     }
-  }, [collectionPickStories.length, mobileStepName])
+  }, [collectionPickStories.length, mobileStepName, t])
 
   const desktopTitle = useMemo(() => {
     switch (desktopStepName) {
       case DesktopCreateCollectionStep.Step1EditAll:
-        return '建立集錦'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
       case DesktopCreateCollectionStep.Step2SortStories:
-        return '排序'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step2-title',
+          '排序'
+        )
       default:
-        return '建立集錦'
+        return t(
+          'Pages.Collection.CreateCollectionProvider-desktop-step1-title',
+          '建立集錦'
+        )
     }
-  }, [desktopStepName])
+  }, [desktopStepName, t])
 
   const createCollection = async () => {
     const formData = new FormData()
@@ -205,7 +240,13 @@ export default function CreateCollectionProvider({
       })
       router.push(`/collection/${collectionId}`)
     } else {
-      setCrossPageToast({ status: 'fail', text: '建立集錦失敗，請重新嘗試' })
+      setCrossPageToast({
+        status: 'fail',
+        text: t(
+          `Others.toast.${TOAST_MESSAGE.createCollectionFailed}`,
+          '建立集錦失敗，請重新嘗試'
+        ),
+      })
       router.push(`/profile/member/${user.customId}`)
     }
   }

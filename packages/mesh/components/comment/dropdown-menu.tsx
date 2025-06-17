@@ -4,9 +4,11 @@ import React, { useRef } from 'react'
 import Icon from '@/components/icon'
 import { EditDrawerShowType, useComment } from '@/context/comment'
 import useClickOutside from '@/hooks/use-click-outside'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 const DropdownMenu = () => {
+  const { t } = useCustomTranslation()
   const { width } = useWindowDimensions()
   const isMobileWidth = width < 768
   const {
@@ -38,7 +40,7 @@ const DropdownMenu = () => {
           className="button-large flex items-center gap-1 px-5 py-2 hover:bg-primary-100"
         >
           <Icon iconName="icon-flag" size="m" />
-          檢舉留言
+          {t('Components.DropdownMenu.report', '檢舉留言')}
         </li>
       ) : (
         <>
@@ -47,7 +49,7 @@ const DropdownMenu = () => {
             className="button-large flex items-center gap-1 px-5 py-2 hover:bg-primary-100"
           >
             <Icon iconName="icon-edit" size="m" />
-            編輯留言
+            {t('Components.DropdownMenu.edit', '編輯留言')}
           </li>
           <li
             onClick={handleDeleteComment}
@@ -56,7 +58,7 @@ const DropdownMenu = () => {
             <span className="brightness-0">
               <Icon iconName="icon-delete" size="m" />
             </span>
-            刪除留言
+            {t('Components.DropdownMenu.delete', '刪除留言')}
           </li>
         </>
       )}

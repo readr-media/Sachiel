@@ -5,8 +5,10 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { LoginState, useLogin } from '@/context/login'
 import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function LoginSetCategory() {
+  const { t } = useCustomTranslation()
   const { formData, setFormData, setStep } = useLogin()
   const [allCategories, setAllCategories] =
     useState<GetAllCategoriesQuery['categories']>(null)
@@ -43,7 +45,7 @@ export default function LoginSetCategory() {
       <div className="flex flex-col items-center gap-5 p-5">
         <Icon iconName="icon-login-step-2" size={{ width: 335, height: 20 }} />
         <p className="subtitle-1 text-center text-primary-500">
-          請選擇您想追蹤的新聞類別
+          {t('Pages.Login.LoginSetCategory-hint', '請選擇您想追蹤的新聞類別')}
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           {allCategories?.map((category) => (
@@ -51,7 +53,7 @@ export default function LoginSetCategory() {
               key={category.id}
               size="md-100"
               color="lightbox"
-              text={category.title ?? ''}
+              text={t(`Others.categories.${category.slug}`, '')}
               activeState={{
                 isActive: formData.interests.includes(category.id),
               }}
@@ -64,7 +66,11 @@ export default function LoginSetCategory() {
         <Button
           size="lg"
           color="primary"
-          text={formData.interests.length < 3 ? '至少要選 3 個' : '下一步'}
+          text={
+            formData.interests.length < 3
+              ? t('Pages.Login.LoginSetCategory-select-three', '至少要選 3 個')
+              : t('Pages.Login.LoginSetCategory-go-next', '下一步')
+          }
           onClick={() => setStep(LoginState.SetFollowing)}
           disabled={formData.interests.length < 3}
         />

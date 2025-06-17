@@ -1,12 +1,18 @@
-import { displayDateWithWeekday } from '@/utils/story-display'
+'use client'
+
+import { DisplayDateWithWeekday } from '@/components/story-time-display'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function Loading() {
+  const { t } = useCustomTranslation()
   return (
     <div className="px-5 pt-4 sm:pt-5 lg:px-10">
       <div className="flex justify-between">
-        <h2 className="list-title lg:title-1 text-primary-700">今日焦點</h2>
+        <h2 className="list-title lg:title-1 text-primary-700">
+          {t('Pages.Home.DailyHighlight-title', '今日焦點')}
+        </h2>
         <time className="button text-primary-500">
-          {displayDateWithWeekday()}
+          <DisplayDateWithWeekday />
         </time>
       </div>
       <div className="mt-3 flex animate-pulse flex-col gap-3 sm:mt-4 lg:flex-row lg:items-center lg:gap-10">

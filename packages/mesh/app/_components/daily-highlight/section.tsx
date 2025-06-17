@@ -2,12 +2,13 @@ import {
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
 } from '@/app/actions/get-homepage'
-import { displayDateWithWeekday } from '@/utils/story-display'
+import { DisplayDateWithWeekday } from '@/components/story-time-display'
 
 import StoryCard from '../story-card'
 import { AdAfterMainGroup } from './ad-after-main-group'
 import { AdAfterNoGroup } from './ad-after-no-group'
 import MainGroup from './main-group'
+import Title from './title'
 
 export default async function DailyHighlight() {
   const groupData = await fetchDailyHighlightGroup()
@@ -19,9 +20,9 @@ export default async function DailyHighlight() {
   return (
     <section className="flex flex-col px-5 pt-4 sm:pt-5 md:px-[70px] lg:px-10 lg:pb-10">
       <div className="mb-3 flex items-center justify-between sm:mb-4">
-        <h2 className="list-title lg:title-1 text-primary-700">今日焦點</h2>
+        <Title />
         <time className="button text-primary-500">
-          {displayDateWithWeekday()}
+          <DisplayDateWithWeekday />
         </time>
       </div>
       {groupStories && <MainGroup stories={groupStories} />}

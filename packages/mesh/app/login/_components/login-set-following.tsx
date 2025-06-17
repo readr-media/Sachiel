@@ -10,8 +10,10 @@ import { LoginState, useLogin } from '@/context/login'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
 import type { GetMemberByFollowingCategoryQuery } from '@/graphql/__generated__/graphql'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function LoginSetFollowing() {
+  const { t } = useCustomTranslation()
   const { formData, setFormData, setStep } = useLogin()
   const { setUser } = useUser()
   const [recommend, setRecommend] =
@@ -83,7 +85,10 @@ export default function LoginSetFollowing() {
         <Icon iconName="icon-login-step-3" size={{ width: 335, height: 20 }} />
         <div className="w-full">
           <p className="subtitle-1 pb-3 text-center text-primary-500">
-            根據您的喜好，我們推薦您追蹤這些人物
+            {t(
+              'Pages.Login.LoginSetFollowing-hint',
+              '根據您的喜好，我們推薦您追蹤這些人物'
+            )}
           </p>
           <div className="flex h-15 items-center rounded-md border border-primary-200 bg-primary-100 px-4">
             <div className="flex flex-row items-center gap-2">
@@ -101,18 +106,29 @@ export default function LoginSetFollowing() {
                 <span className="inline-block w-15 truncate">
                   {recommend?.members?.[0].name}
                 </span>
-                等
+                {t(
+                  'Pages.Login.LoginSetFollowing-select-all-recommend-1',
+                  '等'
+                )}
                 <span className="px-0.5 text-primary-700">
                   {recommend?.members?.length}
                 </span>
-                人
+                {t(
+                  'Pages.Login.LoginSetFollowing-select-all-recommend-2',
+                  '人'
+                )}
               </div>
             </div>
             <button
               className="body-3 ml-auto text-custom-blue"
               onClick={handleFollowAllBtn}
             >
-              {isFollowAll ? '取消追蹤全部' : '一次追蹤全部'}
+              {isFollowAll
+                ? t(
+                    'Pages.Login.LoginSetFollowing-unfollow-all',
+                    '取消追蹤全部'
+                  )
+                : t('Pages.Login.LoginSetFollowing-follow-all', '一次追蹤全部')}
             </button>
           </div>
         </div>
@@ -129,10 +145,13 @@ export default function LoginSetFollowing() {
                   <Button
                     size="sm"
                     color="transparent"
-                    text="追蹤"
+                    text={t('Components.FollowButton.follow', '追蹤')}
                     activeState={{
                       isActive: formData.followings.includes(member.id),
-                      activeText: '追蹤中',
+                      activeText: t(
+                        'Components.FollowButton.following',
+                        '追蹤中'
+                      ),
                     }}
                     onClick={() => handleFollowToggle(member.id)}
                   />
@@ -149,7 +168,7 @@ export default function LoginSetFollowing() {
         <Button
           size="lg"
           color="primary"
-          text="完成"
+          text={t('Pages.Login.LoginSetFollowing-finish', '完成')}
           onClick={handleFinishSignUp}
           disabled={loading}
         />

@@ -5,12 +5,14 @@ import Dots from '@/components/dots'
 import Avatar from '@/components/story-card/avatar'
 import { EditDrawerBlockType, useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { sortAndFilterComments, sortAuthorComments } from '@/utils/comment'
 
 import CommentBlock from '../comment-block'
 import CommentModal from '../comment-modal'
 
 export default function CommentBlocks({ targetId }: { targetId: string }) {
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const {
     state,
@@ -46,7 +48,10 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
             name="comment"
             id="comment"
             rows={4}
-            placeholder="有什麼要補充的嗎..."
+            placeholder={t(
+              'Components.CommentBlocks.comment-placeholder',
+              '有什麼要補充的嗎...'
+            )}
             onChange={handleTextChange}
             value={comment}
             className="grow rounded-md border border-primary-200 p-3 focus-visible:outline-none"
@@ -62,7 +67,7 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
               onClick={() => handleCommentPublish({ user, targetId })}
               size="md"
               color="primary"
-              text="發布"
+              text={t('Components.CommentBlocks.comment-publish', '發布')}
               disabled={comment.trim() === ''}
             />
           )}
@@ -70,37 +75,63 @@ export default function CommentBlocks({ targetId }: { targetId: string }) {
       </div>
       {!!popularComments.length && (
         <CommentBlock
-          title="熱門留言"
+          title={t(
+            'Components.CommentBlocks.comment-poular-comment',
+            '熱門留言'
+          )}
           type={EditDrawerBlockType.Popular}
           comments={popularComments}
         />
       )}
       <CommentBlock
-        title="所有留言"
+        title={t('Components.CommentBlocks.comment-all-comments', '所有留言')}
         type={EditDrawerBlockType.All}
         comments={sortedAuthorComments}
       />
       <CommentModal
-        onConfirmText="刪除留言"
-        onCloseText="取消"
+        onConfirmText={t(
+          'Components.CommentBlocks.comment-delete-comment',
+          '刪除留言'
+        )}
+        onCloseText={t('Components.CommentBlocks.comment-cancel', '取消')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">確認要刪除留言？</p>
-          <p className="body-3">系統仍會保留您的精選記錄</p>
+          <p className="title-2">
+            {t(
+              'Components.CommentBlocks.comment-confirm-delete',
+              '確認要刪除留言？'
+            )}
+          </p>
+          <p className="body-3">
+            {t(
+              'Components.CommentBlocks.comment-pick-will-stay',
+              '系統仍會保留您的精選記錄'
+            )}
+          </p>
         </section>
       </CommentModal>
       <CommentModal
         onConfirmText=""
-        onCloseText="返回留言"
+        onCloseText={t(
+          'Components.CommentBlocks.comment-return-to-comment',
+          '返回留言'
+        )}
         isOpen={isConfirmReportingModalOpen}
         onClose={handleReportOnClose}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">檢舉成功</p>
-          <p className="body-3">我們已收到您的檢舉，感謝提供資訊</p>
+          <p className="title-2">
+            {t('Components.CommentBlocks.comment-report-success', '檢舉成功')}
+          </p>
+          <p className="body-3">
+            {t(
+              'Components.CommentBlocks.comment-report-success-detail',
+              '我們已收到您的檢舉，感謝提供資訊'
+            )}
+          </p>
         </section>
       </CommentModal>
     </>

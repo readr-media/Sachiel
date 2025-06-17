@@ -1,5 +1,4 @@
 import * as tsImport from 'ts-import'
-
 const { FIREBASE_DOMAIN } = await tsImport.load('./constants/config.ts')
 
 /** @type {import('next').NextConfig} */

@@ -1,7 +1,8 @@
-import { displayTimeFromNow } from '@/utils/story-display'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import CommentCount from '../comment-count'
 import Icon from '../icon'
+import { DisplayTimeFromNow } from '../story-time-display'
 
 export default function StoryMeta({
   storyId,
@@ -18,30 +19,32 @@ export default function StoryMeta({
   fullScreenAd: string
   storyType?: 'story' | 'podcast'
 }) {
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex items-center text-primary-500">
       <Icon iconName="icon-chat-bubble" size="s" />
       <CommentCount objectiveId={storyId} initialCommentCounts={commentCount} />
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>
+        <span>{publishDate && <DisplayTimeFromNow date={publishDate} />}</span>
       </div>
       {paywall && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          付費文章
+          {t('Components.StoryMeta.payall', '付費文章')}
         </div>
       )}
       {fullScreenAd && fullScreenAd !== 'none' && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          蓋板廣告
+          {t('Components.StoryMeta.full-screen-ad', '蓋板廣告')}
         </div>
       )}
       {storyType === 'podcast' ? (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          Podcast
+          {t('Components.StoryMeta.podcast', 'Podcast')}
         </div>
       ) : null}
     </div>

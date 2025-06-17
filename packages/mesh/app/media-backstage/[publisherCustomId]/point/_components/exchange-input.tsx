@@ -4,6 +4,7 @@ import {
   NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
 } from '@/constants/config'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function ExchangeInput({
   balance,
@@ -12,6 +13,7 @@ export default function ExchangeInput({
   balance: number | undefined
   onChangeAmount: (value: number) => void
 }) {
+  const { t } = useCustomTranslation()
   const [userInput, setUserInput] = useState('')
   const [fullfillMinimum, setFullfillMimium] = useState(true)
   const maxAmount = balance ?? 0
@@ -63,21 +65,45 @@ export default function ExchangeInput({
             } text-[11px] font-normal text-white`}
             onClick={handleMaxClick}
           >
-            MAX
+            {t('Pages.Media-Backstage.ExchangeInput-set-max-amount', 'MAX')}
           </button>
         </div>
         {!fullfillMinimum && (
           <span className="body-3 mt-2 text-custom-red-text">
-            輸入金額不能少於 1000
+            {t(
+              'Pages.Media-Backstage.ExchangeInput-minimum-amount-hint',
+              '輸入金額不能少於 {{amount}}',
+              {
+                amount: NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
+              }
+            )}
           </span>
         )}
         <p className="footnote mt-6 flex flex-col text-primary-500">
-          <span>請輸入您要兌換的金額。</span>
-          <span>您的讀選點數餘額：${balance}</span>
+          <span>
+            {t(
+              'Pages.Media-Backstage.ExchangeInput-enter-amount',
+              '請輸入您要兌換的金額。'
+            )}
+          </span>
+          <span>
+            {t(
+              'Pages.Media-Backstage.ExchangeInput-mesh-point-balance',
+              '您的讀選點數餘額：${{balance}}',
+              {
+                balance,
+              }
+            )}
+          </span>
           <span className="mt-5 text-custom-blue">
-            {`點數最低兌換點數為 ${NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT} 點，單筆兌換手續費為 ${
-              NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100
-            }%。`}
+            {t(
+              'Pages.Media-Backstage.ExchangeInput-exchange-detail',
+              '點數最低兌換點數為 {{amount}} 點，單筆兌換手續費為 {{feeRate}}%。',
+              {
+                amount: NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,
+                feeRate: NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE * 100,
+              }
+            )}
           </span>
         </p>
       </div>

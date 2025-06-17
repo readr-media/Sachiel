@@ -3,10 +3,11 @@ import { useRouter } from 'next/navigation'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { DisplayTimeFromNow } from '@/components/story-time-display'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { type CommentType } from '@/types/profile'
-import { displayTimeFromNow } from '@/utils/story-display'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
 
 type CommentProps = {
@@ -25,6 +26,7 @@ const Comment: React.FC<CommentProps> = ({
   //TODO: 之後有文章再更改成slug或id傳入做跳轉功能。
   storyId = '',
 }) => {
+  const { t } = useCustomTranslation()
   const { width } = useWindowDimensions()
   const router = useRouter()
   const { needClamp, commentRef, handleToggleClamp } = useCommentClamp(
@@ -56,11 +58,13 @@ const Comment: React.FC<CommentProps> = ({
             extra="mr-2 min-w-[28px] min-h-[28px]"
           />
           <p className="caption-1 text-primary-500">
-            {displayTimeFromNow(data.createdAt)}
+            <DisplayTimeFromNow date={data.createdAt} />
           </p>
           <Icon iconName="icon-dot" size="s" />
 
-          <button className="caption-1 text-primary-500">編輯留言</button>
+          <button className="caption-1 text-primary-500">
+            {t('Pages.Collection.Comment-edit-comment', '編輯留言')}
+          </button>
         </div>
         <div className="flex items-center justify-end">
           <p className="caption-1 text-primary-600">{data.likeCount}</p>
@@ -87,7 +91,7 @@ const Comment: React.FC<CommentProps> = ({
           } sm:line-clamp-1`}
           ref={commentRef}
         >
-          {data.content || '沒有評論'}
+          {data.content || t('Pages.Collection.Comment-no-comment', '沒有評論')}
         </p>
       </div>
     </section>

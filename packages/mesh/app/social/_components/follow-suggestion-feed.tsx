@@ -1,14 +1,15 @@
 import Link from 'next/link'
 
+import FollowButton from '@/components/follow-button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import {
   type MongoDBResponse,
   type MostFollowersMember,
 } from '@/utils/data-schema'
 
 import useSuggestedFollowers from '../_hooks/use-suggested-followers'
-import FollowButton from './follow-button'
 
 export default function FollowSuggestionFeed({
   suggestedFollowers,
@@ -17,6 +18,7 @@ export default function FollowSuggestionFeed({
   suggestedFollowers: MongoDBResponse['members'] | MostFollowersMember[]
   isNoFollowings: boolean
 }) {
+  const { t } = useCustomTranslation()
   const { displaySuggestedFollowers, setPage, hasNextPage } =
     useSuggestedFollowers(suggestedFollowers)
 
@@ -29,7 +31,9 @@ export default function FollowSuggestionFeed({
       } sm:rounded-md lg:hidden`}
     >
       <div className=" flex items-center justify-between pb-3 sm:pb-1">
-        <h2 className="list-title text-primary-700">推薦追蹤</h2>
+        <h2 className="list-title text-primary-700">
+          {t('Pages.Social.FollowSuggestionFeed-title', '推薦追蹤')}
+        </h2>
         <button
           className={`button flex h-6 items-center text-primary-500 ${
             !hasNextPage ? 'hidden' : ''
@@ -37,7 +41,7 @@ export default function FollowSuggestionFeed({
           onClick={() => setPage((page) => page + 1)}
         >
           <Icon iconName="icon-refresh" size="l" />
-          重新推薦
+          {t('Pages.Social.FollowSuggestionFeed-recommend-others', '重新推薦')}
         </button>
       </div>
       <div className="flex h-[210px] flex-row gap-3 overflow-x-auto sm:h-[345px] sm:flex-col sm:gap-0">
@@ -59,17 +63,22 @@ export default function FollowSuggestionFeed({
                       {member.name}
                     </Link>
                     <p className="caption-1 h-9 w-[124px] text-center text-primary-500 sm:h-[18px] sm:w-full sm:text-left">
-                      {'from' in member && member.from.name ? (
-                        <>
-                          <span>{member.from.name}</span>
-                          及其他<span> {member.followerCount} </span>
-                          人的追蹤對象
-                        </>
-                      ) : (
-                        <>
-                          有<span> {member.followerCount} </span>人正在追蹤
-                        </>
-                      )}
+                      {'from' in member && member.from.name
+                        ? t(
+                            'Pages.Social.FollowSuggestionFeed-follow-detail-with-name',
+                            '{{name}}及其他 {{followerCount}} 人的追蹤對象',
+                            {
+                              name: member.from.name,
+                              followerCount: member.followerCount,
+                            }
+                          )
+                        : t(
+                            'Pages.Social.FollowSuggestionFeed-follow-detail',
+                            '有 {{followerCount}} 人正在追蹤',
+                            {
+                              followerCount: member.followerCount,
+                            }
+                          )}
                     </p>
                   </div>
                   <FollowButton
