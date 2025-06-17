@@ -4,7 +4,6 @@ import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
 
 import SubscribeStoriesList from '../_components/subscribe-stories-list'
-import NoRecord from './_components/no-record'
 
 export type SubscribeStories = Awaited<
   ReturnType<typeof getMemberUnlockStories>
@@ -22,7 +21,11 @@ export default async function Page() {
   return (
     <>
       {subscribeStories.length === 0 ? (
-        <NoRecord />
+        <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
+          <p className="button-large w-dvw text-center text-primary-400">
+            目前還沒有訂閱中的文章
+          </p>
+        </div>
       ) : (
         <SubscribeStoriesList
           initialList={subscribeStories}

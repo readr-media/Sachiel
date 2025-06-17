@@ -1,7 +1,6 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import Button from '@/components/button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import { type UserType } from '@/types/profile'
@@ -13,7 +12,6 @@ export default function EmptyTabState({
   tabKey: ProfileTabKey
   userType: UserType
 }) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
   const pageName = usePageName()
@@ -25,17 +23,17 @@ export default function EmptyTabState({
   const messages: Record<ProfileTabKey, string> = {
     pick:
       userType === 'member'
-        ? 'EmptyTabState-no-pick'
-        : 'EmptyTabState-no-pick-for-other',
-    bookmark: 'EmptyTabState-no-bookmark',
+        ? '這裡還空空的\n趕緊將喜愛的新聞加入精選吧'
+        : '這個人還沒有精選新聞',
+    bookmark: '沒有已儲存的書籤',
     collection:
       userType === 'member'
-        ? 'EmptyTabState-no-collection'
-        : 'EmptyTabState-no-collection-for-other',
-    story: 'EmptyTabState-no-story',
+        ? '從精選新聞或書籤中\n將數篇新聞打包成集錦'
+        : '這個人還沒有建立集錦',
+    story: '這個媒體還沒有發佈任何新聞',
     podcast: '',
   }
-  const emptyMessage = t(`Pages.Profile.${messages[tabKey]}`, '')
+  const emptyMessage = messages[tabKey] || ''
 
   return (
     <div className="flex grow flex-col">
@@ -45,10 +43,7 @@ export default function EmptyTabState({
           <Button
             size="md"
             color="transparent"
-            text={t(
-              'Pages.Profile.EmptyTabState-create-collection',
-              '立即嘗試'
-            )}
+            text="立即嘗試"
             onClick={handleNavigate}
           />
         )}

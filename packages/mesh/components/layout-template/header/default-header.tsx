@@ -4,10 +4,11 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
+import Button from '@/components/button'
 import Icon from '@/components/icon'
-import LoginButton from '@/components/login-button'
 import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
+import useRedirectLogin from '@/hooks/use-redirect-login'
 const DesktopSearchBar = dynamic(
   () => import('@/components/desktop-search-bar'),
   {
@@ -28,6 +29,7 @@ const NotificationWrapper = dynamic(
 export default function DefaultHeader() {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
+  const { detectIfShouldRedirectToLogin } = useRedirectLogin()
 
   return (
     <>
@@ -58,7 +60,18 @@ export default function DefaultHeader() {
             <HeaderIconWrapper className="GTM-header_click_search_bar sm:hidden">
               <MobileSearchWrapper />
             </HeaderIconWrapper>
-            {isLoggedIn ? <NotificationWrapper /> : <LoginButton />}
+            {isLoggedIn ? (
+              <NotificationWrapper />
+            ) : (
+              <div className="mx-3 my-1 flex items-center">
+                <Button
+                  size="sm"
+                  color="white"
+                  text="登入"
+                  onClick={detectIfShouldRedirectToLogin}
+                />
+              </div>
+            )}
           </div>
         </div>
       </header>

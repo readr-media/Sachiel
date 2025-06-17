@@ -1,4 +1,3 @@
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type SearchResults } from '@/utils/data-schema'
 
 import CarouselWrapper from './carousel-wrapper'
@@ -14,7 +13,6 @@ export default function StoryAndCollection({
   storyResult: SearchResults['story']
   collectionResult: SearchResults['collection']
 }) {
-  const { t } = useCustomTranslation()
   const isNoResult = !storyResult.length && !collectionResult.length
 
   return (
@@ -23,12 +21,7 @@ export default function StoryAndCollection({
         <>
           <div className="xl:hidden">
             <div className="flex flex-row items-center justify-between">
-              <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
-                {t(
-                  'Pages.Search.StoryAndCollection-all-collections',
-                  '所有集錦'
-                )}
-              </h2>
+              <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有集錦</h2>
             </div>
             <div className="flex w-full flex-row gap-3 overflow-auto">
               {collectionResult.map((collection) => (
@@ -43,9 +36,7 @@ export default function StoryAndCollection({
       ) : null}
       {storyResult.length ? (
         <>
-          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
-            {t('Pages.Search.StoryAndCollection-all-stories', '所有新聞')}
-          </h2>
+          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有新聞</h2>
           {storyResult.map((story, idx) => (
             <StoryCard
               key={story.id}
@@ -57,15 +48,9 @@ export default function StoryAndCollection({
       ) : null}
       {isNoResult ? (
         <p className="pt-3 text-primary-500 sm:pt-5">
-          {t(
-            'Pages.Search.StoryAndCollection-cant-find-keyword-1',
-            '找不到包含「'
-          )}
+          找不到包含「
           <span className="text-primary-700">{query}</span>
-          {t(
-            'Pages.Search.StoryAndCollection-cant-find-keyword-2',
-            '」的新聞，請換個關鍵字，再試一次。'
-          )}
+          」的新聞，請換個關鍵字，再試一次。
         </p>
       ) : null}
     </>

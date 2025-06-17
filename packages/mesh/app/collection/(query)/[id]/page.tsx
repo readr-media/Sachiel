@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation'
 import { getCollection, getCollectionStories } from '@/app/actions/collection'
 import MisoPageView from '@/components/miso-page-view'
 
+import ArticleCardList from './_components/article-card-list'
 import CollectionCard from './_components/collection-card'
 import NotExist from './_components/not-exist'
-import CollectionArticleList from './collection-article-list'
 
 export default async function CollectionPage({
   params: { id: collectionId },
@@ -31,8 +31,9 @@ export default async function CollectionPage({
     <main className="flex grow flex-col">
       <MisoPageView productIds={`profile_collection_${collectionId}`} />
       <CollectionCard collection={collection} />
-      <CollectionArticleList
+      <ArticleCardList
         items={collectionPicks ?? []}
+        emptyMessage={'從精選新聞或書籤中\n將數篇新聞打包成集錦'}
         avatar={collection.creator?.avatar ?? ''}
       />
     </main>

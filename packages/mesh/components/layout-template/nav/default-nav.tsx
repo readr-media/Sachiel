@@ -2,21 +2,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
 import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { TabCategory } from '@/types/profile'
 import { matchPath } from '@/utils/nav-button'
 
-type IconInfo = typeof NON_MOBILE_NAV_ICONS[
-  | 'first'
-  | 'second'
-  | 'third'][number]
-
-type MobileIconInfo = typeof MOBILE_NAV_ICONS[number]
+type IconInfo = {
+  icon: {
+    default: IconName
+    hover: IconName
+    on: IconName
+  }
+  href: string
+  text: string
+  gtmName: string
+}
 
 export default function DefaultNav({ className = '' }: { className?: string }) {
   const path = usePathname()
@@ -65,7 +69,7 @@ const NonMobileNav = ({
           <div className="flex flex-col border-b sm:gap-8 sm:pb-8 md:gap-2 md:pb-5">
             {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.key}
+                key={iconInfo.text}
                 isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />
@@ -73,44 +77,45 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
             {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
-              if (iconInfo.key === 'profile') {
+              if (iconInfo.text === '個人檔案') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.key}
+                    key={iconInfo.text}
                     isOn={
                       matchPath(iconInfo.href, path) &&
                       searchParams.get('tab') === TabCategory.PICKS
                     }
-                    iconInfo={iconInfo}
-                    href={
-                      userCustomId
+                    iconInfo={{
+                      ...iconInfo,
+                      href: userCustomId
                         ? iconInfo.href +
                           `/member/${userCustomId}?tab=${TabCategory.PICKS}`
-                        : '/login'
-                    }
+                        : '/login',
+                    }}
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.key === 'bookmark') {
+              } else if (iconInfo.text === '書籤') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.key}
+                    key={iconInfo.text}
                     isOn={
                       matchPath(iconInfo.href, path) &&
                       searchParams.get('tab') === TabCategory.BOOKMARKS
                     }
-                    iconInfo={iconInfo}
-                    href={
-                      iconInfo.href +
-                      `/member/${userCustomId}?tab=${TabCategory.BOOKMARKS}`
-                    }
+                    iconInfo={{
+                      ...iconInfo,
+                      href:
+                        iconInfo.href +
+                        `/member/${userCustomId}?tab=${TabCategory.BOOKMARKS}`,
+                    }}
                     avatarUrl={avatarUrl}
                   />
                 )
               } else {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.key}
+                    key={iconInfo.text}
                     isOn={matchPath(iconInfo.href, path)}
                     iconInfo={iconInfo}
                   />
@@ -139,16 +144,13 @@ const NonMobileNav = ({
 const NonMobileNavIcon = ({
   isOn,
   iconInfo,
-  href,
   avatarUrl,
 }: {
   isOn: boolean
   iconInfo: IconInfo
-  href?: string
   avatarUrl?: string
 }) => {
-  const { t } = useCustomTranslation()
-  const showAvatar = iconInfo.key === 'profile' && avatarUrl
+  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Avatar src={avatarUrl} size="s" />
@@ -160,18 +162,18 @@ const NonMobileNavIcon = ({
   )
   const textJsx = isOn ? (
     <span className="title-1 hidden md:block md:text-primary-700">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
+      {iconInfo.text}
     </span>
   ) : (
     <span className="title-1 hidden group-hover:text-primary-700 md:block md:text-primary-600">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
+      {iconInfo.text}
     </span>
   )
 
   return (
     <Link
       key={iconInfo.text}
-      href={href ?? iconInfo.href}
+      href={iconInfo.href}
       className={`GTM-nav_click_${iconInfo.gtmName} group flex rounded-md md:h-14 md:items-center md:gap-3 md:pl-2 md:hover:bg-primary-100`}
     >
       {iconJsx}
@@ -194,7 +196,7 @@ const MobileNav = ({
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {MOBILE_NAV_ICONS.map((iconInfo) => {
-          if (iconInfo.key === 'profile') {
+          if (iconInfo.text === '個人檔案') {
             return (
               <MobileNavIcon
                 key={iconInfo.icon.default}
@@ -202,11 +204,12 @@ const MobileNav = ({
                   matchPath(iconInfo.href, path) &&
                   searchParams.get('tab') === TabCategory.PICKS
                 }
-                iconInfo={iconInfo}
-                href={
-                  iconInfo.href +
-                  `/member/${userCustomId}?tab=${TabCategory.PICKS}`
-                }
+                iconInfo={{
+                  ...iconInfo,
+                  href:
+                    iconInfo.href +
+                    `/member/${userCustomId}?tab=${TabCategory.PICKS}`,
+                }}
                 avatarUrl={avatarUrl}
               />
             )
@@ -228,16 +231,13 @@ const MobileNav = ({
 const MobileNavIcon = ({
   isOn,
   iconInfo,
-  href,
   avatarUrl,
 }: {
   isOn: boolean
-  iconInfo: MobileIconInfo
-  href?: string
+  iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const { t } = useCustomTranslation()
-  const showAvatar = iconInfo.key === 'profile' && avatarUrl
+  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-6 items-center justify-center">
       <Image
@@ -254,19 +254,15 @@ const MobileNavIcon = ({
     <InteractiveIcon icon={iconInfo.icon} size="l" />
   )
   const textJsx = isOn ? (
-    <span className="caption-1 text-primary-700">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
-    </span>
+    <span className="caption-1 text-primary-700">{iconInfo.text}</span>
   ) : (
-    <span className="caption-1 text-primary-600">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
-    </span>
+    <span className="caption-1 text-primary-600">{iconInfo.text}</span>
   )
 
   return (
     <Link
       key={iconInfo.icon.default}
-      href={href ?? iconInfo.href}
+      href={iconInfo.href}
       className={`GTM-nav_click_${iconInfo.gtmName} flex h-full flex-1 flex-col items-center justify-center`}
     >
       {iconJsx}

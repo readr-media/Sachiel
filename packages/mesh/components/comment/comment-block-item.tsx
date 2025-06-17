@@ -10,10 +10,9 @@ import { useUser } from '@/context/user'
 import type { Comment } from '@/graphql/__generated__/graphql'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import { useCommentLike } from '@/hooks/use-comment-like'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
+import { displayTimeFromNow } from '@/utils/story-display'
 
-import { DisplayTimeFromNow } from '../story-time-display'
 import CommentEditor from './comment-editor'
 import DropdownMenu from './dropdown-menu'
 
@@ -24,7 +23,6 @@ const CommentBlockItem = ({
   comment: Comment
   displayMode: EditDrawerBlockType
 }) => {
-  const { t } = useCustomTranslation()
   const { state, dispatch } = useComment()
   const { user } = useUser()
   const { commentData, isCommentLiked, handleLikeComment } = useCommentLike({
@@ -102,13 +100,12 @@ const CommentBlockItem = ({
               <div className="flex max-w-[calc(100%_-_50px)] flex-wrap">
                 <p className="subtitle-2 max-w-full cursor-pointer truncate hover-or-active:underline">
                   <Link href={`/profile/member/${comment.member?.customId}`}>
-                    {commentData.member?.name ||
-                      t('Components.CommentBlockItem.member', '使用者')}
+                    {commentData.member?.name || '使用者'}
                   </Link>
                 </p>
                 <div className="flex items-center">
                   <span className="caption-1 mr-1 text-primary-500">
-                    ·<DisplayTimeFromNow date={commentData.createdAt} />
+                    ·{displayTimeFromNow(commentData.createdAt)}
                   </span>
                   {comment.is_edited && (
                     <>
@@ -116,10 +113,7 @@ const CommentBlockItem = ({
                         <Icon iconName="icon-edited" size="m" />
                       </span>
                       <p className="caption-1 hidden text-primary-500 md:block">
-                        {t(
-                          'Components.CommentBlockItem.edit-comment',
-                          '·編輯留言'
-                        )}
+                        ·編輯留言
                       </p>
                     </>
                   )}

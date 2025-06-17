@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import { ImageCategory } from '@/constants/fallback-src'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { UseCollection } from '../_types/collection'
 import ImageSelector from './image-selector'
@@ -20,7 +19,6 @@ export default function EditHeroImage({
 }: {
   useCollection: UseCollection
 }) {
-  const { t } = useCustomTranslation()
   const [showImageSelector, setShowImageSelector] = useState(false)
   const { heroImage, collectionPickStories } = useCollection()
 
@@ -52,9 +50,7 @@ export default function EditHeroImage({
           />
         </div>
         <div className="body-2 flex justify-center text-custom-blue">
-          <button onClick={openImageSelector}>
-            {t('Pages.Collection.EditHeroImage-change-image', '更換封面照片')}
-          </button>
+          <button onClick={openImageSelector}>更換封面照片</button>
         </div>
       </div>
       {showImageSelector && (

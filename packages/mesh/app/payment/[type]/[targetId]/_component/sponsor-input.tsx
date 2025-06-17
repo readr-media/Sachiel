@@ -1,7 +1,5 @@
 import { type FormEvent, useState } from 'react'
 
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
-
 export default function SponsorInput({
   balance,
   onChangeAmount,
@@ -9,7 +7,6 @@ export default function SponsorInput({
   balance: number | undefined
   onChangeAmount: (value: number) => void
 }) {
-  const { t } = useCustomTranslation()
   const [userInput, setUserInput] = useState('')
   const isMax = `${userInput}` === `${balance}`
 
@@ -47,23 +44,12 @@ export default function SponsorInput({
             } text-[11px] font-normal text-white`}
             onClick={handleMaxClick}
           >
-            {t('Pages.Payment.SponsorInput-set-max-amount', 'MAX')}
+            MAX
           </button>
         </div>
         <p className="footnote flex flex-col text-primary-500">
-          <span>
-            {t(
-              'Pages.Payment.SponsorInput-enter-amount',
-              '請輸入您要贊助的金額。'
-            )}
-          </span>
-          <span>
-            {t(
-              'Pages.Payment.SponsorInput-mesh-balance',
-              '您的讀選點數餘額：${{balance}}',
-              { balance }
-            )}
-          </span>
+          <span>請輸入您要贊助的金額。</span>
+          <span>您的讀選點數餘額：${balance}</span>
         </p>
       </div>
     </div>

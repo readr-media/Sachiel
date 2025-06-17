@@ -23,7 +23,7 @@ type FollowingListProps = {
 
 const FollowingList = ({
   followingList = [],
-  title,
+  title = '媒體',
   defaultToggle,
   type,
   followingCount,
@@ -45,7 +45,7 @@ const FollowingList = ({
   const shouldLoadMore = list.length < followingCount
 
   const fetchNextPage = useCallback(async () => {
-    if (type === 'member') {
+    if (title === '人物') {
       isLoadingRef.current = true
       const response = await getMoreMemberFollowing(
         publisherCustomId,

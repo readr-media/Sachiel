@@ -6,7 +6,6 @@ import CollectionPickButton from '@/components/collection-card/collection-pick-b
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import { useEditProfile } from '@/context/edit-profile'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { PickCollections } from '@/types/profile'
@@ -19,7 +18,6 @@ type CollectionsCarouselElementProps = {
 const CollectionsCarouselElement = ({
   data,
 }: CollectionsCarouselElementProps) => {
-  const { t } = useCustomTranslation()
   const { profileData } = useEditProfile()
   const userPayload = useUserPayload()
   const pageName = usePageName()
@@ -54,9 +52,7 @@ const CollectionsCarouselElement = ({
           />
           <div className="absolute right-[6px] top-2 flex items-center rounded-md bg-black/50 px-[6px] py-[2.5px]">
             <Icon iconName="icon-collection-folder" size="s" />
-            <span className="caption-2 text-white">
-              {t('Page.Profile.CollectionsCarouselElement-collection', '集錦')}
-            </span>
+            <span className="caption-2 text-white">集錦</span>
           </div>
         </div>
       </Link>
@@ -84,10 +80,7 @@ const CollectionsCarouselElement = ({
           </div>
           <p className="footnote pb-2 text-primary-600">
             <span className="font-medium text-primary-700">{picksCount}</span>
-            {t(
-              'Page.Profile.CollectionsCarouselElement-picks-count-detail',
-              '人精選'
-            )}
+            人精選
           </p>
         </Link>
         {shouldShowCollectionPickButton ? (

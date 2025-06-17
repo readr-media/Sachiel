@@ -5,13 +5,11 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { useEditProfile } from '@/context/edit-profile'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import AvatarEditMenu from './avatar-edit-menu'
 import UploadImageErrorModal from './upload-image-error-modal'
 
 export default function EditProfile() {
-  const { t } = useCustomTranslation()
   const {
     editProfileForm,
     errors,
@@ -93,10 +91,7 @@ export default function EditProfile() {
                 isSubmitting ? 'text-disable' : 'text-custom-blue'
               } `}
             >
-              {t(
-                'Pages.Edit-Profile.EditProfile-change-avatar',
-                '更換大頭貼照'
-              )}
+              更換大頭貼照
               {showBottomMenu && (
                 <AvatarEditMenu
                   hideBottomMenu={hideBottomMenu}
@@ -112,7 +107,7 @@ export default function EditProfile() {
                 htmlFor="name"
                 className="profile-subtitle text-primary-500"
               >
-                {t('Pages.Edit-Profile.EditProfile-name', '姓名')}
+                姓名
               </label>
               <section
                 className={`flex border-b border-b-primary-200 pb-2 focus-within:border-b-primary-600 ${
@@ -144,7 +139,7 @@ export default function EditProfile() {
                 htmlFor="customId"
                 className="profile-subtitle text-primary-500"
               >
-                {t('Pages.Edit-Profile.EditProfile-id', '更換大頭貼照')}
+                ID
               </label>
               <section
                 className={`flex border-b border-b-primary-200 pb-2 focus-within:border-b-primary-600 ${
@@ -177,25 +172,21 @@ export default function EditProfile() {
                   htmlFor="intro"
                   className="profile-subtitle mb-1 text-primary-500"
                 >
-                  {t('Pages.Edit-Profile.EditProfile-intro', '簡介')}
+                  簡介
                 </label>
                 <span
                   className={`profile-subtitle mb-1 ${
                     errors.intro ? 'text-custom-red' : 'text-primary-500 '
                   }`}
                 >
-                  {editProfileForm.intro.length}/250
-                  {t('Pages.Edit-Profile.EditProfile-words', '字')}
+                  {editProfileForm.intro.length}/250字
                 </span>
               </section>
               <textarea
                 id="intro"
                 name="intro"
                 value={editProfileForm.intro}
-                placeholder={t(
-                  'Pages.Edit-Profile.EditProfile-intro-placeholder',
-                  '向大家介紹一下自己吧...'
-                )}
+                placeholder="向大家介紹一下自己吧..."
                 onChange={handleInputChange}
                 ref={textareaRef}
                 className={`body-2 w-full grow rounded border p-2 outline-none focus:border-primary-600 ${
@@ -205,7 +196,7 @@ export default function EditProfile() {
             </div>
             <span className="hidden sm:flex sm:grow *:sm:w-full">
               <Button
-                text={t('Pages.Edit-Profile.EditProfile-save', '儲存')}
+                text="儲存"
                 size="sm"
                 color="blue-500"
                 onClick={handleSubmit}

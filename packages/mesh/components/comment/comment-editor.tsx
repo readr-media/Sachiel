@@ -3,10 +3,8 @@ import React from 'react'
 import Button from '@/components/button'
 import { useComment } from '@/context/comment'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const CommentEditor = () => {
-  const { t } = useCustomTranslation()
   const { state, dispatch, handleCommentEdit } = useComment()
   const { user } = useUser()
 
@@ -30,14 +28,14 @@ const CommentEditor = () => {
       <div className="flex items-center justify-end gap-1 focus-visible:outline-none">
         <Button
           onClick={handleAddCommentModalOnLeave}
-          text={t('Components.CommentEditor.cancel', '取消')}
+          text="取消"
           size="md"
           color="white"
         />
         <Button
           onClick={() => handleCommentEdit(user)}
           disabled={notChange}
-          text={t('Components.CommentEditor.save', '儲存')}
+          text="儲存"
           size="md"
           color="white"
         />

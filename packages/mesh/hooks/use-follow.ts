@@ -9,11 +9,9 @@ import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
-import { useCustomTranslation } from './use-custom-translation'
 import useRedirectLogin from './use-redirect-login'
 
 export const useFollow = (followingId: string) => {
-  const { t } = useCustomTranslation()
   const { user, setUser } = useUser()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const memberId = user.memberId
@@ -35,13 +33,7 @@ export const useFollow = (followingId: string) => {
       }))
       const response = await addMemberFollowing(memberId, followingId)
       if (!response) {
-        addToast({
-          status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.followMemberFailed}`,
-            '追蹤失敗，請重新嘗試'
-          ),
-        })
+        addToast({ status: 'fail', text: TOAST_MESSAGE.followMemberFailed })
         // TODO: simplify the mutation
         newFollowingMemberIds.delete(followingId)
         setUser((user) => ({
@@ -59,13 +51,7 @@ export const useFollow = (followingId: string) => {
 
       const response = await removeMemberFollowing(memberId, followingId)
       if (!response) {
-        addToast({
-          status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.unfollowMemberFailed}`,
-            '取消追蹤失敗，請重新嘗試'
-          ),
-        })
+        addToast({ status: 'fail', text: TOAST_MESSAGE.unfollowMemberFailed })
         // TODO: simplify the mutation
         newFollowingMemberIds.add(followingId)
         setUser((user) => ({

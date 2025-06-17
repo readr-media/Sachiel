@@ -1,7 +1,7 @@
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMeshPointBalance } from '@/app/actions/mesh-point'
+import { LogInCard } from '@/components/alchemy/login-card'
 
-import MediaPointLoginCard from './_components/media-point-login-card'
 import MeshPoint from './_components/mesh-point'
 
 export default async function MediaPointPage({
@@ -23,7 +23,10 @@ export default async function MediaPointPage({
       {hasAlchemyAccount ? (
         <MeshPoint balance={balance} publisherCustomId={publisherCustomId} />
       ) : (
-        <MediaPointLoginCard />
+        <LogInCard
+          formDescription="您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。"
+          isHelperText={true}
+        />
       )}
     </main>
   )

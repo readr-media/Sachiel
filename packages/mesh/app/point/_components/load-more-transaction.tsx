@@ -1,11 +1,8 @@
 'use client'
-
 import Button from '@/components/button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 
 export default function LoadMoreTransaction() {
-  const { t } = useCustomTranslation()
   const { width } = useWindowDimensions()
 
   return (
@@ -15,10 +12,7 @@ export default function LoadMoreTransaction() {
           <Button
             size="md"
             color="white"
-            text={t(
-              'Pages.Point.LoadMoreTransaction-load-more',
-              '載入更多記錄'
-            )}
+            text="載入更多記錄"
             onClick={() => {}}
           />
         ) : (
@@ -26,10 +20,7 @@ export default function LoadMoreTransaction() {
             <Button
               size="lg"
               color="white"
-              text={t(
-                'Pages.Point.LoadMoreTransaction-load-more',
-                '載入更多記錄'
-              )}
+              text="載入更多記錄"
               onClick={() => {}}
             />
           </div>

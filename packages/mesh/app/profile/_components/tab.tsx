@@ -1,6 +1,3 @@
-'use client'
-
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type ProfileTabKey, type TabOption } from '@/hooks/use-profile-tab'
 
 const activeTabStyle =
@@ -16,14 +13,12 @@ export default function Tab({
   activeTab: ProfileTabKey
   handleTabClick: (tab: ProfileTabKey) => void
 }) {
-  const { t } = useCustomTranslation()
-
   return (
     <ul
       className="flex h-[48px] w-full items-center justify-around border-y border-primary-200 bg-white
 sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px] lg:pl-10"
     >
-      {viewTabs.map(({ key, labelKey, label }) => (
+      {viewTabs.map(({ key, label }) => (
         <li
           key={key}
           onClick={() => handleTabClick(key)}
@@ -31,7 +26,7 @@ sm:justify-start sm:gap-2 sm:pl-5 md:pl-[70px] lg:pl-10"
             activeTab === key ? activeTabStyle : inactiveTabStyle
           }`}
         >
-          {t(`Pages.Profile.${labelKey}`, label)}
+          {label}
         </li>
       ))}
     </ul>

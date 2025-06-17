@@ -1,13 +1,11 @@
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { LoginState, useLogin } from '@/context/login'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { sendEmailLink } from '@/utils/auth-provider'
 import { debounce } from '@/utils/performance'
 import { isValidEmail } from '@/utils/validate-email'
 
 export default function LoginEmail() {
-  const { t } = useCustomTranslation()
   const { formData, setFormData, setStep, cachedEmail, setCachedEmail } =
     useLogin()
   const { email } = formData
@@ -56,22 +54,17 @@ export default function LoginEmail() {
             }
             size="m"
           />
-          <p className="body-3">
-            {t('Pages.Login.LoginEmail-valid-email', 'Email 符合格式')}
-          </p>
+          <p className="body-3">Email 符合格式</p>
         </div>
         <p className="footnote pt-3 text-primary-500">
-          {t(
-            'Pages.Login.LoginEmail-hint',
-            '我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。'
-          )}
+          我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。
         </p>
       </div>
       <div className="w-full max-w-[320px]">
         <Button
           size="lg"
           color="white"
-          text={t('Pages.Login.LoginEmail-submit', '送出')}
+          text="送出"
           onClick={handleSubmit}
           disabled={!isValid}
         />

@@ -68,7 +68,7 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
       >
         <section className="mb-1 flex items-center justify-between">
           <p className="caption-1 text-primary-500">
-            {(story?.source && story?.source.title) ?? ''}
+            {(story?.source && story?.source.title) ?? '預設媒體'}
           </p>
           {story && (
             <StoryMoreActionButton
@@ -80,7 +80,7 @@ const ArticleCard = ({ story, isLast, avatar = '' }: ArticleCardProps) => {
         <section className="mb-2 flex items-start justify-between sm:gap-10">
           <div className="flex h-full flex-col justify-between">
             <p className="body-2 mb-2 w-full sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
-              {story?.title || ''}
+              {story?.title || '預設標題'}
             </p>
             <span className=" *:caption-1 *:text-primary-500">
               <StoryMeta

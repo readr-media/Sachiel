@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 
 import { getMemberForOG } from '@/app/actions/get-profile'
-import { getSiteMedadata } from '@/utils/site-meta'
+import { metadata as rootMetadata } from '@/app/layout'
+import { SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '@/constants/config'
 
 import ClientLayout from './_components/client-layout'
 
@@ -16,20 +17,28 @@ export async function generateMetadata({
   const memberName = memberData?.member?.name
   const memberAvatar =
     memberData?.member?.avatar ||
-    memberData?.member?.avatar_image?.resized?.original
+    memberData?.member?.avatar_image?.resized?.original ||
+    SITE_OG_IMAGE
 
-  const title = memberName ? `${memberName} | READr Mesh 讀選` : undefined
-  const description = memberName
+  const metaTitle = memberName ? `${memberName} | ${SITE_TITLE}` : SITE_TITLE
+  const metaDescription = memberName
     ? `查看 ${memberName} 的個人檔案。追蹤他們精選的文章和製作的集錦。`
     : '查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。'
-  const images = memberAvatar ?? undefined
-  const urlPath = `/profile/member/${memberCustomId}`
-  return getSiteMedadata({
-    title,
-    description,
-    images,
-    urlPath,
-  })
+
+  return {
+    ...rootMetadata,
+    title: metaTitle,
+    description: metaDescription,
+    openGraph: {
+      ...rootMetadata.openGraph,
+      url: SITE_URL + `/profile/member/${memberCustomId}`,
+      title: metaTitle,
+      description: metaDescription,
+      images: {
+        url: memberAvatar,
+      },
+    },
+  }
 }
 
 export default function ProfileMemberLayout({

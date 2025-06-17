@@ -9,11 +9,9 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import { LoginState, useLogin } from '@/context/login'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { processPolicy } from '@/utils/process-policy'
 
 export default function LoginTermsConfirmation() {
-  const { t } = useCustomTranslation()
   const [terms, setTerms] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isChecked, setIsChecked] = useState(false)
@@ -72,10 +70,7 @@ export default function LoginTermsConfirmation() {
     <div className="flex size-full flex-col">
       <div className="flex flex-col items-center justify-center px-5 pt-5 sm:px-10">
         <p className="body-3 mb-5 text-primary-500">
-          {t(
-            'Pages.Login.LoginTermsConfirmation-hint',
-            '繼續使用前，請先詳閱我們的服務條款及隱私權政策'
-          )}
+          繼續使用前，請先詳閱我們的服務條款及隱私權政策
         </p>
         <div
           className="boder-primary-200 mb-5 h-[410px] w-full overflow-auto rounded border p-4 sm:mb-6 sm:h-[247px]"
@@ -100,12 +95,7 @@ export default function LoginTermsConfirmation() {
             <Icon iconName="icon-checkbox-off" size="l" />
           )}
 
-          <p className="subtitle-1 text-primary-700">
-            {t(
-              'Pages.Login.LoginTermsConfirmation-agree-terms',
-              '我同意以上條款'
-            )}
-          </p>
+          <p className="subtitle-1 text-primary-700">我同意以上條款</p>
         </div>
       </div>
 
@@ -113,7 +103,7 @@ export default function LoginTermsConfirmation() {
         <Button
           size="lg"
           color="primary"
-          text={t('Pages.Login.LoginTermsConfirmation-go-next', '下一步')}
+          text="下一步"
           onClick={handleSubmit}
           disabled={!isChecked}
         />

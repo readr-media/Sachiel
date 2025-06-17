@@ -1,18 +1,22 @@
 import type { Metadata } from 'next'
 
+import { metadata as rootMetadata } from '@/app/layout'
 import LayoutTemplate from '@/components/layout-template'
-import { getSiteMedadata } from '@/utils/site-meta'
+import { SITE_TITLE, SITE_URL } from '@/constants/config'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = '登入 | READr Mesh 讀選'
-  const description = '登入您的讀選帳號，開始精選你感興趣的新聞文章。'
-  const urlPath = '/login'
+const pageTitle = `登入 | ${SITE_TITLE}`
+const pageDescription = '登入您的讀選帳號，開始精選你感興趣的新聞文章。'
 
-  return getSiteMedadata({
-    title,
-    description,
-    urlPath,
-  })
+export const metadata: Metadata = {
+  ...rootMetadata,
+  title: pageTitle,
+  description: pageDescription,
+  openGraph: {
+    ...rootMetadata.openGraph,
+    url: SITE_URL + '/login',
+    title: pageTitle,
+    description: pageDescription,
+  },
 }
 
 export default function LoginLayout({

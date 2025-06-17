@@ -2,12 +2,10 @@
 
 import Button from '@/components/button'
 import { useEditCollection } from '@/context/edit-collection'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { MobileEditCollectionType } from '../../_types/edit-collection'
 
 export default function TabletGoNextButton() {
-  const { t } = useCustomTranslation()
   const {
     mobileEditType,
     setMobileEditType,
@@ -25,7 +23,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditTitle:
       return (
         <Button
-          text={t('Pages.Collection.TabletGoNextButton-save', '儲存')}
+          text="儲存"
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -35,7 +33,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditSummary:
       return (
         <Button
-          text={t('Pages.Collection.TabletGoNextButton-save', '儲存')}
+          text="儲存"
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -45,7 +43,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.EditStories:
       return (
         <Button
-          text={t('Pages.Collection.TabletGoNextButton-save', '儲存')}
+          text="儲存"
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}
@@ -55,7 +53,7 @@ export default function TabletGoNextButton() {
     case MobileEditCollectionType.AddStories:
       return (
         <Button
-          text={t('Pages.Collection.TabletGoNextButton-finish', '完成')}
+          text="完成"
           size="lg"
           color="primary"
           disabled={!isMobileEditTypeFullfilled}

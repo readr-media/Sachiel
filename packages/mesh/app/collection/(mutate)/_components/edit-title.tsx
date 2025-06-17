@@ -1,7 +1,6 @@
 'use client'
 
 import useAutoFocus from '@/hooks/use-auto-focus'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { UseCollection } from '../_types/collection'
 
@@ -12,14 +11,13 @@ export default function EditTitle({
   autoFocus?: boolean
   useCollection: UseCollection
 }) {
-  const { t } = useCustomTranslation()
   const { title, setTitle } = useCollection()
   const inputRef = useAutoFocus<HTMLInputElement>({ disable: !autoFocus })
 
   return (
     <div className="px-5 md:px-[70px] lg:px-0">
-      <label htmlFor="title" className="profile-subtitle hidden px-1 lg:block">
-        {t('Pages.Collection.EditTitle-label', '標題*')}
+      <label htmlFor="title" className="profile-subtitle  hidden px-1 lg:block">
+        標題*
       </label>
       <input
         id="title"
@@ -30,10 +28,7 @@ export default function EditTitle({
         onChange={(evt) => {
           setTitle(evt.target.value.trim())
         }}
-        placeholder={t(
-          'Pages.Collection.EditTitle-input-placeholder',
-          '輸入集錦標題'
-        )}
+        placeholder="輸入集錦標題"
         ref={inputRef}
       />
     </div>

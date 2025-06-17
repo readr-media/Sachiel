@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { Category } from '../page'
 
@@ -18,7 +17,6 @@ export default function CategoryEditor({
   onFinish: (categories: Category[]) => void
   onClose: () => void
 }) {
-  const { t } = useCustomTranslation()
   const [selectingCategories, setSelectingCategories] =
     useState(followingCategories)
   useBlockBodyScroll(true)
@@ -40,9 +38,7 @@ export default function CategoryEditor({
       >
         <div className="flex h-15 items-center justify-between border-b px-2">
           <div className="size-11"></div>
-          <h2 className="list-title text-primary-800">
-            {t('Pages.Media.CategoryEditor-title', '編輯追蹤類別')}
-          </h2>
+          <h2 className="list-title text-primary-800">編輯追蹤類別</h2>
           <div className="cursor-pointer" onClick={onClose}>
             <Icon size="2xl" iconName="icon-modal-close" />
           </div>
@@ -50,7 +46,7 @@ export default function CategoryEditor({
         <div className="flex flex-col justify-between gap-10 px-6 py-5">
           <div className="px-3">
             <div className="subtitle-1 text-center text-primary-500">
-              {t('Pages.Media.CategoryEditor-hint', '請選擇您想追蹤的新聞類別')}
+              請選擇您想追蹤的新聞類別
             </div>
             <div className="mt-5 flex flex-wrap justify-center gap-3">
               {allCategories.map((category) => {
@@ -60,7 +56,7 @@ export default function CategoryEditor({
                     key={category.id}
                     size="md-100"
                     color="lightbox"
-                    text={t(`Others.categories.${category.slug}`, '')}
+                    text={category.title ?? ''}
                     activeState={{
                       isActive: isSelecting,
                     }}
@@ -84,11 +80,7 @@ export default function CategoryEditor({
           <Button
             size="lg"
             color="primary"
-            text={
-              selectingCategories.length === 0
-                ? t('Pages.Media.CategoryEditor-at-least-one', '至少要選1個')
-                : t('Pages.Media.CategoryEditor-save', '儲存')
-            }
+            text={selectingCategories.length === 0 ? '至少要選1個' : '儲存'}
             disabled={selectingCategories.length === 0}
             onClick={() => {
               onFinish(selectingCategories)

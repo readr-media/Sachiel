@@ -1,10 +1,7 @@
-'use client'
-
 import Link from 'next/link'
 
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type MongoDBResponse } from '@/utils/data-schema'
 
 import { type LatestAction } from './feed'
@@ -16,7 +13,6 @@ export default function FeedLatestAction({
   actions: LatestAction
   storyType: MongoDBResponse['stories'][number]['story_type']
 }) {
-  const { t } = useCustomTranslation()
   const { picksNum, commentsNum, picksData, commentsData } = actions
   const maxNameBytes = 9
   if (picksNum === 0) {
@@ -38,10 +34,7 @@ export default function FeedLatestAction({
                 )}
               </Link>
             </span>
-            {t(
-              'Pages.Social.FeedLatestAction-single-comment',
-              '在這篇文章留言'
-            )}
+            在這篇文章留言
           </div>
         </div>
       )
@@ -72,7 +65,7 @@ export default function FeedLatestAction({
             </span>
             {commentsData[1] ? (
               <div>
-                {t('Pages.Social.FeedLatestAction-two-comments-1', '及')}
+                及
                 <span className="text-primary-700">
                   <Link
                     href={`profile/member/${commentsData[1].member.customId}`}
@@ -86,10 +79,7 @@ export default function FeedLatestAction({
                 </span>
               </div>
             ) : null}
-            {t(
-              'Pages.Social.FeedLatestAction-two-comments-2',
-              '在這篇文章留言'
-            )}
+            在這篇文章留言
           </div>
         </div>
       )
@@ -111,12 +101,9 @@ export default function FeedLatestAction({
                 )}
               </Link>
             </span>
-            {t('Pages.Social.FeedLatestAction-three-comments-1', '及其他')}
+            及其他
             <span className="px-1 text-primary-700">{commentsNum - 1}</span>
-            {t(
-              'Pages.Social.FeedLatestAction-three-comments-2',
-              '人在這篇文章留言'
-            )}
+            人在這篇文章留言
           </div>
         </div>
       )
@@ -134,12 +121,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {storyType === 'story'
-            ? t('Pages.Social.FeedLatestAction-single-pick-story', '精選了這篇')
-            : t(
-                'Pages.Social.FeedLatestAction-single-pick-podcast',
-                '精選了這集 Podcast'
-              )}
+          {storyType === 'story' ? '精選了這篇' : '精選了這集 Podcast'}
         </div>
       </div>
     )
@@ -165,7 +147,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {t('Pages.Social.FeedLatestAction-two-picks-1', '及')}
+          及
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[1].member.customId}`}
@@ -174,15 +156,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {storyType === 'story'
-            ? t(
-                'Pages.Social.FeedLatestAction-two-picks-2-story',
-                '精選了這篇文章'
-              )
-            : t(
-                'Pages.Social.FeedLatestAction-two-picks-2-podcast',
-                '精選了這集 Podcast'
-              )}
+          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
         </div>
       </div>
     )
@@ -201,17 +175,9 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {t('Pages.Social.FeedLatestAction-three-picks-1', '及其他')}
+          及其他
           <span className="px-1 text-primary-700">{picksNum - 1}</span>人
-          {storyType === 'story'
-            ? t(
-                'Pages.Social.FeedLatestAction-three-picks-2-story',
-                '精選了這篇文章'
-              )
-            : t(
-                'Pages.Social.FeedLatestAction-three-picks-2-podcast',
-                '精選了這集 Podcast'
-              )}
+          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
         </div>
       </div>
     )
