@@ -4,8 +4,9 @@ import { useState } from 'react'
 
 import { type SearchResults } from '@/utils/data-schema'
 
+import CollectionSearchResult from './collection-search-result'
 import MemberAndPublisher from './member-and-publisher'
-import StoryAndCollection from './story-and-collection'
+import StorySearchResult from './story-search-result'
 
 type filterType = {
   id: 'story' | 'collection' | 'member-publisher'
@@ -60,9 +61,10 @@ export default function SearchFilter({
       </div>
       <section className="px-5 xl:px-10">
         {activeFilter === 'story' ? (
-          <StoryAndCollection
+          <StorySearchResult query={query} storyResult={results.story} />
+        ) : activeFilter === 'collection' ? (
+          <CollectionSearchResult
             query={query}
-            storyResult={results.story}
             collectionResult={results.collection}
           />
         ) : (
