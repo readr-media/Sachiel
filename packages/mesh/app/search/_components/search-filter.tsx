@@ -8,13 +8,17 @@ import MemberAndPublisher from './member-and-publisher'
 import StoryAndCollection from './story-and-collection'
 
 type filterType = {
-  id: 'story-collection' | 'member-publisher'
+  id: 'story' | 'collection' | 'member-publisher'
   name: string
 }
 const filters: filterType[] = [
   {
-    id: 'story-collection',
+    id: 'story',
     name: '新聞',
+  },
+  {
+    id: 'collection',
+    name: '集錦',
   },
   {
     id: 'member-publisher',
@@ -55,7 +59,7 @@ export default function SearchFilter({
         ))}
       </div>
       <section className="px-5 xl:px-10">
-        {activeFilter === 'story-collection' ? (
+        {activeFilter === 'story' ? (
           <StoryAndCollection
             query={query}
             storyResult={results.story}
