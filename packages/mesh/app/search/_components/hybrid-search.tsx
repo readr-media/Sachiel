@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 
 import {
-  searchWithHybrid,
+  type AnswerResponse,
   type HybridSearchResponse,
+  getAnswer,
+  searchWithHybrid,
 } from '@/app/actions/hybrid-search'
 import { useUser } from '@/context/user'
 
@@ -22,12 +24,23 @@ export default function HybridSearch({
   const [error, setError] = useState<string | null>(null)
   const [results, setResults] = useState<HybridSearchResponse | null>(null)
 
+  // Answer 相關狀態
+  const [answer, setAnswer] = useState<AnswerResponse | null>(null)
+  const [isLoadingAnswer, setIsLoadingAnswer] = useState(false)
+  const [answerError, setAnswerError] = useState<string | null>(null)
+  const [showAnswer, setShowAnswer] = useState(false)
+
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) return
 
     try {
       setIsLoading(true)
       setError(null)
+      // 清空之前的答案
+      setAnswer(null)
+      setAnswerError(null)
+      setShowAnswer(false)
+
       console.log('🔍 [HybridSearch] Performing search for:', searchQuery)
 
       const response = await searchWithHybrid(searchQuery, user?.memberId, {
@@ -55,6 +68,39 @@ export default function HybridSearch({
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const fetchAnswer = async (questionId: string) => {
+    try {
+      setIsLoadingAnswer(true)
+      setAnswerError(null)
+      console.log('🤖 [HybridSearch] Fetching answer for question:', questionId)
+
+      const response = await getAnswer(questionId)
+
+      if (response) {
+        console.log('📝 [HybridSearch] Answer received:', response)
+        setAnswer(response)
+        setShowAnswer(true)
+      } else {
+        setAnswerError('無法獲取答案')
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to get answer'
+      console.error('❌ [HybridSearch] Answer error:', err)
+      setAnswerError(errorMessage)
+    } finally {
+      setIsLoadingAnswer(false)
+    }
+  }
+
+  // 處理答案中的引用連結
+  const processAnswerText = (text: string) => {
+    return text.replace(
+      /\[\[(\d+)\]\]\((.*?)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors">[$1]</a>'
+    )
   }
 
   useEffect(() => {
@@ -105,11 +151,105 @@ export default function HybridSearch({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* AI 答案區塊 */}
+      {results?.data.question_id && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-900">
+              <span className="rounded bg-blue-600 px-2 py-1 text-xs text-white">
+                AI
+              </span>
+              智能答案
+            </h3>
+            {!showAnswer && (
+              <button
+                onClick={() => fetchAnswer(results.data.question_id)}
+                disabled={isLoadingAnswer}
+                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                {isLoadingAnswer ? '生成中...' : '獲取 AI 答案'}
+              </button>
+            )}
+          </div>
+
+          {isLoadingAnswer && (
+            <div className="flex items-center gap-2 text-blue-700">
+              <div className="size-4 animate-spin rounded-full border-2 border-blue-300 border-t-blue-700"></div>
+              <span>AI 正在分析搜尋結果...</span>
+            </div>
+          )}
+
+          {answerError && (
+            <div className="text-red-600">
+              <p>答案生成失敗：{answerError}</p>
+              <button
+                onClick={() => fetchAnswer(results.data.question_id)}
+                className="mt-2 rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+              >
+                重試
+              </button>
+            </div>
+          )}
+
+          {showAnswer && answer && (
+            <div className="space-y-4">
+              {/* 答案內容 */}
+              <div
+                className="prose prose-sm text-gray-800"
+                dangerouslySetInnerHTML={{
+                  __html: processAnswerText(answer.data.answer),
+                }}
+              />
+
+              {/* 來源文章 */}
+              {answer.data.sources.length > 0 && (
+                <div>
+                  <h4 className="mb-2 text-sm font-semibold text-blue-900">
+                    來源文章
+                  </h4>
+                  <div className="grid gap-2">
+                    {answer.data.sources.slice(0, 3).map((source, index) => (
+                      <a
+                        key={source.product_id}
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex gap-3 rounded border bg-white p-3 hover:shadow-sm"
+                      >
+                        {source.cover_image && (
+                          <img
+                            src={source.cover_image}
+                            alt={source.title}
+                            className="h-12 w-16 rounded object-cover"
+                          />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <h5 className="truncate text-sm font-medium text-gray-900">
+                            [{index + 1}] {source.title}
+                          </h5>
+                          <p className="text-xs text-gray-500">
+                            {new Date(source.published_at).toLocaleDateString(
+                              'zh-TW'
+                            )}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 搜尋結果統計 */}
       <div className="text-sm text-gray-500">
         找到 {results.data.total} 筆結果，耗時 {results.data.took}ms
       </div>
 
+      {/* 搜尋結果列表 */}
       <div className="grid gap-4">
         {results.data.products.map((product) => (
           <div

@@ -47,6 +47,46 @@ export interface HybridSearchResponse {
   }
 }
 
+export interface AnswerSource {
+  cover_image: string
+  title: string
+  published_at: string
+  url: string
+  custom_attributes: Record<string, any>
+  product_id: string
+  date: string
+  child_title: string | null
+  child_id: string | null
+  boosted: boolean
+  snippet: string
+  highlight_text: string
+  _attribution_length: number
+  _attribution_length_percentage: number
+}
+
+export interface AnswerResponse {
+  message: string
+  data: {
+    question: string
+    question_id: string
+    parent_question_id: string | null
+    question_category: string | null
+    answer_stage: string
+    finished: boolean
+    finish_reason: string
+    blocked_reason: string
+    answer: string
+    sources: AnswerSource[]
+    related_resources: AnswerSource[]
+    followup_questions: any
+    affiliation_products: any
+    sovrn_aff: any
+    images: any
+    revision: number
+    metadata: Record<string, any>
+  }
+}
+
 export async function hybridSearch(
   params: HybridSearchRequest
 ): Promise<HybridSearchResponse | null> {
@@ -126,4 +166,43 @@ export async function searchWithHybrid(
   }
 
   return hybridSearch(defaultParams)
+}
+
+// Get Answer API
+export async function getAnswer(
+  questionId: string
+): Promise<AnswerResponse | null> {
+  try {
+    console.log('🤖 [Answer API] Making request for question_id:', questionId)
+
+    const url = new URL(
+      `https://api.askmiso.com/v1/ask/questions/${questionId}/answer`
+    )
+    url.searchParams.set('api_key', MISO_API_KEY)
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-cache',
+    })
+
+    if (!response.ok) {
+      console.error(
+        '❌ [Answer API] HTTP error:',
+        response.status,
+        response.statusText
+      )
+      return null
+    }
+
+    const data = await response.json()
+    console.log('📝 [Answer API] Response received:', data)
+
+    return data
+  } catch (error) {
+    console.error('❌ [Answer API] Request failed:', error)
+    return null
+  }
 }
