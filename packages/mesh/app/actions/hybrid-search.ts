@@ -168,9 +168,13 @@ export async function searchWithHybrid(
   return hybridSearch(defaultParams)
 }
 
-// Get Answer API
-export async function getAnswer(
-  questionId: string
+// 新增回調類型
+export type AnswerProgressCallback = (partialAnswer: AnswerResponse) => void
+
+// Get Answer API with Progress
+export async function getAnswerWithProgress(
+  questionId: string,
+  onProgress?: AnswerProgressCallback
 ): Promise<AnswerResponse | null> {
   try {
     console.log('🤖 [Answer API] Making request for question_id:', questionId)
@@ -180,29 +184,71 @@ export async function getAnswer(
     )
     url.searchParams.set('api_key', MISO_API_KEY)
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-cache',
-    })
+    const maxRetries = 120 // 最多輪詢 120 次（60秒）
+    const pollInterval = 500 // 每 0.5 秒輪詢一次
+    let attempts = 0
 
-    if (!response.ok) {
-      console.error(
-        '❌ [Answer API] HTTP error:',
-        response.status,
-        response.statusText
+    while (attempts < maxRetries) {
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+      })
+
+      if (!response.ok) {
+        console.error(
+          '❌ [Answer API] HTTP error:',
+          response.status,
+          response.statusText
+        )
+        return null
+      }
+
+      const data = await response.json()
+      console.log(
+        `📝 [Answer API] Attempt ${attempts + 1}, finished: ${
+          data.data.finished
+        }, answer_stage: ${data.data.answer_stage}`
       )
-      return null
+
+      // 每次都回調，讓 UI 可以即時更新
+      if (onProgress && data.data.answer) {
+        onProgress(data)
+      }
+
+      // 如果完成了，直接返回
+      if (data.data.finished) {
+        console.log('✅ [Answer API] Answer completed:', data)
+        return data
+      }
+
+      attempts++
+
+      // 如果還沒完成且未達到最大重試次數，等待後繼續
+      if (attempts < maxRetries) {
+        console.log(
+          `⏳ [Answer API] Waiting ${pollInterval}ms before next attempt...`
+        )
+        await new Promise((resolve) => setTimeout(resolve, pollInterval))
+      }
     }
 
-    const data = await response.json()
-    console.log('📝 [Answer API] Response received:', data)
-
-    return data
+    // 超過最大重試次數，返回 null 或最後的結果
+    console.warn(
+      '⚠️ [Answer API] Max retries reached, answer may not be complete'
+    )
+    return null
   } catch (error) {
     console.error('❌ [Answer API] Request failed:', error)
     return null
   }
+}
+
+// 原始的 getAnswer 函數（向後兼容）
+export async function getAnswer(
+  questionId: string
+): Promise<AnswerResponse | null> {
+  return getAnswerWithProgress(questionId)
 }

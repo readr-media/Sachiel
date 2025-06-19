@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   type AnswerResponse,
@@ -23,6 +23,7 @@ export default function HybridSearch({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [results, setResults] = useState<HybridSearchResponse | null>(null)
+  const [currentQuery, setCurrentQuery] = useState<string>('')
 
   // Answer 相關狀態
   const [answer, setAnswer] = useState<AnswerResponse | null>(null)
@@ -30,16 +31,34 @@ export default function HybridSearch({
   const [answerError, setAnswerError] = useState<string | null>(null)
   const [showAnswer, setShowAnswer] = useState(false)
 
+  // 打字機效果狀態
+  const [displayedText, setDisplayedText] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const hasSearch = useRef(false)
+
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) return
 
+    // 防止重複調用相同查詢
+    if (isLoading || searchQuery === currentQuery) {
+      console.log(
+        '🚫 [HybridSearch] Skipping duplicate search for:',
+        searchQuery
+      )
+      return
+    }
+
     try {
+      setCurrentQuery(searchQuery)
       setIsLoading(true)
       setError(null)
       // 清空之前的答案
       setAnswer(null)
       setAnswerError(null)
       setShowAnswer(false)
+      setDisplayedText('')
+      setIsTyping(false)
+      previousAnswerRef.current = ''
 
       console.log('🔍 [HybridSearch] Performing search for:', searchQuery)
 
@@ -55,6 +74,15 @@ export default function HybridSearch({
 
       if (onResultsChange) {
         onResultsChange(response)
+      }
+
+      // 自動獲取 AI 答案
+      if (response?.data.question_id) {
+        console.log(
+          '🤖 [HybridSearch] Auto-fetching answer for question:',
+          response.data.question_id
+        )
+        fetchAnswer(response.data.question_id)
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Search failed'
@@ -74,16 +102,50 @@ export default function HybridSearch({
     try {
       setIsLoadingAnswer(true)
       setAnswerError(null)
+      setDisplayedText('')
+      setIsTyping(false)
+      previousAnswerRef.current = ''
       console.log('🤖 [HybridSearch] Fetching answer for question:', questionId)
 
-      const response = await getAnswer(questionId)
+      // 客戶端輪詢機制
+      const maxRetries = 120 // 最多輪詢 120 次（60秒）
+      const pollInterval = 500 // 每 0.5 秒輪詢一次
+      let attempts = 0
 
-      if (response) {
-        console.log('📝 [HybridSearch] Answer received:', response)
-        setAnswer(response)
-        setShowAnswer(true)
-      } else {
-        setAnswerError('無法獲取答案')
+      while (attempts < maxRetries) {
+        const response = await getAnswer(questionId)
+
+        if (response) {
+          console.log(
+            `📝 [HybridSearch] Attempt ${attempts + 1}, finished: ${
+              response.data.finished
+            }, stage: ${response.data.answer_stage}`
+          )
+
+          // 每次都更新答案內容（觸發打字機效果）
+          setAnswer(response)
+          setShowAnswer(true)
+
+          // 如果完成了，退出迴圈
+          if (response.data.finished) {
+            console.log('✅ [HybridSearch] Answer completed!')
+            break
+          }
+        } else {
+          console.warn('⚠️ [HybridSearch] No response received')
+        }
+
+        attempts++
+
+        // 如果還沒完成且未達到最大重試次數，等待後繼續
+        if (attempts < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, pollInterval))
+        }
+      }
+
+      if (attempts >= maxRetries) {
+        console.warn('⚠️ [HybridSearch] Max retries reached')
+        setAnswerError('答案生成超時，請重試')
       }
     } catch (err) {
       const errorMessage =
@@ -103,12 +165,120 @@ export default function HybridSearch({
     )
   }
 
+  // 打字機效果邏輯
+  const previousAnswerRef = useRef<string>('')
+
   useEffect(() => {
-    if (query) {
+    if (!answer?.data.answer) {
+      setDisplayedText('')
+      return
+    }
+
+    const fullText = processAnswerText(answer.data.answer)
+
+    // 如果內容沒變，不需要重新打字
+    if (fullText === previousAnswerRef.current) return
+
+    // 檢查是否是內容擴展
+    const isExtension =
+      fullText.startsWith(previousAnswerRef.current.replace(/<[^>]*>/g, '')) ||
+      previousAnswerRef.current === ''
+
+    if (isExtension) {
+      setIsTyping(true)
+
+      // 提取純文字來計算要打字的內容
+      const plainText = fullText.replace(/<[^>]*>/g, '')
+      const currentPlainText = displayedText.replace(/<[^>]*>/g, '')
+
+      if (plainText.length > currentPlainText.length) {
+        let index = currentPlainText.length
+        const typingSpeed = 30 // 每字符間隔 30ms
+
+        const typeNext = () => {
+          if (index < plainText.length) {
+            // 找到下一個要顯示的 HTML 位置
+            let htmlIndex = 0
+            let plainIndex = 0
+
+            for (let i = 0; i < fullText.length; i++) {
+              if (fullText[i] === '<') {
+                // 跳過整個標籤
+                while (i < fullText.length && fullText[i] !== '>') i++
+                htmlIndex = i + 1
+              } else {
+                if (plainIndex === index) {
+                  htmlIndex = i + 1
+                  break
+                }
+                plainIndex++
+              }
+            }
+
+            setDisplayedText(fullText.substring(0, htmlIndex))
+            index++
+            setTimeout(typeNext, typingSpeed)
+          } else {
+            setIsTyping(false)
+            previousAnswerRef.current = fullText
+          }
+        }
+
+        typeNext()
+      } else {
+        setDisplayedText(fullText)
+        setIsTyping(false)
+        previousAnswerRef.current = fullText
+      }
+    } else {
+      // 全新內容，直接重新開始打字
+      setDisplayedText('')
+      setIsTyping(true)
+
+      const plainText = fullText.replace(/<[^>]*>/g, '')
+      let index = 0
+      const typingSpeed = 30
+
+      const typeNext = () => {
+        if (index < plainText.length) {
+          let htmlIndex = 0
+          let plainIndex = 0
+
+          for (let i = 0; i < fullText.length; i++) {
+            if (fullText[i] === '<') {
+              while (i < fullText.length && fullText[i] !== '>') i++
+              htmlIndex = i + 1
+            } else {
+              if (plainIndex === index) {
+                htmlIndex = i + 1
+                break
+              }
+              plainIndex++
+            }
+          }
+
+          setDisplayedText(fullText.substring(0, htmlIndex))
+          index++
+          setTimeout(typeNext, typingSpeed)
+        } else {
+          setIsTyping(false)
+          previousAnswerRef.current = fullText
+        }
+      }
+
+      typeNext()
+    }
+  }, [answer?.data.answer])
+
+  useEffect(() => {
+    if (hasSearch.current) return
+    console.count('search')
+    if (query && query !== currentQuery) {
       console.log('🔄 [HybridSearch] Query changed:', query)
       performSearch(query)
     }
-  }, [query, user?.memberId])
+    hasSearch.current = true
+  }, [currentQuery, query, user.memberId])
 
   if (error) {
     return (
@@ -162,15 +332,6 @@ export default function HybridSearch({
               </span>
               智能答案
             </h3>
-            {!showAnswer && (
-              <button
-                onClick={() => fetchAnswer(results.data.question_id)}
-                disabled={isLoadingAnswer}
-                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isLoadingAnswer ? '生成中...' : '獲取 AI 答案'}
-              </button>
-            )}
           </div>
 
           {isLoadingAnswer && (
@@ -192,15 +353,28 @@ export default function HybridSearch({
             </div>
           )}
 
-          {showAnswer && answer && (
+          {answer && (
             <div className="space-y-4">
               {/* 答案內容 */}
-              <div
-                className="prose prose-sm text-gray-800"
-                dangerouslySetInnerHTML={{
-                  __html: processAnswerText(answer.data.answer),
-                }}
-              />
+              <div className="prose prose-sm text-gray-800">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: displayedText,
+                  }}
+                />
+                {/* 打字機游標 */}
+                {isTyping && (
+                  <span className="ml-1 inline-block h-4 w-0.5 animate-pulse bg-blue-600"></span>
+                )}
+              </div>
+
+              {/* 顯示答案生成階段 */}
+              {!answer.data.finished && (
+                <div className="flex items-center gap-2 text-sm text-blue-600">
+                  <div className="size-3 animate-spin rounded-full border border-blue-300 border-t-blue-600"></div>
+                  <span>{answer.data.answer_stage}...</span>
+                </div>
+              )}
 
               {/* 來源文章 */}
               {answer.data.sources.length > 0 && (
