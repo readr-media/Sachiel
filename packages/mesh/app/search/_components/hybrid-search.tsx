@@ -2,13 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import {
-  type AnswerResponse,
-  type HybridSearchResponse,
-  getAnswer,
-  searchWithHybrid,
-} from '@/app/actions/hybrid-search'
+import { getAnswer, searchWithHybrid } from '@/app/actions/hybrid-search'
 import { useUser } from '@/context/user'
+import type { AnswerResponse, HybridSearchResponse } from '@/types/miso'
 
 interface HybridSearchProps {
   query?: string
@@ -29,7 +25,6 @@ export default function HybridSearch({
   const [answer, setAnswer] = useState<AnswerResponse | null>(null)
   const [isLoadingAnswer, setIsLoadingAnswer] = useState(false)
   const [answerError, setAnswerError] = useState<string | null>(null)
-  const [showAnswer, setShowAnswer] = useState(false)
 
   // 打字機效果狀態
   const [displayedText, setDisplayedText] = useState('')
@@ -55,13 +50,9 @@ export default function HybridSearch({
       // 清空之前的答案
       setAnswer(null)
       setAnswerError(null)
-      setShowAnswer(false)
       setDisplayedText('')
       setIsTyping(false)
       previousAnswerRef.current = ''
-
-      console.log('🔍 [HybridSearch] Performing search for:', searchQuery)
-
       const response = await searchWithHybrid(searchQuery, user?.memberId, {
         // 可以根據需求調整參數
         rows: 20,
@@ -108,7 +99,7 @@ export default function HybridSearch({
       console.log('🤖 [HybridSearch] Fetching answer for question:', questionId)
 
       // 客戶端輪詢機制
-      const maxRetries = 120 // 最多輪詢 120 次（60秒）
+      const maxRetries = 10 // 最多輪詢 120 次（60秒）
       const pollInterval = 500 // 每 0.5 秒輪詢一次
       let attempts = 0
 
@@ -124,7 +115,6 @@ export default function HybridSearch({
 
           // 每次都更新答案內容（觸發打字機效果）
           setAnswer(response)
-          setShowAnswer(true)
 
           // 如果完成了，退出迴圈
           if (response.data.finished) {
@@ -403,9 +393,11 @@ export default function HybridSearch({
                             [{index + 1}] {source.title}
                           </h5>
                           <p className="text-xs text-gray-500">
-                            {new Date(source.published_at).toLocaleDateString(
-                              'zh-TW'
-                            )}
+                            {source.published_at
+                              ? new Date(
+                                  source.published_at
+                                ).toLocaleDateString('zh-TW')
+                              : '日期未知'}
                           </p>
                         </div>
                       </a>
