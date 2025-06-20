@@ -52,7 +52,7 @@ let SITE_HOST = ''
 const SITE_TITLE = 'READr Mesh 讀選'
 const SITE_DESCRIPTION =
   '在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。'
-
+const MISO_API_BASE_URL = 'https://api.askmiso.com'
 switch (ENV) {
   case 'local':
     SITE_HOST = 'localhost:3000'
@@ -189,7 +189,11 @@ const STATIC_FILE_ENDPOINTS = {
 
 const SITE_URL = `https://${SITE_HOST}`
 const SITE_OG_IMAGE = `${SITE_URL}/images/default-og-img.png`
-
+const MISO_ENDPOINTS = {
+  hybridSearch: `${MISO_API_BASE_URL}/v1/ask/search`,
+  getAnswerWithProgress: (questionId: string) =>
+    `${MISO_API_BASE_URL}/v1/ask/questions/${questionId}/answer`,
+}
 export {
   ADSENSE_CLIENT,
   ALCHEMY_ADDRESS,
@@ -203,6 +207,7 @@ export {
   GQL_ENDPOINT,
   GTM_ID,
   MISO_API_KEY,
+  MISO_ENDPOINTS,
   NEXT_PAGES_REVALIDATE,
   NEXT_PUBLIC_MEDIA_BACKSTAGE_EXCHANGE_FEE_RATE,
   NEXT_PUBLIC_MEDIA_BACKSTAGE_MINIMUM_EXCHANGE_AMOUNT,

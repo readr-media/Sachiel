@@ -1,12 +1,8 @@
 'use client'
-import { notFound } from 'next/navigation'
 
-import { search } from '@/app/actions/search'
+import type { HybridSearchResponse } from '@/types/miso'
 
-import SearchFilter from '../_components/search-filter'
 import HybridSearch from '../_components/hybrid-search'
-import { useState } from 'react'
-import { HybridSearchResponse } from '@/app/actions/hybrid-search'
 
 export default function SearchResultPage({
   params,
@@ -15,15 +11,11 @@ export default function SearchResultPage({
 }) {
   const { query } = params
   const decodedQuery = decodeURIComponent(query)
-  const [searchResults, setSearchResults] =
-    useState<HybridSearchResponse | null>(null)
-  const handleResultsChange = (results: HybridSearchResponse | null) => {
-    setSearchResults(results)
-    console.log('📊 [SearchPage] Results updated:', results)
+  const handleResultsChange = (_results: HybridSearchResponse | null) => {
+    // Handle results update if needed
   }
   return (
     <main>
-      {/* <SearchFilter query={decodedQuery} results={results} /> */}
       <HybridSearch
         query={decodedQuery}
         onResultsChange={handleResultsChange}
