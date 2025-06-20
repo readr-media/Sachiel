@@ -1,99 +1,19 @@
 'use server'
 
-import { MISO_API_KEY } from '@/constants/config'
-
-export interface HybridSearchRequest {
-  anonymous_id: string
-  user_id?: string
-  q: string
-  fq?: string
-  facets?: string[]
-  snippet_max_chars?: number
-  fl?: string[]
-  exclude?: string[]
-  rows?: number
-  order_by?: string
-  answer?: boolean
-  source_fl?: string[]
-  cite_link?: number
-  cite_start?: string
-  cite_end?: string
-}
-
-export interface HybridSearchProduct {
-  product_id: string
-  cover_image?: string
-  title: string
-  published_at?: string
-  url?: string
-  custom_attributes?: Record<string, any>
-  authors?: string[] | string
-  snippet?: string
-  _title_with_markups?: string
-  _missing_keywords?: string[]
-}
-
-export interface HybridSearchResponse {
-  message: string
-  data: {
-    miso_id: string
-    question_id: string
-    took: number
-    total: number
-    products: HybridSearchProduct[]
-    facet_counts?: {
-      facet_fields?: Record<string, Array<[string, number]>>
-    }
-  }
-}
-
-export interface AnswerSource {
-  cover_image: string
-  title: string
-  published_at: string
-  url: string
-  custom_attributes: Record<string, any>
-  product_id: string
-  date: string
-  child_title: string | null
-  child_id: string | null
-  boosted: boolean
-  snippet: string
-  highlight_text: string
-  _attribution_length: number
-  _attribution_length_percentage: number
-}
-
-export interface AnswerResponse {
-  message: string
-  data: {
-    question: string
-    question_id: string
-    parent_question_id: string | null
-    question_category: string | null
-    answer_stage: string
-    finished: boolean
-    finish_reason: string
-    blocked_reason: string
-    answer: string
-    sources: AnswerSource[]
-    related_resources: AnswerSource[]
-    followup_questions: any
-    affiliation_products: any
-    sovrn_aff: any
-    images: any
-    revision: number
-    metadata: Record<string, any>
-  }
-}
+import { MISO_API_KEY, MISO_ENDPOINTS } from '@/constants/config'
+import type {
+  AnswerResponse,
+  HybridSearchRequest,
+  HybridSearchResponse,
+} from '@/types/miso'
+import { AnswerResponseSchema, HybridSearchResponseSchema } from '@/types/miso'
+import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 export async function hybridSearch(
   params: HybridSearchRequest
 ): Promise<HybridSearchResponse | null> {
   try {
-    console.log('🔍 [HybridSearch API] Making request with params:', params)
-
-    const url = new URL('https://api.askmiso.com/v1/ask/search')
+    const url = new URL(MISO_ENDPOINTS.hybridSearch)
     url.searchParams.set('api_key', MISO_API_KEY)
 
     const response = await fetch(url.toString(), {
@@ -114,12 +34,24 @@ export async function hybridSearch(
       return null
     }
 
-    const data = await response.json()
-    console.log('📊 [HybridSearch API] Response received:', data)
+    const rawData = await response.json()
 
-    return data
+    const parseResult = HybridSearchResponseSchema.safeParse(rawData)
+
+    if (!parseResult.success) {
+      console.error(
+        '❌ [HybridSearch API] Response validation failed:',
+        parseResult.error.format()
+      )
+      return null
+    }
+
+    return parseResult.data
   } catch (error) {
-    console.error('❌ [HybridSearch API] Request failed:', error)
+    const traceObject = getLogTraceObjectFromHeaders()
+    const fallbackErrorMessage =
+      'Miso hybridSearch failed, info: ' + JSON.stringify({ params })
+    logServerSideError(error, fallbackErrorMessage, traceObject)
     return null
   }
 }
@@ -179,12 +111,10 @@ export async function getAnswerWithProgress(
   try {
     console.log('🤖 [Answer API] Making request for question_id:', questionId)
 
-    const url = new URL(
-      `https://api.askmiso.com/v1/ask/questions/${questionId}/answer`
-    )
+    const url = new URL(MISO_ENDPOINTS.getAnswerWithProgress(questionId))
     url.searchParams.set('api_key', MISO_API_KEY)
 
-    const maxRetries = 120 // 最多輪詢 120 次（60秒）
+    const maxRetries = 10 // 最多輪詢 120 次（60秒）
     const pollInterval = 500 // 每 0.5 秒輪詢一次
     let attempts = 0
 
@@ -206,7 +136,26 @@ export async function getAnswerWithProgress(
         return null
       }
 
-      const data = await response.json()
+      const rawData = await response.json()
+
+      // 使用 Zod schema 驗證回應資料
+      const parseResult = AnswerResponseSchema.safeParse(rawData)
+
+      if (!parseResult.success) {
+        console.error(
+          `❌ [Answer API] Response validation failed at attempt ${
+            attempts + 1
+          }:`,
+          parseResult.error.format()
+        )
+        attempts++
+        if (attempts < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, pollInterval))
+        }
+        continue
+      }
+
+      const data = parseResult.data
       console.log(
         `📝 [Answer API] Attempt ${attempts + 1}, finished: ${
           data.data.finished
