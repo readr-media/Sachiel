@@ -5,14 +5,14 @@ export type HybridSearchRequest = {
   user_id?: string
   q: string
   fq?: string
-  facets?: string[]
+  facets?: readonly string[]
   snippet_max_chars?: number
-  fl?: string[]
-  exclude?: string[]
+  fl?: readonly string[]
+  exclude?: readonly string[]
   rows?: number
   order_by?: string
   answer?: boolean
-  source_fl?: string[]
+  source_fl?: readonly string[]
   cite_link?: number
   cite_start?: string
   cite_end?: string

@@ -1,6 +1,7 @@
 'use server'
 
 import { MISO_API_KEY, MISO_ENDPOINTS } from '@/constants/config'
+import { MISO_FIELDS, MISO_SEARCH_DEFAULTS } from '@/constants/miso'
 import type {
   AnswerResponse,
   HybridSearchRequest,
@@ -56,7 +57,7 @@ export async function hybridSearch(
   }
 }
 
-// 便利函數：基本搜尋
+// 基本搜尋
 export async function searchWithHybrid(
   query: string,
   userId?: string,
@@ -65,31 +66,14 @@ export async function searchWithHybrid(
   const defaultParams: HybridSearchRequest = {
     anonymous_id: `anon_${Date.now()}`,
     q: query,
-    rows: 20,
-    fl: [
-      'product_id',
-      'cover_image',
-      'url',
-      'published_at',
-      'title',
-      'authors',
-      'custom_attributes.*',
-    ],
-    snippet_max_chars: 200,
+    rows: options.rows,
+    fl: MISO_FIELDS.SEARCH_FL,
+    snippet_max_chars: MISO_SEARCH_DEFAULTS.SNIPPET_MAX_CHARS,
     answer: true,
-    source_fl: [
-      'cover_image',
-      'url',
-      'created_at',
-      'updated_at',
-      'published_at',
-      'title',
-      'authors',
-      'custom_attributes.*',
-    ],
-    cite_link: 1,
-    cite_start: '[',
-    cite_end: ']',
+    source_fl: MISO_FIELDS.SOURCE_FL,
+    cite_link: MISO_SEARCH_DEFAULTS.CITE_LINK,
+    cite_start: MISO_SEARCH_DEFAULTS.CITE_START,
+    cite_end: MISO_SEARCH_DEFAULTS.CITE_END,
     ...options,
   }
 
@@ -100,22 +84,16 @@ export async function searchWithHybrid(
   return hybridSearch(defaultParams)
 }
 
-// 新增回調類型
-export type AnswerProgressCallback = (partialAnswer: AnswerResponse) => void
-
 // Get Answer API with Progress
 export async function getAnswerWithProgress(
-  questionId: string,
-  onProgress?: AnswerProgressCallback
+  questionId: string
 ): Promise<AnswerResponse | null> {
   try {
-    console.log('🤖 [Answer API] Making request for question_id:', questionId)
-
     const url = new URL(MISO_ENDPOINTS.getAnswerWithProgress(questionId))
     url.searchParams.set('api_key', MISO_API_KEY)
 
-    const maxRetries = 10 // 最多輪詢 120 次（60秒）
-    const pollInterval = 500 // 每 0.5 秒輪詢一次
+    const maxRetries = MISO_SEARCH_DEFAULTS.MAX_RETRIES
+    const pollInterval = MISO_SEARCH_DEFAULTS.POLL_INTERVAL_MS
     let attempts = 0
 
     while (attempts < maxRetries) {
@@ -138,7 +116,7 @@ export async function getAnswerWithProgress(
 
       const rawData = await response.json()
 
-      // 使用 Zod schema 驗證回應資料
+      // 使用 Zod schema 驗證response data
       const parseResult = AnswerResponseSchema.safeParse(rawData)
 
       if (!parseResult.success) {
@@ -156,20 +134,10 @@ export async function getAnswerWithProgress(
       }
 
       const data = parseResult.data
-      console.log(
-        `📝 [Answer API] Attempt ${attempts + 1}, finished: ${
-          data.data.finished
-        }, answer_stage: ${data.data.answer_stage}`
-      )
 
-      // 每次都回調，讓 UI 可以即時更新
-      if (onProgress && data.data.answer) {
-        onProgress(data)
-      }
-
-      // 如果完成了，直接返回
+      // 如果完成了，直接return
       if (data.data.finished) {
-        console.log('✅ [Answer API] Answer completed:', data)
+        console.log({ data })
         return data
       }
 
@@ -177,9 +145,6 @@ export async function getAnswerWithProgress(
 
       // 如果還沒完成且未達到最大重試次數，等待後繼續
       if (attempts < maxRetries) {
-        console.log(
-          `⏳ [Answer API] Waiting ${pollInterval}ms before next attempt...`
-        )
         await new Promise((resolve) => setTimeout(resolve, pollInterval))
       }
     }
@@ -193,11 +158,4 @@ export async function getAnswerWithProgress(
     console.error('❌ [Answer API] Request failed:', error)
     return null
   }
-}
-
-// 原始的 getAnswer 函數（向後兼容）
-export async function getAnswer(
-  questionId: string
-): Promise<AnswerResponse | null> {
-  return getAnswerWithProgress(questionId)
 }

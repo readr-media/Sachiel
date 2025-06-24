@@ -2,263 +2,59 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { getAnswer, searchWithHybrid } from '@/app/actions/hybrid-search'
-import { useUser } from '@/context/user'
-import type { AnswerResponse, HybridSearchResponse } from '@/types/miso'
+import Icon from '@/components/icon'
+import useHybridSearchWithAnswer from '@/hooks/use-hybrid-search-with-answer'
+import { displayTimeFromNow } from '@/utils/story-display'
 
 interface HybridSearchProps {
   query?: string
-  onResultsChange?: (results: HybridSearchResponse | null) => void
 }
 
-export default function HybridSearch({
-  query,
-  onResultsChange,
-}: HybridSearchProps) {
-  const { user } = useUser()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<HybridSearchResponse | null>(null)
-  const [currentQuery, setCurrentQuery] = useState<string>('')
+const sortOptions = [
+  { value: 'relevance', label: '相關度' },
+  { value: 'date', label: '發布時間' },
+  { value: 'popularity', label: '熱門度' },
+]
 
-  // Answer 相關狀態
-  const [answer, setAnswer] = useState<AnswerResponse | null>(null)
-  const [isLoadingAnswer, setIsLoadingAnswer] = useState(false)
-  const [answerError, setAnswerError] = useState<string | null>(null)
+export default function HybridSearch({ query }: HybridSearchProps) {
+  const {
+    // hybridSearch狀態
+    isLoading: isHybridSearchLoading,
+    error: hybridSearchError,
+    results: hybridSearchResults,
+    currentQuery,
+    // AI answer狀態
+    answer,
+    isLoadingAnswer,
+    answerError,
+    displayedText,
+    isTyping,
+    // 操作函數
+    performSearch,
+    retrySearch,
+    retryAnswer,
+  } = useHybridSearchWithAnswer()
 
-  // 打字機效果狀態
-  const [displayedText, setDisplayedText] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
   const hasSearch = useRef(false)
 
-  const performSearch = async (searchQuery: string) => {
-    if (!searchQuery.trim()) return
+  // 排序下拉選單狀態
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [selectedSort, setSelectedSort] = useState('relevance')
 
-    // 防止重複調用相同查詢
-    if (isLoading || searchQuery === currentQuery) {
-      console.log(
-        '🚫 [HybridSearch] Skipping duplicate search for:',
-        searchQuery
-      )
-      return
-    }
-
-    try {
-      setCurrentQuery(searchQuery)
-      setIsLoading(true)
-      setError(null)
-      // 清空之前的答案
-      setAnswer(null)
-      setAnswerError(null)
-      setDisplayedText('')
-      setIsTyping(false)
-      previousAnswerRef.current = ''
-      const response = await searchWithHybrid(searchQuery, user?.memberId, {
-        // 可以根據需求調整參數
-        rows: 20,
-        facets: ['custom_attributes.article:section'],
-        order_by: 'relevance',
-      })
-
-      console.log('📊 [HybridSearch] Search completed:', response)
-      setResults(response)
-
-      if (onResultsChange) {
-        onResultsChange(response)
-      }
-
-      // 自動獲取 AI 答案
-      if (response?.data.question_id) {
-        console.log(
-          '🤖 [HybridSearch] Auto-fetching answer for question:',
-          response.data.question_id
-        )
-        fetchAnswer(response.data.question_id)
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Search failed'
-      console.error('❌ [HybridSearch] Search error:', err)
-      setError(errorMessage)
-      setResults(null)
-
-      if (onResultsChange) {
-        onResultsChange(null)
-      }
-    } finally {
-      setIsLoading(false)
-    }
+  // 處理排序選擇
+  const handleSortChange = (sortValue: string) => {
+    setSelectedSort(sortValue)
+    setIsDropdownOpen(false)
+    // TODO: 重新執行搜尋with新的排序參數
   }
 
-  const fetchAnswer = async (questionId: string) => {
-    try {
-      setIsLoadingAnswer(true)
-      setAnswerError(null)
-      setDisplayedText('')
-      setIsTyping(false)
-      previousAnswerRef.current = ''
-      console.log('🤖 [HybridSearch] Fetching answer for question:', questionId)
-
-      // 客戶端輪詢機制
-      const maxRetries = 10 // 最多輪詢 120 次（60秒）
-      const pollInterval = 500 // 每 0.5 秒輪詢一次
-      let attempts = 0
-
-      while (attempts < maxRetries) {
-        const response = await getAnswer(questionId)
-
-        if (response) {
-          console.log(
-            `📝 [HybridSearch] Attempt ${attempts + 1}, finished: ${
-              response.data.finished
-            }, stage: ${response.data.answer_stage}`
-          )
-
-          // 每次都更新答案內容（觸發打字機效果）
-          setAnswer(response)
-
-          // 如果完成了，退出迴圈
-          if (response.data.finished) {
-            console.log('✅ [HybridSearch] Answer completed!')
-            break
-          }
-        } else {
-          console.warn('⚠️ [HybridSearch] No response received')
-        }
-
-        attempts++
-
-        // 如果還沒完成且未達到最大重試次數，等待後繼續
-        if (attempts < maxRetries) {
-          await new Promise((resolve) => setTimeout(resolve, pollInterval))
-        }
-      }
-
-      if (attempts >= maxRetries) {
-        console.warn('⚠️ [HybridSearch] Max retries reached')
-        setAnswerError('答案生成超時，請重試')
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to get answer'
-      console.error('❌ [HybridSearch] Answer error:', err)
-      setAnswerError(errorMessage)
-    } finally {
-      setIsLoadingAnswer(false)
-    }
-  }
-
-  // 處理答案中的引用連結
-  const processAnswerText = (text: string) => {
-    return text.replace(
-      /\[\[(\d+)\]\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors">[$1]</a>'
+  // 獲取當前選中的排序標籤
+  const getCurrentSortLabel = () => {
+    return (
+      sortOptions.find((option) => option.value === selectedSort)?.label ||
+      '相關度'
     )
   }
-
-  // 打字機效果邏輯
-  const previousAnswerRef = useRef<string>('')
-
-  useEffect(() => {
-    if (!answer?.data.answer) {
-      setDisplayedText('')
-      return
-    }
-
-    const fullText = processAnswerText(answer.data.answer)
-
-    // 如果內容沒變，不需要重新打字
-    if (fullText === previousAnswerRef.current) return
-
-    // 檢查是否是內容擴展
-    const isExtension =
-      fullText.startsWith(previousAnswerRef.current.replace(/<[^>]*>/g, '')) ||
-      previousAnswerRef.current === ''
-
-    if (isExtension) {
-      setIsTyping(true)
-
-      // 提取純文字來計算要打字的內容
-      const plainText = fullText.replace(/<[^>]*>/g, '')
-      const currentPlainText = displayedText.replace(/<[^>]*>/g, '')
-
-      if (plainText.length > currentPlainText.length) {
-        let index = currentPlainText.length
-        const typingSpeed = 30 // 每字符間隔 30ms
-
-        const typeNext = () => {
-          if (index < plainText.length) {
-            // 找到下一個要顯示的 HTML 位置
-            let htmlIndex = 0
-            let plainIndex = 0
-
-            for (let i = 0; i < fullText.length; i++) {
-              if (fullText[i] === '<') {
-                // 跳過整個標籤
-                while (i < fullText.length && fullText[i] !== '>') i++
-                htmlIndex = i + 1
-              } else {
-                if (plainIndex === index) {
-                  htmlIndex = i + 1
-                  break
-                }
-                plainIndex++
-              }
-            }
-
-            setDisplayedText(fullText.substring(0, htmlIndex))
-            index++
-            setTimeout(typeNext, typingSpeed)
-          } else {
-            setIsTyping(false)
-            previousAnswerRef.current = fullText
-          }
-        }
-
-        typeNext()
-      } else {
-        setDisplayedText(fullText)
-        setIsTyping(false)
-        previousAnswerRef.current = fullText
-      }
-    } else {
-      // 全新內容，直接重新開始打字
-      setDisplayedText('')
-      setIsTyping(true)
-
-      const plainText = fullText.replace(/<[^>]*>/g, '')
-      let index = 0
-      const typingSpeed = 30
-
-      const typeNext = () => {
-        if (index < plainText.length) {
-          let htmlIndex = 0
-          let plainIndex = 0
-
-          for (let i = 0; i < fullText.length; i++) {
-            if (fullText[i] === '<') {
-              while (i < fullText.length && fullText[i] !== '>') i++
-              htmlIndex = i + 1
-            } else {
-              if (plainIndex === index) {
-                htmlIndex = i + 1
-                break
-              }
-              plainIndex++
-            }
-          }
-
-          setDisplayedText(fullText.substring(0, htmlIndex))
-          index++
-          setTimeout(typeNext, typingSpeed)
-        } else {
-          setIsTyping(false)
-          previousAnswerRef.current = fullText
-        }
-      }
-
-      typeNext()
-    }
-  }, [answer?.data.answer])
 
   useEffect(() => {
     if (hasSearch.current) return
@@ -268,16 +64,16 @@ export default function HybridSearch({
       performSearch(query)
     }
     hasSearch.current = true
-  }, [currentQuery, query, user.memberId])
+  }, [currentQuery, query])
 
-  if (error) {
+  if (hybridSearchError) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <p className="text-red-500">搜尋發生錯誤</p>
-          <p className="text-sm text-gray-500">{error}</p>
+          <p className="text-sm text-gray-500">{hybridSearchError}</p>
           <button
-            onClick={() => query && performSearch(query)}
+            onClick={retrySearch}
             className="mt-2 rounded bg-primary-700 px-4 py-2 text-white hover:bg-primary-800"
           >
             重試
@@ -287,7 +83,7 @@ export default function HybridSearch({
     )
   }
 
-  if (isLoading) {
+  if (isHybridSearchLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
@@ -298,7 +94,7 @@ export default function HybridSearch({
     )
   }
 
-  if (!results || !results.data.products.length) {
+  if (!hybridSearchResults || !hybridSearchResults.data.products.length) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
@@ -311,17 +107,15 @@ export default function HybridSearch({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 px-5">
       {/* AI 答案區塊 */}
-      {results?.data.question_id && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-900">
-              <span className="rounded bg-blue-600 px-2 py-1 text-xs text-white">
-                AI
-              </span>
-              智能答案
+      {hybridSearchResults?.data.question_id && (
+        <div className="flex flex-col  border border-blue-200">
+          <div className="flex items-center justify-between">
+            <h3 className="list-title flex items-center text-primary-700">
+              <Icon iconName="icon-mesh-ai" size="xl" />由 READr Mesh AI 生成
             </h3>
+            <span className="body-3 text-primary-500">瞭解更多</span>
           </div>
 
           {isLoadingAnswer && (
@@ -335,7 +129,7 @@ export default function HybridSearch({
             <div className="text-red-600">
               <p>答案生成失敗：{answerError}</p>
               <button
-                onClick={() => fetchAnswer(results.data.question_id)}
+                onClick={retryAnswer}
                 className="mt-2 rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
               >
                 重試
@@ -348,6 +142,7 @@ export default function HybridSearch({
               {/* 答案內容 */}
               <div className="prose prose-sm text-gray-800">
                 <div
+                  className="body-1"
                   dangerouslySetInnerHTML={{
                     __html: displayedText,
                   }}
@@ -366,38 +161,35 @@ export default function HybridSearch({
                 </div>
               )}
 
-              {/* 來源文章 */}
+              {/* 回答資料來源 */}
               {answer.data.sources.length > 0 && (
                 <div>
-                  <h4 className="mb-2 text-sm font-semibold text-blue-900">
-                    來源文章
+                  <h4 className="caption-1 mb-2 text-primary-500">
+                    回答資料來源
                   </h4>
-                  <div className="grid gap-2">
+                  <div className="flex gap-2 overflow-x-auto">
                     {answer.data.sources.slice(0, 3).map((source, index) => (
                       <a
                         key={source.product_id}
                         href={source.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex gap-3 rounded border bg-white p-3 hover:shadow-sm"
+                        className="flex h-[114px] w-[280px] min-w-[280px] flex-col gap-3 rounded-md border-primary-200 bg-primary-100 px-4 py-3"
                       >
-                        {source.cover_image && (
-                          <img
-                            src={source.cover_image}
-                            alt={source.title}
-                            className="h-12 w-16 rounded object-cover"
-                          />
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <h5 className="truncate text-sm font-medium text-gray-900">
-                            [{index + 1}] {source.title}
-                          </h5>
-                          <p className="text-xs text-gray-500">
-                            {source.published_at
-                              ? new Date(
-                                  source.published_at
-                                ).toLocaleDateString('zh-TW')
-                              : '日期未知'}
+                        <div className="flex min-w-0 flex-1 flex-col gap-y-2">
+                          <p className="caption-1 flex size-5 flex-wrap items-center justify-center rounded-full bg-primary-200 text-primary-700">
+                            {index + 1}
+                          </p>
+                          <p className="subtitle-2 line-clamp-2 text-primary-700">
+                            {source.title}
+                          </p>
+                          <p className="caption-1 flex items-center text-primary-500">
+                            {source.custom_attributes?.['og:site_name'] ??
+                              '資料來源'}
+                            <span className="mx-1 inline-block size-[2px] rounded-full bg-primary-500 text-center"></span>
+                            <span>
+                              {displayTimeFromNow(source.published_at ?? '')}
+                            </span>
                           </p>
                         </div>
                       </a>
@@ -411,13 +203,59 @@ export default function HybridSearch({
       )}
 
       {/* 搜尋結果統計 */}
-      <div className="text-sm text-gray-500">
-        找到 {results.data.total} 筆結果，耗時 {results.data.took}ms
+      <div className="list-title text-primary-500">
+        <p>
+          <span className="text-primary-700">{query}</span>
+          的搜尋結果：
+        </p>
+        <div className="flex items-center justify-between">
+          <span className="body-3">
+            找到 {hybridSearchResults.data.total} 筆結果
+          </span>
+          <div className="flex items-center gap-1">
+            <span className="button text-primary-500">排序依</span>
+            <div className="relative">
+              {/* 下拉觸發按鈕 */}
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="button flex items-center gap-1 text-primary-500 transition-colors hover:text-primary-700"
+              >
+                <span>{getCurrentSortLabel()}</span>
+                <Icon
+                  iconName="icon-down-arrow"
+                  size="s"
+                  className={`transition-transform duration-200 ${
+                    isDropdownOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              {/* 下拉選項列表 */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full z-10 mt-1 min-w-[100px] rounded-md border border-gray-200 bg-white shadow-lg">
+                  {sortOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => handleSortChange(option.value)}
+                      className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${
+                        selectedSort === option.value
+                          ? 'bg-primary-50 text-primary-700'
+                          : 'text-gray-700'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 搜尋結果列表 */}
       <div className="grid gap-4">
-        {results.data.products.map((product) => (
+        {hybridSearchResults.data.products.map((product) => (
           <div
             key={product.product_id}
             className="rounded-lg border p-4 transition-shadow hover:shadow-md"
@@ -453,7 +291,7 @@ export default function HybridSearch({
                   )}
                   {product.authors && (
                     <span>
-                      作者:{' '}
+                      作者:
                       {Array.isArray(product.authors)
                         ? product.authors.join(', ')
                         : product.authors}
@@ -472,26 +310,26 @@ export default function HybridSearch({
       </div>
 
       {/* Facet 資訊 */}
-      {results.data.facet_counts?.facet_fields && (
+      {hybridSearchResults.data.facet_counts?.facet_fields && (
         <div className="mt-6 border-t pt-4">
           <h4 className="mb-2 font-semibold">分類統計</h4>
-          {Object.entries(results.data.facet_counts.facet_fields).map(
-            ([field, counts]) => (
-              <div key={field} className="mb-2">
-                <span className="text-sm font-medium">{field}:</span>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {counts.map(([value, count]) => (
-                    <span
-                      key={value}
-                      className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-800"
-                    >
-                      {value} ({count})
-                    </span>
-                  ))}
-                </div>
+          {Object.entries(
+            hybridSearchResults.data.facet_counts.facet_fields
+          ).map(([field, counts]) => (
+            <div key={field} className="mb-2">
+              <span className="text-sm font-medium">{field}:</span>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {counts.map(([value, count]) => (
+                  <span
+                    key={value}
+                    className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-800"
+                  >
+                    {value} ({count})
+                  </span>
+                ))}
               </div>
-            )
-          )}
+            </div>
+          ))}
         </div>
       )}
     </div>

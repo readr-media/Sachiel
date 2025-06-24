@@ -31,8 +31,8 @@ export default function SearchFilter({
   query,
   results,
 }: {
-  query: string
-  results: SearchResults
+  query?: string
+  results?: SearchResults
 }) {
   const [activeFilter, setActiveFilter] = useState<filterType['id']>(
     filters[0].id
@@ -59,7 +59,7 @@ export default function SearchFilter({
           </button>
         ))}
       </div>
-      <section className="px-5 xl:px-10">
+      {/* <section className="px-5 xl:px-10">
         {activeFilter === 'story' ? (
           <StorySearchResult query={query} storyResult={results.story} />
         ) : activeFilter === 'collection' ? (
@@ -74,7 +74,7 @@ export default function SearchFilter({
             publisherResult={results.publisher}
           />
         )}
-      </section>
+      </section> */}
     </>
   )
 }
