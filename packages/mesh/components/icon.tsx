@@ -199,6 +199,8 @@ export type IconName =
   | 'icon-download-hover'
   | 'icon-print'
   | 'icon-print-hover'
+  | 'icon-mesh-ai'
+  | 'icon-lock'
 
 export type IconProps = {
   size: Size

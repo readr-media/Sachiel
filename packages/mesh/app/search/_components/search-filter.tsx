@@ -1,12 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-
-import { type SearchResults } from '@/utils/data-schema'
-
-import CollectionSearchResult from './collection-search-result'
-import MemberAndPublisher from './member-and-publisher'
-import StorySearchResult from './story-search-result'
+import type { SetStateAction } from 'react'
+import type { Dispatch } from 'react'
 
 type filterType = {
   id: 'story' | 'collection' | 'member-publisher'
@@ -28,16 +23,12 @@ const filters: filterType[] = [
 ]
 
 export default function SearchFilter({
-  query,
-  results,
+  activeFilter,
+  setActiveFilter,
 }: {
-  query: string
-  results: SearchResults
+  activeFilter: filterType['id']
+  setActiveFilter: Dispatch<SetStateAction<filterType['id']>>
 }) {
-  const [activeFilter, setActiveFilter] = useState<filterType['id']>(
-    filters[0].id
-  )
-
   return (
     <>
       <div className="flex justify-between border-b-[0.5px] border-primary-400 sm:justify-start sm:gap-2">
@@ -59,22 +50,6 @@ export default function SearchFilter({
           </button>
         ))}
       </div>
-      <section className="px-5 xl:px-10">
-        {activeFilter === 'story' ? (
-          <StorySearchResult query={query} storyResult={results.story} />
-        ) : activeFilter === 'collection' ? (
-          <CollectionSearchResult
-            query={query}
-            collectionResult={results.collection}
-          />
-        ) : (
-          <MemberAndPublisher
-            query={query}
-            memberResult={results.member}
-            publisherResult={results.publisher}
-          />
-        )}
-      </section>
     </>
   )
 }

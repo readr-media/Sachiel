@@ -1,407 +1,342 @@
 'use client'
+import { useState } from 'react'
 
-import { useEffect, useRef, useState } from 'react'
+import Drawer from '@/app/_components/drawer'
+import Icon from '@/components/icon'
+import type { AnswerResponse } from '@/types/miso'
+import type { SearchResults } from '@/utils/data-schema'
+import { displayTimeFromNow } from '@/utils/story-display'
 
-import { getAnswer, searchWithHybrid } from '@/app/actions/hybrid-search'
-import { useUser } from '@/context/user'
-import type { AnswerResponse, HybridSearchResponse } from '@/types/miso'
+import type { SearchResult, SearchType } from '../[query]/page'
+import CollectionSearchResult from './collection-search-result'
+import MemberAndPublisher from './member-and-publisher'
+import ResultTotal from './result-total'
+import { type filterType } from './search-result'
+import StorySearchResult from './story-search-result'
 
-interface HybridSearchProps {
-  query?: string
-  onResultsChange?: (results: HybridSearchResponse | null) => void
+type HybridSearchProps = {
+  hybridSearchResults: Record<SearchType, SearchResult>
+  misoAskResult: null | AnswerResponse
+  query: string
+  activeFilter: filterType['id']
 }
 
+const sortOptions = [
+  { value: 'relevance', label: '相關度' },
+  { value: 'published_at', label: '最新發布' },
+]
+
 export default function HybridSearch({
+  hybridSearchResults,
+  misoAskResult,
   query,
-  onResultsChange,
+  activeFilter,
 }: HybridSearchProps) {
-  const { user } = useUser()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<HybridSearchResponse | null>(null)
-  const [currentQuery, setCurrentQuery] = useState<string>('')
-
-  // Answer 相關狀態
-  const [answer, setAnswer] = useState<AnswerResponse | null>(null)
-  const [isLoadingAnswer, setIsLoadingAnswer] = useState(false)
-  const [answerError, setAnswerError] = useState<string | null>(null)
-
-  // 打字機效果狀態
-  const [displayedText, setDisplayedText] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const hasSearch = useRef(false)
-
-  const performSearch = async (searchQuery: string) => {
-    if (!searchQuery.trim()) return
-
-    // 防止重複調用相同查詢
-    if (isLoading || searchQuery === currentQuery) {
-      console.log(
-        '🚫 [HybridSearch] Skipping duplicate search for:',
-        searchQuery
-      )
-      return
-    }
-
-    try {
-      setCurrentQuery(searchQuery)
-      setIsLoading(true)
-      setError(null)
-      // 清空之前的答案
-      setAnswer(null)
-      setAnswerError(null)
-      setDisplayedText('')
-      setIsTyping(false)
-      previousAnswerRef.current = ''
-      const response = await searchWithHybrid(searchQuery, user?.memberId, {
-        // 可以根據需求調整參數
-        rows: 20,
-        facets: ['custom_attributes.article:section'],
-        order_by: 'relevance',
-      })
-
-      console.log('📊 [HybridSearch] Search completed:', response)
-      setResults(response)
-
-      if (onResultsChange) {
-        onResultsChange(response)
-      }
-
-      // 自動獲取 AI 答案
-      if (response?.data.question_id) {
-        console.log(
-          '🤖 [HybridSearch] Auto-fetching answer for question:',
-          response.data.question_id
-        )
-        fetchAnswer(response.data.question_id)
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Search failed'
-      console.error('❌ [HybridSearch] Search error:', err)
-      setError(errorMessage)
-      setResults(null)
-
-      if (onResultsChange) {
-        onResultsChange(null)
-      }
-    } finally {
-      setIsLoading(false)
-    }
+  // 排序下拉選單狀態
+  const [selectedSort, setSelectedSort] = useState<
+    'relevance' | 'published_at'
+  >('published_at')
+  // Drawer States
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const closeDrawer = () => setIsDrawerOpen(false)
+  // 處理排序選擇
+  const handleSortChange = (sortValue: 'relevance' | 'published_at') => {
+    setSelectedSort(sortValue)
+    closeDrawer()
+    // TODO: 重新執行搜尋with新的排序參數
   }
 
-  const fetchAnswer = async (questionId: string) => {
-    try {
-      setIsLoadingAnswer(true)
-      setAnswerError(null)
-      setDisplayedText('')
-      setIsTyping(false)
-      previousAnswerRef.current = ''
-      console.log('🤖 [HybridSearch] Fetching answer for question:', questionId)
-
-      // 客戶端輪詢機制
-      const maxRetries = 10 // 最多輪詢 120 次（60秒）
-      const pollInterval = 500 // 每 0.5 秒輪詢一次
-      let attempts = 0
-
-      while (attempts < maxRetries) {
-        const response = await getAnswer(questionId)
-
-        if (response) {
-          console.log(
-            `📝 [HybridSearch] Attempt ${attempts + 1}, finished: ${
-              response.data.finished
-            }, stage: ${response.data.answer_stage}`
-          )
-
-          // 每次都更新答案內容（觸發打字機效果）
-          setAnswer(response)
-
-          // 如果完成了，退出迴圈
-          if (response.data.finished) {
-            console.log('✅ [HybridSearch] Answer completed!')
-            break
-          }
-        } else {
-          console.warn('⚠️ [HybridSearch] No response received')
-        }
-
-        attempts++
-
-        // 如果還沒完成且未達到最大重試次數，等待後繼續
-        if (attempts < maxRetries) {
-          await new Promise((resolve) => setTimeout(resolve, pollInterval))
-        }
-      }
-
-      if (attempts >= maxRetries) {
-        console.warn('⚠️ [HybridSearch] Max retries reached')
-        setAnswerError('答案生成超時，請重試')
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to get answer'
-      console.error('❌ [HybridSearch] Answer error:', err)
-      setAnswerError(errorMessage)
-    } finally {
-      setIsLoadingAnswer(false)
-    }
-  }
-
-  // 處理答案中的引用連結
-  const processAnswerText = (text: string) => {
-    return text.replace(
-      /\[\[(\d+)\]\]\((.*?)\)/g,
-      '<a href="$2" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors">[$1]</a>'
+  const getCurrentSortLabel = () => {
+    return (
+      sortOptions.find((option) => option.value === selectedSort)?.label ||
+      '相關度'
     )
   }
 
-  // 打字機效果邏輯
-  const previousAnswerRef = useRef<string>('')
-
-  useEffect(() => {
-    if (!answer?.data.answer) {
-      setDisplayedText('')
-      return
+  const convertMisoToMemberAndPublisher = (
+    misoData: SearchResult['data']
+  ): {
+    memberResult: SearchResults['member']
+    publisherResult: SearchResults['publisher']
+  } => {
+    if (!misoData?.data?.products) {
+      return { memberResult: [], publisherResult: [] }
     }
 
-    const fullText = processAnswerText(answer.data.answer)
+    const memberResult: SearchResults['member'] = []
+    const publisherResult: SearchResults['publisher'] = []
 
-    // 如果內容沒變，不需要重新打字
-    if (fullText === previousAnswerRef.current) return
+    misoData.data.products.forEach((product) => {
+      const productId = product.product_id
 
-    // 檢查是否是內容擴展
-    const isExtension =
-      fullText.startsWith(previousAnswerRef.current.replace(/<[^>]*>/g, '')) ||
-      previousAnswerRef.current === ''
+      if (productId.startsWith('mesh_profile_member_')) {
+        // 這是會員資料
+        memberResult.push({
+          id:
+            //TODO: simplify logic
+            product.custom_attributes?.['og:url']?.split('/').at(-1) ||
+            productId.replace('mesh_profile_member_', ''),
+          //TODO: need to get
+          customId: productId.replace('mesh_profile_member_', ''),
+          name: product.title,
+          nickname: product.title,
+          avatar: product.cover_image || '',
+          is_active: true,
+        })
+      } else if (productId.startsWith('mesh_publisher_')) {
+        // 這是發布者資料
+        publisherResult.push({
+          id: productId.replace('mesh_publisher_', ''),
+          title: product.title,
+          customId: productId.replace('mesh_publisher_', ''),
+          logo: product.cover_image || '',
+          //TODO:  need to get
+          followerCount: parseInt('0'),
+        })
+      }
+    })
 
-    if (isExtension) {
-      setIsTyping(true)
+    return { memberResult, publisherResult }
+  }
 
-      // 提取純文字來計算要打字的內容
-      const plainText = fullText.replace(/<[^>]*>/g, '')
-      const currentPlainText = displayedText.replace(/<[^>]*>/g, '')
+  // 轉換 Miso API 回應為 CollectionSearchResult 組件期望的格式
+  const convertMisoToCollection = (
+    misoData: SearchResult['data']
+  ): { collectionResult: SearchResults['collection'] } => {
+    if (!misoData?.data?.products) {
+      return { collectionResult: [] }
+    }
 
-      if (plainText.length > currentPlainText.length) {
-        let index = currentPlainText.length
-        const typingSpeed = 30 // 每字符間隔 30ms
+    const collectionResult: SearchResults['collection'] = []
 
-        const typeNext = () => {
-          if (index < plainText.length) {
-            // 找到下一個要顯示的 HTML 位置
-            let htmlIndex = 0
-            let plainIndex = 0
+    misoData.data.products.forEach((product) => {
+      const productId = product.product_id
 
-            for (let i = 0; i < fullText.length; i++) {
-              if (fullText[i] === '<') {
-                // 跳過整個標籤
-                while (i < fullText.length && fullText[i] !== '>') i++
-                htmlIndex = i + 1
-              } else {
-                if (plainIndex === index) {
-                  htmlIndex = i + 1
-                  break
-                }
-                plainIndex++
+      if (productId.startsWith('mesh_profile_collection_')) {
+        // 這是集錦資料
+        collectionResult.push({
+          id: productId.replace('mesh_profile_collection_', ''),
+          title: product.title.replace('集錦 | ', ''),
+          status: 'published', // 假設發布狀態
+          // TODO: need api to get the real data
+          creator: {
+            id: product.product_id.replace('mesh_profile_collection_', ''),
+            name: product.title.replace('集錦 | ', ''),
+            customId: productId.replace('mesh_profile_collection_', ''),
+            nickname:
+              product.custom_attributes?.['og:site_name'] || 'Unknown Creator',
+          },
+          heroImage: {
+            resized: {
+              original: product.cover_image || '',
+            },
+            urlOriginal: product.cover_image || '',
+          },
+          readsCount: parseInt('0'),
+        })
+      }
+    })
+
+    return { collectionResult }
+  }
+
+  // 轉換 Miso API 回應為 StorySearchResult 組件期望的格式
+  const convertMisoToStory = (
+    misoData: SearchResult['data']
+  ): SearchResults['story'] => {
+    if (!misoData?.data?.products) {
+      return []
+    }
+
+    const storyResult: SearchResults['story'] = []
+
+    misoData.data.products.forEach((product) => {
+      const productId = product.product_id
+
+      if (productId.startsWith('mirrordaily_')) {
+        // 從 product_id 推斷來源資訊
+        const getSourceFromProductId = (id: string) => {
+          const splitResult = id.split('_').at(0)
+          switch (splitResult) {
+            case 'mirrormedia':
+              return {
+                id: 'mirrormedia',
+                customId: 'mirrormedia',
+                title: '鏡週刊 Mirror Media',
+                is_active: true,
               }
-            }
-
-            setDisplayedText(fullText.substring(0, htmlIndex))
-            index++
-            setTimeout(typeNext, typingSpeed)
-          } else {
-            setIsTyping(false)
-            previousAnswerRef.current = fullText
+            case 'mnews':
+              return {
+                id: 'mnews',
+                customId: 'mnews',
+                title: '鏡新聞',
+                is_active: true,
+              }
+            case 'mirrordaily':
+              return {
+                id: 'mirrordaily',
+                customId: 'mirrordaily',
+                title: '鏡報',
+                is_active: true,
+              }
+            default:
+              return {
+                id: 'readr',
+                customId: 'readr',
+                title: 'READr Mesh 讀選',
+                is_active: true,
+              }
           }
         }
 
-        typeNext()
-      } else {
-        setDisplayedText(fullText)
-        setIsTyping(false)
-        previousAnswerRef.current = fullText
+        storyResult.push({
+          id: productId.replace('mirrordaily_', ''),
+          title: product._title_with_markups || product.title,
+          og_image: product.cover_image || '',
+          og_description: product.custom_attributes?.['og:description'] || '',
+          published_date: product.published_at || '',
+          full_screen_ad:
+            (product.custom_attributes?.['full_screen_ad'] as
+              | 'mobile'
+              | 'desktop'
+              | 'all'
+              | 'none') || 'none',
+          isMember: Boolean(product.custom_attributes?.['member_only']),
+          source: getSourceFromProductId(productId),
+        })
       }
-    } else {
-      // 全新內容，直接重新開始打字
-      setDisplayedText('')
-      setIsTyping(true)
+    })
 
-      const plainText = fullText.replace(/<[^>]*>/g, '')
-      let index = 0
-      const typingSpeed = 30
+    return storyResult
+  }
 
-      const typeNext = () => {
-        if (index < plainText.length) {
-          let htmlIndex = 0
-          let plainIndex = 0
-
-          for (let i = 0; i < fullText.length; i++) {
-            if (fullText[i] === '<') {
-              while (i < fullText.length && fullText[i] !== '>') i++
-              htmlIndex = i + 1
-            } else {
-              if (plainIndex === index) {
-                htmlIndex = i + 1
-                break
-              }
-              plainIndex++
-            }
-          }
-
-          setDisplayedText(fullText.substring(0, htmlIndex))
-          index++
-          setTimeout(typeNext, typingSpeed)
-        } else {
-          setIsTyping(false)
-          previousAnswerRef.current = fullText
-        }
-      }
-
-      typeNext()
-    }
-  }, [answer?.data.answer])
-
-  useEffect(() => {
-    if (hasSearch.current) return
-    console.count('search')
-    if (query && query !== currentQuery) {
-      console.log('🔄 [HybridSearch] Query changed:', query)
-      performSearch(query)
-    }
-    hasSearch.current = true
-  }, [currentQuery, query, user.memberId])
-
-  if (error) {
+  // need to pass tab filter
+  if (hybridSearchResults[activeFilter].error) {
     return (
       <div className="flex h-64 items-center justify-center">
         <div className="text-center">
           <p className="text-red-500">搜尋發生錯誤</p>
-          <p className="text-sm text-gray-500">{error}</p>
-          <button
-            onClick={() => query && performSearch(query)}
-            className="mt-2 rounded bg-primary-700 px-4 py-2 text-white hover:bg-primary-800"
-          >
-            重試
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <div className="mb-4 size-8 animate-spin rounded-full border-2 border-gray-300 border-t-primary-700"></div>
-          <p className="text-gray-500">搜尋中...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!results || !results.data.products.length) {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-500">
-            {query ? `找不到「${query}」的相關結果` : '請輸入搜尋關鍵字'}
+          <p className="text-sm text-gray-500">
+            {hybridSearchResults[activeFilter].error?.message}
           </p>
         </div>
       </div>
     )
   }
 
+  if (!hybridSearchResults[activeFilter].data?.data) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500">找不到的相關結果</p>
+        </div>
+      </div>
+    )
+  }
+
+  // user and publisher profile search results
+  if (activeFilter === 'member-publisher') {
+    const { memberResult, publisherResult } = convertMisoToMemberAndPublisher(
+      hybridSearchResults['member-publisher'].data
+    )
+
+    return (
+      <div className="space-y-6 p-4 px-5 md:pt-5 xl:pl-10">
+        <MemberAndPublisher
+          query={query}
+          memberResult={memberResult}
+          publisherResult={publisherResult}
+        />
+      </div>
+    )
+  }
+
+  // collection search results
+  if (activeFilter === 'collection') {
+    const { collectionResult } = convertMisoToCollection(
+      hybridSearchResults['collection'].data
+    )
+
+    return (
+      <div className="space-y-6 p-4 px-5 md:pt-5 xl:pl-10">
+        <ResultTotal
+          query={query}
+          resultCount={hybridSearchResults[activeFilter].data?.data.total || 0}
+          currentSortLabel={getCurrentSortLabel()}
+          isDrawerOpen={isDrawerOpen}
+          toggleDrawer={() => {
+            setIsDrawerOpen((prev) => !prev)
+          }}
+          sortOptions={sortOptions}
+        />
+        <CollectionSearchResult
+          query={query}
+          collectionResult={collectionResult}
+        />
+      </div>
+    )
+  }
+  // story search results
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 px-5 md:pt-5 xl:pl-10">
       {/* AI 答案區塊 */}
-      {results?.data.question_id && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-900">
-              <span className="rounded bg-blue-600 px-2 py-1 text-xs text-white">
-                AI
-              </span>
-              智能答案
-            </h3>
+      {misoAskResult?.data.answer && (
+        <div className="flex flex-col">
+          <div className="flex items-center justify-between sm:max-w-[600px] xl:max-w-screen-sm">
+            <p className="list-title flex items-center text-primary-700">
+              <Icon iconName="icon-mesh-ai" size="xl" />由 READr Mesh AI 生成
+            </p>
+            <span className="body-3 text-primary-500">瞭解更多</span>
           </div>
 
-          {isLoadingAnswer && (
-            <div className="flex items-center gap-2 text-blue-700">
-              <div className="size-4 animate-spin rounded-full border-2 border-blue-300 border-t-blue-700"></div>
-              <span>AI 正在分析搜尋結果...</span>
-            </div>
-          )}
-
-          {answerError && (
-            <div className="text-red-600">
-              <p>答案生成失敗：{answerError}</p>
-              <button
-                onClick={() => fetchAnswer(results.data.question_id)}
-                className="mt-2 rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-              >
-                重試
-              </button>
-            </div>
-          )}
-
-          {answer && (
+          {misoAskResult?.data.answer && (
             <div className="space-y-4">
               {/* 答案內容 */}
               <div className="prose prose-sm text-gray-800">
                 <div
+                  className="body-1 sm:max-w-[600px] xl:max-w-screen-sm"
                   dangerouslySetInnerHTML={{
-                    __html: displayedText,
+                    __html: misoAskResult?.data.answer,
                   }}
                 />
-                {/* 打字機游標 */}
-                {isTyping && (
-                  <span className="ml-1 inline-block h-4 w-0.5 animate-pulse bg-blue-600"></span>
-                )}
               </div>
 
-              {/* 顯示答案生成階段 */}
-              {!answer.data.finished && (
-                <div className="flex items-center gap-2 text-sm text-blue-600">
-                  <div className="size-3 animate-spin rounded-full border border-blue-300 border-t-blue-600"></div>
-                  <span>{answer.data.answer_stage}...</span>
-                </div>
-              )}
-
-              {/* 來源文章 */}
-              {answer.data.sources.length > 0 && (
+              {/* 回答資料來源 */}
+              {misoAskResult?.data.sources.length > 0 && (
                 <div>
-                  <h4 className="mb-2 text-sm font-semibold text-blue-900">
-                    來源文章
+                  <h4 className="caption-1 mb-2 text-primary-500">
+                    回答資料來源
                   </h4>
-                  <div className="grid gap-2">
-                    {answer.data.sources.slice(0, 3).map((source, index) => (
-                      <a
-                        key={source.product_id}
-                        href={source.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex gap-3 rounded border bg-white p-3 hover:shadow-sm"
-                      >
-                        {source.cover_image && (
-                          <img
-                            src={source.cover_image}
-                            alt={source.title}
-                            className="h-12 w-16 rounded object-cover"
-                          />
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <h5 className="truncate text-sm font-medium text-gray-900">
-                            [{index + 1}] {source.title}
-                          </h5>
-                          <p className="text-xs text-gray-500">
-                            {source.published_at
-                              ? new Date(
-                                  source.published_at
-                                ).toLocaleDateString('zh-TW')
-                              : '日期未知'}
-                          </p>
-                        </div>
-                      </a>
-                    ))}
+                  <div className="flex gap-2 overflow-x-auto">
+                    {misoAskResult?.data.sources
+                      //TODO: magic number
+                      .slice(0, 3)
+                      .map((source, index) => (
+                        <a
+                          key={source.product_id}
+                          href={source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex h-[114px] w-[280px] min-w-[280px] flex-col gap-3 rounded-md border-primary-200 bg-primary-100 px-4 py-3"
+                        >
+                          <div className="flex min-w-0 flex-1 flex-col gap-y-2">
+                            <p className="caption-1 flex size-5 flex-wrap items-center justify-center rounded-full bg-primary-200 text-primary-700">
+                              {index + 1}
+                            </p>
+                            <p className="subtitle-2 line-clamp-2 text-primary-700">
+                              {source.title}
+                            </p>
+                            <p className="caption-1 flex items-center text-primary-500">
+                              {source.custom_attributes?.['og:site_name'] ??
+                                '資料來源'}
+                              <span className="mx-1 inline-block size-[2px] rounded-full bg-primary-500 text-center"></span>
+                              <span>
+                                {displayTimeFromNow(source.published_at ?? '')}
+                              </span>
+                            </p>
+                          </div>
+                        </a>
+                      ))}
                   </div>
                 </div>
               )}
@@ -411,89 +346,50 @@ export default function HybridSearch({
       )}
 
       {/* 搜尋結果統計 */}
-      <div className="text-sm text-gray-500">
-        找到 {results.data.total} 筆結果，耗時 {results.data.took}ms
-      </div>
+      {/* 這個要抽成component會在collection重復使用 */}
+      <div className="flex flex-col sm:gap-y-[9.5px] xl:max-w-[720px]">
+        <ResultTotal
+          query={query}
+          resultCount={hybridSearchResults[activeFilter].data?.data.total || 0}
+          currentSortLabel={getCurrentSortLabel()}
+          isDrawerOpen={isDrawerOpen}
+          toggleDrawer={() => {
+            setIsDrawerOpen((prev) => !prev)
+          }}
+          sortOptions={sortOptions}
+        />
 
-      {/* 搜尋結果列表 */}
-      <div className="grid gap-4">
-        {results.data.products.map((product) => (
-          <div
-            key={product.product_id}
-            className="rounded-lg border p-4 transition-shadow hover:shadow-md"
-          >
-            <div className="flex gap-4">
-              {product.cover_image && (
-                <img
-                  src={product.cover_image}
-                  alt={product.title}
-                  className="h-16 w-24 rounded object-cover"
-                />
-              )}
-              <div className="flex-1">
-                <h3
-                  className="mb-2 text-lg font-semibold"
-                  dangerouslySetInnerHTML={{
-                    __html: product._title_with_markups || product.title,
-                  }}
-                />
-                {product.snippet && (
-                  <p
-                    className="mb-2 text-sm text-gray-600"
-                    dangerouslySetInnerHTML={{ __html: product.snippet }}
-                  />
-                )}
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                  {product.published_at && (
-                    <span>
-                      {new Date(product.published_at).toLocaleDateString(
-                        'zh-TW'
-                      )}
-                    </span>
-                  )}
-                  {product.authors && (
-                    <span>
-                      作者:{' '}
-                      {Array.isArray(product.authors)
-                        ? product.authors.join(', ')
-                        : product.authors}
-                    </span>
-                  )}
-                  {product.custom_attributes?.['article:section'] && (
-                    <span className="rounded bg-gray-100 px-2 py-1">
-                      {product.custom_attributes['article:section']}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+        {/* 搜尋結果列表 */}
+        <StorySearchResult
+          query={query}
+          storyResult={convertMisoToStory(hybridSearchResults['story'].data)}
+        />
       </div>
-
-      {/* Facet 資訊 */}
-      {results.data.facet_counts?.facet_fields && (
-        <div className="mt-6 border-t pt-4">
-          <h4 className="mb-2 font-semibold">分類統計</h4>
-          {Object.entries(results.data.facet_counts.facet_fields).map(
-            ([field, counts]) => (
-              <div key={field} className="mb-2">
-                <span className="text-sm font-medium">{field}:</span>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {counts.map(([value, count]) => (
-                    <span
-                      key={value}
-                      className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-800"
-                    >
-                      {value} ({count})
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )
-          )}
+      <Drawer
+        className="sm:hidden"
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        position={'bottom'}
+        size={'fit'}
+      >
+        <div className="flex flex-col gap-y-6 px-5 py-4">
+          <span className="button text-primary-500">排序依</span>
+          <ul className="flex flex-col gap-4">
+            <li
+              className="button-large text-primary-700"
+              onClick={() => handleSortChange('relevance')}
+            >
+              相關度
+            </li>
+            <li
+              className="button-large text-primary-700"
+              onClick={() => handleSortChange('published_at')}
+            >
+              最新發布
+            </li>
+          </ul>
         </div>
-      )}
+      </Drawer>
     </div>
   )
 }

@@ -15,8 +15,7 @@ export default function CollectionSearchResult({
     <>
       {collectionResult.length ? (
         <>
-          <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有集錦</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-5 [&>*]:w-full">
+          <div className="grid grid-cols-2 gap-3 border-t-[0.5px] border-primary-100 pt-4 sm:grid-cols-4 xl:grid-cols-5 [&>*]:w-full">
             {collectionResult.map((collection) => (
               <CollectionCard key={collection.id} collection={collection} />
             ))}
