@@ -267,7 +267,7 @@ const ArticleCard = ({
                 }`}
               >
                 <p className="body-2 mb-2 w-full sm:mb-1 sm:line-clamp-2 lg:line-clamp-3 lg:min-h-[72px]">
-                  {storyData?.title || ''}
+                  {storyData?.title || '預設標題'}
                 </p>
                 <span className="*:caption-1 *:text-primary-500">
                   <StoryMeta

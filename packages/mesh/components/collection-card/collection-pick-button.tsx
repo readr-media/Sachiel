@@ -4,7 +4,6 @@ import type { ButtonColor, ButtonSize } from '@/components/button'
 import Button from '@/components/button'
 import { usePickModal } from '@/context/pick-modal'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PickObjective } from '@/types/objective'
 import { debounce } from '@/utils/performance'
@@ -22,7 +21,6 @@ export default function CollectionPickButton({
   size?: ButtonSize
   gtmClassName?: string
 }) {
-  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { openPickModal } = usePickModal()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -44,15 +42,12 @@ export default function CollectionPickButton({
     <Button
       size={size}
       color={color}
-      text={t('Components.CollectionPickButton.pick', '精選')}
+      text="精選"
       icon={{ iconName: 'icon-star-primary', size: 's' }}
       onClick={handleClickPick}
       activeState={{
         isActive: isStoryPicked,
-        activeText: t(
-          'Components.CollectionPickButton.already-picked',
-          '已精選'
-        ),
+        activeText: '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
       gtmClassName={gtmClassName}

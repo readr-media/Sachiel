@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import Button from '@/components/button'
 import Icon from '@/components/icon'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import type { UseCollection } from '../_types/collection'
 import Checkbox from './checkbox'
@@ -12,7 +11,6 @@ export default function StoryFilter({
 }: {
   useCollection: UseCollection
 }) {
-  const { t } = useCustomTranslation()
   const [showFilter, setShowFilter] = useState(false)
 
   const { pickCandidates, bookmarkCandidates } = useCollection()
@@ -23,14 +21,11 @@ export default function StoryFilter({
 
   const filterTitle = (() => {
     if (pickCandidates.usedAsFilter && bookmarkCandidates.usedAsFilter) {
-      return t(
-        'Pages.Collection.StoryFilter-pick-and-bookmark',
-        '精選文章及書籤'
-      )
+      return '精選文章及書籤'
     } else if (pickCandidates.usedAsFilter) {
-      return t('Pages.Collection.StoryFilter-pick', '精選文章')
+      return '精選文章'
     } else if (bookmarkCandidates.usedAsFilter) {
-      return t('Pages.Collection.StoryFilter-bookmark', '書籤')
+      return '書籤'
     } else {
       return ''
     }
@@ -85,7 +80,6 @@ const DestktopFilter = ({
 }: {
   useCollection: UseCollection
 }) => {
-  const { t } = useCustomTranslation()
   const [showError, setShowError] = useState(false)
 
   const {
@@ -115,9 +109,7 @@ const DestktopFilter = ({
           }}
         >
           <Checkbox isChecked={isPickSelected} />
-          <span className="body-2 text-primary-500">
-            {t('Pages.Collection.StoryFilter-check-pick', '精選文章')}
-          </span>
+          <span className="body-2 text-primary-500">精選文章</span>
         </button>
         <button
           className="flex"
@@ -134,15 +126,11 @@ const DestktopFilter = ({
           }}
         >
           <Checkbox isChecked={isBookmarkSelected} />
-          <span className="body-2 text-primary-500">
-            {t('Pages.Collection.StoryFilter-check-bookmark', '書籤')}
-          </span>
+          <span className="body-2 text-primary-500">書籤</span>
         </button>
       </div>
       {showError && (
-        <div className="body-3 mt-2 text-custom-red">
-          {t('Pages.Collection.StoryFilter-pick-one', '至少要選一個')}
-        </div>
+        <div className="body-3 mt-2 text-custom-red">至少要選一個</div>
       )}
     </div>
   )
@@ -155,7 +143,6 @@ const MobileFilter = ({
   onClose: () => void
   useCollection: UseCollection
 }) => {
-  const { t } = useCustomTranslation()
   const {
     pickCandidates,
     bookmarkCandidates,
@@ -196,12 +183,10 @@ const MobileFilter = ({
         }}
       >
         <div className="list-title flex items-center justify-center border-b border-[rgba(0,9,40,0.1)] py-[14px] text-primary-800">
-          {t('Pages.Collection.StoryFilter-filter', '篩選')}
+          篩選
         </div>
         <div className="flex flex-col gap-6 border-b border-[rgba(0,9,40,0.1)] px-5 py-4">
-          <div className="footnote text-primary-500">
-            {t('Pages.Collection.StoryFilter-story-source', '新聞來源')}
-          </div>
+          <div className="footnote text-primary-500">新聞來源</div>
           <div className="flex flex-col gap-4">
             <button
               className="flex gap-1"
@@ -210,9 +195,7 @@ const MobileFilter = ({
               }}
             >
               <Checkbox isChecked={isPickSelected} />
-              <span className="body-2 text-primary-500">
-                {t('Pages.Collection.StoryFilter-check-pick', '精選文章')}
-              </span>
+              <span className="body-2 text-primary-500">精選文章</span>
             </button>
             <button
               className="flex gap-1"
@@ -221,9 +204,7 @@ const MobileFilter = ({
               }}
             >
               <Checkbox isChecked={isBookmarkSelected} />
-              <span className="body-2 text-primary-500">
-                {t('Pages.Collection.StoryFilter-check-bookmark', '書籤')}
-              </span>
+              <span className="body-2 text-primary-500">書籤</span>
             </button>
           </div>
         </div>
@@ -232,11 +213,7 @@ const MobileFilter = ({
             onClick={onFilter}
             size="lg"
             color="primary"
-            text={
-              disableFilter
-                ? t('Pages.Collection.StoryFilter-pick-one', '至少要選一個')
-                : t('Pages.Collection.StoryFilter-filter', '篩選')
-            }
+            text={disableFilter ? '至少要選1個' : '篩選'}
             disabled={disableFilter}
           />
         </div>

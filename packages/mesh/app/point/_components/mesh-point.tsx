@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 
 import { getMemberTransactionRecord } from '@/app/actions/sponsorship'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import Loading from './loading'
 import MeshPointInfo from './mesh-point-info'
@@ -18,7 +17,6 @@ export default function MeshPoint({
 }: {
   balance: number | undefined
 }) {
-  const { t } = useCustomTranslation()
   const { user } = useUser()
   const [transactionData, setTransactionData] = useState<Transaction | null>(
     null
@@ -51,24 +49,18 @@ export default function MeshPoint({
           <Link href={'/point/sponsorship'}>
             <div className="group flex flex-col items-center gap-1 sm:flex-row">
               <p className="profile-title-2 text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-                {transactionData.totalSponsorCount || 0}
-                {t('Pages.Point.MeshPoint-sponsor-unit', '次')}
+                {transactionData.totalSponsorCount || 0}次
               </p>
-              <p className="profile-subtitle text-primary-500">
-                {t('Pages.Point.MeshPoint-sponsor-count', '已贊助次數')}
-              </p>
+              <p className="profile-subtitle text-primary-500">已贊助次數</p>
             </div>
           </Link>
           <div className="h-5 w-0 border-[0.5px] border-primary-200 sm:hidden"></div>
           <Link href={'/point/subscribe-stories'}>
             <div className="group flex flex-col items-center gap-1 sm:flex-row">
               <p className="profile-title-2 text-center text-primary-700 group-hover:text-primary-500 group-active:text-primary-500">
-                {transactionData?.unlockStoriesCount || 0}
-                {t('Pages.Point.MeshPoint-unlock-unit', '篇')}
+                {transactionData?.unlockStoriesCount || 0}篇
               </p>
-              <p className="profile-subtitle text-primary-500">
-                {t('Pages.Point.MeshPoint-unlock-count', '訂閱中文章')}
-              </p>
+              <p className="profile-subtitle text-primary-500">訂閱中文章</p>
             </div>
           </Link>
         </div>
@@ -76,9 +68,7 @@ export default function MeshPoint({
 
       {transactionData?.combinedRecord.length === 0 ? (
         <section className="flex h-[calc(100vh-313px)] w-full items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-591px)] sm:rounded-md sm:bg-white">
-          <p className="body-3 text-primary-500">
-            {t('Pages.Point.MeshPoint-no-transaction', '沒有交易紀錄')}
-          </p>
+          <p className="body-3 text-primary-500">沒有交易紀錄</p>
         </section>
       ) : (
         <section className="p-5 sm:px-10">

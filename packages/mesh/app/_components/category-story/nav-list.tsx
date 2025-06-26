@@ -9,7 +9,6 @@ import Button from '@/components/button'
 import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
 import { categorySearchParamName } from '@/constants/search-param-names'
 import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -41,7 +40,6 @@ type Props = {
 }
 
 export default function NavList({ categories, initialStories }: Props) {
-  const { t } = useCustomTranslation()
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
   const userPayload = useUserPayload()
   const searchParams = useSearchParams()
@@ -98,7 +96,7 @@ export default function NavList({ categories, initialStories }: Props) {
                 <Button
                   size="xs"
                   color="nav-chip"
-                  text={t(`Others.categories.${category.slug}`, '')}
+                  text={category.title ?? ''}
                   activeState={{
                     isActive: category === activeCategory,
                   }}
@@ -171,7 +169,11 @@ export default function NavList({ categories, initialStories }: Props) {
         </div>
       </div>
 
-      <StorySection stories={data} slug={activeCategory?.slug ?? ''} />
+      <StorySection
+        stories={data}
+        activeTitle={activeCategory?.title ?? ''}
+        slug={activeCategory?.slug ?? ''}
+      />
     </>
   )
 }

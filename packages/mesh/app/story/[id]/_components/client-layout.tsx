@@ -11,7 +11,6 @@ import { useComment } from '@/context/comment'
 import { useStoryInteractions } from '@/context/story-interactions'
 import { useUser } from '@/context/user'
 import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { BookmarkObjective, PickObjective } from '@/types/objective'
 import { getStoryUrl } from '@/utils/get-url'
@@ -29,7 +28,6 @@ export default function ClientLayout({
   storyType: 'story' | 'podcast'
   children: React.ReactNode
 }) {
-  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { interactions } = useStoryInteractions()
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -37,10 +35,8 @@ export default function ClientLayout({
 
   const isSinglePickByCurrentUser =
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
-  const navigationTitle =
-    storyType === 'story'
-      ? t('Pages.Story.ClientLayout-story-title', '新聞')
-      : t('Pages.Story.ClientLayout-podcast-title', 'Podcast')
+  const navigationTitle = storyType === 'story' ? '新聞' : 'Podcast'
+
   return (
     <LayoutTemplate
       type="article"

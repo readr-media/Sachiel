@@ -7,15 +7,14 @@ import { fetchCommentLikes } from '@/app/actions/get-homepage'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import Avatar from '@/components/story-card/avatar'
-import { DisplayTimeFromNow } from '@/components/story-time-display'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import type { CategoryStory } from '@/types/homepage'
 import { debounce } from '@/utils/performance'
+import { displayTimeFromNow } from '@/utils/story-display'
 
 type NonEmptyObject<T> = T extends Record<string, never> ? never : T
 type Props = {
@@ -23,7 +22,6 @@ type Props = {
 }
 
 export default function Comment({ comment }: Props) {
-  const { t } = useCustomTranslation()
   const [isLikedBySelf, setIsLikedBySelf] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
@@ -56,13 +54,7 @@ export default function Comment({ comment }: Props) {
       try {
         const response = await unlikeComment({ memberId, commentId })
         if (!response) {
-          addToast({
-            status: 'fail',
-            text: t(
-              `Others.toast.${TOAST_MESSAGE.unlikeCommentFailed}`,
-              '取消按讚留言失敗，請重新嘗試'
-            ),
-          })
+          addToast({ status: 'fail', text: TOAST_MESSAGE.unlikeCommentFailed })
           throw new Error(`Failed to unlike comment, comment id:${commentId}`)
         }
         setLikeCount((prev) => prev - 1)
@@ -76,13 +68,7 @@ export default function Comment({ comment }: Props) {
     try {
       const response = await likeComment({ memberId, commentId })
       if (!response) {
-        addToast({
-          status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.likeCommentFailed}`,
-            '按讚留言失敗，請重新嘗試'
-          ),
-        })
+        addToast({ status: 'fail', text: TOAST_MESSAGE.likeCommentFailed })
         throw new Error(`Failed to like comment, comment id:${commentId}`)
       }
       setLikeCount((prev) => prev + 1)
@@ -119,7 +105,7 @@ export default function Comment({ comment }: Props) {
 
           <Icon iconName="icon-dot" size="xxs" />
           <p className="caption-1 text-primary-500">
-            <DisplayTimeFromNow date={comment.createdAt} />
+            {displayTimeFromNow(comment.createdAt)}
           </p>
         </div>
 
@@ -153,9 +139,7 @@ export default function Comment({ comment }: Props) {
           {needClamp && (
             <span className="body-3 absolute bottom-0 right-0 bg-gradient-to-r from-transparent from-0% to-primary-100 to-10% pl-4">
               <span className="text-primary-600">... </span>
-              <span className="text-primary-400">
-                {t('Pages.Home.Comment-show-more', '顯示更多')}
-              </span>
+              <span className="text-primary-400">顯示更多</span>
             </span>
           )}
         </p>

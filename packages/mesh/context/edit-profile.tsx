@@ -6,7 +6,6 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
 import TOAST_MESSAGE from '@/constants/toast'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useForm } from '@/hooks/use-form'
 import useProfileState from '@/hooks/use-profile-state'
 import type {
@@ -25,7 +24,6 @@ const EditProfileContext = createContext<EditProfileContextType | undefined>(
 export const EditProfileProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user, setUser } = useUser()
   const params = useParams()
@@ -173,13 +171,7 @@ export const EditProfileProvider: React.FC<{
       })
     } catch (error) {
       console.error('Failed to update profile:', error)
-      addToast({
-        status: 'fail',
-        text: t(
-          `Others.toast.${TOAST_MESSAGE.updateProfileFailed}`,
-          '編輯個人檔案失敗，請重新嘗試'
-        ),
-      })
+      addToast({ status: 'fail', text: TOAST_MESSAGE.updateProfileFailed })
       router.push(`/profile/member/${user.customId}`)
     } finally {
       // 9. 清理狀態
@@ -192,9 +184,6 @@ export const EditProfileProvider: React.FC<{
     user.intro,
     user.customId,
     user.name,
-    resetForm,
-    resetErrors,
-    initialData,
   ])
 
   return (

@@ -16,7 +16,6 @@ import { useStoryInteractions } from '@/context/story-interactions'
 import { useUser } from '@/context/user'
 import type { GetStoryInteractionsQuery } from '@/graphql/__generated__/graphql'
 import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
@@ -44,7 +43,6 @@ export default function Article({
   isMemberStory: boolean
   policy: PublisherPolicy
 }) {
-  const { t } = useCustomTranslation()
   const [apiData, setApiData] = useState<ApiData>(
     story?.apiData ?? story?.trimApiData
   )
@@ -53,6 +51,7 @@ export default function Article({
   const { state: comment } = useComment()
   const { interactions } = useStoryInteractions()
 
+  const publishDateInFormat = displayTime(story?.published_date)
   // TODO: handle login user's following situation like feed.tsx did
 
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -92,9 +91,7 @@ export default function Article({
     if (isLinkedArticle) {
       return (
         <div className="mt-6 flex flex-col items-center gap-5 rounded-[10px] border border-primary-200 p-5 sm:mt-10">
-          <div className="body-3 text-primary-500">
-            {t('Pages.Story.Article-linked-story', '本篇為外連文章')}
-          </div>
+          <div className="body-3 text-primary-500">本篇為外連文章</div>
           <Link
             href={story?.url ?? ''}
             target="_blank"
@@ -103,7 +100,7 @@ export default function Article({
             <Button
               size="lg"
               color="primary"
-              text={t('Pages.Story.Article-open-link', '閱讀原文')}
+              text="閱讀原文"
               icon={{ size: 'm', iconName: 'icon-open-new-tab' }}
               onClick={() => {}}
             />
@@ -137,7 +134,6 @@ export default function Article({
 
   return (
     <div>
-      <h1>{t('Pages.Home.DailyHighlight-title', '今日焦點')}</h1>
       <div>
         {story?.og_image && (
           <div className="relative mb-6 aspect-[2/1]">
@@ -161,11 +157,9 @@ export default function Article({
             <h1 className="hero-title mt-1 text-primary-700">
               {story?.title ?? ''}
             </h1>
-            {story?.published_date && (
+            {publishDateInFormat && (
               <div className="footnote mt-3 text-primary-500">
-                {t('Pages.Story.Article-update-time', '更新時間：{{time}}', {
-                  time: displayTime(story?.published_date),
-                })}
+                更新時間：{publishDateInFormat}
               </div>
             )}
             <div className="mt-5 flex justify-between">

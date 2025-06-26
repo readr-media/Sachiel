@@ -27,8 +27,6 @@ import {
   DesktopEditCollectionType,
   MobileEditCollectionType,
 } from '@/app/collection/(mutate)/(edit)/_types/edit-collection'
-import TOAST_MESSAGE from '@/constants/toast'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -82,7 +80,6 @@ export default function EditCollectionProvider({
   initialMobileEditType?: MobileEditCollectionType
   initialCollection: Collection
 }) {
-  const { t } = useCustomTranslation()
   const [desktopEditType, setDesktopEditType] = useState(
     initialDesktopEditType ?? DesktopEditCollectionType.EditAll
   )
@@ -153,55 +150,31 @@ export default function EditCollectionProvider({
   const mobileTitle = useMemo(() => {
     switch (mobileEditType) {
       case MobileEditCollectionType.EditTitle:
-        return t(
-          'Pages.Collection.EditCollectionProvider-mobile-edit-title',
-          '修改標題'
-        )
+        return '修改標題'
       case MobileEditCollectionType.EditSummary:
-        return t(
-          'Pages.Collection.EditCollectionProvider-mobile-edit-summary',
-          '修改敘述'
-        )
+        return '修改敘述'
       case MobileEditCollectionType.EditStories:
-        return t(
-          'Pages.Collection.EditCollectionProvider-mobile-edit-stories',
-          '編輯排序'
-        )
+        return '編輯排序'
       case MobileEditCollectionType.AddStories:
-        return t(
-          'Pages.Collection.EditCollectionProvider-mobile-add-stories',
-          '加入新文章'
-        )
+        return '加入新文章'
       default:
         return ''
     }
-  }, [mobileEditType, t])
+  }, [mobileEditType])
 
   const desktopTitle = useMemo(() => {
     switch (desktopEditType) {
       case DesktopEditCollectionType.EditAll:
-        return t(
-          'Pages.Collection.EditCollectionProvider-desktop-edit-all',
-          '編輯集錦'
-        )
+        return '編輯集錦'
       case DesktopEditCollectionType.AddStories:
-        return t(
-          'Pages.Collection.EditCollectionProvider-desktop-add-stories',
-          '加入新文章'
-        )
+        return '加入新文章'
       default:
         return ''
     }
-  }, [desktopEditType, t])
+  }, [desktopEditType])
 
   const hintUserUpdateCollectionError = () => {
-    setCrossPageToast({
-      status: 'fail',
-      text: t(
-        `Others.toast.${TOAST_MESSAGE.editCollectionFailed}`,
-        '編輯集錦失敗，請重新嘗試'
-      ),
-    })
+    setCrossPageToast({ status: 'fail', text: '編輯集錦失敗，請重新嘗試' })
   }
 
   const redirectAfterUpdateCollection = () => {

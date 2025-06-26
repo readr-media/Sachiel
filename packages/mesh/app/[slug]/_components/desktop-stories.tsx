@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import StoryCard from '@/app/_components/story-card'
 import AdSense from '@/components/ad/adsense-ad'
 import Spinner from '@/components/spinner'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import type { DailyStory, SponsoredStoryByCategory } from '@/types/homepage'
 
@@ -24,7 +23,6 @@ export default function DesktopStories({
   publishersAndStories,
   storyType,
 }: Props) {
-  const { t } = useCustomTranslation()
   const [visibleCount, setVisibleCount] = useState(15)
   const [isLoading, setIsLoading] = useState(false)
   const { targetRef: triggerLoadMoreRef, isIntersecting: shouldStartLoadMore } =
@@ -92,9 +90,7 @@ export default function DesktopStories({
       <div className="lg:flex lg:gap-x-10">
         {otherStories.length !== 0 && (
           <div className="w-articleMain shrink-0">
-            <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">
-              {t('Pages.Subpage.latest-news-title', '最新報導')}
-            </h2>
+            <h2 className="lg:title-1 lg:mb-6 lg:text-primary-700">最新報導</h2>
             <div className="flex flex-col gap-y-5">{getStoriesContent()}</div>
           </div>
         )}

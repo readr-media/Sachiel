@@ -1,22 +1,29 @@
-import type { Metadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { getCollection } from '@/app/actions/collection'
+import { metadata as rootMetadata } from '@/app/layout'
+import { SITE_DESCRIPTION, SITE_URL } from '@/constants/config'
 import { CommentProvider } from '@/context/comment'
 import { CommentObjective } from '@/types/objective'
-import { getSiteMedadata } from '@/utils/site-meta'
 
 import ClientLayout from './_components/client-layout'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string }
-}): Promise<Metadata> {
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: { id: string }
+  },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const collectionId = params.id
+
   const collectionData = await getCollection({
     collectionId,
   })
+
+  const previousImages = (await parent).openGraph?.images || []
 
   const collection = collectionData?.collections?.[0]
   const collectionTitle = collection?.title
@@ -27,17 +34,21 @@ export async function generateMetadata({
     height: collection?.heroImage?.file?.height,
   }
 
-  const title = collectionTitle ? `集錦 | ${collectionTitle}` : '集錦'
-  const description = collectionDescription ?? undefined
-  const images = collectionImageInfo
-  const urlPath = `/collection/${collectionId}`
-
-  return getSiteMedadata({
-    title,
-    description,
-    images,
-    urlPath,
-  })
+  const metaTitle = collectionTitle ? `集錦 | ${collectionTitle}` : '集錦'
+  const metaDescription = collectionDescription || SITE_DESCRIPTION
+  const metaImages = [collectionImageInfo, ...previousImages]
+  return {
+    ...rootMetadata,
+    title: metaTitle,
+    description: metaDescription,
+    openGraph: {
+      ...rootMetadata.openGraph,
+      url: SITE_URL + `/collection/${collectionId}`,
+      title: metaTitle,
+      description: metaDescription,
+      images: metaImages,
+    },
+  }
 }
 
 export default async function CollectionLayout({

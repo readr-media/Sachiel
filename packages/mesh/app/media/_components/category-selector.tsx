@@ -8,7 +8,6 @@ import { categorySearchParamName } from '@/constants/search-param-names'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -47,7 +46,6 @@ export default function CategorySelector({
   allCategories: Category[]
   currentCategory?: Category
 }) {
-  const { t } = useCustomTranslation()
   const { user, setUser } = useUser()
   const displayCategories = user.followingCategories
   const { addToast } = useToast()
@@ -85,13 +83,7 @@ export default function CategorySelector({
       if (!addCategoryResponse) {
         finalCategories = undoAddCategories(finalCategories, addedCategoryIds)
         console.error('send addedCategory to pubsub failed', addedCategoryIds)
-        addToast({
-          status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.followCategoryFailed}`,
-            '新增類別失敗，請重新嘗試'
-          ),
-        })
+        addToast({ status: 'fail', text: TOAST_MESSAGE.followCategoryFailed })
       }
     }
     if (deletedCategoryIds.size) {
@@ -106,13 +98,7 @@ export default function CategorySelector({
           allCategories
         )
         console.error('send deleteCategory to pubsub failed', addedCategoryIds)
-        addToast({
-          status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.unfollowCategoryFailed}`,
-            '刪除類別失敗，請重新嘗試'
-          ),
-        })
+        addToast({ status: 'fail', text: TOAST_MESSAGE.unfollowCategoryFailed })
       }
     }
 
@@ -150,7 +136,7 @@ export default function CategorySelector({
                 <Button
                   size="xs"
                   color="nav-chip"
-                  text={t(`Others.categories.${category.slug}`, '')}
+                  text={category.title ?? ''}
                   activeState={{
                     isActive: category.slug === currentCategory?.slug,
                   }}
@@ -173,7 +159,7 @@ export default function CategorySelector({
               <Button
                 size="xs"
                 color="nav-button-add"
-                text={t('Pages.Media.CategorySelector-edit', '編輯')}
+                text="編輯"
                 icon={{
                   iconName: 'icon-add',
                   size: 'm',

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -14,7 +13,6 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -187,38 +185,38 @@ enum ActionType {
 const actions = [
   {
     type: ActionType.Sponsor,
-    textKey: 'donate',
+    text: '贊助',
     icon: 'icon-wallet',
     gtmClass: 'GTM-article_click_sponsor_article',
   },
   {
     type: ActionType.AddBookMark,
-    textKey: 'add-bookmark',
+    text: '加入書籤',
     icon: 'icon-bookmark',
-    offTextKey: 'remove-bookmark',
+    offText: '移除書籤',
     offIcon: 'icon-bookmark-off',
     gtmClass: 'GTM-article_click_bookmark',
   },
   {
     type: ActionType.AddCollection,
-    textKey: 'add-collection',
+    text: '加入集錦',
     icon: 'icon-collection',
     gtmClass: 'GTM-article_click_collection',
   },
   {
     type: ActionType.UnFollow,
-    textKey: 'unfollow',
+    text: '取消追蹤',
     icon: 'icon-unfollow',
   },
   {
     type: ActionType.CopyLink,
-    textKey: 'copy-link',
+    text: '複製連結',
     icon: 'icon-copy',
     gtmClass: 'GTM-article_click_copy_url',
   },
   {
     type: ActionType.Share,
-    textKey: 'share',
+    text: '分享',
     icon: 'icon-share',
     gtmClass: 'GTM-article_click_share',
   },
@@ -247,7 +245,6 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user, setUser } = useUser()
   const storyId = storyInfo.id
@@ -261,13 +258,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
-      addToast({
-        status: 'fail',
-        text: t(
-          `Others.toast.${TOAST_MESSAGE.moreActionError}`,
-          '有點怪怪的，請稍後再試'
-        ),
-      })
+      addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
       console.error(
         `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
       )
@@ -279,13 +270,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           return
         }
         if (!publisherId) {
-          addToast({
-            status: 'fail',
-            text: t(
-              `Others.toast.${TOAST_MESSAGE.moreActionError}`,
-              '有點怪怪的，請稍後再試'
-            ),
-          })
+          addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
           console.error(
             `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
           )
@@ -314,18 +299,12 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.removeBookmarkSuccess}`,
-                '已移除書籤'
-              ),
+              text: TOAST_MESSAGE.removeBookmarkSuccess,
             })
           } else {
             addToast({
               status: 'fail',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.deleteBookmarkFailed}`,
-                '刪除書籤失敗，請重新嘗試'
-              ),
+              text: TOAST_MESSAGE.deleteBookmarkFailed,
             })
           }
           onClose()
@@ -341,10 +320,7 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.addBookmarkSuccess}`,
-                '已加入書籤'
-              ),
+              text: TOAST_MESSAGE.addBookmarkSuccess,
             })
             logStoryInteractionEvent(userPayolad, {
               type: 'bookmark',
@@ -355,10 +331,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           } else {
             addToast({
               status: 'fail',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.addBookmarkFailed}`,
-                '加入書籤失敗，請重新嘗試'
-              ),
+              text: TOAST_MESSAGE.addBookmarkFailed,
             })
           }
           onClose()
@@ -388,10 +361,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           .then(() => {
             addToast({
               status: 'success',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.copyStoryLinkSuccess}`,
-                '已複製連結'
-              ),
+              text: TOAST_MESSAGE.copyStoryLinkSuccess,
             })
             onClose()
           })
@@ -453,15 +423,7 @@ const ActionSheet = forwardRef(function ActionSheet(
                   size="l"
                 />
                 <span className="button-large shrink-0 text-primary-700">
-                  {isStoryAddedBookmark
-                    ? t(
-                        `Components.StoryMoreActionButton.${action.offTextKey}`,
-                        '移除書籤'
-                      )
-                    : t(
-                        `Components.StoryMoreActionButton.${action.textKey}`,
-                        '加入書籤'
-                      )}
+                  {isStoryAddedBookmark ? action.offText : action.text}
                 </span>
               </button>
             )
@@ -475,10 +437,7 @@ const ActionSheet = forwardRef(function ActionSheet(
               >
                 <Icon iconName={action.icon} size="l" />
                 <span className="button-large shrink-0 text-primary-700">
-                  {t(
-                    `Components.StoryMoreActionButton.${action.textKey}`,
-                    '取消追蹤'
-                  )}
+                  {action.text}
                 </span>
               </button>
             ) : null
@@ -492,7 +451,7 @@ const ActionSheet = forwardRef(function ActionSheet(
               >
                 <Icon iconName={action.icon} size="l" />
                 <span className="button-large shrink-0 text-primary-700">
-                  {t(`Components.StoryMoreActionButton.${action.textKey}`, '')}
+                  {action.text}
                 </span>
               </button>
             )

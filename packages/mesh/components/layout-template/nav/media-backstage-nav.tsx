@@ -11,10 +11,14 @@ import { ImageCategory } from '@/constants/fallback-src'
 import { MEDIA_BACKSTAGE_NAV_ICONS } from '@/constants/layout'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import type { IconInfo as BaseIconInfo } from '@/types/layout'
 import type { Media } from '@/types/media-backstage'
 
-type IconInfo = typeof MEDIA_BACKSTAGE_NAV_ICONS['first' | 'second'][number]
+type IconInfo = Omit<BaseIconInfo, 'href'> &
+  (
+    | { hrefFn: (param: string) => string; action?: never }
+    | { action: () => void; hrefFn?: never }
+  )
 
 export default function MediaBackstageNav({
   publisherCustomId,
@@ -215,7 +219,6 @@ const NavIcon = ({
   iconInfo: IconInfo
   publisherCustomId: string
 }) => {
-  const { t } = useCustomTranslation()
   const iconJsx = isOn ? (
     <Icon size="xl" iconName={iconInfo.icon.on} />
   ) : (
@@ -223,12 +226,10 @@ const NavIcon = ({
   )
 
   const textJsx = isOn ? (
-    <span className="title-1 blocktext-primary-700">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
-    </span>
+    <span className="title-1 blocktext-primary-700">{iconInfo.text}</span>
   ) : (
     <span className="title-1 block text-primary-600 group-hover:text-primary-700">
-      {t(`Others.navs.${iconInfo.key}`, iconInfo.text)}
+      {iconInfo.text}
     </span>
   )
 

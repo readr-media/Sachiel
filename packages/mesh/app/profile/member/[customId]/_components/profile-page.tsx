@@ -11,7 +11,6 @@ import UserProfile from '@/app/profile/_components/user-profile'
 import UserStatusList from '@/app/profile/_components/user-status-list'
 import ErrorPage from '@/components/status/error-page'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import useProfileState from '@/hooks/use-profile-state'
 import useProfileTab from '@/hooks/use-profile-tab'
@@ -26,7 +25,6 @@ export default function ProfilePage({
   userType: UserType
   profileCustomId: string
 }) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user } = useUser()
   const {
@@ -84,14 +82,14 @@ export default function ProfilePage({
   }
 
   const userStatusList = [
-    { tabName: t(`Pages.Profile.${TabKey.PICK}`, '精選'), count: pickCount },
+    { tabName: TabKey.PICK, count: pickCount },
     {
-      tabName: t(`Pages.Profile.${TabKey.FOLLOWER}`, '粉絲'),
+      tabName: TabKey.FOLLOWER,
       count: followerCount,
       redirectLink: `${customId}/follower`,
     },
     {
-      tabName: t(`Pages.Profile.${TabKey.FOLLOWING}`, '追蹤中'),
+      tabName: TabKey.FOLLOWING,
       count: followingCount,
       redirectLink: `${customId}/following`,
     },
@@ -104,24 +102,12 @@ export default function ProfilePage({
       ? isMediaManager
         ? [
             {
-              text: {
-                default: t(
-                  'Pages.Profile.ProfilePage-edit-profile',
-                  '編輯個人檔案'
-                ),
-                isActive: '',
-              },
+              text: { default: '編輯個人檔案', isActive: '' },
               clickFn: () => router.push(`${customId}/edit-profile`),
               isActive: false,
             },
             {
-              text: {
-                default: t(
-                  'Pages.Profile.ProfilePage-media-backstage',
-                  '進入媒體後台'
-                ),
-                isActive: '',
-              },
+              text: { default: '進入媒體後台', isActive: '' },
               color: 'primary',
               clickFn: () =>
                 router.push(`/media-backstage/${publisherCustomId}/point`),
@@ -130,23 +116,14 @@ export default function ProfilePage({
           ]
         : [
             {
-              text: {
-                default: t(
-                  'Pages.Profile.ProfilePage-edit-profile',
-                  '編輯個人檔案'
-                ),
-                isActive: '',
-              },
+              text: { default: '編輯個人檔案', isActive: '' },
               clickFn: () => router.push(`${customId}/edit-profile`),
               isActive: false,
             },
           ]
       : [
           {
-            text: {
-              default: t('Pages.Profile.ProfilePage-follow', '追蹤'),
-              isActive: t('Pages.Profile.ProfilePage-following', '追蹤中'),
-            },
+            text: { default: '追蹤', isActive: '追蹤中' },
             clickFn: handleClickFollow,
             isActive: isFollowing,
           },

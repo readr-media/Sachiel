@@ -8,7 +8,6 @@ import { useComment } from '@/context/comment'
 // import { BookmarkObjective } from '@/types/objective'
 import { useUser } from '@/context/user'
 import type { GetCollectionQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { PickObjective } from '@/types/objective'
 // import AddBookMarkButton from '@/components/navigation/add-bookmark-button'
 import { getCollectionUrl } from '@/utils/get-url'
@@ -24,7 +23,6 @@ export default function ClientLayout({
   collection: Collection
   children: React.ReactNode
 }) {
-  const { t } = useCustomTranslation()
   const { user } = useUser()
   const isSinglePickByCurrentUser =
     collection.picks?.length === 1 &&
@@ -40,7 +38,7 @@ export default function ClientLayout({
       }}
       mobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: t('Pages.Collection.ClientLayout-title', '集錦'),
+        title: '集錦',
         rightButtons: [
           // TODO: for now bookmark pub/sub only support add story to bookmark, unlock the comment when pub/sub update
           // <AddBookMarkButton
@@ -56,7 +54,7 @@ export default function ClientLayout({
       }}
       nonMobileNavigation={{
         leftButtons: [<GoBackButton key={0} />],
-        title: t('Pages.Collection.ClientLayout-title', '集錦'),
+        title: '集錦',
         rightButtons: [
           <CollectionMoreActionButton key={2} collection={collection} />,
         ],

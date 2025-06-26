@@ -4,7 +4,6 @@ import * as XLSX from 'xlsx'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import type { GetPublisherReportsQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export type Report = NonNullable<
   NonNullable<
@@ -13,11 +12,9 @@ export type Report = NonNullable<
 >
 
 export default function ReportRow({ report }: { report: Report }) {
-  const { t } = useCustomTranslation()
   const isLoadingRef = useRef(false)
   const fileBlobRef = useRef<Blob | null>(null)
   const { title, start_date, end_date, url } = report
-  const { startMonth, endMonth } = formatMonthRange(start_date, end_date)
 
   const fetchReportFile = async (fileUrl: string) => {
     if (!fileBlobRef.current) {
@@ -112,15 +109,7 @@ export default function ReportRow({ report }: { report: Report }) {
           className="subtitle-1 cursor-pointer text-primary-700 active:text-primary-500"
           onClick={handleDownload.bind(null, url)}
         >
-          {t(
-            'Pages.Media-Backstage.ReportRow-month-range',
-            '{{startMonth}}-{{endMonth}} 月',
-            {
-              startMonth,
-              endMonth,
-            }
-          )}{' '}
-          : {title}
+          {formatMonthRange(start_date, end_date)} : {title}
         </span>
       </div>
       <div className="flex gap-4">
@@ -132,7 +121,7 @@ export default function ReportRow({ report }: { report: Report }) {
             icon={{ default: 'icon-download', hover: 'icon-download-hover' }}
             size="l"
           />
-          {t('Pages.Media-Backstage.ReportRow-download', '下載')}
+          下載
         </button>
         <button
           className="subtitle-1 group flex items-center gap-1 rounded-md px-2 py-1 text-primary-600 hover:bg-primary-100 hover:text-primary-700"
@@ -142,7 +131,7 @@ export default function ReportRow({ report }: { report: Report }) {
             icon={{ default: 'icon-print', hover: 'icon-print-hover' }}
             size="l"
           />
-          {t('Pages.Media-Backstage.ReportRow-print', '列印')}
+          列印
         </button>
       </div>
     </li>
@@ -152,5 +141,5 @@ export default function ReportRow({ report }: { report: Report }) {
 function formatMonthRange(start: string, end: string) {
   const startMonth = new Date(start).getMonth() + 1
   const endMonth = new Date(end).getMonth() + 1
-  return { startMonth, endMonth }
+  return `${startMonth}-${endMonth} 月`
 }

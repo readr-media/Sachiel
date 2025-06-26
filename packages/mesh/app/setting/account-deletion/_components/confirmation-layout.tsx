@@ -8,19 +8,14 @@ import NonMobileNavigation, {
   NonMobileNavigationType,
 } from '@/components/layout-template/navigation/non-mobile-navigation'
 import GoBackButton from '@/components/navigation/go-back-button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function ConfirmationLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { t } = useCustomTranslation()
   const navigationData = {
-    title: t(
-      'Pages.Setting-Account-Deletion.ConfirmationLayout-title',
-      '刪除帳號'
-    ),
+    title: '刪除帳號',
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }

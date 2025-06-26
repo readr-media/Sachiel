@@ -3,7 +3,6 @@ import { useRef } from 'react'
 import Icon from '@/components/icon'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 type AvatarEditMenu = {
   handleDeletePhoto: () => void
@@ -14,7 +13,6 @@ export default function AvatarEditMenu({
   hideBottomMenu,
   handleDeletePhoto,
 }: AvatarEditMenu) {
-  const { t } = useCustomTranslation()
   const { user } = useUser()
   const menuRef = useRef(null)
   useClickOutside(menuRef, hideBottomMenu)
@@ -29,7 +27,7 @@ export default function AvatarEditMenu({
       <li className="button-large text-primary-700">
         <label htmlFor="avatar" className="flex cursor-pointer gap-1">
           <Icon iconName="icon-photo" size="l" />
-          {t('Pages.Edit-Profile.AvatarEditMenu-select-photo', '選擇相片')}
+          選擇相片
         </label>
       </li>
       {user.avatarImageId && (
@@ -38,7 +36,7 @@ export default function AvatarEditMenu({
           onClick={handleDeletePhoto}
         >
           <Icon iconName="icon-delete" size="l" />
-          {t('Pages.Edit-Profile.AvatarEditMenu-remove-avatar', '刪除大頭貼照')}
+          刪除大頭貼照
         </li>
       )}
     </ul>

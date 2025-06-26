@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import Avatar from '@/components/story-card/avatar'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type UserType } from '@/types/profile'
 import { debounce } from '@/utils/performance'
 
@@ -21,7 +20,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
   userType,
   pickedCount,
 }) => {
-  const { t } = useCustomTranslation()
   const [showMore, setShowMore] = useState(false)
   const toggleShowMore = () => setShowMore((prev) => !prev)
   const handleOnClickShowMore = debounce(toggleShowMore)
@@ -29,17 +27,17 @@ const UserProfile: React.FC<UserProfileProps> = ({
     if (userType === 'publisher') {
       return (
         <p className="footnote sm:profile-subtitle text-primary-500">
-          {t('Pages.Profile.UserProfile-publisher-get-picks-1', '本週獲得')}
+          本週獲得
           <span className="text-primary-800">{pickedCount}</span>
-          {t('Pages.Profile.UserProfile-publisher-get-picks-2', '次精選')}
+          次精選
         </p>
       )
     }
     return (
       <p className="footnote sm:profile-subtitle text-primary-500">
-        {t('Pages.Profile.UserProfile-member-picks-1', '本週精選了')}
+        本週精選了
         <span className="text-primary-800">{pickCount}</span>
-        {t('Pages.Profile.UserProfile-member-picks-2', '篇文章')}
+        篇文章
       </p>
     )
   }

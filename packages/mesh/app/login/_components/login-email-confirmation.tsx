@@ -1,10 +1,8 @@
 import { LoginState, useLogin } from '@/context/login'
 import useCountdown from '@/hooks/use-countdown'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { sendEmailLink } from '@/utils/auth-provider'
 
 export default function LoginEmailConfirmation() {
-  const { t } = useCustomTranslation()
   const { formData, setStep } = useLogin()
   const { email } = formData
   const { countdown, resetCountdown } = useCountdown(60)
@@ -20,27 +18,19 @@ export default function LoginEmailConfirmation() {
     <div className="flex w-full justify-center p-10">
       <div className="w-[295px]">
         <p className="subtitle-1 pb-6 text-center text-primary-700">
-          {t(
-            'Pages.Login.LoginEmailConfirmation-hint-1',
-            '我們已將登入連結寄到 {{email}}，請點擊信件中的連結登入。',
-            { email }
-          )}
+          我們已將登入連結寄到 {email}，請點擊信件中的連結登入。
         </p>
         <p className="footnote text-center text-primary-400">
-          {t(
-            'Pages.Login.LoginEmailConfirmation-hint-2',
-            '沒收到信件？請檢查垃圾信件匣'
-          )}
+          沒收到信件？請檢查垃圾信件匣
         </p>
         <p className="footnote pb-5 text-center text-primary-400">
-          {t('Pages.Login.LoginEmailConfirmation-hint-3', '或')}
+          或
           <button
             className="text-primary-700 underline underline-offset-2"
             onClick={resendEmail}
             disabled={countdown > 0}
           >
-            {t('Pages.Login.LoginEmailConfirmation-hint-4', '重新發送信件')}{' '}
-            {countdown === 0 ? '' : `(${countdown}s)`}
+            重新發送信件 {countdown === 0 ? '' : `(${countdown}s)`}
           </button>
         </p>
         <button
@@ -49,10 +39,7 @@ export default function LoginEmailConfirmation() {
             setStep(LoginState.Entry)
           }}
         >
-          {t(
-            'Pages.Login.LoginEmailConfirmation-try-other-way',
-            '嘗試其他登入方式'
-          )}
+          嘗試其他登入方式
         </button>
       </div>
     </div>

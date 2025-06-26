@@ -5,8 +5,7 @@ import { useState } from 'react'
 
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import { DisplayTimeFromNow } from '@/components/story-time-display'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { displayTimeFromNow } from '@/utils/story-display'
 
 import { type LatestAction } from './feed'
 
@@ -15,7 +14,6 @@ export default function FeedComment({
 }: {
   comment: LatestAction['commentsData'][number]
 }) {
-  const { t } = useCustomTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
   const text = comment.content || ''
   const maxTextLength = 60
@@ -41,9 +39,7 @@ export default function FeedComment({
           </div>
           <Icon iconName="icon-dot" size="s" />
           <div className="caption-1 text-primary-500">
-            <span>
-              <DisplayTimeFromNow date={comment.createdAt} />
-            </span>
+            <span>{displayTimeFromNow(comment.createdAt)}</span>
           </div>
         </span>
         <p className="body-3 text-primary-600">
@@ -57,7 +53,7 @@ export default function FeedComment({
                 onClick={toggleExpand}
                 className="body-3 pl-1 text-primary-400 hover-or-active:text-primary-700"
               >
-                {t('Pages.Social.FeedComment-expand-comment', '看完整留言')}
+                看完整留言
               </button>
             </>
           )}

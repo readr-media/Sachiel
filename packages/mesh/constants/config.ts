@@ -51,7 +51,7 @@ let NEXT_PAGES_REVALIDATE: {
 let SITE_HOST = ''
 const SITE_TITLE = 'READr Mesh 讀選'
 const SITE_DESCRIPTION =
-  'site-在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。'
+  '在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。'
 
 switch (ENV) {
   case 'local':

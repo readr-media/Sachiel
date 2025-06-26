@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import Spinner from '@/components/spinner'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import LoadingPoint from './_components/loading'
 import LoadingSponsorship from './sponsorship/_components/loading'
@@ -15,7 +14,6 @@ export default function PointLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { t } = useCustomTranslation()
   const pathname = usePathname()
   const subPath = pathname.split('/')[2]
   const isNestedPage = ['sponsorship', 'subscribe-stories', 'record'].includes(
@@ -27,15 +25,15 @@ export default function PointLayout({
   if (isNestedPage) {
     switch (subPath) {
       case 'sponsorship':
-        subtitle = t('Pages.Point.Layout-sponsor', '已贊助媒體')
+        subtitle = '已贊助媒體'
         loadingJsx = <LoadingSponsorship />
         break
       case 'subscribe-stories':
-        subtitle = t('Pages.Point.Layout-subscribe-stories', '訂閱中文章')
+        subtitle = '訂閱中文章'
         loadingJsx = <LoadingSubscribeStories />
         break
       case 'record':
-        subtitle = t('Pages.Point.Layout-record', '點數紀錄')
+        subtitle = '點數紀錄'
         break
       default:
         subtitle = ''

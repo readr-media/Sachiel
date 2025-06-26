@@ -13,7 +13,6 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -49,7 +48,6 @@ export default function CollectionMoreActionButton({
   nestedScrollContainerRef?: RefObject<HTMLElement>
   className?: string
 }) {
-  const { t } = useCustomTranslation()
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
   const [position, setPosition] = useState<Position>({
     top: Infinity,
@@ -94,28 +92,16 @@ export default function CollectionMoreActionButton({
 
   const dialogInfos = {
     [ActionType.Delete]: {
-      title: t(
-        'Pages.Collection.CollectionMoreActionButton-delete-title',
-        '確認刪除集錦'
-      ),
-      description: t(
-        'Pages.Collection.CollectionMoreActionButton-delete-warning',
-        '此動作無法還原'
-      ),
+      title: '確認刪除集錦',
+      description: '此動作無法還原',
       primaryAction: {
-        text: t(
-          'Pages.Collection.CollectionMoreActionButton-delete-cancel',
-          '取消'
-        ),
+        text: '取消',
         action: () => {
           dialogRef.current?.close()
         },
       },
       secondaryAction: {
-        text: t(
-          'Pages.Collection.CollectionMoreActionButton-delete',
-          '刪除集錦'
-        ),
+        text: '刪除集錦',
         action: async () => {
           const response = await removeCollection({
             collectionId: collection.id,
@@ -125,32 +111,17 @@ export default function CollectionMoreActionButton({
           if (response) {
             router.push(`/profile/member/${user.customId}?tab=COLLECTIONS`)
           } else {
-            addToast({
-              status: 'fail',
-              text: t(
-                `Others.toast.${TOAST_MESSAGE.deleteCollectionFailed}`,
-                '刪除集錦失敗，請重新嘗試'
-              ),
-            })
+            addToast({ status: 'fail', text: '刪除集錦失敗' })
           }
           dialogRef.current?.close()
         },
       },
     },
     [ActionType.Report]: {
-      title: t(
-        'Pages.Collection.CollectionMoreActionButton-report-title',
-        '檢舉成功'
-      ),
-      description: t(
-        'Pages.Collection.CollectionMoreActionButton-report-detail',
-        '我們已收到您的檢舉，感謝提供資訊。'
-      ),
+      title: '檢舉成功',
+      description: '我們已收到您的檢舉，感謝提供資訊。',
       primaryAction: {
-        text: t(
-          'Pages.Collection.CollectionMoreActionButton-report-confirm',
-          '好的'
-        ),
+        text: '好的',
         action: () => {
           dialogRef.current?.close()
         },
@@ -226,31 +197,31 @@ export default function CollectionMoreActionButton({
 const creatorActions = [
   {
     type: ActionType.EditTitle,
-    textKey: 'CollectionMoreActionButton-action-edit-title',
+    text: '修改標題',
     icon: 'icon-collection-edit',
     style: 'text-primary-700 lg:hidden',
   },
   {
     type: ActionType.EditDescription,
-    textKey: 'CollectionMoreActionButton-action-edit-description',
+    text: '修改敘述',
     icon: 'icon-collection-edit',
     style: 'text-primary-700 lg:hidden',
   },
   {
     type: ActionType.EditStories,
-    textKey: 'CollectionMoreActionButton-action-edit-stories',
+    text: '編輯內容與排序',
     icon: 'icon-collection-edit-stories',
     style: 'text-primary-700 lg:hidden',
   },
   {
     type: ActionType.EditAll,
-    textKey: 'CollectionMoreActionButton-action-edit-all',
+    text: '編輯集錦',
     icon: 'icon-collection-edit',
     style: 'text-primary-700 hidden lg:flex',
   },
   {
     type: ActionType.Delete,
-    textKey: 'CollectionMoreActionButton-action-edit-delete',
+    text: '刪除集錦',
     icon: 'icon-collection-delete',
     style: 'text-custom-red-text',
   },
@@ -259,7 +230,7 @@ const creatorActions = [
 const visitorActions = [
   {
     type: ActionType.Report,
-    textKey: 'CollectionMoreActionButton-action-report',
+    text: '檢舉',
     icon: 'icon-collection-report',
     style: 'text-primary-700',
   },
@@ -279,7 +250,6 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user } = useUser()
   const { addToast } = useToast()
@@ -291,13 +261,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const actions = isCreator ? creatorActions : visitorActions
   const onAction = async (type: ActionType) => {
     if (!collection) {
-      addToast({
-        status: 'fail',
-        text: t(
-          `Others.toast.${TOAST_MESSAGE.moreActionError}`,
-          '有點怪怪的，請稍後再試'
-        ),
-      })
+      addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
       console.error(
         `more action on collection error, collection: ${collection}`
       )
@@ -360,9 +324,7 @@ const ActionSheet = forwardRef(function ActionSheet(
                 onClick={onAction.bind(null, action.type)}
               >
                 <Icon iconName={action.icon} size="l" />
-                <span className="button-large shrink-0">
-                  {t(`Pages.Collection.${action.textKey}`, '')}
-                </span>
+                <span className="button-large shrink-0">{action.text}</span>
               </button>
             )
           })}

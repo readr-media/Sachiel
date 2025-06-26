@@ -12,12 +12,10 @@ import {
 import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
 import { ImageCategory } from '@/constants/fallback-src'
 import { collectionCreateParamName } from '@/constants/search-param-names'
-import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { setCrossPageCollectionPickStory } from '@/utils/cross-page-create-collection'
@@ -39,7 +37,6 @@ export default function AddStoryToCollection({
   story: CollectionPickStory | MongoDBResponse['stories'][number]
   onClose: () => void
 }) {
-  const { t } = useCustomTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [collections, setCollections] = useState<Collection[]>([])
   const [addedCollections, setAddedCollections] = useState<Collection[]>([])
@@ -65,13 +62,7 @@ export default function AddStoryToCollection({
       pickDate: getCurrentTimeInISOFormat(),
     })
     if (response) {
-      addToast({
-        status: 'success',
-        text: t(
-          `Others.toast.${TOAST_MESSAGE.addStoryToCollectionSuccess}`,
-          '成功加入集錦'
-        ),
-      })
+      addToast({ status: 'success', text: '成功加入集錦' })
       logStoryInteractionEvent(userPayload, {
         type: 'collection',
         storyId: story.id,
@@ -87,13 +78,7 @@ export default function AddStoryToCollection({
         },
       })
     } else {
-      addToast({
-        status: 'fail',
-        text: t(
-          `Others.toast.${TOAST_MESSAGE.addStoryToCollectionFailed}`,
-          '加入集錦失敗，請重新嘗試'
-        ),
-      })
+      addToast({ status: 'fail', text: '加入集錦失敗，請重新嘗試' })
     }
     onClose()
   }
@@ -139,39 +124,24 @@ export default function AddStoryToCollection({
     if (!collections.length && !addedCollections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          {t(
-            'Components.AddStoryToCollection.no-collection',
-            '你目前還沒有任何集錦...'
-          )}
+          你目前還沒有任何集錦...
         </div>
       )
     if (!collections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          {t(
-            'Components.AddStoryToCollection.story-alredy-added',
-            '你之前已將這篇新聞加入你所有的集錦囉'
-          )}
+          你之前已將這篇新聞加入你所有的集錦囉
         </div>
       )
     if (!addedCollections.length) return null
     const endingText =
       addedCollections.length > 1
-        ? t(
-            'Components.AddStoryToCollection.added-detail-2-plural',
-            '等{{length}}個集錦囉',
-            {
-              length: addedCollections.length,
-            }
-          )
-        : t('Components.AddStoryToCollection.added-detail-2-single', '集錦囉')
+        ? `等${addedCollections.length}個集錦囉`
+        : '集錦囉'
 
     return (
       <div className="body-3 p-5 pb-0 text-primary-500">
-        {t(
-          'Components.AddStoryToCollection.added-detail-1',
-          '你之前已將這篇新聞加入'
-        )}
+        你之前已將這篇新聞加入
         {addedCollections.map((collection, i) => (
           <React.Fragment key={i}>
             「
@@ -209,9 +179,7 @@ export default function AddStoryToCollection({
           >
             <Icon className="sm:hidden" iconName="icon-chevron-left" size="m" />
           </div>
-          <div className="list-title text-primary-800">
-            {t('Components.AddStoryToCollection.add-to-collection', '加入集錦')}
-          </div>
+          <div className="list-title text-primary-800">加入集錦</div>
           <div
             className="group pointer-events-none relative flex size-11 items-center justify-center sm:pointer-events-auto sm:cursor-pointer"
             onClick={onClose}
@@ -267,10 +235,7 @@ export default function AddStoryToCollection({
         <div className="border-t px-5 py-3 sm:py-5">
           <Button
             size="lg"
-            text={t(
-              'Components.AddStoryToCollection.create-new-collection',
-              '建立新集錦'
-            )}
+            text="建立新集錦"
             color="white"
             onClick={createCollection}
           />
