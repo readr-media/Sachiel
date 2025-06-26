@@ -1,7 +1,7 @@
 'use server'
 
 import { searchWithHybrid } from '@/app/actions/hybrid-search'
-import { MISO_ORDER_BY } from '@/constants/miso'
+import { MISO_ORDER_BY, MISO_SEARCH_PAGINATION } from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetStoriesCommentCountsQuery,
@@ -42,7 +42,7 @@ export async function searchWithPagination(
   searchType: 'STORY' | 'COLLECTION',
   query: string,
   pageIndex: number,
-  pageSize: number = 20,
+  pageSize: number = MISO_SEARCH_PAGINATION.PAGE_SIZE,
   orderBy: OrderByType = 'RELEVANCE',
   gqlData?:
     | GetStoriesCommentCountsQuery['stories']

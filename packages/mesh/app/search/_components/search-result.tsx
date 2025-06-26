@@ -1,7 +1,12 @@
 'use client'
 import { useState } from 'react'
 
-import { type SearchResultType, type SearchType } from '@/constants/miso'
+import {
+  type FilterType,
+  type SearchResultType,
+  type SearchType,
+  MISO_SEARCH_FILTERS,
+} from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -22,25 +27,7 @@ type SearchResultsProps = {
   currentStorySort: 'relevance' | 'published_at'
   currentCollectionSort: 'relevance' | 'published_at'
 }
-export type filterType = {
-  id: 'story' | 'collection' | 'member-publisher'
-  name: string
-}
-
-const filters: filterType[] = [
-  {
-    id: 'story',
-    name: '新聞',
-  },
-  {
-    id: 'collection',
-    name: '集錦',
-  },
-  {
-    id: 'member-publisher',
-    name: '個人檔案',
-  },
-]
+export type filterType = FilterType
 
 export default function SearchResult({
   query,
@@ -53,7 +40,7 @@ export default function SearchResult({
   currentCollectionSort,
 }: SearchResultsProps) {
   const [activeFilter, setActiveFilter] = useState<filterType['id']>(
-    filters[0].id
+    MISO_SEARCH_FILTERS[0].id
   )
   return (
     <div>

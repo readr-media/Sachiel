@@ -8,7 +8,10 @@ import { getStoriesCommentCounts } from '@/app/actions/story'
 import {
   type SearchResultType,
   type SearchType,
+  mapSortToOrderBy,
+  MISO_BASE_SEARCH_OPTIONS,
   MISO_ORDER_BY,
+  validateSortParam,
 } from '@/constants/miso'
 import type { HybridSearchResponse } from '@/types/miso'
 import processAnswerText from '@/utils/miso-ask-process'
@@ -26,40 +29,16 @@ export default async function SearchResultPage({
   const { sort, story_sort, collection_sort } = searchParams
   const decodedQuery = decodeURIComponent(query)
 
-  // Validate and set sort parameters - support independent sorting
-  const validSorts = ['relevance', 'published_at'] as const
+  const storySortBy = story_sort
+    ? validateSortParam(story_sort)
+    : validateSortParam(sort)
 
-  // Story sort with fallback to general sort, then default
-  const storySortBy = validSorts.includes(
-    story_sort as typeof validSorts[number]
-  )
-    ? (story_sort as typeof validSorts[number])
-    : validSorts.includes(sort as typeof validSorts[number])
-    ? (sort as typeof validSorts[number])
-    : 'published_at'
+  const collectionSortBy = collection_sort
+    ? validateSortParam(collection_sort)
+    : validateSortParam(sort)
 
-  // Collection sort with fallback to general sort, then default
-  const collectionSortBy = validSorts.includes(
-    collection_sort as typeof validSorts[number]
-  )
-    ? (collection_sort as typeof validSorts[number])
-    : validSorts.includes(sort as typeof validSorts[number])
-    ? (sort as typeof validSorts[number])
-    : 'published_at'
-
-  const storyOrderBy =
-    storySortBy === 'relevance'
-      ? MISO_ORDER_BY.RELEVANCE
-      : MISO_ORDER_BY.PUBLISHED_AT
-
-  const collectionOrderBy =
-    collectionSortBy === 'relevance'
-      ? MISO_ORDER_BY.RELEVANCE
-      : MISO_ORDER_BY.PUBLISHED_AT
-
-  const baseSearchOptions = {
-    rows: 20,
-  }
+  const storyOrderBy = mapSortToOrderBy(storySortBy)
+  const collectionOrderBy = mapSortToOrderBy(collectionSortBy)
   // 建立搜尋 promises
   const searchPromises: Record<
     SearchType,
@@ -68,14 +47,14 @@ export default async function SearchResultPage({
     'member-publisher': searchWithHybrid(
       decodedQuery,
       'USER_AND_PUBLISHER_PROFILE',
-      { ...baseSearchOptions, order_by: MISO_ORDER_BY.RELEVANCE }
+      { ...MISO_BASE_SEARCH_OPTIONS, order_by: MISO_ORDER_BY.RELEVANCE }
     ),
     story: searchWithHybrid(decodedQuery, 'STORY', {
-      ...baseSearchOptions,
+      ...MISO_BASE_SEARCH_OPTIONS,
       order_by: storyOrderBy,
     }),
     collection: searchWithHybrid(decodedQuery, 'COLLECTION', {
-      ...baseSearchOptions,
+      ...MISO_BASE_SEARCH_OPTIONS,
       order_by: collectionOrderBy,
     }),
   }

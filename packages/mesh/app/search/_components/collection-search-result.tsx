@@ -2,7 +2,11 @@ import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 
 import { searchWithPagination } from '@/app/actions/search-pagination'
-import { MISO_ORDER_BY } from '@/constants/miso'
+import {
+  generateNoResultsMessage,
+  MISO_ORDER_BY,
+  MISO_SEARCH_PAGINATION,
+} from '@/constants/miso'
 import type { GetCollectionsQuery } from '@/graphql/__generated__/graphql'
 import { type SearchResults } from '@/utils/data-schema'
 
@@ -15,9 +19,6 @@ type CollectionSearchResultProps = {
   currentSort: 'relevance' | 'published_at'
   collectionsGQLData?: GetCollectionsQuery['collections']
 }
-
-const PAGE_SIZE = 20
-const MAX_ELEMENTS = 200 // Reasonable limit for performance
 
 export default function CollectionSearchResult({
   query,
@@ -46,13 +47,13 @@ export default function CollectionSearchResult({
         'COLLECTION',
         query,
         pageIndex,
-        PAGE_SIZE,
+        MISO_SEARCH_PAGINATION.PAGE_SIZE,
         orderBy,
         collectionsGQLData
       )) as SearchResults['collection']
 
       // If we get fewer collections than page size, we've reached the end
-      if (newCollections.length < PAGE_SIZE) {
+      if (newCollections.length < MISO_SEARCH_PAGINATION.PAGE_SIZE) {
         setHasMoreData(false)
       }
 
@@ -67,9 +68,7 @@ export default function CollectionSearchResult({
   if (isNoResult) {
     return (
       <p className="pt-3 text-primary-500 sm:pt-5">
-        找不到包含「
-        <span className="text-primary-700">{query}</span>
-        」的集錦，請換個關鍵字，再試一次。
+        {generateNoResultsMessage(query, '集錦')}
       </p>
     )
   }
@@ -78,8 +77,11 @@ export default function CollectionSearchResult({
     <InfiniteScrollList
       key={currentSort}
       initialList={initialCollections}
-      pageSize={PAGE_SIZE}
-      amountOfElements={Math.min(totalCount, MAX_ELEMENTS)}
+      pageSize={MISO_SEARCH_PAGINATION.PAGE_SIZE}
+      amountOfElements={Math.min(
+        totalCount,
+        MISO_SEARCH_PAGINATION.MAX_ELEMENTS
+      )}
       fetchListInPage={fetchMoreCollections}
       isAutoFetch={true}
     >

@@ -2,7 +2,11 @@ import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 
 import { searchWithPagination } from '@/app/actions/search-pagination'
-import { MISO_ORDER_BY } from '@/constants/miso'
+import {
+  generateNoResultsMessage,
+  MISO_ORDER_BY,
+  MISO_SEARCH_PAGINATION,
+} from '@/constants/miso'
 import type { GetStoriesCommentCountsQuery } from '@/graphql/__generated__/graphql'
 import { type SearchResults } from '@/utils/data-schema'
 
@@ -15,9 +19,6 @@ type StorySearchResultProps = {
   currentSort: 'relevance' | 'published_at'
   storiesGQLData?: GetStoriesCommentCountsQuery['stories']
 }
-
-const PAGE_SIZE = 20
-const MAX_ELEMENTS = 200 // Reasonable limit for performance
 
 export default function StorySearchResult({
   query,
@@ -46,13 +47,13 @@ export default function StorySearchResult({
         'STORY',
         query,
         pageIndex,
-        PAGE_SIZE,
+        MISO_SEARCH_PAGINATION.PAGE_SIZE,
         orderBy,
         storiesGQLData
       )) as SearchResults['story']
 
       // If we get fewer stories than page size, we've reached the end
-      if (newStories.length < PAGE_SIZE) {
+      if (newStories.length < MISO_SEARCH_PAGINATION.PAGE_SIZE) {
         setHasMoreData(false)
       }
 
@@ -67,9 +68,7 @@ export default function StorySearchResult({
   if (isNoResult) {
     return (
       <p className="pt-3 text-primary-500 sm:pt-5">
-        找不到包含「
-        <span className="text-primary-700">{query}</span>
-        」的新聞，請換個關鍵字，再試一次。
+        {generateNoResultsMessage(query, '新聞')}
       </p>
     )
   }
@@ -80,8 +79,11 @@ export default function StorySearchResult({
       <InfiniteScrollList
         key={currentSort}
         initialList={initialStories}
-        pageSize={PAGE_SIZE}
-        amountOfElements={Math.min(totalCount, MAX_ELEMENTS)}
+        pageSize={MISO_SEARCH_PAGINATION.PAGE_SIZE}
+        amountOfElements={Math.min(
+          totalCount,
+          MISO_SEARCH_PAGINATION.MAX_ELEMENTS
+        )}
         fetchListInPage={fetchMoreStories}
         isAutoFetch={true}
       >

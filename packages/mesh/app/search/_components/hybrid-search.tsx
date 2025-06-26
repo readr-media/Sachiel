@@ -4,7 +4,13 @@ import { useState } from 'react'
 
 import Drawer from '@/app/_components/drawer'
 import Icon from '@/components/icon'
-import { type SearchResultType, type SearchType } from '@/constants/miso'
+import {
+  type SearchResultType,
+  type SearchType,
+  getSortLabel,
+  MISO_SEARCH_SORT_OPTIONS,
+  MISO_SEARCH_UI,
+} from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -35,11 +41,6 @@ type HybridSearchProps = {
   currentStorySort: 'relevance' | 'published_at'
   currentCollectionSort: 'relevance' | 'published_at'
 }
-
-export const sortOptions = [
-  { value: 'relevance', label: '相關度' },
-  { value: 'published_at', label: '最新發布' },
-] as const
 
 export default function HybridSearch({
   hybridSearchResults,
@@ -88,17 +89,11 @@ export default function HybridSearch({
   }
 
   const getCurrentStorySortLabel = () => {
-    return (
-      sortOptions.find((option) => option.value === currentStorySort)?.label ||
-      '相關度'
-    )
+    return getSortLabel(currentStorySort)
   }
 
   const getCurrentCollectionSortLabel = () => {
-    return (
-      sortOptions.find((option) => option.value === currentCollectionSort)
-        ?.label || '相關度'
-    )
+    return getSortLabel(currentCollectionSort)
   }
 
   // need to pass tab filter
@@ -150,7 +145,7 @@ export default function HybridSearch({
           toggleDrawer={() => {
             setIsDrawerOpen((prev) => !prev)
           }}
-          sortOptions={sortOptions}
+          sortOptions={MISO_SEARCH_SORT_OPTIONS}
           handleSortChange={handleCollectionSortChange}
         />
         <CollectionSearchResult
@@ -170,7 +165,7 @@ export default function HybridSearch({
           <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
             <span className="button text-primary-500">排序依</span>
             <ul className="flex flex-col gap-4">
-              {sortOptions.map(({ value, label }) => (
+              {MISO_SEARCH_SORT_OPTIONS.map(({ value, label }) => (
                 <li
                   key={value}
                   className="cursor-pointer"
@@ -218,8 +213,7 @@ export default function HybridSearch({
                   </h4>
                   <div className="flex gap-2 overflow-x-auto">
                     {misoAskResult?.data.sources
-                      //TODO: magic number
-                      .slice(0, 3)
+                      .slice(0, MISO_SEARCH_UI.MAX_SOURCES_DISPLAY)
                       .map((source, index) => (
                         <a
                           key={source.product_id}
@@ -264,7 +258,7 @@ export default function HybridSearch({
           toggleDrawer={() => {
             setIsDrawerOpen((prev) => !prev)
           }}
-          sortOptions={sortOptions}
+          sortOptions={MISO_SEARCH_SORT_OPTIONS}
           handleSortChange={handleStorySortChange}
         />
 
@@ -290,7 +284,7 @@ export default function HybridSearch({
         <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
           <span className="button text-primary-500">排序依</span>
           <ul className="flex flex-col gap-4">
-            {sortOptions.map(({ value, label }) => (
+            {MISO_SEARCH_SORT_OPTIONS.map(({ value, label }) => (
               <li
                 key={value}
                 className="cursor-pointer"
