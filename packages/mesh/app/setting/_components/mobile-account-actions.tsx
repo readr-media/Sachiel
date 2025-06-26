@@ -51,6 +51,17 @@ export default function MobileAccountActions() {
       </div>
       <div className="border-y-[0.5px] border-y-primary-800 border-opacity-10 bg-single-layer px-5 py-4">
         <div className="group cursor-pointer">
+          <Link
+            href={ACTION_NAMES[3].href as string}
+            className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
+          >
+            {ACTION_NAMES[3].name}
+          </Link>
+        </div>
+
+        <hr className="my-4 border-t-[0.5px] border-t-primary-800 border-opacity-10" />
+
+        <div className="group cursor-pointer">
           <button
             onClick={logout}
             className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
