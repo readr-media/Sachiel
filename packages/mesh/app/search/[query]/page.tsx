@@ -5,20 +5,15 @@ import {
   searchWithHybrid,
 } from '@/app/actions/hybrid-search'
 import { getStoriesCommentCounts } from '@/app/actions/story'
-import { MISO_ORDER_BY } from '@/constants/miso'
+import {
+  type SearchResultType,
+  type SearchType,
+  MISO_ORDER_BY,
+} from '@/constants/miso'
 import type { HybridSearchResponse } from '@/types/miso'
 import processAnswerText from '@/utils/miso-ask-process'
 
 import SearchResult from '../_components/search-result'
-// 定義搜尋結果
-export type SearchResult = {
-  success: boolean
-  data: HybridSearchResponse | null
-  error: Error | null
-}
-
-// 定義搜尋類型
-export type SearchType = 'story' | 'collection' | 'member-publisher'
 
 export default async function SearchResultPage({
   params,
@@ -89,7 +84,7 @@ export default async function SearchResultPage({
   const settledResults = await Promise.allSettled(Object.values(searchPromises))
   const searchPromisesKeys = Object.keys(searchPromises) as SearchType[]
 
-  const hybridSearchResults: Record<SearchType, SearchResult> =
+  const hybridSearchResults: Record<SearchType, SearchResultType> =
     searchPromisesKeys.reduce((acc, key, index) => {
       const result = settledResults[index]
       acc[key] = {
@@ -98,7 +93,7 @@ export default async function SearchResultPage({
         error: result.status === 'rejected' ? (result.reason as Error) : null,
       }
       return acc
-    }, {} as Record<SearchType, SearchResult>)
+    }, {} as Record<SearchType, SearchResultType>)
 
   const collectionsGQLData = await getCollections({
     collectionIds:

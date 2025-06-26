@@ -2,6 +2,8 @@
  * Miso AI 相關常數配置
  */
 
+import { type HybridSearchResponse } from '@/types/miso'
+
 // API 基本設定
 export const MISO_CONFIG = {
   API_KEY: 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT',
@@ -79,3 +81,12 @@ export const MISO_ANSWER_STAGES = {
   GENERATING: '產生摘要',
   COMPLETED: '完成',
 } as const
+// 定義搜尋結果
+export type SearchResultType = {
+  success: boolean
+  data: HybridSearchResponse | null
+  error: Error | null
+}
+
+// 定義搜尋類型
+export type SearchType = 'story' | 'collection' | 'member-publisher'

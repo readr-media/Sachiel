@@ -1,4 +1,4 @@
-import type { SearchResult } from '@/app/search/[query]/page'
+import { type SearchResultType } from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -8,7 +8,7 @@ import type {
 import type { SearchResults } from './data-schema'
 
 const convertMisoToMemberAndPublisher = (
-  misoData: SearchResult['data'],
+  misoData: SearchResultType['data'],
   publisherGQLData?: GetPublishersQuery['publishers']
 ): {
   memberResult: SearchResults['member']
@@ -68,7 +68,7 @@ const convertMisoToMemberAndPublisher = (
 
 // 轉換 Miso API 回應為 CollectionSearchResult 組件期望的格式
 const convertMisoToCollection = (
-  misoData: SearchResult['data'],
+  misoData: SearchResultType['data'],
   collectionsGQLData?: GetCollectionsQuery['collections']
 ): { collectionResult: SearchResults['collection'] } => {
   if (!misoData?.data?.products) {
@@ -125,7 +125,7 @@ const convertMisoToCollection = (
 
 // 轉換 Miso API 回應為 StorySearchResult 組件期望的格式
 const convertMisoToStory = (
-  misoData: SearchResult['data'],
+  misoData: SearchResultType['data'],
   storiesGQLData?: GetStoriesCommentCountsQuery['stories']
 ): SearchResults['story'] => {
   if (!misoData?.data?.products) {

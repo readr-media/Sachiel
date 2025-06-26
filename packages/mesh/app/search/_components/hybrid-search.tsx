@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import Drawer from '@/app/_components/drawer'
 import Icon from '@/components/icon'
+import { type SearchResultType, type SearchType } from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -17,7 +18,6 @@ import {
 } from '@/utils/miso-response-mapper'
 import { displayTimeFromNow } from '@/utils/story-display'
 
-import type { SearchResult, SearchType } from '../[query]/page'
 import CollectionSearchResult from './collection-search-result'
 import MemberAndPublisher from './member-and-publisher'
 import ResultTotal from './result-total'
@@ -25,7 +25,7 @@ import { type filterType } from './search-result'
 import StorySearchResult from './story-search-result'
 
 type HybridSearchProps = {
-  hybridSearchResults: Record<SearchType, SearchResult>
+  hybridSearchResults: Record<SearchType, SearchResultType>
   misoAskResult: null | AnswerResponse
   query: string
   activeFilter: filterType['id']

@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 
+import { type SearchResultType, type SearchType } from '@/constants/miso'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -8,12 +9,11 @@ import type {
 } from '@/graphql/__generated__/graphql'
 import type { AnswerResponse } from '@/types/miso'
 
-import type { SearchResult, SearchType } from '../[query]/page'
 import HybridSearch from './hybrid-search'
 import SearchFilter from './search-filter'
 
 type SearchResultsProps = {
-  hybridSearchResults: Record<SearchType, SearchResult>
+  hybridSearchResults: Record<SearchType, SearchResultType>
   misoAskResult: null | AnswerResponse
   query: string
   collectionsGQLData?: GetCollectionsQuery['collections']
