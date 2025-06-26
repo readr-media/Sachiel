@@ -6,12 +6,7 @@ module.exports = {
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended',
   ],
-  plugins: [
-    'filename-rules',
-    '@typescript-eslint',
-    'prettier',
-    'simple-import-sort',
-  ],
+  plugins: ['filename-rules', '@typescript-eslint', 'prettier'],
   parserOptions: {
     ecmaVersion: 2021,
     sourceType: 'module',
@@ -32,8 +27,6 @@ module.exports = {
     'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
     'tailwindcss/no-custom-classname': 'off',
     'prettier/prettier': 'error',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
   overrides: [

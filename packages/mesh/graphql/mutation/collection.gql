@@ -6,7 +6,7 @@ mutation CreateCollection(
   $public: String
   $format: String
   $imageName: String
-  $imageUpload: Upload
+  $imageUpload: Upload!
   $collectionpicks: [CollectionPickCreateInput!]
   $memberId: ID
 ) {

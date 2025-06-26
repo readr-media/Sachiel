@@ -52,7 +52,7 @@ mutation ConnectMemberAvatar(
   }
 }
 
-mutation CreatePhoto($image: Upload, $imageName: String) {
+mutation CreatePhoto($image: Upload!, $imageName: String) {
   createPhoto(data: { name: $imageName, file: { upload: $image } }) {
     resized {
       original
