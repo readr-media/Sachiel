@@ -216,10 +216,13 @@ export default function HybridSearch({
         {/* 搜尋結果列表 */}
         <StorySearchResult
           query={query}
-          storyResult={convertMisoToStory(
+          initialStories={convertMisoToStory(
             hybridSearchResults['story'].data,
             storiesGQLData
           )}
+          totalCount={hybridSearchResults['story'].data?.data.total || 0}
+          currentSort={currentSort}
+          storiesGQLData={storiesGQLData}
         />
       </div>
       <Drawer

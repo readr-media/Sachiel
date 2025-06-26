@@ -82,6 +82,7 @@ export async function searchWithHybrid(
     cite_start: MISO_SEARCH_DEFAULTS.CITE_START,
     cite_end: MISO_SEARCH_DEFAULTS.CITE_END,
     order_by: options.order_by ?? MISO_ORDER_BY.PUBLISHED_AT,
+    start: options.start ?? 0,
     ...options,
   }
 

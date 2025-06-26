@@ -16,6 +16,7 @@ export type HybridSearchRequest = {
   cite_link?: number
   cite_start?: string
   cite_end?: string
+  start?: number
 }
 
 export const CustomAttributesSchema = z
