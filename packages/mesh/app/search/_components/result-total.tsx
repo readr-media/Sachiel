@@ -1,6 +1,5 @@
 import Icon from '@/components/icon'
-
-import type { sortOptions } from './hybrid-search'
+import type { MISO_SEARCH_SORT_OPTIONS } from '@/constants/miso'
 
 type ResultTotalProps = {
   query: string
@@ -8,8 +7,10 @@ type ResultTotalProps = {
   currentSortLabel: string
   toggleDrawer: () => void
   isDrawerOpen: boolean
-  sortOptions: typeof sortOptions
-  handleSortChange: (sort: typeof sortOptions[number]['value']) => void
+  sortOptions: typeof MISO_SEARCH_SORT_OPTIONS
+  handleSortChange: (
+    sort: typeof MISO_SEARCH_SORT_OPTIONS[number]['value']
+  ) => void
 }
 
 export default function ResultTotal({
