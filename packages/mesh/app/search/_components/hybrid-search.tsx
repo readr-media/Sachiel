@@ -125,8 +125,33 @@ export default function HybridSearch({
         />
         <CollectionSearchResult
           query={query}
-          collectionResult={collectionResult}
+          initialCollections={collectionResult}
+          totalCount={hybridSearchResults['collection'].data?.data.total || 0}
+          currentSort={currentSort}
+          collectionsGQLData={collectionsGQLData}
         />
+        <Drawer
+          className="sm:hidden"
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+          position={'bottom'}
+          size={'fit'}
+        >
+          <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
+            <span className="button text-primary-500">排序依</span>
+            <ul className="flex flex-col gap-4">
+              {sortOptions.map(({ value, label }) => (
+                <li
+                  key={value}
+                  className="cursor-pointer"
+                  onClick={() => handleSortChange(value)}
+                >
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Drawer>
       </div>
     )
   }
@@ -232,7 +257,7 @@ export default function HybridSearch({
         position={'bottom'}
         size={'fit'}
       >
-        <div className="flex flex-col gap-y-6 px-5 py-4">
+        <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
           <span className="button text-primary-500">排序依</span>
           <ul className="flex flex-col gap-4">
             {sortOptions.map(({ value, label }) => (

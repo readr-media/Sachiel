@@ -1,7 +1,8 @@
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 
-import { searchStoriesWithPagination } from '@/app/actions/search-stories-pagination'
+import { searchWithPagination } from '@/app/actions/search-pagination'
+import { MISO_ORDER_BY } from '@/constants/miso'
 import type { GetStoriesCommentCountsQuery } from '@/graphql/__generated__/graphql'
 import { type SearchResults } from '@/utils/data-schema'
 
@@ -35,19 +36,26 @@ export default function StorySearchResult({
     if (!hasMoreData) return []
 
     try {
-      const newStories = await searchStoriesWithPagination(
+      // Map currentSort to MISO_ORDER_BY constants
+      const orderBy =
+        currentSort === MISO_ORDER_BY.PUBLISHED_AT
+          ? 'PUBLISHED_AT'
+          : 'RELEVANCE'
+
+      const newStories = (await searchWithPagination(
+        'STORY',
         query,
         pageIndex,
         PAGE_SIZE,
-        currentSort,
+        orderBy,
         storiesGQLData
-      )
+      )) as SearchResults['story']
 
       // If we get fewer stories than page size, we've reached the end
       if (newStories.length < PAGE_SIZE) {
         setHasMoreData(false)
       }
-      console.log({ newStories })
+
       return newStories
     } catch (error) {
       console.error('Error fetching more stories:', error)
@@ -70,6 +78,7 @@ export default function StorySearchResult({
     <>
       <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有新聞</h2>
       <InfiniteScrollList
+        key={currentSort}
         initialList={initialStories}
         pageSize={PAGE_SIZE}
         amountOfElements={Math.min(totalCount, MAX_ELEMENTS)}
