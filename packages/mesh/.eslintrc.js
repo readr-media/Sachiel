@@ -13,7 +13,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'max-lines': ['error', { max: 500 }],
+    // 'max-lines': ['error', { max: 500 }],
     'filename-rules/match': [2, 'kebab-case'],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],

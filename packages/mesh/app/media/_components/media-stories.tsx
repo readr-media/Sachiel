@@ -440,7 +440,7 @@ export default function MediaStories({
         ) {
           successfullyFetchedData[result.value.slug] = result.value.data
         } else if (result.status === 'rejected') {
-          console.error("Failed to prefetch a category:", result.reason)
+          console.error('Failed to prefetch a category:', result.reason)
         }
       })
 
