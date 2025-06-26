@@ -1,6 +1,11 @@
 'use client'
 import { useState } from 'react'
 
+import type {
+  GetCollectionsQuery,
+  GetPublishersQuery,
+  GetStoriesCommentCountsQuery,
+} from '@/graphql/__generated__/graphql'
 import type { AnswerResponse } from '@/types/miso'
 
 import type { SearchResult, SearchType } from '../[query]/page'
@@ -11,6 +16,10 @@ type SearchResultsProps = {
   hybridSearchResults: Record<SearchType, SearchResult>
   misoAskResult: null | AnswerResponse
   query: string
+  collectionsGQLData?: GetCollectionsQuery['collections']
+  publisherGQLData?: GetPublishersQuery['publishers']
+  storiesGQLData?: GetStoriesCommentCountsQuery['stories']
+  currentSort: 'relevance' | 'published_at'
 }
 export type filterType = {
   id: 'story' | 'collection' | 'member-publisher'
@@ -36,6 +45,10 @@ export default function SearchResult({
   query,
   hybridSearchResults,
   misoAskResult,
+  collectionsGQLData,
+  publisherGQLData,
+  storiesGQLData,
+  currentSort,
 }: SearchResultsProps) {
   const [activeFilter, setActiveFilter] = useState<filterType['id']>(
     filters[0].id
@@ -51,6 +64,10 @@ export default function SearchResult({
         query={query}
         hybridSearchResults={hybridSearchResults}
         misoAskResult={misoAskResult}
+        collectionsGQLData={collectionsGQLData}
+        publisherGQLData={publisherGQLData}
+        storiesGQLData={storiesGQLData}
+        currentSort={currentSort}
       />
     </div>
   )

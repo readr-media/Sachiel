@@ -6,6 +6,7 @@ import {
   GetMemberForOgDocument,
   GetMemberProfileDocument,
   GetPublisherForOgDocument,
+  GetPublishersDocument,
   GetVisitorProfileDocument,
 } from '@/graphql/__generated__/graphql'
 import { PickObjective } from '@/types/objective'
@@ -134,6 +135,23 @@ export async function getMoreMemberFollowing(
       'Failed to get member following loadmre',
       globalLogFields
     )
+    throw error
+  }
+}
+
+export async function getPublishers({
+  publisherCustomIds,
+}: {
+  publisherCustomIds: string[]
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(GetPublishersDocument, {
+      publisherCustomIds,
+    })
+    return response?.publishers || []
+  } catch (error) {
+    logServerSideError(error, 'Failed to get publishers', globalLogFields)
     throw error
   }
 }

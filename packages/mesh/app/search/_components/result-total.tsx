@@ -1,15 +1,15 @@
 import Icon from '@/components/icon'
 
+import type { sortOptions } from './hybrid-search'
+
 type ResultTotalProps = {
   query: string
   resultCount: number
   currentSortLabel: string
   toggleDrawer: () => void
   isDrawerOpen: boolean
-  sortOptions: {
-    value: string
-    label: string
-  }[]
+  sortOptions: typeof sortOptions
+  handleSortChange: (sort: typeof sortOptions[number]['value']) => void
 }
 
 export default function ResultTotal({
@@ -19,6 +19,7 @@ export default function ResultTotal({
   isDrawerOpen,
   sortOptions,
   toggleDrawer,
+  handleSortChange,
 }: ResultTotalProps) {
   return (
     <div className="list-title text-primary-500">
@@ -56,6 +57,7 @@ export default function ResultTotal({
                   <li
                     className="button-large px-5 py-2 text-primary-700 transition-colors hover:bg-primary-200"
                     key={option.value}
+                    onClick={() => handleSortChange(option.value)}
                   >
                     {option.label}
                   </li>

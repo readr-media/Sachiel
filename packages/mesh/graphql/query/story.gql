@@ -218,3 +218,12 @@ query GetStoryInteractions($storyId: ID, $picksTake: Int, $commentsTake: Int) {
     }
   }
 }
+
+query GetStoriesCommentCounts($storyIds: [ID!]) {
+  stories(where: { id: { in: $storyIds } }) {
+    id
+    commentsCount: commentCount(
+      where: { state: { equals: "public" }, is_active: { equals: true } }
+    )
+  }
+}

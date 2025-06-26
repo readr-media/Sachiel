@@ -3,6 +3,7 @@
 import { MISO_API_KEY, MISO_ENDPOINTS } from '@/constants/config'
 import {
   MISO_FIELDS,
+  MISO_ORDER_BY,
   MISO_SEARCH_DEFAULTS,
   MISO_SEARCH_FQ,
 } from '@/constants/miso'
@@ -80,7 +81,7 @@ export async function searchWithHybrid(
     cite_link: MISO_SEARCH_DEFAULTS.CITE_LINK,
     cite_start: MISO_SEARCH_DEFAULTS.CITE_START,
     cite_end: MISO_SEARCH_DEFAULTS.CITE_END,
-    order_by: 'published_at',
+    order_by: options.order_by ?? MISO_ORDER_BY.PUBLISHED_AT,
     ...options,
   }
 

@@ -46,9 +46,10 @@ export default function StoryCard({
       <div className="flex flex-row justify-between gap-3 sm:gap-10">
         <div>
           <NextLink href={`/story/${story.id}`} onClick={() => sendClickLog()}>
-            <span className="subtitle-1 sm:title-2 line-clamp-2 grow text-primary-700 hover-or-active:underline">
-              {story.title}
-            </span>
+            <p
+              dangerouslySetInnerHTML={{ __html: story.title }}
+              className="subtitle-1 sm:title-2 line-clamp-2 grow text-primary-700 hover-or-active:underline"
+            />
           </NextLink>
           <div className="caption-1 pt-2 sm:pt-1">
             <StoryMeta

@@ -14,7 +14,7 @@ export const MISO_CONFIG = {
 } as const
 
 export const MISO_SEARCH_FQ = {
-  STORY: 'product_id:/mirrordaily_.+/',
+  STORY: 'product_id:/mesh_story_.+/',
   COLLECTION: 'product_id:/mesh_profile_collection_.+/',
   USER_PROFILE: 'product_id:/mesh_profile_member_.+/',
   PUBLISHER_PROFILE: 'product_id:/mesh_publisher_.+/',
@@ -70,8 +70,7 @@ export const MISO_SOURCE_FL = MISO_FIELDS.SOURCE_FL
 // 排序選項
 export const MISO_ORDER_BY = {
   RELEVANCE: 'relevance',
-  PUBLISHED_AT_DESC: 'published_at desc',
-  PUBLISHED_AT_ASC: 'published_at asc',
+  PUBLISHED_AT: 'published_at',
 } as const
 
 // 答案生成狀態
