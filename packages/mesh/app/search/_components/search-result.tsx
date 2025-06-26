@@ -19,7 +19,8 @@ type SearchResultsProps = {
   collectionsGQLData?: GetCollectionsQuery['collections']
   publisherGQLData?: GetPublishersQuery['publishers']
   storiesGQLData?: GetStoriesCommentCountsQuery['stories']
-  currentSort: 'relevance' | 'published_at'
+  currentStorySort: 'relevance' | 'published_at'
+  currentCollectionSort: 'relevance' | 'published_at'
 }
 export type filterType = {
   id: 'story' | 'collection' | 'member-publisher'
@@ -48,7 +49,8 @@ export default function SearchResult({
   collectionsGQLData,
   publisherGQLData,
   storiesGQLData,
-  currentSort,
+  currentStorySort,
+  currentCollectionSort,
 }: SearchResultsProps) {
   const [activeFilter, setActiveFilter] = useState<filterType['id']>(
     filters[0].id
@@ -67,7 +69,8 @@ export default function SearchResult({
         collectionsGQLData={collectionsGQLData}
         publisherGQLData={publisherGQLData}
         storiesGQLData={storiesGQLData}
-        currentSort={currentSort}
+        currentStorySort={currentStorySort}
+        currentCollectionSort={currentCollectionSort}
       />
     </div>
   )

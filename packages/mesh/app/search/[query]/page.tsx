@@ -25,19 +25,40 @@ export default async function SearchResultPage({
   searchParams,
 }: {
   params: { query: string }
-  searchParams: { sort?: string }
+  searchParams: { sort?: string; story_sort?: string; collection_sort?: string }
 }) {
   const { query } = params
-  const { sort } = searchParams
+  const { sort, story_sort, collection_sort } = searchParams
   const decodedQuery = decodeURIComponent(query)
 
-  // Validate and set sort parameter
+  // Validate and set sort parameters - support independent sorting
   const validSorts = ['relevance', 'published_at'] as const
-  const sortBy = validSorts.includes(sort as typeof validSorts[number])
+
+  // Story sort with fallback to general sort, then default
+  const storySortBy = validSorts.includes(
+    story_sort as typeof validSorts[number]
+  )
+    ? (story_sort as typeof validSorts[number])
+    : validSorts.includes(sort as typeof validSorts[number])
     ? (sort as typeof validSorts[number])
     : 'published_at'
-  const orderBy =
-    sortBy === 'relevance'
+
+  // Collection sort with fallback to general sort, then default
+  const collectionSortBy = validSorts.includes(
+    collection_sort as typeof validSorts[number]
+  )
+    ? (collection_sort as typeof validSorts[number])
+    : validSorts.includes(sort as typeof validSorts[number])
+    ? (sort as typeof validSorts[number])
+    : 'published_at'
+
+  const storyOrderBy =
+    storySortBy === 'relevance'
+      ? MISO_ORDER_BY.RELEVANCE
+      : MISO_ORDER_BY.PUBLISHED_AT
+
+  const collectionOrderBy =
+    collectionSortBy === 'relevance'
       ? MISO_ORDER_BY.RELEVANCE
       : MISO_ORDER_BY.PUBLISHED_AT
 
@@ -56,11 +77,11 @@ export default async function SearchResultPage({
     ),
     story: searchWithHybrid(decodedQuery, 'STORY', {
       ...baseSearchOptions,
-      order_by: orderBy,
+      order_by: storyOrderBy,
     }),
     collection: searchWithHybrid(decodedQuery, 'COLLECTION', {
       ...baseSearchOptions,
-      order_by: orderBy,
+      order_by: collectionOrderBy,
     }),
   }
 
@@ -129,7 +150,8 @@ export default async function SearchResultPage({
         collectionsGQLData={collectionsGQLData?.collections}
         publisherGQLData={publisherGQLData}
         storiesGQLData={storiesGQLData}
-        currentSort={sortBy}
+        currentStorySort={storySortBy}
+        currentCollectionSort={collectionSortBy}
       />
     </main>
   )

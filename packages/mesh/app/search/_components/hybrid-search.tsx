@@ -32,7 +32,8 @@ type HybridSearchProps = {
   collectionsGQLData?: GetCollectionsQuery['collections']
   publisherGQLData?: GetPublishersQuery['publishers']
   storiesGQLData?: GetStoriesCommentCountsQuery['stories']
-  currentSort: 'relevance' | 'published_at'
+  currentStorySort: 'relevance' | 'published_at'
+  currentCollectionSort: 'relevance' | 'published_at'
 }
 
 export const sortOptions = [
@@ -48,26 +49,55 @@ export default function HybridSearch({
   collectionsGQLData,
   publisherGQLData,
   storiesGQLData,
-  currentSort,
+  currentStorySort,
+  currentCollectionSort,
 }: HybridSearchProps) {
   const router = useRouter()
   // Drawer States
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const closeDrawer = () => setIsDrawerOpen(false)
 
-  // 處理排序選擇
-  const handleSortChange = (sortValue: 'relevance' | 'published_at') => {
+  // 處理Story排序選擇
+  const handleStorySortChange = (sortValue: 'relevance' | 'published_at') => {
     closeDrawer()
-    // Update URL with new sort parameter
     const currentUrl = new URL(window.location.href)
-    currentUrl.searchParams.set('sort', sortValue)
+    // 只移除舊的sort參數，保持story_sort和collection_sort都存在
+    currentUrl.searchParams.delete('sort')
+    currentUrl.searchParams.set('story_sort', sortValue)
+    // 確保collection_sort存在，如果沒有就設定為當前值
+    if (!currentUrl.searchParams.has('collection_sort')) {
+      currentUrl.searchParams.set('collection_sort', currentCollectionSort)
+    }
     router.push(currentUrl.pathname + currentUrl.search)
   }
 
-  const getCurrentSortLabel = () => {
+  // 處理Collection排序選擇
+  const handleCollectionSortChange = (
+    sortValue: 'relevance' | 'published_at'
+  ) => {
+    closeDrawer()
+    const currentUrl = new URL(window.location.href)
+    // 只移除舊的sort參數，保持story_sort和collection_sort都存在
+    currentUrl.searchParams.delete('sort')
+    currentUrl.searchParams.set('collection_sort', sortValue)
+    // 確保story_sort存在，如果沒有就設定為當前值
+    if (!currentUrl.searchParams.has('story_sort')) {
+      currentUrl.searchParams.set('story_sort', currentStorySort)
+    }
+    router.push(currentUrl.pathname + currentUrl.search)
+  }
+
+  const getCurrentStorySortLabel = () => {
     return (
-      sortOptions.find((option) => option.value === currentSort)?.label ||
+      sortOptions.find((option) => option.value === currentStorySort)?.label ||
       '相關度'
+    )
+  }
+
+  const getCurrentCollectionSortLabel = () => {
+    return (
+      sortOptions.find((option) => option.value === currentCollectionSort)
+        ?.label || '相關度'
     )
   }
 
@@ -115,19 +145,19 @@ export default function HybridSearch({
         <ResultTotal
           query={query}
           resultCount={hybridSearchResults[activeFilter].data?.data.total || 0}
-          currentSortLabel={getCurrentSortLabel()}
+          currentSortLabel={getCurrentCollectionSortLabel()}
           isDrawerOpen={isDrawerOpen}
           toggleDrawer={() => {
             setIsDrawerOpen((prev) => !prev)
           }}
           sortOptions={sortOptions}
-          handleSortChange={handleSortChange}
+          handleSortChange={handleCollectionSortChange}
         />
         <CollectionSearchResult
           query={query}
           initialCollections={collectionResult}
           totalCount={hybridSearchResults['collection'].data?.data.total || 0}
-          currentSort={currentSort}
+          currentSort={currentCollectionSort}
           collectionsGQLData={collectionsGQLData}
         />
         <Drawer
@@ -144,7 +174,7 @@ export default function HybridSearch({
                 <li
                   key={value}
                   className="cursor-pointer"
-                  onClick={() => handleSortChange(value)}
+                  onClick={() => handleCollectionSortChange(value)}
                 >
                   {label}
                 </li>
@@ -229,13 +259,13 @@ export default function HybridSearch({
         <ResultTotal
           query={query}
           resultCount={hybridSearchResults[activeFilter].data?.data.total || 0}
-          currentSortLabel={getCurrentSortLabel()}
+          currentSortLabel={getCurrentStorySortLabel()}
           isDrawerOpen={isDrawerOpen}
           toggleDrawer={() => {
             setIsDrawerOpen((prev) => !prev)
           }}
           sortOptions={sortOptions}
-          handleSortChange={handleSortChange}
+          handleSortChange={handleStorySortChange}
         />
 
         {/* 搜尋結果列表 */}
@@ -246,7 +276,7 @@ export default function HybridSearch({
             storiesGQLData
           )}
           totalCount={hybridSearchResults['story'].data?.data.total || 0}
-          currentSort={currentSort}
+          currentSort={currentStorySort}
           storiesGQLData={storiesGQLData}
         />
       </div>
@@ -264,7 +294,7 @@ export default function HybridSearch({
               <li
                 key={value}
                 className="cursor-pointer"
-                onClick={() => handleSortChange(value)}
+                onClick={() => handleStorySortChange(value)}
               >
                 {label}
               </li>
