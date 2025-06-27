@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
@@ -34,7 +37,7 @@ export default function MostPickedStoryCard({
             isDesktop ? 'title-1' : 'list-title'
           } text-primary-500 lg:h-8`}
         >
-          {t('Pages.Home.FeaturedCard.non-readr-title', '最多人精選')}
+          {t('Pages.Home.FeaturedCard-non-readr-title', '最多人精選')}
         </div>
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:size-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
