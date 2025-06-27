@@ -2,7 +2,7 @@ import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
-import { useCustomTranslation } from './use-custom-translation' // Import added
+import { useCustomTranslation } from '@/hooks/use-custom-translation' // Import added
 
 export default async function SubpageLayout({
   children,
