@@ -5784,6 +5784,7 @@ export type GetCurrentUserMemberIdQuery = {
     avatar?: string | null
     intro?: string | null
     wallet?: string | null
+    language?: MemberLanguageType | null
     avatar_image?: { __typename?: 'Photo'; id: string } | null
     followingMembers?: Array<{ __typename?: 'Member'; id: string }> | null
     picks?: Array<{
@@ -13307,6 +13308,7 @@ export const GetCurrentUserMemberIdDocument = {
                     ],
                   },
                 },
+                { kind: 'Field', name: { kind: 'Name', value: 'language' } },
               ],
             },
           },

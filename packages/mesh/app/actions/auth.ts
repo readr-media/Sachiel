@@ -154,6 +154,7 @@ export async function getCurrentUser() {
         followingCategories: data.member.followingCategories ?? [],
         followingPublishers: data.member.followingPublishers ?? [],
         publishers: data.member.publishers ?? [],
+        language: data.member.language ?? 'zh_TW',
       }
     } else {
       return undefined
