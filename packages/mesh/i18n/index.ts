@@ -13,9 +13,26 @@ const resources = {
   },
 }
 
+// 偵測瀏覽器語言
+const detectBrowserLanguage = () => {
+  if (typeof window === 'undefined') return 'zh-TW' // SSR fallback
+
+  const browserLang = navigator.language || navigator.languages?.[0] || 'zh-TW'
+
+  if (browserLang.startsWith('zh')) {
+    return 'zh-TW'
+  }
+
+  if (browserLang.startsWith('en')) {
+    return 'en-US'
+  }
+
+  return 'zh-TW'
+}
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: 'zh-TW',
+  lng: detectBrowserLanguage(),
   fallbackLng: 'zh-TW',
   interpolation: {
     escapeValue: false,
