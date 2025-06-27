@@ -31,7 +31,7 @@ export default function useAiAnswer(questionId: string): UseAiAnswerState {
       try {
         const result = await getAnswerWithProgress(questionId)
         if (result) {
-          // 處理答案文字
+          // Process answer text
           const processedResult = {
             ...result,
             data: {

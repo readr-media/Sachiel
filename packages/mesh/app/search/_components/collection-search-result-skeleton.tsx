@@ -1,7 +1,7 @@
 export default function CollectionSearchResultSkeleton() {
   return (
     <div className="grid grid-cols-2 gap-3 border-t-[0.5px] border-primary-200 pt-4 sm:grid-cols-4 xl:grid-cols-5 [&>*]:w-full">
-      {Array.from(Array(8)).map((_, i) => (
+      {Array.from({ length: 8 }, (_, i) => (
         <div key={i} className="animate-pulse">
           {/* Collection card skeleton */}
           <div className="flex w-full flex-col gap-2">

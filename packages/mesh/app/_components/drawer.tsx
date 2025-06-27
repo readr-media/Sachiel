@@ -7,7 +7,7 @@ interface DrawerProps {
   children: React.ReactNode
   position?: 'bottom'
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'fit'
-  className: string
+  className?: string
 }
 
 export default function Drawer({
