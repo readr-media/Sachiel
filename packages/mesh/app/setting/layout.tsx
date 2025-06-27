@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
-import { useCustomTranslation } from './use-custom-translation'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function SettingLayout({
   children,
