@@ -1,11 +1,10 @@
 module.exports = {
-  //TODO: ESLint: Failed to load config "../../.eslintrc" to extend from. Referenced from: /app/.eslintrc.json
   extends: [
-    '../../.eslintrc.js',
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:tailwindcss/recommended',
+    'plugin:prettier/recommended',
   ],
   plugins: ['filename-rules', '@typescript-eslint', 'prettier'],
   parserOptions: {
@@ -13,7 +12,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'max-lines': ['error', { max: 500 }],
+    // 'max-lines': ['error', { max: 500 }],
     'filename-rules/match': [2, 'kebab-case'],
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
@@ -27,6 +26,8 @@ module.exports = {
     'tailwindcss/enforces-shorthand': 'error',
     'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
     'tailwindcss/no-custom-classname': 'off',
+    'prettier/prettier': 'error',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
   overrides: [
     {

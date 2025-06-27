@@ -1,0 +1,15 @@
+{
+  "Pages": {
+    "Home": {
+      "FeaturedCard": {
+        "non-readr-title": "Top picks by users this week"
+      }
+    }
+  },
+  "Others": {
+    "toast": {
+      "followMemberFailed": "Failed to follow, please try again",
+      "unfollowMemberFailed": "Failed to unfollow, please try again"
+    }
+  }
+}

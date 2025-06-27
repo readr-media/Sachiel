@@ -7,6 +7,7 @@ import { Noto_Sans_TC } from 'next/font/google'
 import AdManagerScript from '@/components/ad-manager-script'
 import AdsenseScript from '@/components/adsense-script'
 import MisoAiScript from '@/components/miso-ai-script'
+import I18nProvider from '@/components/translation-provider'
 import UserBehaviorLogger from '@/components/user-behavior-logger'
 import {
   GTM_ID,
@@ -60,18 +61,20 @@ export default async function RootLayout({
       <AdManagerScript />
       <MisoAiScript />
       <body>
-        <UserProvider user={user}>
-          <ToastProvider>
-            <PickModalProvider>
-              <PickersModalProvider>
-                <RootLayoutWrapper>
-                  <UserBehaviorLogger />
-                  {children}
-                </RootLayoutWrapper>
-              </PickersModalProvider>
-            </PickModalProvider>
-          </ToastProvider>
-        </UserProvider>
+        <I18nProvider>
+          <UserProvider user={user}>
+            <ToastProvider>
+              <PickModalProvider>
+                <PickersModalProvider>
+                  <RootLayoutWrapper>
+                    <UserBehaviorLogger />
+                    {children}
+                  </RootLayoutWrapper>
+                </PickersModalProvider>
+              </PickModalProvider>
+            </ToastProvider>
+          </UserProvider>
+        </I18nProvider>
       </body>
     </html>
   )

@@ -1,0 +1,15 @@
+{
+  "Pages": {
+    "Home": {
+      "FeaturedCard": {
+        "non-readr-title": "最多人精選"
+      }
+    }
+  },
+  "Others": {
+    "toast": {
+      "followMemberFailed": "追蹤失敗，請重新嘗試",
+      "unfollowMemberFailed": "取消追蹤失敗，請重新嘗試"
+    }
+  }
+}

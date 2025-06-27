@@ -7,6 +7,7 @@ const ACTION_NAMES = [
   // { name: '關於', href: '/' },
   { name: '登出' },
   { name: '刪除帳號', href: '/setting/account-deletion' },
+  { name: '語言', href: '/setting/language' },
 ]
 
 const ICON_MAP: { [key: string]: IconName } = {
