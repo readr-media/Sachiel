@@ -32,6 +32,6 @@ export default function SettingLayout({
       }}
     >
       {children}
-    </Format>
+    </LayoutTemplate>
   )
 }
