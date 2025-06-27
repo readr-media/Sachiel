@@ -1,4 +1,5 @@
 import { type SearchResultType } from '@/constants/miso'
+import { getSourceFromProductId } from '@/constants/source-mappings'
 import type {
   GetCollectionsQuery,
   GetPublishersQuery,
@@ -161,41 +162,7 @@ const convertMisoToStory = (
       if (storyId) {
         const gqlData = storiesGQLMap.get(storyId)
 
-        // 從 product_id 推斷來源資訊
-        // 目前只取mesh
-        const getSourceFromProductId = (id: string) => {
-          const splitResult = id.split('_').at(0)
-          switch (splitResult) {
-            case 'mirrormedia':
-              return {
-                id: 'mirrormedia',
-                customId: 'mirrormedia',
-                title: '鏡週刊 Mirror Media',
-                is_active: true,
-              }
-            case 'mnews':
-              return {
-                id: 'mnews',
-                customId: 'mnews',
-                title: '鏡新聞',
-                is_active: true,
-              }
-            case 'mirrordaily':
-              return {
-                id: 'mirrordaily',
-                customId: 'mirrordaily',
-                title: '鏡報',
-                is_active: true,
-              }
-            default:
-              return {
-                id: 'readr',
-                customId: 'readr',
-                title: 'READr Mesh 讀選',
-                is_active: true,
-              }
-          }
-        }
+        // Extract source information from product ID using configuration
 
         storyResult.push({
           id: storyId,
