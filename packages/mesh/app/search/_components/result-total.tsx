@@ -38,6 +38,9 @@ export default function ResultTotal({
           <div className="relative">
             {/* drawer觸發按鈕 */}
             <button
+              aria-expanded={isDrawerOpen}
+              aria-haspopup="menu"
+              aria-label="Sort options"
               onClick={toggleDrawer}
               className="button flex items-center gap-1 text-primary-500 transition-colors hover:text-primary-700"
             >

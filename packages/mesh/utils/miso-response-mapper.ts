@@ -6,6 +6,7 @@ import type {
 } from '@/graphql/__generated__/graphql'
 
 import type { SearchResults } from './data-schema'
+import { extractIdFromProductId, isValidProductId } from './miso-id-parser'
 
 const convertMisoToMemberAndPublisher = (
   misoData: SearchResultType['data'],
@@ -34,32 +35,37 @@ const convertMisoToMemberAndPublisher = (
   misoData.data.products.forEach((product) => {
     const productId = product.product_id
 
-    if (productId.startsWith('mesh_profile_member_')) {
-      // 這是會員資料
-      memberResult.push({
-        id:
-          //TODO: simplify logic
-          product.custom_attributes?.['og:url']?.split('/').at(-1) ||
-          productId.replace('mesh_profile_member_', ''),
-        //TODO: need to get
-        customId: productId.replace('mesh_profile_member_', ''),
-        name: product.title,
-        nickname: product.title,
-        avatar: product.cover_image || '',
-        is_active: true,
-      })
-    } else if (productId.startsWith('mesh_publisher_')) {
-      const publisherCustomId = productId.replace('mesh_publisher_', '')
-      const gqlData = publisherGQLMap.get(publisherCustomId)
+    if (isValidProductId(productId, 'MEMBER')) {
+      const memberId = extractIdFromProductId(productId, 'MEMBER')
+      if (memberId) {
+        // 這是會員資料
+        memberResult.push({
+          id:
+            //TODO: simplify logic
+            product.custom_attributes?.['og:url']?.split('/').at(-1) ||
+            memberId,
+          //TODO: need to get
+          customId: memberId,
+          name: product.title,
+          nickname: product.title,
+          avatar: product.cover_image || '',
+          is_active: true,
+        })
+      }
+    } else if (isValidProductId(productId, 'PUBLISHER')) {
+      const publisherId = extractIdFromProductId(productId, 'PUBLISHER')
+      if (publisherId) {
+        const gqlData = publisherGQLMap.get(publisherId)
 
-      // 這是publisher資料，只使用 GraphQL 的 followerCount
-      publisherResult.push({
-        id: productId.replace('mesh_publisher_', ''),
-        title: product.title,
-        customId: publisherCustomId,
-        logo: product.cover_image || '',
-        followerCount: gqlData?.followerCount || 0,
-      })
+        // 這是publisher資料，只使用 GraphQL 的 followerCount
+        publisherResult.push({
+          id: publisherId,
+          title: product.title,
+          customId: publisherId,
+          logo: product.cover_image || '',
+          followerCount: gqlData?.followerCount || 0,
+        })
+      }
     }
   })
 
@@ -90,33 +96,36 @@ const convertMisoToCollection = (
   misoData.data.products.forEach((product) => {
     const productId = product.product_id
 
-    if (productId.startsWith('mesh_profile_collection_')) {
-      const collectionId = productId.replace('mesh_profile_collection_', '')
-      const gqlData = gqlDataMap.get(collectionId)
+    if (isValidProductId(productId, 'COLLECTION')) {
+      const collectionId = extractIdFromProductId(productId, 'COLLECTION')
+      if (collectionId) {
+        const gqlData = gqlDataMap.get(collectionId)
 
-      // 這是集錦資料，使用 GraphQL 資料增強
-      collectionResult.push({
-        id: collectionId,
-        title: product.title.replace('集錦 | ', ''),
-        status: gqlData?.status || 'published',
-        creator: {
-          id: gqlData?.creator?.id || collectionId,
-          name:
-            gqlData?.creator?.nickname || product.title.replace('集錦 | ', ''),
-          customId: gqlData?.creator?.customId || collectionId,
-          nickname:
-            gqlData?.creator?.nickname ||
-            product.custom_attributes?.['og:site_name'] ||
-            'Unknown Creator',
-        },
-        heroImage: {
-          resized: {
-            original: product.cover_image || '',
+        // 這是集錦資料，使用 GraphQL 資料增強
+        collectionResult.push({
+          id: collectionId,
+          title: product.title.replace('集錦 | ', ''),
+          status: gqlData?.status || 'published',
+          creator: {
+            id: gqlData?.creator?.id || collectionId,
+            name:
+              gqlData?.creator?.nickname ||
+              product.title.replace('集錦 | ', ''),
+            customId: gqlData?.creator?.customId || collectionId,
+            nickname:
+              gqlData?.creator?.nickname ||
+              product.custom_attributes?.['og:site_name'] ||
+              'Unknown Creator',
           },
-          urlOriginal: product.cover_image || '',
-        },
-        readsCount: gqlData?.picksCount || 0,
-      })
+          heroImage: {
+            resized: {
+              original: product.cover_image || '',
+            },
+            urlOriginal: product.cover_image || '',
+          },
+          readsCount: gqlData?.picksCount || 0,
+        })
+      }
     }
   })
 
@@ -147,61 +156,65 @@ const convertMisoToStory = (
   misoData.data.products.forEach((product) => {
     const productId = product.product_id
 
-    const storyId = productId.replace('mesh_story_', '')
-    const gqlData = storiesGQLMap.get(storyId)
+    if (isValidProductId(productId, 'STORY')) {
+      const storyId = extractIdFromProductId(productId, 'STORY')
+      if (storyId) {
+        const gqlData = storiesGQLMap.get(storyId)
 
-    // 從 product_id 推斷來源資訊
-    // 目前只取mesh
-    const getSourceFromProductId = (id: string) => {
-      const splitResult = id.split('_').at(0)
-      switch (splitResult) {
-        case 'mirrormedia':
-          return {
-            id: 'mirrormedia',
-            customId: 'mirrormedia',
-            title: '鏡週刊 Mirror Media',
-            is_active: true,
+        // 從 product_id 推斷來源資訊
+        // 目前只取mesh
+        const getSourceFromProductId = (id: string) => {
+          const splitResult = id.split('_').at(0)
+          switch (splitResult) {
+            case 'mirrormedia':
+              return {
+                id: 'mirrormedia',
+                customId: 'mirrormedia',
+                title: '鏡週刊 Mirror Media',
+                is_active: true,
+              }
+            case 'mnews':
+              return {
+                id: 'mnews',
+                customId: 'mnews',
+                title: '鏡新聞',
+                is_active: true,
+              }
+            case 'mirrordaily':
+              return {
+                id: 'mirrordaily',
+                customId: 'mirrordaily',
+                title: '鏡報',
+                is_active: true,
+              }
+            default:
+              return {
+                id: 'readr',
+                customId: 'readr',
+                title: 'READr Mesh 讀選',
+                is_active: true,
+              }
           }
-        case 'mnews':
-          return {
-            id: 'mnews',
-            customId: 'mnews',
-            title: '鏡新聞',
-            is_active: true,
-          }
-        case 'mirrordaily':
-          return {
-            id: 'mirrordaily',
-            customId: 'mirrordaily',
-            title: '鏡報',
-            is_active: true,
-          }
-        default:
-          return {
-            id: 'readr',
-            customId: 'readr',
-            title: 'READr Mesh 讀選',
-            is_active: true,
-          }
+        }
+
+        storyResult.push({
+          id: storyId,
+          title: product._title_with_markups || product.title,
+          og_image: product.cover_image || '',
+          og_description: product.custom_attributes?.['og:description'] || '',
+          published_date: product.published_at || '',
+          full_screen_ad:
+            (product.custom_attributes?.['full_screen_ad'] as
+              | 'mobile'
+              | 'desktop'
+              | 'all'
+              | 'none') || 'none',
+          isMember: Boolean(product.custom_attributes?.['member_only']),
+          commentsCount: gqlData?.commentsCount || 0,
+          source: getSourceFromProductId(productId),
+        })
       }
     }
-
-    storyResult.push({
-      id: storyId,
-      title: product._title_with_markups || product.title,
-      og_image: product.cover_image || '',
-      og_description: product.custom_attributes?.['og:description'] || '',
-      published_date: product.published_at || '',
-      full_screen_ad:
-        (product.custom_attributes?.['full_screen_ad'] as
-          | 'mobile'
-          | 'desktop'
-          | 'all'
-          | 'none') || 'none',
-      isMember: Boolean(product.custom_attributes?.['member_only']),
-      commentsCount: gqlData?.commentsCount || 0,
-      source: getSourceFromProductId(productId),
-    })
   })
 
   return storyResult

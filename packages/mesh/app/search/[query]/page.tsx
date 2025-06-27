@@ -11,6 +11,10 @@ import {
   validateSortParam,
 } from '@/constants/miso'
 import type { HybridSearchResponse } from '@/types/miso'
+import {
+  extractIdsFromProductIds,
+  filterProductsByType,
+} from '@/utils/miso-id-parser'
 
 import SearchResult from '../_components/search-result'
 
@@ -74,26 +78,29 @@ export default async function SearchResultPage({
   const [collectionsGQLData, publisherGQLData, storiesGQLData] =
     await Promise.allSettled([
       getCollections({
-        collectionIds:
-          hybridSearchResults.collection.data?.data.products.map((product) =>
-            product.product_id.replace('mesh_profile_collection_', '')
+        collectionIds: extractIdsFromProductIds(
+          hybridSearchResults.collection.data?.data.products.map(
+            (product) => product.product_id
           ) ?? [],
+          'COLLECTION'
+        ),
       }),
       getPublishers({
-        publisherCustomIds:
-          hybridSearchResults['member-publisher'].data?.data.products
-            .filter((product) =>
-              product.product_id.startsWith('mesh_profile_publisher_')
-            )
-            .map((product) =>
-              product.product_id.replace('mesh_profile_publisher_', '')
-            ) ?? [],
+        publisherCustomIds: extractIdsFromProductIds(
+          filterProductsByType(
+            hybridSearchResults['member-publisher'].data?.data.products ?? [],
+            'PUBLISHER_PROFILE'
+          ).map((product) => product.product_id),
+          'PUBLISHER_PROFILE'
+        ),
       }),
       getStoriesCommentCounts({
-        storyIds:
-          hybridSearchResults.story.data?.data.products.map((product) =>
-            product.product_id.replace('mesh_story_', '')
+        storyIds: extractIdsFromProductIds(
+          hybridSearchResults.story.data?.data.products.map(
+            (product) => product.product_id
           ) ?? [],
+          'STORY'
+        ),
       }),
     ])
 
