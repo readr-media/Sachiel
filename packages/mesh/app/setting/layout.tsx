@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from './use-custom-translation'
 
 export default function SettingLayout({
   children,
@@ -10,8 +11,9 @@ export default function SettingLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const { t } = useCustomTranslation()
   const navigationData = {
-    title: '設定',
+    title: t('Others.setting.setting', '設定'),
     leftButtons: [<GoBackButton key={0} />],
     rightButtons: [],
   }
