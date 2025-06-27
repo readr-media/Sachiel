@@ -51,14 +51,24 @@ export default function CollectionSearchResult({
           ? 'PUBLISHED_AT'
           : 'RELEVANCE'
 
-      const newCollections = (await searchWithPagination(
+      const newCollections = await searchWithPagination(
         'COLLECTION',
         query,
         pageIndex,
         MISO_SEARCH_PAGINATION.PAGE_SIZE,
         orderBy,
         collectionsGQLData
-      )) as SearchResults['collection']
+      )
+
+      // Runtime validation to ensure type safety
+      if (!Array.isArray(newCollections)) {
+        console.error(
+          'Expected array from searchWithPagination, got:',
+          typeof newCollections
+        )
+        setHasMoreData(false)
+        return []
+      }
 
       // If we get fewer collections than page size, we've reached the end
       if (newCollections.length < MISO_SEARCH_PAGINATION.PAGE_SIZE) {
