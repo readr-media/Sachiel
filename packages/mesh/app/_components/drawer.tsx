@@ -35,8 +35,10 @@ export default function Drawer({
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
+      if (isOpen) {
+        document.removeEventListener('keydown', handleEscape)
+        document.body.style.overflow = 'unset'
+      }
     }
   }, [isOpen, onClose])
 

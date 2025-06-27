@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { searchWithPagination } from '@/app/actions/search-pagination'
 import {
   generateNoResultsMessage,
-  MISO_ORDER_BY,
   MISO_SEARCH_PAGINATION,
 } from '@/constants/miso'
 import type { GetStoriesCommentCountsQuery } from '@/graphql/__generated__/graphql'
@@ -47,9 +46,7 @@ export default function StorySearchResult({
     try {
       // Map currentSort to MISO_ORDER_BY constants
       const orderBy =
-        currentSort === MISO_ORDER_BY.PUBLISHED_AT
-          ? 'PUBLISHED_AT'
-          : 'RELEVANCE'
+        currentSort === 'published_at' ? 'PUBLISHED_AT' : 'RELEVANCE'
 
       const newStories = (await searchWithPagination(
         'STORY',

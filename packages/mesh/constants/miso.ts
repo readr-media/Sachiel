@@ -6,7 +6,7 @@ import { type HybridSearchResponse } from '@/types/miso'
 
 // API 基本設定
 export const MISO_CONFIG = {
-  API_KEY: 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT',
+  API_KEY: process.env.MISO_API_KEY || '',
   BASE_URL: 'https://api.askmiso.com',
   ENDPOINTS: {
     HYBRID_SEARCH: '/v1/ask/search',

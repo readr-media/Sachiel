@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import Drawer from '@/app/_components/drawer'
 import Icon from '@/components/icon'
 import {
   type SearchResultType,
@@ -28,6 +27,7 @@ import CollectionSearchResult from './collection-search-result'
 import MemberAndPublisher from './member-and-publisher'
 import ResultTotal from './result-total'
 import { type filterType } from './search-result'
+import SortDrawer from './sort-drawer'
 import StorySearchResult from './story-search-result'
 
 type HybridSearchProps = {
@@ -55,7 +55,7 @@ export default function HybridSearch({
 }: HybridSearchProps) {
   const router = useRouter()
 
-  // AI 答案非同步載入
+  // AI answer is loaded asynchronously
   const { data: misoAskResult, loading: aiLoading } = useAiAnswer(questionId)
 
   // Drawer States
@@ -72,34 +72,48 @@ export default function HybridSearch({
     setIsStoryLoading(false)
   }, [hybridSearchResults])
 
-  // 處理Story排序選擇
-  const handleStorySortChange = (sortValue: 'relevance' | 'published_at') => {
-    closeDrawer()
-    setIsStoryLoading(true)
+  // Shared function to update sort parameters
+  const updateSortParams = (
+    sortType: 'story_sort' | 'collection_sort',
+    sortValue: 'relevance' | 'published_at'
+  ) => {
     const currentUrl = new URL(window.location.href)
+    // Remove old generic sort parameter
     currentUrl.searchParams.delete('sort')
-    currentUrl.searchParams.set('story_sort', sortValue)
-    if (!currentUrl.searchParams.has('collection_sort')) {
+
+    // Set the specified sort parameter
+    currentUrl.searchParams.set(sortType, sortValue)
+
+    // Ensure both sort parameters exist
+    if (
+      sortType === 'story_sort' &&
+      !currentUrl.searchParams.has('collection_sort')
+    ) {
       currentUrl.searchParams.set('collection_sort', currentCollectionSort)
+    } else if (
+      sortType === 'collection_sort' &&
+      !currentUrl.searchParams.has('story_sort')
+    ) {
+      currentUrl.searchParams.set('story_sort', currentStorySort)
     }
+
     router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
   }
 
-  // 處理Collection排序選擇
+  // Handle story sort selection
+  const handleStorySortChange = (sortValue: 'relevance' | 'published_at') => {
+    closeDrawer()
+    setIsStoryLoading(true)
+    updateSortParams('story_sort', sortValue)
+  }
+
+  // Handle collection sort selection
   const handleCollectionSortChange = (
     sortValue: 'relevance' | 'published_at'
   ) => {
     closeDrawer()
     setIsCollectionLoading(true)
-    const currentUrl = new URL(window.location.href)
-    // 只移除舊的sort參數，保持story_sort和collection_sort都存在
-    currentUrl.searchParams.delete('sort')
-    currentUrl.searchParams.set('collection_sort', sortValue)
-    // 確保story_sort存在，如果沒有就設定為當前值
-    if (!currentUrl.searchParams.has('story_sort')) {
-      currentUrl.searchParams.set('story_sort', currentStorySort)
-    }
-    router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
+    updateSortParams('collection_sort', sortValue)
   }
 
   const getCurrentStorySortLabel = () => {
@@ -110,7 +124,7 @@ export default function HybridSearch({
     return getSortLabel(currentCollectionSort)
   }
 
-  // need to pass tab filter
+  // Need to pass tab filter
   if (hybridSearchResults[activeFilter].error) {
     return (
       <div className="flex h-64 items-center justify-center">
@@ -124,7 +138,7 @@ export default function HybridSearch({
     )
   }
 
-  // user and publisher profile search results
+  // User and publisher profile search results
   if (activeFilter === 'member-publisher') {
     const { memberResult, publisherResult } = convertMisoToMemberAndPublisher(
       hybridSearchResults['member-publisher'].data,
@@ -142,7 +156,7 @@ export default function HybridSearch({
     )
   }
 
-  // collection search results
+  // Collection search results
   if (activeFilter === 'collection') {
     const { collectionResult } = convertMisoToCollection(
       hybridSearchResults['collection'].data,
@@ -170,35 +184,18 @@ export default function HybridSearch({
           collectionsGQLData={collectionsGQLData}
           isLoading={isCollectionLoading}
         />
-        <Drawer
-          className="sm:hidden"
+        <SortDrawer
           isOpen={isDrawerOpen}
           onClose={closeDrawer}
-          position={'bottom'}
-          size={'fit'}
-        >
-          <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
-            <span className="button text-primary-500">排序依</span>
-            <ul className="flex flex-col gap-4">
-              {MISO_SEARCH_SORT_OPTIONS.map(({ value, label }) => (
-                <li
-                  key={value}
-                  className="cursor-pointer"
-                  onClick={() => handleCollectionSortChange(value)}
-                >
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Drawer>
+          onSortChange={handleCollectionSortChange}
+        />
       </div>
     )
   }
-  // story search results
+  // Story search results
   return (
     <div className="space-y-6 p-4 px-5 md:pt-5 xl:pl-10">
-      {/* AI 答案區塊 */}
+      {/* AI answer section */}
       {(aiLoading || misoAskResult?.data.answer) && (
         <div className="flex flex-col">
           <div className="flex items-center justify-between sm:max-w-[600px] xl:max-w-screen-sm">
@@ -210,7 +207,7 @@ export default function HybridSearch({
 
           {aiLoading && !misoAskResult && (
             <div className="space-y-4">
-              {/* AI 答案載入骨架 */}
+              {/* AI answer loading skeleton */}
               <div className="animate-pulse">
                 <div className="h-4 w-full rounded bg-loading" />
                 <div className="mt-2 h-4 w-3/4 rounded bg-loading" />
@@ -221,7 +218,7 @@ export default function HybridSearch({
 
           {misoAskResult?.data.answer && (
             <div className="space-y-4">
-              {/* 答案內容 */}
+              {/* Answer content */}
               <div className="prose prose-sm text-gray-800">
                 <div
                   className="body-1 sm:max-w-[600px] xl:max-w-screen-sm"
@@ -231,7 +228,7 @@ export default function HybridSearch({
                 />
               </div>
 
-              {/* 回答資料來源 */}
+              {/* Answer sources */}
               {misoAskResult?.data.sources.length > 0 && (
                 <div>
                   <h4 className="caption-1 mb-2 text-primary-500">
@@ -274,21 +271,25 @@ export default function HybridSearch({
         </div>
       )}
 
-      {/* 搜尋結果統計 */}
+      {/* Search result statistics */}
       <div className="flex flex-col sm:gap-y-[9.5px] xl:max-w-[720px]">
-        <ResultTotal
-          query={query}
-          resultCount={hybridSearchResults[activeFilter].data?.data.total || 0}
-          currentSortLabel={getCurrentStorySortLabel()}
-          isDrawerOpen={isDrawerOpen}
-          toggleDrawer={() => {
-            setIsDrawerOpen((prev) => !prev)
-          }}
-          sortOptions={MISO_SEARCH_SORT_OPTIONS}
-          handleSortChange={handleStorySortChange}
-        />
+        <div className="sm:max-w-[640px]">
+          <ResultTotal
+            query={query}
+            resultCount={
+              hybridSearchResults[activeFilter].data?.data.total || 0
+            }
+            currentSortLabel={getCurrentStorySortLabel()}
+            isDrawerOpen={isDrawerOpen}
+            toggleDrawer={() => {
+              setIsDrawerOpen((prev) => !prev)
+            }}
+            sortOptions={MISO_SEARCH_SORT_OPTIONS}
+            handleSortChange={handleStorySortChange}
+          />
+        </div>
 
-        {/* 搜尋結果列表 */}
+        {/* Search result list */}
         <StorySearchResult
           query={query}
           initialStories={convertMisoToStory(
@@ -301,28 +302,11 @@ export default function HybridSearch({
           isLoading={isStoryLoading}
         />
       </div>
-      <Drawer
-        className="sm:hidden"
+      <SortDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
-        position={'bottom'}
-        size={'fit'}
-      >
-        <div className="z-10 flex flex-col gap-y-6 px-5 py-4">
-          <span className="button text-primary-500">排序依</span>
-          <ul className="flex flex-col gap-4">
-            {MISO_SEARCH_SORT_OPTIONS.map(({ value, label }) => (
-              <li
-                key={value}
-                className="cursor-pointer"
-                onClick={() => handleStorySortChange(value)}
-              >
-                {label}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Drawer>
+        onSortChange={handleStorySortChange}
+      />
     </div>
   )
 }

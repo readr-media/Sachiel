@@ -56,7 +56,7 @@ export default function ResultTotal({
               <ul className="absolute -right-2 top-8 z-10 hidden h-fit w-[180px] border bg-white py-2 sm:flex sm:flex-col">
                 {sortOptions.map((option) => (
                   <li
-                    className="button-large px-5 py-2 text-primary-700 transition-colors hover:bg-primary-200"
+                    className="button-large cursor-pointer px-5 py-2 text-primary-700 transition-colors hover:bg-primary-200"
                     key={option.value}
                     onClick={() => handleSortChange(option.value)}
                   >
