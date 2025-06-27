@@ -11,6 +11,7 @@ import type { GetCollectionsQuery } from '@/graphql/__generated__/graphql'
 import { type SearchResults } from '@/utils/data-schema'
 
 import CollectionCard from './collection-card'
+import CollectionSearchResultSkeleton from './collection-search-result-skeleton'
 
 type CollectionSearchResultProps = {
   query: string
@@ -18,6 +19,7 @@ type CollectionSearchResultProps = {
   totalCount: number
   currentSort: 'relevance' | 'published_at'
   collectionsGQLData?: GetCollectionsQuery['collections']
+  isLoading?: boolean
 }
 
 export default function CollectionSearchResult({
@@ -26,9 +28,15 @@ export default function CollectionSearchResult({
   totalCount,
   currentSort,
   collectionsGQLData,
+  isLoading = false,
 }: CollectionSearchResultProps) {
   const [hasMoreData, setHasMoreData] = useState(true)
   const isNoResult = !initialCollections.length && totalCount === 0
+
+  // Show loading skeleton when isLoading is true
+  if (isLoading) {
+    return <CollectionSearchResultSkeleton />
+  }
 
   // Function to fetch more collections for pagination
   const fetchMoreCollections = async (

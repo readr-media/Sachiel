@@ -1,9 +1,6 @@
 import { getCollections } from '@/app/actions/collection'
 import { getPublishers } from '@/app/actions/get-profile'
-import {
-  getAnswerWithProgress,
-  searchWithHybrid,
-} from '@/app/actions/hybrid-search'
+import { searchWithHybrid } from '@/app/actions/hybrid-search'
 import { getStoriesCommentCounts } from '@/app/actions/story'
 import {
   type SearchResultType,
@@ -14,7 +11,6 @@ import {
   validateSortParam,
 } from '@/constants/miso'
 import type { HybridSearchResponse } from '@/types/miso'
-import processAnswerText from '@/utils/miso-ask-process'
 
 import SearchResult from '../_components/search-result'
 
@@ -74,56 +70,52 @@ export default async function SearchResultPage({
       return acc
     }, {} as Record<SearchType, SearchResultType>)
 
-  const collectionsGQLData = await getCollections({
-    collectionIds:
-      hybridSearchResults.collection.data?.data.products.map((product) =>
-        product.product_id.replace('mesh_profile_collection_', '')
-      ) ?? [],
-  })
+  // 並行執行所有 GraphQL 查詢以減少 Total Blocking Time
+  const [collectionsGQLData, publisherGQLData, storiesGQLData] =
+    await Promise.allSettled([
+      getCollections({
+        collectionIds:
+          hybridSearchResults.collection.data?.data.products.map((product) =>
+            product.product_id.replace('mesh_profile_collection_', '')
+          ) ?? [],
+      }),
+      getPublishers({
+        publisherCustomIds:
+          hybridSearchResults['member-publisher'].data?.data.products
+            .filter((product) =>
+              product.product_id.startsWith('mesh_profile_publisher_')
+            )
+            .map((product) =>
+              product.product_id.replace('mesh_profile_publisher_', '')
+            ) ?? [],
+      }),
+      getStoriesCommentCounts({
+        storyIds:
+          hybridSearchResults.story.data?.data.products.map((product) =>
+            product.product_id.replace('mesh_story_', '')
+          ) ?? [],
+      }),
+    ])
 
-  const publisherGQLData = await getPublishers({
-    publisherCustomIds:
-      hybridSearchResults['member-publisher'].data?.data.products
-        .filter((product) =>
-          product.product_id.startsWith('mesh_profile_publisher_')
-        )
-        .map((product) =>
-          product.product_id.replace('mesh_profile_publisher_', '')
-        ) ?? [],
-  })
+  // 處理 GraphQL 查詢結果
+  const collectionsData =
+    collectionsGQLData.status === 'fulfilled' ? collectionsGQLData.value : null
+  const publisherData =
+    publisherGQLData.status === 'fulfilled' ? publisherGQLData.value : null
+  const storiesData =
+    storiesGQLData.status === 'fulfilled' ? storiesGQLData.value : null
 
-  const storiesGQLData = await getStoriesCommentCounts({
-    storyIds:
-      hybridSearchResults.story.data?.data.products.map((product) =>
-        product.product_id.replace('mesh_story_', '')
-      ) ?? [],
-  })
-
-  // 沒有使用try catch因為error handle實作在getAnswerWithProgress
-  // 如果錯誤、無資料會回傳null
-  const misoAskResult = await getAnswerWithProgress(
-    hybridSearchResults.story.data?.data.question_id ?? ''
-  )
-
-  const processedMisoResult = misoAskResult
-    ? {
-        ...misoAskResult,
-        data: {
-          ...misoAskResult.data,
-          answer: processAnswerText(misoAskResult.data.answer ?? ''),
-        },
-      }
-    : null
+  const questionId = hybridSearchResults.story.data?.data.question_id ?? ''
 
   return (
     <main>
       <SearchResult
         query={decodedQuery}
         hybridSearchResults={hybridSearchResults}
-        misoAskResult={processedMisoResult}
-        collectionsGQLData={collectionsGQLData?.collections}
-        publisherGQLData={publisherGQLData}
-        storiesGQLData={storiesGQLData}
+        questionId={questionId}
+        collectionsGQLData={collectionsData?.collections}
+        publisherGQLData={publisherData}
+        storiesGQLData={storiesData}
         currentStorySort={storySortBy}
         currentCollectionSort={collectionSortBy}
       />

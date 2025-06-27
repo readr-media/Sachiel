@@ -5,6 +5,7 @@ import { type SearchResults, SearchResultsSchema } from '@/utils/data-schema'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { logServerSideError } from '@/utils/log'
 
+//TODO: if no need delete
 export type SearchOption = 'member' | 'story' | 'collection' | 'publisher'
 export async function search(queryText: string, objectives: SearchOption[]) {
   const data = await fetchRestfulPost<SearchResults>(

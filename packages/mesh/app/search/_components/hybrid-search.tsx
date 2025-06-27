@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Drawer from '@/app/_components/drawer'
 import Icon from '@/components/icon'
@@ -16,7 +16,7 @@ import type {
   GetPublishersQuery,
   GetStoriesCommentCountsQuery,
 } from '@/graphql/__generated__/graphql'
-import type { AnswerResponse } from '@/types/miso'
+import useAiAnswer from '@/hooks/use-ai-answer'
 import {
   convertMisoToCollection,
   convertMisoToMemberAndPublisher,
@@ -32,7 +32,7 @@ import StorySearchResult from './story-search-result'
 
 type HybridSearchProps = {
   hybridSearchResults: Record<SearchType, SearchResultType>
-  misoAskResult: null | AnswerResponse
+  questionId: string
   query: string
   activeFilter: filterType['id']
   collectionsGQLData?: GetCollectionsQuery['collections']
@@ -44,7 +44,7 @@ type HybridSearchProps = {
 
 export default function HybridSearch({
   hybridSearchResults,
-  misoAskResult,
+  questionId,
   query,
   activeFilter,
   collectionsGQLData,
@@ -54,22 +54,35 @@ export default function HybridSearch({
   currentCollectionSort,
 }: HybridSearchProps) {
   const router = useRouter()
+
+  // AI 答案非同步載入
+  const { data: misoAskResult, loading: aiLoading } = useAiAnswer(questionId)
+
   // Drawer States
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const closeDrawer = () => setIsDrawerOpen(false)
 
+  // Loading States
+  const [isCollectionLoading, setIsCollectionLoading] = useState(false)
+  const [isStoryLoading, setIsStoryLoading] = useState(false)
+
+  // Reset loading states when search results change
+  useEffect(() => {
+    setIsCollectionLoading(false)
+    setIsStoryLoading(false)
+  }, [hybridSearchResults])
+
   // 處理Story排序選擇
   const handleStorySortChange = (sortValue: 'relevance' | 'published_at') => {
     closeDrawer()
+    setIsStoryLoading(true)
     const currentUrl = new URL(window.location.href)
-    // 只移除舊的sort參數，保持story_sort和collection_sort都存在
     currentUrl.searchParams.delete('sort')
     currentUrl.searchParams.set('story_sort', sortValue)
-    // 確保collection_sort存在，如果沒有就設定為當前值
     if (!currentUrl.searchParams.has('collection_sort')) {
       currentUrl.searchParams.set('collection_sort', currentCollectionSort)
     }
-    router.push(currentUrl.pathname + currentUrl.search)
+    router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
   }
 
   // 處理Collection排序選擇
@@ -77,6 +90,7 @@ export default function HybridSearch({
     sortValue: 'relevance' | 'published_at'
   ) => {
     closeDrawer()
+    setIsCollectionLoading(true)
     const currentUrl = new URL(window.location.href)
     // 只移除舊的sort參數，保持story_sort和collection_sort都存在
     currentUrl.searchParams.delete('sort')
@@ -85,7 +99,7 @@ export default function HybridSearch({
     if (!currentUrl.searchParams.has('story_sort')) {
       currentUrl.searchParams.set('story_sort', currentStorySort)
     }
-    router.push(currentUrl.pathname + currentUrl.search)
+    router.push(currentUrl.pathname + currentUrl.search, { scroll: false })
   }
 
   const getCurrentStorySortLabel = () => {
@@ -154,6 +168,7 @@ export default function HybridSearch({
           totalCount={hybridSearchResults['collection'].data?.data.total || 0}
           currentSort={currentCollectionSort}
           collectionsGQLData={collectionsGQLData}
+          isLoading={isCollectionLoading}
         />
         <Drawer
           className="sm:hidden"
@@ -184,7 +199,7 @@ export default function HybridSearch({
   return (
     <div className="space-y-6 p-4 px-5 md:pt-5 xl:pl-10">
       {/* AI 答案區塊 */}
-      {misoAskResult?.data.answer && (
+      {(aiLoading || misoAskResult?.data.answer) && (
         <div className="flex flex-col">
           <div className="flex items-center justify-between sm:max-w-[600px] xl:max-w-screen-sm">
             <p className="list-title flex items-center text-primary-700">
@@ -192,6 +207,17 @@ export default function HybridSearch({
             </p>
             <span className="body-3 text-primary-500">瞭解更多</span>
           </div>
+
+          {aiLoading && !misoAskResult && (
+            <div className="space-y-4">
+              {/* AI 答案載入骨架 */}
+              <div className="animate-pulse">
+                <div className="h-4 w-full rounded bg-loading" />
+                <div className="mt-2 h-4 w-3/4 rounded bg-loading" />
+                <div className="mt-2 h-4 w-1/2 rounded bg-loading" />
+              </div>
+            </div>
+          )}
 
           {misoAskResult?.data.answer && (
             <div className="space-y-4">
@@ -272,6 +298,7 @@ export default function HybridSearch({
           totalCount={hybridSearchResults['story'].data?.data.total || 0}
           currentSort={currentStorySort}
           storiesGQLData={storiesGQLData}
+          isLoading={isStoryLoading}
         />
       </div>
       <Drawer

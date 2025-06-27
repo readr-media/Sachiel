@@ -11,6 +11,7 @@ import type { GetStoriesCommentCountsQuery } from '@/graphql/__generated__/graph
 import { type SearchResults } from '@/utils/data-schema'
 
 import StoryCard from './story-card'
+import StorySearchResultSkeleton from './story-search-result-skeleton'
 
 type StorySearchResultProps = {
   query: string
@@ -18,6 +19,7 @@ type StorySearchResultProps = {
   totalCount: number
   currentSort: 'relevance' | 'published_at'
   storiesGQLData?: GetStoriesCommentCountsQuery['stories']
+  isLoading?: boolean
 }
 
 export default function StorySearchResult({
@@ -26,9 +28,15 @@ export default function StorySearchResult({
   totalCount,
   currentSort,
   storiesGQLData,
+  isLoading = false,
 }: StorySearchResultProps) {
   const [hasMoreData, setHasMoreData] = useState(true)
   const isNoResult = !initialStories.length && totalCount === 0
+
+  // Show loading skeleton when isLoading is true
+  if (isLoading) {
+    return <StorySearchResultSkeleton />
+  }
 
   // Function to fetch more stories for pagination
   const fetchMoreStories = async (

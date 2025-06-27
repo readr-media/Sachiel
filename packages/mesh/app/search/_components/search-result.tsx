@@ -12,14 +12,13 @@ import type {
   GetPublishersQuery,
   GetStoriesCommentCountsQuery,
 } from '@/graphql/__generated__/graphql'
-import type { AnswerResponse } from '@/types/miso'
 
 import HybridSearch from './hybrid-search'
 import SearchFilter from './search-filter'
 
 type SearchResultsProps = {
   hybridSearchResults: Record<SearchType, SearchResultType>
-  misoAskResult: null | AnswerResponse
+  questionId: string
   query: string
   collectionsGQLData?: GetCollectionsQuery['collections']
   publisherGQLData?: GetPublishersQuery['publishers']
@@ -32,7 +31,7 @@ export type filterType = FilterType
 export default function SearchResult({
   query,
   hybridSearchResults,
-  misoAskResult,
+  questionId,
   collectionsGQLData,
   publisherGQLData,
   storiesGQLData,
@@ -52,7 +51,7 @@ export default function SearchResult({
         activeFilter={activeFilter}
         query={query}
         hybridSearchResults={hybridSearchResults}
-        misoAskResult={misoAskResult}
+        questionId={questionId}
         collectionsGQLData={collectionsGQLData}
         publisherGQLData={publisherGQLData}
         storiesGQLData={storiesGQLData}
