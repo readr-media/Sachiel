@@ -79,17 +79,18 @@ export default function MediaStories({
     useState<PageData | null>(null)
   const followingCategoriesCount = user.followingCategories.length
 
-  const isCategoryDataLoaded = (
-    data: PageData[string] | undefined
-  ): boolean => {
-    if (!data) return false
-    return !(
-      data.mostPickedStory === null &&
-      data.latestStoriesInfo.stories.length === 0 &&
-      data.latestStoriesInfo.totalCount === 0 &&
-      data.latestStoriesInfo.shouldLoadmore === true
-    )
-  }
+  const isCategoryDataLoaded = useCallback(
+    (data: PageData[string] | undefined): boolean => {
+      if (!data) return false
+      return !(
+        data.mostPickedStory === null &&
+        data.latestStoriesInfo.stories.length === 0 &&
+        data.latestStoriesInfo.totalCount === 0 &&
+        data.latestStoriesInfo.shouldLoadmore === true
+      )
+    },
+    []
+  )
 
   const searchParams = useSearchParams()
 
@@ -237,7 +238,6 @@ export default function MediaStories({
     currentCategory,
     followingPublisherIds,
     latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
-    latestStoriesInfo?.totalCount,
     allCategories, // Added allCategories to dependency array
   ])
 
@@ -258,9 +258,6 @@ export default function MediaStories({
       if (cachedItem) {
         const cachedPageData = JSON.parse(cachedItem) as PageData
         if (cachedPageData) {
-          console.log(
-            '[MediaStories] Successfully loaded PageData from localStorage.'
-          )
           const freshDefaultData = getInitialPageData(allCategories)
           const mergedData = { ...freshDefaultData } // Start with defaults for all current categories
           for (const slug in cachedPageData) {
@@ -273,21 +270,9 @@ export default function MediaStories({
             }
           }
           initialData = mergedData
-        } else {
-          console.log(
-            '[MediaStories] localStorage item found but parsed to null/undefined. Using default.'
-          )
         }
-      } else {
-        console.log(
-          '[MediaStories] No PageData found in localStorage. Using default.'
-        )
       }
     } catch (error) {
-      console.error(
-        '[MediaStories] Error reading PageData from localStorage:',
-        error
-      )
       // initialData is already getInitialPageData(allCategories) in this case
     }
     setPageDataInCategories(initialData)
@@ -297,9 +282,6 @@ export default function MediaStories({
   useEffect(() => {
     // Ensure pageDataInCategories is populated before this effect runs critical logic
     if (!pageDataInCategories) {
-      console.log(
-        '[Effect 1] Waiting for pageDataInCategories to be initialized.'
-      )
       return
     }
     const loadInitialCategoryData = async () => {
@@ -317,10 +299,6 @@ export default function MediaStories({
 
       if (existingData) {
         // If any data object exists for this slug
-        console.log(
-          '[Effect 1] Initial category data exists in state. Rendering from cache first.',
-          existingData
-        )
         setIsLoading(false) // <<< IMPORTANT: Allow rendering of this cached data immediately
 
         // Decide if a background fetch is needed for this existing data
@@ -330,43 +308,24 @@ export default function MediaStories({
           existingData.latestStoriesInfo.stories.length === 0
         ) {
           // Fetch if no timestamp, or stale, or has no stories (even if not stale, maybe prefetch was empty)
-          console.log(
-            '[Effect 1] Cached data is stale, empty, or untimestamped. Scheduling background fetch.'
-          )
           shouldFetchInBackground = true
-        } else {
-          // Data exists and is fresh enough, no immediate background fetch needed from Effect 1
-          console.log(
-            '[Effect 1] Cached data is fresh. No immediate background fetch.'
-          )
         }
         setInitialLoadComplete(true) // Mark initial load as "complete" as we've decided what to do.
         // The background fetch will happen without blocking this.
       } else {
         // No data whatsoever for this slug
-        console.log(
-          '[Effect 1] No data found for initial category. Fetching with loading screen.'
-        )
         setIsLoading(true) // Show loading screen as there's nothing to display
         shouldFetchInBackground = true // We must fetch
       }
 
       if (shouldFetchInBackground) {
-        console.log('[Effect 1] Initiating fetch for initial category:', slug)
         try {
           const result = await fetchCategoryData(initialActiveCategory)
           if (result) {
             setPageDataInCategories((prev) => ({ ...prev, [slug]: result }))
-            console.log(
-              '[Effect 1] Background fetch complete, data updated for',
-              slug
-            )
           }
         } catch (error) {
-          console.error(
-            `[Effect 1] Error fetching initial category ${slug} in background:`,
-            error
-          )
+          // Error handling
         } finally {
           if (!existingData) {
             // If there was no initial data, we were in a loading state
@@ -439,8 +398,6 @@ export default function MediaStories({
           result.value.slug
         ) {
           successfullyFetchedData[result.value.slug] = result.value.data
-        } else if (result.status === 'rejected') {
-          console.error('Failed to prefetch a category:', result.reason)
         }
       })
 
@@ -467,22 +424,8 @@ export default function MediaStories({
 
   // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
   useEffect(() => {
-    console.log(
-      '[Effect 3 Hook Start] initialLoadComplete:',
-      initialLoadComplete,
-      'currentCategory:',
-      currentCategory?.slug,
-      'initialActiveCategory:',
-      initialActiveCategory?.slug
-    )
     const loadCurrentCategoryDataIfNeeded = async () => {
       if (!currentCategory?.slug || !initialLoadComplete) {
-        console.log(
-          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because !currentCategory?.slug or !initialLoadComplete. currentCategory?.slug:',
-          currentCategory?.slug,
-          'initialLoadComplete:',
-          initialLoadComplete
-        )
         if (!currentCategory && followingCategoriesCount === 0 && !isLoading) {
           // Prevent multiple setIsLoading(false)
           setIsLoading(false)
@@ -491,15 +434,10 @@ export default function MediaStories({
       }
 
       const categorySlug = currentCategory.slug
-      console.log(`[Effect 3] Processing category: ${categorySlug}`)
 
       // If it's the initial category, Effect 1 handles it.
       // isLoading will be set by Effect 1.
       if (categorySlug === initialActiveCategory?.slug) {
-        console.log(
-          '[Effect 3] loadCurrentCategoryDataIfNeeded: Early exit because categorySlug === initialActiveCategory?.slug. categorySlug:',
-          categorySlug
-        )
         if (
           pageDataInCategories && // <<< Ensure pageDataInCategories is not null
           isCategoryDataLoaded(pageDataInCategories[categorySlug]) &&
@@ -516,9 +454,6 @@ export default function MediaStories({
       // which in turn waits for pageDataInCategories from Effect 0.
       // However, being extremely defensive for direct access patterns:
       if (!pageDataInCategories) {
-        console.error(
-          '[Effect 3] pageDataInCategories is unexpectedly null after initialActiveCategory check.'
-        )
         // Potentially set an error state or isLoading true and return
         setIsLoading(true) // Fallback to loading state
         return
@@ -526,25 +461,7 @@ export default function MediaStories({
       const existingData = pageDataInCategories[categorySlug]
       let shouldFetchInBackground = false
 
-      // Keeping the detailed log for existingData as per previous subtask
-      console.log(
-        '[Effect 3] Existing categoryData - stories.length:',
-        existingData?.latestStoriesInfo?.stories?.length,
-        'timestamp:',
-        existingData?.timestamp,
-        'shouldLoadmore:',
-        existingData?.latestStoriesInfo?.shouldLoadmore,
-        'totalCount:',
-        existingData?.latestStoriesInfo?.totalCount,
-        'mostPickedStory:',
-        existingData?.mostPickedStory !== null
-      )
-
       if (existingData) {
-        console.log(
-          '[Effect 3] Category data exists in state for navigated category. Rendering from cache first.',
-          categorySlug
-        )
         setIsLoading(false) // Show cached data immediately
 
         // Decide if a background fetch is needed
@@ -553,33 +470,15 @@ export default function MediaStories({
           Date.now() - existingData.timestamp > TEN_MINUTES_MS ||
           existingData.latestStoriesInfo.stories.length === 0
         ) {
-          console.log(
-            '[Effect 3] Cached data for navigated category is stale, empty, or untimestamped. Scheduling background fetch.',
-            categorySlug
-          )
           shouldFetchInBackground = true
-        } else {
-          console.log(
-            '[Effect 3] Cached data for navigated category is fresh. No background fetch.',
-            categorySlug
-          )
         }
       } else {
         // No data for this navigated category
-        console.log(
-          '[Effect 3] No data found for navigated category. Fetching with loading screen.',
-          categorySlug
-        )
         setIsLoading(true) // Show loading screen
         shouldFetchInBackground = true // Must fetch
       }
 
       if (shouldFetchInBackground) {
-        console.log(
-          '[Effect 3] Initiating fetch for navigated category:',
-          categorySlug
-        )
-
         // Revised isLoading management for fetch block:
         if (!existingData) {
           // This condition ensures setIsLoading(true) was called if no cache.
@@ -597,27 +496,13 @@ export default function MediaStories({
               ...prev,
               [categorySlug]: result,
             }))
-            console.log(
-              '[Effect 3] Background fetch complete, data updated for navigated category:',
-              categorySlug
-            )
           }
         } catch (error) {
-          console.error(
-            `[Effect 3] Error fetching navigated category ${categorySlug}:`,
-            error
-          )
+          // Error handling
         } finally {
           // Only set isLoading to false if we actually set it to true for this fetch (i.e., !existingData).
           if (!existingData) {
-            console.log(
-              `[Effect 3] Fetch attempt finished for ${categorySlug} (was loading). Setting isLoading to false.`
-            )
             setIsLoading(false)
-          } else {
-            console.log(
-              `[Effect 3] Background fetch attempt finished for ${categorySlug} (was not loading). isLoading remains false.`
-            )
           }
         }
       }
@@ -656,9 +541,6 @@ export default function MediaStories({
 
       // Add a null check for pageDataInCategories inside the setInterval callback
       if (!pageDataInCategories || !categorySlug) {
-        console.warn(
-          '[Effect 4] Periodic refresh skipped: pageDataInCategories is null or categorySlug is missing unexpectedly.'
-        )
         return
       }
 
@@ -668,9 +550,6 @@ export default function MediaStories({
         currentCategoryData &&
         Date.now() - currentCategoryData.timestamp > TEN_MINUTES_MS
       ) {
-        console.log(
-          `[Effect 4] Refreshing data for active category: ${categorySlug}`
-        )
         try {
           const result = await fetchCategoryData(currentCategory) // currentCategory is from outer scope
           if (result) {
@@ -683,10 +562,7 @@ export default function MediaStories({
             })
           }
         } catch (error) {
-          console.error(
-            `[Effect 4] Error refreshing category ${categorySlug}:`,
-            error
-          )
+          // Error handling
         }
       }
     }, REFRESH_CHECK_INTERVAL_MS)
@@ -703,16 +579,12 @@ export default function MediaStories({
   useEffect(() => {
     if (pageDataInCategories !== null) {
       try {
-        console.log('[MediaStories] Saving updated PageData to localStorage.')
         localStorage.setItem(
           MEDIA_STORIES_CACHE_KEY,
           JSON.stringify(pageDataInCategories)
         )
       } catch (error) {
-        console.error(
-          '[MediaStories] Error saving PageData to localStorage:',
-          error
-        )
+        // Error handling
       }
     }
   }, [pageDataInCategories])

@@ -50,10 +50,6 @@ export default function Page() {
           // Optional: Add staleness check here if desired for immediate rendering
           // For now, just load it if it exists
           if (cachedSocialData && cachedSocialData.feedData) {
-            console.log(
-              '[Social Page] Loaded data from localStorage cache for member:',
-              memberId
-            )
             setSocialData(cachedSocialData.feedData)
             // Set isLoading to false because we have something to show.
             // The fetch below will still run to get fresh data.
@@ -62,10 +58,7 @@ export default function Page() {
           }
         }
       } catch (error) {
-        console.error(
-          '[Social Page] Error reading social feed from localStorage:',
-          error
-        )
+        // Error handling - localStorage read failed
         // Optionally clear the corrupted item: localStorage.removeItem(memberCacheKey);
       }
     }
@@ -99,20 +92,12 @@ export default function Page() {
                 memberCacheKey,
                 JSON.stringify(newCachedData)
               )
-              console.log(
-                '[Social Page] Saved fresh data to localStorage for member:',
-                memberId
-              )
             } catch (error) {
-              console.error(
-                '[Social Page] Error saving social feed to localStorage:',
-                error
-              )
+              // Error handling - localStorage write failed
             }
           }
         }
       } catch (error) {
-        console.error('[Social Page] Error fetching social page data:', error)
         if (!loadedFromCache) {
           // If cache wasn't loaded, an error in fetch means not found or error state
           setIsNotFound(true) // Or a more generic error state
@@ -127,8 +112,7 @@ export default function Page() {
       // Ensure memberId is available
       fetchSocialData()
     }
-  }, [memberId]) // Keep memberId as a dependency. `socialData` is not needed as a dependency here
-  // as we are setting it. `feedsNumber` is a constant.
+  }, [memberId, feedsNumber, socialData]) // Added socialData as dependency since it's used in the effect
 
   if (isLoading) return <Loading />
   if (isNotFound) return <ErrorPage statusCode={404} />

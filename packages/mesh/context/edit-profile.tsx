@@ -1,7 +1,15 @@
 'use client'
+
 import { useParams, useRouter } from 'next/navigation'
 import type { ChangeEvent } from 'react'
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { deletePhoto, updateProfile } from '@/app/actions/edit-profile'
 import { IMAGE_SIZE_LIMITATION } from '@/constants/profile'
@@ -42,12 +50,15 @@ export const EditProfileProvider: React.FC<{
     takesCount: 20,
   })
 
-  const initialData = {
-    name: user.name || '',
-    customId: user.customId || '',
-    intro: user.intro || '',
-    avatar: user.avatar || '',
-  }
+  const initialData = useMemo(
+    () => ({
+      name: user.name || '',
+      customId: user.customId || '',
+      intro: user.intro || '',
+      avatar: user.avatar || '',
+    }),
+    [user.name, user.customId, user.intro, user.avatar]
+  )
 
   const {
     form: editProfileForm,
@@ -184,6 +195,9 @@ export const EditProfileProvider: React.FC<{
     user.intro,
     user.customId,
     user.name,
+    initialData,
+    resetErrors,
+    resetForm,
   ])
 
   return (

@@ -1,8 +1,8 @@
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { fetchCategoryInformation } from '../actions/get-homepage'
-import { useCustomTranslation } from '@/hooks/use-custom-translation' // Import added
 
 export default async function SubpageLayout({
   children,
@@ -13,12 +13,12 @@ export default async function SubpageLayout({
 }) {
   const categorySlug = params.slug
   const result = await fetchCategoryInformation(categorySlug)
-  const { t } = useCustomTranslation() // useCustomTranslation hook used
+  const { t } = useCustomTranslation()
 
   const title =
     categorySlug !== 'podcast'
-      ? `${result?.title}${t('category.popular', '熱門')}` // String updated to use t()
-      : `${result?.title} ${t('category.popular', '熱門')}` // String updated to use t()
+      ? `${result?.title}${t('category.popular', '熱門')}`
+      : `${result?.title} ${t('category.popular', '熱門')}`
 
   const navigationData = {
     title,
