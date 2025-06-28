@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import Link from 'next/link'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
@@ -47,11 +48,11 @@ export default function MostPickedPodcastCard({ story }: { story: Story }) {
         </figure>
         <div className="w-full">
           <div className="mb-1 flex justify-between">
-            <NextLink href={`/profile/publisher/${publisherCustomId}`}>
+            <Link href={`/profile/publisher/${publisherCustomId}`}>
               <p className="footnote lg:body-3 text-primary-500 hover-or-active:text-primary-700">
                 {publisher}
               </p>
-            </NextLink>
+            </Link>
             <StoryMoreActionButton story={story} publisherId={publisherId} />
           </div>
           <div className="flex flex-row justify-between gap-3">
