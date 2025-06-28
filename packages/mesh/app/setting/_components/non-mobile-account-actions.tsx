@@ -31,7 +31,7 @@ export default function NonMobileAccountActions() {
 
   return (
     <section className="body-2 hidden w-articleMain rounded-xl bg-single-layer text-primary-700 shadow-[0_0_4px_0_rgba(0,9,40,0.1),0_2px_2px_0_rgba(0,9,40,0.1)] sm:block">
-      <div className="flex justify-between border-b-[0.5px] border-b-primary-800/10 px-10 py-8">
+      <div className="flex justify-between border-b-[0.5px] border-b-primary-800 border-opacity-10 px-10 py-8">
         <p>{user.email}</p>
         {iconName && <Icon iconName={iconName} size="m" />}
       </div>
@@ -39,7 +39,7 @@ export default function NonMobileAccountActions() {
         {ACTION_NAMES.map(({ name, href }, index) => (
           <div
             key={name}
-            className="cursor-pointer border-b-[0.5px] border-b-primary-800/10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"
+            className="cursor-pointer border-b-[0.5px] border-b-primary-800 border-opacity-10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"
           >
             {href ? (
               <Link href={href}>

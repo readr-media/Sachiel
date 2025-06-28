@@ -13,7 +13,6 @@ import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -183,6 +182,46 @@ enum ActionType {
   AddCollection = 'add-collection',
 }
 
+const actions = [
+  {
+    type: ActionType.Sponsor,
+    text: '贊助',
+    icon: 'icon-wallet',
+    gtmClass: 'GTM-article_click_sponsor_article',
+  },
+  {
+    type: ActionType.AddBookMark,
+    text: '加入書籤',
+    icon: 'icon-bookmark',
+    offText: '移除書籤',
+    offIcon: 'icon-bookmark-off',
+    gtmClass: 'GTM-article_click_bookmark',
+  },
+  {
+    type: ActionType.AddCollection,
+    text: '加入集錦',
+    icon: 'icon-collection',
+    gtmClass: 'GTM-article_click_collection',
+  },
+  {
+    type: ActionType.UnFollow,
+    text: '取消追蹤',
+    icon: 'icon-unfollow',
+  },
+  {
+    type: ActionType.CopyLink,
+    text: '複製連結',
+    icon: 'icon-copy',
+    gtmClass: 'GTM-article_click_copy_url',
+  },
+  {
+    type: ActionType.Share,
+    text: '分享',
+    icon: 'icon-share',
+    gtmClass: 'GTM-article_click_share',
+  },
+] as const
+
 const ActionSheet = forwardRef(function ActionSheet(
   {
     storyInfo,
@@ -206,7 +245,6 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user, setUser } = useUser()
   const storyId = storyInfo.id
@@ -217,49 +255,6 @@ const ActionSheet = forwardRef(function ActionSheet(
   const pageName = usePageName()
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
-
-  const actions = [
-    {
-      type: ActionType.Sponsor,
-      text: t('Components.StoryMoreActionButton.donate', '贊助'),
-      icon: 'icon-donate',
-      gtmClass: 'GTM-article_click_donate',
-    },
-    {
-      type: ActionType.AddBookMark,
-      text: t('Components.StoryMoreActionButton.add-bookmark', '加入書籤'),
-      offText: t(
-        'Components.StoryMoreActionButton.remove-bookmark',
-        '移除書籤'
-      ),
-      icon: 'icon-bookmark',
-      offIcon: 'icon-bookmark-off',
-      gtmClass: 'GTM-article_click_bookmark',
-    },
-    {
-      type: ActionType.AddCollection,
-      text: t('Components.StoryMoreActionButton.add-collection', '加入集錦'),
-      icon: 'icon-collection',
-      gtmClass: 'GTM-article_click_collection',
-    },
-    {
-      type: ActionType.UnFollow,
-      text: t('Components.StoryMoreActionButton.unfollow', '取消追蹤'),
-      icon: 'icon-unfollow',
-    },
-    {
-      type: ActionType.CopyLink,
-      text: t('Components.StoryMoreActionButton.copy-link', '複製連結'),
-      icon: 'icon-copy',
-      gtmClass: 'GTM-article_click_copy',
-    },
-    {
-      type: ActionType.Share,
-      text: t('Components.StoryMoreActionButton.share', '分享'),
-      icon: 'icon-share',
-      gtmClass: 'GTM-article_click_share',
-    },
-  ] as const
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
