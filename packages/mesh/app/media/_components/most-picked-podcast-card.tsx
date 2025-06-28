@@ -9,13 +9,11 @@ import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 
 import { type Story } from './media-stories'
 
 export default function MostPickedPodcastCard({ story }: { story: Story }) {
-  const { t } = useCustomTranslation()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const publisherCustomId = story.source?.customId ?? ''
   const publisher = story.source?.title ?? ''
@@ -34,7 +32,7 @@ export default function MostPickedPodcastCard({ story }: { story: Story }) {
   return (
     <section className="bg-primary-100 p-5 md:px-[70px] lg:px-10 lg:py-8">
       <h2 className="list-title lg:title-1 mb-2 text-primary-500 lg:mb-3">
-        {t('Pages.Home.FeaturedCard-non-readr-title', '最多人精選')}
+        最多人精選
       </h2>
       <div className="sm:flex sm:flex-row sm:gap-5">
         <figure className="relative hidden shrink-0 sm:block sm:size-[168px] lg:size-[178px] xl:size-[200px]">

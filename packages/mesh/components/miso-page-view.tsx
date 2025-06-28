@@ -20,7 +20,7 @@ export default function MisoPageView({ productIds }: { productIds: string }) {
         product_ids: [`mesh_${productIds}`],
       })
     })
-  }, [productIds, user.memberId])
+  }, [])
 
   return <></>
 }
