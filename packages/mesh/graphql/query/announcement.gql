@@ -11,4 +11,3 @@ query GetAnnouncements {
     createdAt
   }
 }
- 

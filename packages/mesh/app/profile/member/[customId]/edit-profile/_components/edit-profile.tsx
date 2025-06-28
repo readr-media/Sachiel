@@ -56,7 +56,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     initializeProfileData()
-  }, [])
+  }, [initializeProfileData])
 
   return (
     <>
