@@ -1,6 +1,10 @@
 'use client'
 
+<<<<<<< HEAD
 import NextLink from 'next/link'
+=======
+import Link from 'next/link'
+>>>>>>> parent of cf94af14 (fix(mesh): import Nextlink)
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
