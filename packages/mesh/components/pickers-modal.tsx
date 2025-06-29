@@ -7,6 +7,7 @@ import FollowButton from '@/app/social/_components/follow-button'
 import { usePickersModal } from '@/context/pickers-modal'
 import { type Picker } from '@/context/pickers-modal'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import { PickObjective } from '@/types/objective'
 
@@ -23,6 +24,7 @@ export default function PickersModal() {
   const [page, setPage] = useState(0)
   const [pickersData, setPickersData] = useState<Picker[]>([])
   const isPicked = user.pickStoryIds.has(objectiveId)
+  const { t } = useCustomTranslation()
 
   const getPickers = useMemo(() => {
     switch (pickObjective) {
@@ -107,7 +109,9 @@ export default function PickersModal() {
           <div className="relative max-h-[600px] w-full max-w-[480px] rounded-md bg-white text-left shadow-xl transition-all">
             <div className="flex h-15 flex-row items-center justify-center rounded-t-md border-[0.5px] border-primary-200 bg-white">
               <div className="size-11"></div>
-              <p className="list-title mx-auto text-primary-800">精選者</p>
+              <p className="list-title mx-auto text-primary-800">
+                {t('Components.PickersModal.picker', '精選者')}
+              </p>
               <button onClick={() => closePickersModal()}>
                 <Icon iconName="icon-modal-close" size="2xl" />
               </button>

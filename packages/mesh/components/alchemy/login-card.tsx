@@ -9,6 +9,7 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { ENV } from '@/constants/config'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import { Card } from './card'
 
@@ -25,6 +26,7 @@ export const LogInCard = ({
   const pathname = usePathname()
   const isAwaitingEmail = status === 'AWAITING_EMAIL_AUTH'
   const email = user.email
+  const { t } = useCustomTranslation()
 
   const login = (evt: FormEvent<HTMLFormElement>) => {
     if (!email) return
@@ -70,7 +72,10 @@ export const LogInCard = ({
                 type="submit"
                 size="lg"
                 color="primary"
-                text="發送登入連結"
+                text={t(
+                  'Components.AlchemyLoginCard.send-login-link',
+                  '發送登入連結'
+                )}
               />
             </div>
           </div>

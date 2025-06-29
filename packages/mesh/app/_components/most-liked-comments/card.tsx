@@ -6,6 +6,7 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -25,6 +26,7 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
   const { user } = useUser()
   const userPayload = useUserPayload()
   const pageName = usePageName()
+  const { t } = useCustomTranslation()
 
   return (
     <div className="flex items-start gap-x-3">
@@ -72,10 +74,10 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
               <Button
                 size="sm"
                 color="transparent"
-                text="追蹤"
+                text={t('Components.FollowButton.follow', '追蹤')}
                 activeState={{
                   isActive: isFollowing,
-                  activeText: '追蹤中',
+                  activeText: t('Components.FollowButton.following', '追蹤中'),
                 }}
                 onClick={handleClickFollow}
                 gtmClassName="GTM-homepage_click_popular_user_follow"
