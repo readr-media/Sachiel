@@ -223,17 +223,17 @@ const ActionSheet = forwardRef(function ActionSheet(
     {
       type: ActionType.Sponsor,
       text: t('Components.StoryMoreActionButton.donate', '贊助'),
-      icon: 'icon-donate',
-      gtmClass: 'GTM-article_click_donate',
+      icon: 'icon-wallet',
+      gtmClass: 'GTM-article_click_sponsor_article',
     },
     {
       type: ActionType.AddBookMark,
       text: t('Components.StoryMoreActionButton.add-bookmark', '加入書籤'),
+      icon: 'icon-bookmark',
       offText: t(
         'Components.StoryMoreActionButton.remove-bookmark',
         '移除書籤'
       ),
-      icon: 'icon-bookmark',
       offIcon: 'icon-bookmark-off',
       gtmClass: 'GTM-article_click_bookmark',
     },
@@ -252,7 +252,7 @@ const ActionSheet = forwardRef(function ActionSheet(
       type: ActionType.CopyLink,
       text: t('Components.StoryMoreActionButton.copy-link', '複製連結'),
       icon: 'icon-copy',
-      gtmClass: 'GTM-article_click_copy',
+      gtmClass: 'GTM-article_click_copy_url',
     },
     {
       type: ActionType.Share,

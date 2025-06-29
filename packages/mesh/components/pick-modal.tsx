@@ -8,6 +8,7 @@ import {
 
 import { usePickModal } from '@/context/pick-modal'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePicker from '@/hooks/use-picker'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { PickObjective } from '@/types/objective'
@@ -42,7 +43,10 @@ const AddPickModal = () => {
   const dialogRef = useRef<HTMLDialogElement | null>(null)
   const textAreaMaxHeight = width < 768 ? 104 : 600
   const [value, setValue] = useState('')
-  const buttonText = value ? '發佈' : '直接加入精選'
+  const { t } = useCustomTranslation()
+  const buttonText = value
+    ? t('Components.PickModal.publish', '發布')
+    : t('Components.PickModal.add-pick', '直接加入精選')
 
   const handleInput = (
     e: FormEvent<HTMLTextAreaElement>,
@@ -80,8 +84,14 @@ const AddPickModal = () => {
 
   const textareaPlaceHolder =
     pickObjective === PickObjective.Story
-      ? '留言分享你為什麼精選這篇文章...'
-      : '留言分享你為什麼精選這個集錦...'
+      ? t(
+          'Components.PickModal.comment-for-pick-story',
+          '留言分享你為什麼精選這篇文章...'
+        )
+      : t(
+          'Components.PickModal.comment-for-pick-collection',
+          '留言分享你為什麼精選這個集錦...'
+        )
 
   return (
     <>
@@ -141,7 +151,9 @@ const AddPickModal = () => {
             <div className="relative overflow-hidden rounded-md bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div className="flex h-15 flex-row items-center justify-center border-[0.5px] border-primary-200 bg-white">
                 <div className="size-11"></div>
-                <p className="list-title mx-auto text-primary-800">加入精選</p>
+                <p className="list-title mx-auto text-primary-800">
+                  {t('Components.PickModal.add-to-pick', '加入精選')}
+                </p>
                 <button onClick={handleConfirmLeave}>
                   <Icon iconName="icon-modal-close" size="2xl" />
                 </button>
