@@ -11,6 +11,7 @@ import AdManager from '@/components/ad/ad-manager-ad'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { ProfileJSONType } from '@/utils/data-schema'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import EmptyTabState from './empty-tab-state'
 
@@ -43,6 +44,7 @@ export default function ArticleCardList({
   activeTab,
   userType,
 }: ArticleCardListProps) {
+  const { t } = useCustomTranslation()
   const [hasMoreData, setHasMoreData] = useState(true)
   const shouldShowComment = activeTab === 'pick'
   const isCollection = activeTab === 'collection'
@@ -73,7 +75,7 @@ export default function ArticleCardList({
     <>
       {activeTab === 'pick' && (
         <p className="list-title bg-white px-5 pt-4 text-primary-700 md:bg-primary-700-dark md:p-10 md:px-[70px] md:pb-1 md:pt-9 lg:px-10">
-          精選文章
+          {t('Profile.PickArticle', '精選文章')}
         </p>
       )}
       <InfiniteScrollList

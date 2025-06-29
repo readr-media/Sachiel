@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -12,12 +13,13 @@ export default function FollowingLayout({
   children: React.ReactNode
 }>) {
   const pathname = usePathname()
+  const { t } = useCustomTranslation()
 
   let title = ''
   if (pathname.endsWith('follower')) {
-    title = '粉絲'
+    title = t('Profile.Follower', '粉絲')
   } else if (pathname.endsWith('following')) {
-    title = '追蹤中'
+    title = t('Profile.Following', '追蹤中')
   }
 
   const navigationData = {
