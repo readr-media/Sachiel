@@ -22,7 +22,6 @@
       "loading": "Loading...",
       "not-found": "Policy content not found"
     },
-
     "Subpage": {
       "SubpageLayout-title": "Trending in {{title}}",
       "SubpageLayout-podcast-title": "Trending in {{title}}",
@@ -176,8 +175,8 @@
       "Page-sponsor-count-unit": "times"
     },
     "Point-Subscribe-Stories": {
-      "Page-no-record": "No unlocked stories yet",
-      "SubscribeStoriesList-due-day": "Expires at {{time}}"
+      "Page-no-record": "No subscribed stories yet",
+      "SubscribeStoriesList-due-day": "Due {{time}}"
     },
     "Collection": {
       "CreateCollectionProvider-mobile-step1-title-1": "{{count}} Stories picked",
