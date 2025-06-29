@@ -22,6 +22,7 @@
       "loading": "Loading...",
       "not-found": "Policy content not found"
     },
+
     "Subpage": {
       "SubpageLayout-title": "Trending in {{title}}",
       "SubpageLayout-podcast-title": "Trending in {{title}}",
@@ -175,8 +176,8 @@
       "Page-sponsor-count-unit": "times"
     },
     "Point-Subscribe-Stories": {
-      "Page-no-record": "No subscribed stories yet",
-      "SubscribeStoriesList-due-day": "Due {{time}}"
+      "Page-no-record": "No unlocked stories yet",
+      "SubscribeStoriesList-due-day": "Expires at {{time}}"
     },
     "Collection": {
       "CreateCollectionProvider-mobile-step1-title-1": "{{count}} Stories picked",
@@ -256,6 +257,11 @@
     },
     "Contact": {
       "description": "If you have any usage issues, please send screenshots and problem descriptions to our customer service email, or call our customer service hotline for dedicated assistance (Service hours: Monday to Friday, 10:00-18:00)"
+      "Page-description": "If you encounter any issues, please email us with a screenshot and description, or call our support line (service hours: Monday–Friday, 10:00–18:00)",
+      "Page-link-customer-service-mail": "Support email",
+      "Page-link-customer-service-phone": "Support phone",
+      "Page-link-discord": "Discord community",
+      "Layout-title": "Contact us"
     },
     "Invitation-Code": {
       "Page-valid-code": "Available invite codes ({{count}})",

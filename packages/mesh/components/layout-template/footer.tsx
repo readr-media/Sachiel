@@ -10,11 +10,14 @@ import {
   useFooterCompanyInfos,
   useFooterNavLinks,
 } from '@/constants/layout'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
+
 const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
   const footerNavLinks = useFooterNavLinks()
   const footerCompanyInfos = useFooterCompanyInfos()
+  const { t } = useCustomTranslation()
 
   return (
     <footer
@@ -104,8 +107,8 @@ export default function Footer({ className = '' }: { className?: string }) {
             ))}
           </address>
           <div className="caption-2 text-primary-400">
-            &copy; <time>{new Date().getFullYear()}</time> 精鏡傳媒股份有限公司
-            All Rights Reserved
+            &copy; <time>{new Date().getFullYear()}</time>{' '}
+            {t('Others.footers.company-name', '精鏡傳媒股份有限公司')}
           </div>
         </div>
       </div>
