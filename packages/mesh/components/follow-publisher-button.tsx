@@ -13,21 +13,21 @@ export default function FollowPublisherButton({
   publisherId: string
   publisherName: string
 }) {
-  const { t } = useCustomTranslation()
   const { isFollowing, handleFollowOnClick } = useFollowPublisher({
     publisherId,
     publisherName,
   })
+  const { t } = useCustomTranslation()
 
   return (
     <div className="shrink-0">
       <Button
         size={size}
         color="transparent"
-        text={t('Components.FollowButton.follow', '追蹤')}
+        text={t('Components.FollowPublisherButton.follow', '追蹤')}
         activeState={{
           isActive: isFollowing,
-          activeText: t('Components.FollowButton.following', '追蹤中'),
+          activeText: t('Components.FollowPublisherButton.following', '追蹤中'),
         }}
         onClick={handleFollowOnClick}
       />

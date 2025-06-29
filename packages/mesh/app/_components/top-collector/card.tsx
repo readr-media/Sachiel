@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import Button from '@/components/button'
 import Avatar from '@/components/story-card/avatar'
 import { useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 import type { Collector } from '@/types/homepage'
 
@@ -16,6 +17,7 @@ type Props = {
 export default function TopCollectorCard({ person, rank }: Props) {
   const { handleClickFollow, isFollowing } = useFollow(String(person.id))
   const { user } = useUser()
+  const { t } = useCustomTranslation()
 
   return (
     <div className="mb-3 flex items-center gap-y-3 border-b-[0.5px] pb-3 last:border-0 lg:w-[164px] lg:flex-col lg:rounded-md lg:bg-[#FFF] lg:px-3 lg:pb-4 lg:pt-3 lg:shadow-card xl:w-[192px]">
@@ -58,10 +60,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="sm"
               color="transparent"
-              text="追蹤"
+              text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: t('Components.FollowButton.following', '追蹤中'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"
@@ -71,10 +73,10 @@ export default function TopCollectorCard({ person, rank }: Props) {
             <Button
               size="md-large"
               color="transparent"
-              text="追蹤"
+              text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: '追蹤中',
+                activeText: t('Components.FollowButton.following', '追蹤中'),
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"

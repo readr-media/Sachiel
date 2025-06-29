@@ -13,7 +13,7 @@ export default function ObjectivePickCount({
 
   if (picksCount === 0) {
     return (
-      <span>{t('Components.ObjectivePickCount.no-pick', '尚無人精選')}</span>
+      <span>{t('Components.ObjectivePickCount.no-picks', '尚無人精選')}</span>
     )
   }
 
@@ -31,8 +31,8 @@ export default function ObjectivePickCount({
       <span className="pr-1 text-primary-700">{displayCount}</span>
       <span>
         {picksCount < 10000
-          ? t('Components.ObjectivePickCount.pick-unit', '人精選')
-          : t('Components.ObjectivePickCount.pick-unit-10k', '萬人精選')}
+          ? t('Components.ObjectivePickCount.pick-under-10000', '人精選')
+          : t('Components.ObjectivePickCount.pick-over-10000', '萬人精選')}
       </span>
     </button>
   )

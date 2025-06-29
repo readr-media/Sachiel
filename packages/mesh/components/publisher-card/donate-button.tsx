@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { getPublisherWallet } from '@/app/actions/publisher'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import { PaymentType } from '@/types/payment'
 
@@ -19,6 +20,7 @@ export default function PublisherDonateButton({
   const router = useRouter()
   const [isWalletAvailable, setIsWalletAvailable] = useState(false)
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
+  const { t } = useCustomTranslation()
 
   useEffect(() => {
     const init = async () => {
@@ -41,7 +43,7 @@ export default function PublisherDonateButton({
       size="sm"
       color="custom-blue"
       icon={{ iconName: 'icon-donate', size: 's' }}
-      text="贊助"
+      text={t('Components.DonateButton.donate', '贊助')}
       onClick={handleClickDonate}
       disabled={!isWalletAvailable}
       gtmClassName={gtmClassName}

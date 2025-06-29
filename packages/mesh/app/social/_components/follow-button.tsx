@@ -1,6 +1,7 @@
 'use client'
 
 import Button from '@/components/button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useFollow } from '@/hooks/use-follow'
 
 export default function FollowButton({
@@ -11,15 +12,16 @@ export default function FollowButton({
   gtmClassName?: string
 }) {
   const { handleClickFollow, isFollowing } = useFollow(followingId)
+  const { t } = useCustomTranslation()
 
   return (
     <Button
       size="sm"
       color="transparent"
-      text="追蹤"
+      text={t('Components.FollowButton.follow', '追蹤')}
       activeState={{
         isActive: isFollowing,
-        activeText: '追蹤中',
+        activeText: t('Components.FollowButton.following', '追蹤中'),
       }}
       onClick={handleClickFollow}
       gtmClassName={gtmClassName}

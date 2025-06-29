@@ -8,6 +8,7 @@ import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { LOGO_ICONS } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 const DesktopSearchBar = dynamic(
   () => import('@/components/desktop-search-bar'),
@@ -30,6 +31,7 @@ export default function DefaultHeader() {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
+  const { t } = useCustomTranslation()
 
   return (
     <>
@@ -67,7 +69,7 @@ export default function DefaultHeader() {
                 <Button
                   size="sm"
                   color="white"
-                  text="登入"
+                  text={t('Components.LoginButton.login', '登入')}
                   onClick={detectIfShouldRedirectToLogin}
                 />
               </div>
