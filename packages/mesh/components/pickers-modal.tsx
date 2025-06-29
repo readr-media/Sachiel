@@ -15,6 +15,7 @@ import Icon from './icon'
 import Avatar from './story-card/avatar'
 
 export default function PickersModal() {
+  const { t } = useCustomTranslation()
   const { user } = useUser()
   const { pickObjective, objectiveId, closePickersModal } = usePickersModal()
   const { targetRef: scrollRef, isIntersecting: isInView } = useInView()
@@ -24,7 +25,6 @@ export default function PickersModal() {
   const [page, setPage] = useState(0)
   const [pickersData, setPickersData] = useState<Picker[]>([])
   const isPicked = user.pickStoryIds.has(objectiveId)
-  const { t } = useCustomTranslation()
 
   const getPickers = useMemo(() => {
     switch (pickObjective) {

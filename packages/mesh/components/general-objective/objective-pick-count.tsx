@@ -10,6 +10,7 @@ export default function ObjectivePickCount({
   disabled: boolean
 }) {
   const { t } = useCustomTranslation()
+
   if (picksCount === 0) {
     return (
       <span>{t('Components.ObjectivePickCount.no-picks', '尚無人精選')}</span>

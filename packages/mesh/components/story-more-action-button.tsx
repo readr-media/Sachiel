@@ -57,7 +57,6 @@ export default function StoryMoreActionButton({
     left: Infinity,
   })
   const actionSheetRef = useRef<HTMLDivElement>(null)
-  const { t } = useCustomTranslation()
 
   useClickOutside(actionSheetRef, () => {
     closeActionSheet()
@@ -155,7 +154,6 @@ export default function StoryMoreActionButton({
           openAddCollection={openAddCollection}
           canUnFollowPublisher={canUnFollowPublisher}
           position={position}
-          t={t}
         />
       )}
       {shouldShowShareSheet &&
@@ -194,7 +192,6 @@ const ActionSheet = forwardRef(function ActionSheet(
     canUnFollowPublisher,
     position,
     onClose,
-    t,
   }: {
     storyInfo: {
       id: string
@@ -206,7 +203,6 @@ const ActionSheet = forwardRef(function ActionSheet(
     canUnFollowPublisher: boolean
     position: Position
     onClose: () => void
-    t: ReturnType<typeof useCustomTranslation>['t']
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
@@ -221,6 +217,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const toastMessages = useToastMessages()
+  const { t } = useCustomTranslation()
 
   const actions = [
     {
