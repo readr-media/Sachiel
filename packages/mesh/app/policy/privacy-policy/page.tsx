@@ -1,14 +1,62 @@
+'use client'
+
 import '@/styles/policy.css'
 
+import { useEffect, useState } from 'react'
+
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { processPolicy } from '@/utils/process-policy'
 
 import { fetchPrivacyPolicy } from '../../actions/policy'
 
-export default async function Page() {
-  const data = await fetchPrivacyPolicy()
-  const processedHtml = data && (await processPolicy(data))
+export default function Page() {
+  const { t, i18n } = useCustomTranslation()
+  const [processedHtml, setProcessedHtml] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (!processedHtml) return null
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const data = await fetchPrivacyPolicy(i18n.language)
+        if (data) {
+          const processed = await processPolicy(data)
+          setProcessedHtml(processed)
+        } else {
+          setError('Failed to load privacy policy')
+        }
+      } catch (error) {
+        console.error('Failed to fetch privacy policy:', error)
+        setError('Failed to load privacy policy')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [i18n.language])
+
+  if (isLoading) {
+    return (
+      <section className="px-5 pb-5 pt-6 sm:p-0">
+        <div className="policy-content">
+          <p>{t('Pages.Policy.loading', '載入中...')}</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (error || !processedHtml) {
+    return (
+      <section className="px-5 pb-5 pt-6 sm:p-0">
+        <div className="policy-content">
+          <p>{t('Pages.Policy.not-found', '找不到隱私政策內容')}</p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="px-5 pb-5 pt-6 sm:p-0">

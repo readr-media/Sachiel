@@ -28,6 +28,7 @@ module.exports = {
     'tailwindcss/no-custom-classname': 'off',
     'prettier/prettier': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
+    '@next/next/no-html-link-for-pages': 'off',
   },
   overrides: [
     {

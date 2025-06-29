@@ -6,7 +6,7 @@ import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
-import { MOBILE_NAV_ICONS, NON_MOBILE_NAV_ICONS } from '@/constants/layout'
+import { useMobileNavIcons, useNonMobileNavIcons } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import { TabCategory } from '@/types/profile'
 import { matchPath } from '@/utils/nav-button'
@@ -59,6 +59,8 @@ const NonMobileNav = ({
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const searchParams = useSearchParams()
+  const nonMobileNavIcons = useNonMobileNavIcons()
+
   return (
     <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
       {/* nested nav bar to maintain the max width for screen width larger than 1440 */}
@@ -67,7 +69,7 @@ const NonMobileNav = ({
         <div className="py-10">
           {/* top first section */}
           <div className="flex flex-col border-b sm:gap-8 sm:pb-8 md:gap-2 md:pb-5">
-            {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
+            {nonMobileNavIcons.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
                 isOn={matchPath(iconInfo.href, path)}
@@ -76,7 +78,7 @@ const NonMobileNav = ({
             ))}
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
-            {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
+            {nonMobileNavIcons.second.map((iconInfo) => {
               if (iconInfo.text === '個人檔案') {
                 return (
                   <NonMobileNavIcon
@@ -127,7 +129,7 @@ const NonMobileNav = ({
         {/* bottom (third) part */}
         {isLoggedIn && (
           <div className="flex flex-col border-t py-6">
-            {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+            {nonMobileNavIcons.third.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
                 isOn={matchPath(iconInfo.href, path)}
@@ -192,23 +194,26 @@ const MobileNav = ({
   userCustomId: string
 }) => {
   const searchParams = useSearchParams()
+  const mobileNavIcons = useMobileNavIcons()
+
   return (
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
-        {MOBILE_NAV_ICONS.map((iconInfo) => {
+        {mobileNavIcons.map((iconInfo) => {
           if (iconInfo.text === '個人檔案') {
             return (
               <MobileNavIcon
-                key={iconInfo.icon.default}
+                key={iconInfo.text}
                 isOn={
                   matchPath(iconInfo.href, path) &&
                   searchParams.get('tab') === TabCategory.PICKS
                 }
                 iconInfo={{
                   ...iconInfo,
-                  href:
-                    iconInfo.href +
-                    `/member/${userCustomId}?tab=${TabCategory.PICKS}`,
+                  href: userCustomId
+                    ? iconInfo.href +
+                      `/member/${userCustomId}?tab=${TabCategory.PICKS}`
+                    : '/login',
                 }}
                 avatarUrl={avatarUrl}
               />
@@ -216,7 +221,7 @@ const MobileNav = ({
           } else {
             return (
               <MobileNavIcon
-                key={iconInfo.icon.default}
+                key={iconInfo.text}
                 isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />

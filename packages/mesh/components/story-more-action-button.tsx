@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge'
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import { removeFollowPublisher } from '@/app/actions/follow-publisher'
 import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
-import TOAST_MESSAGE from '@/constants/toast'
+import { useToastMessages } from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
@@ -217,6 +217,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const pageName = usePageName()
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
+  const toastMessages = useToastMessages()
 
   const actions = [
     {
@@ -263,7 +264,7 @@ const ActionSheet = forwardRef(function ActionSheet(
 
   const onAction = async (type: ActionType) => {
     if (!storyId) {
-      addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
+      addToast({ status: 'fail', text: toastMessages.moreActionError })
       console.error(
         `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
       )
@@ -275,7 +276,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           return
         }
         if (!publisherId) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.moreActionError })
+          addToast({ status: 'fail', text: toastMessages.moreActionError })
           console.error(
             `more action on story error, storyId: ${storyId}, publisherId: ${publisherId}`
           )
@@ -304,12 +305,12 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.removeBookmarkSuccess,
+              text: toastMessages.removeBookmarkSuccess,
             })
           } else {
             addToast({
               status: 'fail',
-              text: TOAST_MESSAGE.deleteBookmarkFailed,
+              text: toastMessages.deleteBookmarkFailed,
             })
           }
           onClose()
@@ -325,7 +326,7 @@ const ActionSheet = forwardRef(function ActionSheet(
             }))
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.addBookmarkSuccess,
+              text: toastMessages.addBookmarkSuccess,
             })
             logStoryInteractionEvent(userPayolad, {
               type: 'bookmark',
@@ -336,7 +337,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           } else {
             addToast({
               status: 'fail',
-              text: TOAST_MESSAGE.addBookmarkFailed,
+              text: toastMessages.addBookmarkFailed,
             })
           }
           onClose()
@@ -366,7 +367,7 @@ const ActionSheet = forwardRef(function ActionSheet(
           .then(() => {
             addToast({
               status: 'success',
-              text: TOAST_MESSAGE.copyStoryLinkSuccess,
+              text: toastMessages.copyStoryLinkSuccess,
             })
             onClose()
           })

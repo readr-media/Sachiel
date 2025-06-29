@@ -18,6 +18,11 @@
       "TopPublisherCard-sponsor-count-unit": "sponsorships",
       "Comment-show-more": "show more"
     },
+    "Policy": {
+      "loading": "Loading...",
+      "not-found": "Policy content not found"
+    },
+
     "Subpage": {
       "SubpageLayout-title": "Trending in {{title}}",
       "SubpageLayout-podcast-title": "Trending in {{title}}",
@@ -251,6 +256,7 @@
       "NotExist-description": "This collection has been deleted"
     },
     "Contact": {
+      "description": "If you have any usage issues, please send screenshots and problem descriptions to our customer service email, or call our customer service hotline for dedicated assistance (Service hours: Monday to Friday, 10:00-18:00)"
       "Page-description": "If you encounter any issues, please email us with a screenshot and description, or call our support line (service hours: Monday–Friday, 10:00–18:00)",
       "Page-link-customer-service-mail": "Support email",
       "Page-link-customer-service-phone": "Support phone",
@@ -832,6 +838,73 @@
       "add-bookmark-success": "Bookmark added",
       "remove-bookmark-success": "Bookmark removed",
       "edit-collection-failed": "Failed to edit collection. Please try again."
+    }
+  },
+  "Constants": {
+    "Contact": {
+      "customer-email": "Customer Email",
+      "customer-phone": "Customer Phone",
+      "discord-community": "Discord Community"
+    },
+    "Toast": {
+      "follow-category-failed": "Failed to add category. Please try again.",
+      "unfollow-category-failed": "Failed to remove category. Please try again.",
+      "more-action-error": "Something went wrong. Please try again later.",
+      "add-comment-failed": "Failed to post comment. Please try again.",
+      "edit-comment-failed": "Failed to edit comment. Please try again.",
+      "like-comment-failed": "Failed to like comment. Please try again.",
+      "unlike-comment-failed": "Failed to unlike comment. Please try again.",
+      "delete-comment-failed": "Failed to delete comment. Please try again.",
+      "follow-member-failed": "Failed to follow. Please try again",
+      "unfollow-member-failed": "Failed to unfollow. Please try again.",
+      "pick-story-failed": "Failed to add to picks. Please try again.",
+      "delete-pick-failed": "Failed to remove pick. Please try again.",
+      "add-bookmark-failed": "Failed to add bookmark. Please try again.",
+      "delete-bookmark-failed": "Failed to remove bookmark. Please try again.",
+      "copy-story-link-success": "Link copied",
+      "copy-invitation-code": "Invite code copied",
+      "unlock-story-success": "Successfully unlocked",
+      "pay-failed-insufficient": "Not enough Mesh points",
+      "pay-failed-unknown": "Payment failed. Please try again.",
+      "block-member-success": "Blocked",
+      "unblock-member-success": "Unblocked",
+      "block-member-failed": "Failed to block user. Please try again.",
+      "unblock-member-failed": "Failed to unblock user. Please try again.",
+      "add-story-to-collection-success": "Successfully added to collection",
+      "add-story-to-collection-failed": "Failed to add to collection. Please try again.",
+      "create-collection-failed": "Failed to create collection. Please try again.",
+      "delete-collection-success": "Collection successfully deleted",
+      "delete-collection-failed": "Failed to delete collection. Please try again.",
+      "update-profile-failed": "Failed to update profile. Please try again.",
+      "add-bookmark-success": "Bookmark added",
+      "remove-bookmark-success": "Bookmark removed"
+    },
+    "Setting": {
+      "block-list": "Block list",
+      "contact-us": "Contact us",
+      "about": "About",
+      "logout": "Log out",
+      "delete-account": "Delete account",
+      "language": "Language"
+    },
+    "Layout": {
+      "about-us": "About us",
+      "contact-us": "Contact us",
+      "privacy-policy": "Privacy policy",
+      "terms-of-service": "Terms of service",
+      "company-name": "Mirror Media Inc.",
+      "company-address": "7F, No. 365, Section 1, Tiding Blvd., Neihu District, Taipei 114, Taiwan",
+      "company-email": "readr@readr.tw",
+      "homepage": "Home",
+      "social": "Community",
+      "media": "Media",
+      "profile": "Profile",
+      "point": "Mesh points",
+      "bookmark": "Bookmarks",
+      "setting": "Settings",
+      "redeem-points": "Redeem points",
+      "earning-report": "Earning report",
+      "logout": "Log out"
     }
   }
 }
