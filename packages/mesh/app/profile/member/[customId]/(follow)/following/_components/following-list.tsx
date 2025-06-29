@@ -5,6 +5,7 @@ import { getMoreMemberFollowing } from '@/app/actions/get-profile'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import Icon from '@/components/icon'
 import { takeCount } from '@/constants/profile-following'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInViewDynamicRef from '@/hooks/use-in-view-dynamic-ref'
 
 import {
@@ -29,6 +30,7 @@ const FollowingList = ({
   followingCount,
   publisherCustomId,
 }: FollowingListProps) => {
+  const { t } = useCustomTranslation()
   const [list, setList] = useState<
     FollowingListType | FollowingPublisherListType
   >(followingList)
@@ -76,7 +78,10 @@ const FollowingList = ({
         onClick={toggleResult}
       >
         <p className="list-title w-full">
-          {title}({followingCount})
+          {t(title, title)}
+          {t('Profile.Following.count', '({{count}})', {
+            count: followingCount,
+          })}
         </p>
         {resultShowing ? (
           <span className={`${hasResult ? 'block' : 'opacity-0'}`}>
