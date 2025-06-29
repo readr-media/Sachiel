@@ -1,7 +1,13 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
 import {
   fetchDailyHighlightGroup,
   fetchDailyHighlightNoGroup,
 } from '@/app/actions/get-homepage'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import type { DailyStory } from '@/types/homepage'
 import { displayDateWithWeekday } from '@/utils/story-display'
 
 import StoryCard from '../story-card'
@@ -9,9 +15,20 @@ import { AdAfterMainGroup } from './ad-after-main-group'
 import { AdAfterNoGroup } from './ad-after-no-group'
 import MainGroup from './main-group'
 
-export default async function DailyHighlight() {
-  const groupData = await fetchDailyHighlightGroup()
-  const noGroupData = await fetchDailyHighlightNoGroup()
+export default function DailyHighlight() {
+  const { t } = useCustomTranslation()
+  const [groupData, setGroupData] = useState<DailyStory[] | null>(null)
+  const [noGroupData, setNoGroupData] = useState<DailyStory[] | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const group = await fetchDailyHighlightGroup()
+      const noGroup = await fetchDailyHighlightNoGroup()
+      setGroupData(group)
+      setNoGroupData(noGroup)
+    }
+    fetchData()
+  }, [])
 
   const groupStories = groupData && groupData.slice(0, 4)
   const noGroupStories = noGroupData && noGroupData.slice(0, 6)
@@ -19,7 +36,9 @@ export default async function DailyHighlight() {
   return (
     <section className="flex flex-col px-5 pt-4 sm:pt-5 md:px-[70px] lg:px-10 lg:pb-10">
       <div className="mb-3 flex items-center justify-between sm:mb-4">
-        <h2 className="list-title lg:title-1 text-primary-700">今日焦點</h2>
+        <h2 className="list-title lg:title-1 text-primary-700">
+          {t('Pages.Home.DailyHighlight-title', '今日焦點')}
+        </h2>
         <time className="button text-primary-500">
           {displayDateWithWeekday()}
         </time>
@@ -28,7 +47,7 @@ export default async function DailyHighlight() {
       <AdAfterMainGroup />
       <div className="flex flex-col gap-y-5 lg:grid lg:grid-cols-2 lg:gap-x-10 lg:[&>*:nth-child(5)]:shadow-none">
         {noGroupStories &&
-          noGroupStories.map((story) => (
+          noGroupStories.map((story: DailyStory) => (
             <StoryCard
               key={story.id}
               story={story}

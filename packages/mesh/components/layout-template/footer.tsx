@@ -5,14 +5,17 @@ import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import {
   DOWNLOAD_APP_LINKS,
-  FOOTER_COMPANY_INFOS,
-  FOOTER_NAV_LINKS,
   FOOTER_SHARED_ICONS,
   LOGO_ICONS,
+  useFooterCompanyInfos,
+  useFooterNavLinks,
 } from '@/constants/layout'
 const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
+  const footerNavLinks = useFooterNavLinks()
+  const footerCompanyInfos = useFooterCompanyInfos()
+
   return (
     <footer
       className={twMerge(
@@ -62,7 +65,7 @@ export default function Footer({ className = '' }: { className?: string }) {
         <div className="flex flex-col items-center gap-10 sm:h-[76px] sm:flex-row sm:justify-between sm:gap-0 sm:border-b">
           {/* second row left block  */}
           <nav className="flex flex-col items-center gap-3 sm:flex-row sm:gap-10">
-            {FOOTER_NAV_LINKS.map((link) => (
+            {footerNavLinks.map((link) => (
               <Link
                 href={link.href}
                 key={link.text}
@@ -91,7 +94,7 @@ export default function Footer({ className = '' }: { className?: string }) {
         {/* thrid row */}
         <div className="flex flex-col items-center gap-5 sm:mt-5 sm:gap-3">
           <address className="flex flex-col items-center gap-1 not-italic sm:flex-row sm:justify-center sm:gap-0">
-            {FOOTER_COMPANY_INFOS.map((info) => (
+            {footerCompanyInfos.map((info) => (
               <p
                 key={info}
                 className="caption-1 text-primary-500 sm:border-l sm:border-primary-200 sm:px-[7.5px] sm:first-of-type:border-none"
