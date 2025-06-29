@@ -256,11 +256,6 @@
     },
     "Contact": {
       "description": "若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務（服務時間：星期一～星期五，10:00～18:00）"
-      "Page-description": "若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務（服務時間：星期一～星期五，10:00～18:00）",
-      "Page-link-customer-service-mail": "客服信箱",
-      "Page-link-customer-service-phone": "客服電話",
-      "Page-link-discord": "Discord 社群",
-      "Layout-title": "聯絡我們"
     },
     "Invitation-Code": {
       "Page-valid-code": "可用的邀請碼（{{count}}）",
