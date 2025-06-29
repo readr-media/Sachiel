@@ -206,7 +206,6 @@ const ActionSheet = forwardRef(function ActionSheet(
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { t } = useCustomTranslation()
   const router = useRouter()
   const { user, setUser } = useUser()
   const storyId = storyInfo.id
@@ -218,6 +217,7 @@ const ActionSheet = forwardRef(function ActionSheet(
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
   const toastMessages = useToastMessages()
+  const { t } = useCustomTranslation()
 
   const actions = [
     {
