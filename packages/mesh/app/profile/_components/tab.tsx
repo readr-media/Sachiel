@@ -1,5 +1,5 @@
-import { type ProfileTabKey, type TabOption } from '@/hooks/use-profile-tab'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 
 const activeTabStyle =
   'after:absolute after:bottom-[-1px] after:left-0 after:w-full after:border after:border-primary-800 text-primary-700'
@@ -10,9 +10,9 @@ export default function Tab({
   activeTab,
   handleTabClick,
 }: {
-  viewTabs: { key: string; label: string }[]
-  activeTab: string
-  handleTabClick: (tab: string) => void
+  viewTabs: { key: ProfileTabKey; label: string }[]
+  activeTab: ProfileTabKey
+  handleTabClick: (tab: ProfileTabKey) => void
 }) {
   const { t } = useCustomTranslation()
   return (
