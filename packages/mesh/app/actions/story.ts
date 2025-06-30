@@ -7,6 +7,7 @@ import { RESTFUL_ENDPOINTS } from '@/constants/config'
 import {
   GetFullStoryDocument,
   GetPublisherPolicyDocument,
+  GetStoriesCommentCountsDocument,
   GetStoriesDocument,
   GetStoryDocument,
   GetStoryInteractionsDocument,
@@ -177,4 +178,25 @@ export async function getStoryInteractions(storyId: string) {
   )
 
   return response?.story
+}
+
+export async function getStoriesCommentCounts({
+  storyIds,
+}: {
+  storyIds: string[]
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  try {
+    const response = await queryGraphQL(
+      GetStoriesCommentCountsDocument,
+      {
+        storyIds,
+      },
+      globalLogFields
+    )
+    return response?.stories || []
+  } catch (error) {
+    console.error('Failed to get stories comment counts:', error)
+    return []
+  }
 }

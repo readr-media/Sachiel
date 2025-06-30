@@ -88,3 +88,16 @@ query GetPublisherStoryType($publisherCustomId: String) {
     }
   }
 }
+
+query GetPublishers($publisherCustomIds: [String!]!) {
+  publishers(
+    where: {
+      customId: { in: $publisherCustomIds }
+      is_active: { equals: true }
+    }
+  ) {
+    id
+    customId
+    followerCount
+  }
+}
