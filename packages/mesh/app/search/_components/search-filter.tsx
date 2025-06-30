@@ -1,42 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import type { SetStateAction } from 'react'
+import type { Dispatch } from 'react'
 
-import { type SearchResults } from '@/utils/data-schema'
-
-import MemberAndPublisher from './member-and-publisher'
-import StoryAndCollection from './story-and-collection'
-
-type filterType = {
-  id: 'story-collection' | 'member-publisher'
-  name: string
-}
-const filters: filterType[] = [
-  {
-    id: 'story-collection',
-    name: '新聞',
-  },
-  {
-    id: 'member-publisher',
-    name: '個人檔案',
-  },
-]
+import { type FilterType, MISO_SEARCH_FILTERS } from '@/constants/miso'
 
 export default function SearchFilter({
-  query,
-  results,
+  activeFilter,
+  setActiveFilter,
 }: {
-  query: string
-  results: SearchResults
+  activeFilter: FilterType['id']
+  setActiveFilter: Dispatch<SetStateAction<FilterType['id']>>
 }) {
-  const [activeFilter, setActiveFilter] = useState<filterType['id']>(
-    filters[0].id
-  )
-
   return (
     <>
       <div className="flex justify-between border-b-[0.5px] border-primary-400 sm:justify-start sm:gap-2">
-        {filters.map((filter) => (
+        {MISO_SEARCH_FILTERS.map((filter) => (
           <button
             key={filter.id}
             className="flex flex-1 justify-center sm:flex-none"
@@ -54,21 +33,6 @@ export default function SearchFilter({
           </button>
         ))}
       </div>
-      <section className="px-5 xl:px-10">
-        {activeFilter === 'story-collection' ? (
-          <StoryAndCollection
-            query={query}
-            storyResult={results.story}
-            collectionResult={results.collection}
-          />
-        ) : (
-          <MemberAndPublisher
-            query={query}
-            memberResult={results.member}
-            publisherResult={results.publisher}
-          />
-        )}
-      </section>
     </>
   )
 }

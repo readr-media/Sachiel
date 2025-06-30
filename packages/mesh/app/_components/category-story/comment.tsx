@@ -7,10 +7,11 @@ import { fetchCommentLikes } from '@/app/actions/get-homepage'
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import Avatar from '@/components/story-card/avatar'
-import TOAST_MESSAGE from '@/constants/toast'
+import { useToastMessages } from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import type { CategoryStory } from '@/types/homepage'
 import { debounce } from '@/utils/performance'
@@ -22,12 +23,14 @@ type Props = {
 }
 
 export default function Comment({ comment }: Props) {
+  const { t } = useCustomTranslation()
   const [isLikedBySelf, setIsLikedBySelf] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
   const { user } = useUser()
   const { addToast } = useToast()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
+  const toastMessages = useToastMessages()
   const memberId = user.memberId
   const commentId = comment.id
   useEffect(() => {
@@ -54,7 +57,7 @@ export default function Comment({ comment }: Props) {
       try {
         const response = await unlikeComment({ memberId, commentId })
         if (!response) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.unlikeCommentFailed })
+          addToast({ status: 'fail', text: toastMessages.unlikeCommentFailed })
           throw new Error(`Failed to unlike comment, comment id:${commentId}`)
         }
         setLikeCount((prev) => prev - 1)
@@ -68,7 +71,7 @@ export default function Comment({ comment }: Props) {
     try {
       const response = await likeComment({ memberId, commentId })
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.likeCommentFailed })
+        addToast({ status: 'fail', text: toastMessages.likeCommentFailed })
         throw new Error(`Failed to like comment, comment id:${commentId}`)
       }
       setLikeCount((prev) => prev + 1)
@@ -139,7 +142,9 @@ export default function Comment({ comment }: Props) {
           {needClamp && (
             <span className="body-3 absolute bottom-0 right-0 bg-gradient-to-r from-transparent from-0% to-primary-100 to-10% pl-4">
               <span className="text-primary-600">... </span>
-              <span className="text-primary-400">顯示更多</span>
+              <span className="text-primary-400">
+                {t('Pages.Home.Comment-show-more', '顯示更多')}
+              </span>
             </span>
           )}
         </p>

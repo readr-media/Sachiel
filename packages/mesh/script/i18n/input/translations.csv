@@ -1,0 +1,654 @@
+type,sub-type,key,note,zh_TW,en_US
+Pages,Home,DailyHighlight-title,,今日焦點,Top stories today
+Pages,Home,FeaturedCard-readr-title,,READr 最新報導,Latest from READr
+Pages,Home,FeaturedCard-non-readr-title,,最多人精選,Top picks by users this week
+Pages,Home,EmptyMessage-title,,找不到新聞,No stories found
+Pages,Home,EmptyMessage-description,,請查看其他分類，或重新整理頁面,Try browsing other categories or refresh the page
+Pages,Home,TopCollectorSection-title,,本週精選最多文章,Top pickers of the week
+Pages,Home,TopCollectorCard-pick-detail-1,,本週已精選,has picked
+Pages,Home,TopCollectorCard-pick-detail-2,,篇文章,stories this week
+Pages,Home,MostLikedCommentSection-title,,本週獲得最多愛心的留言,Top liked comments of the week
+Pages,Home,MostLikedCommentCard-like-detail-1,,留言獲得,Comment received
+Pages,Home,MostLikedCommentCard-like-detail-2,,個愛心,likes
+Pages,Home,TopPublisherSection-title,,獲得最多次贊助,Most sponsored of the week
+Pages,Home,TopPublisherCard-sponsor-detail-1,"理論上英文應該顯示：Received {number} sponsorships
+所以「贊助」可以留空",已獲得,Received
+Pages,Home,TopPublisherCard-sponsor-detail-2,,贊助,
+Pages,Home,TopPublisherCard-sponsor-count-unit,,次,sponsorships
+Pages,Home,Comment-show-more,,顯示更多,show more
+Pages,Subpage,SubpageLayout-title,,{{title}}熱門,Trending in {{title}}
+Pages,Subpage,SubpageLayout-podcast-title,"顯示為 ""Podcast 熱門""",{{title}} 熱門,Trending in {{title}}
+Pages,Subpage,latest-news-title,,最新報導,Latest stories
+Pages,Subpage,PublisherCard-sponsor-count-1,,已獲得,Received
+Pages,Subpage,PublisherCard-sponsor-count-2,,次贊助,sponsorships
+Pages,Social,NoFollowings-title,,咦？這裡好像還缺點什麼...,Hmm... something seems to be missing here...
+Pages,Social,NoFollowings-action,,追蹤您喜愛的人,Follow people you like
+Pages,Social,NoFollowings-action-detail,,看看他們都精選了什麼新聞 👀,See what stories they've picked 👀
+Pages,Social,FollowSuggestionFeed-title,,推薦追蹤,Suggested follows       
+Pages,Social,FollowSuggestionFeed-recommend-others,,重新推薦,Refresh
+Pages,Social,FollowSuggestionFeed-follow-detail-with-name,,{{name}}及其他 {{followerCount}} 人的追蹤對象,Followed by {{name}} and {{followerCount}} others
+Pages,Social,FollowSuggestionFeed-follow-detail,,有 {{followerCount}} 人正在追蹤,{{followerCount}} followers
+Pages,Social,FeedComment-expand-comment,,看完整留言,View full comment
+Pages,Social,FeedLatestAction-single-comment,,在這篇文章留言,commented on this story
+Pages,Social,FeedLatestAction-two-comments-1,,及,and
+Pages,Social,FeedLatestAction-two-comments-2,,在這篇文章留言,commented on this story
+Pages,Social,FeedLatestAction-three-comments-1,,及其他,and other
+Pages,Social,FeedLatestAction-three-comments-2,,人在這篇文章留言,commented on this story
+Pages,Social,FeedLatestAction-single-pick-story,,精選了這篇,picked this story
+Pages,Social,FeedLatestAction-single-pick-podcast,,精選了這集 Podcast,picked this episode of the podcast
+Pages,Social,FeedLatestAction-two-picks-1,,及,and
+Pages,Social,FeedLatestAction-two-picks-2-story,,精選了這篇文章,picked this story
+Pages,Social,FeedLatestAction-two-picks-2-podcast,,精選了這集 Podcast,picked this episode of the podcast
+Pages,Social,FeedLatestAction-three-picks-1,,及其他,and other
+Pages,Social,FeedLatestAction-three-picks-2-story,,精選了這篇文章,picked this story
+Pages,Social,FeedLatestAction-three-picks-2-podcast,,精選了這集 Podcast,picked this episode of the podcast
+Pages,Media,NoStories-title,,這個分類沒有新文章,No new stories in this category
+Pages,Media,NoStories-description,,看看其他分類吧👆,Check out other categories 👆
+Pages,Media,CategorySelector-edit,,編輯,Edit
+Pages,Media,CategoryEditor-title,,編輯追蹤類別,Edit followed categories
+Pages,Media,CategoryEditor-hint,,請選擇您想追蹤的新聞類別,Select the news categories you want to follow
+Pages,Media,CategoryEditor-at-least-one,,至少要選1個,Select at least one
+Pages,Media,CategoryEditor-save,,儲存,Save
+Pages,Media,MostPickedStoryCard-title,,最多人精選,Top picks by users this week
+Pages,Media,PublisherSuggestion-title,,推薦追蹤,Suggested follows       
+Pages,Media,PublisherSuggestion-action,,查看全部,View all
+Pages,Media,PublisherSuggestion-hidden,,已隱藏,Hidden
+Pages,Media,PublisherSuggestion-status-hidden,,您不會再收到此推薦,You won’t see this suggestion again
+Pages,Media,PublisherSuggestion-status-new,,新加入,Newly joined        
+Pages,Media,PublisherSuggestion-status-followers,,{{followerCount}}人追蹤,{{followerCount}} followers
+Pages,Media,PublisherSuggestion-cancel,,取消,Cancel
+Pages,Media,PublisherCard-sponsor-count-1,,已獲得,Received
+Pages,Media,PublisherCard-sponsor-count-2,,次贊助,sponsorships
+Pages,Profile,ProfilePage-edit-profile,,編輯個人檔案,Edit profile
+Pages,Profile,ProfilePage-media-backstage,,進入媒體後台,Media dashboard
+Pages,Profile,ProfilePage-follow,,追蹤,Follow
+Pages,Profile,ProfilePage-following,,追蹤中,Following
+Pages,Profile,PublisherPage-sponsor-or-payment,,贊助/訂閱媒體,Sponsor
+Pages,Profile,PublisherPage-sponsor-count,,{{count}}次,{{count}} sponsorships
+Pages,Profile,UserProfile-publisher-get-picks-1,,本週獲得,Received
+Pages,Profile,UserProfile-publisher-get-picks-2,,次精選,picks
+Pages,Profile,UserProfile-member-picks-1,,本週精選了,Picked
+Pages,Profile,UserProfile-member-picks-2,,篇文章,stories this week
+Pages,Profile,TabKey-pick,,精選,Picks
+Pages,Profile,TabKey-follower,,粉絲,Followers
+Pages,Profile,TabKey-following,,追蹤中,Following
+Pages,Profile,TabKey-sponsored,,本月獲得贊助,Received
+Pages,Profile,TabOption-pick,,精選,Picks
+Pages,Profile,TabOption-collection,,集錦,Collections
+Pages,Profile,TabOption-bookmark,,書籤,Bookmarks
+Pages,Profile,TabOption-story,,報導,Stories
+Pages,Profile,TabOption-podcast,,Podcast,Podcast
+Pages,Profile,ProfileMoreActionButton-actions-copy-link,,複製個人檔案連結,Copy profile link
+Pages,Profile,ProfileMoreActionButton-actions-share,,分享這個人的個人檔案,Share profile
+Pages,Profile,ProfileMoreActionButton-actions-report,,檢舉,Report
+Pages,Profile,ProfileMoreActionButton-actions-block,,封鎖,Block
+Pages,Profile,CollectionsCarousel,,精選集錦,Picked collections
+Pages,Profile,CollectionsCarouselElement-collection,,集錦,Collections
+Pages,Profile,CollectionsCarouselElement-picks-count-detail,,人精選,Picks
+Pages,Profile,ArticleCardList-title,,精選文章,Picked stories
+Pages,Profile,Comment-edit-comment,,編輯留言,Edit comment
+Pages,Profile,Comment-no-comment,,沒有評論,No comments yet
+Pages,Profile,Comment-delete-comment,,刪除留言,Delete comment
+Pages,Profile,Comment-cancel-edit,,取消,Cancel
+Pages,Profile,Comment-confirm-delete,,確認要刪除留言？,Are you sure you want to delete this comment?
+Pages,Profile,Comment-delete-hint,,系統仍會保留您的精選記錄,Your pick record will still be saved
+Pages,Profile,BlockSheet-title,,封鎖 {{customId}}？,Block {{customId}}?
+Pages,Profile,BlockSheet-description,,你將再也不會看到對方的精選新聞、集錦、留言等動態及相關通知。如果你有追蹤對方，封鎖對方的同時也會取消追蹤。,"You will no longer see their picked articles, collections, comments, or related updates. If you're following this user, blocking them will also unfollow them."
+Pages,Profile,BlockSheet-confirm,,好的,Got it
+Pages,Profile,BlockSheet-cancel,,取消,Cancel
+Pages,Profile,EmptyTabState-no-pick,,"這裡還空空的
+趕緊將喜愛的新聞加入精選吧","It's still empty here
+Start picking your favorite articles now!"
+Pages,Profile,EmptyTabState-no-pick-for-other,,這個人還沒有精選新聞,This user hasn't picked any articles yet
+Pages,Profile,EmptyTabState-no-bookmark,,沒有已儲存的書籤,No saved bookmarks
+Pages,Profile,EmptyTabState-no-collection,,"從精選新聞或書籤中
+將數篇新聞打包成集錦",Bundle several picked or bookmarked articles into a collection
+Pages,Profile,EmptyTabState-no-collection-for-other,,這個人還沒有建立集錦,This user hasn't created any collections yet
+Pages,Profile,EmptyTabState-no-story,,這個媒體還沒有發佈任何新聞,This media hasn’t published any stories yet
+Pages,Profile,EmptyTabState-create-collection,,立即嘗試,Try it now
+Pages,Profile,ReportSheet-report-success,,檢舉成功,Report submitted
+Pages,Profile,ReportSheet-description,,我們已收到您的檢舉，感謝提供資訊。,We've received your report. Thank you for your feedback.
+Pages,Profile,ReportSheet-confirm,,好的,OK
+Pages,Profile,FollowerPage-no-follower-for-other,,這個人還沒有粉絲,This user doesn’t have any followers yet
+Pages,Profile,FollowerPage-no-follower,,目前還沒有粉絲,No followers yet
+Pages,Profile,FollowingPage-no-follow-for-other,,這個人還沒有追蹤中的對象,This user isn’t following anyone yet
+Pages,Profile,FollowingPage-no-follow,,目前還沒有追蹤中的對象,No followers yet
+Pages,Profile,FollowingPage-publisher,,媒體,Media
+Pages,Profile,FollowingPage-member,,人物,Users
+Pages,Profile,Loading-edit-profile,,編輯個人檔案,Edit Profile
+Pages,Profile,Loading-donate-publisher,,贊助媒體,Sponsor Media
+Pages,Profile,Loading-follower,,粉絲,Followers
+Pages,Profile,Loading-gain-donate,,本月獲得贊助,Sponsorships received this month
+Pages,Profile,Loading-follow,,追蹤,Follow
+Pages,Profile,Loading-story,,報導,Stories
+Pages,Profile,FollowerLayout-title,,粉絲,Followers
+Pages,Edit-Profile,Layout-title,,編輯個人檔案,Edit profile
+Pages,Edit-Profile,Layout-cancel,,取消,Cancel
+Pages,Edit-Profile,Layout-save,,儲存,Save
+Pages,Edit-Profile,EditProfile-change-avatar,,更換大頭貼照,Change profile picture
+Pages,Edit-Profile,EditProfile-name,,姓名,Name
+Pages,Edit-Profile,EditProfile-id,,更換大頭貼照,Change profile picture
+Pages,Edit-Profile,EditProfile-intro,,簡介,Bio
+Pages,Edit-Profile,EditProfile-words,,字,characters
+Pages,Edit-Profile,EditProfile-intro-placeholder,,向大家介紹一下自己吧...,Tell us a bit about yourself...
+Pages,Edit-Profile,EditProfile-save,,儲存,Save
+Pages,Edit-Profile,AvatarEditMenu-select-photo,,選擇相片,Upload photo
+Pages,Edit-Profile,AvatarEditMenu-remove-avatar,,刪除大頭貼照,Remove Profile Picture
+Pages,Edit-Profile,UploadImageErrorModal-file-too-big,,檔案過大,File too large
+Pages,Edit-Profile,UploadImageErrorModal-file-limitation,,上傳的檔案大小須小於 10MB,Uploaded file must be smaller than 10MB       
+Pages,Point,Layout-sponsor,,已贊助媒體,Sponsored media
+Pages,Point,Layout-subscribe-stories,,訂閱中文章,Unlocked stories
+Pages,Point,Layout-record,,點數紀錄,Points history
+Pages,Point,MeshPointHelper-mesh-point,,讀選點數,Mesh points
+Pages,Point,MeshPointHelper-tooltip,,讀選點數（READR）能用來贊助媒體、支持你喜歡的報導。你可以透過閱讀新聞獲得讀選點數。,Mesh Points can be used to sponsor media and support articles you love. Earn points by reading the news.
+Pages,Point,MeshPointHelper-learn-more,,了解更多,Learn more
+Pages,Point,MeshPoint-sponsor-unit,這部分可能只顯示數字，不用翻譯,次,
+Pages,Point,MeshPoint-sponsor-count,,已贊助次數,Media sponsorships
+Pages,Point,MeshPoint-unlock-unit,這部分可能只顯示數字，不用翻譯,篇,
+Pages,Point,MeshPoint-unlock-count,,訂閱中文章,Unlocked stories
+Pages,Point,MeshPoint-no-transaction,,沒有交易紀錄,No transaction history
+Pages,Point,LoadMoreTransaction-load-more,,載入更多記錄,Load more
+Pages,Point-Record,Page-receive-at-time,,在 {{time}} 收到,Received at {{time}}
+Pages,Point-Record,Page-pay-at-time,,在 {{time}} 送出,Sent at {{time}}
+Pages,Point-Record,Page-name,,名稱,Item
+Pages,Point-Record,Page-balance,,讀選點數餘額,Mesh Points balance
+Pages,Point-Sponsorship,Page-no-record,,目前還沒有贊助紀錄,No sponsorship history yet
+Pages,Point-Sponsorship,Page-already-sponsored,,已贊助,Sponsored
+Pages,Point-Sponsorship,Page-sponsor-count-unit,,次,times
+Pages,Point-Subscribe-Stories,Page-no-record,,目前還沒有訂閱中的文章,No unlocked stories yet
+Pages,Point-Subscribe-Stories,SubscribeStoriesList-due-day,,{{time}} 到期,Expires at {{time}}
+Pages,Collection,CreateCollectionProvider-mobile-step1-title-1,,已選{{count}}篇,{{count}} Stories picked
+Pages,Collection,CreateCollectionProvider-mobile-step1-title-2,,選擇文章,Select stories
+Pages,Collection,CreateCollectionProvider-mobile-step2-title,,標題,Title
+Pages,Collection,CreateCollectionProvider-mobile-step3-title,,敘述,Description
+Pages,Collection,CreateCollectionProvider-mobile-step4-title,,排序,Sort by
+Pages,Collection,CreateCollectionProvider-desktop-step1-title,,建立集錦,Create collection
+Pages,Collection,CreateCollectionProvider-desktop-step2-title,,排序,Sort by
+Pages,Collection,MobileGoBackButton-confirm-leave,,確認要退出編輯？,Are you sure you want to exit editing?
+Pages,Collection,MobileGoBackButton-leave-warning,,系統不會儲存您所做的變更,Your changes will not be saved
+Pages,Collection,MobileGoBackButton-stay,,繼續編輯,Continue editing
+Pages,Collection,MobileGoBackButton-leave,,退出,Exit
+Pages,Collection,DesktopGoBackButton-confirm-leave,,確認要退出編輯？,Are you sure you want to exit editing?
+Pages,Collection,DesktopGoBackButton-leave-warning,,系統不會儲存您所做的變更,Your changes won’t be saved
+Pages,Collection,DesktopGoBackButton-stay,,繼續編輯,Continue editing
+Pages,Collection,DesktopGoBackButton-leave,,退出,Exit
+Pages,Collection,MobileGoNextButton-go-next,,下一步,Next
+Pages,Collection,MobileGoNextButton-create,,建立,Create
+Pages,Collection,MobileGoNextButton-save,,儲存,Save
+Pages,Collection,MobileGoNextButton-finish,,完成,Finish
+Pages,Collection,TabletGoNextButton-go-next,,下一步,Next
+Pages,Collection,TabletGoNextButton-create,,建立,Create
+Pages,Collection,TabletGoNextButton-save,,儲存,Save
+Pages,Collection,TabletGoNextButton-finish,,完成,Finish
+Pages,Collection,DesktopGoNextButton-go-next,,下一步,Next
+Pages,Collection,DesktopGoNextButton-create,,建立,Create
+Pages,Collection,DesktopGoNextButton-save,,儲存,Save
+Pages,Collection,DesktopGoNextButton-finish,,完成,Finish
+Pages,Collection,StoryFilter-pick-and-bookmark,,精選文章及書籤,Picked stories and bookmarks
+Pages,Collection,StoryFilter-pick,,精選文章,Picked stories
+Pages,Collection,StoryFilter-bookmark,,書籤,Bookmarks
+Pages,Collection,StoryFilter-check-pick,,精選文章,Picked stories
+Pages,Collection,StoryFilter-check-bookmark,,書籤,Bookmarks
+Pages,Collection,StoryFilter-story-source,,新聞來源,Story source
+Pages,Collection,StoryFilter-pick-one,,至少要選一個,Please select at least one
+Pages,Collection,StoryFilter-filter,,篩選,Filter
+Pages,Collection,EditHeroImage-change-image,,更換封面照片,Change cover photo
+Pages,Collection,EditTitle-label,,標題*,Title*
+Pages,Collection,EditTitle-input-placeholder,,輸入集錦標題,Enter a title for the collection
+Pages,Collection,EditSummary-summary,,敘述,Description
+Pages,Collection,EditSummary-current-length-to-max,,{{currentCount}}/{{maxCount}}字,{{currentCount}}/{{maxCount}} characters
+Pages,Collection,EditSummary-placeholder,,這個集錦的內容主題是什麼...,What is the theme of this collection...
+Pages,Collection,EditSummary-too-many-words,,字數不能超過 {{length}} 字,Character count must not exceed {{length}}
+Pages,Collection,DesktopStep2SortStories-detail,,預設是以加入集錦的時間排序新聞，你也可以拖動新聞，重新排列順序。,Stories are sorted by the time they were added. You can also drag to rearrange them.
+Pages,Collection,ClientLayout-title,,集錦,	Collection
+Pages,Collection,CollectionMoreActionButton-delete-title,,確認刪除集錦,Confirm deleting this collection
+Pages,Collection,CollectionMoreActionButton-delete-warning,,此動作無法還原,This action cannot be undone
+Pages,Collection,CollectionMoreActionButton-delete-cancel,,取消,Cancel
+Pages,Collection,CollectionMoreActionButton-delete,,刪除集錦,Delete collection
+Pages,Collection,CollectionMoreActionButton-delete-failed,,刪除集錦失敗,Failed to delete collection
+Pages,Collection,CollectionMoreActionButton-report-title,,檢舉成功,Report submitted
+Pages,Collection,CollectionMoreActionButton-report-detail,,我們已收到您的檢舉，感謝提供資訊。,We’ve received your report. Thank you for the information.
+Pages,Collection,CollectionMoreActionButton-report-confirm,,好的,OK
+Pages,Collection,CollectionMoreActionButton-action-edit-title,,修改標題,Edit title
+Pages,Collection,CollectionMoreActionButton-action-edit-description,,修改敘述,Edit description
+Pages,Collection,CollectionMoreActionButton-action-edit-stories,,編輯內容與排序,Edit content and order
+Pages,Collection,CollectionMoreActionButton-action-edit-all,,編輯集錦,Edit collection
+Pages,Collection,CollectionMoreActionButton-action-edit-delete,,刪除集錦,Delete collection
+Pages,Collection,CollectionMoreActionButton-action-report,,檢舉,Report
+Pages,Collection,CollectionCard-collection,,集錦,Collection
+Pages,Collection,CollectionCard-expand,,...展開更多,...show more
+Pages,Collection,ArticleCardList-empty-message,,"從精選新聞或書籤中
+將數篇新聞打包成集錦",Bundle several picked or bookmarked articles into a collection
+Pages,Collection,EditCollectionProvider-mobile-edit-title,,修改標題,Edit title
+Pages,Collection,EditCollectionProvider-mobile-edit-summary,,修改敘述,Edit description
+Pages,Collection,EditCollectionProvider-mobile-edit-stories,,編輯排序,Edit order
+Pages,Collection,EditCollectionProvider-mobile-add-stories,,加入新文章,Add new story
+Pages,Collection,EditCollectionProvider-desktop-edit-all,,編輯集錦,Edit collection
+Pages,Collection,EditCollectionProvider-desktop-add-stories,,加入新文章,Add new story
+Pages,Collection,AdditionalEditor-add-story,,新增文章,Add story
+Pages,Collection,DesktopAddStories-hint,,從你的精選文章、書籤或全站文章中，挑選要加入集錦的文章,"Select stories from your picked stories, bookmarks, or the site to add to this collection"
+Pages,Collection,ImageSelector-select-image,,選擇相片,Choose photo
+Pages,Collection,Comment-edit-comment,,編輯留言,Edit comment
+Pages,Collection,Comment-no-comment,,沒有評論,No comments yet
+Pages,Collection,NotExist-title,,集錦不存在,Collection not found
+Pages,Collection,NotExist-description,,這個集錦已經被刪除了,This collection has been deleted
+Pages,Contact,Page-description,,若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務（服務時間：星期一～星期五，10:00～18:00）,"If you encounter any issues, please email us with a screenshot and description, or call our support line (service hours: Monday–Friday, 10:00–18:00)"
+Pages,Contact,Page-link-customer-service-mail,,客服信箱,Support email
+Pages,Contact,Page-link-customer-service-phone,,客服電話,Support phone
+Pages,Contact,Page-link-discord,,Discord 社群,Discord community
+Pages,Contact,Layout-title,,聯絡我們,Contact us
+Pages,Invitation-Code,Page-valid-code,,可用的邀請碼（{{count}}）,Available invite codes ({{count}})
+Pages,Invitation-Code,InvitationCodeLayout-title,,邀請碼,Invite code
+Pages,Invitation-Code,Page-no-codes,,目前沒有可用的邀請碼...,No available invite codes at the moment...
+Pages,Invitation-Code,Page-already-used,,已使用,Used
+Pages,Invitation-Code,CopyCodeButton-copy-code,,複製邀請碼,Copy invite code
+Pages,Login,LoginStepsTitle-title-terms,,服務條款,Terms of service
+Pages,Login,LoginStepsTitle-title-email,,Email,Email
+Pages,Login,LoginStepsTitle-title-email-confirm,,確認收件匣,Check your inbox
+Pages,Login,LoginStepsTitle-title-set-category,,新聞類別,News categories
+Pages,Login,LoginStepsTitle-title-set-following,,推薦追蹤,Suggested follows
+Pages,Login,LoginStepsTitle-title-webview-hint,,註冊／登入,Sign up / log in
+Pages,Login,LoginStepsTitle-title-set-name,,姓名,Name
+Pages,Login,LoginStepsTitle-title-set-wallet,,連結錢包,Connect wallet
+Pages,Login,LoginStepsTitle-skip,,略過,Skip
+Pages,Login,LoginEntry-title,,註冊/登入會員,Sign up / log in as a member
+Pages,Login,LoginEntry-description,,加入討論，並享受個人化新聞選讀體驗,Join the discussion and enjoy a personalized news reading experience
+Pages,Login,LoginEntry-hint-1,,繼續使用代表您同意與接受我們的,"By continuing, you agree to our"
+Pages,Login,LoginEntry-hint-2,,《服務條款》,terms of service
+Pages,Login,LoginEntry-hint-3,,及,and
+Pages,Login,LoginEntry-hint-4,,《隱私政策》,privacy policy
+Pages,Login,LoginEntry-continue-with-text,,以 {{text}} 帳號繼續,Continue with {{text}} account
+Pages,Login,LoginEmail-valid-email,,Email 符合格式,Valid email format required
+Pages,Login,LoginEmail-hint,,我們會將登入連結寄送至這個 Email，替您省去設定密碼的麻煩。,"We’ll send a login link to this email, so you don’t need a password"
+Pages,Login,LoginEmail-submit,,送出,Submit
+Pages,Login,LoginTermsConfirmation-hint,,繼續使用前，請先詳閱我們的服務條款及隱私權政策,Please read and agree to our terms of service and privacy policy before continuing
+Pages,Login,LoginTermsConfirmation-agree-terms,,我同意以上條款,I agree to the above terms
+Pages,Login,LoginTermsConfirmation-go-next,,下一步,Next
+Pages,Login,LoginEmailConfirmation-hint-1,,我們已將登入連結寄到 {{email}}，請點擊信件中的連結登入。,We’ve sent a login link to {{email}}. Please check your inbox to log in.
+Pages,Login,LoginEmailConfirmation-hint-2,,沒收到信件？請檢查垃圾信件匣,Didn’t receive the email? Check your spam folder
+Pages,Login,LoginEmailConfirmation-hint-3,,或,or
+Pages,Login,LoginEmailConfirmation-hint-4,,重新發送信件,Resend email
+Pages,Login,LoginEmailConfirmation-try-other-way,,嘗試其他登入方式,Try another login method
+Pages,Login,LoginSetName-hint,,輸入您想使用的公開顯示名稱。您隨時都能更改姓名。,Enter your public display name. You can change it at any time.
+Pages,Login,LoginSetName-go-next,,下一步,Next
+Pages,Login,LoginSetName-rule-name-length,,姓名在 2-32 字間,	Name must be between 2 and 32 characters
+Pages,Login,LoginSetName-rule-no-special-char,,不包含特殊符號,No special characters allowed
+Pages,Login,LoginSetName-rule-no-repetition,,沒有跟媒體名稱重複,Must not duplicate an existing media name
+Pages,Login,LoginSetCategory-hint,,請選擇您想追蹤的新聞類別,Select the news categories you want to follow
+Pages,Login,LoginSetCategory-select-three,,至少要選 3 個,Please select at least 3
+Pages,Login,LoginSetCategory-go-next,,下一步,Next
+Pages,Login,LoginSetFollowing-hint,,根據您的喜好，我們推薦您追蹤這些人物,"Based on your interests, we suggest following these people"
+Pages,Login,LoginSetFollowing-select-all-recommend-1,,等,etc.
+Pages,Login,LoginSetFollowing-select-all-recommend-2,,人,people
+Pages,Login,LoginSetFollowing-unfollow-all,,取消追蹤全部,Unfollow all
+Pages,Login,LoginSetFollowing-follow-all,,一次追蹤全部,Follow all
+Pages,Login,LoginSetFollowing-finish,,完成,Done
+Pages,Login,LoginWebviewHint-title,,以外部瀏覽器開啟,Open in external browser
+Pages,Login,LoginWebviewHint-detail,,請用瀏覽器開啟此網址以繼續登入,Please open this link in your browser to continue logging in
+Pages,Login,LoginWebviewHint-action,,以外部瀏覽器開啟,Open in external browser
+Pages,Login,LoginCode-invitaion-not-found,,找不到這個邀請碼，請重新輸入,	Invite code not found. Please try again.
+Pages,Login,LoginCode-enter-invitation-code,,請輸入邀請碼,Please enter an invite code
+Pages,Login,LoginCode-enter-send,,送出,Send
+Pages,Media-Backstage,RecordController-record-type-sponsor,,贊助,Sponsor
+Pages,Media-Backstage,RecordController-record-type-transaction,,付費解鎖,Pay to unlock
+Pages,Media-Backstage,RecordController-record-type-mutual-fund,,共同基金池,Shared fund pool
+Pages,Media-Backstage,RecordController-record-type-redeem,,點數兌換,Redeem points
+Pages,Media-Backstage,DatePicker-date-format,,{{year}} 年 {{month}} 月,"{{month}}, {{year}}"
+Pages,Media-Backstage,MeshPointInfo-title,,讀選點數,Mesh Points
+Pages,Media-Backstage,MeshPointInfo-point-hint,,此為所有管理帳號的點數總額,This is the total Mesh point balance across all admin accounts
+Pages,Media-Backstage,MeshPointInfo-settlement-hint-1,,收益每兩個月結算一次，結算日為雙數月的最後一天，請於結算日前兌換，否則收益將計入下一期報表,"Earnings are settled every two months. The settlement date is the last day of even-numbered months. Please redeem your points before the deadline, or they’ll roll over to the next cycle."
+Pages,Media-Backstage,MeshPointInfo-settlement-hint-2,,123例：1-2 月收益，應於 2/28前兌換，若未兌換，收益將記入下個結算日（5/5）之報表,"Example: earnings from Jan–Feb must be redeemed by Feb 28. Otherwise, they’ll appear in the next report (May 5)."
+Pages,Media-Backstage,MeshPointInfo-exchange-point,,點數兌換,Redeem points
+Pages,Media-Backstage,RecordList-no-record,,目前沒有紀錄,No records yet
+Pages,Media-Backstage,RecordItem-transaction-title,,{{name}} - 付費解鎖 - {{title}},{{name}} - unlocked with payment - {{title}}
+Pages,Media-Backstage,RecordItem-sponsor-name-fallback,,會員,Member
+Pages,Media-Backstage,RecordItem-sponsor-title,,{{name}} - 贊助,{{name}} - sponsored
+Pages,Media-Backstage,RecordItem-redeem-title,,點數兌換,Redeem points
+Pages,Media-Backstage,ExchangeInfo-exchange-success,,兌換成功,Redemption successful
+Pages,Media-Backstage,ExchangeInfo-report-generation,,收益將於 {{nextMonthNumber}}/5 出報表,Earnings will be reported on {{nextMonthNumber}}/5
+Pages,Media-Backstage,ExchangeInfo-finish,,完成,Done
+Pages,Media-Backstage,ExchangeInfo-exchange,,兌換,Redeem
+Pages,Media-Backstage,ExchangeInput-set-max-amount,,MAX,MAX
+Pages,Media-Backstage,ExchangeInput-minimum-amount-hint,,輸入金額不能少於 {{amount}},The amount must be at least {{amount}}
+Pages,Media-Backstage,ExchangeInput-enter-amount,,請輸入您要兌換的金額。,Please enter the amount you want to redeem.
+Pages,Media-Backstage,ExchangeInput-mesh-point-balance,,您的讀選點數餘額：${{balance}},Your Mesh points balance: ${{balance}}
+Pages,Media-Backstage,ExchangeInput-exchange-detail,,點數最低兌換點數為 {{amount}} 點，單筆兌換手續費為 {{feeRate}}%。,Minimum redeemable points: {{amount}}. A {{feeRate}}% fee applies per transaction.
+Pages,Media-Backstage,Reports-no-report,,目前沒有紀錄,No records yet
+Pages,Media-Backstage,ReportGroup-year-report,,{{year}} 收益報表,{{year}} earnings report
+Pages,Media-Backstage,ReportRow-download,,下載,Download
+Pages,Media-Backstage,ReportRow-print,,列印,Print
+Pages,Media-Backstage,ReportRow-month-range,英文只顯示系統的月份即可,{{startMonth}}-{{endMonth}} 月,{{startMonth}}–{{endMonth}}
+Pages,Payment,PaymentLayout-subtitle-subscribe,,解鎖,Unlock
+Pages,Payment,PaymentLayout-subtitle-sponsor,,贊助,Sponsor
+Pages,Payment,PaymentInfo-payment-info,,訂單資訊,Order information
+Pages,Payment,PaymentInfo-payment-type,,購買方案,Purchase plan
+Pages,Payment,PaymentInfo-mm-single-story,,鏡週刊Basic會員（單篇）,Mirror Weekly Basic membership (single story)
+Pages,Payment,PaymentInfo-unlock-duration,,閱讀期限,Reading period
+Pages,Payment,PaymentInfo-14-days,,完成購買後可享 14 天無限瀏覽,Enjoy unlimited access for 14 days after purchase
+Pages,Payment,PaymentInfo-price,,方案費用,Plan cost
+Pages,Payment,PaymentInfo-payment-hint,,(交易手續費依付款畫面為準),(Transaction fee may vary and will be shown at checkout)
+Pages,Payment,PaymentInfo-email,,Email,Email
+Pages,Payment,PaymentInfo-email-hint,,我們會將訂單資訊寄至這個 Email。,We’ll send your order info to this email address.
+Pages,Payment,PaymentInfo-email-valid,,Email 符合格式,Valid email format required
+Pages,Payment,PaymentInfo-aceept-terms,,我接受與同意鏡傳媒的,I accept and agree to Mirror Media’s
+Pages,Payment,PaymentInfo-terms,,《服務條款》,《terms of service》
+Pages,Payment,PaymentInfo-pay,,完成付款,Complete payment
+Pages,Payment,SponsorshipInfo-sponsor-success,,支付成功,Payment successful
+Pages,Payment,SponsorshipInfo-sponsor-detail,,您成功贊助了,You’ve successfully sponsored
+Pages,Payment,SponsorshipInfo-finish,,完成,Done
+Pages,Payment,SponsorshipInfo-go-back,,上一步,Previous
+Pages,Payment,SponsorshipInfo-go-next,,下一步,Next
+Pages,Payment,SponsorInput-enter-amount,,請輸入您要贊助的金額。,Please enter the amount you want to sponsor.
+Pages,Payment,SponsorInput-mesh-balance,,您的讀選點數餘額：${{balance}},Your Mesh points balance: ${{balance}}
+Pages,Payment,SponsorInput-set-max-amount,,MAX,MAX
+Pages,Payment,SponsorOption-sponsor,,贊助,Sponsor
+Pages,Payment,SponsorOption-support-publisher,,支持喜歡的媒體，做出更多優質報導！,Support the media you like to help create more quality journalism!
+Pages,Payment,SponsorOption-custom,,自訂,Custom
+Pages,Payment,SponsorOption-good-to-know,,贊助須知,Sponsor guide
+Pages,Payment,SponsorOption-how-to-sponsor,,贊助方式：您可以選擇平台提供的預設贊助點數金額，或是自行設置您想要的贊助額度，支持您喜愛的媒體。,Sponsorship method: You can choose from suggested point amounts or set your own to support the media you like.
+Pages,Payment,SponsorOption-where-the-money-go,,贊助用途：您的贊助將直接用於支持該媒體的內容創作、報導開支和平台運營，以維持優質內容的持續輸出。,"Sponsorship usage: Your contribution will directly support the media’s content creation, reporting expenses, and platform operations."
+Pages,Payment,SponsorOption-confirm-sponsor,,贊助確認：每筆贊助完成後無法取消或退還，請確認贊助金額無誤後再提交。,Confirmation: All sponsorships are final and cannot be canceled or refunded. Please double-check the amount before submitting.
+Pages,Payment,SponsorOption-check-record,,紀錄查詢：您可以在個人帳戶的【讀選點數】頁面中查看已完成的贊助詳情，隨時掌握您的支付狀態。,"Record tracking: You can view your sponsorship history at any time on the ""READr points"" page in your account."
+Pages,Payment,SponsorOption-reach-us,,若有任何疑問或遇到贊助問題，歡迎聯繫我們的客服團隊。我們將隨時為您提供協助。,"If you have any questions or issues, feel free to contact our support team. We’re here to help."
+Pages,Payment,SponsorOption-mesh-point,,讀選點數,Mesh points
+Pages,Publisher-List,PublisherListLayout-title,,媒體列表,Media list
+Pages,Publisher-List,PublisherList-new-publisher,,新加入,Newly joined
+Pages,Publisher-List,PublisherList-follower-count,,{{followerCount}}人追蹤,{{followerCount}} followers
+Pages,Search,StoryAndCollection-all-collections,,所有集錦,All collections
+Pages,Search,StoryAndCollection-all-stories,,所有新聞,All stories
+Pages,Search,StoryAndCollection-cant-find-keyword-1,,找不到包含「,"No stories found for """
+Pages,Search,StoryAndCollection-cant-find-keyword-2,,」的新聞，請換個關鍵字，再試一次。,""". Try a different keyword."
+Pages,Search,MemberAndPublisher-member,,人物,Users
+Pages,Search,MemberAndPublisher-publisher,,媒體,Media
+Pages,Search,MemberAndPublisher-follower-count,,{{followerCount}} 人追蹤,{{followerCount}} followers
+Pages,Search,CarouselWrapper-all-collection,,所有集錦,All collections
+Pages,Search,CollectionCard-collection,,集錦,Collection
+Pages,Setting,SettingLayout-title,,設定,Setting
+Pages,Setting-Account-Deletion,ConfirmationLayout-title,,刪除帳號,Delete account
+Pages,Setting-Account-Deletion,Confirmation-delete-confirm,,真的要刪除帳號嗎？,Are you sure you want to delete your account?
+Pages,Setting-Account-Deletion,Confirmation-delete-warning,,提醒您：刪除帳號後，您的帳號資訊將永久刪除並無法復原。,Warning: This action is permanent. Your account data will be permanently deleted and cannot be recovered.
+Pages,Setting-Account-Deletion,Confirmation-cancel,,那我再想想,Let me think again
+Pages,Setting-Account-Deletion,Confirmation-confirm,,確認刪除,Confirm delete
+Pages,Setting-Account-Deletion,Success-delete-success,,刪除帳號成功,Account successfully deleted
+Pages,Setting-Account-Deletion,Success-thanks,,謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :),Thank you for using our membership service. You're always welcome back :)
+Pages,Setting-Account-Deletion,Success-action,,回首頁,Return to homepage
+Pages,Setting-Account-Deletion,Failure-delete-success,,喔不，出錯了...,"Oops, something went wrong..."
+Pages,Setting-Account-Deletion,Failure-thanks,,刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@gmail.com 由專人為您服務。,Failed to delete account. Please log in again or contact support at readr@gmail.com
+Pages,Story,ClientLayout-story-title,"想要確認這個「新聞」出現在哪裡？會決定要用哪個詞彙翻譯，因為全站現在報導/文章都會用 story/stories
+
+位置",新聞,News
+Pages,Story,ClientLayout-podcast-title,,Podcast,Podcast
+Pages,Story,Article-linked-story,,本篇為外連文章,This story links to an external site
+Pages,Story,Article-open-link,,閱讀原文,Read original article
+Pages,Story,Article-update-time,,更新時間：{{time}},Updated at {{time}}
+Pages,Story,PaymentWall-unlock-with-point-1,"這段話點數的數值會出現在「以」之後？例如「以 10 讀選點數解鎖文章」？這樣的話第三個字段我會選擇省略翻譯
+
+位置 主要是 PaymentWall-unlock-with-point-2 會和前面的數字一起用藍色字體呈現，如果要省略的話應該把 Mesh points 放在 PaymentWall-unlock-with-point-3",以,Unlock article with
+Pages,Story,PaymentWall-unlock-with-point-2,,讀選點數,
+Pages,Story,PaymentWall-unlock-with-point-3,,解鎖文章,Mesh points
+Pages,Story,PaymentWall-unlock-duration,,{{duration}} 天內可無限閱讀,Unlimited access for {{duration}} days
+Pages,Story,PaymentWall-unlock-story,,解鎖文章,Unlock story
+Pages,Story,PaymentWall-no-account-hint,,還沒有帳號？,Don’t have an account?
+Pages,Story,PaymentWall-signup-for-point,,免費註冊會員拿讀選點數,Sign up for free to get Mesh points
+Pages,Story,RelatedStories-title,,相關報導,Related stories
+Pages,Story,Comment-title,,留言區,Comments section
+Components,LoginButton,login,,登入,Log in
+Components,StoryMeta,payall,,付費文章,Paid story
+Components,StoryMeta,full-screen-ad,,蓋板廣告,Full-screen ad
+Components,StoryMeta,podcast,,Podcast,Podcast
+Components,StoryPickButton,pick,,精選,Pick
+Components,StoryPickButton,already-picked,,已精選,Picked
+Components,CollectionPickButton,pick,,精選,Pick
+Components,CollectionPickButton,already-picked,,已精選,Picked
+Components,PublisherDonateButton,donate,,贊助,Sponsor
+Components,ObjectivePickCount,no-picks,,尚無人精選,No picks yet
+Components,ObjectivePickCount,pick-under-10000,,人精選,Picks
+Components,ObjectivePickCount,pick-over-10000,"超過萬人的時候，例如 1.2萬人，英文的數法會有點不同，如果我希望顯示 「12K Picks」的話這邊的英文字段，需要寫入這個K嗎？
+
+需要，最後會是這樣呈現： 12 萬人精選 | 12 K Picks",萬人精選,K Picks
+Components,ObjectiveCommentCount,no-comment,,尚無人留言,No comments yet
+Components,ObjectiveCommentCount,comment-under-10000,,則留言,comments
+Components,ObjectiveCommentCount,comment-over-10000,同上疑問,萬則留言,K Picks
+Components,FollowButton,follow,,追蹤,Follow
+Components,FollowButton,following,,追蹤中,Following
+Components,FollowPublisherButton,follow,,追蹤,Follow
+Components,FollowPublisherButton,following,,追蹤中,Following
+Components,StoryMoreActionButton,donate,,贊助,Sponsor
+Components,StoryMoreActionButton,add-bookmark,,加入書籤,Add to bookmarks
+Components,StoryMoreActionButton,remove-bookmark,,移除書籤,Remove bookmark
+Components,StoryMoreActionButton,add-collection,,加入集錦,Add to collection
+Components,StoryMoreActionButton,unfollow,,取消追蹤,Unfollow
+Components,StoryMoreActionButton,copy-link,,複製連結,Copy link
+Components,StoryMoreActionButton,share,,分享,Share
+Components,DisplayTimeFromNow,mins-ago,,分鐘前,minutes ago
+Components,DisplayTimeFromNow,hours-ago,,小時前,hours ago
+Components,DisplayTimeFromNow,days-ago,,天前,days ago
+Components,DisplayExpireTimeFromNow,one,,一,one
+Components,DisplayExpireTimeFromNow,two,,二,two
+Components,DisplayExpireTimeFromNow,three,,三,three
+Components,DisplayExpireTimeFromNow,day-unit,,天,day
+Components,DisplayDateWithWeekday,sunday,,日,Sunday
+Components,DisplayDateWithWeekday,monday,,一,Monday
+Components,DisplayDateWithWeekday,tuesday,,二,Tuesday
+Components,DisplayDateWithWeekday,wednesday,,三,Wednesday
+Components,DisplayDateWithWeekday,thursday,,四,Thursday
+Components,DisplayDateWithWeekday,friday,,五,Friday
+Components,DisplayDateWithWeekday,saturday,,六,Saturday
+Components,DisplayDateWithWeekday,time-template,,{{month}}月{{date}}日({{dayString}}),{{month}}/{{date}} ({{dayString}})
+Components,NotificationDropDown,h2,,通知,Notifications
+Components,NotificationDropDown,announcement-title,,系統維修公告,System maintenance notice
+Components,NotificationDropDown,new-announcement-title,,新通知,New notifications
+Components,NotificationDropDown,no-new-announcement,,目前沒有新通知...,No new notifications...
+Components,NotificationDropDown,prev-notification,,之前的通知,Previous notifications
+Components,NotificationDropDown,notifier-follow-single,,開始追蹤你,started following you
+Components,NotificationDropDown,notifier-follow-plural,,都開始追蹤你,all started following you
+Components,NotificationDropDown,notifier-pick-single,,精選了你的集錦,picked your collection
+Components,NotificationDropDown,notifier-pick-plural,,都精選了你的集錦,all picked your collection
+Components,NotificationDropDown,notifier-collection-comment-single-1,,在你的集錦,commented on your collection
+Components,NotificationDropDown,notifier-collection-comment-single-2,"因為英文語法上這段字應該不會翻譯出來，所以我需要知道這段字串前面是對應哪個字串？
+
+完整句子會是
+在你的集錦 「 集錦名稱 」下留言",下留言,
+Components,NotificationDropDown,notifier-collection-comment-plural-1,,都在你的集錦,commented on your collection
+Components,NotificationDropDown,notifier-collection-comment-plural-2,"因為英文語法上這段字應該不會翻譯出來，所以我需要知道這段字串前面是對應哪個字串？
+
+完整句子會是
+都在你的集錦 「 集錦名稱 」下留言",下留言,
+Components,NotificationDropDown,notifier-story-comment-single-1,,也在,also commented on the story
+Components,NotificationDropDown,notifier-story-comment-single-2,"因為英文語法上這段字應該不會翻譯出來，所以我需要知道這段字串前面是對應哪個字串？
+
+完整句子會是
+也在「 文章名稱 」下留言",下留言,
+Components,NotificationDropDown,notifier-story-comment-plural-1,,也在,also commented on the story
+Components,NotificationDropDown,notifier-story-comment-plural-2,"因為英文語法上這段字應該不會翻譯出來，所以我需要知道這段字串前面是對應哪個字串？
+
+完整句子會是
+也在「 文章名稱 」下留言",下留言,
+Components,NotificationDropDown,notifier-comment-like-single,,喜歡你的留言,liked your comment
+Components,NotificationDropDown,notifier-comment-like-plural,,都喜歡你的留言,all liked your comment
+Components,NotificationDropDown,notifier-unknown,,Unknown Notification,Unknown notification
+Components,NotificationDropDown,notifier-sponsor-success-1,,你已成功贊助,You’ve successfully sponsored
+Components,NotificationDropDown,notifier-sponsor-success-2,,讀選點數,Mesh points
+Components,NotificationDropDown,notifier-collection-created,,建立了新的集錦,created a new collection
+Components,NotificationDropDown,notifier-unlock-story,,你已成功解鎖,You’ve successfully unlocked
+Components,NotificationDropDown,notifier-receive-airdrop,,你已收到 {{depositVolume}} 讀選點數的空投,You received an airdrop of {{depositVolume}} Mesh points
+Components,NotificationDropDown,expire-description-1,,這篇文章的閱讀期限只剩,This article will expire in
+Components,NotificationDropDown,expire-description-2,"想這知道這文案出現在在哪裡
+
+完整句子是
+
+這篇文章的閱讀期限只剩n 天哦：「文章名稱」
+主要用來連接後面文章名稱",哦：,:
+Components,NotificationDropDown,two-names-and,,及,and
+Components,NotificationDropDown,three-names-above-1,,、,","
+Components,NotificationDropDown,three-names-above-2,,及其他,and other
+Components,NotificationDropDown,three-names-above-3,,人,people
+Components,NotificationDropDown,announcement-title-maintain,,系統維修公告,System maintenance notice
+Components,NotificationDropDown,announcement-title-new-media,,新媒體上架,New media available
+Components,NotificationDropDown,announcement-title-features,,新功能上線,New feature released
+Components,ErrorPage,404,,找不到這頁的資料...,Page not found...
+Components,ErrorPage,500,,看來有哪裡出錯了...,Something went wrong...
+Components,ErrorPage,retry,,重新嘗試,Try again
+Components,LogInCard,login-mail-has-sent,,我們已將錢包登入連結寄到 {{email}}，請點擊信件中的連結。,We’ve sent the wallet login link to {{email}}. Please check your inbox.
+Components,LogInCard,login-again,,重新登入錢包,Log in to wallet again
+Components,LogInCard,resend-login-mail,,發送登入連結,Resend login link
+Components,LogInCard,what-is-mesh-point,,讀選點數是什麼？,What are Mesh points?
+Components,LogInCard,learn-more,,了解更多,Learn more
+Components,TransactionOngoing,transaction-on-going-1,,交易進行中,Transaction in progress
+Components,TransactionOngoing,transaction-on-going-2,,請稍候，感謝您的耐心,"Please wait, and thank you for your patience"
+Components,ShareSheet,share,,分享,Share
+Components,CommentBlocks,comment-placeholder,,有什麼要補充的嗎...,Got something to add?
+Components,CommentBlocks,comment-publish,,發布,Publish
+Components,CommentBlocks,comment-poular-comment,,熱門留言,Popular comments
+Components,CommentBlocks,comment-all-comments,,所有留言,All comments
+Components,CommentBlocks,comment-delete-comment,,刪除留言,Delete comment
+Components,CommentBlocks,comment-cancel,,取消,Cancel
+Components,CommentBlocks,comment-confirm-delete,,確認要刪除留言？,Are you sure you want to delete this comment?
+Components,CommentBlocks,comment-pick-will-stay,,系統仍會保留您的精選記錄,Your pick record will still be saved
+Components,CommentBlocks,comment-return-to-comment,,返回留言,Return to comment
+Components,CommentBlocks,comment-report-success,,檢舉成功,Report submitted
+Components,CommentBlocks,comment-report-success-detail,,我們已收到您的檢舉，感謝提供資訊,We've received your report. Thank you for the information.
+Components,DesktopCommentModal,comment-block,,留言區,Comments section
+Components,MobileCommentEditDrawer,report,,檢舉留言,Report comment
+Components,MobileCommentEditDrawer,edit,,編輯留言,Edit comment
+Components,MobileCommentEditDrawer,delete,,刪除留言,Delete comment
+Components,MobileCommentEditor,save,,儲存,Save
+Components,MobileCommentEditor,submit,,送出,Submit
+Components,MobileCommentEditor,cancel,,取消編輯,Cancel edit
+Components,MobileCommentFooter,placeholder,,在這裡輸入留言...,Type your comment here...
+Components,MobileCommentFooter,publish,,發布,Publish
+Components,MobileCommentModalContent,poupular-comments,,熱門留言,Popular comments
+Components,MobileCommentModalContent,all-comments,,所有留言,All comments
+Components,MobileCommentModalContent,leave,,離開,Leave
+Components,MobileCommentModalContent,stay,,繼續輸入,Keep typing
+Components,MobileCommentModalContent,leave-question,,離開留言區？,Leave the comment section?
+Components,MobileCommentModalContent,leave-detail,,系統將不會儲存您剛剛輸入的內容,Your unsaved comment will not be saved
+Components,MobileCommentModalContent,delete,,刪除留言,Delete comment
+Components,MobileCommentModalContent,cancel,,取消,Cancel
+Components,MobileCommentModalContent,delete-question,,確認要刪除留言？,Are you sure you want to delete this comment?
+Components,MobileCommentModalContent,delete-detail,,系統仍會保留您的精選記錄,Your pick record will still be saved
+Components,MobileCommentModalContent,close,,返回留言,Return to comment
+Components,MobileCommentModalContent,report-success,,檢舉成功,Report submitted
+Components,MobileCommentModalContent,report-success-detail,,我們已收到您的檢舉，感謝提供資訊,We've received your report. Thank you for the information.
+Components,CommentBlockItem,member,,使用者,User
+Components,CommentBlockItem,edit-comment,,·編輯留言,·edit comment
+Components,CommentBlock,no-comment,,還沒有人留言，快來搶頭香！,"No comments yet, be the first to share your thoughts!"
+Components,CommentEditor,cancel,,取消,Cancel
+Components,CommentEditor,save,,儲存,Save
+Components,DropdownMenu,report,,檢舉留言,Report comment
+Components,DropdownMenu,edit,,編輯留言,Edit comment
+Components,DropdownMenu,delete,,刪除留言,Delete comment
+Components,AddStoryToCollection,no-collection,,你目前還沒有任何集錦...,You don’t have any collections yet...
+Components,AddStoryToCollection,story-alredy-added,,你之前已將這篇新聞加入你所有的集錦囉,You’ve already added this article to all your collections
+Components,AddStoryToCollection,added-detail-1,,你之前已將這篇新聞加入,You’ve already added this article to
+Components,AddStoryToCollection,added-detail-2-plural,,等{{length}}個集錦囉,and {{length}} other collections
+Components,AddStoryToCollection,added-detail-2-single,,集錦囉,collection
+Components,AddStoryToCollection,add-to-collection,,加入集錦,Add to collection
+Components,AddStoryToCollection,create-new-collection,,建立新集錦,Create new collection
+Components,DesktopSearchBar,history,,搜尋歷史,Search history
+Components,PickModal,publish,,發布,Publish
+Components,PickModal,pick,,直接加入精選,Pick this article
+Components,PickModal,comment-for-pick-story,,留言分享你為什麼精選這篇文章...,Share why you picked this article...
+Components,PickModal,comment-for-pick-collection,,留言分享你為什麼精選這個集錦...,Share why you picked this collection...
+Components,PickModal,add-pick,,加入精選,Add to picks
+Components,PickModal,confirm-leave,,您輸入的資訊尚未儲存，是否離開此頁面?,Your changes haven’t been saved. Leave this page?
+Components,PickModal,stay,,留在此頁面,Stay on this page
+Components,PickModal,leave,,離開,Leave
+Components,PickModal,remove-pick-story,,移除精選文章，將會一併移除您的留言,Removing this pick will also delete your commen
+Components,PickModal,remove-pick-collection,,移除精選集錦，將會一併移除您的留言,Removing this collection pick will also delete your comment
+Components,PickModal,confirm-delete,,確認要移除精選？,Are you sure you want to remove this pick?
+Components,PickModal,delete,,移除,Remove
+Components,PickModal,cancel,,取消,Cancel
+Components,PickersModal,picker,,精選者,Picker
+Others,punctuation,corner-quote-start,,「,“
+Others,punctuation,corner-quote-end,,」,”
+Others,categories,internation,,國際,International
+Others,categories,politics,,政治,Politics
+Others,categories,society,,社會,Society
+Others,categories,finance,,財經,Finance
+Others,categories,technology,,科技,Technology
+Others,categories,health,,醫療健康,Health
+Others,categories,sport,,體育,Sports
+Others,categories,art,,藝文,Arts
+Others,categories,entertainment,,娛樂,Entertainment
+Others,categories,life,,生活,Lifestyle
+Others,categories,education,,教育,Education
+Others,categories,environment,,環境,Environment
+Others,categories,test01,,測試空狀態,Test empty state
+Others,categories,podcast,,Podcast,Podcast
+Others,alchemy,login-description,,您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。,You haven’t added or linked a wallet yet. Click the button below and we’ll send the activation link to your email.
+Others,alchemy,signup-description,,新增/連結錢包即可完成註冊。點擊下方按鈕立刻建立錢包！,Add or link a wallet to complete registration. Click below to create your wallet now!
+Others,alchemy,login-before-transaction-description,,為維護交易安全，請重新登入錢包以繼續,"For transaction security, please log in to your wallet again to continue."
+Others,setting,block-list,,封鎖名單,Block list
+Others,setting,contact-us,,聯絡我們,Contact us
+Others,setting,about,,關於,About
+Others,setting,logout,,登出,Log out
+Others,setting,delete-account,,刪除帳號,Delete account
+Others,setting,language,,語言,Language
+Others,navs,homepage,,首頁,Home
+Others,navs,social,,社群,Community
+Others,navs,media,,最新,Media
+Others,navs,profile,,個人檔案,Profile
+Others,navs,point,,讀選點數,Mesh points
+Others,navs,bookmark,,書籤,Bookmarks
+Others,navs,setting,,設定,Settings
+Others,navs,media-backstage-point,,點數兌換,Redeem points
+Others,navs,media-backstage-report,,收益報表,Earning report
+Others,navs,logout,,登出,Log out
+Others,footers,about,,關於我們,About us'
+Others,footers,contact,,聯絡我們,Contact us
+Others,footers,privacy,,隱私政策,Privacy policy
+Others,footers,terms,,服務條款,Terms of service
+Others,footers,company-name,,精鏡傳媒股份有限公司,Mirror Media Inc.
+Others,footers,company-address,,114 台北市內湖區堤頂大道一段 365 號 7 樓,"7F, No. 365, Section 1, Tiding Blvd., Neihu District, Taipei 114, Taiwan"
+Others,footers,company-email,,readr@readr.tw,readr@readr.tw
+Others,footers,all-right-reserved,,All Rights Reserved,All Rights Reserved
+Others,meta,site-title,,READr Mesh 讀選,READr Mesh 讀選
+Others,meta,site-description,,在READr Mesh 讀選上瀏覽多元的新聞媒體內容。盡情精選、分享和製作新聞集錦，將你認為有意義的新聞資訊傳播出去。,"Explore diverse media content on READr Mesh. Pick, share, and create collections of meaningful stories worth spreading."
+Others,meta,site-title-collection,,集錦 | {{collectionTitle}},Collection | {{collectionTitle}}
+Others,meta,site-title-collection-fallback,,集錦,	Collection
+Others,meta,site-title-profile-member,,{{memberName}} | READr Mesh 讀選,{{memberName}} | READr Mesh 讀選
+Others,meta,site-description-profile-member,,查看 {{memberName}} 的個人檔案。追蹤他們精選的文章和製作的集錦。,View {{memberName}}’s profile. Follow their picked articles and collections.
+Others,meta,site-description-profile-member-fallback,,查看用戶的個人檔案。追蹤他們精選的文章和製作的集錦。,View user profile. Follow their picked articles and collections.
+Others,meta,site-title-profile-publisher,,{{publisherName}} | READr Mesh 讀選,{{publisherName}} | READr Mesh 讀選
+Others,meta,site-description-profile-publisher,,查看 {{publisherName}} 的媒體檔案。追蹤他們的媒體報導。,View {{publisherName}}’s media profile. Follow their latest articles.
+Others,meta,site-description-profile-publisher-fallback,,查看媒體檔案。追蹤他們的媒體報導。,View media profile. Follow their latest articles.
+Others,meta,site-title-story,,{{storyTitle}} | READr Mesh 讀選,{{storyTitle}} | READr Mesh 讀選
+Others,meta,site-title-login,,登入 | READr Mesh 讀選,Log in | READr Mesh 讀選
+Others,meta,site-description-login,,登入您的讀選帳號，開始精選你感興趣的新聞文章。,Log in to your READr account and start picking the stories you care about.
+Others,meta,site-title-media,,最新 | READr Mesh 讀選,Media | READr Mesh 讀選
+Others,meta,site-description-media,,追蹤你感興趣的媒體，查看他們最新發布的各類文章。,Follow media you care about and browse their latest stories.
+Others,meta,site-title-social,,社群 | READr Mesh 讀選,Social | READr Mesh 讀選
+Others,meta,site-description-social,,追蹤你感興趣的用戶，瀏覽他們精選的文章和集錦。,Follow users and explore their picked articles and collections.
+Others,toast,follow-category-failed,,新增類別失敗，請重新嘗試,Failed to add category. Please try again.
+Others,toast,unfollow-category-failed,,刪除類別失敗，請重新嘗試,Failed to remove category. Please try again.
+Others,toast,more-action-error,,有點怪怪的，請稍後再試,Something went wrong. Please try again later.
+Others,toast,add-comment-failed,,發布留言失敗，請重新嘗試,Failed to post comment. Please try again.
+Others,toast,edit-comment-failed,,編輯留言失敗，請重新嘗試,Failed to edit comment. Please try again.
+Others,toast,like-comment-failed,,按讚留言失敗，請重新嘗試,Failed to like comment. Please try again.
+Others,toast,unlike-comment-failed,,取消按讚留言失敗，請重新嘗試,	Failed to unlike comment. Please try again.
+Others,toast,delete-comment-failed,,刪除留言失敗，請重新嘗試,Failed to delete comment. Please try again.
+Others,toast,follow-member-failed,,追蹤失敗，請重新嘗試,Failed to follow. Please try again
+Others,toast,unfollow-member-failed,,取消追蹤失敗，請重新嘗試,Failed to unfollow. Please try again.
+Others,toast,pick-story-failed,,加入精選失敗，請重新嘗試,Failed to add to picks. Please try again.
+Others,toast,delete-pick-failed,,移除精選失敗，請重新嘗試,Failed to remove pick. Please try again.
+Others,toast,add-bookmark-failed,,加入書籤失敗，請重新嘗試,Failed to add bookmark. Please try again.
+Others,toast,delete-bookmark-failed,,刪除書籤失敗，請重新嘗試,Failed to remove bookmark. Please try again.
+Others,toast,copy-story-link-success,,已複製連結,Link copied
+Others,toast,copy-invitation-code,,已複製邀請碼,Invite code copied
+Others,toast,unlock-story-success,,已成功解鎖,Successfully unlocked
+Others,toast,pay-failed-insufficient,,讀選點數餘額不足,Not enough Mesh points
+Others,toast,pay-failed-unknown,,支付失敗，請重新嘗試,Payment failed. Please try again.
+Others,toast,block-member-success,,已封鎖,Blocked
+Others,toast,unblock-member-success,,已取消封鎖,Unblocked
+Others,toast,block-member-failed,,封鎖失敗，請重新嘗試,Failed to block user. Please try again.
+Others,toast,unblock-member-failed,,取消封鎖失敗，請重新嘗試,Failed to unblock user. Please try again.
+Others,toast,add-story-to-collection-success,,成功加入集錦,Successfully added to collection
+Others,toast,add-story-to-collection-failed,,加入集錦失敗，請重新嘗試,Failed to add to collection. Please try again.
+Others,toast,create-collection-failed,,建立集錦失敗，請重新嘗試,Failed to create collection. Please try again.
+Others,toast,delete-collection-success,,成功刪除集錦,Collection successfully deleted
+Others,toast,delete-collection-failed,,刪除集錦失敗，請重新嘗試,Failed to delete collection. Please try again.
+Others,toast,update-profile-failed,,編輯個人檔案失敗，請重新嘗試,Failed to update profile. Please try again.
+Others,toast,add-bookmark-success,,已加入書籤,Bookmark added
+Others,toast,remove-bookmark-success,,已移除書籤,Bookmark removed
+Others,toast,edit-collection-failed,,編輯集錦失敗，請重新嘗試,Failed to edit collection. Please try again.

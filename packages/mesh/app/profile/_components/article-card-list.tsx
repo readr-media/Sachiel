@@ -1,3 +1,4 @@
+'use client'
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 
@@ -8,6 +9,7 @@ import {
 } from '@/app/actions/get-more-profile-data'
 import ArticleCard from '@/app/profile/_components/article-card'
 import AdManager from '@/components/ad/ad-manager-ad'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { ProfileJSONType } from '@/utils/data-schema'
@@ -43,6 +45,7 @@ export default function ArticleCardList({
   activeTab,
   userType,
 }: ArticleCardListProps) {
+  const { t } = useCustomTranslation()
   const [hasMoreData, setHasMoreData] = useState(true)
   const shouldShowComment = activeTab === 'pick'
   const isCollection = activeTab === 'collection'
@@ -73,7 +76,7 @@ export default function ArticleCardList({
     <>
       {activeTab === 'pick' && (
         <p className="list-title bg-white px-5 pt-4 text-primary-700 md:bg-primary-700-dark md:p-10 md:px-[70px] md:pb-1 md:pt-9 lg:px-10">
-          精選文章
+          {t('Profile.PickArticle', '精選文章')}
         </p>
       )}
       <InfiniteScrollList

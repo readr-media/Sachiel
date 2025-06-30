@@ -79,6 +79,7 @@ query GetCurrentUserMemberId($uid: String!) {
       customId
       logo
     }
+    language
   }
 }
 

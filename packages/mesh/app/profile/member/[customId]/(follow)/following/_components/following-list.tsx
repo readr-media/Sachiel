@@ -5,6 +5,7 @@ import { getMoreMemberFollowing } from '@/app/actions/get-profile'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import Icon from '@/components/icon'
 import { takeCount } from '@/constants/profile-following'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInViewDynamicRef from '@/hooks/use-in-view-dynamic-ref'
 
 import {
@@ -14,7 +15,6 @@ import {
 
 type FollowingListProps = {
   followingList: FollowingListType | FollowingPublisherListType
-  title: string
   defaultToggle: boolean
   type: 'member' | 'publisher'
   followingCount: number
@@ -23,12 +23,12 @@ type FollowingListProps = {
 
 const FollowingList = ({
   followingList = [],
-  title = '媒體',
   defaultToggle,
   type,
   followingCount,
   publisherCustomId,
 }: FollowingListProps) => {
+  const { t } = useCustomTranslation()
   const [list, setList] = useState<
     FollowingListType | FollowingPublisherListType
   >(followingList)
@@ -45,7 +45,7 @@ const FollowingList = ({
   const shouldLoadMore = list.length < followingCount
 
   const fetchNextPage = useCallback(async () => {
-    if (title === '人物') {
+    if (type === 'member') {
       isLoadingRef.current = true
       const response = await getMoreMemberFollowing(
         publisherCustomId,
@@ -61,7 +61,7 @@ const FollowingList = ({
         listLengthRef.current + (response.member?.following?.length ?? 0)
       isLoadingRef.current = false
     }
-  }, [publisherCustomId, title])
+  }, [publisherCustomId, type])
 
   useEffect(() => {
     if (shouldStartLoadMore && shouldLoadMore && !isLoadingRef.current) {
@@ -76,7 +76,15 @@ const FollowingList = ({
         onClick={toggleResult}
       >
         <p className="list-title w-full">
-          {title}({followingCount})
+          {t(
+            type === 'member'
+              ? 'Profile.Following.member'
+              : 'Profile.Following.publisher',
+            type === 'member' ? '人物' : '媒體'
+          )}
+          {t('Profile.Following.count', '({{count}})', {
+            count: followingCount,
+          })}
         </p>
         {resultShowing ? (
           <span className={`${hasResult ? 'block' : 'opacity-0'}`}>

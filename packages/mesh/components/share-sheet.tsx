@@ -3,6 +3,7 @@
 import { type MouseEventHandler } from 'react'
 
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { logStoryInteractionEvent } from '@/utils/event-logs'
@@ -51,6 +52,7 @@ export default function ShareSheet({
     title: string
   }
 }) {
+  const { t } = useCustomTranslation()
   useBlockBodyScroll(true)
   const onShareSheetContainerClicked: MouseEventHandler<HTMLDivElement> = (
     evt
@@ -74,7 +76,9 @@ export default function ShareSheet({
       >
         <div className="flex h-15 items-center justify-between border-b border-[rgba(0,9,40,0.1)] px-2">
           <div />
-          <div className="list-title text-primary-800">分享</div>
+          <div className="list-title text-primary-800">
+            {t('Components.ShareSheet.share', '分享')}
+          </div>
           <button
             className="flex size-11 items-center justify-center"
             onClick={onClose}

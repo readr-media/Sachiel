@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
-import TOAST_MESSAGE from '@/constants/toast'
+import { useToastMessages } from '@/constants/toast'
 import { useComment } from '@/context/comment'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
@@ -55,6 +55,7 @@ export const useCommentLike = ({
   const { addToast } = useToast()
   const { updateCommentLikeStatus } = useComment()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
+  const toastMessages = useToastMessages()
 
   const memberLikedList = useMemo(() => {
     if (isCommentType(commentData)) {
@@ -82,7 +83,7 @@ export const useCommentLike = ({
       try {
         const response = await unlikeComment(likeCommentArgs)
         if (!response) {
-          addToast({ status: 'fail', text: TOAST_MESSAGE.unlikeCommentFailed })
+          addToast({ status: 'fail', text: toastMessages.unlikeCommentFailed })
           throw new Error('Failed to unlike comment')
         }
         setCommentData((prev) => {
@@ -115,7 +116,7 @@ export const useCommentLike = ({
     try {
       const response = await likeComment(likeCommentArgs)
       if (!response) {
-        addToast({ status: 'fail', text: TOAST_MESSAGE.likeCommentFailed })
+        addToast({ status: 'fail', text: toastMessages.likeCommentFailed })
         throw new Error('Failed to like comment')
       }
       setCommentData((prev) => {
