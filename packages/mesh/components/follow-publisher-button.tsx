@@ -27,7 +27,9 @@ export default function FollowPublisherButton({
         text={t('Components.FollowPublisherButton.follow', '追蹤')}
         activeState={{
           isActive: isFollowing,
-          activeText: t('Components.FollowPublisherButton.following', '追蹤中'),
+          activeText:
+            t('Components.FollowPublisherButton.following', '追蹤中') ??
+            '追蹤中',
         }}
         onClick={handleFollowOnClick}
       />

@@ -40,7 +40,8 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
               color={button.color ?? 'white'}
               activeState={{
                 isActive: button.isActive,
-                activeText: t(button.text.isActive, button.text.isActive),
+                activeText:
+                  t(button.text.isActive, button.text.isActive) ?? '追蹤中',
               }}
             />
           </div>

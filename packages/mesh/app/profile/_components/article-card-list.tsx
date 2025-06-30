@@ -1,3 +1,4 @@
+'use client'
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 

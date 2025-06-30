@@ -49,10 +49,9 @@ export default function CollectionPickButton({
       onClick={handleClickPick}
       activeState={{
         isActive: isStoryPicked,
-        activeText: t(
-          'Components.CollectionPickButton.already-picked',
-          '已精選'
-        ),
+        activeText:
+          t('Components.CollectionPickButton.already-picked', '已精選') ??
+          '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
       gtmClassName={gtmClassName}

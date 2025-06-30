@@ -1,3 +1,4 @@
+'use client'
 import 'swiper/css'
 
 import React, { useState } from 'react'

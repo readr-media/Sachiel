@@ -1,3 +1,4 @@
+'use client'
 import type { IconName } from '@/components/icon'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 

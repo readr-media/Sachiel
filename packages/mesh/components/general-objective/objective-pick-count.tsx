@@ -1,3 +1,4 @@
+'use client'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function ObjectivePickCount({

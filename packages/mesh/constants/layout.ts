@@ -1,3 +1,4 @@
+'use client'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 

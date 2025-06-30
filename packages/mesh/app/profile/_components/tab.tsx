@@ -1,3 +1,4 @@
+'use client'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 

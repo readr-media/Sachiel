@@ -63,7 +63,8 @@ export default function TopCollectorCard({ person, rank }: Props) {
               text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: t('Components.FollowButton.following', '追蹤中'),
+                activeText:
+                  t('Components.FollowButton.following', '追蹤中') ?? '追蹤中',
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"
@@ -76,7 +77,8 @@ export default function TopCollectorCard({ person, rank }: Props) {
               text={t('Components.FollowButton.follow', '追蹤')}
               activeState={{
                 isActive: isFollowing,
-                activeText: t('Components.FollowButton.following', '追蹤中'),
+                activeText:
+                  t('Components.FollowButton.following', '追蹤中') ?? '追蹤中',
               }}
               onClick={handleClickFollow}
               gtmClassName="GTM-homepage_click_hot_user_follow"

@@ -1,3 +1,4 @@
+'use client'
 import { useComment } from '@/context/comment'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
