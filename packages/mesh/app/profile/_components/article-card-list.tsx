@@ -8,10 +8,10 @@ import {
 } from '@/app/actions/get-more-profile-data'
 import ArticleCard from '@/app/profile/_components/article-card'
 import AdManager from '@/components/ad/ad-manager-ad'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { ProfileJSONType } from '@/utils/data-schema'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import EmptyTabState from './empty-tab-state'
 

@@ -15,17 +15,23 @@ export default function Loading() {
         <div className="mb-8 mt-6 flex items-center gap-3 sm:m-0 sm:mb-6 sm:gap-5 sm:px-5 md:px-[70px] lg:px-10">
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
-            <div className="profile-subtitle text-primary-500">{t('Profile.Pick', '精選')}</div>
+            <div className="profile-subtitle text-primary-500">
+              {t('Profile.Pick', '精選')}
+            </div>
           </div>
           <div className="h-5 w-[0.5px] bg-primary-200 sm:hidden" />
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
-            <div className="profile-subtitle text-primary-500">{t('Profile.Follower', '粉絲')}</div>
+            <div className="profile-subtitle text-primary-500">
+              {t('Profile.Follower', '粉絲')}
+            </div>
           </div>
           <div className="h-5 w-[0.5px] bg-primary-200 sm:hidden" />
           <div className="flex w-20 flex-col items-center gap-1 sm:w-auto sm:flex-row">
             <div className="h-5 w-10 rounded-sm bg-loading" />
-            <div className="profile-subtitle text-primary-500">{t('Profile.Following', '追蹤中')}</div>
+            <div className="profile-subtitle text-primary-500">
+              {t('Profile.Following', '追蹤中')}
+            </div>
           </div>
         </div>
       </div>

@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 
-import { type TabItem } from '@/types/profile'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { type TabItem } from '@/types/profile'
 
 type UserStatusListProps = {
   userStatusList: TabItem[]
@@ -25,12 +25,16 @@ const UserStatusList = ({ userStatusList }: UserStatusListProps) => {
               className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center"
             >
               <p className="profile-title-2 text-primary-700">{count}</p>
-              <p className="profile-subtitle sm:body-2 text-primary-500">{t(tabName, tabName)}</p>
+              <p className="profile-subtitle sm:body-2 text-primary-500">
+                {t(tabName, tabName)}
+              </p>
             </Link>
           ) : (
             <div className="flex flex-col items-center gap-[2px] sm:flex-row sm:items-center">
               <p className="profile-title-2 text-primary-700">{count}</p>
-              <p className="profile-subtitle sm:body-2 text-primary-500">{t(tabName, tabName)}</p>
+              <p className="profile-subtitle sm:body-2 text-primary-500">
+                {t(tabName, tabName)}
+              </p>
             </div>
           )}
         </li>
