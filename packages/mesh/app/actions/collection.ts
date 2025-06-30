@@ -7,6 +7,7 @@ import {
   CreateCollectionDocument,
   GetCollectionDocument,
   GetCollectionPickersDocument,
+  GetCollectionsDocument,
   GetCollectionStoriesDocument,
   GetMemberCollectionsDocument,
   RemoveCollectionDocument,
@@ -32,6 +33,21 @@ export async function getCollection({
       collectionId,
       picksTake,
       commentsTake,
+    },
+    globalLogFields
+  )
+}
+
+export async function getCollections({
+  collectionIds,
+}: {
+  collectionIds: string[]
+}) {
+  const globalLogFields = getLogTraceObjectFromHeaders()
+  return await queryGraphQL(
+    GetCollectionsDocument,
+    {
+      collectionIds,
     },
     globalLogFields
   )

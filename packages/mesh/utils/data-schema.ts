@@ -333,6 +333,7 @@ export const SearchResultsSchema = z.object({
         published_date: z.string(),
         full_screen_ad: FullScreenAdEnum,
         isMember: z.boolean(),
+        commentsCount: z.number(),
         source: z.object({
           id: z.string(),
           customId: z.string(),

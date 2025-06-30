@@ -6,6 +6,7 @@ import ImageWithFallback from '@/app/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStoryByCategory } from '@/types/homepage'
@@ -82,6 +83,8 @@ type Props = {
 }
 
 export default function PublisherCard({ data }: Props) {
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex w-full flex-col rounded-lg border-[0.5px] border-primary-200 bg-primary-100 px-5 pb-2 pt-5 lg:self-start lg:pb-3 lg:pt-6 xl:px-8">
       <div className="mb-3 flex items-center justify-between">
@@ -105,11 +108,11 @@ export default function PublisherCard({ data }: Props) {
               </NextLink>
             </p>
             <p className="footnote text-primary-500">
-              已獲得
+              {t('Pages.Subpage.PublisherCard-sponsor-count-1', '已獲得')}
               <span className="text-custom-blue">
-                {data.publisher.sponsoredCount}次
+                {data.publisher.sponsoredCount}
+                {t('Pages.Subpage.PublisherCard-sponsor-count-2', '次贊助')}
               </span>
-              贊助
             </p>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
-import { NON_MOBILE_NAV_ICONS } from '@/constants/layout'
+import { useNonMobileNavIcons } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import type { IconInfo } from '@/types/layout'
 import { TabCategory } from '@/types/profile'
@@ -69,6 +69,7 @@ const NonMobileNav = ({
 }) => {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
+  const nonMobileNavIcons = useNonMobileNavIcons()
 
   return (
     <nav
@@ -88,7 +89,7 @@ const NonMobileNav = ({
             </button>
           </div>
           <div className="flex flex-col gap-2 border-b pb-5">
-            {NON_MOBILE_NAV_ICONS.first.map((iconInfo) => (
+            {nonMobileNavIcons.first.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
                 isOn={path === iconInfo.href}
@@ -97,7 +98,7 @@ const NonMobileNav = ({
             ))}
           </div>
           <div className="flex flex-col gap-2 pt-5">
-            {NON_MOBILE_NAV_ICONS.second.map((iconInfo) => {
+            {nonMobileNavIcons.second.map((iconInfo) => {
               if (iconInfo.text === '個人檔案') {
                 return (
                   <NonMobileNavIcon
@@ -139,7 +140,7 @@ const NonMobileNav = ({
         {/* bottom (third) part */}
         {isLoggedIn && (
           <div className="flex flex-col border-t py-6">
-            {NON_MOBILE_NAV_ICONS.third.map((iconInfo) => (
+            {nonMobileNavIcons.third.map((iconInfo) => (
               <NonMobileNavIcon
                 key={iconInfo.text}
                 isOn={path === iconInfo.href}

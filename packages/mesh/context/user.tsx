@@ -53,6 +53,7 @@ export type User = {
   collections?: Collections
   pickCollections?: ProfileTypes['picksData']
   publishers?: ProfileTypes['publishers']
+  language: string
 }
 
 type UserContextType = {
@@ -85,6 +86,7 @@ export const guest: User = {
   followingCount: 0,
   picksData: [],
   bookmarks: [],
+  language: 'zh_TW',
 }
 
 export function UserProvider({

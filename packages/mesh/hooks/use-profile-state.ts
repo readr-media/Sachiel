@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { getMemberProfile, getVisitorProfile } from '@/app/actions/get-profile'
-import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
 import { useUser } from '@/context/user'
 import { PickObjective } from '@/types/objective'
 import type { ProfileTypes } from '@/types/profile'
+import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
 
 type ProfileConfigType = {
   customId: string
@@ -45,7 +45,7 @@ export default function useProfileState({
     const cachedData = getLocalStorage(cacheKey, null)
 
     if (cachedData) {
-      setProfileData({ ...user, ...cachedData })
+      setProfileData({ ...initialProfileState, ...user, ...cachedData })
       // setIsLoading(false); // Decide if needed here or rely on finally
     }
 
@@ -65,7 +65,10 @@ export default function useProfileState({
         // Only throw if there's no cache, otherwise we've already set profile data
         throw error
       }
-      console.error('Failed to fetch fresh profile, using cached data if available', error)
+      console.error(
+        'Failed to fetch fresh profile, using cached data if available',
+        error
+      )
     }
   }, [customId, takesCount, user])
 

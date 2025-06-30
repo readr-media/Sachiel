@@ -7,6 +7,7 @@ import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type SearchResults } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
+import { sanitizeStoryTitle } from '@/utils/sanitize-html'
 
 export default function StoryCard({
   story,
@@ -46,9 +47,12 @@ export default function StoryCard({
       <div className="flex flex-row justify-between gap-3 sm:gap-10">
         <div>
           <NextLink href={`/story/${story.id}`} onClick={() => sendClickLog()}>
-            <span className="subtitle-1 sm:title-2 line-clamp-2 grow text-primary-700 hover-or-active:underline">
-              {story.title}
-            </span>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: sanitizeStoryTitle(story.title),
+              }}
+              className="subtitle-1 sm:title-2 line-clamp-2 grow text-primary-700 hover-or-active:underline"
+            />
           </NextLink>
           <div className="caption-1 pt-2 sm:pt-1">
             <StoryMeta

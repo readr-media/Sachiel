@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { SponsoredStory } from '@/types/homepage'
@@ -80,6 +81,8 @@ type Props = {
 }
 
 export default function TopPublisherCard({ publisher }: Props) {
+  const { t } = useCustomTranslation()
+
   return (
     <div className="flex flex-col rounded-lg border-[0.5px] border-primary-200 bg-primary-100 px-5 pb-2 pt-5 lg:self-start lg:px-8 lg:pb-3 lg:pt-6">
       <div className="mb-3 flex items-center justify-between">
@@ -104,11 +107,12 @@ export default function TopPublisherCard({ publisher }: Props) {
               </NextLink>
             </p>
             <p className="footnote text-primary-500">
-              已獲得
+              {t('Pages.Home.TopPublisherCard-sponsor-detail-1', '已獲得')}
               <span className="text-custom-blue">
-                {publisher.sponsoredCount}次
+                {publisher.sponsoredCount}
+                {t('Pages.Home.TopPublisherCard-sponsor-count-unit', '次')}
               </span>
-              贊助
+              {t('Pages.Home.TopPublisherCard-sponsor-detail-2', '贊助')}
             </p>
           </div>
         </div>

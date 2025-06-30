@@ -34,18 +34,11 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
   const hasFollowingData = !!followResponse.length
 
   if (!hasPublisherData && !hasFollowingData) {
-    return (
-      <EmptyFollowStatus
-        content={
-          isVisitor ? '這個人還沒有追蹤中的對象' : '目前還沒有追蹤中的對象'
-        }
-      />
-    )
+    return <EmptyFollowStatus isVisitor={isVisitor} />
   }
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 lg:px-10 xl:w-maxMain">
       <FollowingList
-        title="媒體"
         publisherCustomId={customId}
         followingList={followPublisherData}
         followingCount={followPublisherCount}
@@ -53,7 +46,6 @@ const FollowingPage = async ({ params: { customId } }: PageProps) => {
         type="publisher"
       />
       <FollowingList
-        title="人物"
         publisherCustomId={customId}
         followingList={followResponse}
         followingCount={followCount}

@@ -14,6 +14,7 @@ import {
 import { useUser } from '@/context/user'
 import { useCommentClamp } from '@/hooks/use-comment-clamp'
 import { useCommentLike } from '@/hooks/use-comment-like'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { type CommentType } from '@/types/profile'
 import { displayTimeFromNow } from '@/utils/story-display'
@@ -48,6 +49,7 @@ const Comment: React.FC<CommentProps> = ({
     handleDeleteCommentModalOnCancel,
   } = useComment()
   const { isConfirmDeleteCommentModalOpen } = state
+  const { t } = useCustomTranslation()
   const initializeEditCommentDrawer = (
     mode: EditDrawerShowType,
     commentId: string,
@@ -111,7 +113,7 @@ const Comment: React.FC<CommentProps> = ({
                   onClick={handleEditOnClick}
                   className="caption-1 text-primary-500"
                 >
-                  編輯留言
+                  {t('Profile.Comment.edit', '編輯留言')}
                 </button>
               </>
             )}
@@ -147,20 +149,25 @@ const Comment: React.FC<CommentProps> = ({
             } sm:line-clamp-1`}
             ref={commentRef}
           >
-            {state.commentList[0]?.content ?? (data.content || '沒有評論')}
+            {state.commentList[0]?.content ??
+              (data.content || t('Profile.Comment.noComment', '沒有評論'))}
           </p>
         </div>
       </section>
       <CommentModal
-        onConfirmText="刪除留言"
-        onCloseText="取消"
+        onConfirmText={t('Profile.Comment.delete', '刪除留言')}
+        onCloseText={t('Profile.Comment.cancel', '取消')}
         isOpen={isConfirmDeleteCommentModalOpen}
         onConfirm={() => handleDeleteCommentModalOnConfirm(user)}
         onClose={handleDeleteCommentModalOnCancel}
       >
         <section className="flex flex-col justify-start">
-          <p className="title-2">確認要刪除留言？</p>
-          <p className="body-3">系統仍會保留您的精選記錄</p>
+          <p className="title-2">
+            {t('Profile.Comment.confirmDelete', '確認要刪除留言？')}
+          </p>
+          <p className="body-3">
+            {t('Profile.Comment.keepPick', '系統仍會保留您的精選記錄')}
+          </p>
         </section>
       </CommentModal>
       <MobileCommentEditor />
