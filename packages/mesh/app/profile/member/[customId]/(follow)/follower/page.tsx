@@ -2,7 +2,6 @@ import { getCurrentUser } from '@/app/actions/auth'
 import EmptyFollowStatus from '@/app/profile/_components/empty-follow-status'
 import FollowListItem from '@/app/profile/_components/follow-list-item'
 import { GetMemberFollowerListDocument } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import queryGraphQL from '@/utils/fetch-graphql'
 
 import type { PageProps } from '../../page'
@@ -11,7 +10,6 @@ const FollowerPage = async ({ params }: PageProps) => {
   const takeCount = 20
   const user = await getCurrentUser()
   const isVisitor = params.customId !== user?.customId
-  const { t } = useCustomTranslation()
   const response = await queryGraphQL(GetMemberFollowerListDocument, {
     customId: params.customId,
     take: takeCount,
@@ -20,16 +18,7 @@ const FollowerPage = async ({ params }: PageProps) => {
   const mutualFansList = response?.member?.mutualFans
 
   if (!followList || !followList.length)
-    return (
-      <EmptyFollowStatus
-        content={t(
-          isVisitor
-            ? 'Profile.Follower.emptyVisitor'
-            : 'Profile.Follower.emptySelf',
-          isVisitor ? '這個人還沒有粉絲' : '目前還沒有粉絲'
-        )}
-      />
-    )
+    return <EmptyFollowStatus isVisitor={isVisitor} />
   return (
     <main className="flex max-w-[theme(width.maxMain)] grow flex-col items-center sm:gap-5 sm:p-5 md:px-[70px] md:py-10 lg:px-10 xl:w-maxMain">
       <div className="w-full rounded-xl bg-white px-5 pb-3 pt-4">

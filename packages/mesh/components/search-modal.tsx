@@ -1,3 +1,4 @@
+'use client'
 import NextLink from 'next/link'
 import { Fragment, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'

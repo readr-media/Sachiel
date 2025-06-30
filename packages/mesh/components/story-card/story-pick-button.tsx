@@ -45,7 +45,8 @@ export default function StoryPickButton({
       }}
       activeState={{
         isActive: isStoryPicked,
-        activeText: t('Components.StoryPickButton.already-picked', '已精選'),
+        activeText:
+          t('Components.StoryPickButton.already-picked', '已精選') ?? '已精選',
         activeIcon: { iconName: 'icon-star-white', size: 's' },
       }}
       gtmClassName={gtmClassName}

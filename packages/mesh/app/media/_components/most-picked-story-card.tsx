@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 
 import ImageWithFallback from '@/app/_components/image-with-fallback'

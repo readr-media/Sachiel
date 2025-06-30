@@ -1,4 +1,4 @@
-import React from 'react'
+'use client'
 
 import Button from '@/components/button'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'

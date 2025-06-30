@@ -21,7 +21,8 @@ export default function FollowButton({
       text={t('Components.FollowButton.follow', '追蹤')}
       activeState={{
         isActive: isFollowing,
-        activeText: t('Components.FollowButton.following', '追蹤中'),
+        activeText:
+          t('Components.FollowButton.following', '追蹤中') ?? '追蹤中',
       }}
       onClick={handleClickFollow}
       gtmClassName={gtmClassName}

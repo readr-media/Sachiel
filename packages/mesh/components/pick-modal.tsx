@@ -1,3 +1,4 @@
+'use client'
 import {
   type FormEvent,
   type RefObject,
