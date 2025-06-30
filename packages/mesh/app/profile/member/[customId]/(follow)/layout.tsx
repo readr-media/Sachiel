@@ -1,9 +1,9 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
+import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import Loading from './_components/loading'
 
