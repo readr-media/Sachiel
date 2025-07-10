@@ -11,7 +11,6 @@ import { ThemeProvider } from 'styled-components'
 
 import { getGqlClient } from '~/apollo-client'
 import ComScoreScript from '~/components/comscore-script'
-import Footer from '~/components/layout/footer'
 import GDPRControl from '~/components/layout/gdpr-control'
 import { NormalizeStyles } from '~/components/layout/normalize-styles'
 import { ReadrStyles } from '~/components/layout/readr-styles'
@@ -70,7 +69,6 @@ const MyApp = ({ Component, pageProps, props }: AppPropsWithLayout) => {
             <CategoryListContext.Provider value={props.categoryList}>
               {getLayout(<Component {...pageProps} />)}
             </CategoryListContext.Provider>
-            <Footer />
             <GDPRControl />
           </HeaderCategoriesAndRelatePostsContext.Provider>
         </ThemeProvider>
