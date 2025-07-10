@@ -52,7 +52,6 @@ export default function Blank({ postData }: BlankProps): JSX.Element {
         <DraftRenderer rawContentBlock={postData?.content} />
       )}
 
-      <Footer />
       <HiddenAnchor ref={anchorRef} />
     </BlankWrapper>
   )
