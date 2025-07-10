@@ -2,6 +2,7 @@ import SharedImage from '@readr-media/react-image'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import Footer from '~/components/layout/footer'
 import HeaderGeneral from '~/components/layout/header/header-general'
 import PostContent from '~/components/post/post-content'
 import PostHeading from '~/components/post/post-heading'
@@ -146,6 +147,7 @@ export default function News({
           relatedPosts={postData?.relatedPosts}
           latestPosts={latestPosts}
         />
+        <Footer />
         <HiddenAnchor ref={anchorRef} />
       </NewsContainer>
     </>

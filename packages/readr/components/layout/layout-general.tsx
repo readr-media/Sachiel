@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { SITE_TITLE } from '~/constants/constant'
 
 import CustomHead from './custom-head'
+import Footer from './footer'
 import HeaderGeneral from './header/header-general'
 
 const Main = styled.main`
@@ -40,6 +41,7 @@ export default function LayoutGeneral({
       ></CustomHead>
       <HeaderGeneral onCompleteReadingHandle={onCompleteReadingHandle} />
       <Main>{children}</Main>
+      <Footer />
     </>
   )
 }
