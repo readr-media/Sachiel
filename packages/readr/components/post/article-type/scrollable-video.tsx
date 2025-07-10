@@ -3,6 +3,7 @@ import SharedImage from '@readr-media/react-image'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+import Footer from '~/components/layout/footer'
 import HeaderGeneral from '~/components/layout/header/header-general'
 import LeadingEmbeddedCode from '~/components/post/leadingEmbeddedCode'
 import PostContent from '~/components/post/post-content'
@@ -190,6 +191,7 @@ export default function ScrollableVideo({
         relatedPosts={postData?.relatedPosts}
         latestPosts={latestPosts}
       />
+      <Footer />
       <HiddenAnchor ref={anchorRef} />
     </>
   )
