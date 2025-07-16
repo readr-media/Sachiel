@@ -1,4 +1,5 @@
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const IS_SPECIALEVENT = process.env.NEXT_PUBLIC_SPECIALEVENT === 'true'
 
 // 這裡管理的是在 runtime 時，可被設定的環境變數 (通常沒有 `NEXT_PUBLIC_` 作為開頭)
 const USE_MOCK_SERVER = (process.env.USE_MOCK_SERVER ?? 'false') === 'true'
@@ -44,6 +45,7 @@ if (USE_MOCK_SERVER) API_ENDPOINT = `http://localhost:${MOCK_API_SERVER_PORT}/`
 export {
   API_ENDPOINT,
   EDITOOLS_API_ENDPOINT,
+  IS_SPECIALEVENT,
   MISO_API_KEY,
   MOCK_API_SERVER_PORT,
   OAUTH_CLIENT_ID,
