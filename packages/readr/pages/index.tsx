@@ -17,7 +17,7 @@ import LatestReportSection from '~/components/index/latest-report-section'
 import MassRecallLiveSection from '~/components/index/mass-recall-live-section'
 import OpenDataSection from '~/components/index/open-data-section'
 import LayoutGeneral from '~/components/layout/layout-general'
-import { IS_SPECIALEVENT } from '~/constants/config'
+import { IS_MASS_RECALL } from '~/constants/config'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import {
   LATEST_POSTS_IN_CATEGORIES_URL,
@@ -107,7 +107,7 @@ const Index: NextPageWithLayout<PageProps> = ({
 
   return (
     <>
-      {IS_SPECIALEVENT && <MassRecallLiveSection />}
+      {IS_MASS_RECALL && <MassRecallLiveSection />}
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
