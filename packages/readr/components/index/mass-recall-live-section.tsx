@@ -43,6 +43,17 @@ const Title = styled.h1`
 
 const Iframe = styled.iframe`
   width: 100%;
+  height: 270px;
+
+  ${({ theme }) => `
+    ${theme.breakpoint.md} {
+      height: 212px;
+  `}
+
+  ${({ theme }) => `
+    ${theme.breakpoint.xl} {
+      height: 206px;
+  `}
 `
 
 const KnowMoreLink = styled(NextLink)`
@@ -55,7 +66,7 @@ const KnowMoreLink = styled(NextLink)`
 
 export default function MassRecallLiveSection(): JSX.Element {
   const RecallIframeURL =
-    'https://www.mirrormedia.mg/projects/election2024-homepage/index.html'
+    'https://www.readr.tw/project/3/election2025-homepage/index.html'
   const RecallTopicPageURL = ''
 
   return (
