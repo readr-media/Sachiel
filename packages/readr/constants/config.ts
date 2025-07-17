@@ -1,5 +1,5 @@
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
-const IS_SPECIALEVENT = process.env.NEXT_PUBLIC_SPECIALEVENT === 'true'
+const IS_SPECIALEVENT = process.env.NEXT_PUBLIC_SPECIALEVENT === 'True'
 
 // 這裡管理的是在 runtime 時，可被設定的環境變數 (通常沒有 `NEXT_PUBLIC_` 作為開頭)
 const USE_MOCK_SERVER = (process.env.USE_MOCK_SERVER ?? 'false') === 'true'
