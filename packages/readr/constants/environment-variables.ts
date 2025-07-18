@@ -1,5 +1,7 @@
 // 這裡管理的是在 Build 階段就會寫死數值的環境變數 (通常為 `NEXT_PUBLCI_` 開頭)
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const IS_MASS_RECALL = process.env.NEXT_PUBLIC_SPECIALEVENT === 'True'
+
 let SITE_URL: string
 let GA_TRACKING_ID: string
 let GTM_ID: string
@@ -91,6 +93,7 @@ export {
   GOOGLE_ADSENSE_AD_CLIENT,
   GTM_ID,
   HEADER_JSON_URL,
+  IS_MASS_RECALL,
   LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL,
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
