@@ -48,5 +48,5 @@ substitutions:
   _TARGET_PACKAGE: '' # default value
   _IMAGE_NAME: '' # default value
   _CLOUD_RUN_SERVICE_NAMES: '' # default value
-  _NEXT_PUBLIC_SPECIALEVENT: '' # default value
+  _SPECIALEVENT: '' # default value
   _ENV: 'dev' # default value
