@@ -105,14 +105,6 @@ const Index: NextPageWithLayout<PageProps> = ({
   const shouldShowFeatureSection = features.length > 0
   const shouldShowCollaborationSection = collaborations.length > 0
 
-  // eslint-disable-next-line no-console
-  console.log(
-    'process.env.NEXT_PUBLIC_SPECIALEVENT: ',
-    process.env.NEXT_PUBLIC_SPECIALEVENT,
-    'typeof process.env.NEXT_PUBLIC_SPECIALEVENT:',
-    typeof process.env.NEXT_PUBLIC_SPECIALEVENT
-  )
-
   return (
     <>
       {IS_MASS_RECALL && <MassRecallLiveSection />}
