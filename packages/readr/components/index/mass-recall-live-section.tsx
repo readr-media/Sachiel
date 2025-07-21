@@ -1,7 +1,8 @@
 // 2025/7/26 立委罷免即時開票專區
-
 import NextLink from 'next/link'
 import styled from 'styled-components'
+
+import { RECALL_TOPIC_PAGE_URL } from '~/constants/environment-variables'
 
 const Container = styled.section`
   margin: 0 auto;
@@ -67,7 +68,7 @@ const KnowMoreLink = styled(NextLink)`
 export default function MassRecallLiveSection(): JSX.Element {
   const RecallIframeURL =
     'https://www.readr.tw/project/3/election2025-homepage/index.html'
-  const RecallTopicPageURL = ''
+  const RecallTopicPageURL = RECALL_TOPIC_PAGE_URL
 
   return (
     <Container>

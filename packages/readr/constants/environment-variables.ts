@@ -13,6 +13,8 @@ let HEADER_JSON_URL: string
 let LATEST_POSTS_URL: string
 let LATEST_POSTS_IN_CATEGORIES_URL: string
 let LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL: string
+let RECALL_TOPIC_PAGE_URL: string
+
 switch (ENV) {
   case 'prod':
     SITE_URL = 'www.readr.tw'
@@ -28,6 +30,8 @@ switch (ENV) {
       'https://statics.readr.tw/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://statics.readr.tw/json/sections-posts-listing.json'
+    RECALL_TOPIC_PAGE_URL =
+      'https://www.readr.tw/project/3/taiwan-elections/index.html'
     break
 
   case 'staging':
@@ -46,6 +50,8 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/sections-posts-listing.json'
+    RECALL_TOPIC_PAGE_URL =
+      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
     break
 
   case 'dev':
@@ -64,6 +70,8 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
+    RECALL_TOPIC_PAGE_URL =
+      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
     break
 
   default:
@@ -82,6 +90,8 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
+    RECALL_TOPIC_PAGE_URL =
+      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
     break
 }
 
@@ -98,5 +108,6 @@ export {
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
   QA_RECORD_CONFIG,
+  RECALL_TOPIC_PAGE_URL,
   SITE_URL,
 }
