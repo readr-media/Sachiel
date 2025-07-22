@@ -4,7 +4,7 @@ steps:
     id: Build Image
     env:
       - 'NEXT_PUBLIC_ENV=${BRANCH_NAME}'
-      - 'NEXT_PUBLIC_SPECIALEVENT=$_NEXT_PUBLIC_SPECIALEVENT'
+      - 'NEXT_PUBLIC_SPECIALEVENT=$_SPECIALEVENT'
     entrypoint: 'bash'
     args:
       - '-c'
