@@ -44,7 +44,7 @@ const Title = styled.h1`
 
 const Iframe = styled.iframe`
   width: 100%;
-  height: 300px;
+  height: 241px;
   margin: 16px 0;
 
   ${({ theme }) => `
