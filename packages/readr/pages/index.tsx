@@ -104,7 +104,6 @@ const Index: NextPageWithLayout<PageProps> = ({
   const shouldShowLatestReportSection = categories.length > 0
   const shouldShowFeatureSection = features.length > 0
   const shouldShowCollaborationSection = collaborations.length > 0
-  console.log('IS_MASS_RECALL', IS_MASS_RECALL)
   return (
     <>
       {IS_MASS_RECALL && <MassRecallLiveSection />}
