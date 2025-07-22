@@ -75,7 +75,7 @@ export default function MassRecallLiveSection(): JSX.Element {
         target="_blank"
         rel="noopener noreferrer"
       >
-        查看更多
+        查看完整資料
       </KnowMoreLink>
     </Container>
   )
