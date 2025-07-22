@@ -4,6 +4,7 @@ steps:
     id: Build Image
     env:
       - 'NEXT_PUBLIC_ENV=${BRANCH_NAME}'
+      - 'NEXT_PUBLIC_SPECIALEVENT=$_SPECIALEVENT'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -47,4 +48,5 @@ substitutions:
   _TARGET_PACKAGE: '' # default value
   _IMAGE_NAME: '' # default value
   _CLOUD_RUN_SERVICE_NAMES: '' # default value
+  _SPECIALEVENT: '' # default value
   _ENV: 'dev' # default value
