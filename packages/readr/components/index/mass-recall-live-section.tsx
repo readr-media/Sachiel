@@ -44,16 +44,11 @@ const Title = styled.h1`
 
 const Iframe = styled.iframe`
   width: 100%;
-  height: 270px;
+  height: 297px;
 
   ${({ theme }) => `
     ${theme.breakpoint.md} {
-      height: 212px;
-  `}
-
-  ${({ theme }) => `
-    ${theme.breakpoint.xl} {
-      height: 206px;
+      height: 226px;
   `}
 `
 
