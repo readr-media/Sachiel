@@ -17,11 +17,12 @@ import LatestReportSection from '~/components/index/latest-report-section'
 import MassRecallLiveSection from '~/components/index/mass-recall-live-section'
 import OpenDataSection from '~/components/index/open-data-section'
 import LayoutGeneral from '~/components/layout/layout-general'
-import { IS_MASS_RECALL } from '~/constants/config'
 import { DEFAULT_CATEGORY } from '~/constants/constant'
 import {
+  ENV,
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
+  MASS_RECALL_DISPLAY_JSON_URL,
 } from '~/constants/environment-variables'
 import type { Post } from '~/graphql/fragments/post'
 import type { Category } from '~/graphql/query/category'
@@ -63,6 +64,7 @@ type PageProps = {
   featuredCollaboration: FeaturedCollaboration
   dataSetItems: DataSetItem[]
   dataSetCount: number
+  isMassRecall2025: boolean
 }
 
 const HiddenAnchor = styled.div`
@@ -95,6 +97,7 @@ const Index: NextPageWithLayout<PageProps> = ({
   featuredCollaboration,
   dataSetItems,
   dataSetCount,
+  isMassRecall2025,
 }) => {
   const anchorRef = useScrollToEnd(() =>
     gtag.sendEvent('homepage', 'scroll', 'scroll to end')
@@ -106,7 +109,7 @@ const Index: NextPageWithLayout<PageProps> = ({
   const shouldShowCollaborationSection = collaborations.length > 0
   return (
     <>
-      {IS_MASS_RECALL && <MassRecallLiveSection />}
+      {isMassRecall2025 && <MassRecallLiveSection />}
       {shouldShowEditorChoiceSection && (
         <EditorChoiceSection posts={editorChoices} />
       )}
@@ -145,6 +148,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   const client = getGqlClient()
 
+  let isMassRecall2025 = false
   let editorChoices: EditorCard[] = []
   let categories: NavigationCategoryWithArticleCards[] = []
   let latest: NavigationCategoryWithArticleCards = {
@@ -168,6 +172,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   try {
     {
+      // fetch mass recall display URL
+      const massRecallDisplayJsonData = await fetch(
+        MASS_RECALL_DISPLAY_JSON_URL,
+        {
+          next: { revalidate: 0 },
+        }
+      ).then((res) => res.json())
+
+      isMassRecall2025 =
+        massRecallDisplayJsonData[
+          ENV === 'local' ? `display_iframe_dev` : `display_iframe_${ENV}`
+        ] === 'TRUE'
       // fetch editor choice data
       const { data, errors: gqlErrors } = await client.query<{
         editorChoices: EditorChoice[]
@@ -485,6 +501,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       featuredCollaboration,
       dataSetItems,
       dataSetCount,
+      isMassRecall2025,
     },
   }
 }
