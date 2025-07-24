@@ -178,7 +178,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         {
           next: { revalidate: 0 },
         }
-      ).then((res) => res.json())
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          console.error('Error fetching mass recall display JSON:', err)
+        })
 
       isMassRecall2025 =
         massRecallDisplayJsonData?.[
