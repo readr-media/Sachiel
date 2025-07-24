@@ -181,7 +181,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       ).then((res) => res.json())
 
       isMassRecall2025 =
-        massRecallDisplayJsonData[
+        massRecallDisplayJsonData?.[
           ENV === 'local' ? `display_iframe_dev` : `display_iframe_${ENV}`
         ] === 'TRUE'
       // fetch editor choice data
