@@ -73,6 +73,7 @@ export default function MassRecallLiveSection(): JSX.Element {
       <KnowMoreLink
         href={RecallTopicPageURL}
         target="_blank"
+        className="GTM-click_2025_election_page"
         rel="noopener noreferrer"
       >
         查看完整資料
