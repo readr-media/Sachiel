@@ -51,7 +51,7 @@ switch (ENV) {
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/sections-posts-listing.json'
     RECALL_TOPIC_PAGE_URL =
-      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
+      'https://www.readr.tw/project/3/taiwan-elections/index.html'
     break
 
   case 'dev':
