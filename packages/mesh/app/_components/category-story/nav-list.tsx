@@ -64,7 +64,7 @@ export default function NavList({ categories, initialStories }: Props) {
     if (activeCategory?.slug) {
       fetchCategoryData(activeCategory.slug)
     }
-  }, [activeCategory])
+  }, [activeCategory?.slug])
 
   const categoriesRef = useRef<HTMLDivElement>(null)
   const { targetRef: leadingRef, isIntersecting: isLeadingRefInView } =
