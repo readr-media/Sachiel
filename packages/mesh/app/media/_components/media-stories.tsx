@@ -508,7 +508,7 @@ export default function MediaStories({
           categorySlug
         )
         // Check if Effect 1 already handled this category properly
-        const existingData = pageDataInCategories[categorySlug]
+        const existingData = pageDataInCategories?.[categorySlug]
         if (existingData && isCategoryDataLoaded(existingData)) {
           console.log(
             '[Effect 3] Initial category data is already loaded by Effect 1. No action needed.'
