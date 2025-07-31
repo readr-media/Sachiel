@@ -537,7 +537,7 @@ export default function MediaStories({
         setIsLoading(true) // Fallback to loading state
         return
       }
-      const existingData = pageDataInCategories[categorySlug]
+      const existingData = pageDataInCategories?.[categorySlug]
       let shouldFetchInBackground = false
 
       // Keeping the detailed log for existingData as per previous subtask

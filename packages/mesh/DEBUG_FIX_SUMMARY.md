@@ -15,6 +15,10 @@
 - Effect 1 檢查數據時沒有正確驗證數據是否真正加載
 - Effect 3 對於初始分類會提前退出，不處理數據加載
 
+### 問題 3：TypeScript 錯誤和構建問題
+- TypeScript 錯誤：`pageDataInCategories` 可能為 null
+- ESLint 錯誤：找不到 prettier.config 模組（在 Docker 構建環境中）
+
 ## 修復方案
 
 ### 1. 新增 `setSearchParamsWithRouter` 函數
@@ -57,11 +61,22 @@ export function setSearchParamsWithRouter(
 - 檢查 Effect 1 是否已經正確處理了初始分類
 - 如果 Effect 1 沒有正確處理，則在 Effect 3 中處理
 
+### 6. 修復 TypeScript 錯誤
+在 `media-stories.tsx` 中：
+- 使用可選鏈操作符 `?.` 來安全訪問 `pageDataInCategories`
+- 確保所有對 `pageDataInCategories` 的訪問都是安全的
+
+### 7. 修復 prettier 配置問題
+在 `prettier.config.js` 中：
+- 添加 try-catch 塊來處理共享配置可能不存在的情況
+- 提供 fallback 配置，確保在 Docker 構建環境中也能正常工作
+
 ## 修復的文件
 1. `utils/search-params.ts` - 新增 `setSearchParamsWithRouter` 函數
 2. `app/media/_components/category-selector.tsx` - 使用新的路由函數
 3. `app/_components/category-story/nav-list.tsx` - 使用新的路由函數
-4. `app/media/_components/media-stories.tsx` - 修復 Effect 1 和 Effect 3 的邏輯
+4. `app/media/_components/media-stories.tsx` - 修復 Effect 1 和 Effect 3 的邏輯，修復 TypeScript 錯誤
+5. `prettier.config.js` - 修復 Docker 構建環境中的配置問題
 
 ## 測試建議
 1. 登入應用程序
@@ -71,9 +86,14 @@ export function setSearchParamsWithRouter(
 5. 直接訪問 `media?c=politics` 這樣的 URL，確認數據正常加載
 6. 檢查瀏覽器開發者工具的 Network 標籤，確認 API 請求正常發送
 7. 檢查瀏覽器控制台的日誌，確認 Effect 1 和 Effect 3 正確執行
+8. 運行 `npm run type` 確認沒有 TypeScript 錯誤
+9. 運行 `npm run lint` 確認沒有 ESLint 錯誤
+10. 測試 Docker 構建是否成功
 
 ## 注意事項
 - 原有的 `setSearchParams` 函數保持不變，以確保向後兼容性
 - 新的 `setSearchParamsWithRouter` 函數專門用於需要觸發組件重新渲染的場景
 - 修復不會影響其他使用 `setSearchParams` 的功能
-- 添加了更詳細的日誌來幫助調試未來的問題 
+- 添加了更詳細的日誌來幫助調試未來的問題
+- 所有對可能為 null 的對象的訪問都使用了安全的方式
+- prettier 配置現在在 Docker 構建環境中也能正常工作 
