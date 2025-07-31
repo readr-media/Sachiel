@@ -18,6 +18,8 @@
 ### 問題 3：TypeScript 錯誤和構建問題
 - TypeScript 錯誤：`pageDataInCategories` 可能為 null
 - ESLint 錯誤：找不到 prettier.config 模組（在 Docker 構建環境中）
+- ESLint 格式化錯誤：prettier 格式化問題
+- React Hooks 依賴項警告
 
 ## 修復方案
 
@@ -26,7 +28,7 @@
 
 ```typescript
 export function setSearchParamsWithRouter(
-  router: any,
+  router: { push: (url: string, options?: { scroll?: boolean }) => void },
   paramName: string,
   paramValue: string
 ) {
@@ -43,11 +45,13 @@ export function setSearchParamsWithRouter(
 - 導入 `useRouter` hook
 - 將 `setSearchParams` 替換為 `setSearchParamsWithRouter`
 - 在分類切換時傳入 router 實例
+- 修復 prettier 格式化問題
 
 ### 3. 修改 `nav-list.tsx`
 - 導入 `useRouter` hook
 - 將 `setSearchParams` 替換為 `setSearchParamsWithRouter`
 - 修復了 useEffect 的使用錯誤
+- 修復 prettier 格式化問題
 
 ### 4. 修復 Effect 1 的數據檢查邏輯
 在 `media-stories.tsx` 中修改 Effect 1：
@@ -71,11 +75,22 @@ export function setSearchParamsWithRouter(
 - 添加 try-catch 塊來處理共享配置可能不存在的情況
 - 提供 fallback 配置，確保在 Docker 構建環境中也能正常工作
 
+### 8. 修復 React Hooks 依賴項警告
+在 `media-stories.tsx` 中：
+- 將 `isCategoryDataLoaded` 函數包裝在 `useCallback` 中
+- 移除不必要的依賴項 `latestStoriesInfo.totalCount`
+- 修復 useEffect 依賴項問題
+
+### 9. 修復 ESLint 格式化問題
+- 使用 ESLint 的 `--fix` 選項自動修復格式化問題
+- 修復 import 語句的格式化
+- 修復函數調用的格式化
+
 ## 修復的文件
-1. `utils/search-params.ts` - 新增 `setSearchParamsWithRouter` 函數
-2. `app/media/_components/category-selector.tsx` - 使用新的路由函數
-3. `app/_components/category-story/nav-list.tsx` - 使用新的路由函數
-4. `app/media/_components/media-stories.tsx` - 修復 Effect 1 和 Effect 3 的邏輯，修復 TypeScript 錯誤
+1. `utils/search-params.ts` - 新增 `setSearchParamsWithRouter` 函數，修復 TypeScript 類型
+2. `app/media/_components/category-selector.tsx` - 使用新的路由函數，修復格式化
+3. `app/_components/category-story/nav-list.tsx` - 使用新的路由函數，修復格式化
+4. `app/media/_components/media-stories.tsx` - 修復 Effect 1 和 Effect 3 的邏輯，修復 TypeScript 錯誤，修復 React Hooks 依賴項
 5. `prettier.config.js` - 修復 Docker 構建環境中的配置問題
 
 ## 測試建議
@@ -87,7 +102,7 @@ export function setSearchParamsWithRouter(
 6. 檢查瀏覽器開發者工具的 Network 標籤，確認 API 請求正常發送
 7. 檢查瀏覽器控制台的日誌，確認 Effect 1 和 Effect 3 正確執行
 8. 運行 `npm run type` 確認沒有 TypeScript 錯誤
-9. 運行 `npm run lint` 確認沒有 ESLint 錯誤
+9. 運行 `npx eslint` 確認沒有 ESLint 錯誤
 10. 測試 Docker 構建是否成功
 
 ## 注意事項
@@ -96,4 +111,6 @@ export function setSearchParamsWithRouter(
 - 修復不會影響其他使用 `setSearchParams` 的功能
 - 添加了更詳細的日誌來幫助調試未來的問題
 - 所有對可能為 null 的對象的訪問都使用了安全的方式
-- prettier 配置現在在 Docker 構建環境中也能正常工作 
+- prettier 配置現在在 Docker 構建環境中也能正常工作
+- React Hooks 依賴項已經正確配置，避免不必要的重新渲染
+- 保留了 console.error 語句用於錯誤調試，但移除了 console.log 語句 

@@ -79,17 +79,18 @@ export default function MediaStories({
     useState<PageData | null>(null)
   const followingCategoriesCount = user.followingCategories.length
 
-  const isCategoryDataLoaded = (
-    data: PageData[string] | undefined
-  ): boolean => {
-    if (!data) return false
-    return !(
-      data.mostPickedStory === null &&
-      data.latestStoriesInfo.stories.length === 0 &&
-      data.latestStoriesInfo.totalCount === 0 &&
-      data.latestStoriesInfo.shouldLoadmore === true
-    )
-  }
+  const isCategoryDataLoaded = useCallback(
+    (data: PageData[string] | undefined): boolean => {
+      if (!data) return false
+      return !(
+        data.mostPickedStory === null &&
+        data.latestStoriesInfo.stories.length === 0 &&
+        data.latestStoriesInfo.totalCount === 0 &&
+        data.latestStoriesInfo.shouldLoadmore === true
+      )
+    },
+    []
+  )
 
   const searchParams = useSearchParams()
 
@@ -237,7 +238,6 @@ export default function MediaStories({
     currentCategory,
     followingPublisherIds,
     latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
-    latestStoriesInfo?.totalCount,
     allCategories, // Added allCategories to dependency array
   ])
 
