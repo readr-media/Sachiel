@@ -1,8 +1,8 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import type { MouseEventHandler } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { fetchCategoryStory } from '@/app/actions/get-homepage'
 import Button from '@/components/button'
@@ -14,7 +14,7 @@ import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
-import { replaceSearchParams, setSearchParams } from '@/utils/search-params'
+import { replaceSearchParams, setSearchParamsWithRouter } from '@/utils/search-params'
 
 import StorySection from './story-section'
 
@@ -42,6 +42,7 @@ type Props = {
 export default function NavList({ categories, initialStories }: Props) {
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
   const userPayload = useUserPayload()
+  const router = useRouter()
   const searchParams = useSearchParams()
   const pageName = usePageName()
   const activeCategorySlug = searchParams.get(categorySearchParamName)
@@ -107,7 +108,8 @@ export default function NavList({ categories, initialStories }: Props) {
                       targetTitle: category?.title ?? '',
                       source: pageName,
                     })
-                    setSearchParams(
+                    setSearchParamsWithRouter(
+                      router,
                       categorySearchParamName,
                       category.slug ?? ''
                     )
