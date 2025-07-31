@@ -72,7 +72,6 @@ export default function MediaStories({
   allCategories: Category[]
   publisherList: AllPublisherData
 }) {
-  console.log('[MediaStories] Component initialized with allCategories:', allCategories.length, 'categories:', allCategories.map(c => c.slug))
   const { user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
@@ -253,11 +252,9 @@ export default function MediaStories({
 
   // Effect 0: Load initial pageDataInCategories from localStorage or defaults
   useEffect(() => {
-    console.log('[Effect 0] Starting to load initial pageDataInCategories. allCategories length:', allCategories.length)
     let initialData: PageData = getInitialPageData(allCategories) // Start with default structure
     try {
       const cachedItem = localStorage.getItem(MEDIA_STORIES_CACHE_KEY)
-      console.log('[Effect 0] localStorage.getItem result:', cachedItem ? 'found' : 'not found')
       if (cachedItem) {
         const cachedPageData = JSON.parse(cachedItem) as PageData
         if (cachedPageData) {
@@ -293,13 +290,11 @@ export default function MediaStories({
       )
       // initialData is already getInitialPageData(allCategories) in this case
     }
-    console.log('[Effect 0] Setting pageDataInCategories with:', Object.keys(initialData))
     setPageDataInCategories(initialData)
   }, [allCategories]) // Dependency on allCategories
 
   // Effect 1: Initial Active Category Load
   useEffect(() => {
-    console.log('[Effect 1] Effect triggered. pageDataInCategories:', !!pageDataInCategories, 'initialLoadComplete:', initialLoadComplete)
     // Ensure pageDataInCategories is populated before this effect runs critical logic
     if (!pageDataInCategories) {
       console.log(
@@ -327,16 +322,7 @@ export default function MediaStories({
         existingData
       )
 
-      if (existingData) {
-        console.log('[Effect 1] existingData details:', {
-          mostPickedStory: existingData.mostPickedStory !== null,
-          storiesLength: existingData.latestStoriesInfo.stories.length,
-          totalCount: existingData.latestStoriesInfo.totalCount,
-          shouldLoadmore: existingData.latestStoriesInfo.shouldLoadmore,
-          timestamp: existingData.timestamp,
-          isDataLoaded: isCategoryDataLoaded(existingData)
-        })
-      }
+
 
       if (existingData && isCategoryDataLoaded(existingData)) {
         // If any data object exists for this slug and it's actually loaded
@@ -527,17 +513,15 @@ export default function MediaStories({
         const existingData = pageDataInCategories?.[categorySlug]
         if (existingData && isCategoryDataLoaded(existingData)) {
           console.log(
-            '[Effect 3] Initial category data is already loaded by Effect 1. No action needed.'
+            '[Effect 3] Initial category data is already loaded by Effect 1. Checking if refresh is needed.'
           )
-          if (isLoading) {
-            setIsLoading(false)
-          }
-          return
+          // Don't return here, continue to check if refresh is needed
+        } else {
+          // If Effect 1 didn't handle it properly, we need to handle it here
+          console.log(
+            '[Effect 3] Initial category data is not properly loaded by Effect 1. Handling it here.'
+          )
         }
-        // If Effect 1 didn't handle it properly, we need to handle it here
-        console.log(
-          '[Effect 3] Initial category data is not properly loaded by Effect 1. Handling it here.'
-        )
       }
 
       // Cache-First Logic for Navigated Category
