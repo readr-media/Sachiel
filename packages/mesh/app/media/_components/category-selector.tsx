@@ -1,5 +1,6 @@
 import type { MouseEventHandler } from 'react'
 import { useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
@@ -18,7 +19,7 @@ import {
   undoDeleteCategroies,
 } from '@/utils/edit-category'
 import { logClickEvent } from '@/utils/event-logs'
-import { setSearchParams } from '@/utils/search-params'
+import { setSearchParamsWithRouter } from '@/utils/search-params'
 
 import type { Category } from '../page'
 import CategoryEditor from './category-editor'
@@ -51,6 +52,7 @@ export default function CategorySelector({
   const { addToast } = useToast()
   const userPayoload = useUserPayload()
   const pageName = usePageName()
+  const router = useRouter()
 
   const [showCategoryEditor, setShowCategoryEditor] = useState(false)
   const { memberId } = user
@@ -106,7 +108,7 @@ export default function CategorySelector({
       (category) => category.slug === currentCategory?.slug
     )
     if (isCurrentCategoryDeleted) {
-      setSearchParams(categorySearchParamName, finalCategories[0].slug ?? '')
+      setSearchParamsWithRouter(router, categorySearchParamName, finalCategories[0].slug ?? '')
     }
 
     setUser((user) => ({
@@ -147,10 +149,7 @@ export default function CategorySelector({
                       targetTitle: category?.title ?? '',
                       source: pageName,
                     })
-                    setSearchParams(
-                      categorySearchParamName,
-                      category.slug ?? ''
-                    )
+                    setSearchParamsWithRouter(router, categorySearchParamName, category.slug ?? '')
                   }}
                 />
               </div>
