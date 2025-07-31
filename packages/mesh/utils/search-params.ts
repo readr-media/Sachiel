@@ -29,7 +29,7 @@ export function setSearchParams(paramName: string, paramValue: string) {
  * This function should be used in components that need to trigger re-renders when search params change
  */
 export function setSearchParamsWithRouter(
-  router: any,
+  router: { push: (url: string, options?: { scroll?: boolean }) => void },
   paramName: string,
   paramValue: string
 ) {

@@ -1,8 +1,8 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation'
 import type { MouseEventHandler } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 
 import { fetchCategoryStory } from '@/app/actions/get-homepage'
 import Button from '@/components/button'
@@ -14,7 +14,10 @@ import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
-import { replaceSearchParams, setSearchParamsWithRouter } from '@/utils/search-params'
+import {
+  replaceSearchParams,
+  setSearchParamsWithRouter,
+} from '@/utils/search-params'
 
 import StorySection from './story-section'
 
