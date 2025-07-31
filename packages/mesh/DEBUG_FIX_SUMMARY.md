@@ -3,8 +3,17 @@
 ## 問題描述
 在使用者登入後，還沒有 local storage 的內容時，點選 media page 的第一個分類 tab 時會透過 api 去拿到資料，但是當切換其他分類 tab 時就沒有去打 api，於是出現沒有內容的狀態。
 
+**更新：** 直接訪問帶有分類參數的 URL（如 `media?c=politics`）時，也沒有正確加載最新數據。
+
 ## 問題根源
+
+### 問題 1：分類切換不觸發 API 調用
 問題出現在 `setSearchParams` 函數的實現上。該函數使用 `window.history.pushState` 來改變 URL，但這種方式不會觸發 Next.js 的路由變化，因此 `useSearchParams` hook 不會檢測到 URL 的變化，導致組件不會重新渲染和加載數據。
+
+### 問題 2：直接訪問 URL 不加載數據
+當用戶直接訪問 `media?c=politics` 這樣的 URL 時，Effect 1 和 Effect 3 的邏輯存在問題：
+- Effect 1 檢查數據時沒有正確驗證數據是否真正加載
+- Effect 3 對於初始分類會提前退出，不處理數據加載
 
 ## 修復方案
 
@@ -36,19 +45,35 @@ export function setSearchParamsWithRouter(
 - 將 `setSearchParams` 替換為 `setSearchParamsWithRouter`
 - 修復了 useEffect 的使用錯誤
 
+### 4. 修復 Effect 1 的數據檢查邏輯
+在 `media-stories.tsx` 中修改 Effect 1：
+- 添加更詳細的日誌來追蹤數據檢查過程
+- 使用 `isCategoryDataLoaded` 函數來正確驗證數據是否真正加載
+- 改進錯誤處理邏輯
+
+### 5. 修復 Effect 3 的初始分類處理
+在 `media-stories.tsx` 中修改 Effect 3：
+- 不再對初始分類提前退出
+- 檢查 Effect 1 是否已經正確處理了初始分類
+- 如果 Effect 1 沒有正確處理，則在 Effect 3 中處理
+
 ## 修復的文件
 1. `utils/search-params.ts` - 新增 `setSearchParamsWithRouter` 函數
 2. `app/media/_components/category-selector.tsx` - 使用新的路由函數
 3. `app/_components/category-story/nav-list.tsx` - 使用新的路由函數
+4. `app/media/_components/media-stories.tsx` - 修復 Effect 1 和 Effect 3 的邏輯
 
 ## 測試建議
 1. 登入應用程序
 2. 進入 media page
 3. 點擊第一個分類 tab，確認數據正常加載
 4. 切換到其他分類 tab，確認數據也能正常加載
-5. 檢查瀏覽器開發者工具的 Network 標籤，確認 API 請求正常發送
+5. 直接訪問 `media?c=politics` 這樣的 URL，確認數據正常加載
+6. 檢查瀏覽器開發者工具的 Network 標籤，確認 API 請求正常發送
+7. 檢查瀏覽器控制台的日誌，確認 Effect 1 和 Effect 3 正確執行
 
 ## 注意事項
 - 原有的 `setSearchParams` 函數保持不變，以確保向後兼容性
 - 新的 `setSearchParamsWithRouter` 函數專門用於需要觸發組件重新渲染的場景
-- 修復不會影響其他使用 `setSearchParams` 的功能 
+- 修復不會影響其他使用 `setSearchParams` 的功能
+- 添加了更詳細的日誌來幫助調試未來的問題 
