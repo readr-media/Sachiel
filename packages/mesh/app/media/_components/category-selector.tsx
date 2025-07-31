@@ -1,6 +1,6 @@
+import { useRouter } from 'next/navigation'
 import type { MouseEventHandler } from 'react'
 import { useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
@@ -108,7 +108,11 @@ export default function CategorySelector({
       (category) => category.slug === currentCategory?.slug
     )
     if (isCurrentCategoryDeleted) {
-      setSearchParamsWithRouter(router, categorySearchParamName, finalCategories[0].slug ?? '')
+      setSearchParamsWithRouter(
+        router,
+        categorySearchParamName,
+        finalCategories[0].slug ?? ''
+      )
     }
 
     setUser((user) => ({
@@ -149,7 +153,11 @@ export default function CategorySelector({
                       targetTitle: category?.title ?? '',
                       source: pageName,
                     })
-                    setSearchParamsWithRouter(router, categorySearchParamName, category.slug ?? '')
+                    setSearchParamsWithRouter(
+                      router,
+                      categorySearchParamName,
+                      category.slug ?? ''
+                    )
                   }}
                 />
               </div>

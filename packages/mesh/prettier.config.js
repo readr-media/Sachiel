@@ -1,5 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const shareConfig = require('../../prettier.config')
+let shareConfig = {}
+try {
+  shareConfig = require('../../prettier.config')
+} catch (error) {
+  // Fallback configuration if shared config is not available (e.g., in Docker build)
+  shareConfig = {
+    semi: false,
+    singleQuote: true,
+    tabWidth: 2,
+    trailingComma: 'es5',
+  }
+}
 
 module.exports = {
   ...shareConfig,
