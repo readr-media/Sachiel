@@ -303,6 +303,7 @@ export default function MediaStories({
 
       if (existingData && isCategoryDataLoaded(existingData)) {
         // If any data object exists for this slug and it's actually loaded
+
         setIsLoading(false) // <<< IMPORTANT: Allow rendering of this cached data immediately
 
         // Decide if a background fetch is needed for this existing data
@@ -313,8 +314,6 @@ export default function MediaStories({
         ) {
           // Fetch if no timestamp, or stale, or has no stories (even if not stale, maybe prefetch was empty)
           shouldFetchInBackground = true
-        } else {
-          // Data exists and is fresh enough, no immediate background fetch needed from Effect 1
         }
         setInitialLoadComplete(true) // Mark initial load as "complete" as we've decided what to do.
         // The background fetch will happen without blocking this.
@@ -435,10 +434,8 @@ export default function MediaStories({
 
   // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
   useEffect(() => {
-
     const loadCurrentCategoryDataIfNeeded = async () => {
       if (!currentCategory?.slug || !initialLoadComplete) {
-
         if (!currentCategory && followingCategoriesCount === 0 && !isLoading) {
           // Prevent multiple setIsLoading(false)
           setIsLoading(false)
@@ -447,7 +444,6 @@ export default function MediaStories({
       }
 
       const categorySlug = currentCategory.slug
-
 
       // If it's the initial category, Effect 1 should handle it.
       // But if Effect 1 didn't handle it properly (e.g., direct URL access), we need to handle it here.
