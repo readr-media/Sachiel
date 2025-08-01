@@ -553,7 +553,7 @@ export default function MediaStories({
       loadCurrentCategoryDataIfNeeded()
     }
   }, [
-    currentCategory?.slug, // Only depend on the slug, not the entire object
+    currentCategory, // Include the full object since we use currentCategory
     initialLoadComplete,
     initialActiveCategory?.slug, // Only depend on the slug
     fetchCategoryData,
@@ -576,13 +576,12 @@ export default function MediaStories({
       return
     }
 
-          const categorySlug = currentCategory.slug! // Capture the slug at effect time
+    const categorySlug = currentCategory.slug! // Capture the slug at effect time
 
     const intervalId = setInterval(async () => {
       // Get current category from user context to avoid dependency issues
-      const currentCategoryFromContext: Category | undefined = user.followingCategories.find(
-        (cat) => cat.slug === categorySlug
-      )
+      const currentCategoryFromContext: Category | undefined =
+        user.followingCategories.find((cat) => cat.slug === categorySlug)
 
       if (!currentCategoryFromContext) {
         return
@@ -626,7 +625,7 @@ export default function MediaStories({
 
     return () => clearInterval(intervalId)
   }, [
-    currentCategory?.slug, // Only depend on the slug, not the entire object
+    currentCategory, // Include the full object since we use currentCategory.slug!
     fetchCategoryData,
     pageDataInCategories, // pageDataInCategories is a dependency
     initialLoadComplete,
