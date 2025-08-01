@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import getLatestStoriesInCategory, {
   type Story,
@@ -576,37 +576,48 @@ export default function MediaStories({
       return
     }
 
+          const categorySlug = currentCategory.slug! // Capture the slug at effect time
+
     const intervalId = setInterval(async () => {
-      const categorySlug = currentCategory.slug // currentCategory is guaranteed by the outer check
+      // Get current category from user context to avoid dependency issues
+      const currentCategoryFromContext: Category | undefined = user.followingCategories.find(
+        (cat) => cat.slug === categorySlug
+      )
+
+      if (!currentCategoryFromContext) {
+        return
+      }
+
+      const currentCategorySlug = currentCategoryFromContext.slug
 
       // Add a null check for pageDataInCategories inside the setInterval callback
-      if (!pageDataInCategories || !categorySlug) {
+      if (!pageDataInCategories || !currentCategorySlug) {
         console.warn(
           '[Effect 4] Periodic refresh skipped: pageDataInCategories is null or categorySlug is missing unexpectedly.'
         )
         return
       }
 
-      const currentCategoryData = pageDataInCategories[categorySlug]
+      const currentCategoryData = pageDataInCategories[currentCategorySlug]
 
       if (
         currentCategoryData &&
         Date.now() - currentCategoryData.timestamp > FIVE_MINUTES_MS
       ) {
         try {
-          const result = await fetchCategoryData(currentCategory) // currentCategory is from outer scope
+          const result = await fetchCategoryData(currentCategoryFromContext)
           if (result) {
             setPageDataInCategories((prevPageData) => {
               if (!prevPageData) return null // Should not happen if outer logic is correct, but defensive
               return {
                 ...prevPageData,
-                [categorySlug]: result,
+                [currentCategorySlug]: result,
               }
             })
           }
         } catch (error) {
           console.error(
-            `[Effect 4] Error refreshing category ${categorySlug}:`,
+            `[Effect 4] Error refreshing category ${currentCategorySlug}:`,
             error
           )
         }
@@ -615,10 +626,11 @@ export default function MediaStories({
 
     return () => clearInterval(intervalId)
   }, [
-    currentCategory,
+    currentCategory?.slug, // Only depend on the slug, not the entire object
     fetchCategoryData,
     pageDataInCategories, // pageDataInCategories is a dependency
     initialLoadComplete,
+    user.followingCategories,
   ])
 
   // Effect 5: Save pageDataInCategories to localStorage whenever it changes
