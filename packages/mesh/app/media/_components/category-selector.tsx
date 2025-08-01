@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 import type { MouseEventHandler } from 'react'
-import { useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 
 import { addCategory, removeCategory } from '@/app/actions/edit-category'
 import Button from '@/components/button'
@@ -40,7 +40,7 @@ const NavigateButton = ({
   )
 }
 
-export default function CategorySelector({
+export default memo(function CategorySelector({
   allCategories,
   currentCategory,
 }: {
@@ -241,4 +241,4 @@ export default function CategorySelector({
       )}
     </>
   )
-}
+})

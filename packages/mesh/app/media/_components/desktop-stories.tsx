@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 
 import { type AllPublisherData } from '@/app/actions/publisher'
 import AdSense from '@/components/ad/adsense-ad'
@@ -14,7 +14,7 @@ import PublisherCard from './publisher-card'
 import PublisherSuggestion from './publisher-suggestion'
 import StoryCard from './story-card'
 
-export default function DesktopStories({
+export default memo(function DesktopStories({
   mostPickedStory,
   publishersAndStories,
   latestStoriesInfo,
@@ -79,7 +79,7 @@ export default function DesktopStories({
       <div className="flex gap-10 p-10 pb-15">
         <section className="w-articleMain shrink-0">
           <DesktopInfiniteStories
-            key={latestStoriesInfo.stories.length}
+            key={`${slug}-${latestStoriesInfo.stories.length}`}
             latestStoriesInfo={{
               ...latestStoriesInfo,
               stories: secondSectionStories,
@@ -101,4 +101,4 @@ export default function DesktopStories({
       </div>
     </div>
   )
-}
+})
