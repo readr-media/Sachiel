@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import getLatestStoriesInCategory, {
   type Story,
@@ -64,627 +64,661 @@ const getInitialPageData = (allCategories: Category[]) => {
   }, {} as PageData)
 }
 
-export default function MediaStories({
-  allCategories,
-  publisherList,
-}: {
-  allCategories: Category[]
-  publisherList: AllPublisherData
-}) {
-  const { user } = useUser()
-  const [isLoading, setIsLoading] = useState(true)
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false)
-  const [pageDataInCategories, setPageDataInCategories] =
-    useState<PageData | null>(null)
-  const [fetchingCategories, setFetchingCategories] = useState<Set<string>>(
-    new Set()
-  ) // 追蹤正在獲取的分類
-  const followingCategoriesCount = user.followingCategories.length
+export default memo(
+  function MediaStories({
+    allCategories,
+    publisherList,
+  }: {
+    allCategories: Category[]
+    publisherList: AllPublisherData
+  }) {
+    const { user } = useUser()
+    const [isLoading, setIsLoading] = useState(true)
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false)
+    const [pageDataInCategories, setPageDataInCategories] =
+      useState<PageData | null>(null)
+    const [fetchingCategories, setFetchingCategories] = useState<Set<string>>(
+      new Set()
+    ) // 追蹤正在獲取的分類
+    const followingCategoriesCount = user.followingCategories.length
 
-  const isCategoryDataLoaded = useCallback(
-    (data: PageData[string] | undefined): boolean => {
-      if (!data) return false
-      return !(
-        data.mostPickedStory === null &&
-        data.latestStoriesInfo.stories.length === 0 &&
-        data.latestStoriesInfo.totalCount === 0 &&
-        data.latestStoriesInfo.shouldLoadmore === true
-      )
-    },
-    []
-  )
-
-  const searchParams = useSearchParams()
-
-  const initialActiveCategory = useMemo(() => {
-    const slugFromParams = searchParams.get(categorySearchParamName)
-    if (slugFromParams) {
-      const categoryFromSlug = user.followingCategories.find(
-        (category) => category.slug === slugFromParams
-      )
-      if (categoryFromSlug) return categoryFromSlug
-    }
-    return user.followingCategories[0] || null
-  }, [searchParams, user.followingCategories])
-
-  const currentCategory = useMemo(() => {
-    const slugFromParams = searchParams.get(categorySearchParamName)
-    if (slugFromParams) {
-      return user.followingCategories.find(
-        (category) => category.slug === slugFromParams
-      )
-    }
-    return initialActiveCategory
-  }, [searchParams, user.followingCategories, initialActiveCategory])
-
-  const currentCategorySlug = currentCategory?.slug
-
-  const followingPublisherIds = useMemo(
-    () => user.followingPublishers.map((publisher) => publisher.id),
-    [user.followingPublishers]
-  )
-
-  // Data for rendering is derived from currentCategorySlug and pageDataInCategories
-  const currentCategoryData =
-    pageDataInCategories && currentCategorySlug
-      ? pageDataInCategories[currentCategorySlug]
-      : null
-  const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
-    currentCategoryData || {
-      mostPickedStory: null,
-      latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
-      publishersAndStories: [],
-      timestamp: 0, // Ensure timestamp is part of default
-    }
-
-  const fetchCategoryData = useCallback(
-    async (categoryToFetch: Category) => {
-      if (!categoryToFetch?.slug || !categoryToFetch?.id) return null
-
-      const categorySlug = categoryToFetch.slug
-
-      // 檢查是否正在獲取這個分類
-      if (fetchingCategories.has(categorySlug)) {
-        return null // 避免重複請求
-      }
-
-      // 標記正在獲取
-      setFetchingCategories((prev) => new Set(prev).add(categorySlug))
-
-      try {
-        const categorySlugVal = categoryToFetch.slug
-        const categoryIdVal = categoryToFetch.id
-
-        const categoryLatestStoriesfetchBody = {
-          publishers: followingPublisherIds,
-          category: categoryIdVal,
-          index: 0,
-          take: latestStoryPageCount,
-        }
-
-        const [
-          mostPickedStoryResponse,
-          latestStoriesResponse,
-          publishersAndStoriesResponse,
-        ] = await Promise.all([
-          getMostPickedStoriesInCategory(categorySlugVal),
-          getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
-          getMostSponsorPublishersAndStories(categorySlugVal),
-        ])
-
-        const loadedMostPickedStory = mostPickedStoryResponse?.[0] ?? null
-        const loadedLatestStoriesInfo: LatestStoriesInfo = {
-          stories: latestStoriesResponse?.stories ?? [],
-          totalCount: latestStoriesResponse?.num_stories ?? 0,
-          shouldLoadmore:
-            (latestStoriesResponse?.stories?.length ?? 0) >=
-            latestStoryPageCount,
-        }
-        const loadedPublishersAndStories =
-          publishersAndStoriesResponse
-            ?.slice(0, displayPublisherCount)
-            .map((ps) => ({
-              publisher: ps.publisher,
-              stories: (ps.stories ?? []).slice(
-                0,
-                displayPublisherStoriesCount
-              ),
-            })) ?? []
-
-        return {
-          mostPickedStory: loadedMostPickedStory,
-          latestStoriesInfo: loadedLatestStoriesInfo,
-          publishersAndStories: loadedPublishersAndStories,
-          timestamp: Date.now(),
-        }
-      } finally {
-        // 移除獲取標記
-        setFetchingCategories((prev) => {
-          const newSet = new Set(prev)
-          newSet.delete(categorySlug)
-          return newSet
-        })
-      }
-    },
-    [followingPublisherIds, fetchingCategories]
-  )
-
-  const loadMoreLatestStories = useCallback(async () => {
-    if (!currentCategory || !currentCategory.id || !currentCategory.slug) return
-
-    const currentCategoryLatestStoriesfetchBody = {
-      publishers: followingPublisherIds,
-      category: currentCategory.id,
-      index: latestStoriesInfo.stories.length,
-      take: latestStoryPageCount,
-    }
-
-    const latestStoriesResponse = await getLatestStoriesInCategory(
-      currentCategoryLatestStoriesfetchBody
+    const isCategoryDataLoaded = useCallback(
+      (data: PageData[string] | undefined): boolean => {
+        if (!data) return false
+        return !(
+          data.mostPickedStory === null &&
+          data.latestStoriesInfo.stories.length === 0 &&
+          data.latestStoriesInfo.totalCount === 0 &&
+          data.latestStoriesInfo.shouldLoadmore === true
+        )
+      },
+      []
     )
 
-    if (!latestStoriesResponse?.stories) return
-    const categorySlug = currentCategory.slug! // currentCategory is checked at the beginning
+    const searchParams = useSearchParams()
+    const categorySlugFromParams = searchParams.get(categorySearchParamName)
 
-    setPageDataInCategories((oldPageData) => {
-      // If oldPageData is null, initialize it with the default structure for all categories.
-      const basePageData = oldPageData ?? getInitialPageData(allCategories)
-
-      // Get the specific data for the current category from this base.
-      // If categorySlug somehow wasn't in basePageData provide a default structure.
-      const categoryDataToUpdate = basePageData[categorySlug] ?? {
-        mostPickedStory: null,
-        latestStoriesInfo: { stories: [], totalCount: 0, shouldLoadmore: true },
-        publishersAndStories: [],
-        timestamp: 0,
+    const initialActiveCategory = useMemo(() => {
+      if (categorySlugFromParams) {
+        const categoryFromSlug = user.followingCategories.find(
+          (category) => category.slug === categorySlugFromParams
+        )
+        if (categoryFromSlug) return categoryFromSlug
       }
+      return user.followingCategories[0] || null
+    }, [categorySlugFromParams, user.followingCategories])
 
-      const newLatestStoriesInfo: LatestStoriesInfo = {
-        stories: categoryDataToUpdate.latestStoriesInfo.stories.concat(
-          latestStoriesResponse.stories
-        ),
-        totalCount:
-          latestStoriesResponse.num_stories ??
-          categoryDataToUpdate.latestStoriesInfo.totalCount,
-        shouldLoadmore:
-          latestStoriesResponse.stories.length >= latestStoryPageCount,
+    const currentCategory = useMemo(() => {
+      if (categorySlugFromParams) {
+        return user.followingCategories.find(
+          (category) => category.slug === categorySlugFromParams
+        )
       }
+      return initialActiveCategory
+    }, [
+      categorySlugFromParams,
+      user.followingCategories,
+      initialActiveCategory,
+    ])
 
-      return {
-        ...basePageData, // Spread all other categories from the base
-        [categorySlug]: {
-          // Update the specific category
-          ...categoryDataToUpdate, // Preserve its other fields (mostPickedStory, publishersAndStories, timestamp)
-          latestStoriesInfo: newLatestStoriesInfo, // Set the new stories info
-        },
-      }
-    })
-  }, [
-    currentCategory,
-    followingPublisherIds,
-    latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
-    allCategories, // Added allCategories to dependency array
-  ])
+    const currentCategorySlug = currentCategory?.slug
 
-  useEffect(() => {
-    if (
-      !searchParams.get(categorySearchParamName) &&
-      initialActiveCategory?.slug
-    ) {
-      replaceSearchParams(categorySearchParamName, initialActiveCategory.slug)
-    }
-  }, [searchParams, initialActiveCategory])
+    const followingPublisherIds = useMemo(
+      () => user.followingPublishers.map((publisher) => publisher.id),
+      [user.followingPublishers]
+    )
 
-  // Effect 0: Load initial pageDataInCategories from localStorage or defaults
-  useEffect(() => {
-    let initialData: PageData = getInitialPageData(allCategories) // Start with default structure
-    try {
-      const cachedItem = localStorage.getItem(MEDIA_STORIES_CACHE_KEY)
-      if (cachedItem) {
-        const cachedPageData = JSON.parse(cachedItem) as PageData
-        if (cachedPageData) {
-          const freshDefaultData = getInitialPageData(allCategories)
-          const mergedData = { ...freshDefaultData } // Start with defaults for all current categories
-          for (const slug in cachedPageData) {
-            if (
-              Object.prototype.hasOwnProperty.call(cachedPageData, slug) &&
-              mergedData[slug]
-            ) {
-              // If slug is valid in current allCategories
-              mergedData[slug] = cachedPageData[slug] // Overwrite with cached value
-            }
+    // Data for rendering is derived from currentCategorySlug and pageDataInCategories
+    const currentCategoryData = useMemo(() => {
+      return pageDataInCategories && currentCategorySlug
+        ? pageDataInCategories[currentCategorySlug]
+        : null
+    }, [pageDataInCategories, currentCategorySlug])
+
+    const { mostPickedStory, latestStoriesInfo, publishersAndStories } =
+      useMemo(() => {
+        return (
+          currentCategoryData || {
+            mostPickedStory: null,
+            latestStoriesInfo: {
+              stories: [],
+              totalCount: 0,
+              shouldLoadmore: true,
+            },
+            publishersAndStories: [],
+            timestamp: 0, // Ensure timestamp is part of default
           }
-          initialData = mergedData
+        )
+      }, [currentCategoryData])
+
+    const fetchCategoryData = useCallback(
+      async (categoryToFetch: Category) => {
+        if (!categoryToFetch?.slug || !categoryToFetch?.id) return null
+
+        const categorySlug = categoryToFetch.slug
+
+        // 檢查是否正在獲取這個分類
+        if (fetchingCategories.has(categorySlug)) {
+          return null // 避免重複請求
+        }
+
+        // 標記正在獲取
+        setFetchingCategories((prev) => new Set(prev).add(categorySlug))
+
+        try {
+          const categorySlugVal = categoryToFetch.slug
+          const categoryIdVal = categoryToFetch.id
+
+          const categoryLatestStoriesfetchBody = {
+            publishers: followingPublisherIds,
+            category: categoryIdVal,
+            index: 0,
+            take: latestStoryPageCount,
+          }
+
+          const [
+            mostPickedStoryResponse,
+            latestStoriesResponse,
+            publishersAndStoriesResponse,
+          ] = await Promise.all([
+            getMostPickedStoriesInCategory(categorySlugVal),
+            getLatestStoriesInCategory(categoryLatestStoriesfetchBody),
+            getMostSponsorPublishersAndStories(categorySlugVal),
+          ])
+
+          const loadedMostPickedStory = mostPickedStoryResponse?.[0] ?? null
+          const loadedLatestStoriesInfo: LatestStoriesInfo = {
+            stories: latestStoriesResponse?.stories ?? [],
+            totalCount: latestStoriesResponse?.num_stories ?? 0,
+            shouldLoadmore:
+              (latestStoriesResponse?.stories?.length ?? 0) >=
+              latestStoryPageCount,
+          }
+          const loadedPublishersAndStories =
+            publishersAndStoriesResponse
+              ?.slice(0, displayPublisherCount)
+              .map((ps) => ({
+                publisher: ps.publisher,
+                stories: (ps.stories ?? []).slice(
+                  0,
+                  displayPublisherStoriesCount
+                ),
+              })) ?? []
+
+          return {
+            mostPickedStory: loadedMostPickedStory,
+            latestStoriesInfo: loadedLatestStoriesInfo,
+            publishersAndStories: loadedPublishersAndStories,
+            timestamp: Date.now(),
+          }
+        } finally {
+          // 移除獲取標記
+          setFetchingCategories((prev) => {
+            const newSet = new Set(prev)
+            newSet.delete(categorySlug)
+            return newSet
+          })
+        }
+      },
+      [followingPublisherIds, fetchingCategories]
+    )
+
+    const loadMoreLatestStories = useCallback(async () => {
+      if (!currentCategory || !currentCategory.id || !currentCategory.slug)
+        return
+
+      const currentCategoryLatestStoriesfetchBody = {
+        publishers: followingPublisherIds,
+        category: currentCategory.id,
+        index: latestStoriesInfo.stories.length,
+        take: latestStoryPageCount,
+      }
+
+      const latestStoriesResponse = await getLatestStoriesInCategory(
+        currentCategoryLatestStoriesfetchBody
+      )
+
+      if (!latestStoriesResponse?.stories) return
+      const categorySlug = currentCategory.slug! // currentCategory is checked at the beginning
+
+      setPageDataInCategories((oldPageData) => {
+        // If oldPageData is null, initialize it with the default structure for all categories.
+        const basePageData = oldPageData ?? getInitialPageData(allCategories)
+
+        // Get the specific data for the current category from this base.
+        // If categorySlug somehow wasn't in basePageData provide a default structure.
+        const categoryDataToUpdate = basePageData[categorySlug] ?? {
+          mostPickedStory: null,
+          latestStoriesInfo: {
+            stories: [],
+            totalCount: 0,
+            shouldLoadmore: true,
+          },
+          publishersAndStories: [],
+          timestamp: 0,
+        }
+
+        const newLatestStoriesInfo: LatestStoriesInfo = {
+          stories: categoryDataToUpdate.latestStoriesInfo.stories.concat(
+            latestStoriesResponse.stories
+          ),
+          totalCount:
+            latestStoriesResponse.num_stories ??
+            categoryDataToUpdate.latestStoriesInfo.totalCount,
+          shouldLoadmore:
+            latestStoriesResponse.stories.length >= latestStoryPageCount,
+        }
+
+        return {
+          ...basePageData, // Spread all other categories from the base
+          [categorySlug]: {
+            // Update the specific category
+            ...categoryDataToUpdate, // Preserve its other fields (mostPickedStory, publishersAndStories, timestamp)
+            latestStoriesInfo: newLatestStoriesInfo, // Set the new stories info
+          },
+        }
+      })
+    }, [
+      currentCategory,
+      followingPublisherIds,
+      latestStoriesInfo?.stories, // Use optional chaining for safety if latestStoriesInfo can be undefined
+      allCategories, // Added allCategories to dependency array
+    ])
+
+    useEffect(() => {
+      if (
+        !searchParams.get(categorySearchParamName) &&
+        initialActiveCategory?.slug
+      ) {
+        replaceSearchParams(categorySearchParamName, initialActiveCategory.slug)
+      }
+    }, [searchParams, initialActiveCategory])
+
+    // Effect 0: Load initial pageDataInCategories from localStorage or defaults
+    useEffect(() => {
+      let initialData: PageData = getInitialPageData(allCategories) // Start with default structure
+      try {
+        const cachedItem = localStorage.getItem(MEDIA_STORIES_CACHE_KEY)
+        if (cachedItem) {
+          const cachedPageData = JSON.parse(cachedItem) as PageData
+          if (cachedPageData) {
+            const freshDefaultData = getInitialPageData(allCategories)
+            const mergedData = { ...freshDefaultData } // Start with defaults for all current categories
+            for (const slug in cachedPageData) {
+              if (
+                Object.prototype.hasOwnProperty.call(cachedPageData, slug) &&
+                mergedData[slug]
+              ) {
+                // If slug is valid in current allCategories
+                mergedData[slug] = cachedPageData[slug] // Overwrite with cached value
+              }
+            }
+            initialData = mergedData
+          }
+        }
+      } catch (error) {
+        console.error(
+          '[MediaStories] Error reading PageData from localStorage:',
+          error
+        )
+        // initialData is already getInitialPageData(allCategories) in this case
+      }
+      setPageDataInCategories(initialData)
+    }, [allCategories]) // Dependency on allCategories
+
+    // Effect 1: Initial Active Category Load
+    useEffect(() => {
+      // Ensure pageDataInCategories is populated before this effect runs critical logic
+      if (!pageDataInCategories) {
+        return
+      }
+      const loadInitialCategoryData = async () => {
+        if (!initialActiveCategory?.slug) {
+          if (followingCategoriesCount === 0) {
+            setIsLoading(false)
+          }
+          setInitialLoadComplete(true)
+          return
+        }
+
+        const slug = initialActiveCategory.slug
+        const existingData = pageDataInCategories[slug] // Get existing data directly
+        let shouldFetchInBackground = false
+
+        if (existingData && isCategoryDataLoaded(existingData)) {
+          // If any data object exists for this slug and it's actually loaded
+
+          setIsLoading(false) // <<< IMPORTANT: Allow rendering of this cached data immediately
+
+          // Decide if a background fetch is needed for this existing data
+          if (
+            !existingData.timestamp ||
+            Date.now() - existingData.timestamp > FIVE_MINUTES_MS ||
+            existingData.latestStoriesInfo.stories.length === 0
+          ) {
+            // Fetch if no timestamp, or stale, or has no stories (even if not stale, maybe prefetch was empty)
+            shouldFetchInBackground = true
+          }
+          setInitialLoadComplete(true) // Mark initial load as "complete" as we've decided what to do.
+          // The background fetch will happen without blocking this.
+        } else {
+          // No data whatsoever for this slug or data is not properly loaded
+          setIsLoading(true) // Show loading screen as there's nothing to display
+          shouldFetchInBackground = true // We must fetch
+        }
+
+        if (shouldFetchInBackground) {
+          try {
+            const result = await fetchCategoryData(initialActiveCategory)
+            if (result) {
+              setPageDataInCategories((prev) => ({ ...prev, [slug]: result }))
+            }
+          } catch (error) {
+            console.error(
+              `[Effect 1] Error fetching initial category ${slug} in background:`,
+              error
+            )
+          } finally {
+            if (!existingData || !isCategoryDataLoaded(existingData)) {
+              // If there was no initial data or data was not properly loaded, we were in a loading state
+              setIsLoading(false)
+            }
+            // If there was existing data, isLoading was already false. The update will just re-render.
+            setInitialLoadComplete(true) // Ensure this is set after the fetch attempt too
+          }
         }
       }
-    } catch (error) {
-      console.error(
-        '[MediaStories] Error reading PageData from localStorage:',
-        error
-      )
-      // initialData is already getInitialPageData(allCategories) in this case
-    }
-    setPageDataInCategories(initialData)
-  }, [allCategories]) // Dependency on allCategories
 
-  // Effect 1: Initial Active Category Load
-  useEffect(() => {
-    // Ensure pageDataInCategories is populated before this effect runs critical logic
-    if (!pageDataInCategories) {
-      return
-    }
-    const loadInitialCategoryData = async () => {
-      if (!initialActiveCategory?.slug) {
-        if (followingCategoriesCount === 0) {
-          setIsLoading(false)
-        }
-        setInitialLoadComplete(true)
+      if (!initialLoadComplete) {
+        loadInitialCategoryData()
+      }
+    }, [
+      initialActiveCategory,
+      fetchCategoryData,
+      pageDataInCategories,
+      initialLoadComplete,
+      followingCategoriesCount,
+      isCategoryDataLoaded,
+    ])
+
+    // Effect 2: Background Prefetching Other Categories
+    useEffect(() => {
+      if (!initialLoadComplete || !pageDataInCategories) {
+        // Primary guard
         return
       }
 
-      const slug = initialActiveCategory.slug
-      const existingData = pageDataInCategories[slug] // Get existing data directly
-      let shouldFetchInBackground = false
+      const prefetchAllOtherCategoriesData = async () => {
+        const categoriesToPrefetch = user.followingCategories.filter(
+          (category) => {
+            if (
+              !category.slug ||
+              category.slug === initialActiveCategory?.slug
+            ) {
+              return false
+            }
+            const categoryData = pageDataInCategories[category.slug]
+            const isDataCurrentlyLoaded = isCategoryDataLoaded(categoryData)
+            // Prefetch if not loaded OR if loaded but stale
+            if (!isDataCurrentlyLoaded) {
+              return true // Needs prefetching because it's not loaded
+            }
+            // If loaded, check for staleness
+            if (
+              categoryData.timestamp &&
+              Date.now() - categoryData.timestamp > FIVE_MINUTES_MS
+            ) {
+              return true // Needs prefetching because it's stale
+            }
+            return false // Already loaded and not stale
+          }
+        )
 
-      if (existingData && isCategoryDataLoaded(existingData)) {
-        // If any data object exists for this slug and it's actually loaded
+        if (categoriesToPrefetch.length === 0) return
 
-        setIsLoading(false) // <<< IMPORTANT: Allow rendering of this cached data immediately
+        const prefetchPromises = categoriesToPrefetch.map((category) =>
+          fetchCategoryData(category).then((data) => ({
+            slug: category.slug,
+            data,
+          }))
+        )
 
-        // Decide if a background fetch is needed for this existing data
-        if (
-          !existingData.timestamp ||
-          Date.now() - existingData.timestamp > FIVE_MINUTES_MS ||
-          existingData.latestStoriesInfo.stories.length === 0
-        ) {
-          // Fetch if no timestamp, or stale, or has no stories (even if not stale, maybe prefetch was empty)
-          shouldFetchInBackground = true
+        const results = await Promise.allSettled(prefetchPromises)
+
+        const successfullyFetchedData: PageData = {}
+        results.forEach((result) => {
+          if (
+            result.status === 'fulfilled' &&
+            result.value?.data &&
+            result.value.slug
+          ) {
+            successfullyFetchedData[result.value.slug] = result.value.data
+          } else if (result.status === 'rejected') {
+            console.error('Failed to prefetch a category:', result.reason)
+          }
+        })
+
+        if (Object.keys(successfullyFetchedData).length > 0) {
+          setPageDataInCategories((prevData) => ({
+            ...prevData,
+            ...successfullyFetchedData,
+          }))
         }
-        setInitialLoadComplete(true) // Mark initial load as "complete" as we've decided what to do.
-        // The background fetch will happen without blocking this.
-      } else {
-        // No data whatsoever for this slug or data is not properly loaded
-        setIsLoading(true) // Show loading screen as there's nothing to display
-        shouldFetchInBackground = true // We must fetch
       }
 
-      if (shouldFetchInBackground) {
+      // The original condition for running prefetch:
+      if (user.followingCategories.length > 0) {
+        prefetchAllOtherCategoriesData()
+      }
+    }, [
+      initialLoadComplete,
+      user.followingCategories,
+      fetchCategoryData,
+      initialActiveCategory?.slug, // Only depend on the slug
+      pageDataInCategories,
+      isCategoryDataLoaded,
+    ])
+
+    // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
+    useEffect(() => {
+      const loadCurrentCategoryDataIfNeeded = async () => {
+        if (!currentCategory?.slug || !initialLoadComplete) {
+          if (
+            !currentCategory &&
+            followingCategoriesCount === 0 &&
+            !isLoading
+          ) {
+            // Prevent multiple setIsLoading(false)
+            setIsLoading(false)
+          }
+          return
+        }
+
+        const categorySlug = currentCategory.slug
+
+        // If it's the initial category, Effect 1 should handle it.
+        // But if Effect 1 didn't handle it properly (e.g., direct URL access), we need to handle it here.
+        if (categorySlug === initialActiveCategory?.slug) {
+          // Check if Effect 1 already handled this category properly
+          const existingData = pageDataInCategories?.[categorySlug]
+          if (existingData && isCategoryDataLoaded(existingData)) {
+            // Don't return here, continue to check if refresh is needed
+          } else {
+            // If Effect 1 didn't handle it properly, we need to handle it here
+          }
+        }
+
+        // Cache-First Logic for Navigated Category
+        // Ensure pageDataInCategories is not null before accessing it.
+        // This should be guaranteed by the initialLoadComplete check, which depends on Effect 1,
+        // which in turn waits for pageDataInCategories from Effect 0.
+        // However, being extremely defensive for direct access patterns:
+        if (!pageDataInCategories) {
+          console.error(
+            '[Effect 3] pageDataInCategories is unexpectedly null after initialActiveCategory check.'
+          )
+          // Potentially set an error state or isLoading true and return
+          setIsLoading(true) // Fallback to loading state
+          return
+        }
+        const existingData = pageDataInCategories?.[categorySlug]
+
+        // Quick check: if we have valid data, show it immediately
+        if (existingData && isCategoryDataLoaded(existingData)) {
+          setIsLoading(false) // Show cached data immediately
+
+          // Only fetch in background if data is stale
+          const isDataStale =
+            !existingData.timestamp ||
+            Date.now() - existingData.timestamp > FIVE_MINUTES_MS ||
+            existingData.latestStoriesInfo.stories.length === 0
+
+          if (isDataStale) {
+            // Fetch in background without blocking UI
+            fetchCategoryData(currentCategory)
+              .then((result) => {
+                if (result) {
+                  setPageDataInCategories((prev) => ({
+                    ...prev,
+                    [categorySlug]: result,
+                  }))
+                }
+              })
+              .catch((error) => {
+                console.error(
+                  `[Effect 3] Error fetching navigated category ${categorySlug}:`,
+                  error
+                )
+              })
+          }
+          return // Exit early, no need for further processing
+        }
+
+        // If we don't have valid data, fetch it
+        setIsLoading(true)
         try {
-          const result = await fetchCategoryData(initialActiveCategory)
+          const result = await fetchCategoryData(currentCategory)
           if (result) {
-            setPageDataInCategories((prev) => ({ ...prev, [slug]: result }))
+            setPageDataInCategories((prev) => ({
+              ...prev,
+              [categorySlug]: result,
+            }))
           }
         } catch (error) {
           console.error(
-            `[Effect 1] Error fetching initial category ${slug} in background:`,
+            `[Effect 3] Error fetching navigated category ${categorySlug}:`,
             error
           )
         } finally {
-          if (!existingData || !isCategoryDataLoaded(existingData)) {
-            // If there was no initial data or data was not properly loaded, we were in a loading state
-            setIsLoading(false)
-          }
-          // If there was existing data, isLoading was already false. The update will just re-render.
-          setInitialLoadComplete(true) // Ensure this is set after the fetch attempt too
-        }
-      }
-    }
-
-    if (!initialLoadComplete) {
-      loadInitialCategoryData()
-    }
-  }, [
-    initialActiveCategory,
-    fetchCategoryData,
-    pageDataInCategories,
-    initialLoadComplete,
-    followingCategoriesCount,
-    isCategoryDataLoaded,
-  ])
-
-  // Effect 2: Background Prefetching Other Categories
-  useEffect(() => {
-    if (!initialLoadComplete || !pageDataInCategories) {
-      // Primary guard
-      return
-    }
-
-    const prefetchAllOtherCategoriesData = async () => {
-      const categoriesToPrefetch = user.followingCategories.filter(
-        (category) => {
-          if (!category.slug || category.slug === initialActiveCategory?.slug) {
-            return false
-          }
-          const categoryData = pageDataInCategories[category.slug]
-          const isDataCurrentlyLoaded = isCategoryDataLoaded(categoryData)
-          // Prefetch if not loaded OR if loaded but stale
-          if (!isDataCurrentlyLoaded) {
-            return true // Needs prefetching because it's not loaded
-          }
-          // If loaded, check for staleness
-          if (
-            categoryData.timestamp &&
-            Date.now() - categoryData.timestamp > FIVE_MINUTES_MS
-          ) {
-            return true // Needs prefetching because it's stale
-          }
-          return false // Already loaded and not stale
-        }
-      )
-
-      if (categoriesToPrefetch.length === 0) return
-
-      const prefetchPromises = categoriesToPrefetch.map((category) =>
-        fetchCategoryData(category).then((data) => ({
-          slug: category.slug,
-          data,
-        }))
-      )
-
-      const results = await Promise.allSettled(prefetchPromises)
-
-      const successfullyFetchedData: PageData = {}
-      results.forEach((result) => {
-        if (
-          result.status === 'fulfilled' &&
-          result.value?.data &&
-          result.value.slug
-        ) {
-          successfullyFetchedData[result.value.slug] = result.value.data
-        } else if (result.status === 'rejected') {
-          console.error('Failed to prefetch a category:', result.reason)
-        }
-      })
-
-      if (Object.keys(successfullyFetchedData).length > 0) {
-        setPageDataInCategories((prevData) => ({
-          ...prevData,
-          ...successfullyFetchedData,
-        }))
-      }
-    }
-
-    // The original condition for running prefetch:
-    if (user.followingCategories.length > 0) {
-      prefetchAllOtherCategoriesData()
-    }
-  }, [
-    initialLoadComplete,
-    user.followingCategories,
-    fetchCategoryData,
-    initialActiveCategory?.slug, // Only depend on the slug
-    pageDataInCategories,
-    isCategoryDataLoaded,
-  ])
-
-  // Effect 3: User Navigation (Load Current Category Data if not loaded by Effect 1 or 2)
-  useEffect(() => {
-    const loadCurrentCategoryDataIfNeeded = async () => {
-      if (!currentCategory?.slug || !initialLoadComplete) {
-        if (!currentCategory && followingCategoriesCount === 0 && !isLoading) {
-          // Prevent multiple setIsLoading(false)
           setIsLoading(false)
         }
-        return
       }
 
-      const categorySlug = currentCategory.slug
-
-      // If it's the initial category, Effect 1 should handle it.
-      // But if Effect 1 didn't handle it properly (e.g., direct URL access), we need to handle it here.
-      if (categorySlug === initialActiveCategory?.slug) {
-        // Check if Effect 1 already handled this category properly
-        const existingData = pageDataInCategories?.[categorySlug]
-        if (existingData && isCategoryDataLoaded(existingData)) {
-          // Don't return here, continue to check if refresh is needed
-        } else {
-          // If Effect 1 didn't handle it properly, we need to handle it here
-        }
+      if (initialLoadComplete) {
+        // Only run this logic after initial load attempt
+        loadCurrentCategoryDataIfNeeded()
       }
+    }, [
+      currentCategory, // Include the full object since we use currentCategory
+      initialLoadComplete,
+      initialActiveCategory?.slug, // Only depend on the slug
+      fetchCategoryData,
+      pageDataInCategories,
+      followingCategoriesCount,
+      isCategoryDataLoaded,
+      isLoading,
+    ])
 
-      // Cache-First Logic for Navigated Category
-      // Ensure pageDataInCategories is not null before accessing it.
-      // This should be guaranteed by the initialLoadComplete check, which depends on Effect 1,
-      // which in turn waits for pageDataInCategories from Effect 0.
-      // However, being extremely defensive for direct access patterns:
-      if (!pageDataInCategories) {
-        console.error(
-          '[Effect 3] pageDataInCategories is unexpectedly null after initialActiveCategory check.'
-        )
-        // Potentially set an error state or isLoading true and return
-        setIsLoading(true) // Fallback to loading state
-        return
-      }
-      const existingData = pageDataInCategories?.[categorySlug]
-
-      // Quick check: if we have valid data, show it immediately
-      if (existingData && isCategoryDataLoaded(existingData)) {
-        setIsLoading(false) // Show cached data immediately
-
-        // Only fetch in background if data is stale
-        const isDataStale =
-          !existingData.timestamp ||
-          Date.now() - existingData.timestamp > FIVE_MINUTES_MS ||
-          existingData.latestStoriesInfo.stories.length === 0
-
-        if (isDataStale) {
-          // Fetch in background without blocking UI
-          fetchCategoryData(currentCategory)
-            .then((result) => {
-              if (result) {
-                setPageDataInCategories((prev) => ({
-                  ...prev,
-                  [categorySlug]: result,
-                }))
-              }
-            })
-            .catch((error) => {
-              console.error(
-                `[Effect 3] Error fetching navigated category ${categorySlug}:`,
-                error
-              )
-            })
-        }
-        return // Exit early, no need for further processing
-      }
-
-      // If we don't have valid data, fetch it
-      setIsLoading(true)
-      try {
-        const result = await fetchCategoryData(currentCategory)
-        if (result) {
-          setPageDataInCategories((prev) => ({
-            ...prev,
-            [categorySlug]: result,
-          }))
-        }
-      } catch (error) {
-        console.error(
-          `[Effect 3] Error fetching navigated category ${categorySlug}:`,
-          error
-        )
-      } finally {
+    // This separate effect handles the case where there are no followed categories from the start.
+    useEffect(() => {
+      if (user.followingCategories.length === 0 && initialLoadComplete) {
         setIsLoading(false)
       }
-    }
+    }, [user.followingCategories.length, initialLoadComplete])
 
-    if (initialLoadComplete) {
-      // Only run this logic after initial load attempt
-      loadCurrentCategoryDataIfNeeded()
-    }
-  }, [
-    currentCategory, // Include the full object since we use currentCategory
-    initialLoadComplete,
-    initialActiveCategory?.slug, // Only depend on the slug
-    fetchCategoryData,
-    pageDataInCategories,
-    followingCategoriesCount,
-    isCategoryDataLoaded,
-    isLoading,
-  ])
-
-  // This separate effect handles the case where there are no followed categories from the start.
-  useEffect(() => {
-    if (user.followingCategories.length === 0 && initialLoadComplete) {
-      setIsLoading(false)
-    }
-  }, [user.followingCategories.length, initialLoadComplete])
-
-  // Effect 4: Periodic Refresh of Active Category Data
-  useEffect(() => {
-    if (!initialLoadComplete || !currentCategory?.slug) {
-      return
-    }
-
-    const categorySlug = currentCategory.slug! // Capture the slug at effect time
-
-    const intervalId = setInterval(async () => {
-      // Get current category from user context to avoid dependency issues
-      const currentCategoryFromContext: Category | undefined =
-        user.followingCategories.find((cat) => cat.slug === categorySlug)
-
-      if (!currentCategoryFromContext) {
+    // Effect 4: Periodic Refresh of Active Category Data
+    useEffect(() => {
+      if (!initialLoadComplete || !currentCategory?.slug) {
         return
       }
 
-      const currentCategorySlug = currentCategoryFromContext.slug
+      const categorySlug = currentCategory.slug! // Capture the slug at effect time
 
-      // Add a null check for pageDataInCategories inside the setInterval callback
-      if (!pageDataInCategories || !currentCategorySlug) {
-        console.warn(
-          '[Effect 4] Periodic refresh skipped: pageDataInCategories is null or categorySlug is missing unexpectedly.'
-        )
-        return
-      }
+      const intervalId = setInterval(async () => {
+        // Get current category from user context to avoid dependency issues
+        const currentCategoryFromContext: Category | undefined =
+          user.followingCategories.find((cat) => cat.slug === categorySlug)
 
-      const currentCategoryData = pageDataInCategories[currentCategorySlug]
+        if (!currentCategoryFromContext) {
+          return
+        }
 
-      if (
-        currentCategoryData &&
-        Date.now() - currentCategoryData.timestamp > FIVE_MINUTES_MS
-      ) {
-        try {
-          const result = await fetchCategoryData(currentCategoryFromContext)
-          if (result) {
-            setPageDataInCategories((prevPageData) => {
-              if (!prevPageData) return null // Should not happen if outer logic is correct, but defensive
-              return {
-                ...prevPageData,
-                [currentCategorySlug]: result,
-              }
-            })
+        const currentCategorySlug = currentCategoryFromContext.slug
+
+        // Add a null check for pageDataInCategories inside the setInterval callback
+        if (!pageDataInCategories || !currentCategorySlug) {
+          console.warn(
+            '[Effect 4] Periodic refresh skipped: pageDataInCategories is null or categorySlug is missing unexpectedly.'
+          )
+          return
+        }
+
+        const currentCategoryData = pageDataInCategories[currentCategorySlug]
+
+        if (
+          currentCategoryData &&
+          Date.now() - currentCategoryData.timestamp > FIVE_MINUTES_MS
+        ) {
+          try {
+            const result = await fetchCategoryData(currentCategoryFromContext)
+            if (result) {
+              setPageDataInCategories((prevPageData) => {
+                if (!prevPageData) return null // Should not happen if outer logic is correct, but defensive
+                return {
+                  ...prevPageData,
+                  [currentCategorySlug]: result,
+                }
+              })
+            }
+          } catch (error) {
+            console.error(
+              `[Effect 4] Error refreshing category ${currentCategorySlug}:`,
+              error
+            )
           }
+        }
+      }, REFRESH_CHECK_INTERVAL_MS)
+
+      return () => clearInterval(intervalId)
+    }, [
+      currentCategory, // Include the full object since we use currentCategory.slug!
+      fetchCategoryData,
+      pageDataInCategories, // pageDataInCategories is a dependency
+      initialLoadComplete,
+      user.followingCategories,
+    ])
+
+    // Effect 5: Save pageDataInCategories to localStorage whenever it changes
+    useEffect(() => {
+      if (pageDataInCategories !== null) {
+        try {
+          localStorage.setItem(
+            MEDIA_STORIES_CACHE_KEY,
+            JSON.stringify(pageDataInCategories)
+          )
         } catch (error) {
           console.error(
-            `[Effect 4] Error refreshing category ${currentCategorySlug}:`,
+            '[MediaStories] Error saving PageData to localStorage:',
             error
           )
         }
       }
-    }, REFRESH_CHECK_INTERVAL_MS)
+    }, [pageDataInCategories])
 
-    return () => clearInterval(intervalId)
-  }, [
-    currentCategory, // Include the full object since we use currentCategory.slug!
-    fetchCategoryData,
-    pageDataInCategories, // pageDataInCategories is a dependency
-    initialLoadComplete,
-    user.followingCategories,
-  ])
+    let contentJsx: JSX.Element
 
-  // Effect 5: Save pageDataInCategories to localStorage whenever it changes
-  useEffect(() => {
-    if (pageDataInCategories !== null) {
-      try {
-        localStorage.setItem(
-          MEDIA_STORIES_CACHE_KEY,
-          JSON.stringify(pageDataInCategories)
-        )
-      } catch (error) {
-        console.error(
-          '[MediaStories] Error saving PageData to localStorage:',
-          error
-        )
-      }
+    if (isLoading || !currentCategory) {
+      contentJsx = <Loading withCategory={false} />
+    } else if (!latestStoriesInfo?.stories.length && !mostPickedStory) {
+      contentJsx = <NoStories />
+    } else {
+      contentJsx = (
+        <>
+          <DesktopStories
+            latestStoriesInfo={latestStoriesInfo}
+            mostPickedStory={mostPickedStory}
+            publishersAndStories={publishersAndStories}
+            publisherList={publisherList}
+            loadMoreLatestStories={loadMoreLatestStories}
+            slug={currentCategorySlug ?? ''}
+          />
+          <NonDesktopStories
+            key={`${currentCategorySlug}-${latestStoriesInfo?.stories.length}`}
+            latestStoriesInfo={latestStoriesInfo}
+            mostPickedStory={mostPickedStory}
+            publishersAndStories={publishersAndStories}
+            publisherList={publisherList}
+            loadMoreLatestStories={loadMoreLatestStories}
+          />
+        </>
+      )
     }
-  }, [pageDataInCategories])
 
-  let contentJsx: JSX.Element
-
-  if (isLoading || !currentCategory) {
-    contentJsx = <Loading withCategory={false} />
-  } else if (!latestStoriesInfo?.stories.length && !mostPickedStory) {
-    contentJsx = <NoStories />
-  } else {
-    contentJsx = (
-      <>
-        <DesktopStories
-          latestStoriesInfo={latestStoriesInfo}
-          mostPickedStory={mostPickedStory}
-          publishersAndStories={publishersAndStories}
-          publisherList={publisherList}
-          loadMoreLatestStories={loadMoreLatestStories}
-          slug={currentCategorySlug ?? ''}
+    return (
+      <main className="flex grow flex-col">
+        <CategorySelector
+          allCategories={allCategories}
+          currentCategory={currentCategory}
         />
-        <NonDesktopStories
-          key={latestStoriesInfo?.stories.length}
-          latestStoriesInfo={latestStoriesInfo}
-          mostPickedStory={mostPickedStory}
-          publishersAndStories={publishersAndStories}
-          publisherList={publisherList}
-          loadMoreLatestStories={loadMoreLatestStories}
-        />
-      </>
+        {contentJsx}
+      </main>
+    )
+  },
+  (prevProps, nextProps) => {
+    // 自定義比較函數，只在必要時重新渲染
+    return (
+      prevProps.allCategories.length === nextProps.allCategories.length &&
+      prevProps.publisherList === nextProps.publisherList
     )
   }
-
-  return (
-    <main className="flex grow flex-col">
-      <CategorySelector
-        allCategories={allCategories}
-        currentCategory={currentCategory}
-      />
-      {contentJsx}
-    </main>
-  )
-}
+)
