@@ -1,6 +1,6 @@
 import { getCollections } from '@/app/actions/collection'
 import { getPublishers } from '@/app/actions/get-profile'
-import { searchWithHybrid } from '@/app/actions/hybrid-search'
+import { hybridSearch } from '@/app/actions/hybrid-search'
 import { getStoriesCommentCounts } from '@/app/actions/story'
 import {
   type SearchResultType,
@@ -44,16 +44,16 @@ export default async function SearchResultPage({
     SearchType,
     Promise<HybridSearchResponse | null>
   > = {
-    'member-publisher': searchWithHybrid(
+    'member-publisher': hybridSearch(
       decodedQuery,
       'USER_AND_PUBLISHER_PROFILE',
       { ...MISO_BASE_SEARCH_OPTIONS, order_by: MISO_ORDER_BY.RELEVANCE }
     ),
-    story: searchWithHybrid(decodedQuery, 'STORY', {
+    story: hybridSearch(decodedQuery, 'STORY', {
       ...MISO_BASE_SEARCH_OPTIONS,
       order_by: storyOrderBy,
     }),
-    collection: searchWithHybrid(decodedQuery, 'COLLECTION', {
+    collection: hybridSearch(decodedQuery, 'COLLECTION', {
       ...MISO_BASE_SEARCH_OPTIONS,
       order_by: collectionOrderBy,
     }),
