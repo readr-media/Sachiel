@@ -1,44 +1,28 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import { getRelatedStories } from '@/app/actions/story'
 import StoryCard from '@/app/media/_components/story-card'
 import Spinner from '@/components/spinner'
 import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
 
-type Story = NonNullable<GetStoriesQuery['stories']>[number]
+type Stories = NonNullable<GetStoriesQuery['stories']>
 
 export default function RelatedStories({
-  relatedKeyword,
-  sourceStoryId,
+  relatedStories = [],
 }: {
-  relatedKeyword: string
-  sourceStoryId: string
+  relatedStories: Stories
 }) {
-  const [stories, setStories] = useState<Story[]>([])
-  useEffect(() => {
-    const fetchRelatedStories = async () => {
-      const relatedStories = await getRelatedStories({
-        storyTitle: relatedKeyword,
-      })
-      setStories(relatedStories)
-    }
-
-    fetchRelatedStories()
-  }, [relatedKeyword])
-
   return (
     <div className="mt-9 px-5 sm:mt-14 sm:px-0 ">
       <h2 className="list-title mb-3 text-primary-700 sm:mb-4 sm:border-b sm:pb-1">
         相關報導
       </h2>
       <div>
-        {stories.length ? (
-          stories.map((story) => (
+        {relatedStories.length ? (
+          relatedStories.map((story) => (
             <StoryCard
               key={story.id}
-              sourceStoryId={sourceStoryId}
               story={story}
               gtmTags={{
                 story: 'GTM-article_click_related_article',

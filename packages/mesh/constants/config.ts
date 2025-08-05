@@ -2,7 +2,7 @@ import { optimism, optimismSepolia } from '@alchemy/aa-core'
 import { type Chain, type Hex } from 'viem'
 
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
-const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const ENV = process.env.NEXT_PUBLIC_ENV || 'prod'
 const MISO_API_KEY = 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT'
 
 const FIREBASE_CLIENT_EMAIL =
@@ -193,7 +193,8 @@ const MISO_ENDPOINTS = {
   hybridSearch: `${MISO_API_BASE_URL}/v1/ask/search`,
   getAnswerWithProgress: (questionId: string) =>
     `${MISO_API_BASE_URL}/v1/ask/questions/${questionId}/answer`,
-}
+  relatedStories: `${MISO_API_BASE_URL}/v1/recommendation/product_to_products`,
+} as const
 export {
   ADSENSE_CLIENT,
   ALCHEMY_ADDRESS,

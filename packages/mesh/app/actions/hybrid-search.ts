@@ -12,7 +12,11 @@ import type {
   HybridSearchRequest,
   HybridSearchResponse,
 } from '@/types/miso'
-import { AnswerResponseSchema, HybridSearchResponseSchema } from '@/types/miso'
+import {
+  AnswerResponseSchema,
+  HybridSearchResponseSchema,
+  RelatedStoriesResponseSchema,
+} from '@/types/miso'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
 export async function hybridSearch(
@@ -22,6 +26,7 @@ export async function hybridSearch(
     const url = new URL(MISO_ENDPOINTS.hybridSearch)
     url.searchParams.set('api_key', MISO_API_KEY)
 
+    console.log(params)
     const response = await fetch(url.toString(), {
       method: 'POST',
       headers: {
@@ -161,5 +166,72 @@ export async function getAnswerWithProgress(
   } catch (error) {
     console.error('[Answer API] Request failed:', error)
     return null
+  }
+}
+
+export async function getRelatedStories(storyId: string) {
+  const url = new URL(MISO_ENDPOINTS.relatedStories)
+  url.searchParams.set('api_key', MISO_API_KEY)
+
+  // NOTE: miso ai use mesh_story prefix to search so ensure the story id is in right format.
+  const formattedStoryId = storyId.startsWith('mesh')
+    ? storyId
+    : `mesh_story_${storyId}`
+  const relatedStoriesTakeCounts = 4
+
+  /**
+   * miso does not index dev database
+   * so if you are test in dev enviroment,
+   * it is normal to be undefined.
+   *
+   * BTW, if you are not sure, use curl or postman:
+   * ```bash
+   * curl --location 'https://api.askmiso.com/v1/recommendation/product_to_products?api_key=IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT' \
+   *      --header 'Content-Type: application/json' \
+   *       --data '{
+   *           "product_ids": [
+   *               "mesh_story_172347"
+   *           ],
+   *           "anonymous_id": "test",
+   *           "fq": "product_id:/mesh_story_.+/",
+   *           "fl": [
+   *               "title",
+   *               "url",
+   *               "cover_image"
+   *           ]
+   *       }
+   * ```
+   */
+  const defaultParams = {
+    product_ids: [formattedStoryId],
+    // product_ids: [storyId],
+    anonymous_id: 'mesh_related_stories',
+    rows: relatedStoriesTakeCounts,
+    fq: 'product_id:/mesh_story_.+/',
+    fl: [],
+  } as const
+
+  try {
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(defaultParams),
+      cache: 'no-cache',
+    })
+    const result = await response.json()
+    const parsedResult = RelatedStoriesResponseSchema.safeParse(result)
+
+    if (!parsedResult.success) {
+      console.error(
+        'Failed to parse related stories response:',
+        parsedResult.error
+      )
+      throw new Error('Invalid response format from related stories API')
+    }
+    return parsedResult.data
+  } catch (err) {
+    console.error(err)
   }
 }
