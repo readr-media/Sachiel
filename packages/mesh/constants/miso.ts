@@ -1,9 +1,11 @@
 /**
- * Miso AI 相關常數配置
+ * Miso AI configuration constants
+ * Organized by functional areas for better maintainability
  */
 
 import { type HybridSearchResponse } from '@/types/miso'
 
+// API Query Filters - Used for filtering search results by content type
 export const MISO_SEARCH_FQ = {
   STORY: 'product_id:/mesh_story_.+/',
   COLLECTION: 'product_id:/mesh_profile_collection_.+/',
@@ -13,19 +15,19 @@ export const MISO_SEARCH_FQ = {
     'product_id:/(mesh_publisher|mesh_profile_member)_.+/',
 } as const
 
-// 搜尋預設參數
-export const MISO_SEARCH_DEFAULTS = {
+// API Request Configuration - Default values for search requests
+export const MISO_API_CONFIG = {
   SNIPPET_MAX_CHARS: 200,
   POLL_INTERVAL_MS: 500,
   MAX_RETRIES: 10,
   CITE_LINK: 1,
   CITE_START: '[',
   CITE_END: ']',
+  DEFAULT_PAGE_SIZE: 20,
 } as const
 
-// 搜尋欄位配置
+// Field Configurations - Define which fields to retrieve from API
 export const MISO_FIELDS = {
-  // 搜尋結果欄位
   SEARCH_FL: [
     'product_id',
     'cover_image',
@@ -35,7 +37,6 @@ export const MISO_FIELDS = {
     'authors',
     'custom_attributes.*',
   ],
-  // 來源欄位
   SOURCE_FL: [
     'cover_image',
     'url',
@@ -46,7 +47,6 @@ export const MISO_FIELDS = {
     'authors',
     'custom_attributes.*',
   ],
-  // 常用 facets
   COMMON_FACETS: [
     'custom_attributes.article:section',
     'custom_attributes.article:tag',
@@ -54,71 +54,61 @@ export const MISO_FIELDS = {
   ],
 } as const
 
-// 向後相容的匯出
-export const MISO_SEARCH_FL = MISO_FIELDS.SEARCH_FL
-export const MISO_SOURCE_FL = MISO_FIELDS.SOURCE_FL
-
-// 排序選項
-export const MISO_ORDER_BY = {
-  RELEVANCE: 'relevance',
-  PUBLISHED_AT: 'published_at',
+// Sort Configuration - Centralized sorting options and mappings
+export const MISO_SORT = {
+  VALUES: ['relevance', 'published_at'] as const,
+  ORDER_BY: {
+    RELEVANCE: 'relevance',
+    PUBLISHED_AT: 'published_at',
+  } as const,
+  UI_OPTIONS: [
+    { value: 'relevance', label: '相關度' },
+    { value: 'published_at', label: '最新發布' },
+  ] as const,
 } as const
 
-// 答案生成狀態
-export const MISO_ANSWER_STAGES = {
-  SEARCHING: '搜尋中',
-  GENERATING: '產生摘要',
-  COMPLETED: '完成',
-} as const
-// 搜尋排序選項
-export const MISO_SEARCH_SORT_OPTIONS = [
-  { value: 'relevance', label: '相關度' },
-  { value: 'published_at', label: '最新發布' },
-] as const
-
-export const MISO_VALID_SORTS = ['relevance', 'published_at'] as const
-
-// 搜尋分頁設定
-export const MISO_SEARCH_PAGINATION = {
-  PAGE_SIZE: 20,
-  MAX_ELEMENTS: 200,
-  ITEMS_PER_PAGE: 5, // for carousel
-} as const
-
-// 搜尋過濾器設定
-export const MISO_SEARCH_FILTERS = [
-  { id: 'story', name: '新聞' },
-  { id: 'collection', name: '集錦' },
-  { id: 'member-publisher', name: '個人檔案' },
-] as const
-
-// 搜尋 UI 設定
-export const MISO_SEARCH_UI = {
+// UI Configuration - Frontend display settings
+export const MISO_UI_CONFIG = {
   CAROUSEL_ITEM_WIDTH: 212,
   MAX_SOURCES_DISPLAY: 3,
+  PAGINATION: {
+    MAX_ELEMENTS: 200,
+    CAROUSEL_ITEMS_PER_PAGE: 5,
+  },
+  FILTERS: [
+    { id: 'story', name: '新聞' },
+    { id: 'collection', name: '集錦' },
+    { id: 'member-publisher', name: '個人檔案' },
+  ] as const,
+  ANSWER_STAGES: {
+    SEARCHING: '搜尋中',
+    GENERATING: '產生摘要',
+    COMPLETED: '完成',
+  } as const,
 } as const
 
-// 搜尋基本選項
-export const MISO_BASE_SEARCH_OPTIONS = {
-  rows: 20,
-} as const
-
-// 排序驗證與映射函式
+// Utility Functions - Helper functions for validation and data transformation
 export const validateSortParam = (
   sort: string | undefined
-): typeof MISO_VALID_SORTS[number] => {
-  return MISO_VALID_SORTS.includes(sort as typeof MISO_VALID_SORTS[number])
-    ? (sort as typeof MISO_VALID_SORTS[number])
+): typeof MISO_SORT.VALUES[number] => {
+  return MISO_SORT.VALUES.includes(sort as typeof MISO_SORT.VALUES[number])
+    ? (sort as typeof MISO_SORT.VALUES[number])
     : 'published_at'
 }
 
-export const mapSortToOrderBy = (sort: typeof MISO_VALID_SORTS[number]) => {
-  return sort === 'relevance'
-    ? MISO_ORDER_BY.RELEVANCE
-    : MISO_ORDER_BY.PUBLISHED_AT
+export const getSortLabel = (sort: typeof MISO_SORT.VALUES[number]) => {
+  return (
+    MISO_SORT.UI_OPTIONS.find((option) => option.value === sort)?.label ||
+    '相關度'
+  )
 }
 
-// 無結果訊息生成
+export const mapSortToOrderBy = (sort: typeof MISO_SORT.VALUES[number]) => {
+  return sort === 'relevance'
+    ? MISO_SORT.ORDER_BY.RELEVANCE
+    : MISO_SORT.ORDER_BY.PUBLISHED_AT
+}
+
 export const generateNoResultsMessage = (
   query: string,
   type: '新聞' | '集錦' | '個人檔案'
@@ -126,26 +116,36 @@ export const generateNoResultsMessage = (
   return `找不到包含「${query}」的${type}，請換個關鍵字，再試一次。`
 }
 
-// 排序標籤獲取
-export const getSortLabel = (sort: typeof MISO_VALID_SORTS[number]) => {
-  return (
-    MISO_SEARCH_SORT_OPTIONS.find((option) => option.value === sort)?.label ||
-    '相關度'
-  )
-}
-
-// 定義搜尋結果
+// Type Definitions - Shared types for search functionality
 export type SearchResultType = {
   success: boolean
   data: HybridSearchResponse | null
   error: Error | null
 }
 
-// 定義搜尋類型
 export type SearchType = 'story' | 'collection' | 'member-publisher'
 
-// 定義過濾器類型
 export type FilterType = {
   id: SearchType
   name: string
 }
+
+// Legacy Exports - Maintain backwards compatibility
+export const MISO_SEARCH_DEFAULTS = MISO_API_CONFIG
+export const MISO_ORDER_BY = MISO_SORT.ORDER_BY
+export const MISO_VALID_SORTS = MISO_SORT.VALUES
+export const MISO_SEARCH_SORT_OPTIONS = MISO_SORT.UI_OPTIONS
+export const MISO_SEARCH_PAGINATION = {
+  PAGE_SIZE: MISO_API_CONFIG.DEFAULT_PAGE_SIZE,
+  MAX_ELEMENTS: MISO_UI_CONFIG.PAGINATION.MAX_ELEMENTS,
+  ITEMS_PER_PAGE: MISO_UI_CONFIG.PAGINATION.CAROUSEL_ITEMS_PER_PAGE,
+}
+export const MISO_SEARCH_FILTERS = MISO_UI_CONFIG.FILTERS
+export const MISO_SEARCH_UI = {
+  CAROUSEL_ITEM_WIDTH: MISO_UI_CONFIG.CAROUSEL_ITEM_WIDTH,
+  MAX_SOURCES_DISPLAY: MISO_UI_CONFIG.MAX_SOURCES_DISPLAY,
+}
+export const MISO_BASE_SEARCH_OPTIONS = {
+  rows: MISO_API_CONFIG.DEFAULT_PAGE_SIZE,
+}
+export const MISO_ANSWER_STAGES = MISO_UI_CONFIG.ANSWER_STAGES
