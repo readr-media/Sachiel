@@ -2,7 +2,21 @@
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 
-const LOGO_ICONS = {
+// Logo icon types
+type LogoIconNames = 'icon-readr-logoA-mobile' | 'icon-readr-logoA-desktop'
+
+type LogoDeviceType = 'mobile' | 'nonMobile'
+
+type LogoIconType = {
+  size: {
+    width: number
+    height: number
+  }
+  icon: LogoIconNames
+  href: string
+}
+
+const LOGO_ICONS: Record<LogoDeviceType, LogoIconType> = {
   mobile: {
     size: { width: 144, height: 36 },
     icon: 'icon-readr-logoA-mobile',
@@ -13,10 +27,25 @@ const LOGO_ICONS = {
     icon: 'icon-readr-logoA-desktop',
     href: '/',
   },
-} as const
+}
+
+// Download app link types
+type DownloadAppIconNames = 'icon-google-play' | 'icon-app-store'
+
+type DownloadAppGtmNames = 'googleplay' | 'appstore'
+
+type DownloadAppLinkType = {
+  size: {
+    width: number
+    height: number
+  }
+  icon: DownloadAppIconNames
+  href: string
+  gtmName: DownloadAppGtmNames
+}
 
 // TODO: update path
-const DOWNLOAD_APP_LINKS = [
+const DOWNLOAD_APP_LINKS: DownloadAppLinkType[] = [
   {
     size: { width: 162.1, height: 48 },
     icon: 'icon-google-play',
@@ -29,9 +58,23 @@ const DOWNLOAD_APP_LINKS = [
     href: '/',
     gtmName: 'appstore',
   },
-] as const
+]
 
-export const useFooterNavLinks = () => {
+// Footer navigation link types
+type FooterNavHrefs =
+  | '/contact'
+  | '/policy/privacy-policy'
+  | '/policy/terms-of-service'
+
+type FooterNavGtmNames = 'contact' | 'privacy_terms' | 'service_terms'
+
+type FooterNavLinkType = {
+  text: string
+  href: FooterNavHrefs
+  gtmName: FooterNavGtmNames
+}
+
+export const useFooterNavLinks = (): FooterNavLinkType[] => {
   const { t } = useCustomTranslation()
 
   return [
@@ -55,7 +98,35 @@ export const useFooterNavLinks = () => {
   ] as const
 }
 
-const FOOTER_SHARED_ICONS = [
+// Footer shared icon types
+type FooterSharedIconNames =
+  | 'icon-facebook'
+  | 'icon-discord'
+  | 'icon-x'
+  | 'icon-instagram'
+
+type FooterSharedIconHoverNames =
+  | 'icon-facebook-hover'
+  | 'icon-discord-hover'
+  | 'icon-x-hover'
+  | 'icon-instagram-hover'
+
+type FooterSharedIconGtmNames = 'FB' | 'DC' | 'twitter' | 'IG'
+
+type FooterSharedIconType = {
+  icon: {
+    default: FooterSharedIconNames
+    hover: FooterSharedIconHoverNames
+  }
+  href: string
+  size: {
+    width: number
+    height: number
+  }
+  gtmName: FooterSharedIconGtmNames
+}
+
+const FOOTER_SHARED_ICONS: FooterSharedIconType[] = [
   {
     icon: { default: 'icon-facebook', hover: 'icon-facebook-hover' },
     href: 'https://www.facebook.com/profile.php?id=61567155163574',
@@ -81,9 +152,12 @@ const FOOTER_SHARED_ICONS = [
     size: { width: 21, height: 24 },
     gtmName: 'DC',
   },
-] as const
+]
 
-export const useFooterCompanyInfos = () => {
+// Footer company info types
+type FooterCompanyInfoType = string
+
+export const useFooterCompanyInfos = (): readonly FooterCompanyInfoType[] => {
   const { t } = useCustomTranslation()
 
   return [
@@ -96,7 +170,86 @@ export const useFooterCompanyInfos = () => {
   ] as const
 }
 
-export const useNonMobileNavIcons = () => {
+// Icon name types
+type FirstGroupIconNames =
+  | 'icon-popular-lg'
+  | 'icon-social-lg'
+  | 'icon-latest-lg'
+type FirstGroupIconHoverNames =
+  | 'icon-popular-lg-hover'
+  | 'icon-social-lg-hover'
+  | 'icon-latest-lg-hover'
+type FirstGroupIconOnNames =
+  | 'icon-popular-lg-on'
+  | 'icon-social-lg-on'
+  | 'icon-latest-lg-on'
+
+type SecondGroupIconNames =
+  | 'icon-profile-lg'
+  | 'icon-wallet-lg'
+  | 'icon-bookmark-lg'
+type SecondGroupIconHoverNames =
+  | 'icon-profile-lg-hover'
+  | 'icon-wallet-lg-hover'
+  | 'icon-bookmark-lg-hover'
+type SecondGroupIconOnNames =
+  | 'icon-profile-lg-on'
+  | 'icon-wallet-lg-on'
+  | 'icon-bookmark-lg-on'
+
+type ThirdGroupIconNames = 'icon-setting-lg'
+type ThirdGroupIconHoverNames = 'icon-setting-lg-hover'
+type ThirdGroupIconOnNames = 'icon-setting-lg-on'
+
+// Href types
+type FirstGroupHrefs = '/' | '/social' | '/media'
+type SecondGroupHrefs = '/profile' | '/point' | '/profile'
+type ThirdGroupHrefs = '/setting'
+
+// GTM name types
+type FirstGroupGtmNames = 'homepage' | 'social' | 'media'
+type SecondGroupGtmNames = 'profile' | 'point' | 'bookmark'
+type ThirdGroupGtmNames = 'setting'
+
+// Combined types
+type FirstNonMobileNavIconType = {
+  icon: {
+    default: FirstGroupIconNames
+    hover: FirstGroupIconHoverNames
+    on: FirstGroupIconOnNames
+  }
+  href: FirstGroupHrefs
+  text: string
+  gtmName: FirstGroupGtmNames
+}
+
+type SecondNonMobileNavIconType = {
+  icon: {
+    default: SecondGroupIconNames
+    hover: SecondGroupIconHoverNames
+    on: SecondGroupIconOnNames
+  }
+  href: SecondGroupHrefs
+  text: string
+  gtmName: SecondGroupGtmNames
+}
+
+type ThirdNonMobileNavIconType = {
+  icon: {
+    default: ThirdGroupIconNames
+    hover: ThirdGroupIconHoverNames
+    on: ThirdGroupIconOnNames
+  }
+  href: ThirdGroupHrefs
+  text: string
+  gtmName: ThirdGroupGtmNames
+}
+
+export const useNonMobileNavIcons = (): {
+  first: FirstNonMobileNavIconType[]
+  second: SecondNonMobileNavIconType[]
+  third: ThirdNonMobileNavIconType[]
+} => {
   const { t } = useCustomTranslation()
 
   return {
@@ -176,10 +329,47 @@ export const useNonMobileNavIcons = () => {
         gtmName: 'setting',
       },
     ],
-  } as const
+  }
 }
 
-export const useMobileNavIcons = () => {
+// Mobile navigation icon types
+type MobileNavIconNames =
+  | 'icon-popular'
+  | 'icon-social'
+  | 'icon-latest'
+  | 'icon-wallet'
+  | 'icon-profile'
+
+type MobileNavIconHoverNames =
+  | 'icon-popular-hover'
+  | 'icon-social-hover'
+  | 'icon-latest-hover'
+  | 'icon-wallet-hover'
+  | 'icon-profile-hover'
+
+type MobileNavIconOnNames =
+  | 'icon-popular-on'
+  | 'icon-social-on'
+  | 'icon-latest-on'
+  | 'icon-wallet-on'
+  | 'icon-profile-on'
+
+type MobileNavHrefs = '/' | '/social' | '/media' | '/point' | '/profile'
+
+type MobileNavGtmNames = 'homepage' | 'social' | 'media' | 'point' | 'profile'
+
+type MobileNavIconType = {
+  icon: {
+    default: MobileNavIconNames
+    hover: MobileNavIconHoverNames
+    on: MobileNavIconOnNames
+  }
+  href: MobileNavHrefs
+  text: string
+  gtmName: MobileNavGtmNames
+}
+
+export const useMobileNavIcons = (): MobileNavIconType[] => {
   const { t } = useCustomTranslation()
 
   return [
@@ -236,7 +426,39 @@ export const useMobileNavIcons = () => {
   ] as const
 }
 
-export const useMediaBackstageNavIcons = () => {
+// Media backstage navigation icon types
+type MediaBackstageFirstIconNames = 'icon-redeem' | 'icon-report'
+type MediaBackstageFirstIconHoverNames = 'icon-redeem' | 'icon-report-hover'
+type MediaBackstageFirstIconOnNames = 'icon-redeem' | 'icon-report-on'
+
+type MediaBackstageSecondIconNames = 'icon-logout'
+type MediaBackstageSecondIconHoverNames = 'icon-logout-hover'
+type MediaBackstageSecondIconOnNames = 'icon-logout'
+
+type MediaBackstageFirstNavItemType = {
+  icon: {
+    default: MediaBackstageFirstIconNames
+    hover: MediaBackstageFirstIconHoverNames
+    on: MediaBackstageFirstIconOnNames
+  }
+  hrefFn: (publisherCustomId: string) => string
+  text: string
+}
+
+type MediaBackstageSecondNavItemType = {
+  icon: {
+    default: MediaBackstageSecondIconNames
+    hover: MediaBackstageSecondIconHoverNames
+    on: MediaBackstageSecondIconOnNames
+  }
+  action: () => void
+  text: string
+}
+
+export const useMediaBackstageNavIcons = (): {
+  first: MediaBackstageFirstNavItemType[]
+  second: MediaBackstageSecondNavItemType[]
+} => {
   const { t } = useCustomTranslation()
 
   return {

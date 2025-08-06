@@ -79,7 +79,7 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
             {nonMobileNavIcons.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案') {
+              if (iconInfo.href === '/profile') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
@@ -97,7 +97,7 @@ const NonMobileNav = ({
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === '書籤') {
+              } else if (iconInfo.gtmName === 'bookmark') {
                 return (
                   <NonMobileNavIcon
                     key={iconInfo.text}
