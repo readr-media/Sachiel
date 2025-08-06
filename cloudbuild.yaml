@@ -7,7 +7,7 @@ steps:
     entrypoint: bash
 
   # Run tests
-  - name: node:18-alpine
+  - name: node:18
     id: Run Tests
     waitFor: ['-']
     entrypoint: 'bash'
