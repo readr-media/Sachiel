@@ -15,7 +15,7 @@ steps:
       - '-c'
       - |
         cd packages/$_TARGET_PACKAGE
-        yarn install --frozen-lockfile --prefer-offline --network-timeout 300000
+        yarn install --frozen-lockfile --prefer-offline
         yarn test --maxWorkers=2 --watchAll=false --passWithNoTests
 
   # build docker image for target sub-package
