@@ -33,8 +33,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "vitest.config.js",
-    "__tests__/components/layout-template/nav/nav-default.test.jsx"
   ],
   "exclude": [
     "node_modules"
