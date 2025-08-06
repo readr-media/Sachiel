@@ -1,12 +1,23 @@
 steps:
-# Pull previous image
+  # Pull previous image
   - name: gcr.io/cloud-builders/docker
     args:
       - '-c'
       - 'docker pull gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest || exit 0'
     entrypoint: bash
 
-  # build docker image for target sub-pacakge
+  # Run tests
+  - name: node:18
+    id: Run Tests
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd packages/$_TARGET_PACKAGE
+        yarn install --frozen-lockfile
+        yarn test --watchAll=false --passWithNoTests
+
+  # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
     id: Build Image
     env:
@@ -23,7 +34,7 @@ steps:
         -t gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest \
         --cache-from gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest .
 
-  # build docker image for target sub-pacakge
+  # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
     id: Push Image
     args:
@@ -57,4 +68,3 @@ substitutions:
   _TARGET_PACKAGE: '' # default value
   _IMAGE_NAME: '' # default value
   _CLOUD_RUN_SERVICE_NAMES: '' # default value
-  _ENV: 'dev' # default value
