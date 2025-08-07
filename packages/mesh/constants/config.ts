@@ -193,7 +193,8 @@ const MISO_ENDPOINTS = {
   hybridSearch: `${MISO_API_BASE_URL}/v1/ask/search`,
   getAnswerWithProgress: (questionId: string) =>
     `${MISO_API_BASE_URL}/v1/ask/questions/${questionId}/answer`,
-}
+  relatedStories: `${MISO_API_BASE_URL}/v1/recommendation/product_to_products`,
+} as const
 export {
   ADSENSE_CLIENT,
   ALCHEMY_ADDRESS,

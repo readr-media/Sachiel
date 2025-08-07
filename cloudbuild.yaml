@@ -1,12 +1,24 @@
 steps:
-# Pull previous image
+  # Pull previous image
   - name: gcr.io/cloud-builders/docker
     args:
       - '-c'
       - 'docker pull gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest || exit 0'
     entrypoint: bash
 
-  # build docker image for target sub-pacakge
+  # Run tests
+  - name: node:18-alpine
+    id: Run Tests
+    waitFor: ['-']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        cd packages/$_TARGET_PACKAGE
+        yarn install --frozen-lockfile --prefer-offline
+        yarn test --maxWorkers=2 --watchAll=false --passWithNoTests
+
+  # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
     id: Build Image
     env:
@@ -23,7 +35,7 @@ steps:
         -t gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest \
         --cache-from gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest .
 
-  # build docker image for target sub-pacakge
+  # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
     id: Push Image
     args:
@@ -49,7 +61,7 @@ steps:
 
         done
 
-timeout: 1800s
+timeout: 3600s
 
 images: ['gcr.io/$PROJECT_ID/$_IMAGE_NAME:${BRANCH_NAME}_${SHORT_SHA}']
 
@@ -57,4 +69,3 @@ substitutions:
   _TARGET_PACKAGE: '' # default value
   _IMAGE_NAME: '' # default value
   _CLOUD_RUN_SERVICE_NAMES: '' # default value
-  _ENV: 'dev' # default value

@@ -1,6 +1,6 @@
 'use server'
 
-import { searchWithHybrid } from '@/app/actions/hybrid-search'
+import { hybridSearch } from '@/app/actions/hybrid-search'
 import { MISO_ORDER_BY, MISO_SEARCH_PAGINATION } from '@/constants/miso'
 import type {
   GetCollectionsQuery,
@@ -53,7 +53,7 @@ export async function searchWithPagination(
     const start = (pageIndex - 1) * pageSize
 
     // Call the hybrid search API with pagination parameters
-    const response = await searchWithHybrid(query, searchType, {
+    const response = await hybridSearch(query, searchType, {
       rows: pageSize,
       start,
       order_by:
