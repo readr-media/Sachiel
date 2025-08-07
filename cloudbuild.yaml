@@ -6,17 +6,33 @@ steps:
       - 'docker pull gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest || exit 0'
     entrypoint: bash
 
-  # Run tests
-  - name: node:18-alpine
-    id: Run Tests
+  # Install dependencies
+  - name: 'gcr.io/cloud-builders/yarn'
+    id: Install Dependencies
     waitFor: ['-']
-    entrypoint: 'sh'
     args:
-      - '-c'
-      - |
-        cd packages/$_TARGET_PACKAGE
-        yarn install --frozen-lockfile --prefer-offline
-        yarn test --maxWorkers=2 --watchAll=false --passWithNoTests
+      - install
+      - --frozen-lockfile
+      - --prefer-offline
+    dir: 'packages/$_TARGET_PACKAGE'
+
+  # Install Sharp for Next.js image optimization
+  - name: 'gcr.io/cloud-builders/yarn'
+    id: Install Sharp
+    args:
+      - add
+      - sharp
+    dir: 'packages/$_TARGET_PACKAGE'
+
+  # Run tests
+  - name: 'gcr.io/cloud-builders/yarn'
+    id: Run Tests
+    args:
+      - test
+      - --maxWorkers=2
+      - --watchAll=false
+      - --passWithNoTests
+    dir: 'packages/$_TARGET_PACKAGE'
 
   # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
