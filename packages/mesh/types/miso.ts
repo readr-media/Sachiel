@@ -3,7 +3,7 @@ import { z } from 'zod'
 export type HybridSearchRequest = {
   anonymous_id: string
   user_id?: string
-  q: string
+  q?: string
   fq?: string
   facets?: readonly string[]
   snippet_max_chars?: number
@@ -17,6 +17,7 @@ export type HybridSearchRequest = {
   cite_start?: string
   cite_end?: string
   start?: number
+  product_ids?: string[]
 }
 
 export const CustomAttributesSchema = z
@@ -187,3 +188,22 @@ export const AnswerResponseSchema = z.object({
 })
 
 export type AnswerResponse = z.infer<typeof AnswerResponseSchema>
+
+export const RelatedStoriesResponseSchema = z.object({
+  message: z.string(),
+  data: z.object({
+    took: z.number(),
+    miso_id: z.string(),
+    products: z.array(
+      z.object({
+        product_id: z.string(),
+        _boosted: z.boolean().nullish(),
+        _order_by: z.array(z.any()),
+      })
+    ),
+  }),
+})
+
+export type RelatedStoriesResponse = z.infer<
+  typeof RelatedStoriesResponseSchema
+>

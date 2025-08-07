@@ -12,24 +12,64 @@ import type {
   HybridSearchRequest,
   HybridSearchResponse,
 } from '@/types/miso'
-import { AnswerResponseSchema, HybridSearchResponseSchema } from '@/types/miso'
+import {
+  AnswerResponseSchema,
+  HybridSearchResponseSchema,
+  RelatedStoriesResponseSchema,
+} from '@/types/miso'
 import { getLogTraceObjectFromHeaders, logServerSideError } from '@/utils/log'
 
-export async function hybridSearch(
-  params: HybridSearchRequest
-): Promise<HybridSearchResponse | null> {
-  try {
-    const url = new URL(MISO_ENDPOINTS.hybridSearch)
-    url.searchParams.set('api_key', MISO_API_KEY)
+function buildMisoUrl(endpoint: string): URL {
+  const url = new URL(endpoint)
+  url.searchParams.set('api_key', MISO_API_KEY)
+  return url
+}
 
-    const response = await fetch(url.toString(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-      cache: 'no-cache',
-    })
+function formatStoryId(storyId: string): string {
+  return storyId.startsWith('mesh') ? storyId : `mesh_story_${storyId}`
+}
+
+async function misoFetch(url: URL, body?: object): Promise<Response> {
+  return fetch(url.toString(), {
+    method: body ? 'POST' : 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    ...(body && { body: JSON.stringify(body) }),
+    cache: 'no-cache',
+  })
+}
+
+export async function hybridSearch(
+  query: string,
+  fq: keyof typeof MISO_SEARCH_FQ,
+  options: Partial<HybridSearchRequest> = {},
+  userId?: string
+): Promise<HybridSearchResponse | null> {
+  const params: HybridSearchRequest = {
+    anonymous_id: `anon_${Date.now()}`,
+    q: query,
+    fq: MISO_SEARCH_FQ[fq],
+    rows: options.rows,
+    fl: MISO_FIELDS.SEARCH_FL,
+    snippet_max_chars: MISO_SEARCH_DEFAULTS.SNIPPET_MAX_CHARS,
+    answer: true,
+    source_fl: MISO_FIELDS.SOURCE_FL,
+    cite_link: MISO_SEARCH_DEFAULTS.CITE_LINK,
+    cite_start: MISO_SEARCH_DEFAULTS.CITE_START,
+    cite_end: MISO_SEARCH_DEFAULTS.CITE_END,
+    order_by: options.order_by ?? MISO_ORDER_BY.PUBLISHED_AT,
+    start: options.start ?? 0,
+    ...options,
+  }
+
+  if (userId) {
+    params.user_id = userId
+  }
+
+  try {
+    const url = buildMisoUrl(MISO_ENDPOINTS.hybridSearch)
+    const response = await misoFetch(url, params)
 
     if (!response.ok) {
       console.error(
@@ -41,7 +81,6 @@ export async function hybridSearch(
     }
 
     const rawData = await response.json()
-
     const parseResult = HybridSearchResponseSchema.safeParse(rawData)
 
     if (!parseResult.success) {
@@ -62,57 +101,19 @@ export async function hybridSearch(
   }
 }
 
-// 基本搜尋
-export async function searchWithHybrid(
-  query: string,
-  fq: keyof typeof MISO_SEARCH_FQ,
-  options: Partial<HybridSearchRequest> = {},
-  userId?: string
-): Promise<HybridSearchResponse | null> {
-  const defaultParams: HybridSearchRequest = {
-    anonymous_id: `anon_${Date.now()}`,
-    q: query,
-    fq: MISO_SEARCH_FQ[fq],
-    rows: options.rows,
-    fl: MISO_FIELDS.SEARCH_FL,
-    snippet_max_chars: MISO_SEARCH_DEFAULTS.SNIPPET_MAX_CHARS,
-    answer: true,
-    source_fl: MISO_FIELDS.SOURCE_FL,
-    cite_link: MISO_SEARCH_DEFAULTS.CITE_LINK,
-    cite_start: MISO_SEARCH_DEFAULTS.CITE_START,
-    cite_end: MISO_SEARCH_DEFAULTS.CITE_END,
-    order_by: options.order_by ?? MISO_ORDER_BY.PUBLISHED_AT,
-    start: options.start ?? 0,
-    ...options,
-  }
-
-  if (userId) {
-    defaultParams.user_id = userId
-  }
-
-  return hybridSearch(defaultParams)
-}
-
 // Get Answer API with Progress
 export async function getAnswerWithProgress(
   questionId: string
 ): Promise<AnswerResponse | null> {
   try {
-    const url = new URL(MISO_ENDPOINTS.getAnswerWithProgress(questionId))
-    url.searchParams.set('api_key', MISO_API_KEY)
+    const url = buildMisoUrl(MISO_ENDPOINTS.getAnswerWithProgress(questionId))
 
     const maxRetries = MISO_SEARCH_DEFAULTS.MAX_RETRIES
     const pollInterval = MISO_SEARCH_DEFAULTS.POLL_INTERVAL_MS
     let attempts = 0
 
     while (attempts < maxRetries) {
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-cache',
-      })
+      const response = await misoFetch(url)
 
       if (!response.ok) {
         console.error(
@@ -161,5 +162,62 @@ export async function getAnswerWithProgress(
   } catch (error) {
     console.error('[Answer API] Request failed:', error)
     return null
+  }
+}
+
+export async function getRelatedStories(storyId: string) {
+  const url = buildMisoUrl(MISO_ENDPOINTS.relatedStories)
+
+  // NOTE: miso ai use mesh_story prefix to search so ensure the story id is in right format.
+  const formattedStoryId = formatStoryId(storyId)
+  const relatedStoriesTakeCounts = 4
+
+  /**
+   * miso does not index dev database
+   * so if you are test in dev enviroment,
+   * it is normal to be undefined.
+   *
+   * BTW, if you are not sure, use curl or postman:
+   * ```bash
+   * curl --location 'https://api.askmiso.com/v1/recommendation/product_to_products?api_key=IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT' \
+   *      --header 'Content-Type: application/json' \
+   *       --data '{
+   *           "product_ids": [
+   *               "mesh_story_172347"
+   *           ],
+   *           "anonymous_id": "test",
+   *           "fq": "product_id:/mesh_story_.+/",
+   *           "fl": [
+   *               "title",
+   *               "url",
+   *               "cover_image"
+   *           ]
+   *       }
+   * ```
+   */
+  const defaultParams = {
+    product_ids: [formattedStoryId],
+    // product_ids: [storyId],
+    anonymous_id: 'mesh_related_stories',
+    rows: relatedStoriesTakeCounts,
+    fq: 'product_id:/mesh_story_.+/',
+    fl: [],
+  } as const
+
+  try {
+    const response = await misoFetch(url, defaultParams)
+    const result = await response.json()
+    const parsedResult = RelatedStoriesResponseSchema.safeParse(result)
+
+    if (!parsedResult.success) {
+      console.error(
+        'Failed to parse related stories response:',
+        parsedResult.error
+      )
+      throw new Error('Invalid response format from related stories API')
+    }
+    return parsedResult.data
+  } catch (err) {
+    console.error(err)
   }
 }
