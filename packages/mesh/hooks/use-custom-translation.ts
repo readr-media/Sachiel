@@ -11,7 +11,6 @@ export function useCustomTranslation() {
   // @ts-expect-error: hook typescript
   const { t: clientT, i18n, ...rest } = useTranslation<string, string>()
 
-  // 在客户端渲染后更新状态
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -21,7 +20,6 @@ export function useCustomTranslation() {
     (_key: string, defaultValue: string, options?: object) => {
       if (options) {
         let interpolatedValue = defaultValue
-        // 替换所有 {{key}} 格式的插值变量
         Object.entries(options).forEach(([varKey, varValue]) => {
           const regex = new RegExp(`{{${varKey}}}`, 'g')
           interpolatedValue = interpolatedValue.replace(regex, String(varValue))
@@ -33,6 +31,5 @@ export function useCustomTranslation() {
     []
   )
 
-  // 为了支持更多的函数签名和类型安全，返回的 t 函数类型与原始 TFunction 一致
   return { t: isClient ? clientT : serverT, i18n, ...rest }
 }

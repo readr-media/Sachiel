@@ -8,7 +8,6 @@ import {
 } from '@/app/actions/get-homepage'
 import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { DailyStory } from '@/types/homepage'
-import { displayDateWithWeekday } from '@/utils/story-display'
 
 import StoryCard from '../story-card'
 import { AdAfterMainGroup } from './ad-after-main-group'
@@ -19,6 +18,36 @@ export default function DailyHighlight() {
   const { t } = useCustomTranslation()
   const [groupData, setGroupData] = useState<DailyStory[] | null>(null)
   const [noGroupData, setNoGroupData] = useState<DailyStory[] | null>(null)
+
+  const getLocalizedDateWithWeekday = () => {
+    const today = new Date()
+    const month = String(today.getMonth() + 1)
+    const date = String(today.getDate())
+    const day = today.getDay()
+    const dayKeys = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ]
+    const dayString = t(
+      `Components.DisplayDateWithWeekday.${dayKeys[day]}`,
+      dayKeys[day]
+    )
+
+    return t(
+      'Components.DisplayDateWithWeekday.time-template',
+      `${month}月${date}日(${dayString})`,
+      {
+        month,
+        date,
+        dayString,
+      }
+    )
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +69,7 @@ export default function DailyHighlight() {
           {t('Pages.Home.DailyHighlight-title', '今日焦點')}
         </h2>
         <time className="button text-primary-500">
-          {displayDateWithWeekday()}
+          {getLocalizedDateWithWeekday()}
         </time>
       </div>
       {groupStories && <MainGroup stories={groupStories} />}
