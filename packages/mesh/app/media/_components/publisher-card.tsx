@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'

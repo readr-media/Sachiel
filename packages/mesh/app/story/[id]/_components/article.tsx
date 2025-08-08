@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { tryToGetFullStory } from '@/app/actions/story'
 import Button from '@/components/button'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'

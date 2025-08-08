@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { type RefObject, useEffect } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import Icon from '@/components/icon'

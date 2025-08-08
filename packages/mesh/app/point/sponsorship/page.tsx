@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberSponsorRecord } from '@/app/actions/sponsorship'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'

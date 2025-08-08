@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { metadata as rootMetadata } from '@/app/layout'
+import { metadata as rootMetadata } from '@/app/[lng]/layout'
 import LayoutTemplate from '@/components/layout-template'
 import { SITE_TITLE, SITE_URL } from '@/constants/config'
 

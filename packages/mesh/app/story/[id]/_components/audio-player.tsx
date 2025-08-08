@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Icon from '@/components/icon'
 import { ImageCategory } from '@/constants/fallback-src'
 import useWindowDimensions from '@/hooks/use-window-dimension'

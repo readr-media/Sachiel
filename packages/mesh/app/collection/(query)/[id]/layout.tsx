@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { metadata as rootMetadata } from '@/app/[lng]/layout'
 import { getCollection } from '@/app/actions/collection'
-import { metadata as rootMetadata } from '@/app/layout'
 import { SITE_DESCRIPTION, SITE_URL } from '@/constants/config'
 import { CommentProvider } from '@/context/comment'
 import { CommentObjective } from '@/types/objective'

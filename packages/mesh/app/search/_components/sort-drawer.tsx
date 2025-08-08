@@ -1,4 +1,4 @@
-import Drawer from '@/app/_components/drawer'
+import Drawer from '@/app/[lng]/_components/drawer'
 import { MISO_SEARCH_SORT_OPTIONS } from '@/constants/miso'
 
 type SortDrawerProps = {

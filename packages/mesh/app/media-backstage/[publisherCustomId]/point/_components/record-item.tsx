@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Avatar from '@/components/story-card/avatar'
 import { ImageCategory } from '@/constants/fallback-src'
 import type {

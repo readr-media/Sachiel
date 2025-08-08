@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { ImageCategory } from '@/constants/fallback-src'

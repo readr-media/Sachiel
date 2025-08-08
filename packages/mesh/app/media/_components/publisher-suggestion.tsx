@@ -2,7 +2,7 @@
 import NextLink from 'next/link'
 import { useState } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { type AllPublisherData } from '@/app/actions/publisher'
 import { updateExcludePublisher } from '@/app/actions/publisher'
 import Button from '@/components/button'

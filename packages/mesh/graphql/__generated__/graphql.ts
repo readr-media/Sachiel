@@ -34,6 +34,639 @@ export type Scalars = {
   Upload: { input: any; output: any }
 }
 
+export type AccountDiscovery = {
+  __typename?: 'AccountDiscovery'
+  confidence_score?: Maybe<Scalars['Int']['output']>
+  created_at?: Maybe<Scalars['DateTime']['output']>
+  discovered_actor_id?: Maybe<Scalars['String']['output']>
+  discovered_avatar_url?: Maybe<Scalars['String']['output']>
+  discovered_display_name?: Maybe<Scalars['String']['output']>
+  discovered_domain?: Maybe<Scalars['String']['output']>
+  discovered_summary?: Maybe<Scalars['String']['output']>
+  discovered_username?: Maybe<Scalars['String']['output']>
+  discovery_method?: Maybe<AccountDiscoveryDiscoveryMethodType>
+  id: Scalars['ID']['output']
+  is_successful?: Maybe<AccountDiscoveryIsSuccessfulType>
+  match_reason?: Maybe<Scalars['String']['output']>
+  mesh_member?: Maybe<Member>
+  search_query?: Maybe<Scalars['String']['output']>
+}
+
+export type AccountDiscoveryCreateInput = {
+  confidence_score?: InputMaybe<Scalars['Int']['input']>
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  discovered_actor_id?: InputMaybe<Scalars['String']['input']>
+  discovered_avatar_url?: InputMaybe<Scalars['String']['input']>
+  discovered_display_name?: InputMaybe<Scalars['String']['input']>
+  discovered_domain?: InputMaybe<Scalars['String']['input']>
+  discovered_summary?: InputMaybe<Scalars['String']['input']>
+  discovered_username?: InputMaybe<Scalars['String']['input']>
+  discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodType>
+  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulType>
+  match_reason?: InputMaybe<Scalars['String']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForCreateInput>
+  search_query?: InputMaybe<Scalars['String']['input']>
+}
+
+export enum AccountDiscoveryDiscoveryMethodType {
+  Activitypub = 'activitypub',
+  Auto = 'auto',
+  Email = 'email',
+  ProfileUrl = 'profile_url',
+  Search = 'search',
+  Webfinger = 'webfinger',
+}
+
+export type AccountDiscoveryDiscoveryMethodTypeNullableFilter = {
+  equals?: InputMaybe<AccountDiscoveryDiscoveryMethodType>
+  in?: InputMaybe<Array<AccountDiscoveryDiscoveryMethodType>>
+  not?: InputMaybe<AccountDiscoveryDiscoveryMethodTypeNullableFilter>
+  notIn?: InputMaybe<Array<AccountDiscoveryDiscoveryMethodType>>
+}
+
+export enum AccountDiscoveryIsSuccessfulType {
+  Failed = 'failed',
+  Success = 'success',
+}
+
+export type AccountDiscoveryIsSuccessfulTypeNullableFilter = {
+  equals?: InputMaybe<AccountDiscoveryIsSuccessfulType>
+  in?: InputMaybe<Array<AccountDiscoveryIsSuccessfulType>>
+  not?: InputMaybe<AccountDiscoveryIsSuccessfulTypeNullableFilter>
+  notIn?: InputMaybe<Array<AccountDiscoveryIsSuccessfulType>>
+}
+
+export type AccountDiscoveryOrderByInput = {
+  confidence_score?: InputMaybe<OrderDirection>
+  created_at?: InputMaybe<OrderDirection>
+  discovered_actor_id?: InputMaybe<OrderDirection>
+  discovered_avatar_url?: InputMaybe<OrderDirection>
+  discovered_display_name?: InputMaybe<OrderDirection>
+  discovered_domain?: InputMaybe<OrderDirection>
+  discovered_summary?: InputMaybe<OrderDirection>
+  discovered_username?: InputMaybe<OrderDirection>
+  discovery_method?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  is_successful?: InputMaybe<OrderDirection>
+  match_reason?: InputMaybe<OrderDirection>
+  search_query?: InputMaybe<OrderDirection>
+}
+
+export type AccountDiscoveryUpdateArgs = {
+  data: AccountDiscoveryUpdateInput
+  where: AccountDiscoveryWhereUniqueInput
+}
+
+export type AccountDiscoveryUpdateInput = {
+  confidence_score?: InputMaybe<Scalars['Int']['input']>
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  discovered_actor_id?: InputMaybe<Scalars['String']['input']>
+  discovered_avatar_url?: InputMaybe<Scalars['String']['input']>
+  discovered_display_name?: InputMaybe<Scalars['String']['input']>
+  discovered_domain?: InputMaybe<Scalars['String']['input']>
+  discovered_summary?: InputMaybe<Scalars['String']['input']>
+  discovered_username?: InputMaybe<Scalars['String']['input']>
+  discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodType>
+  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulType>
+  match_reason?: InputMaybe<Scalars['String']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForUpdateInput>
+  search_query?: InputMaybe<Scalars['String']['input']>
+}
+
+export type AccountDiscoveryWhereInput = {
+  AND?: InputMaybe<Array<AccountDiscoveryWhereInput>>
+  NOT?: InputMaybe<Array<AccountDiscoveryWhereInput>>
+  OR?: InputMaybe<Array<AccountDiscoveryWhereInput>>
+  confidence_score?: InputMaybe<IntFilter>
+  created_at?: InputMaybe<DateTimeFilter>
+  discovered_actor_id?: InputMaybe<StringFilter>
+  discovered_avatar_url?: InputMaybe<StringFilter>
+  discovered_display_name?: InputMaybe<StringFilter>
+  discovered_domain?: InputMaybe<StringFilter>
+  discovered_summary?: InputMaybe<StringFilter>
+  discovered_username?: InputMaybe<StringFilter>
+  discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodTypeNullableFilter>
+  id?: InputMaybe<IdFilter>
+  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulTypeNullableFilter>
+  match_reason?: InputMaybe<StringFilter>
+  mesh_member?: InputMaybe<MemberWhereInput>
+  search_query?: InputMaybe<StringFilter>
+}
+
+export type AccountDiscoveryWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
+export type AccountMapping = {
+  __typename?: 'AccountMapping'
+  created_at?: Maybe<Scalars['DateTime']['output']>
+  id: Scalars['ID']['output']
+  is_verified?: Maybe<Scalars['Boolean']['output']>
+  last_sync_at?: Maybe<Scalars['DateTime']['output']>
+  mesh_member?: Maybe<Member>
+  remote_actor_id?: Maybe<Scalars['String']['output']>
+  remote_avatar_url?: Maybe<Scalars['String']['output']>
+  remote_display_name?: Maybe<Scalars['String']['output']>
+  remote_domain?: Maybe<Scalars['String']['output']>
+  remote_follower_count?: Maybe<Scalars['Int']['output']>
+  remote_following_count?: Maybe<Scalars['Int']['output']>
+  remote_post_count?: Maybe<Scalars['Int']['output']>
+  remote_summary?: Maybe<Scalars['String']['output']>
+  remote_username?: Maybe<Scalars['String']['output']>
+  sync_announces?: Maybe<Scalars['Boolean']['output']>
+  sync_enabled?: Maybe<Scalars['Boolean']['output']>
+  sync_error_count?: Maybe<Scalars['Int']['output']>
+  sync_follows?: Maybe<Scalars['Boolean']['output']>
+  sync_likes?: Maybe<Scalars['Boolean']['output']>
+  sync_posts?: Maybe<Scalars['Boolean']['output']>
+  updated_at?: Maybe<Scalars['DateTime']['output']>
+  verification_date?: Maybe<Scalars['DateTime']['output']>
+  verification_method?: Maybe<AccountMappingVerificationMethodType>
+}
+
+export type AccountMappingCreateInput = {
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  is_verified?: InputMaybe<Scalars['Boolean']['input']>
+  last_sync_at?: InputMaybe<Scalars['DateTime']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForCreateInput>
+  remote_actor_id?: InputMaybe<Scalars['String']['input']>
+  remote_avatar_url?: InputMaybe<Scalars['String']['input']>
+  remote_display_name?: InputMaybe<Scalars['String']['input']>
+  remote_domain?: InputMaybe<Scalars['String']['input']>
+  remote_follower_count?: InputMaybe<Scalars['Int']['input']>
+  remote_following_count?: InputMaybe<Scalars['Int']['input']>
+  remote_post_count?: InputMaybe<Scalars['Int']['input']>
+  remote_summary?: InputMaybe<Scalars['String']['input']>
+  remote_username?: InputMaybe<Scalars['String']['input']>
+  sync_announces?: InputMaybe<Scalars['Boolean']['input']>
+  sync_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  sync_error_count?: InputMaybe<Scalars['Int']['input']>
+  sync_follows?: InputMaybe<Scalars['Boolean']['input']>
+  sync_likes?: InputMaybe<Scalars['Boolean']['input']>
+  sync_posts?: InputMaybe<Scalars['Boolean']['input']>
+  updated_at?: InputMaybe<Scalars['DateTime']['input']>
+  verification_date?: InputMaybe<Scalars['DateTime']['input']>
+  verification_method?: InputMaybe<AccountMappingVerificationMethodType>
+}
+
+export type AccountMappingOrderByInput = {
+  created_at?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  is_verified?: InputMaybe<OrderDirection>
+  last_sync_at?: InputMaybe<OrderDirection>
+  remote_actor_id?: InputMaybe<OrderDirection>
+  remote_avatar_url?: InputMaybe<OrderDirection>
+  remote_display_name?: InputMaybe<OrderDirection>
+  remote_domain?: InputMaybe<OrderDirection>
+  remote_follower_count?: InputMaybe<OrderDirection>
+  remote_following_count?: InputMaybe<OrderDirection>
+  remote_post_count?: InputMaybe<OrderDirection>
+  remote_summary?: InputMaybe<OrderDirection>
+  remote_username?: InputMaybe<OrderDirection>
+  sync_announces?: InputMaybe<OrderDirection>
+  sync_enabled?: InputMaybe<OrderDirection>
+  sync_error_count?: InputMaybe<OrderDirection>
+  sync_follows?: InputMaybe<OrderDirection>
+  sync_likes?: InputMaybe<OrderDirection>
+  sync_posts?: InputMaybe<OrderDirection>
+  updated_at?: InputMaybe<OrderDirection>
+  verification_date?: InputMaybe<OrderDirection>
+  verification_method?: InputMaybe<OrderDirection>
+}
+
+export type AccountMappingRelateToOneForCreateInput = {
+  connect?: InputMaybe<AccountMappingWhereUniqueInput>
+  create?: InputMaybe<AccountMappingCreateInput>
+}
+
+export type AccountMappingRelateToOneForUpdateInput = {
+  connect?: InputMaybe<AccountMappingWhereUniqueInput>
+  create?: InputMaybe<AccountMappingCreateInput>
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type AccountMappingUpdateArgs = {
+  data: AccountMappingUpdateInput
+  where: AccountMappingWhereUniqueInput
+}
+
+export type AccountMappingUpdateInput = {
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  is_verified?: InputMaybe<Scalars['Boolean']['input']>
+  last_sync_at?: InputMaybe<Scalars['DateTime']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForUpdateInput>
+  remote_actor_id?: InputMaybe<Scalars['String']['input']>
+  remote_avatar_url?: InputMaybe<Scalars['String']['input']>
+  remote_display_name?: InputMaybe<Scalars['String']['input']>
+  remote_domain?: InputMaybe<Scalars['String']['input']>
+  remote_follower_count?: InputMaybe<Scalars['Int']['input']>
+  remote_following_count?: InputMaybe<Scalars['Int']['input']>
+  remote_post_count?: InputMaybe<Scalars['Int']['input']>
+  remote_summary?: InputMaybe<Scalars['String']['input']>
+  remote_username?: InputMaybe<Scalars['String']['input']>
+  sync_announces?: InputMaybe<Scalars['Boolean']['input']>
+  sync_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  sync_error_count?: InputMaybe<Scalars['Int']['input']>
+  sync_follows?: InputMaybe<Scalars['Boolean']['input']>
+  sync_likes?: InputMaybe<Scalars['Boolean']['input']>
+  sync_posts?: InputMaybe<Scalars['Boolean']['input']>
+  updated_at?: InputMaybe<Scalars['DateTime']['input']>
+  verification_date?: InputMaybe<Scalars['DateTime']['input']>
+  verification_method?: InputMaybe<AccountMappingVerificationMethodType>
+}
+
+export enum AccountMappingVerificationMethodType {
+  Activitypub = 'activitypub',
+  Automatic = 'automatic',
+  Manual = 'manual',
+  Webfinger = 'webfinger',
+}
+
+export type AccountMappingVerificationMethodTypeNullableFilter = {
+  equals?: InputMaybe<AccountMappingVerificationMethodType>
+  in?: InputMaybe<Array<AccountMappingVerificationMethodType>>
+  not?: InputMaybe<AccountMappingVerificationMethodTypeNullableFilter>
+  notIn?: InputMaybe<Array<AccountMappingVerificationMethodType>>
+}
+
+export type AccountMappingWhereInput = {
+  AND?: InputMaybe<Array<AccountMappingWhereInput>>
+  NOT?: InputMaybe<Array<AccountMappingWhereInput>>
+  OR?: InputMaybe<Array<AccountMappingWhereInput>>
+  created_at?: InputMaybe<DateTimeFilter>
+  id?: InputMaybe<IdFilter>
+  is_verified?: InputMaybe<BooleanFilter>
+  last_sync_at?: InputMaybe<DateTimeNullableFilter>
+  mesh_member?: InputMaybe<MemberWhereInput>
+  remote_actor_id?: InputMaybe<StringFilter>
+  remote_avatar_url?: InputMaybe<StringFilter>
+  remote_display_name?: InputMaybe<StringFilter>
+  remote_domain?: InputMaybe<StringFilter>
+  remote_follower_count?: InputMaybe<IntNullableFilter>
+  remote_following_count?: InputMaybe<IntNullableFilter>
+  remote_post_count?: InputMaybe<IntNullableFilter>
+  remote_summary?: InputMaybe<StringFilter>
+  remote_username?: InputMaybe<StringFilter>
+  sync_announces?: InputMaybe<BooleanFilter>
+  sync_enabled?: InputMaybe<BooleanFilter>
+  sync_error_count?: InputMaybe<IntNullableFilter>
+  sync_follows?: InputMaybe<BooleanFilter>
+  sync_likes?: InputMaybe<BooleanFilter>
+  sync_posts?: InputMaybe<BooleanFilter>
+  updated_at?: InputMaybe<DateTimeFilter>
+  verification_date?: InputMaybe<DateTimeNullableFilter>
+  verification_method?: InputMaybe<AccountMappingVerificationMethodTypeNullableFilter>
+}
+
+export type AccountMappingWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
+export type AccountSyncTask = {
+  __typename?: 'AccountSyncTask'
+  completed_at?: Maybe<Scalars['DateTime']['output']>
+  created_at?: Maybe<Scalars['DateTime']['output']>
+  error_message?: Maybe<Scalars['String']['output']>
+  id: Scalars['ID']['output']
+  items_failed?: Maybe<Scalars['Int']['output']>
+  items_processed?: Maybe<Scalars['Int']['output']>
+  items_synced?: Maybe<Scalars['Int']['output']>
+  mapping?: Maybe<AccountMapping>
+  max_items?: Maybe<Scalars['Int']['output']>
+  progress?: Maybe<Scalars['Int']['output']>
+  retry_count?: Maybe<Scalars['Int']['output']>
+  since_date?: Maybe<Scalars['DateTime']['output']>
+  started_at?: Maybe<Scalars['DateTime']['output']>
+  status?: Maybe<AccountSyncTaskStatusType>
+  sync_type?: Maybe<AccountSyncTaskSyncTypeType>
+}
+
+export type AccountSyncTaskCreateInput = {
+  completed_at?: InputMaybe<Scalars['DateTime']['input']>
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  error_message?: InputMaybe<Scalars['String']['input']>
+  items_failed?: InputMaybe<Scalars['Int']['input']>
+  items_processed?: InputMaybe<Scalars['Int']['input']>
+  items_synced?: InputMaybe<Scalars['Int']['input']>
+  mapping?: InputMaybe<AccountMappingRelateToOneForCreateInput>
+  max_items?: InputMaybe<Scalars['Int']['input']>
+  progress?: InputMaybe<Scalars['Int']['input']>
+  retry_count?: InputMaybe<Scalars['Int']['input']>
+  since_date?: InputMaybe<Scalars['DateTime']['input']>
+  started_at?: InputMaybe<Scalars['DateTime']['input']>
+  status?: InputMaybe<AccountSyncTaskStatusType>
+  sync_type?: InputMaybe<AccountSyncTaskSyncTypeType>
+}
+
+export type AccountSyncTaskOrderByInput = {
+  completed_at?: InputMaybe<OrderDirection>
+  created_at?: InputMaybe<OrderDirection>
+  error_message?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  items_failed?: InputMaybe<OrderDirection>
+  items_processed?: InputMaybe<OrderDirection>
+  items_synced?: InputMaybe<OrderDirection>
+  max_items?: InputMaybe<OrderDirection>
+  progress?: InputMaybe<OrderDirection>
+  retry_count?: InputMaybe<OrderDirection>
+  since_date?: InputMaybe<OrderDirection>
+  started_at?: InputMaybe<OrderDirection>
+  status?: InputMaybe<OrderDirection>
+  sync_type?: InputMaybe<OrderDirection>
+}
+
+export enum AccountSyncTaskStatusType {
+  Cancelled = 'cancelled',
+  Completed = 'completed',
+  Failed = 'failed',
+  Pending = 'pending',
+  Running = 'running',
+}
+
+export type AccountSyncTaskStatusTypeNullableFilter = {
+  equals?: InputMaybe<AccountSyncTaskStatusType>
+  in?: InputMaybe<Array<AccountSyncTaskStatusType>>
+  not?: InputMaybe<AccountSyncTaskStatusTypeNullableFilter>
+  notIn?: InputMaybe<Array<AccountSyncTaskStatusType>>
+}
+
+export enum AccountSyncTaskSyncTypeType {
+  Announces = 'announces',
+  Follows = 'follows',
+  Likes = 'likes',
+  Posts = 'posts',
+  Profile = 'profile',
+}
+
+export type AccountSyncTaskSyncTypeTypeNullableFilter = {
+  equals?: InputMaybe<AccountSyncTaskSyncTypeType>
+  in?: InputMaybe<Array<AccountSyncTaskSyncTypeType>>
+  not?: InputMaybe<AccountSyncTaskSyncTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<AccountSyncTaskSyncTypeType>>
+}
+
+export type AccountSyncTaskUpdateArgs = {
+  data: AccountSyncTaskUpdateInput
+  where: AccountSyncTaskWhereUniqueInput
+}
+
+export type AccountSyncTaskUpdateInput = {
+  completed_at?: InputMaybe<Scalars['DateTime']['input']>
+  created_at?: InputMaybe<Scalars['DateTime']['input']>
+  error_message?: InputMaybe<Scalars['String']['input']>
+  items_failed?: InputMaybe<Scalars['Int']['input']>
+  items_processed?: InputMaybe<Scalars['Int']['input']>
+  items_synced?: InputMaybe<Scalars['Int']['input']>
+  mapping?: InputMaybe<AccountMappingRelateToOneForUpdateInput>
+  max_items?: InputMaybe<Scalars['Int']['input']>
+  progress?: InputMaybe<Scalars['Int']['input']>
+  retry_count?: InputMaybe<Scalars['Int']['input']>
+  since_date?: InputMaybe<Scalars['DateTime']['input']>
+  started_at?: InputMaybe<Scalars['DateTime']['input']>
+  status?: InputMaybe<AccountSyncTaskStatusType>
+  sync_type?: InputMaybe<AccountSyncTaskSyncTypeType>
+}
+
+export type AccountSyncTaskWhereInput = {
+  AND?: InputMaybe<Array<AccountSyncTaskWhereInput>>
+  NOT?: InputMaybe<Array<AccountSyncTaskWhereInput>>
+  OR?: InputMaybe<Array<AccountSyncTaskWhereInput>>
+  completed_at?: InputMaybe<DateTimeNullableFilter>
+  created_at?: InputMaybe<DateTimeFilter>
+  error_message?: InputMaybe<StringFilter>
+  id?: InputMaybe<IdFilter>
+  items_failed?: InputMaybe<IntNullableFilter>
+  items_processed?: InputMaybe<IntNullableFilter>
+  items_synced?: InputMaybe<IntNullableFilter>
+  mapping?: InputMaybe<AccountMappingWhereInput>
+  max_items?: InputMaybe<IntNullableFilter>
+  progress?: InputMaybe<IntFilter>
+  retry_count?: InputMaybe<IntNullableFilter>
+  since_date?: InputMaybe<DateTimeNullableFilter>
+  started_at?: InputMaybe<DateTimeNullableFilter>
+  status?: InputMaybe<AccountSyncTaskStatusTypeNullableFilter>
+  sync_type?: InputMaybe<AccountSyncTaskSyncTypeTypeNullableFilter>
+}
+
+export type AccountSyncTaskWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
+export type Activity = {
+  __typename?: 'Activity'
+  activity_id?: Maybe<Scalars['String']['output']>
+  activity_type?: Maybe<ActivityActivityTypeType>
+  actor?: Maybe<ActivityPubActor>
+  cc?: Maybe<Scalars['JSON']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  id: Scalars['ID']['output']
+  object_data?: Maybe<Scalars['JSON']['output']>
+  target_data?: Maybe<Scalars['JSON']['output']>
+  to?: Maybe<Scalars['JSON']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export enum ActivityActivityTypeType {
+  Announce = 'Announce',
+  Create = 'Create',
+  Follow = 'Follow',
+  Like = 'Like',
+}
+
+export type ActivityActivityTypeTypeNullableFilter = {
+  equals?: InputMaybe<ActivityActivityTypeType>
+  in?: InputMaybe<Array<ActivityActivityTypeType>>
+  not?: InputMaybe<ActivityActivityTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<ActivityActivityTypeType>>
+}
+
+export type ActivityCreateInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  activity_type?: InputMaybe<ActivityActivityTypeType>
+  actor?: InputMaybe<ActivityPubActorRelateToOneForCreateInput>
+  cc?: InputMaybe<Scalars['JSON']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  object_data?: InputMaybe<Scalars['JSON']['input']>
+  target_data?: InputMaybe<Scalars['JSON']['input']>
+  to?: InputMaybe<Scalars['JSON']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type ActivityOrderByInput = {
+  activity_id?: InputMaybe<OrderDirection>
+  activity_type?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type ActivityPubActor = {
+  __typename?: 'ActivityPubActor'
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  display_name?: Maybe<Scalars['String']['output']>
+  domain?: Maybe<Scalars['String']['output']>
+  followers_url?: Maybe<Scalars['String']['output']>
+  following_url?: Maybe<Scalars['String']['output']>
+  icon_url?: Maybe<Scalars['String']['output']>
+  id: Scalars['ID']['output']
+  inbox_url?: Maybe<Scalars['String']['output']>
+  is_local?: Maybe<Scalars['Boolean']['output']>
+  mesh_member?: Maybe<Member>
+  outbox_url?: Maybe<Scalars['String']['output']>
+  private_key_pem?: Maybe<Scalars['String']['output']>
+  public_key_pem?: Maybe<Scalars['String']['output']>
+  summary?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+  username?: Maybe<Scalars['String']['output']>
+}
+
+export type ActivityPubActorCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  display_name?: InputMaybe<Scalars['String']['input']>
+  domain?: InputMaybe<Scalars['String']['input']>
+  followers_url?: InputMaybe<Scalars['String']['input']>
+  following_url?: InputMaybe<Scalars['String']['input']>
+  icon_url?: InputMaybe<Scalars['String']['input']>
+  inbox_url?: InputMaybe<Scalars['String']['input']>
+  is_local?: InputMaybe<Scalars['Boolean']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForCreateInput>
+  outbox_url?: InputMaybe<Scalars['String']['input']>
+  private_key_pem?: InputMaybe<Scalars['String']['input']>
+  public_key_pem?: InputMaybe<Scalars['String']['input']>
+  summary?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+  username?: InputMaybe<Scalars['String']['input']>
+}
+
+export type ActivityPubActorOrderByInput = {
+  createdAt?: InputMaybe<OrderDirection>
+  display_name?: InputMaybe<OrderDirection>
+  domain?: InputMaybe<OrderDirection>
+  followers_url?: InputMaybe<OrderDirection>
+  following_url?: InputMaybe<OrderDirection>
+  icon_url?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  inbox_url?: InputMaybe<OrderDirection>
+  is_local?: InputMaybe<OrderDirection>
+  outbox_url?: InputMaybe<OrderDirection>
+  private_key_pem?: InputMaybe<OrderDirection>
+  public_key_pem?: InputMaybe<OrderDirection>
+  summary?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+  username?: InputMaybe<OrderDirection>
+}
+
+export type ActivityPubActorRelateToOneForCreateInput = {
+  connect?: InputMaybe<ActivityPubActorWhereUniqueInput>
+  create?: InputMaybe<ActivityPubActorCreateInput>
+}
+
+export type ActivityPubActorRelateToOneForUpdateInput = {
+  connect?: InputMaybe<ActivityPubActorWhereUniqueInput>
+  create?: InputMaybe<ActivityPubActorCreateInput>
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type ActivityPubActorUpdateArgs = {
+  data: ActivityPubActorUpdateInput
+  where: ActivityPubActorWhereUniqueInput
+}
+
+export type ActivityPubActorUpdateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  display_name?: InputMaybe<Scalars['String']['input']>
+  domain?: InputMaybe<Scalars['String']['input']>
+  followers_url?: InputMaybe<Scalars['String']['input']>
+  following_url?: InputMaybe<Scalars['String']['input']>
+  icon_url?: InputMaybe<Scalars['String']['input']>
+  inbox_url?: InputMaybe<Scalars['String']['input']>
+  is_local?: InputMaybe<Scalars['Boolean']['input']>
+  mesh_member?: InputMaybe<MemberRelateToOneForUpdateInput>
+  outbox_url?: InputMaybe<Scalars['String']['input']>
+  private_key_pem?: InputMaybe<Scalars['String']['input']>
+  public_key_pem?: InputMaybe<Scalars['String']['input']>
+  summary?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  username?: InputMaybe<Scalars['String']['input']>
+}
+
+export type ActivityPubActorWhereInput = {
+  AND?: InputMaybe<Array<ActivityPubActorWhereInput>>
+  NOT?: InputMaybe<Array<ActivityPubActorWhereInput>>
+  OR?: InputMaybe<Array<ActivityPubActorWhereInput>>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  display_name?: InputMaybe<StringFilter>
+  domain?: InputMaybe<StringFilter>
+  followers_url?: InputMaybe<StringFilter>
+  following_url?: InputMaybe<StringFilter>
+  icon_url?: InputMaybe<StringFilter>
+  id?: InputMaybe<IdFilter>
+  inbox_url?: InputMaybe<StringFilter>
+  is_local?: InputMaybe<BooleanFilter>
+  mesh_member?: InputMaybe<MemberWhereInput>
+  outbox_url?: InputMaybe<StringFilter>
+  private_key_pem?: InputMaybe<StringFilter>
+  public_key_pem?: InputMaybe<StringFilter>
+  summary?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+  username?: InputMaybe<StringFilter>
+}
+
+export type ActivityPubActorWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+  username?: InputMaybe<Scalars['String']['input']>
+}
+
+export type ActivityUpdateArgs = {
+  data: ActivityUpdateInput
+  where: ActivityWhereUniqueInput
+}
+
+export type ActivityUpdateInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  activity_type?: InputMaybe<ActivityActivityTypeType>
+  actor?: InputMaybe<ActivityPubActorRelateToOneForUpdateInput>
+  cc?: InputMaybe<Scalars['JSON']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  object_data?: InputMaybe<Scalars['JSON']['input']>
+  target_data?: InputMaybe<Scalars['JSON']['input']>
+  to?: InputMaybe<Scalars['JSON']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type ActivityWhereInput = {
+  AND?: InputMaybe<Array<ActivityWhereInput>>
+  NOT?: InputMaybe<Array<ActivityWhereInput>>
+  OR?: InputMaybe<Array<ActivityWhereInput>>
+  activity_id?: InputMaybe<StringFilter>
+  activity_type?: InputMaybe<ActivityActivityTypeTypeNullableFilter>
+  actor?: InputMaybe<ActivityPubActorWhereInput>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  id?: InputMaybe<IdFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type ActivityWhereUniqueInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
 export type Announcement = {
   __typename?: 'Announcement'
   createdAt?: Maybe<Scalars['DateTime']['output']>
@@ -750,6 +1383,17 @@ export type CreateInitialUserInput = {
   role?: InputMaybe<Scalars['String']['input']>
 }
 
+export type DateTimeFilter = {
+  equals?: InputMaybe<Scalars['DateTime']['input']>
+  gt?: InputMaybe<Scalars['DateTime']['input']>
+  gte?: InputMaybe<Scalars['DateTime']['input']>
+  in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  lt?: InputMaybe<Scalars['DateTime']['input']>
+  lte?: InputMaybe<Scalars['DateTime']['input']>
+  not?: InputMaybe<DateTimeFilter>
+  notIn?: InputMaybe<Array<Scalars['DateTime']['input']>>
+}
+
 export type DateTimeNullableFilter = {
   equals?: InputMaybe<Scalars['DateTime']['input']>
   gt?: InputMaybe<Scalars['DateTime']['input']>
@@ -865,6 +1509,322 @@ export type ExchangeWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>
 }
 
+export type FederationConnection = {
+  __typename?: 'FederationConnection'
+  activity_id?: Maybe<Scalars['String']['output']>
+  connection_type?: Maybe<FederationConnectionConnectionTypeType>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  direction?: Maybe<FederationConnectionDirectionType>
+  error_message?: Maybe<Scalars['String']['output']>
+  id: Scalars['ID']['output']
+  instance?: Maybe<FederationInstance>
+  processed_at?: Maybe<Scalars['DateTime']['output']>
+  source_actor?: Maybe<Scalars['String']['output']>
+  status?: Maybe<FederationConnectionStatusType>
+  target_actor?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export enum FederationConnectionConnectionTypeType {
+  Http = 'http',
+  Https = 'https',
+}
+
+export type FederationConnectionConnectionTypeTypeNullableFilter = {
+  equals?: InputMaybe<FederationConnectionConnectionTypeType>
+  in?: InputMaybe<Array<FederationConnectionConnectionTypeType>>
+  not?: InputMaybe<FederationConnectionConnectionTypeTypeNullableFilter>
+  notIn?: InputMaybe<Array<FederationConnectionConnectionTypeType>>
+}
+
+export type FederationConnectionCreateInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  connection_type?: InputMaybe<FederationConnectionConnectionTypeType>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  direction?: InputMaybe<FederationConnectionDirectionType>
+  error_message?: InputMaybe<Scalars['String']['input']>
+  instance?: InputMaybe<FederationInstanceRelateToOneForCreateInput>
+  processed_at?: InputMaybe<Scalars['DateTime']['input']>
+  source_actor?: InputMaybe<Scalars['String']['input']>
+  status?: InputMaybe<FederationConnectionStatusType>
+  target_actor?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export enum FederationConnectionDirectionType {
+  Inbound = 'inbound',
+  Outbound = 'outbound',
+}
+
+export type FederationConnectionDirectionTypeNullableFilter = {
+  equals?: InputMaybe<FederationConnectionDirectionType>
+  in?: InputMaybe<Array<FederationConnectionDirectionType>>
+  not?: InputMaybe<FederationConnectionDirectionTypeNullableFilter>
+  notIn?: InputMaybe<Array<FederationConnectionDirectionType>>
+}
+
+export type FederationConnectionManyRelationFilter = {
+  every?: InputMaybe<FederationConnectionWhereInput>
+  none?: InputMaybe<FederationConnectionWhereInput>
+  some?: InputMaybe<FederationConnectionWhereInput>
+}
+
+export type FederationConnectionOrderByInput = {
+  activity_id?: InputMaybe<OrderDirection>
+  connection_type?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  direction?: InputMaybe<OrderDirection>
+  error_message?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  processed_at?: InputMaybe<OrderDirection>
+  source_actor?: InputMaybe<OrderDirection>
+  status?: InputMaybe<OrderDirection>
+  target_actor?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type FederationConnectionRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<FederationConnectionWhereUniqueInput>>
+  create?: InputMaybe<Array<FederationConnectionCreateInput>>
+}
+
+export type FederationConnectionRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<FederationConnectionWhereUniqueInput>>
+  create?: InputMaybe<Array<FederationConnectionCreateInput>>
+  disconnect?: InputMaybe<Array<FederationConnectionWhereUniqueInput>>
+  set?: InputMaybe<Array<FederationConnectionWhereUniqueInput>>
+}
+
+export enum FederationConnectionStatusType {
+  Failed = 'failed',
+  Pending = 'pending',
+  Success = 'success',
+}
+
+export type FederationConnectionStatusTypeNullableFilter = {
+  equals?: InputMaybe<FederationConnectionStatusType>
+  in?: InputMaybe<Array<FederationConnectionStatusType>>
+  not?: InputMaybe<FederationConnectionStatusTypeNullableFilter>
+  notIn?: InputMaybe<Array<FederationConnectionStatusType>>
+}
+
+export type FederationConnectionUpdateArgs = {
+  data: FederationConnectionUpdateInput
+  where: FederationConnectionWhereUniqueInput
+}
+
+export type FederationConnectionUpdateInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  connection_type?: InputMaybe<FederationConnectionConnectionTypeType>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  direction?: InputMaybe<FederationConnectionDirectionType>
+  error_message?: InputMaybe<Scalars['String']['input']>
+  instance?: InputMaybe<FederationInstanceRelateToOneForUpdateInput>
+  processed_at?: InputMaybe<Scalars['DateTime']['input']>
+  source_actor?: InputMaybe<Scalars['String']['input']>
+  status?: InputMaybe<FederationConnectionStatusType>
+  target_actor?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type FederationConnectionWhereInput = {
+  AND?: InputMaybe<Array<FederationConnectionWhereInput>>
+  NOT?: InputMaybe<Array<FederationConnectionWhereInput>>
+  OR?: InputMaybe<Array<FederationConnectionWhereInput>>
+  activity_id?: InputMaybe<StringFilter>
+  connection_type?: InputMaybe<FederationConnectionConnectionTypeTypeNullableFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  direction?: InputMaybe<FederationConnectionDirectionTypeNullableFilter>
+  error_message?: InputMaybe<StringFilter>
+  id?: InputMaybe<IdFilter>
+  instance?: InputMaybe<FederationInstanceWhereInput>
+  processed_at?: InputMaybe<DateTimeNullableFilter>
+  source_actor?: InputMaybe<StringFilter>
+  status?: InputMaybe<FederationConnectionStatusTypeNullableFilter>
+  target_actor?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type FederationConnectionWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
+export type FederationInstance = {
+  __typename?: 'FederationInstance'
+  auto_announce?: Maybe<Scalars['Boolean']['output']>
+  auto_follow?: Maybe<Scalars['Boolean']['output']>
+  connection?: Maybe<Array<FederationConnection>>
+  connectionCount?: Maybe<Scalars['Int']['output']>
+  connection_count?: Maybe<Scalars['Int']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  description?: Maybe<Scalars['String']['output']>
+  domain?: Maybe<Scalars['String']['output']>
+  error_count?: Maybe<Scalars['Int']['output']>
+  id: Scalars['ID']['output']
+  is_active?: Maybe<Scalars['Boolean']['output']>
+  is_approved?: Maybe<Scalars['Boolean']['output']>
+  is_blocked?: Maybe<Scalars['Boolean']['output']>
+  last_seen?: Maybe<Scalars['DateTime']['output']>
+  last_successful_connection?: Maybe<Scalars['DateTime']['output']>
+  max_followers?: Maybe<Scalars['Int']['output']>
+  max_following?: Maybe<Scalars['Int']['output']>
+  name?: Maybe<Scalars['String']['output']>
+  post_count?: Maybe<Scalars['Int']['output']>
+  software?: Maybe<Scalars['String']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+  user_count?: Maybe<Scalars['Int']['output']>
+  version?: Maybe<Scalars['String']['output']>
+}
+
+export type FederationInstanceConnectionArgs = {
+  cursor?: InputMaybe<FederationConnectionWhereUniqueInput>
+  orderBy?: Array<FederationConnectionOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: FederationConnectionWhereInput
+}
+
+export type FederationInstanceConnectionCountArgs = {
+  where?: FederationConnectionWhereInput
+}
+
+export type FederationInstanceCreateInput = {
+  auto_announce?: InputMaybe<Scalars['Boolean']['input']>
+  auto_follow?: InputMaybe<Scalars['Boolean']['input']>
+  connection?: InputMaybe<FederationConnectionRelateToManyForCreateInput>
+  connection_count?: InputMaybe<Scalars['Int']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  description?: InputMaybe<Scalars['String']['input']>
+  domain?: InputMaybe<Scalars['String']['input']>
+  error_count?: InputMaybe<Scalars['Int']['input']>
+  is_active?: InputMaybe<Scalars['Boolean']['input']>
+  is_approved?: InputMaybe<Scalars['Boolean']['input']>
+  is_blocked?: InputMaybe<Scalars['Boolean']['input']>
+  last_seen?: InputMaybe<Scalars['DateTime']['input']>
+  last_successful_connection?: InputMaybe<Scalars['DateTime']['input']>
+  max_followers?: InputMaybe<Scalars['Int']['input']>
+  max_following?: InputMaybe<Scalars['Int']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+  post_count?: InputMaybe<Scalars['Int']['input']>
+  software?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+  user_count?: InputMaybe<Scalars['Int']['input']>
+  version?: InputMaybe<Scalars['String']['input']>
+}
+
+export type FederationInstanceOrderByInput = {
+  auto_announce?: InputMaybe<OrderDirection>
+  auto_follow?: InputMaybe<OrderDirection>
+  connection_count?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  description?: InputMaybe<OrderDirection>
+  domain?: InputMaybe<OrderDirection>
+  error_count?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  is_active?: InputMaybe<OrderDirection>
+  is_approved?: InputMaybe<OrderDirection>
+  is_blocked?: InputMaybe<OrderDirection>
+  last_seen?: InputMaybe<OrderDirection>
+  last_successful_connection?: InputMaybe<OrderDirection>
+  max_followers?: InputMaybe<OrderDirection>
+  max_following?: InputMaybe<OrderDirection>
+  name?: InputMaybe<OrderDirection>
+  post_count?: InputMaybe<OrderDirection>
+  software?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+  user_count?: InputMaybe<OrderDirection>
+  version?: InputMaybe<OrderDirection>
+}
+
+export type FederationInstanceRelateToOneForCreateInput = {
+  connect?: InputMaybe<FederationInstanceWhereUniqueInput>
+  create?: InputMaybe<FederationInstanceCreateInput>
+}
+
+export type FederationInstanceRelateToOneForUpdateInput = {
+  connect?: InputMaybe<FederationInstanceWhereUniqueInput>
+  create?: InputMaybe<FederationInstanceCreateInput>
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>
+}
+
+export type FederationInstanceUpdateArgs = {
+  data: FederationInstanceUpdateInput
+  where: FederationInstanceWhereUniqueInput
+}
+
+export type FederationInstanceUpdateInput = {
+  auto_announce?: InputMaybe<Scalars['Boolean']['input']>
+  auto_follow?: InputMaybe<Scalars['Boolean']['input']>
+  connection?: InputMaybe<FederationConnectionRelateToManyForUpdateInput>
+  connection_count?: InputMaybe<Scalars['Int']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  description?: InputMaybe<Scalars['String']['input']>
+  domain?: InputMaybe<Scalars['String']['input']>
+  error_count?: InputMaybe<Scalars['Int']['input']>
+  is_active?: InputMaybe<Scalars['Boolean']['input']>
+  is_approved?: InputMaybe<Scalars['Boolean']['input']>
+  is_blocked?: InputMaybe<Scalars['Boolean']['input']>
+  last_seen?: InputMaybe<Scalars['DateTime']['input']>
+  last_successful_connection?: InputMaybe<Scalars['DateTime']['input']>
+  max_followers?: InputMaybe<Scalars['Int']['input']>
+  max_following?: InputMaybe<Scalars['Int']['input']>
+  name?: InputMaybe<Scalars['String']['input']>
+  post_count?: InputMaybe<Scalars['Int']['input']>
+  software?: InputMaybe<Scalars['String']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  user_count?: InputMaybe<Scalars['Int']['input']>
+  version?: InputMaybe<Scalars['String']['input']>
+}
+
+export type FederationInstanceWhereInput = {
+  AND?: InputMaybe<Array<FederationInstanceWhereInput>>
+  NOT?: InputMaybe<Array<FederationInstanceWhereInput>>
+  OR?: InputMaybe<Array<FederationInstanceWhereInput>>
+  auto_announce?: InputMaybe<BooleanFilter>
+  auto_follow?: InputMaybe<BooleanFilter>
+  connection?: InputMaybe<FederationConnectionManyRelationFilter>
+  connection_count?: InputMaybe<IntNullableFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  description?: InputMaybe<StringFilter>
+  domain?: InputMaybe<StringFilter>
+  error_count?: InputMaybe<IntNullableFilter>
+  id?: InputMaybe<IdFilter>
+  is_active?: InputMaybe<BooleanFilter>
+  is_approved?: InputMaybe<BooleanFilter>
+  is_blocked?: InputMaybe<BooleanFilter>
+  last_seen?: InputMaybe<DateTimeNullableFilter>
+  last_successful_connection?: InputMaybe<DateTimeNullableFilter>
+  max_followers?: InputMaybe<IntNullableFilter>
+  max_following?: InputMaybe<IntNullableFilter>
+  name?: InputMaybe<StringFilter>
+  post_count?: InputMaybe<IntNullableFilter>
+  software?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+  user_count?: InputMaybe<IntNullableFilter>
+  version?: InputMaybe<StringFilter>
+}
+
+export type FederationInstanceWhereUniqueInput = {
+  domain?: InputMaybe<Scalars['String']['input']>
+  id?: InputMaybe<Scalars['ID']['input']>
+}
+
 export type FloatFilter = {
   equals?: InputMaybe<Scalars['Float']['input']>
   gt?: InputMaybe<Scalars['Float']['input']>
@@ -917,6 +1877,74 @@ export type ImageFieldOutput = {
   id: Scalars['ID']['output']
   url: Scalars['String']['output']
   width: Scalars['Int']['output']
+}
+
+export type InboxItem = {
+  __typename?: 'InboxItem'
+  activity_data?: Maybe<Scalars['JSON']['output']>
+  activity_id?: Maybe<Scalars['String']['output']>
+  actor_id?: Maybe<Scalars['String']['output']>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  id: Scalars['ID']['output']
+  is_processed?: Maybe<Scalars['Boolean']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type InboxItemCreateInput = {
+  activity_data?: InputMaybe<Scalars['JSON']['input']>
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  actor_id?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  is_processed?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type InboxItemOrderByInput = {
+  activity_id?: InputMaybe<OrderDirection>
+  actor_id?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  is_processed?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type InboxItemUpdateArgs = {
+  data: InboxItemUpdateInput
+  where: InboxItemWhereUniqueInput
+}
+
+export type InboxItemUpdateInput = {
+  activity_data?: InputMaybe<Scalars['JSON']['input']>
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  actor_id?: InputMaybe<Scalars['String']['input']>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  is_processed?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type InboxItemWhereInput = {
+  AND?: InputMaybe<Array<InboxItemWhereInput>>
+  NOT?: InputMaybe<Array<InboxItemWhereInput>>
+  OR?: InputMaybe<Array<InboxItemWhereInput>>
+  activity_id?: InputMaybe<StringFilter>
+  actor_id?: InputMaybe<StringFilter>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  id?: InputMaybe<IdFilter>
+  is_processed?: InputMaybe<BooleanFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type InboxItemWhereUniqueInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  id?: InputMaybe<Scalars['ID']['input']>
 }
 
 export type IntFilter = {
@@ -1212,6 +2240,10 @@ export type KeystoneMeta = {
 
 export type Member = {
   __typename?: 'Member'
+  activitypub_auto_follow?: Maybe<Scalars['Boolean']['output']>
+  activitypub_enabled?: Maybe<Scalars['Boolean']['output']>
+  activitypub_federation_enabled?: Maybe<Scalars['Boolean']['output']>
+  activitypub_public_posts?: Maybe<Scalars['Boolean']['output']>
   avatar?: Maybe<Scalars['String']['output']>
   avatar_image?: Maybe<Photo>
   balance?: Maybe<Scalars['Int']['output']>
@@ -1472,6 +2504,10 @@ export type MemberTransactionCountArgs = {
 }
 
 export type MemberCreateInput = {
+  activitypub_auto_follow?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_federation_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_public_posts?: InputMaybe<Scalars['Boolean']['input']>
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForCreateInput>
   balance?: InputMaybe<Scalars['Int']['input']>
@@ -1533,6 +2569,10 @@ export type MemberManyRelationFilter = {
 }
 
 export type MemberOrderByInput = {
+  activitypub_auto_follow?: InputMaybe<OrderDirection>
+  activitypub_enabled?: InputMaybe<OrderDirection>
+  activitypub_federation_enabled?: InputMaybe<OrderDirection>
+  activitypub_public_posts?: InputMaybe<OrderDirection>
   avatar?: InputMaybe<OrderDirection>
   balance?: InputMaybe<OrderDirection>
   createdAt?: InputMaybe<OrderDirection>
@@ -1579,6 +2619,10 @@ export type MemberUpdateArgs = {
 }
 
 export type MemberUpdateInput = {
+  activitypub_auto_follow?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_federation_enabled?: InputMaybe<Scalars['Boolean']['input']>
+  activitypub_public_posts?: InputMaybe<Scalars['Boolean']['input']>
   avatar?: InputMaybe<Scalars['String']['input']>
   avatar_image?: InputMaybe<PhotoRelateToOneForUpdateInput>
   balance?: InputMaybe<Scalars['Int']['input']>
@@ -1620,6 +2664,10 @@ export type MemberWhereInput = {
   AND?: InputMaybe<Array<MemberWhereInput>>
   NOT?: InputMaybe<Array<MemberWhereInput>>
   OR?: InputMaybe<Array<MemberWhereInput>>
+  activitypub_auto_follow?: InputMaybe<BooleanFilter>
+  activitypub_enabled?: InputMaybe<BooleanFilter>
+  activitypub_federation_enabled?: InputMaybe<BooleanFilter>
+  activitypub_public_posts?: InputMaybe<BooleanFilter>
   avatar?: InputMaybe<StringFilter>
   avatar_image?: InputMaybe<PhotoWhereInput>
   balance?: InputMaybe<IntNullableFilter>
@@ -1668,6 +2716,16 @@ export type MemberWhereUniqueInput = {
 export type Mutation = {
   __typename?: 'Mutation'
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>
+  createAccountDiscoveries?: Maybe<Array<Maybe<AccountDiscovery>>>
+  createAccountDiscovery?: Maybe<AccountDiscovery>
+  createAccountMapping?: Maybe<AccountMapping>
+  createAccountMappings?: Maybe<Array<Maybe<AccountMapping>>>
+  createAccountSyncTask?: Maybe<AccountSyncTask>
+  createAccountSyncTasks?: Maybe<Array<Maybe<AccountSyncTask>>>
+  createActivities?: Maybe<Array<Maybe<Activity>>>
+  createActivity?: Maybe<Activity>
+  createActivityPubActor?: Maybe<ActivityPubActor>
+  createActivityPubActors?: Maybe<Array<Maybe<ActivityPubActor>>>
   createAnnouncement?: Maybe<Announcement>
   createAnnouncements?: Maybe<Array<Maybe<Announcement>>>
   createCategories?: Maybe<Array<Maybe<Category>>>
@@ -1682,6 +2740,12 @@ export type Mutation = {
   createComments?: Maybe<Array<Maybe<Comment>>>
   createExchange?: Maybe<Exchange>
   createExchanges?: Maybe<Array<Maybe<Exchange>>>
+  createFederationConnection?: Maybe<FederationConnection>
+  createFederationConnections?: Maybe<Array<Maybe<FederationConnection>>>
+  createFederationInstance?: Maybe<FederationInstance>
+  createFederationInstances?: Maybe<Array<Maybe<FederationInstance>>>
+  createInboxItem?: Maybe<InboxItem>
+  createInboxItems?: Maybe<Array<Maybe<InboxItem>>>
   createInitialUser: UserAuthenticationWithPasswordSuccess
   createInvalidName?: Maybe<InvalidName>
   createInvalidNames?: Maybe<Array<Maybe<InvalidName>>>
@@ -1691,6 +2755,8 @@ export type Mutation = {
   createMembers?: Maybe<Array<Maybe<Member>>>
   createNotifies?: Maybe<Array<Maybe<Notify>>>
   createNotify?: Maybe<Notify>
+  createOutboxItem?: Maybe<OutboxItem>
+  createOutboxItems?: Maybe<Array<Maybe<OutboxItem>>>
   createPhoto?: Maybe<Photo>
   createPhotos?: Maybe<Array<Maybe<Photo>>>
   createPick?: Maybe<Pick>
@@ -1721,6 +2787,16 @@ export type Mutation = {
   createTransactions?: Maybe<Array<Maybe<Transaction>>>
   createUser?: Maybe<User>
   createUsers?: Maybe<Array<Maybe<User>>>
+  deleteAccountDiscoveries?: Maybe<Array<Maybe<AccountDiscovery>>>
+  deleteAccountDiscovery?: Maybe<AccountDiscovery>
+  deleteAccountMapping?: Maybe<AccountMapping>
+  deleteAccountMappings?: Maybe<Array<Maybe<AccountMapping>>>
+  deleteAccountSyncTask?: Maybe<AccountSyncTask>
+  deleteAccountSyncTasks?: Maybe<Array<Maybe<AccountSyncTask>>>
+  deleteActivities?: Maybe<Array<Maybe<Activity>>>
+  deleteActivity?: Maybe<Activity>
+  deleteActivityPubActor?: Maybe<ActivityPubActor>
+  deleteActivityPubActors?: Maybe<Array<Maybe<ActivityPubActor>>>
   deleteAnnouncement?: Maybe<Announcement>
   deleteAnnouncements?: Maybe<Array<Maybe<Announcement>>>
   deleteCategories?: Maybe<Array<Maybe<Category>>>
@@ -1735,6 +2811,12 @@ export type Mutation = {
   deleteComments?: Maybe<Array<Maybe<Comment>>>
   deleteExchange?: Maybe<Exchange>
   deleteExchanges?: Maybe<Array<Maybe<Exchange>>>
+  deleteFederationConnection?: Maybe<FederationConnection>
+  deleteFederationConnections?: Maybe<Array<Maybe<FederationConnection>>>
+  deleteFederationInstance?: Maybe<FederationInstance>
+  deleteFederationInstances?: Maybe<Array<Maybe<FederationInstance>>>
+  deleteInboxItem?: Maybe<InboxItem>
+  deleteInboxItems?: Maybe<Array<Maybe<InboxItem>>>
   deleteInvalidName?: Maybe<InvalidName>
   deleteInvalidNames?: Maybe<Array<Maybe<InvalidName>>>
   deleteInvitationCode?: Maybe<InvitationCode>
@@ -1743,6 +2825,8 @@ export type Mutation = {
   deleteMembers?: Maybe<Array<Maybe<Member>>>
   deleteNotifies?: Maybe<Array<Maybe<Notify>>>
   deleteNotify?: Maybe<Notify>
+  deleteOutboxItem?: Maybe<OutboxItem>
+  deleteOutboxItems?: Maybe<Array<Maybe<OutboxItem>>>
   deletePhoto?: Maybe<Photo>
   deletePhotos?: Maybe<Array<Maybe<Photo>>>
   deletePick?: Maybe<Pick>
@@ -1774,6 +2858,16 @@ export type Mutation = {
   deleteUser?: Maybe<User>
   deleteUsers?: Maybe<Array<Maybe<User>>>
   endSession: Scalars['Boolean']['output']
+  updateAccountDiscoveries?: Maybe<Array<Maybe<AccountDiscovery>>>
+  updateAccountDiscovery?: Maybe<AccountDiscovery>
+  updateAccountMapping?: Maybe<AccountMapping>
+  updateAccountMappings?: Maybe<Array<Maybe<AccountMapping>>>
+  updateAccountSyncTask?: Maybe<AccountSyncTask>
+  updateAccountSyncTasks?: Maybe<Array<Maybe<AccountSyncTask>>>
+  updateActivities?: Maybe<Array<Maybe<Activity>>>
+  updateActivity?: Maybe<Activity>
+  updateActivityPubActor?: Maybe<ActivityPubActor>
+  updateActivityPubActors?: Maybe<Array<Maybe<ActivityPubActor>>>
   updateAnnouncement?: Maybe<Announcement>
   updateAnnouncements?: Maybe<Array<Maybe<Announcement>>>
   updateCategories?: Maybe<Array<Maybe<Category>>>
@@ -1788,6 +2882,12 @@ export type Mutation = {
   updateComments?: Maybe<Array<Maybe<Comment>>>
   updateExchange?: Maybe<Exchange>
   updateExchanges?: Maybe<Array<Maybe<Exchange>>>
+  updateFederationConnection?: Maybe<FederationConnection>
+  updateFederationConnections?: Maybe<Array<Maybe<FederationConnection>>>
+  updateFederationInstance?: Maybe<FederationInstance>
+  updateFederationInstances?: Maybe<Array<Maybe<FederationInstance>>>
+  updateInboxItem?: Maybe<InboxItem>
+  updateInboxItems?: Maybe<Array<Maybe<InboxItem>>>
   updateInvalidName?: Maybe<InvalidName>
   updateInvalidNames?: Maybe<Array<Maybe<InvalidName>>>
   updateInvitationCode?: Maybe<InvitationCode>
@@ -1796,6 +2896,8 @@ export type Mutation = {
   updateMembers?: Maybe<Array<Maybe<Member>>>
   updateNotifies?: Maybe<Array<Maybe<Notify>>>
   updateNotify?: Maybe<Notify>
+  updateOutboxItem?: Maybe<OutboxItem>
+  updateOutboxItems?: Maybe<Array<Maybe<OutboxItem>>>
   updatePhoto?: Maybe<Photo>
   updatePhotos?: Maybe<Array<Maybe<Photo>>>
   updatePick?: Maybe<Pick>
@@ -1831,6 +2933,46 @@ export type Mutation = {
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String']['input']
   password: Scalars['String']['input']
+}
+
+export type MutationCreateAccountDiscoveriesArgs = {
+  data: Array<AccountDiscoveryCreateInput>
+}
+
+export type MutationCreateAccountDiscoveryArgs = {
+  data: AccountDiscoveryCreateInput
+}
+
+export type MutationCreateAccountMappingArgs = {
+  data: AccountMappingCreateInput
+}
+
+export type MutationCreateAccountMappingsArgs = {
+  data: Array<AccountMappingCreateInput>
+}
+
+export type MutationCreateAccountSyncTaskArgs = {
+  data: AccountSyncTaskCreateInput
+}
+
+export type MutationCreateAccountSyncTasksArgs = {
+  data: Array<AccountSyncTaskCreateInput>
+}
+
+export type MutationCreateActivitiesArgs = {
+  data: Array<ActivityCreateInput>
+}
+
+export type MutationCreateActivityArgs = {
+  data: ActivityCreateInput
+}
+
+export type MutationCreateActivityPubActorArgs = {
+  data: ActivityPubActorCreateInput
+}
+
+export type MutationCreateActivityPubActorsArgs = {
+  data: Array<ActivityPubActorCreateInput>
 }
 
 export type MutationCreateAnnouncementArgs = {
@@ -1889,6 +3031,30 @@ export type MutationCreateExchangesArgs = {
   data: Array<ExchangeCreateInput>
 }
 
+export type MutationCreateFederationConnectionArgs = {
+  data: FederationConnectionCreateInput
+}
+
+export type MutationCreateFederationConnectionsArgs = {
+  data: Array<FederationConnectionCreateInput>
+}
+
+export type MutationCreateFederationInstanceArgs = {
+  data: FederationInstanceCreateInput
+}
+
+export type MutationCreateFederationInstancesArgs = {
+  data: Array<FederationInstanceCreateInput>
+}
+
+export type MutationCreateInboxItemArgs = {
+  data: InboxItemCreateInput
+}
+
+export type MutationCreateInboxItemsArgs = {
+  data: Array<InboxItemCreateInput>
+}
+
 export type MutationCreateInitialUserArgs = {
   data: CreateInitialUserInput
 }
@@ -1923,6 +3089,14 @@ export type MutationCreateNotifiesArgs = {
 
 export type MutationCreateNotifyArgs = {
   data: NotifyCreateInput
+}
+
+export type MutationCreateOutboxItemArgs = {
+  data: OutboxItemCreateInput
+}
+
+export type MutationCreateOutboxItemsArgs = {
+  data: Array<OutboxItemCreateInput>
 }
 
 export type MutationCreatePhotoArgs = {
@@ -2045,6 +3219,46 @@ export type MutationCreateUsersArgs = {
   data: Array<UserCreateInput>
 }
 
+export type MutationDeleteAccountDiscoveriesArgs = {
+  where: Array<AccountDiscoveryWhereUniqueInput>
+}
+
+export type MutationDeleteAccountDiscoveryArgs = {
+  where: AccountDiscoveryWhereUniqueInput
+}
+
+export type MutationDeleteAccountMappingArgs = {
+  where: AccountMappingWhereUniqueInput
+}
+
+export type MutationDeleteAccountMappingsArgs = {
+  where: Array<AccountMappingWhereUniqueInput>
+}
+
+export type MutationDeleteAccountSyncTaskArgs = {
+  where: AccountSyncTaskWhereUniqueInput
+}
+
+export type MutationDeleteAccountSyncTasksArgs = {
+  where: Array<AccountSyncTaskWhereUniqueInput>
+}
+
+export type MutationDeleteActivitiesArgs = {
+  where: Array<ActivityWhereUniqueInput>
+}
+
+export type MutationDeleteActivityArgs = {
+  where: ActivityWhereUniqueInput
+}
+
+export type MutationDeleteActivityPubActorArgs = {
+  where: ActivityPubActorWhereUniqueInput
+}
+
+export type MutationDeleteActivityPubActorsArgs = {
+  where: Array<ActivityPubActorWhereUniqueInput>
+}
+
 export type MutationDeleteAnnouncementArgs = {
   where: AnnouncementWhereUniqueInput
 }
@@ -2101,6 +3315,30 @@ export type MutationDeleteExchangesArgs = {
   where: Array<ExchangeWhereUniqueInput>
 }
 
+export type MutationDeleteFederationConnectionArgs = {
+  where: FederationConnectionWhereUniqueInput
+}
+
+export type MutationDeleteFederationConnectionsArgs = {
+  where: Array<FederationConnectionWhereUniqueInput>
+}
+
+export type MutationDeleteFederationInstanceArgs = {
+  where: FederationInstanceWhereUniqueInput
+}
+
+export type MutationDeleteFederationInstancesArgs = {
+  where: Array<FederationInstanceWhereUniqueInput>
+}
+
+export type MutationDeleteInboxItemArgs = {
+  where: InboxItemWhereUniqueInput
+}
+
+export type MutationDeleteInboxItemsArgs = {
+  where: Array<InboxItemWhereUniqueInput>
+}
+
 export type MutationDeleteInvalidNameArgs = {
   where: InvalidNameWhereUniqueInput
 }
@@ -2131,6 +3369,14 @@ export type MutationDeleteNotifiesArgs = {
 
 export type MutationDeleteNotifyArgs = {
   where: NotifyWhereUniqueInput
+}
+
+export type MutationDeleteOutboxItemArgs = {
+  where: OutboxItemWhereUniqueInput
+}
+
+export type MutationDeleteOutboxItemsArgs = {
+  where: Array<OutboxItemWhereUniqueInput>
 }
 
 export type MutationDeletePhotoArgs = {
@@ -2253,6 +3499,51 @@ export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>
 }
 
+export type MutationUpdateAccountDiscoveriesArgs = {
+  data: Array<AccountDiscoveryUpdateArgs>
+}
+
+export type MutationUpdateAccountDiscoveryArgs = {
+  data: AccountDiscoveryUpdateInput
+  where: AccountDiscoveryWhereUniqueInput
+}
+
+export type MutationUpdateAccountMappingArgs = {
+  data: AccountMappingUpdateInput
+  where: AccountMappingWhereUniqueInput
+}
+
+export type MutationUpdateAccountMappingsArgs = {
+  data: Array<AccountMappingUpdateArgs>
+}
+
+export type MutationUpdateAccountSyncTaskArgs = {
+  data: AccountSyncTaskUpdateInput
+  where: AccountSyncTaskWhereUniqueInput
+}
+
+export type MutationUpdateAccountSyncTasksArgs = {
+  data: Array<AccountSyncTaskUpdateArgs>
+}
+
+export type MutationUpdateActivitiesArgs = {
+  data: Array<ActivityUpdateArgs>
+}
+
+export type MutationUpdateActivityArgs = {
+  data: ActivityUpdateInput
+  where: ActivityWhereUniqueInput
+}
+
+export type MutationUpdateActivityPubActorArgs = {
+  data: ActivityPubActorUpdateInput
+  where: ActivityPubActorWhereUniqueInput
+}
+
+export type MutationUpdateActivityPubActorsArgs = {
+  data: Array<ActivityPubActorUpdateArgs>
+}
+
 export type MutationUpdateAnnouncementArgs = {
   data: AnnouncementUpdateInput
   where: AnnouncementWhereUniqueInput
@@ -2316,6 +3607,33 @@ export type MutationUpdateExchangesArgs = {
   data: Array<ExchangeUpdateArgs>
 }
 
+export type MutationUpdateFederationConnectionArgs = {
+  data: FederationConnectionUpdateInput
+  where: FederationConnectionWhereUniqueInput
+}
+
+export type MutationUpdateFederationConnectionsArgs = {
+  data: Array<FederationConnectionUpdateArgs>
+}
+
+export type MutationUpdateFederationInstanceArgs = {
+  data: FederationInstanceUpdateInput
+  where: FederationInstanceWhereUniqueInput
+}
+
+export type MutationUpdateFederationInstancesArgs = {
+  data: Array<FederationInstanceUpdateArgs>
+}
+
+export type MutationUpdateInboxItemArgs = {
+  data: InboxItemUpdateInput
+  where: InboxItemWhereUniqueInput
+}
+
+export type MutationUpdateInboxItemsArgs = {
+  data: Array<InboxItemUpdateArgs>
+}
+
 export type MutationUpdateInvalidNameArgs = {
   data: InvalidNameUpdateInput
   where: InvalidNameWhereUniqueInput
@@ -2350,6 +3668,15 @@ export type MutationUpdateNotifiesArgs = {
 export type MutationUpdateNotifyArgs = {
   data: NotifyUpdateInput
   where: NotifyWhereUniqueInput
+}
+
+export type MutationUpdateOutboxItemArgs = {
+  data: OutboxItemUpdateInput
+  where: OutboxItemWhereUniqueInput
+}
+
+export type MutationUpdateOutboxItemsArgs = {
+  data: Array<OutboxItemUpdateArgs>
 }
 
 export type MutationUpdatePhotoArgs = {
@@ -2600,6 +3927,83 @@ export type NotifyWhereUniqueInput = {
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc',
+}
+
+export type OutboxItem = {
+  __typename?: 'OutboxItem'
+  activity_data?: Maybe<Scalars['JSON']['output']>
+  activity_id?: Maybe<Scalars['String']['output']>
+  actor?: Maybe<ActivityPubActor>
+  createdAt?: Maybe<Scalars['DateTime']['output']>
+  createdBy?: Maybe<User>
+  delivered_at?: Maybe<Scalars['DateTime']['output']>
+  delivery_attempts?: Maybe<Scalars['Int']['output']>
+  id: Scalars['ID']['output']
+  is_delivered?: Maybe<Scalars['Boolean']['output']>
+  updatedAt?: Maybe<Scalars['DateTime']['output']>
+  updatedBy?: Maybe<User>
+}
+
+export type OutboxItemCreateInput = {
+  activity_data?: InputMaybe<Scalars['JSON']['input']>
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  actor?: InputMaybe<ActivityPubActorRelateToOneForCreateInput>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForCreateInput>
+  delivered_at?: InputMaybe<Scalars['DateTime']['input']>
+  delivery_attempts?: InputMaybe<Scalars['Int']['input']>
+  is_delivered?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
+}
+
+export type OutboxItemOrderByInput = {
+  activity_id?: InputMaybe<OrderDirection>
+  createdAt?: InputMaybe<OrderDirection>
+  delivered_at?: InputMaybe<OrderDirection>
+  delivery_attempts?: InputMaybe<OrderDirection>
+  id?: InputMaybe<OrderDirection>
+  is_delivered?: InputMaybe<OrderDirection>
+  updatedAt?: InputMaybe<OrderDirection>
+}
+
+export type OutboxItemUpdateArgs = {
+  data: OutboxItemUpdateInput
+  where: OutboxItemWhereUniqueInput
+}
+
+export type OutboxItemUpdateInput = {
+  activity_data?: InputMaybe<Scalars['JSON']['input']>
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  actor?: InputMaybe<ActivityPubActorRelateToOneForUpdateInput>
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>
+  createdBy?: InputMaybe<UserRelateToOneForUpdateInput>
+  delivered_at?: InputMaybe<Scalars['DateTime']['input']>
+  delivery_attempts?: InputMaybe<Scalars['Int']['input']>
+  is_delivered?: InputMaybe<Scalars['Boolean']['input']>
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>
+  updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
+}
+
+export type OutboxItemWhereInput = {
+  AND?: InputMaybe<Array<OutboxItemWhereInput>>
+  NOT?: InputMaybe<Array<OutboxItemWhereInput>>
+  OR?: InputMaybe<Array<OutboxItemWhereInput>>
+  activity_id?: InputMaybe<StringFilter>
+  actor?: InputMaybe<ActivityPubActorWhereInput>
+  createdAt?: InputMaybe<DateTimeNullableFilter>
+  createdBy?: InputMaybe<UserWhereInput>
+  delivered_at?: InputMaybe<DateTimeNullableFilter>
+  delivery_attempts?: InputMaybe<IntNullableFilter>
+  id?: InputMaybe<IdFilter>
+  is_delivered?: InputMaybe<BooleanFilter>
+  updatedAt?: InputMaybe<DateTimeNullableFilter>
+  updatedBy?: InputMaybe<UserWhereInput>
+}
+
+export type OutboxItemWhereUniqueInput = {
+  activity_id?: InputMaybe<Scalars['String']['input']>
+  id?: InputMaybe<Scalars['ID']['input']>
 }
 
 export type PasswordState = {
@@ -3051,6 +4455,7 @@ export type Publisher = {
   user?: Maybe<Array<User>>
   userCount?: Maybe<Scalars['Int']['output']>
   wallet?: Maybe<Scalars['String']['output']>
+  youtube_url?: Maybe<Scalars['String']['output']>
 }
 
 export type PublisherExchangeArgs = {
@@ -3166,6 +4571,7 @@ export type PublisherCreateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForCreateInput>
   user?: InputMaybe<UserRelateToManyForCreateInput>
   wallet?: InputMaybe<Scalars['String']['input']>
+  youtube_url?: InputMaybe<Scalars['String']['input']>
 }
 
 export type PublisherManyRelationFilter = {
@@ -3193,6 +4599,7 @@ export type PublisherOrderByInput = {
   title?: InputMaybe<OrderDirection>
   updatedAt?: InputMaybe<OrderDirection>
   wallet?: InputMaybe<OrderDirection>
+  youtube_url?: InputMaybe<OrderDirection>
 }
 
 export type PublisherRelateToManyForCreateInput = {
@@ -3252,6 +4659,7 @@ export type PublisherUpdateInput = {
   updatedBy?: InputMaybe<UserRelateToOneForUpdateInput>
   user?: InputMaybe<UserRelateToManyForUpdateInput>
   wallet?: InputMaybe<Scalars['String']['input']>
+  youtube_url?: InputMaybe<Scalars['String']['input']>
 }
 
 export type PublisherWhereInput = {
@@ -3287,6 +4695,7 @@ export type PublisherWhereInput = {
   updatedBy?: InputMaybe<UserWhereInput>
   user?: InputMaybe<UserManyRelationFilter>
   wallet?: InputMaybe<StringFilter>
+  youtube_url?: InputMaybe<StringFilter>
 }
 
 export type PublisherWhereUniqueInput = {
@@ -3296,6 +4705,21 @@ export type PublisherWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query'
+  accountDiscoveries?: Maybe<Array<AccountDiscovery>>
+  accountDiscoveriesCount?: Maybe<Scalars['Int']['output']>
+  accountDiscovery?: Maybe<AccountDiscovery>
+  accountMapping?: Maybe<AccountMapping>
+  accountMappings?: Maybe<Array<AccountMapping>>
+  accountMappingsCount?: Maybe<Scalars['Int']['output']>
+  accountSyncTask?: Maybe<AccountSyncTask>
+  accountSyncTasks?: Maybe<Array<AccountSyncTask>>
+  accountSyncTasksCount?: Maybe<Scalars['Int']['output']>
+  activities?: Maybe<Array<Activity>>
+  activitiesCount?: Maybe<Scalars['Int']['output']>
+  activity?: Maybe<Activity>
+  activityPubActor?: Maybe<ActivityPubActor>
+  activityPubActors?: Maybe<Array<ActivityPubActor>>
+  activityPubActorsCount?: Maybe<Scalars['Int']['output']>
   announcement?: Maybe<Announcement>
   announcements?: Maybe<Array<Announcement>>
   announcementsCount?: Maybe<Scalars['Int']['output']>
@@ -3318,6 +4742,15 @@ export type Query = {
   exchange?: Maybe<Exchange>
   exchanges?: Maybe<Array<Exchange>>
   exchangesCount?: Maybe<Scalars['Int']['output']>
+  federationConnection?: Maybe<FederationConnection>
+  federationConnections?: Maybe<Array<FederationConnection>>
+  federationConnectionsCount?: Maybe<Scalars['Int']['output']>
+  federationInstance?: Maybe<FederationInstance>
+  federationInstances?: Maybe<Array<FederationInstance>>
+  federationInstancesCount?: Maybe<Scalars['Int']['output']>
+  inboxItem?: Maybe<InboxItem>
+  inboxItems?: Maybe<Array<InboxItem>>
+  inboxItemsCount?: Maybe<Scalars['Int']['output']>
   invalidName?: Maybe<InvalidName>
   invalidNames?: Maybe<Array<InvalidName>>
   invalidNamesCount?: Maybe<Scalars['Int']['output']>
@@ -3331,6 +4764,9 @@ export type Query = {
   notifies?: Maybe<Array<Notify>>
   notifiesCount?: Maybe<Scalars['Int']['output']>
   notify?: Maybe<Notify>
+  outboxItem?: Maybe<OutboxItem>
+  outboxItems?: Maybe<Array<OutboxItem>>
+  outboxItemsCount?: Maybe<Scalars['Int']['output']>
   photo?: Maybe<Photo>
   photos?: Maybe<Array<Photo>>
   photosCount?: Maybe<Scalars['Int']['output']>
@@ -3376,6 +4812,86 @@ export type Query = {
   user?: Maybe<User>
   users?: Maybe<Array<User>>
   usersCount?: Maybe<Scalars['Int']['output']>
+}
+
+export type QueryAccountDiscoveriesArgs = {
+  cursor?: InputMaybe<AccountDiscoveryWhereUniqueInput>
+  orderBy?: Array<AccountDiscoveryOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: AccountDiscoveryWhereInput
+}
+
+export type QueryAccountDiscoveriesCountArgs = {
+  where?: AccountDiscoveryWhereInput
+}
+
+export type QueryAccountDiscoveryArgs = {
+  where: AccountDiscoveryWhereUniqueInput
+}
+
+export type QueryAccountMappingArgs = {
+  where: AccountMappingWhereUniqueInput
+}
+
+export type QueryAccountMappingsArgs = {
+  cursor?: InputMaybe<AccountMappingWhereUniqueInput>
+  orderBy?: Array<AccountMappingOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: AccountMappingWhereInput
+}
+
+export type QueryAccountMappingsCountArgs = {
+  where?: AccountMappingWhereInput
+}
+
+export type QueryAccountSyncTaskArgs = {
+  where: AccountSyncTaskWhereUniqueInput
+}
+
+export type QueryAccountSyncTasksArgs = {
+  cursor?: InputMaybe<AccountSyncTaskWhereUniqueInput>
+  orderBy?: Array<AccountSyncTaskOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: AccountSyncTaskWhereInput
+}
+
+export type QueryAccountSyncTasksCountArgs = {
+  where?: AccountSyncTaskWhereInput
+}
+
+export type QueryActivitiesArgs = {
+  cursor?: InputMaybe<ActivityWhereUniqueInput>
+  orderBy?: Array<ActivityOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: ActivityWhereInput
+}
+
+export type QueryActivitiesCountArgs = {
+  where?: ActivityWhereInput
+}
+
+export type QueryActivityArgs = {
+  where: ActivityWhereUniqueInput
+}
+
+export type QueryActivityPubActorArgs = {
+  where: ActivityPubActorWhereUniqueInput
+}
+
+export type QueryActivityPubActorsArgs = {
+  cursor?: InputMaybe<ActivityPubActorWhereUniqueInput>
+  orderBy?: Array<ActivityPubActorOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: ActivityPubActorWhereInput
+}
+
+export type QueryActivityPubActorsCountArgs = {
+  where?: ActivityPubActorWhereInput
 }
 
 export type QueryAnnouncementArgs = {
@@ -3490,6 +5006,54 @@ export type QueryExchangesCountArgs = {
   where?: ExchangeWhereInput
 }
 
+export type QueryFederationConnectionArgs = {
+  where: FederationConnectionWhereUniqueInput
+}
+
+export type QueryFederationConnectionsArgs = {
+  cursor?: InputMaybe<FederationConnectionWhereUniqueInput>
+  orderBy?: Array<FederationConnectionOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: FederationConnectionWhereInput
+}
+
+export type QueryFederationConnectionsCountArgs = {
+  where?: FederationConnectionWhereInput
+}
+
+export type QueryFederationInstanceArgs = {
+  where: FederationInstanceWhereUniqueInput
+}
+
+export type QueryFederationInstancesArgs = {
+  cursor?: InputMaybe<FederationInstanceWhereUniqueInput>
+  orderBy?: Array<FederationInstanceOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: FederationInstanceWhereInput
+}
+
+export type QueryFederationInstancesCountArgs = {
+  where?: FederationInstanceWhereInput
+}
+
+export type QueryInboxItemArgs = {
+  where: InboxItemWhereUniqueInput
+}
+
+export type QueryInboxItemsArgs = {
+  cursor?: InputMaybe<InboxItemWhereUniqueInput>
+  orderBy?: Array<InboxItemOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: InboxItemWhereInput
+}
+
+export type QueryInboxItemsCountArgs = {
+  where?: InboxItemWhereInput
+}
+
 export type QueryInvalidNameArgs = {
   where: InvalidNameWhereUniqueInput
 }
@@ -3552,6 +5116,22 @@ export type QueryNotifiesCountArgs = {
 
 export type QueryNotifyArgs = {
   where: NotifyWhereUniqueInput
+}
+
+export type QueryOutboxItemArgs = {
+  where: OutboxItemWhereUniqueInput
+}
+
+export type QueryOutboxItemsArgs = {
+  cursor?: InputMaybe<OutboxItemWhereUniqueInput>
+  orderBy?: Array<OutboxItemOrderByInput>
+  skip?: Scalars['Int']['input']
+  take?: InputMaybe<Scalars['Int']['input']>
+  where?: OutboxItemWhereInput
+}
+
+export type QueryOutboxItemsCountArgs = {
+  where?: OutboxItemWhereInput
 }
 
 export type QueryPhotoArgs = {

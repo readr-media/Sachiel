@@ -1,7 +1,16 @@
-import { cookies } from 'next/headers'
+import acceptLanguage from 'accept-language'
 import { type NextRequest, NextResponse } from 'next/server'
 
-export async function middleware(request: NextRequest) {
+import { cookieName, fallbackLng, languages } from './app/i18n/settings'
+acceptLanguage.languages(languages)
+
+export function middleware(request: NextRequest) {
+  let lng
+  if (request.cookies.has(cookieName))
+    lng = acceptLanguage.get(request.cookies.get(cookieName)!.value)
+  if (!lng) lng = acceptLanguage.get(request.headers.get('Accept-Language'))
+  if (!lng) lng = fallbackLng
+
   const protectRoutesPattern = [
     /^\/media(\/.*)?$/,
     /^\/social(\/.*)?$/,
@@ -11,30 +20,59 @@ export async function middleware(request: NextRequest) {
     /^\/media-backstage(\/.*)?$/,
     /^\/publisher-list(\/.*)?$/,
   ]
+
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = protectRoutesPattern.some((pattern) =>
     pattern.test(currentPath)
   )
+
   if (isProtectedRoute) {
-    const cookie = cookies().get('token')?.value
+    const token = request.cookies.get('token')?.value
     const userAgent = request.headers.get('user-agent') || ''
 
-    /**
-     * Facebook crawler: https://developers.facebook.com/docs/sharing/webmasters/web-crawlers
-     * Line crawler: https://help2.line.me/linesearchbot/web/?contentId=50006055&lang=en
-     * X(Twitter) crawler: https://developer.x.com/en/docs/x-for-websites/cards/guides/getting-started (URL Crawling & Caching)
-     * online crawler user agents: https://github.com/monperrus/crawler-user-agents/blob/master/crawler-user-agents.json
-     */
     const isSocialBot =
       /facebookexternalhit|facebookcatalog|Linespider|Twitterbot/.test(
         userAgent
       )
 
-    if (!isSocialBot && !cookie) {
+    if (!isSocialBot && !token) {
       return NextResponse.redirect(new URL('/login', request.nextUrl))
     }
   }
-  return NextResponse.next()
+
+  if (
+    !languages.some((loc) => request.nextUrl.pathname.startsWith(`/${loc}`)) &&
+    !request.nextUrl.pathname.startsWith('/_next')
+  ) {
+    return NextResponse.redirect(
+      new URL(`/${lng}${request.nextUrl.pathname}`, request.url)
+    )
+  }
+
+  const currentLng =
+    languages.find((l) => request.nextUrl.pathname.startsWith(`/${l}`)) || lng
+
+  const response = NextResponse.next()
+
+  response.cookies.set(cookieName, currentLng || lng, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: true,
+  })
+
+  // 處理 referer
+  if (request.headers.has('referer')) {
+    const refererUrl = new URL(request.headers.get('referer') ?? '')
+    const lngInReferer = languages.find((l) =>
+      refererUrl.pathname.startsWith(`/${l}`)
+    )
+    if (lngInReferer) {
+      response
+    }
+  }
+
+  return response
 }
 
 export const config = {

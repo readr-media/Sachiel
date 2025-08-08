@@ -4,7 +4,7 @@ import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { getMemberUnlockStories } from '@/app/actions/subscribe-stories'
 import { ImageCategory } from '@/constants/fallback-src'
 import { displayTime } from '@/utils/story-display'

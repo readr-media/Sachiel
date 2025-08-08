@@ -1,6 +1,6 @@
 'use client'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { ImageCategory } from '@/constants/fallback-src'
 
 type Size = 's' | 'm' | 'l' | 'xl' | 'xxl'

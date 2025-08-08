@@ -1,0 +1,18 @@
+{
+  "DailyHighlight-title": "Top stories today",
+  "FeaturedCard-readr-title": "Latest from READr",
+  "FeaturedCard-non-readr-title": "Top picks by users this week",
+  "EmptyMessage-title": "No stories found",
+  "EmptyMessage-description": "Try browsing other categories or refresh the page",
+  "TopCollectorSection-title": "Top pickers of the week",
+  "TopCollectorCard-pick-detail-1": "has picked",
+  "TopCollectorCard-pick-detail-2": "stories this week",
+  "MostLikedCommentSection-title": "Top liked comments of the week",
+  "MostLikedCommentCard-like-detail-1": "Comment received",
+  "MostLikedCommentCard-like-detail-2": "likes",
+  "TopPublisherSection-title": "Most sponsored of the week",
+  "TopPublisherCard-sponsor-detail-1": "Received",
+  "TopPublisherCard-sponsor-detail-2": "",
+  "TopPublisherCard-sponsor-count-unit": "sponsorships",
+  "Comment-show-more": "show more"
+}

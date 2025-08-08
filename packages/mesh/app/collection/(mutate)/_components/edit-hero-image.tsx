@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { ImageCategory } from '@/constants/fallback-src'
 
 import type { UseCollection } from '../_types/collection'

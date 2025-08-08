@@ -2,15 +2,17 @@
 
 import '@/styles/policy.css'
 
+import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 import { processPolicy } from '@/utils/process-policy'
 
 import { fetchTermsOfService } from '../../actions/policy'
 
 export default function Page() {
-  const { t, i18n } = useCustomTranslation()
+  const { lng } = useParams() as { lng: string }
+  const { t } = useT('pages/policy')
   const [processedHtml, setProcessedHtml] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +22,7 @@ export default function Page() {
       setIsLoading(true)
       setError(null)
       try {
-        const data = await fetchTermsOfService(i18n.language)
+        const data = await fetchTermsOfService(lng)
         if (data) {
           const processed = await processPolicy(data)
           setProcessedHtml(processed)
@@ -36,13 +38,13 @@ export default function Page() {
     }
 
     fetchData()
-  }, [i18n.language])
+  }, [lng])
 
   if (isLoading) {
     return (
       <section className="px-5 pb-5 pt-6 sm:p-0">
         <div className="policy-content">
-          <p>{t('Pages.Policy.loading', '載入中...')}</p>
+          <p>{t('loading', '載入中...')}</p>
         </div>
       </section>
     )
@@ -52,7 +54,7 @@ export default function Page() {
     return (
       <section className="px-5 pb-5 pt-6 sm:p-0">
         <div className="policy-content">
-          <p>{t('Pages.Policy.not-found', '找不到服務條款內容')}</p>
+          <p>{t('terms-not-found', '找不到服務條款內容')}</p>
         </div>
       </section>
     )

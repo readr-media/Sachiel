@@ -2,7 +2,7 @@
 
 import NextLink from 'next/link'
 
-import ImageWithFallback from '@/app/_components/image-with-fallback'
+import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { type AllPublisherData } from '@/app/actions/publisher'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import { ImageCategory } from '@/constants/fallback-src'

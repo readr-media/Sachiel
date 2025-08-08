@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { metadata as rootMetadata } from '@/app/[lng]/layout'
 import { getStory } from '@/app/actions/story'
-import { metadata as rootMetadata } from '@/app/layout'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
 
 import ClientLayout from './_components/client-layout'
