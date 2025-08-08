@@ -13,11 +13,12 @@ export async function generateMetadata(
   {
     params,
   }: {
-    params: { id: string }
+    params: { id: string; lng: string }
   },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const storyId = params.id
+  const lng = params.lng
 
   const storyData = await getStory({
     storyId,
@@ -42,7 +43,7 @@ export async function generateMetadata(
     description: metaDescription,
     openGraph: {
       ...rootMetadata.openGraph,
-      url: SITE_URL + `/story/${storyId}`,
+      url: SITE_URL + `/${lng}/story/${storyId}`,
       title: metaTitle,
       description: metaDescription,
       images: metaImages,
@@ -55,12 +56,16 @@ export async function generateMetadata(
   }
 }
 
+export function generateStaticParams() {
+  return [{ lng: 'zh-TW' }, { lng: 'en-US' }]
+}
+
 export default async function StoryLayout({
   children,
   params,
 }: {
   children: React.ReactNode
-  params: { id: string }
+  params: { id: string; lng: string }
 }) {
   const storyId = params.id
   const storyData = await getStory({ storyId })

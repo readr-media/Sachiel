@@ -5,10 +5,9 @@ import '@/styles/policy.css'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { fetchTermsOfService } from '@/app/actions/policy'
 import { useT } from '@/app/i18n/client'
 import { processPolicy } from '@/utils/process-policy'
-
-import { fetchPrivacyPolicy } from '../../actions/policy'
 
 export default function Page() {
   const { lng } = useParams() as { lng: string }
@@ -22,16 +21,16 @@ export default function Page() {
       setIsLoading(true)
       setError(null)
       try {
-        const data = await fetchPrivacyPolicy(lng)
+        const data = await fetchTermsOfService(lng)
         if (data) {
           const processed = await processPolicy(data)
           setProcessedHtml(processed)
         } else {
-          setError('Failed to load privacy policy')
+          setError('Failed to load terms of service')
         }
       } catch (error) {
-        console.error('Failed to fetch privacy policy:', error)
-        setError('Failed to load privacy policy')
+        console.error('Failed to fetch terms of service:', error)
+        setError('Failed to load terms of service')
       } finally {
         setIsLoading(false)
       }
@@ -54,7 +53,7 @@ export default function Page() {
     return (
       <section className="px-5 pb-5 pt-6 sm:p-0">
         <div className="policy-content">
-          <p>{t('not-found', '找不到隱私政策內容')}</p>
+          <p>{t('terms-not-found', '找不到服務條款內容')}</p>
         </div>
       </section>
     )

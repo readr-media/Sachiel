@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import type { ForwardedRef, MouseEventHandler, RefObject } from 'react'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -49,6 +49,8 @@ export default function StoryMoreActionButton({
   nestedScrollContainerRef?: RefObject<HTMLElement>
   className?: string
 }) {
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW' // fallback to default language
   const [shouldShowShareSheet, setShouldShowShareSheet] = useState(false)
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
   const [shouldShowAddCollection, setShouldShowAddCollection] = useState(false)
@@ -160,7 +162,7 @@ export default function StoryMoreActionButton({
         createPortal(
           <ShareSheet
             onClose={closeShareSheet}
-            url={getStoryUrl(story.id)}
+            url={getStoryUrl(story.id, lng)}
             storyInfo={storyInfo}
           />,
           document.body
@@ -361,7 +363,13 @@ const ActionSheet = forwardRef(function ActionSheet(
         break
       }
       case ActionType.CopyLink: {
-        const storyUrl = getStoryUrl(storyId)
+        // Get language from URL path, fallback to zh-TW
+        const pathSegments = window.location.pathname.split('/')
+        const lngFromPath =
+          pathSegments[1] === 'en-US' || pathSegments[1] === 'zh-TW'
+            ? pathSegments[1]
+            : 'zh-TW'
+        const storyUrl = getStoryUrl(storyId, lngFromPath)
         navigator.clipboard
           .writeText(storyUrl)
           .then(() => {

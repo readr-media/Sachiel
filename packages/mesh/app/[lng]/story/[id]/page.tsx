@@ -37,7 +37,15 @@ type RelatedStoriesType = {
 export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page({ params }: { params: { id: string } }) {
+export function generateStaticParams() {
+  return [{ lng: 'zh-TW' }, { lng: 'en-US' }]
+}
+
+export default async function Page({
+  params,
+}: {
+  params: { id: string; lng: string }
+}) {
   const storyId = params.id
   const storyData = await getStory({ storyId })
   const relatedStoriesResult = await getRelatedStories(storyId)

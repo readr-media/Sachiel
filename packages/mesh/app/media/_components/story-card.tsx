@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -53,6 +54,8 @@ export default forwardRef(function StoryCard(
   },
   ref
 ) {
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW' // fallback to default language
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const pageName = usePageName()
@@ -82,7 +85,7 @@ export default forwardRef(function StoryCard(
           />
         </div>
         <Link
-          href={`/story/${story.id}`}
+          href={`/${lng}/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
             logClickEvent(

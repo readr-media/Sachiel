@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useParams } from 'next/navigation'
 
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import StoryMeta from '@/components/story-card/story-meta'
@@ -33,6 +34,8 @@ export default function FeaturedCard({
   publisherId,
   gtmTags,
 }: Props) {
+  const params = useParams()
+  const lng = params.lng as string
   const { t } = useCustomTranslation()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const userPayload = useUserPayload()
@@ -46,7 +49,7 @@ export default function FeaturedCard({
           : t('Pages.Home.FeaturedCard-non-readr-title', '最多人精選')}
       </h2>
       <article className="flex flex-col gap-y-3 sm:flex-row sm:gap-x-5 lg:gap-x-10">
-        <NextLink href={`/story/${story.id}`} className={gtmTags.story}>
+        <NextLink href={`/${lng}/story/${story.id}`} className={gtmTags.story}>
           <div className="relative aspect-[2/1] shrink-0 overflow-hidden rounded-md sm:aspect-square sm:size-[168px] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
             <ImageWithFallback
               src={story.og_image}
@@ -71,7 +74,7 @@ export default function FeaturedCard({
 
           <h3 className="title-2 lg:title-1 mb-2 text-primary-700 hover-or-active:underline lg:mb-3">
             <NextLink
-              href={`/story/${story.id}`}
+              href={`/${lng}/story/${story.id}`}
               onClick={() =>
                 logClickEvent(userPayload, 'click-story', {
                   target: 'story',

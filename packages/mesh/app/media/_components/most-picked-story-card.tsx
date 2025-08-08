@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
@@ -22,6 +23,8 @@ export default function MostPickedStoryCard({
   story: Story
   isDesktop: boolean
 }) {
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW' // fallback to default language
   const { t } = useCustomTranslation()
   const userPayload = useUserPayload()
   const pageName = usePageName()
@@ -40,7 +43,7 @@ export default function MostPickedStoryCard({
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:size-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">
             <Link
-              href={`/story/${story.id}`}
+              href={`/${lng}/story/${story.id}`}
               className="GTM-media_click_popular_article size-full"
             >
               <ImageWithFallback
@@ -81,7 +84,7 @@ export default function MostPickedStoryCard({
                 } mt-1 text-primary-700 hover-or-active:underline`}
               >
                 <Link
-                  href={`/story/${story.id}`}
+                  href={`/${lng}/story/${story.id}`}
                   className="GTM-media_click_popular_article"
                   onClick={() =>
                     logClickEvent(userPayload, 'click-story', {

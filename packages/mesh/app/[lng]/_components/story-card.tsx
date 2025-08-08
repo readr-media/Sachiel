@@ -1,6 +1,7 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useParams } from 'next/navigation'
 import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
@@ -26,6 +27,8 @@ type Props<T> = {
 export default forwardRef(function StoryCard<
   T extends CategoryStory | DailyStory
 >({ story, className = '', gtmTags }: Props<T>, ref: ForwardedRef<unknown>) {
+  const params = useParams()
+  const lng = params.lng as string
   const userPayload = useUserPayload()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
   const pageName = usePageName()
@@ -48,7 +51,7 @@ export default forwardRef(function StoryCard<
         <div>
           <p className="subtitle-1 sm:title-2 mb-2 line-clamp-2 grow text-primary-700 hover-or-active:underline sm:mb-1">
             <NextLink
-              href={`/story/${story.id}`}
+              href={`/${lng}/story/${story.id}`}
               className={gtmTags.story}
               onClick={() =>
                 logClickEvent(userPayload, 'click-story', {
@@ -79,7 +82,7 @@ export default forwardRef(function StoryCard<
         </div>
 
         <NextLink
-          href={`/story/${story.id}`}
+          href={`/${lng}/story/${story.id}`}
           className={gtmTags.story}
           onClick={() =>
             logClickEvent(userPayload, 'click-story', {

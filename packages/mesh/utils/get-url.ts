@@ -2,9 +2,9 @@ export function getShareUrl(urlTemplate: string, url: string) {
   return urlTemplate.replace('${url}', url)
 }
 
-export function getStoryUrl(storyId: string) {
+export function getStoryUrl(storyId: string, lng: string) {
   if (typeof window !== 'undefined') {
-    return `${window.location.origin}/story/${storyId}`
+    return `${window.location.origin}/${lng}/story/${storyId}`
   }
   return ''
 }

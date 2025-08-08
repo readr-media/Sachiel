@@ -1,5 +1,7 @@
 'use client'
 
+import { useParams } from 'next/navigation'
+
 import LayoutTemplate from '@/components/layout-template'
 import AddBookMarkButton from '@/components/navigation/add-bookmark-button'
 import GoBackButton from '@/components/navigation/go-back-button'
@@ -28,6 +30,8 @@ export default function ClientLayout({
   storyType: 'story' | 'podcast'
   children: React.ReactNode
 }) {
+  const params = useParams()
+  const lng = params.lng as string
   const { user } = useUser()
   const { interactions } = useStoryInteractions()
   const { displayPicks, displayPicksCount } = useDisplayPicks(interactions)
@@ -49,7 +53,7 @@ export default function ClientLayout({
             bookmarkObjective={BookmarkObjective.Story}
             targetId={story?.id ?? ''}
           />,
-          <ShareButton key={1} url={getStoryUrl(story?.id ?? '')} />,
+          <ShareButton key={1} url={getStoryUrl(story?.id ?? '', lng)} />,
         ],
       }}
       nonMobileNavigation={{
