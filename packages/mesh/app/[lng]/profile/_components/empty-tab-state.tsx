@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 
 import Button from '@/components/button'
 import usePageName from '@/hooks/use-page-name'
@@ -12,13 +12,15 @@ export default function EmptyTabState({
   tabKey: ProfileTabKey
   userType: UserType
 }) {
+  const params = useParams()
+  const lng = params.lng as string
   const router = useRouter()
   const searchParams = useSearchParams()
   const pageName = usePageName()
   const updatedParams = new URLSearchParams(searchParams.toString())
   updatedParams.set('from', pageName)
   const handleNavigate = () => {
-    router.push(`/collection/new?${updatedParams.toString()}`)
+    router.push(`/${lng}/collection/new?${updatedParams.toString()}`)
   }
   const messages: Record<ProfileTabKey, string> = {
     pick:

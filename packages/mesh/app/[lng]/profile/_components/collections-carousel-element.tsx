@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import React from 'react'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
@@ -20,6 +21,8 @@ type CollectionsCarouselElementProps = {
 const CollectionsCarouselElement = ({
   data,
 }: CollectionsCarouselElementProps) => {
+  const params = useParams()
+  const lng = params.lng as string
   const { t } = useCustomTranslation()
   const { profileData } = useEditProfile()
   const userPayload = useUserPayload()
@@ -30,7 +33,7 @@ const CollectionsCarouselElement = ({
   return (
     <div className="flex h-full w-[150px] flex-col rounded border bg-white md:w-full">
       <Link
-        href={`/collection/${id}`}
+        href={`/${lng}/collection/${id}`}
         onClick={() =>
           logClickEvent(userPayload, 'click-collection', {
             target: 'collection',
@@ -64,7 +67,7 @@ const CollectionsCarouselElement = ({
       <section className="flex h-auto grow flex-col px-3 py-2">
         <Link
           className="flex grow flex-col"
-          href={`/collection/${id}`}
+          href={`/${lng}/collection/${id}`}
           onClick={() =>
             logClickEvent(userPayload, 'click-collection', {
               target: 'collection',

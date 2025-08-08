@@ -2,19 +2,19 @@ import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
-import type { CreateCollectionParams } from '@/app/actions/collection'
-import { createCollection as sendCreateCollection } from '@/app/actions/collection'
-import { maxSummaryLength } from '@/app/collection/(mutate)/_components/edit-summary'
-import type { BaseMutateCollectionContextValue } from '@/app/collection/(mutate)/_types/collection'
+import { maxSummaryLength } from '@/app/[lng]/collection/(mutate)/_components/edit-summary'
+import type { BaseMutateCollectionContextValue } from '@/app/[lng]/collection/(mutate)/_types/collection'
 import {
   type CollectionPickStory,
   type PickOrBookmark,
   CollectionFormat,
-} from '@/app/collection/(mutate)/_types/collection'
+} from '@/app/[lng]/collection/(mutate)/_types/collection'
 import {
   DesktopCreateCollectionStep,
   MobileCreateCollectionStep,
-} from '@/app/collection/(mutate)/new/_types/create-collection'
+} from '@/app/[lng]/collection/(mutate)/new/_types/create-collection'
+import type { CreateCollectionParams } from '@/app/actions/collection'
+import { createCollection as sendCreateCollection } from '@/app/actions/collection'
 import { collectionCreateParamName } from '@/constants/search-param-names'
 import useUserPayload from '@/hooks/use-user-payload'
 import useWindowDimensions from '@/hooks/use-window-dimension'
@@ -203,7 +203,13 @@ export default function CreateCollectionProvider({
           },
         })
       })
-      router.push(`/collection/${collectionId}`)
+      // Extract lng from URL path, fallback to zh-TW
+      const pathSegments = window.location.pathname.split('/')
+      const lngFromPath =
+        pathSegments[1] === 'en-US' || pathSegments[1] === 'zh-TW'
+          ? pathSegments[1]
+          : 'zh-TW'
+      router.push(`/${lngFromPath}/collection/${collectionId}`)
     } else {
       setCrossPageToast({ status: 'fail', text: '建立集錦失敗，請重新嘗試' })
       router.push(`/profile/member/${user.customId}`)

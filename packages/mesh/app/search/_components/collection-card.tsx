@@ -1,4 +1,7 @@
+'use client'
+
 import NextLink from 'next/link'
+import { useParams } from 'next/navigation'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
@@ -15,6 +18,8 @@ export default function CollectionCard({
 }: {
   collection: NonNullable<SearchResults['collection']>[number]
 }) {
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW'
   const { id, title, creator, heroImage, readsCount } = collection
   const { width } = useWindowDimensions()
   const buttonSize = width >= 1440 ? 'md' : 'sm'
@@ -36,7 +41,10 @@ export default function CollectionCard({
 
   return (
     <div className="flex w-[150px] shrink-0 flex-col rounded border xl:w-[192px]">
-      <NextLink href={`/collection/${id}`} onClick={() => sendClickLog()}>
+      <NextLink
+        href={`/${lng}/collection/${id}`}
+        onClick={() => sendClickLog()}
+      >
         <div className="relative aspect-[2]">
           <ImageWithFallback
             alt={`${title}'s cover image`}
@@ -52,7 +60,10 @@ export default function CollectionCard({
         </div>
       </NextLink>
       <div className="flex flex-col px-3 py-2">
-        <NextLink href={`/collection/${id}`} onClick={() => sendClickLog()}>
+        <NextLink
+          href={`/${lng}/collection/${id}`}
+          onClick={() => sendClickLog()}
+        >
           <p className="caption-1 text-primary-500">@{creator.customId}</p>
           <p className="subtitle-2 xl:subtitle-1 line-clamp-2 h-9 text-primary-700 xl:h-12">
             {title}

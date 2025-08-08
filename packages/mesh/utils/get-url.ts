@@ -9,9 +9,9 @@ export function getStoryUrl(storyId: string, lng: string) {
   return ''
 }
 
-export function getCollectionUrl(collectionId: string) {
+export function getCollectionUrl(collectionId: string, lng: string) {
   if (typeof window !== 'undefined') {
-    return `${window.location.origin}/collection/${collectionId}`
+    return `${window.location.origin}/${lng}/collection/${collectionId}`
   }
   return ''
 }

@@ -1,15 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
+import type { CollectionPickStory } from '@/app/[lng]/collection/(mutate)/_types/collection'
 import {
   addStoryToCollection as updateCollectionWithStory,
   getMemberCollections,
 } from '@/app/actions/collection'
-import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
 import { ImageCategory } from '@/constants/fallback-src'
 import { collectionCreateParamName } from '@/constants/search-param-names'
 import { useToast } from '@/context/toast'
@@ -42,6 +42,8 @@ export default function AddStoryToCollection({
   const [collections, setCollections] = useState<Collection[]>([])
   const [addedCollections, setAddedCollections] = useState<Collection[]>([])
   const router = useRouter()
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW'
   const { user } = useUser()
   useBlockBodyScroll(true)
   const { addToast } = useToast()
@@ -100,7 +102,7 @@ export default function AddStoryToCollection({
 
   const createCollection = () => {
     setCrossPageCollectionPickStory(story)
-    router.push(`/collection/new?${searchParams.toString()}`)
+    router.push(`/${lng}/collection/new?${searchParams.toString()}`)
   }
 
   useEffect(() => {
@@ -172,7 +174,7 @@ export default function AddStoryToCollection({
           <React.Fragment key={i}>
             「
             <Link
-              href={`/collection/${collection.id}`}
+              href={`/${lng}/collection/${collection.id}`}
               className="hover-or-active:underline"
             >
               <span className="text-primary-700">{collection.title ?? ''}</span>

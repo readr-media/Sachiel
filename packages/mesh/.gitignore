@@ -41,3 +41,7 @@ certificates
 
 # Google cloud service account key
 service-account-file.json
+
+# Tools
+Feats/
+PRPs/
