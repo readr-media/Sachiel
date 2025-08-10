@@ -26,8 +26,8 @@ export function getMemberProfileUrl(
   return ''
 }
 
-export function getSearchUrl(text: string) {
-  return `/search/${encodeURIComponent(text.trim())}`
+export function getSearchUrl(text: string, lng: string) {
+  return `/${lng}/search/${encodeURIComponent(text.trim())}`
 }
 
 export function getPolicyUrl(pathName: string) {

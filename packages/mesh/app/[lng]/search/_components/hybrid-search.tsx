@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import {
   type SearchResultType,
@@ -53,6 +54,7 @@ export default function HybridSearch({
   currentStorySort,
   currentCollectionSort,
 }: HybridSearchProps) {
+  const { t } = useT('components/search')
   const router = useRouter()
 
   // AI answer is loaded asynchronously
@@ -254,7 +256,7 @@ export default function HybridSearch({
                             </p>
                             <p className="caption-1 flex items-center text-primary-500">
                               {source.custom_attributes?.['og:site_name'] ??
-                                '資料來源'}
+                                t('dataSource', '資料來源')}
                               <span className="mx-1 inline-block size-[2px] rounded-full bg-primary-500 text-center"></span>
                               <span>
                                 {displayTimeFromNow(source.published_at ?? '')}

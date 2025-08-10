@@ -1,11 +1,11 @@
+'use client'
+
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import { useState } from 'react'
 
 import { searchWithPagination } from '@/app/actions/search-pagination'
-import {
-  generateNoResultsMessage,
-  MISO_SEARCH_PAGINATION,
-} from '@/constants/miso'
+import { useT } from '@/app/i18n/client'
+import { MISO_SEARCH_PAGINATION } from '@/constants/miso'
 import type { GetStoriesCommentCountsQuery } from '@/graphql/__generated__/graphql'
 import { type SearchResults } from '@/utils/data-schema'
 
@@ -29,6 +29,7 @@ export default function StorySearchResult({
   storiesGQLData,
   isLoading = false,
 }: StorySearchResultProps) {
+  const { t } = useT('components/search')
   const [hasMoreData, setHasMoreData] = useState(true)
   const isNoResult = !initialStories.length && totalCount === 0
 
@@ -73,14 +74,20 @@ export default function StorySearchResult({
   if (isNoResult) {
     return (
       <p className="pt-3 text-primary-500 sm:pt-5">
-        {generateNoResultsMessage(query, '新聞')}
+        {t(
+          'noResults',
+          `找不到包含「${query}」的新聞，請換個關鍵字，再試一次。`,
+          { query, type: t('types.story') }
+        )}
       </p>
     )
   }
 
   return (
     <>
-      <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">所有新聞</h2>
+      <h2 className="list-title pb-3 pt-4 sm:pb-4 sm:pt-5">
+        {t('allStories', '所有新聞')}
+      </h2>
       <InfiniteScrollList
         key={currentSort}
         initialList={initialStories}

@@ -22,7 +22,7 @@ export default async function SearchResultPage({
   params,
   searchParams,
 }: {
-  params: { query: string }
+  params: { query: string; lng: string }
   searchParams: { sort?: string; story_sort?: string; collection_sort?: string }
 }) {
   const { query } = params
@@ -128,4 +128,8 @@ export default async function SearchResultPage({
       />
     </main>
   )
+}
+
+export function generateStaticParams() {
+  return [{ lng: 'zh-TW' }, { lng: 'en-US' }]
 }

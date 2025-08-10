@@ -1,0 +1,5 @@
+{
+  "title": "搜尋結果",
+  "titleWithQuery": "搜尋結果: {{query}}",
+  "description": "在 Sachiel 搜尋「{{query}}」的相關內容"
+}
