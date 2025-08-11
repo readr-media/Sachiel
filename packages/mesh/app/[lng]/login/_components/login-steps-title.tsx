@@ -2,14 +2,14 @@
 import { useRouter } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import { type LoginStepsKey, LoginState, useLogin } from '@/context/login'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { loginRedirectPathKey } from '@/hooks/use-redirect-login'
 
 export default function LoginStepsTitle() {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/login')
   const { step, setStep } = useLogin()
   const router = useRouter()
   const { setUser } = useUser()
@@ -24,27 +24,27 @@ export default function LoginStepsTitle() {
     | typeof LoginState.WebviewHint
   > = {
     [LoginState.TermsConfirmation]: {
-      title: t('Pages.Login.LoginStepsTitle-title-terms', '服務條款'),
+      title: t('steps.terms', '服務條款'),
       goBackTo: LoginState.Entry,
     },
     [LoginState.Email]: {
-      title: t('Pages.Login.LoginStepsTitle-title-email', 'Email'),
+      title: t('steps.email', 'Email'),
       goBackTo: LoginState.Entry,
     },
     [LoginState.EmailConfirmation]: {
-      title: t('Pages.Login.LoginStepsTitle-title-email-confirm', '確認收件匣'),
+      title: t('steps.emailConfirm', '確認收件匣'),
       goBackTo: LoginState.Email,
     },
     [LoginState.SetCategory]: {
-      title: t('Pages.Login.LoginStepsTitle-title-set-category', '新聞類別'),
+      title: t('steps.setCategory', '新聞類別'),
       goBackTo: LoginState.SetName,
     },
     [LoginState.SetFollowing]: {
-      title: t('Pages.Login.LoginStepsTitle-title-set-following', '推薦追蹤'),
+      title: t('steps.setFollowing', '推薦追蹤'),
       goBackTo: LoginState.SetCategory,
     },
     [LoginState.WebviewHint]: {
-      title: t('Pages.Login.LoginStepsTitle-title-webview-hint', '註冊／登入'),
+      title: t('steps.webviewHint', '註冊／登入'),
       goBackTo: LoginState.Entry,
     },
   }
@@ -94,22 +94,20 @@ export default function LoginStepsTitle() {
     }
     case LoginState.SetName:
       return (
-        <h2 className="list-title mx-auto">
-          {t('Pages.Login.LoginStepsTitle-title-set-name', '姓名')}
-        </h2>
+        <h2 className="list-title mx-auto">{t('steps.setName', '姓名')}</h2>
       )
     case LoginState.SetWallet:
       return (
         <div className="flex w-full px-5">
           <div className="w-9"></div>
           <h2 className="list-title mx-auto">
-            {t('Pages.Login.LoginStepsTitle-title-set-wallet', '連結錢包')}
+            {t('steps.setWallet', '連結錢包')}
           </h2>
           <button
             className="list-title text-custom-blue"
             onClick={handleSkipButton}
           >
-            {t('Pages.Login.LoginStepsTitle-skip', '略過')}
+            {t('buttons.skip', '略過')}
           </button>
         </div>
       )

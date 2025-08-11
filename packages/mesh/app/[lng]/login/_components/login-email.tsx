@@ -1,3 +1,5 @@
+'use client'
+import { useT } from '@/app/i18n/client'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { LoginState, useLogin } from '@/context/login'
@@ -6,6 +8,7 @@ import { debounce } from '@/utils/performance'
 import { isValidEmail } from '@/utils/validate-email'
 
 export default function LoginEmail() {
+  const { t } = useT('components/login')
   const { formData, setFormData, setStep, cachedEmail, setCachedEmail } =
     useLogin()
   const { email } = formData
@@ -64,7 +67,7 @@ export default function LoginEmail() {
         <Button
           size="lg"
           color="white"
-          text="送出"
+          text={t('buttons.submit', '送出')}
           onClick={handleSubmit}
           disabled={!isValid}
         />

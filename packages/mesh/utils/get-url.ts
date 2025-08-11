@@ -30,6 +30,10 @@ export function getSearchUrl(text: string, lng: string) {
   return `/${lng}/search/${encodeURIComponent(text.trim())}`
 }
 
+export function getLoginUrl(lng: string) {
+  return `/${lng}/login`
+}
+
 export function getPolicyUrl(pathName: string) {
   if (typeof window !== 'undefined') {
     return `${window.location.origin}${pathName}`

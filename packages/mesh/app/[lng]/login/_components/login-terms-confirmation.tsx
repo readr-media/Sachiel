@@ -1,6 +1,6 @@
 'use client'
 
-import '../../../styles/accept-terms.css'
+import '@/styles/accept-terms.css'
 
 import { useEffect, useRef, useState } from 'react'
 

@@ -8,6 +8,7 @@ import AdManager from '@/components/ad/ad-manager-ad'
 import ErrorPage from '@/components/status/error-page'
 import { useUser } from '@/context/user'
 import { type MongoDBResponse } from '@/utils/data-schema'
+import { getLoginUrl } from '@/utils/get-url'
 
 // Define Types and Constants
 interface CachedSocialFeed {
@@ -33,7 +34,7 @@ export default function Page() {
   const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
-  if (!memberId) redirect('/login')
+  if (!memberId) redirect(getLoginUrl('zh-TW'))
 
   useEffect(() => {
     const memberCacheKey = memberId

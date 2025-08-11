@@ -12,12 +12,12 @@ export function middleware(request: NextRequest) {
   if (!lng) lng = fallbackLng
 
   const protectRoutesPattern = [
-    /^\/media(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/media(\/.*)?$/,
     /^\/social(\/.*)?$/,
     /^\/point(\/.*)?$/,
     /^\/payment(\/.*)?$/,
     /^\/setting(\/.*)?$/,
-    /^\/media-backstage(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/media-backstage(\/.*)?$/,
     /^\/publisher-list(\/.*)?$/,
   ]
 
@@ -36,7 +36,7 @@ export function middleware(request: NextRequest) {
       )
 
     if (!isSocialBot && !token) {
-      return NextResponse.redirect(new URL('/login', request.nextUrl))
+      return NextResponse.redirect(new URL(`/${lng}/login`, request.nextUrl))
     }
   }
 
