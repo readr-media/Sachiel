@@ -1,0 +1,20 @@
+{
+  "loginCard": {
+    "sendLoginLink": "Send Login Link",
+    "emailSent": "We've sent a wallet login link to {{email}}, please click the link in the email.",
+    "reLoginTitle": "Re-login Wallet",
+    "pointsQuestion": "What are ReadR Points?",
+    "learnMore": "Learn More"
+  },
+  "auth": {
+    "noWalletDescription": "You haven't added/linked a wallet yet. Click the button below, we'll send the wallet activation link to your Email.",
+    "securityDescription": "For security, please re-login to your wallet to continue"
+  },
+  "transaction": {
+    "completePayment": "Complete Payment"
+  },
+  "status": {
+    "errorOccurred": "An error occurred. Try again!",
+    "viewTransactionDetails": "View transaction details"
+  }
+}

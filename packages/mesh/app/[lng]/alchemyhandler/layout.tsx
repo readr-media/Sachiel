@@ -5,3 +5,6 @@ export default function AlchemyHandlerLayout({
 }) {
   return children
 }
+
+// No metadata needed - this is an external callback handler
+// No generateStaticParams needed - dynamic route only
