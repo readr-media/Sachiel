@@ -1,21 +1,22 @@
 import { redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
+import getAllCategories from '@/app/actions/get-all-categories'
+import { getAllPublishers, getExcludePublishers } from '@/app/actions/publisher'
 import { NEXT_PAGES_REVALIDATE } from '@/constants/config'
 import { type GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
+import { getLoginUrl } from '@/utils/get-url'
 
-import getAllCategories from '../actions/get-all-categories'
-import { getAllPublishers, getExcludePublishers } from '../actions/publisher'
 import MediaStories from './_components/media-stories'
 
 export const revalidate = NEXT_PAGES_REVALIDATE.media
 
 export type Category = NonNullable<GetAllCategoriesQuery['categories']>[number]
 
-export default async function Page() {
+export default async function Page({ params }: { params: { lng: string } }) {
   const user = await getCurrentUser()
 
-  if (!user) redirect('/login')
+  if (!user) redirect(getLoginUrl(params.lng))
 
   const allCategoriesResponse = await getAllCategories()
   const allCategories = allCategoriesResponse?.categories ?? []

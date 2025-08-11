@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useParams, usePathname, useSearchParams } from 'next/navigation'
 
 import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
@@ -25,6 +25,8 @@ type IconInfo = {
 export default function DefaultNav({ className = '' }: { className?: string }) {
   const path = usePathname()
   const { user } = useUser()
+  const params = useParams()
+  const lng = params.lng as string
 
   const avatarUrl = user.avatar
   const userCustomId = user.customId
@@ -36,12 +38,14 @@ export default function DefaultNav({ className = '' }: { className?: string }) {
         path={path}
         avatarUrl={avatarUrl}
         userCustomId={userCustomId}
+        lng={lng}
       />
       {/* fixed bottom nav bar shown on mobile only */}
       <MobileNav
         path={path}
         avatarUrl={avatarUrl}
         userCustomId={userCustomId}
+        lng={lng}
       />
     </div>
   )
@@ -51,15 +55,17 @@ const NonMobileNav = ({
   path,
   avatarUrl,
   userCustomId,
+  lng,
 }: {
   path: string
   avatarUrl: string
   userCustomId: string
+  lng: string
 }) => {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const searchParams = useSearchParams()
-  const nonMobileNavIcons = useNonMobileNavIcons()
+  const nonMobileNavIcons = useNonMobileNavIcons(lng)
 
   return (
     <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
@@ -188,13 +194,15 @@ const MobileNav = ({
   path,
   avatarUrl,
   userCustomId,
+  lng,
 }: {
   path: string
   avatarUrl: string
   userCustomId: string
+  lng: string
 }) => {
   const searchParams = useSearchParams()
-  const mobileNavIcons = useMobileNavIcons()
+  const mobileNavIcons = useMobileNavIcons(lng)
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">

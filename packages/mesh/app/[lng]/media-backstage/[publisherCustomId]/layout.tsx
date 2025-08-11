@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 
 import { getCurrentUser } from '@/app/actions/auth'
 import LayoutTemplate from '@/components/layout-template'
+import { getLoginUrl } from '@/utils/get-url'
 
 import Loading from './point/_components/loading'
 
@@ -10,11 +11,11 @@ export default async function MediaBackstageLayout({
   params,
 }: {
   children: React.ReactNode
-  params: { publisherCustomId: string }
+  params: { publisherCustomId: string; lng: string } // Add lng param
 }) {
   const user = await getCurrentUser()
   const memberId = user?.memberId
-  if (!memberId) redirect('/login')
+  if (!memberId) redirect(getLoginUrl(params.lng))
 
   const { publisherCustomId } = params
 

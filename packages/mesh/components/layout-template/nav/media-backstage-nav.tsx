@@ -1,14 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { ImageCategory } from '@/constants/fallback-src'
-import { MEDIA_BACKSTAGE_NAV_ICONS } from '@/constants/layout'
+import { useMediaBackstageNavIcons } from '@/constants/layout'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 import type { IconInfo as BaseIconInfo } from '@/types/layout'
@@ -26,6 +26,10 @@ export default function MediaBackstageNav({
   publisherCustomId: string
 }) {
   const path = usePathname()
+  const params = useParams()
+  const lng = params.lng as string
+  const mediaBackstageNavIcons = useMediaBackstageNavIcons(lng)
+
   return (
     <nav className="fixed bottom-0 left-0 top-[theme(height.header.sm)] z-layout flex justify-end border-r bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
       <div className="flex w-[theme(width.nav.xl)] flex-col justify-between px-10">
@@ -33,7 +37,7 @@ export default function MediaBackstageNav({
           <div className="flex flex-col gap-5">
             <MediaSelector publisherCustomId={publisherCustomId} />
             <div>
-              {MEDIA_BACKSTAGE_NAV_ICONS.first.map((iconInfo) => (
+              {mediaBackstageNavIcons.first.map((iconInfo) => (
                 <NavIcon
                   key={iconInfo.text}
                   isOn={path === iconInfo.hrefFn(publisherCustomId)}
@@ -45,7 +49,7 @@ export default function MediaBackstageNav({
           </div>
         </div>
         <div className="border-t py-6">
-          {MEDIA_BACKSTAGE_NAV_ICONS.second.map((iconInfo) => (
+          {mediaBackstageNavIcons.second.map((iconInfo) => (
             <NavIcon
               key={iconInfo.text}
               isOn={false}
@@ -82,7 +86,7 @@ const MediaSelector = ({
   const genMediaLink = (newPublisherCustomId: string) =>
     pathname
       .split('/')
-      .map((seg, i) => (i === 2 ? newPublisherCustomId : seg))
+      .map((seg, i) => (i === 3 ? newPublisherCustomId : seg))
       .join('/')
 
   const isSelectable = mediaList.length > 1

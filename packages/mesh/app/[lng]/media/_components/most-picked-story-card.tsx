@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
+import { useT } from '@/app/i18n/client'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
 import { ImageCategory } from '@/constants/fallback-src'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -25,7 +25,7 @@ export default function MostPickedStoryCard({
 }) {
   const params = useParams()
   const lng = (params.lng as string) || 'zh-TW' // fallback to default language
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/home')
   const userPayload = useUserPayload()
   const pageName = usePageName()
   const { displayPicks, displayPicksCount } = useDisplayPicks(story)
@@ -38,7 +38,7 @@ export default function MostPickedStoryCard({
             isDesktop ? 'title-1' : 'list-title'
           } text-primary-500 lg:h-8`}
         >
-          {t('Pages.Home.FeaturedCard-non-readr-title', '最多人精選')}
+          {t('FeaturedCard-non-readr-title', '最多人精選')}
         </div>
         <article className="mt-3 flex flex-col gap-3 sm:flex-row sm:gap-5 lg:gap-10">
           <div className="relative aspect-[2/1] sm:aspect-square sm:size-[168px] lg:aspect-[2/1] lg:h-[178px] lg:w-[356px] xl:h-[200px] xl:w-[400px]">

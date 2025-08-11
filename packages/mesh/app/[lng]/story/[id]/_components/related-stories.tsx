@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import StoryCard from '@/app/media/_components/story-card'
+import StoryCard from '@/app/[lng]/media/_components/story-card'
 import Spinner from '@/components/spinner'
 import type { GetStoriesQuery } from '@/graphql/__generated__/graphql'
 

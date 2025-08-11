@@ -2,10 +2,10 @@
 import Link from 'next/link'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
+import { useT } from '@/app/i18n/client'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import StoryMeta from '@/components/story-card/story-meta'
 import { ImageCategory } from '@/constants/fallback-src'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { MostSponsorPublisher } from '@/utils/data-schema'
@@ -85,7 +85,7 @@ export default function PublisherCard({
 }: {
   publisherAndStories: MostSponsorPublisher
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/media')
   const { publisher, stories } = publisherAndStories
   const { id: publisherId, logo, title, customId, sponsoredCount } = publisher
 
@@ -111,9 +111,9 @@ export default function PublisherCard({
               </div>
             </Link>
             <div className="footnote line-clamp-1 text-primary-500">
-              {t('Pages.Media.PublisherCard-sponsor-count-1', '已獲得')}
+              {t('publisherCard.sponsorCount1', '已獲得')}
               <span className="text-custom-blue">{` ${sponsoredCount} `}</span>
-              {t('Pages.Media.PublisherCard-sponsor-count-2', '次贊助')}
+              {t('publisherCard.sponsorCount2', '次贊助')}
             </div>
           </div>
         </div>
