@@ -1,6 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
 
 import { getSocialPageData } from '@/app/actions/get-member-followings'
@@ -28,13 +29,15 @@ import NoFollowings from './_components/no-followings'
 
 export default function Page() {
   const { user } = useUser()
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW'
   const feedsNumber = 10
   const firstSectionAmount = 3
   const memberId = user.memberId
   const [socialData, setSocialData] = useState<MongoDBResponse | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isNotFound, setIsNotFound] = useState(false)
-  if (!memberId) redirect(getLoginUrl('zh-TW'))
+  if (!memberId) redirect(getLoginUrl(lng))
 
   useEffect(() => {
     const memberCacheKey = memberId

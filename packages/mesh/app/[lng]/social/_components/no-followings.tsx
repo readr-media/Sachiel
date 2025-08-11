@@ -1,6 +1,8 @@
+'use client'
 import { useEffect, useState } from 'react'
 
 import { getMostFollowersData } from '@/app/actions/get-member-followings'
+import { useT } from '@/app/i18n/client' // Add this import
 import Icon from '@/components/icon'
 import Spinner from '@/components/spinner'
 import { type MostFollowersMember } from '@/utils/data-schema'
@@ -9,6 +11,7 @@ import FollowSuggestionFeed from './follow-suggestion-feed'
 import FollowSuggestionWidget from './follow-suggestion-widget'
 
 export default function NoFollowings() {
+  const { t } = useT('components/social') // Add this
   const [suggestedFollowers, setSuggestedFollowers] = useState<
     MostFollowersMember[] | null
   >(null)
@@ -32,12 +35,14 @@ export default function NoFollowings() {
             <Icon iconName="icon-user-dash" size={{ width: 80, height: 78 }} />
             <div className="flex flex-col items-center gap-2">
               <p className="title-1 text-primary-700">
-                咦？這裡好像還缺點什麼...
+                {t('noFollowings.title', '咦？這裡好像還缺點什麼...')}
               </p>
               <div className="flex flex-col items-center">
-                <p className="body-2 text-primary-500">追蹤您喜愛的人</p>
                 <p className="body-2 text-primary-500">
-                  看看他們都精選了什麼新聞 👀
+                  {t('noFollowings.subtitle1', '追蹤您喜愛的人')}
+                </p>
+                <p className="body-2 text-primary-500">
+                  {t('noFollowings.subtitle2', '看看他們都精選了什麼新聞 👀')}
                 </p>
               </div>
             </div>

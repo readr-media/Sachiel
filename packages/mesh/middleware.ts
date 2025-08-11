@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
 
   const protectRoutesPattern = [
     /^\/[a-z]{2}(-[A-Z]{2})?\/media(\/.*)?$/,
-    /^\/social(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/social(\/.*)?$/,
     /^\/point(\/.*)?$/,
     /^\/payment(\/.*)?$/,
     /^\/setting(\/.*)?$/,

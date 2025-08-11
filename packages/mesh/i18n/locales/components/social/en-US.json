@@ -1,0 +1,28 @@
+{
+  "followSuggestion": {
+    "title": "Suggested Follows",
+    "recommendOthers": "Refresh",
+    "followDetailWithName": "and {{followerCount}} others are following",
+    "followDetail": "{{followerCount}} followers"
+  },
+  "followButton": {
+    "follow": "Follow",
+    "following": "Following"
+  },
+  "noFollowings": {
+    "title": "Hmm... something seems to be missing here...",
+    "subtitle1": "Follow people you like",
+    "subtitle2": "See what news they've curated 👀"
+  },
+  "feedAction": {
+    "commentOnArticle": "commented on this article",
+    "and": "and",
+    "andOthers": "and",
+    "peopleCommentedOnArticle": "others commented on this article",
+    "pickedThisStory": "picked this",
+    "pickedThisPodcast": "picked this podcast",
+    "pickedThisStoryFull": "picked this article",
+    "pickedThisPodcastFull": "picked this podcast", 
+    "people": "people"
+  }
+}

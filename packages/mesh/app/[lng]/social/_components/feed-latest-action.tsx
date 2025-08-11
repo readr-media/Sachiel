@@ -1,5 +1,7 @@
+'use client'
 import Link from 'next/link'
 
+import { useT } from '@/app/i18n/client' // Add this import
 import Avatar from '@/components/story-card/avatar'
 import { socialPageAvatarLayer } from '@/constants/z-index'
 import { type MongoDBResponse } from '@/utils/data-schema'
@@ -13,8 +15,10 @@ export default function FeedLatestAction({
   actions: LatestAction
   storyType: MongoDBResponse['stories'][number]['story_type']
 }) {
+  const { t } = useT('components/social') // Add this
   const { picksNum, commentsNum, picksData, commentsData } = actions
   const maxNameBytes = 9
+
   if (picksNum === 0) {
     if (commentsNum === 0) {
       return null
@@ -34,7 +38,7 @@ export default function FeedLatestAction({
                 )}
               </Link>
             </span>
-            在這篇文章留言
+            {t('feedAction.commentOnArticle', '在這篇文章留言')}
           </div>
         </div>
       )
@@ -65,7 +69,7 @@ export default function FeedLatestAction({
             </span>
             {commentsData[1] ? (
               <div>
-                及
+                {t('feedAction.and', '及')}
                 <span className="text-primary-700">
                   <Link
                     href={`profile/member/${commentsData[1].member.customId}`}
@@ -79,7 +83,7 @@ export default function FeedLatestAction({
                 </span>
               </div>
             ) : null}
-            在這篇文章留言
+            {t('feedAction.commentOnArticle', '在這篇文章留言')}
           </div>
         </div>
       )
@@ -101,9 +105,9 @@ export default function FeedLatestAction({
                 )}
               </Link>
             </span>
-            及其他
+            {t('feedAction.andOthers', '及其他')}
             <span className="px-1 text-primary-700">{commentsNum - 1}</span>
-            人在這篇文章留言
+            {t('feedAction.peopleCommentedOnArticle', '人在這篇文章留言')}
           </div>
         </div>
       )
@@ -121,7 +125,9 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {storyType === 'story' ? '精選了這篇' : '精選了這集 Podcast'}
+          {storyType === 'story'
+            ? t('feedAction.pickedThisStory', '精選了這篇')
+            : t('feedAction.pickedThisPodcast', '精選了這集 Podcast')}
         </div>
       </div>
     )
@@ -147,7 +153,7 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          及
+          {t('feedAction.and', '及')}
           <span className="text-primary-700">
             <Link
               href={`profile/member/${picksData[1].member.customId}`}
@@ -156,7 +162,9 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[1]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
+          {storyType === 'story'
+            ? t('feedAction.pickedThisStoryFull', '精選了這篇文章')
+            : t('feedAction.pickedThisPodcastFull', '精選了這集 Podcast')}
         </div>
       </div>
     )
@@ -175,9 +183,12 @@ export default function FeedLatestAction({
               {truncateNameByBytes(picksData[0]?.member?.name, maxNameBytes)}
             </Link>
           </span>
-          及其他
-          <span className="px-1 text-primary-700">{picksNum - 1}</span>人
-          {storyType === 'story' ? '精選了這篇文章' : '精選了這集 Podcast'}
+          {t('feedAction.andOthers', '及其他')}
+          <span className="px-1 text-primary-700">{picksNum - 1}</span>
+          {t('feedAction.people', '人')}
+          {storyType === 'story'
+            ? t('feedAction.pickedThisStoryFull', '精選了這篇文章')
+            : t('feedAction.pickedThisPodcastFull', '精選了這集 Podcast')}
         </div>
       </div>
     )

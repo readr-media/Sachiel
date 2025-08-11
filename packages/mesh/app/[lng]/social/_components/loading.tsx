@@ -1,8 +1,8 @@
 'use client'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 
 export default function Loading() {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/social')
 
   return (
     <main className="flex grow justify-center gap-10 sm:p-5 lg:justify-start lg:px-10">
@@ -22,7 +22,7 @@ export default function Loading() {
       </div>
       <div className="hidden flex-col px-5 lg:flex">
         <h2 className="list-title text-primary-700">
-          {t('Pages.Social.FollowSuggestionFeed-title', '推薦追蹤')}
+          {t('followSuggestion.title', '推薦追蹤')}
         </h2>
         <div className="mt-1 animate-pulse">
           {Array.from(Array(5)).map((_, i) => (

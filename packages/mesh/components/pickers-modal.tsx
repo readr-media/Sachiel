@@ -2,9 +2,9 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import FollowButton from '@/app/[lng]/social/_components/follow-button'
 import { getCollectionPickers } from '@/app/actions/collection'
 import { getStoryPickers } from '@/app/actions/story'
-import FollowButton from '@/app/social/_components/follow-button'
 import { usePickersModal } from '@/context/pickers-modal'
 import { type Picker } from '@/context/pickers-modal'
 import { useUser } from '@/context/user'

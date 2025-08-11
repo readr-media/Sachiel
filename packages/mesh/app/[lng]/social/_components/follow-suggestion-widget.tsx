@@ -1,9 +1,9 @@
 'use client'
 import Link from 'next/link'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import Avatar from '@/components/story-card/avatar'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import {
   type MongoDBResponse,
   type MostFollowersMember,
@@ -17,7 +17,7 @@ export default function FollowSuggestionWidget({
 }: {
   suggestedFollowers: MongoDBResponse['members'] | MostFollowersMember[]
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/social')
   const { displaySuggestedFollowers, setPage, hasNextPage } =
     useSuggestedFollowers(suggestedFollowers)
 
@@ -26,7 +26,7 @@ export default function FollowSuggestionWidget({
       <div className="top-[calc(theme(height.header.sm)+20px)] hidden lg:fixed lg:block lg:w-[220px] xl:w-[360px]">
         <div className=" flex justify-between pb-1">
           <h2 className="list-title text-primary-700">
-            {t('Pages.Social.FollowSuggestionFeed-title', '推薦追蹤')}
+            {t('followSuggestion.title', '推薦追蹤')}
           </h2>
           <button
             className={`button mt-1 flex h-6 items-center text-primary-500 ${
@@ -35,10 +35,7 @@ export default function FollowSuggestionWidget({
             onClick={() => setPage((page) => page + 1)}
           >
             <Icon iconName="icon-refresh" size="l" />
-            {t(
-              'Pages.Social.FollowSuggestionFeed-recommend-others',
-              '重新推薦'
-            )}
+            {t('followSuggestion.recommendOthers', '重新推薦')}
           </button>
         </div>
         {displaySuggestedFollowers?.map((member, index) => (
@@ -62,7 +59,7 @@ export default function FollowSuggestionWidget({
                       <>
                         <span>{member.from.name}</span>
                         {t(
-                          'Pages.Social.FollowSuggestionFeed-follow-detail-with-name',
+                          'followSuggestion.followDetailWithName',
                           '及其他 {{followerCount}} 人的追蹤對象',
                           { followerCount: member.followerCount }
                         )}
@@ -70,7 +67,7 @@ export default function FollowSuggestionWidget({
                     ) : (
                       <>
                         {t(
-                          'Pages.Social.FollowSuggestionFeed-follow-detail',
+                          'followSuggestion.followDetail',
                           '有 {{followerCount}} 人正在追蹤',
                           { followerCount: member.followerCount }
                         )}
