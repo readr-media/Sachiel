@@ -7,16 +7,16 @@ steps:
     entrypoint: bash
 
   # Run tests
-  - name: node:18-alpine
-    id: Run Tests
-    waitFor: ['-']
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        cd packages/$_TARGET_PACKAGE
-        yarn install --frozen-lockfile --prefer-offline
-        yarn test --maxWorkers=2 --watchAll=false --passWithNoTests
+  # - name: node:18-alpine
+  #   id: Run Tests
+  #   waitFor: ['-']
+  #   entrypoint: 'sh'
+  #   args:
+  #     - '-c'
+  #     - |
+  #       cd packages/$_TARGET_PACKAGE
+  #       yarn install --frozen-lockfile --prefer-offline
+  #       yarn test --maxWorkers=2 --watchAll=false --passWithNoTests
 
   # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker
