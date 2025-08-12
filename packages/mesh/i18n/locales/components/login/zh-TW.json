@@ -1,0 +1,29 @@
+{
+  "steps": {
+    "terms": "服務條款",
+    "email": "Email",
+    "emailConfirm": "確認收件匣",
+    "setName": "姓名",
+    "setCategory": "新聞類別",
+    "setFollowing": "推薦追蹤",
+    "setWallet": "連結錢包",
+    "webviewHint": "註冊／登入"
+  },
+  "buttons": {
+    "submit": "送出",
+    "next": "下一步",
+    "complete": "完成",
+    "skip": "略過",
+    "follow": "追蹤",
+    "following": "追蹤中",
+    "followAll": "一次追蹤全部",
+    "unfollowAll": "取消追蹤全部",
+    "openInBrowser": "以外部瀏覽器開啟"
+  },
+  "validation": {
+    "selectMinCategories": "至少要選 3 個",
+    "noSpecialChars": "不包含特殊符號",
+    "noMediaDuplicate": "沒有跟媒體名稱重複"
+  },
+  "categorySelection": "請選擇您想追蹤的新聞類別"
+}

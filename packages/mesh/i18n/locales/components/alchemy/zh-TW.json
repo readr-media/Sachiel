@@ -1,0 +1,20 @@
+{
+  "loginCard": {
+    "sendLoginLink": "發送登入連結",
+    "emailSent": "我們已將錢包登入連結寄到 {{email}}，請點擊信件中的連結。",
+    "reLoginTitle": "重新登入錢包",
+    "pointsQuestion": "讀選點數是什麼？",
+    "learnMore": "了解更多"
+  },
+  "auth": {
+    "noWalletDescription": "您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。",
+    "securityDescription": "為維護交易安全，請重新登入錢包以繼續"
+  },
+  "transaction": {
+    "completePayment": "完成付款"
+  },
+  "status": {
+    "errorOccurred": "發生錯誤，請重試！",
+    "viewTransactionDetails": "查看交易詳情"
+  }
+}

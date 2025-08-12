@@ -447,6 +447,7 @@
     },
     "CollectionPickButton": {
       "pick": "Pick",
+      "picked": "Picked",
       "already-picked": "Picked"
     },
     "PublisherDonateButton": {
@@ -605,7 +606,8 @@
       "edit-comment": "·edit comment"
     },
     "CommentBlock": {
-      "no-comment": "No comments yet, be the first to share your thoughts!"
+      "no-comment": "No comments yet, be the first to share your thoughts!",
+      "no-comment-yet": "No comments yet, be the first to share your thoughts!"
     },
     "CommentEditor": {
       "cancel": "Cancel",
@@ -614,7 +616,10 @@
     "DropdownMenu": {
       "report": "Report comment",
       "edit": "Edit comment",
-      "delete": "Delete comment"
+      "delete": "Delete comment",
+      "report-comment": "Report comment",
+      "edit-comment": "Edit comment",
+      "delete-comment": "Delete comment"
     },
     "AddStoryToCollection": {
       "no-collection": "You don't have any collections yet...",
@@ -679,16 +684,6 @@
     "SendTransaction": {
       "complete-payment": "Complete payment"
     },
-    "ObjectiveCommentCount": {
-      "comment-unit": "comments",
-      "comment-unit-10k": "K comments",
-      "no-comment": "No comments yet"
-    },
-    "ObjectivePickCount": {
-      "no-pick": "No picks yet",
-      "pick-unit": "picks",
-      "pick-unit-10k": "K picks"
-    },
     "AlchemyLoginCard": {
       "login-link-sent": "We've sent the wallet login link to {{email}}. Please click the link in the email.",
       "re-login-wallet": "Re-login to wallet",
@@ -703,15 +698,6 @@
     "DonateButton": {
       "donate": "Sponsor"
     },
-    "CollectionPickButton": {
-      "pick": "Pick",
-      "picked": "Picked"
-    },
-    "DropdownMenu": {
-      "report-comment": "Report comment",
-      "edit-comment": "Edit comment",
-      "delete-comment": "Delete comment"
-    },
     "DefaultNav": {
       "profile": "Profile",
       "bookmark": "Bookmarks"
@@ -724,9 +710,6 @@
     },
     "Footer": {
       "company-copyright": "Mirror Media Inc."
-    },
-    "CommentBlock": {
-      "no-comment-yet": "No comments yet, be the first to share your thoughts!"
     }
   },
   "Others": {

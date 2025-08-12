@@ -1,19 +1,19 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import type { ForwardedRef, MouseEventHandler, RefObject } from 'react'
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
+import type { CollectionPickStory } from '@/app/[lng]/collection/(mutate)/_types/collection'
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import { removeFollowPublisher } from '@/app/actions/follow-publisher'
-import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
-import { useToastMessages } from '@/constants/toast'
+import { useT } from '@/app/i18n/client'
+import { getToastMessages } from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -49,6 +49,8 @@ export default function StoryMoreActionButton({
   nestedScrollContainerRef?: RefObject<HTMLElement>
   className?: string
 }) {
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW' // fallback to default language
   const [shouldShowShareSheet, setShouldShowShareSheet] = useState(false)
   const [shouldShowActionSheet, setShouldShowActionSheet] = useState(false)
   const [shouldShowAddCollection, setShouldShowAddCollection] = useState(false)
@@ -160,7 +162,7 @@ export default function StoryMoreActionButton({
         createPortal(
           <ShareSheet
             onClose={closeShareSheet}
-            url={getStoryUrl(story.id)}
+            url={getStoryUrl(story.id, lng)}
             storyInfo={storyInfo}
           />,
           document.body
@@ -216,8 +218,8 @@ const ActionSheet = forwardRef(function ActionSheet(
   const pageName = usePageName()
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
-  const toastMessages = useToastMessages()
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/toast')
+  const toastMessages = getToastMessages(t)
 
   const actions = [
     {
@@ -361,7 +363,13 @@ const ActionSheet = forwardRef(function ActionSheet(
         break
       }
       case ActionType.CopyLink: {
-        const storyUrl = getStoryUrl(storyId)
+        // Get language from URL path, fallback to zh-TW
+        const pathSegments = window.location.pathname.split('/')
+        const lngFromPath =
+          pathSegments[1] === 'en-US' || pathSegments[1] === 'zh-TW'
+            ? pathSegments[1]
+            : 'zh-TW'
+        const storyUrl = getStoryUrl(storyId, lngFromPath)
         navigator.clipboard
           .writeText(storyUrl)
           .then(() => {

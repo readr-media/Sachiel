@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "meshPoints": "Mesh Points",
+    "sponsorshipCount": "Sponsorships",
+    "subscribedArticles": "Subscribed Articles",
+    "sponsored": "Sponsored"
+  },
+  "emptyState": {
+    "noTransactionRecords": "No transaction records",
+    "noSponsorshipRecords": "No sponsorship records yet",
+    "noSubscribedArticles": "No subscribed articles yet"
+  },
+  "record": {
+    "receivedAt": "Received at {{time}}",
+    "sentAt": "Sent at {{time}}",
+    "name": "Name",
+    "pointBalance": "Point Balance"
+  }
+}

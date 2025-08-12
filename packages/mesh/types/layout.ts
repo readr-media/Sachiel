@@ -8,4 +8,5 @@ export type IconInfo = {
   }
   href: string
   text: string
+  gtmName: string
 }

@@ -1,0 +1,8 @@
+{
+  "title": "Media List",
+  "description": "Browse all media publisher list",
+  "status": {
+    "new": "New",
+    "followers": "{{count}} followers"
+  }
+}

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { likeComment, unlikeComment } from '@/app/actions/comment'
-import { useToastMessages } from '@/constants/toast'
+import { useT } from '@/app/i18n/client'
+import { getToastMessages } from '@/constants/toast'
 import { useComment } from '@/context/comment'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
@@ -55,7 +56,8 @@ export const useCommentLike = ({
   const { addToast } = useToast()
   const { updateCommentLikeStatus } = useComment()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
-  const toastMessages = useToastMessages()
+  const { t } = useT('components/toast')
+  const toastMessages = getToastMessages(t)
 
   const memberLikedList = useMemo(() => {
     if (isCommentType(commentData)) {

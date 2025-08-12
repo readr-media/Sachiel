@@ -18,6 +18,7 @@ import {
   getMeshPointContract,
   updatePayment,
 } from '@/app/actions/payment'
+import { useT } from '@/app/i18n/client'
 import { ALCHEMY_ADDRESS } from '@/constants/config'
 import TOAST_MESSAGE from '@/constants/toast'
 import { useToast } from '@/context/toast'
@@ -41,7 +42,7 @@ export default function SendTransaction({
   onSend,
   onSuccess,
   onError,
-  actionText = '完成付款',
+  actionText,
 }: {
   recipientAddress: Hex
   amount: number
@@ -55,6 +56,9 @@ export default function SendTransaction({
   onError: () => void
   actionText?: string
 }) {
+  const { t } = useT('components/alchemy')
+  const finalActionText =
+    actionText || t('transaction.completePayment', '完成付款')
   const [contractInterface, setContractInterface] = useState<Abi | null>(null)
   const { addToast } = useToast()
   const [paymentId, setPaymentId] = useState('')
@@ -190,7 +194,7 @@ export default function SendTransaction({
             type="submit"
             size="lg"
             color="primary"
-            text={actionText}
+            text={finalActionText}
             disabled={disabled || !client}
           />
         </div>

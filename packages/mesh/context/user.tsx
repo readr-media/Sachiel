@@ -100,7 +100,7 @@ export function UserProvider({
   const [currentUser, setCurrentUser] = useState<User>(user ?? guest)
 
   useEffect(() => {
-    if (currentUser.memberId || pathname === '/login') return
+    if (currentUser.memberId || pathname.endsWith('/login')) return
 
     let unsubscribe: (() => void) | null = null
 

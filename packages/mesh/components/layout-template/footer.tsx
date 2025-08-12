@@ -2,23 +2,23 @@
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import {
   DOWNLOAD_APP_LINKS,
   FOOTER_SHARED_ICONS,
+  getFooterCompanyInfos,
+  getFooterNavLinks,
   LOGO_ICONS,
-  useFooterCompanyInfos,
-  useFooterNavLinks,
 } from '@/constants/layout'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 const SHOULD_SHOW_APP_STORE = false
 
 export default function Footer({ className = '' }: { className?: string }) {
-  const footerNavLinks = useFooterNavLinks()
-  const footerCompanyInfos = useFooterCompanyInfos()
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/layout')
+  const footerNavLinks = getFooterNavLinks(t)
+  const footerCompanyInfos = getFooterCompanyInfos(t)
 
   return (
     <footer

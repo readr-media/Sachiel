@@ -1,0 +1,5 @@
+{
+  "title": "Search Results",
+  "titleWithQuery": "Search Results: {{query}}",
+  "description": "Search results for \"{{query}}\" on Sachiel"
+}

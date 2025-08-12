@@ -1,0 +1,10 @@
+{
+  "add-story-to-collection-success": "add story to collection success",
+  "add-story-to-collection-failed": "add story to collection failed",
+  "story-alredy-added": "story alredy added",
+  "no-collection": "no collection",
+  "added-detail-1": " and ",
+  "added-detail-2-plural": " more stories",
+  "create-new-collection":"create new collection",
+  "added-detail-2-single": " to the collection!"
+}

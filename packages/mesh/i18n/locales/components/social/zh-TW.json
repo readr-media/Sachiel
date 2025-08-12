@@ -1,0 +1,28 @@
+{
+  "followSuggestion": {
+    "title": "推薦追蹤",
+    "recommendOthers": "重新推薦",
+    "followDetailWithName": "及其他 {{followerCount}} 人的追蹤對象",
+    "followDetail": "有 {{followerCount}} 人正在追蹤"
+  },
+  "followButton": {
+    "follow": "追蹤",
+    "following": "追蹤中"
+  },
+  "noFollowings": {
+    "title": "咦？這裡好像還缺點什麼...",
+    "subtitle1": "追蹤您喜愛的人",
+    "subtitle2": "看看他們都精選了什麼新聞 👀"
+  },
+  "feedAction": {
+    "commentOnArticle": "在這篇文章留言",
+    "and": "及",
+    "andOthers": "及其他",
+    "peopleCommentedOnArticle": "人在這篇文章留言",
+    "pickedThisStory": "精選了這篇",
+    "pickedThisPodcast": "精選了這集 Podcast",
+    "pickedThisStoryFull": "精選了這篇文章", 
+    "pickedThisPodcastFull": "精選了這集 Podcast",
+    "people": "人"
+  }
+}
