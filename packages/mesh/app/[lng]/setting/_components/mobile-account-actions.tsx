@@ -2,6 +2,7 @@
 
 import { onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
+import { useParams } from 'next/navigation' // Add this import
 import { useEffect, useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -14,7 +15,14 @@ import { logout } from '@/utils/logout'
 export default function MobileAccountActions() {
   const [logInMethodName, setLogInMethodName] = useState('')
   const { user } = useUser()
+  const { lng } = useParams() // Get language parameter
   const actionNames = useActionNames()
+
+  // Update hrefs to be language-aware
+  const languageAwareActions = actionNames.map((action) => ({
+    ...action,
+    href: action.href ? `/${lng}${action.href}` : action.href,
+  }))
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,7 +47,9 @@ export default function MobileAccountActions() {
         </div>
       </div>
       <div className="flex cursor-pointer items-center justify-between border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 hover-or-active:text-primary-500">
-        <Link href={actionNames[0].href as string}>{actionNames[0].name}</Link>
+        <Link href={languageAwareActions[0].href as string}>
+          {languageAwareActions[0].name}
+        </Link>
         <InteractiveIcon
           size={{ width: 20, height: 20 }}
           icon={{
@@ -51,10 +61,10 @@ export default function MobileAccountActions() {
       <div className="border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4">
         <div className="group cursor-pointer">
           <Link
-            href={actionNames[3].href as string}
+            href={languageAwareActions[3].href as string}
             className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
           >
-            {actionNames[3].name}
+            {languageAwareActions[3].name}
           </Link>
         </div>
 
@@ -65,17 +75,17 @@ export default function MobileAccountActions() {
             onClick={logout}
             className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
           >
-            {actionNames[1].name}
+            {languageAwareActions[1].name}
           </button>
         </div>
 
         <hr className="my-4 border-t-[0.5px] border-t-primary-800/10" />
 
         <Link
-          href={actionNames[2].href as string}
+          href={languageAwareActions[2].href as string}
           className="text-custom-red-text hover-or-active:text-custom-red"
         >
-          <div className="cursor-pointer"> {actionNames[2].name}</div>
+          <div className="cursor-pointer"> {languageAwareActions[2].name}</div>
         </Link>
       </div>
     </section>

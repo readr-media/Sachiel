@@ -2,6 +2,7 @@
 
 import { onAuthStateChanged } from 'firebase/auth'
 import Link from 'next/link'
+import { useParams } from 'next/navigation' // Add this import
 import { useEffect, useState } from 'react'
 
 import Icon from '@/components/icon'
@@ -14,7 +15,14 @@ import { logout } from '@/utils/logout'
 export default function NonMobileAccountActions() {
   const [logInMethodName, setLogInMethodName] = useState('')
   const { user } = useUser()
+  const { lng } = useParams() // Get language parameter
   const actionNames = useActionNames()
+
+  // Update hrefs to be language-aware
+  const languageAwareActions = actionNames.map((action) => ({
+    ...action,
+    href: action.href ? `/${lng}${action.href}` : action.href,
+  }))
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -37,7 +45,7 @@ export default function NonMobileAccountActions() {
         {iconName && <Icon iconName={iconName} size="m" />}
       </div>
       <div>
-        {actionNames.map(({ name, href }, index) => (
+        {languageAwareActions.map(({ name, href }, index) => (
           <div
             key={name}
             className="cursor-pointer border-b-[0.5px] border-b-primary-800/10 px-10 py-4 last:border-b-0 last:pb-9 last:text-custom-red-text hover-or-active:text-primary-500 last:hover-or-active:text-custom-red"

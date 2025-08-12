@@ -3,15 +3,17 @@
 import { type User, deleteUser, onAuthStateChanged } from 'firebase/auth'
 import type { FirebaseError } from 'firebase-admin/app'
 import { redirect } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
 import { deactiveMember } from '@/app/actions/auth'
+import { useT } from '@/app/i18n/client'
 import Button from '@/components/button'
 import { DELETION_STEP } from '@/constants/setting'
 import { useUser } from '@/context/user'
 import { auth } from '@/firebase/client'
+import { getLoginUrl } from '@/utils/get-url'
 
 import ConfirmationLayout from './confirmation-layout'
 
@@ -25,6 +27,9 @@ export default function Confirmation({ setDeleteStatus }: Props) {
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null)
   const { user } = useUser()
   const router = useRouter()
+  const { lng } = useParams()
+  const { t } = useT('pages/setting')
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -37,7 +42,7 @@ export default function Confirmation({ setDeleteStatus }: Props) {
   }, [])
 
   const memberId = user.memberId
-  if (!memberId) redirect('/login')
+  if (!memberId) redirect(getLoginUrl(lng as string)) // Language-aware redirect
 
   const handleDeleteMember = async () => {
     if (!firebaseUser) {
@@ -64,25 +69,28 @@ export default function Confirmation({ setDeleteStatus }: Props) {
         <div className="flex flex-col items-center gap-y-6 bg-single-layer px-5 pt-10 sm:w-[480px] sm:rounded-md sm:p-10 sm:shadow-[0_0_4px_0_rgba(0,9,40,0.1),0_2px_2px_0_rgba(0,9,40,0.1)]">
           <div className="flex flex-col items-center">
             <p className="title-2 mb-2 text-primary-700 sm:mb-1">
-              真的要刪除帳號嗎？
+              {t('deletion.confirmTitle', '真的要刪除帳號嗎？')}
             </p>
             <p className="body-2 text-center text-primary-500">
-              提醒您：刪除帳號後，您的帳號資訊將永久刪除並無法復原。
+              {t(
+                'deletion.confirmDescription',
+                '提醒您：刪除帳號後，您的帳號資訊將永久刪除並無法復原。'
+              )}
             </p>
           </div>
           <div className="w-full max-w-[295px] sm:max-w-[320px]">
             <Button
               size="lg"
               color="transparent"
-              text="那我再想想"
-              onClick={() => router.push('/setting')}
+              text={t('deletion.reconsider', '那我再想想')}
+              onClick={() => router.push(`/${lng}/setting`)} // Language-aware redirect
             />
           </div>
           <button
             onClick={() => handleDeleteMember()}
             className="button text-custom-red-text"
           >
-            確認刪除
+            {t('deletion.confirmDelete', '確認刪除')}
           </button>
         </div>
       </section>
