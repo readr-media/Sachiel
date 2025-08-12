@@ -1,11 +1,11 @@
 'use client'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import { useContactLinks } from '@/constants/contact'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export default function Page() {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/contact')
   const contactLinks = useContactLinks()
 
   return (
@@ -18,7 +18,7 @@ export default function Page() {
           />
           <p className="body-3 text-primary-600">
             {t(
-              'Pages.Contact.description',
+              'description',
               '若有使用上的問題，請將截圖及問題描述寄至客服信箱，或撥打客服電話由專人為您服務（服務時間：星期一～星期五，10:00～18:00）'
             )}
           </p>
