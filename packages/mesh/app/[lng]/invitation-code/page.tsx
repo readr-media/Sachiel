@@ -1,13 +1,13 @@
 import { notFound, redirect } from 'next/navigation'
 import { Fragment } from 'react'
 
-import Avatar from '@/components/story-card/avatar'
-
-import { getCurrentUser } from '../actions/auth'
+import { getCurrentUser } from '@/app/actions/auth'
 import {
   getSentInvitationCodes,
   getValidInvitationCodes,
-} from '../actions/invitation-code'
+} from '@/app/actions/invitation-code'
+import Avatar from '@/components/story-card/avatar'
+
 import CopyCodeButton from './_components/copy-code-button'
 
 export default async function Page() {

@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
+import TransactionOngoing from '@/app/[lng]/payment/[type]/[targetId]/_component/transaction-ongoing'
 import type {
   CreatePaymentProps,
   FailPaymentProps,
   UpdatePaymentProps,
 } from '@/app/actions/payment'
 import { type PublisherData } from '@/app/actions/publisher'
-import TransactionOngoing from '@/app/payment/[type]/[targetId]/_component/transaction-ongoing'
 import SendTransaction from '@/components/alchemy/send-transaction'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
