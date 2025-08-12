@@ -46,7 +46,7 @@ export type AccountDiscovery = {
   discovered_username?: Maybe<Scalars['String']['output']>
   discovery_method?: Maybe<AccountDiscoveryDiscoveryMethodType>
   id: Scalars['ID']['output']
-  is_successful?: Maybe<AccountDiscoveryIsSuccessfulType>
+  is_successful?: Maybe<Scalars['Boolean']['output']>
   match_reason?: Maybe<Scalars['String']['output']>
   mesh_member?: Maybe<Member>
   search_query?: Maybe<Scalars['String']['output']>
@@ -62,7 +62,7 @@ export type AccountDiscoveryCreateInput = {
   discovered_summary?: InputMaybe<Scalars['String']['input']>
   discovered_username?: InputMaybe<Scalars['String']['input']>
   discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodType>
-  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulType>
+  is_successful?: InputMaybe<Scalars['Boolean']['input']>
   match_reason?: InputMaybe<Scalars['String']['input']>
   mesh_member?: InputMaybe<MemberRelateToOneForCreateInput>
   search_query?: InputMaybe<Scalars['String']['input']>
@@ -82,18 +82,6 @@ export type AccountDiscoveryDiscoveryMethodTypeNullableFilter = {
   in?: InputMaybe<Array<AccountDiscoveryDiscoveryMethodType>>
   not?: InputMaybe<AccountDiscoveryDiscoveryMethodTypeNullableFilter>
   notIn?: InputMaybe<Array<AccountDiscoveryDiscoveryMethodType>>
-}
-
-export enum AccountDiscoveryIsSuccessfulType {
-  Failed = 'failed',
-  Success = 'success',
-}
-
-export type AccountDiscoveryIsSuccessfulTypeNullableFilter = {
-  equals?: InputMaybe<AccountDiscoveryIsSuccessfulType>
-  in?: InputMaybe<Array<AccountDiscoveryIsSuccessfulType>>
-  not?: InputMaybe<AccountDiscoveryIsSuccessfulTypeNullableFilter>
-  notIn?: InputMaybe<Array<AccountDiscoveryIsSuccessfulType>>
 }
 
 export type AccountDiscoveryOrderByInput = {
@@ -127,7 +115,7 @@ export type AccountDiscoveryUpdateInput = {
   discovered_summary?: InputMaybe<Scalars['String']['input']>
   discovered_username?: InputMaybe<Scalars['String']['input']>
   discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodType>
-  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulType>
+  is_successful?: InputMaybe<Scalars['Boolean']['input']>
   match_reason?: InputMaybe<Scalars['String']['input']>
   mesh_member?: InputMaybe<MemberRelateToOneForUpdateInput>
   search_query?: InputMaybe<Scalars['String']['input']>
@@ -147,7 +135,7 @@ export type AccountDiscoveryWhereInput = {
   discovered_username?: InputMaybe<StringFilter>
   discovery_method?: InputMaybe<AccountDiscoveryDiscoveryMethodTypeNullableFilter>
   id?: InputMaybe<IdFilter>
-  is_successful?: InputMaybe<AccountDiscoveryIsSuccessfulTypeNullableFilter>
+  is_successful?: InputMaybe<BooleanFilter>
   match_reason?: InputMaybe<StringFilter>
   mesh_member?: InputMaybe<MemberWhereInput>
   search_query?: InputMaybe<StringFilter>
@@ -5854,6 +5842,7 @@ export type Story = {
   full_content?: Maybe<Scalars['Boolean']['output']>
   full_screen_ad?: Maybe<StoryFullScreenAdType>
   id: Scalars['ID']['output']
+  image?: Maybe<Scalars['String']['output']>
   isMember?: Maybe<Scalars['Boolean']['output']>
   is_active?: Maybe<Scalars['Boolean']['output']>
   og_description?: Maybe<Scalars['String']['output']>

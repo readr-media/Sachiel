@@ -7,7 +7,6 @@ import { SITE_TITLE, SITE_URL } from '@/constants/config'
 
 export default async function SettingLayout({
   children,
-  params: _params,
 }: {
   children: React.ReactNode
   params: { lng: string }

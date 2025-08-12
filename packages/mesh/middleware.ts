@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
     /^\/[a-z]{2}(-[A-Z]{2})?\/social(\/.*)?$/,
     /^\/[a-z]{2}(-[A-Z]{2})?\/point(\/.*)?$/,
     /^\/payment(\/.*)?$/,
-    /^\/setting(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/setting(\/.*)?$/, // Updated pattern
     /^\/[a-z]{2}(-[A-Z]{2})?\/media-backstage(\/.*)?$/,
     /^\/[a-z]{2}(-[A-Z]{2})?\/publisher-list(\/.*)?$/,
   ]
