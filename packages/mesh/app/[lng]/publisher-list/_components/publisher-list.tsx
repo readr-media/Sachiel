@@ -1,9 +1,11 @@
 'use client'
 
 import NextLink from 'next/link'
+import { useParams } from 'next/navigation'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { type AllPublisherData } from '@/app/actions/publisher'
+import { useT } from '@/app/i18n/client'
 import FollowPublisherButton from '@/components/follow-publisher-button'
 import { ImageCategory } from '@/constants/fallback-src'
 import { DAY } from '@/constants/time-unit'
@@ -13,6 +15,9 @@ export default function PublisherList({
 }: {
   publishers: AllPublisherData
 }) {
+  const { t } = useT('pages/publisher-list')
+  const { lng } = useParams()
+
   return (
     <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 sm:px-5 sm:py-8 md:px-[70px] lg:grid-cols-5 lg:px-10">
       {publishers.map((publisher) => {
@@ -27,8 +32,8 @@ export default function PublisherList({
 
         const publisherStatus =
           createdAt > Date.now() - 30 * DAY
-            ? `新加入`
-            : `${followerCount}人追蹤`
+            ? t('status.new', '新加入')
+            : t('status.followers', '{{count}}人追蹤', { count: followerCount })
         return (
           <div
             key={id}
@@ -45,7 +50,7 @@ export default function PublisherList({
               />
             </div>
             <p className="subtitle-2 mb-1 line-clamp-1 h-[18px] overflow-hidden break-words text-center hover-or-active:underline">
-              <NextLink href={`/profile/publisher/${customId}`}>
+              <NextLink href={`/${lng}/profile/publisher/${customId}`}>
                 {publisherName}
               </NextLink>
             </p>

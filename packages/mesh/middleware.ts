@@ -14,11 +14,11 @@ export function middleware(request: NextRequest) {
   const protectRoutesPattern = [
     /^\/[a-z]{2}(-[A-Z]{2})?\/media(\/.*)?$/,
     /^\/[a-z]{2}(-[A-Z]{2})?\/social(\/.*)?$/,
-    /^\/point(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/point(\/.*)?$/,
     /^\/payment(\/.*)?$/,
     /^\/setting(\/.*)?$/,
     /^\/[a-z]{2}(-[A-Z]{2})?\/media-backstage(\/.*)?$/,
-    /^\/publisher-list(\/.*)?$/,
+    /^\/[a-z]{2}(-[A-Z]{2})?\/publisher-list(\/.*)?$/,
   ]
 
   const currentPath = request.nextUrl.pathname
