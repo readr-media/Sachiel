@@ -40,3 +40,20 @@ export function getPolicyUrl(pathName: string) {
   }
   return ''
 }
+
+export function getPointUrl(lng: string, subPath?: string) {
+  const base = `/${lng}/point`
+  return subPath ? `${base}/${subPath}` : base
+}
+
+export function getPointRecordUrl(lng: string, id: string) {
+  return `/${lng}/point/record/${id}`
+}
+
+export function getPointSponsorshipUrl(lng: string) {
+  return `/${lng}/point/sponsorship`
+}
+
+export function getPointSubscribeStoriesUrl(lng: string) {
+  return `/${lng}/point/subscribe-stories`
+}

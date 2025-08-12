@@ -3,18 +3,27 @@ import { notFound, redirect } from 'next/navigation'
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMeshPointBalance } from '@/app/actions/mesh-point'
 import { getMemberSingleTransaction } from '@/app/actions/transaction'
+import { getT } from '@/app/i18n'
 import Icon from '@/components/icon'
 import { displayTime } from '@/utils/story-display'
 
 import MeshPointHelper from '../../_components/mesh-point-helper'
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: { id: string; lng: string }
+}) {
+  const { lng, id } = params
+  const { t } = await getT('components/point')
+
   const user = await getCurrentUser()
   const memberId = user?.memberId
   let balance = undefined
-  if (!memberId) redirect('/login')
 
-  const data = await getMemberSingleTransaction(memberId, params.id)
+  if (!memberId) redirect(`/${lng}/login`) // Use localized login URL
+
+  const data = await getMemberSingleTransaction(memberId, id)
   if (!data) notFound()
 
   const hasAlchemyAccount = !!user.wallet
@@ -45,19 +54,27 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
           <p className="footnote text-primary-400 sm:self-end">
             {data.isIncome
-              ? `在 ${displayTime(data.createdAt)} 收到`
-              : `在 ${displayTime(data.createdAt)} 送出`}
+              ? t('record.receivedAt', '在 {{time}} 收到', {
+                  time: displayTime(data.createdAt),
+                })
+              : t('record.sentAt', '在 {{time}} 送出', {
+                  time: displayTime(data.createdAt),
+                })}
           </p>
         </section>
         <section className="flex flex-col gap-6 p-5 sm:p-10">
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">名稱</p>
+            <p className="subtitle-2 text-primary-500">
+              {t('record.name', '名稱')}
+            </p>
             <p className="subtitle-1 text-primary-700">
               {data.transactionTitle}
             </p>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="subtitle-2 text-primary-500">讀選點數餘額</p>
+            <p className="subtitle-2 text-primary-500">
+              {t('record.pointBalance', '讀選點數餘額')}
+            </p>
             <div className="flex flex-row items-center justify-start gap-1">
               <Icon iconName="icon-mesh-point" size="m" className="size-6" />
               <p className="subtitle-1 text-primary-700">

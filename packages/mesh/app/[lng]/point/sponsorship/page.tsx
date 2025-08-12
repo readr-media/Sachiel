@@ -4,13 +4,17 @@ import { Fragment } from 'react'
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import { getCurrentUser } from '@/app/actions/auth'
 import { getMemberSponsorRecord } from '@/app/actions/sponsorship'
+import { getT } from '@/app/i18n'
 import PublisherDonateButton from '@/components/publisher-card/donate-button'
 import { ImageCategory } from '@/constants/fallback-src'
 
-export default async function Page() {
+export default async function Page({ params }: { params: { lng: string } }) {
+  const { lng } = params
+  const { t } = await getT('components/point')
+
   const user = await getCurrentUser()
   const memberId = user?.memberId
-  if (!memberId) redirect('/login')
+  if (!memberId) redirect(`/${lng}/login`)
   const response = await getMemberSponsorRecord(memberId)
   const sponsorRecord = response.filter((data) => data.sponsoredCount !== 0)
 
@@ -19,7 +23,7 @@ export default async function Page() {
       {sponsorRecord.length === 0 ? (
         <div className="flex h-[calc(100vh-124px)] items-center justify-center bg-multi-layer-light sm:h-[calc(100vh-445px)] sm:bg-transparent">
           <p className="button-large w-dvw text-center text-primary-400">
-            目前還沒有贊助紀錄
+            {t('emptyState.noSponsorshipRecords', '目前還沒有贊助紀錄')}
           </p>
         </div>
       ) : (
@@ -51,7 +55,9 @@ export default async function Page() {
                         {record.publisherTitle}
                       </p>
                       <p className="caption-1">
-                        <span className="text-primary-500">已贊助</span>
+                        <span className="text-primary-500">
+                          {t('stats.sponsored', '已贊助')}
+                        </span>
                         <span className="text-custom-blue">
                           {record.sponsoredCount}次
                         </span>

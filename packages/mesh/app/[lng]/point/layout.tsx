@@ -1,6 +1,7 @@
 'use client'
 import { usePathname } from 'next/navigation'
 
+import { useT } from '@/app/i18n/client'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
 import Spinner from '@/components/spinner'
@@ -14,8 +15,9 @@ export default function PointLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { t } = useT('pages/point')
   const pathname = usePathname()
-  const subPath = pathname.split('/')[2]
+  const subPath = pathname.split('/')[3] // Updated for [lng]/point/... structure
   const isNestedPage = ['sponsorship', 'subscribe-stories', 'record'].includes(
     subPath
   )
@@ -25,15 +27,15 @@ export default function PointLayout({
   if (isNestedPage) {
     switch (subPath) {
       case 'sponsorship':
-        subtitle = '已贊助媒體'
+        subtitle = t('nav.sponsorship', '已贊助媒體')
         loadingJsx = <LoadingSponsorship />
         break
       case 'subscribe-stories':
-        subtitle = '訂閱中文章'
+        subtitle = t('nav.subscribeStories', '訂閱中文章')
         loadingJsx = <LoadingSubscribeStories />
         break
       case 'record':
-        subtitle = '點數紀錄'
+        subtitle = t('nav.record', '點數紀錄')
         break
       default:
         subtitle = ''

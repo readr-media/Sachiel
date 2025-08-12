@@ -2,6 +2,7 @@
 
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Icon from '@/components/icon'
@@ -27,6 +28,7 @@ export default function TransactionList({
     pageIndex: number
   ) => Promise<Transaction['combinedRecord']>
 }) {
+  const { lng } = useParams() as { lng: string }
   return (
     <InfiniteScrollList
       initialList={initialList}
@@ -44,7 +46,7 @@ export default function TransactionList({
 
           return (
             <Link
-              href={`/point/record/${data.tid}`}
+              href={`/${lng}/point/record/${data.tid}`}
               key={data.tid}
               className={`group flex flex-row gap-2 ${
                 index === 0 ? 'pb-5' : 'py-5'

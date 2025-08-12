@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Hex } from 'viem'
 
@@ -19,6 +19,7 @@ import { useUser } from '@/context/user'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { TransactionState } from '@/types/transaction'
 import { logSponsorEvent } from '@/utils/event-logs'
+import { getPointUrl } from '@/utils/get-url'
 import { debounce } from '@/utils/performance'
 
 import SponsorInput from './sponsor-input'
@@ -37,6 +38,7 @@ export default function SponsorshipInfo({
 }) {
   const { user } = useUser()
   const router = useRouter()
+  const { lng } = useParams() as { lng?: string }
   const userPayload = useUserPayload()
   const [isInputMode, setIsInputMode] = useState(false)
   const [selectedOption, setSelectedOption] = useState<
@@ -129,7 +131,7 @@ export default function SponsorshipInfo({
               color="white"
               text="完成"
               onClick={() => {
-                router.push('/point')
+                router.push(getPointUrl(lng || 'zh-TW'))
               }}
             />
           </div>
