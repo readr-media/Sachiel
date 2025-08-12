@@ -11,5 +11,8 @@
   "life": "Lifestyle",
   "education": "Education",
   "environment": "Environment",
-  "podcast": "Podcast"
+  "podcast": "Podcast",
+  "comment-show-more": "show more",
+  "EmptyMessage-title": "No stories found",
+  "EmptyMessage-description": "Try browsing other categories or refresh the page"
 }

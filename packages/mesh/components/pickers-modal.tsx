@@ -5,10 +5,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import FollowButton from '@/app/[lng]/social/_components/follow-button'
 import { getCollectionPickers } from '@/app/actions/collection'
 import { getStoryPickers } from '@/app/actions/story'
+import { useT } from '@/app/i18n/client'
 import { usePickersModal } from '@/context/pickers-modal'
 import { type Picker } from '@/context/pickers-modal'
 import { useUser } from '@/context/user'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import { PickObjective } from '@/types/objective'
 
@@ -16,7 +16,7 @@ import Icon from './icon'
 import Avatar from './story-card/avatar'
 
 export default function PickersModal() {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/pickers-modal')
   const { user } = useUser()
   const { pickObjective, objectiveId, closePickersModal } = usePickersModal()
   const { targetRef: scrollRef, isIntersecting: isInView } = useInView()
@@ -111,7 +111,7 @@ export default function PickersModal() {
             <div className="flex h-15 flex-row items-center justify-center rounded-t-md border-[0.5px] border-primary-200 bg-white">
               <div className="size-11"></div>
               <p className="list-title mx-auto text-primary-800">
-                {t('Components.PickersModal.picker', '精選者')}
+                {t('picker', '精選者')}
               </p>
               <button onClick={() => closePickersModal()}>
                 <Icon iconName="icon-modal-close" size="2xl" />

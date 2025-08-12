@@ -1,5 +1,3 @@
-'use client'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import { logout } from '@/utils/logout'
 
 const LOGO_ICONS = {
@@ -31,24 +29,22 @@ const DOWNLOAD_APP_LINKS = [
   },
 ] as const
 
-export const useFooterNavLinks = () => {
-  const { t } = useCustomTranslation()
-
+export const getFooterNavLinks = (t: (key: string) => string) => {
   return [
     // TODO: Uncomment it when page is complete
-    // { text: t('Constants.Layout.about-us', '關於我們'), href: '/' },
+    // { text: t('about-us'), href: '/' },
     {
-      text: t('Constants.Layout.contact-us', '聯絡我們'),
+      text: t('contact-us'),
       href: '/contact',
       gtmName: 'contact',
     },
     {
-      text: t('Constants.Layout.privacy-policy', '隱私政策'),
+      text: t('privacy-policy'),
       href: '/policy/privacy-policy',
       gtmName: 'privacy_terms',
     },
     {
-      text: t('Constants.Layout.terms-of-service', '服務條款'),
+      text: t('terms-of-service'),
       href: '/policy/terms-of-service',
       gtmName: 'service_terms',
     },
@@ -83,22 +79,14 @@ const FOOTER_SHARED_ICONS = [
   },
 ] as const
 
-export const useFooterCompanyInfos = () => {
-  const { t } = useCustomTranslation()
-
-  return [
-    t('Constants.Layout.company-name', '精鏡傳媒股份有限公司'),
-    t(
-      'Constants.Layout.company-address',
-      '114 台北市內湖區堤頂大道一段 365 號 7 樓'
-    ),
-    t('Constants.Layout.company-email', 'readr@readr.tw'),
-  ] as const
+export const getFooterCompanyInfos = (t: (key: string) => string) => {
+  return [t('company-name'), t('company-address'), t('company-email')] as const
 }
 
-export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
-  const { t } = useCustomTranslation()
-
+export const getNonMobileNavIcons = (
+  t: (key: string) => string,
+  lng: string = 'zh-TW'
+) => {
   return {
     first: [
       {
@@ -108,7 +96,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-popular-lg-on',
         },
         href: `/${lng}/`,
-        text: t('Constants.Layout.homepage', '首頁'),
+        text: t('homepage'),
         gtmName: 'homepage',
       },
       {
@@ -118,7 +106,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-social-lg-on',
         },
         href: `/${lng}/social`,
-        text: t('Constants.Layout.social', '社群'),
+        text: t('social'),
         gtmName: 'social',
       },
       {
@@ -128,7 +116,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-latest-lg-on',
         },
         href: `/${lng}/media`,
-        text: t('Constants.Layout.media', '最新'),
+        text: t('media'),
         gtmName: 'media',
       },
     ],
@@ -140,7 +128,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-profile-lg-on',
         },
         href: `/${lng}/profile`,
-        text: t('Constants.Layout.profile', '個人檔案'),
+        text: t('profile'),
         gtmName: 'profile',
       },
       {
@@ -150,7 +138,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-wallet-lg-on',
         },
         href: `/${lng}/point`,
-        text: t('Constants.Layout.point', '讀選點數'),
+        text: t('point'),
         gtmName: 'point',
       },
       {
@@ -160,7 +148,7 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-bookmark-lg-on',
         },
         href: `/${lng}/profile`,
-        text: t('Constants.Layout.bookmark', '書籤'),
+        text: t('bookmark'),
         gtmName: 'bookmark',
       },
     ],
@@ -172,16 +160,17 @@ export const useNonMobileNavIcons = (lng: string = 'zh-TW') => {
           on: 'icon-setting-lg-on',
         },
         href: `/${lng}/setting`,
-        text: t('Constants.Layout.setting', '設定'),
+        text: t('setting'),
         gtmName: 'setting',
       },
     ],
   } as const
 }
 
-export const useMobileNavIcons = (lng: string = 'zh-TW') => {
-  const { t } = useCustomTranslation()
-
+export const getMobileNavIcons = (
+  t: (key: string) => string,
+  lng: string = 'zh-TW'
+) => {
   return [
     {
       icon: {
@@ -190,7 +179,7 @@ export const useMobileNavIcons = (lng: string = 'zh-TW') => {
         on: 'icon-popular-on',
       },
       href: `/${lng}/`,
-      text: t('Constants.Layout.homepage', '首頁'),
+      text: t('homepage'),
       gtmName: 'homepage',
     },
     {
@@ -200,7 +189,7 @@ export const useMobileNavIcons = (lng: string = 'zh-TW') => {
         on: 'icon-social-on',
       },
       href: `/${lng}/social`,
-      text: t('Constants.Layout.social', '社群'),
+      text: t('social'),
       gtmName: 'social',
     },
     {
@@ -210,7 +199,7 @@ export const useMobileNavIcons = (lng: string = 'zh-TW') => {
         on: 'icon-latest-on',
       },
       href: `/${lng}/media`,
-      text: t('Constants.Layout.media', '最新'),
+      text: t('media'),
       gtmName: 'media',
     },
     {
@@ -220,7 +209,7 @@ export const useMobileNavIcons = (lng: string = 'zh-TW') => {
         on: 'icon-wallet-on',
       },
       href: `/${lng}/point`,
-      text: t('Constants.Layout.point', '讀選點數'),
+      text: t('point'),
       gtmName: 'point',
     },
     {
@@ -230,15 +219,16 @@ export const useMobileNavIcons = (lng: string = 'zh-TW') => {
         on: 'icon-profile-on',
       },
       href: `/${lng}/profile`,
-      text: t('Constants.Layout.profile', '個人檔案'),
+      text: t('profile'),
       gtmName: 'profile',
     },
   ] as const
 }
 
-export const useMediaBackstageNavIcons = (lng: string = 'zh-TW') => {
-  const { t } = useCustomTranslation()
-
+export const getMediaBackstageNavIcons = (
+  t: (key: string) => string,
+  lng: string = 'zh-TW'
+) => {
   return {
     first: [
       {
@@ -249,7 +239,8 @@ export const useMediaBackstageNavIcons = (lng: string = 'zh-TW') => {
         },
         hrefFn: (publisherCustomId: string) =>
           `/${lng}/media-backstage/${publisherCustomId}/point`,
-        text: t('Constants.Layout.redeem-points', '點數兌換'),
+        text: t('redeem-points'),
+        gtmName: 'redeem-points',
       },
       {
         icon: {
@@ -259,7 +250,8 @@ export const useMediaBackstageNavIcons = (lng: string = 'zh-TW') => {
         },
         hrefFn: (publisherCustomId: string) =>
           `/${lng}/media-backstage/${publisherCustomId}/report`,
-        text: t('Constants.Layout.earning-report', '收益報表'),
+        text: t('earning-report'),
+        gtmName: 'earning-report',
       },
     ],
     second: [
@@ -272,7 +264,8 @@ export const useMediaBackstageNavIcons = (lng: string = 'zh-TW') => {
         action: () => {
           logout()
         },
-        text: t('Constants.Layout.logout', '登出'),
+        text: t('logout'),
+        gtmName: 'logout',
       },
     ],
   } as const

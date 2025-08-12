@@ -10,13 +10,13 @@ import {
   addStoryToCollection as updateCollectionWithStory,
   getMemberCollections,
 } from '@/app/actions/collection'
+import { useT } from '@/app/i18n/client'
 import { ImageCategory } from '@/constants/fallback-src'
 import { collectionCreateParamName } from '@/constants/search-param-names'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import type { GetMemberCollectionsQuery } from '@/graphql/__generated__/graphql'
 import useBlockBodyScroll from '@/hooks/use-block-body-scroll'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { setCrossPageCollectionPickStory } from '@/utils/cross-page-create-collection'
@@ -53,7 +53,7 @@ export default function AddStoryToCollection({
     [collectionCreateParamName]: pageName,
   })
 
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/add-story-to-collection')
 
   const addStoryToCollection = async (collection: Collection) => {
     if (!collection.collectionpicks) return
@@ -69,10 +69,7 @@ export default function AddStoryToCollection({
     if (response) {
       addToast({
         status: 'success',
-        text: t(
-          'Components.AddStoryToCollection.add-story-to-collection-success',
-          '成功加入集錦'
-        ),
+        text: t('add-story-to-collection-success', '成功加入集錦'),
       })
       logStoryInteractionEvent(userPayload, {
         type: 'collection',
@@ -91,10 +88,7 @@ export default function AddStoryToCollection({
     } else {
       addToast({
         status: 'fail',
-        text: t(
-          'Components.AddStoryToCollection.add-story-to-collection-failed',
-          '加入集錦失敗，請重新嘗試'
-        ),
+        text: t('add-story-to-collection-failed', '加入集錦失敗，請重新嘗試'),
       })
     }
     onClose()
@@ -141,31 +135,23 @@ export default function AddStoryToCollection({
     if (!collections.length && !addedCollections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          {t(
-            'Components.AddStoryToCollection.no-collection',
-            '你目前還沒有任何集錦...'
-          )}
+          {t('no-collection', '你目前還沒有任何集錦...')}
         </div>
       )
     if (!collections.length)
       return (
         <div className="body-3 p-5 pb-0 text-primary-500">
-          {t(
-            'Components.AddStoryToCollection.story-alredy-added',
-            '你之前已將這篇新聞加入你所有的集錦囉'
-          )}
+          {t('story-alredy-added', '你之前已將這篇新聞加入你所有的集錦囉')}
         </div>
       )
     if (!addedCollections.length) return null
     const endingText =
       addedCollections.length > 1
-        ? `${t('Components.AddStoryToCollection.added-detail-1', '等')}${
-            addedCollections.length
-          }${t(
-            'Components.AddStoryToCollection.added-detail-2-plural',
+        ? `${t('added-detail-1', '等')}${addedCollections.length}${t(
+            'added-detail-2-plural',
             '篇文章'
           )}`
-        : t('Components.AddStoryToCollection.added-detail-2-single', '集錦囉')
+        : t('added-detail-2-single', '集錦囉')
 
     return (
       <div className="body-3 p-5 pb-0 text-primary-500">
@@ -208,7 +194,7 @@ export default function AddStoryToCollection({
             <Icon className="sm:hidden" iconName="icon-chevron-left" size="m" />
           </div>
           <div className="list-title text-primary-800">
-            {t('Components.AddStoryToCollection.add-to-collection', '加入集錦')}
+            {t('add-to-collection', '加入集錦')}
           </div>
           <div
             className="group pointer-events-none relative flex size-11 items-center justify-center sm:pointer-events-auto sm:cursor-pointer"
@@ -265,10 +251,7 @@ export default function AddStoryToCollection({
         <div className="border-t px-5 py-3 sm:py-5">
           <Button
             size="lg"
-            text={t(
-              'Components.AddStoryToCollection.create-new-collection',
-              '建立新集錦'
-            )}
+            text={t('create-new-collection', '建立新集錦')}
             color="white"
             onClick={createCollection}
           />

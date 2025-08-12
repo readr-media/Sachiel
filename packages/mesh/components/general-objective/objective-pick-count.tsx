@@ -1,5 +1,5 @@
 'use client'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 
 export default function ObjectivePickCount({
   picksCount,
@@ -10,7 +10,7 @@ export default function ObjectivePickCount({
   onClickDisplayPicker: () => void
   disabled: boolean
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/story-card')
 
   if (picksCount === 0) {
     return (

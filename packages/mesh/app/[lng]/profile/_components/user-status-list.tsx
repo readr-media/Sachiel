@@ -1,16 +1,17 @@
 'use client'
-
 import Link from 'next/link'
 
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 import { type TabItem } from '@/types/profile'
 
 type UserStatusListProps = {
   userStatusList: TabItem[]
 }
 
-const UserStatusList = ({ userStatusList }: UserStatusListProps) => {
-  const { t } = useCustomTranslation()
+export default function UserStatusList({
+  userStatusList,
+}: UserStatusListProps) {
+  const { t } = useT('pages/profile')
   return (
     <ul className="mt-6 flex w-full items-center justify-center gap-6 sm:mt-4 sm:justify-start">
       {userStatusList.map(({ tabName, count, redirectLink }) => (
@@ -42,5 +43,3 @@ const UserStatusList = ({ userStatusList }: UserStatusListProps) => {
     </ul>
   )
 }
-
-export default UserStatusList

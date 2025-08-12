@@ -5,10 +5,11 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import { ImageCategory } from '@/constants/fallback-src'
-import { useMediaBackstageNavIcons } from '@/constants/layout'
+import { getMediaBackstageNavIcons } from '@/constants/layout'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
 import type { IconInfo as BaseIconInfo } from '@/types/layout'
@@ -28,7 +29,8 @@ export default function MediaBackstageNav({
   const path = usePathname()
   const params = useParams()
   const lng = params.lng as string
-  const mediaBackstageNavIcons = useMediaBackstageNavIcons(lng)
+  const { t } = useT('components/layout')
+  const mediaBackstageNavIcons = getMediaBackstageNavIcons(t, lng)
 
   return (
     <nav className="fixed bottom-0 left-0 top-[theme(height.header.sm)] z-layout flex justify-end border-r bg-white xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
@@ -39,7 +41,7 @@ export default function MediaBackstageNav({
             <div>
               {mediaBackstageNavIcons.first.map((iconInfo) => (
                 <NavIcon
-                  key={iconInfo.text}
+                  key={iconInfo.gtmName}
                   isOn={path === iconInfo.hrefFn(publisherCustomId)}
                   iconInfo={iconInfo}
                   publisherCustomId={publisherCustomId}
@@ -51,7 +53,7 @@ export default function MediaBackstageNav({
         <div className="border-t py-6">
           {mediaBackstageNavIcons.second.map((iconInfo) => (
             <NavIcon
-              key={iconInfo.text}
+              key={iconInfo.gtmName}
               isOn={false}
               iconInfo={iconInfo}
               publisherCustomId={publisherCustomId}
@@ -230,7 +232,7 @@ const NavIcon = ({
   )
 
   const textJsx = isOn ? (
-    <span className="title-1 blocktext-primary-700">{iconInfo.text}</span>
+    <span className="title-1 block text-primary-700">{iconInfo.text}</span>
   ) : (
     <span className="title-1 block text-primary-600 group-hover:text-primary-700">
       {iconInfo.text}
@@ -240,7 +242,7 @@ const NavIcon = ({
   if (iconInfo.hrefFn) {
     return (
       <Link
-        key={iconInfo.text}
+        key={iconInfo.gtmName}
         href={iconInfo.hrefFn(publisherCustomId)}
         className="group flex h-14 items-center gap-3 rounded-md pl-2 hover:bg-primary-100"
       >
@@ -252,7 +254,7 @@ const NavIcon = ({
 
   return (
     <button
-      key={iconInfo.text}
+      key={iconInfo.gtmName}
       onClick={iconInfo.action}
       className="group flex h-14 w-full items-center gap-3 rounded-md pl-2 hover:bg-primary-100"
     >

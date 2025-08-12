@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import FollowListItem from '@/app/[lng]/profile/_components/follow-list-item'
 import { getMoreMemberFollowing } from '@/app/actions/get-profile'
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import { takeCount } from '@/constants/profile-following'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInViewDynamicRef from '@/hooks/use-in-view-dynamic-ref'
 
 import {
@@ -28,7 +28,7 @@ const FollowingList = ({
   followingCount,
   publisherCustomId,
 }: FollowingListProps) => {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/profile')
   const [list, setList] = useState<
     FollowingListType | FollowingPublisherListType
   >(followingList)
@@ -77,12 +77,10 @@ const FollowingList = ({
       >
         <p className="list-title w-full">
           {t(
-            type === 'member'
-              ? 'Profile.Following.member'
-              : 'Profile.Following.publisher',
+            type === 'member' ? 'member' : 'publisher',
             type === 'member' ? '人物' : '媒體'
           )}
-          {t('Profile.Following.count', '({{count}})', {
+          {t('count', '({{count}})', {
             count: followingCount,
           })}
         </p>

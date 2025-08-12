@@ -9,11 +9,11 @@ import { twMerge } from 'tailwind-merge'
 import type { CollectionPickStory } from '@/app/[lng]/collection/(mutate)/_types/collection'
 import { addBookmark, removeBookmark } from '@/app/actions/bookmark'
 import { removeFollowPublisher } from '@/app/actions/follow-publisher'
-import { useToastMessages } from '@/constants/toast'
+import { useT } from '@/app/i18n/client'
+import { getToastMessages } from '@/constants/toast'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import useClickOutside from '@/hooks/use-click-outside'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import usePageName from '@/hooks/use-page-name'
 import useRedirectLogin from '@/hooks/use-redirect-login'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -218,8 +218,8 @@ const ActionSheet = forwardRef(function ActionSheet(
   const pageName = usePageName()
   const userPayolad = useUserPayload()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
-  const toastMessages = useToastMessages()
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/toast')
+  const toastMessages = getToastMessages(t)
 
   const actions = [
     {

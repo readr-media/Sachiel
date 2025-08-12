@@ -4,7 +4,6 @@ import 'swiper/css'
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import type { PickCollections } from '@/types/profile'
 
 import CollectionsCarouselElement from './collections-carousel-element'
@@ -14,10 +13,11 @@ type CollectionsCarouselProps = {
 import { FreeMode } from 'swiper/modules'
 import type { Swiper as SwiperType } from 'swiper/types'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 
 const CollectionsCarousel = ({ pickCollections }: CollectionsCarouselProps) => {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/profile')
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null)
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
@@ -42,7 +42,7 @@ const CollectionsCarousel = ({ pickCollections }: CollectionsCarouselProps) => {
     <>
       <section className="flex items-center justify-between bg-white md:bg-primary-700-dark md:p-10 md:px-[70px] md:pb-1 lg:px-10">
         <p className="list-title px-5 pt-4 text-primary-700 md:p-0">
-          {t('Pages.Profile.CollectionsCarousel', '精選集錦')}
+          {t('CollectionsCarousel', '精選集錦')}
         </p>
         <div className="hidden items-center md:flex md:gap-1">
           <button

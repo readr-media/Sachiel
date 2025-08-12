@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { Fragment, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 import useSearchSuggestion from '@/hooks/use-search-suggestion'
 
 import Icon from './icon'
@@ -16,7 +16,7 @@ export default function SearchModal({
   isOpen: boolean
   onClose: () => void
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/search-modal')
   const inputRef = useRef<HTMLInputElement>(null)
   const {
     searchText,
@@ -74,9 +74,7 @@ export default function SearchModal({
         </div>
         {activeRender === 'recent' && (
           <div className="h-[calc(100vh-60px)] bg-white">
-            <p className="list-title px-5 pb-1 pt-4">
-              {t('Components.SearchModal.search-history', '搜尋歷史')}
-            </p>
+            <p className="list-title px-5 pb-1 pt-4">{t('search-history')}</p>
             <ul className="h-[calc(100vh-112px)] overflow-y-auto">
               {recentSearch.map((record, index) => (
                 <Fragment key={index}>

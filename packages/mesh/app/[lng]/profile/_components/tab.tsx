@@ -1,5 +1,5 @@
 'use client'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
+import { useT } from '@/app/i18n/client'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 
 const activeTabStyle =
@@ -15,7 +15,7 @@ export default function Tab({
   activeTab: ProfileTabKey
   handleTabClick: (tab: ProfileTabKey) => void
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/profile')
   return (
     <ul
       className="flex h-[48px] w-full items-center justify-around border-y border-primary-200 bg-white

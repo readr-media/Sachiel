@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { type FormEvent } from 'react'
 
-import { useT } from '@/app/i18n/client' // Replace useCustomTranslation
+import { useT } from '@/app/i18n/client'
 import Button from '@/components/button'
 import Icon from '@/components/icon'
 import { ENV } from '@/constants/config'

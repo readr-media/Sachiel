@@ -5,11 +5,11 @@ import type { MouseEventHandler } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 import { fetchCategoryStory } from '@/app/actions/get-homepage'
+import { useT } from '@/app/i18n/client'
 import Button from '@/components/button'
 import InteractiveIcon, { type Icon } from '@/components/interactive-icon'
 import { categorySearchParamName } from '@/constants/search-param-names'
 import type { GetAllCategoriesQuery } from '@/graphql/__generated__/graphql'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useInView from '@/hooks/use-in-view'
 import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
@@ -45,7 +45,7 @@ type Props = {
 
 export default function NavList({ categories, initialStories }: Props) {
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/categroy-story')
   const userPayload = useUserPayload()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -102,10 +102,7 @@ export default function NavList({ categories, initialStories }: Props) {
                 <Button
                   size="xs"
                   color="nav-chip"
-                  text={t(
-                    `Others.categories.${category.slug ?? ''}`,
-                    category.title ?? ''
-                  )}
+                  text={t(`${category.slug ?? ''}`, category.title ?? '')}
                   activeState={{
                     isActive: category === activeCategory,
                   }}

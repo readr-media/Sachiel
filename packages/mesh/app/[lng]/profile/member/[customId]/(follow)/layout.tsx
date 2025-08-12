@@ -1,9 +1,9 @@
 'use client'
 import { usePathname } from 'next/navigation'
 
+import { useT } from '@/app/i18n/client'
 import LayoutTemplate from '@/components/layout-template'
 import GoBackButton from '@/components/navigation/go-back-button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 import Loading from './_components/loading'
 
@@ -13,13 +13,13 @@ export default function FollowingLayout({
   children: React.ReactNode
 }>) {
   const pathname = usePathname()
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/profile')
 
   let title = ''
   if (pathname.endsWith('follower')) {
-    title = t('Profile.Follower', '粉絲')
+    title = t('Follower', '粉絲')
   } else if (pathname.endsWith('following')) {
-    title = t('Profile.Following', '追蹤中')
+    title = t('Following', '追蹤中')
   }
 
   const navigationData = {

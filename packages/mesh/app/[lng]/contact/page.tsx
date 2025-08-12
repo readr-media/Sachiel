@@ -2,11 +2,11 @@
 
 import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
-import { useContactLinks } from '@/constants/contact'
+import { getContactLinks } from '@/constants/contact'
 
 export default function Page() {
   const { t } = useT('pages/contact')
-  const contactLinks = useContactLinks()
+  const contactLinks = getContactLinks(t)
 
   return (
     <main className="sm:flex sm:justify-center sm:pb-[115px] sm:pt-5 xl:py-10">

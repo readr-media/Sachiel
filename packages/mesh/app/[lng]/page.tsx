@@ -32,9 +32,11 @@ export default function Home({ params }: { params: { lng: string } }) {
       <CategoryStorySection />
       {/* @ts-expect-error Async Server Component */}
       <TopCollectorSection />
+      {/* @ts-expect-error Async Server Component */}
       <MostLikedCommentSection />
       {/* @ts-expect-error Async Server Component */}
       <ReadrStorySection />
+      {/* @ts-expect-error Async Server Component */}
       <TopPublisherSection />
     </main>
   )

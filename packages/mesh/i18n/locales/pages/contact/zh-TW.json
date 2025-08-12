@@ -4,5 +4,8 @@
   "Page-link-customer-service-mail": "客服信箱",
   "Page-link-customer-service-phone": "客服電話",
   "Page-link-discord": "Discord 社群",
-  "Layout-title": "聯絡我們"
+  "Layout-title": "聯絡我們",
+  "customer-email": "客服信箱",
+  "customer-phone": "客服電話",
+  "discord-community": "Discord 社群"
 }

@@ -1,7 +1,6 @@
-'use client'
+import { useT } from '@/app/i18n/client'
 import type { ButtonColor } from '@/components/button'
 import Button from '@/components/button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export type ProfileButton = {
   text: {
@@ -20,7 +19,7 @@ type ProfileButtonListProps = {
 const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
   buttonList,
 }) => {
-  const { t } = useCustomTranslation()
+  const { t } = useT('pages/profile')
   return (
     <div className="button-large mt-6 flex w-full flex-col gap-2 sm:order-3 md:flex-row">
       {buttonList.map((button, index) => {
@@ -40,8 +39,7 @@ const ProfileButtonList: React.FC<ProfileButtonListProps> = ({
               color={button.color ?? 'white'}
               activeState={{
                 isActive: button.isActive,
-                activeText:
-                  t(button.text.isActive, button.text.isActive) ?? '追蹤中',
+                activeText: t('following', button.text.isActive) ?? '追蹤中',
               }}
             />
           </div>
