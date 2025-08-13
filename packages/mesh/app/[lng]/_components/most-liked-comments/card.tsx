@@ -63,9 +63,9 @@ export default function MostLikedCommentCard({ comment, rank }: Props) {
                 </Link>
               </p>
               <p className="footnote text-primary-500">
-                留言獲得{' '}
-                <span className="text-primary-800">{comment.likeCount}</span>{' '}
-                個愛心
+                {t('commentReceived', '留言獲得')}
+                <span className="text-primary-800">{comment.likeCount}</span>
+                {t('hearts', '個愛心')}
               </p>
             </div>
           </div>

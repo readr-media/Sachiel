@@ -45,7 +45,7 @@ type Props = {
 
 export default function NavList({ categories, initialStories }: Props) {
   const [data, setData] = useState<CategoryStory[] | null>(initialStories)
-  const { t } = useT('components/categroy-story')
+  const { t } = useT('components/category-story')
   const userPayload = useUserPayload()
   const router = useRouter()
   const searchParams = useSearchParams()

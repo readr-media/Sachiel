@@ -28,7 +28,7 @@ export default function StoryMeta({
       <CommentCount objectiveId={storyId} initialCommentCounts={commentCount} />
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>
+        <span>{publishDate ? displayTimeFromNow(publishDate, t) : null}</span>
       </div>
       {paywall && (
         <div className="flex items-center">
