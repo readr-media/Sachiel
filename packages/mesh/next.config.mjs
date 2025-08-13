@@ -38,6 +38,12 @@ const nextConfig = {
         source: '/robots.txt',
         destination: '/api/robots',
       },
+      // Handle auth routes with language prefix (e.g., /en-US/__/auth/handler, /zh-TW/__/auth/handler)
+      {
+        source: '/:lng/__/auth/:path*',
+        destination: `https://${FIREBASE_DOMAIN}/__/auth/:path*`,
+      },
+      // Handle auth routes without language prefix (fallback)
       {
         source: '/__/auth/:path*',
         destination: `https://${FIREBASE_DOMAIN}/__/auth/:path*`,
