@@ -1,7 +1,5 @@
 // 這裡管理的是在 Build 階段就會寫死數值的環境變數 (通常為 `NEXT_PUBLCI_` 開頭)
 const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
-const MASS_RECALL_DISPLAY_JSON_URL =
-  'https://storage.googleapis.com/whoareyou-gcs.readr.tw/json/202507_recall_homepage_display.json'
 let SITE_URL: string
 let GA_TRACKING_ID: string
 let GTM_ID: string
@@ -13,7 +11,6 @@ let HEADER_JSON_URL: string
 let LATEST_POSTS_URL: string
 let LATEST_POSTS_IN_CATEGORIES_URL: string
 let LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL: string
-let RECALL_TOPIC_PAGE_URL: string
 
 switch (ENV) {
   case 'prod':
@@ -30,8 +27,6 @@ switch (ENV) {
       'https://statics.readr.tw/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://statics.readr.tw/json/sections-posts-listing.json'
-    RECALL_TOPIC_PAGE_URL =
-      'https://www.readr.tw/project/3/taiwan-elections/index.html'
     break
 
   case 'staging':
@@ -50,8 +45,6 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-staging/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-staging/json/sections-posts-listing.json'
-    RECALL_TOPIC_PAGE_URL =
-      'https://www.readr.tw/project/3/taiwan-elections/index.html'
     break
 
   case 'dev':
@@ -70,8 +63,6 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
-    RECALL_TOPIC_PAGE_URL =
-      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
     break
 
   default:
@@ -90,8 +81,6 @@ switch (ENV) {
       'https://storage.googleapis.com/statics-readr-tw-dev/json/latest-posts-in-categories.json'
     LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL =
       'https://storage.googleapis.com/statics-readr-tw-dev/json/sections-posts-listing.json'
-    RECALL_TOPIC_PAGE_URL =
-      'https://www.readr.tw/project/3/dev-taiwan-elections/index.html'
     break
 }
 
@@ -106,8 +95,6 @@ export {
   LATEST_POSTS_IN_CATEGORIES_FOR_CATEGORY_PAGE_URL,
   LATEST_POSTS_IN_CATEGORIES_URL,
   LATEST_POSTS_URL,
-  MASS_RECALL_DISPLAY_JSON_URL,
   QA_RECORD_CONFIG,
-  RECALL_TOPIC_PAGE_URL,
   SITE_URL,
 }
