@@ -1,5 +1,7 @@
 {
   "follow": "Follow",
   "following": "Following",
-  "MostLikedCommentSection-title": "Top liked comments of the week"
+  "MostLikedCommentSection-title": "Top liked comments of the week",
+  "commentReceived": "Comment received",
+  "hearts": "hearts"
 }
