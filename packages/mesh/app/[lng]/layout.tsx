@@ -1,0 +1,83 @@
+import '@/styles/global.css'
+
+import { GoogleTagManager } from '@next/third-parties/google'
+import { dir } from 'i18next'
+import type { Metadata } from 'next'
+import { Noto_Sans_TC } from 'next/font/google'
+
+import RootLayoutWrapper from '@/app/[lng]/_components/root-layout-wrapper'
+import { getCurrentUser } from '@/app/actions/auth'
+import AdManagerScript from '@/components/ad-manager-script'
+import AdsenseScript from '@/components/adsense-script'
+import MisoAiScript from '@/components/miso-ai-script'
+import UserBehaviorLogger from '@/components/user-behavior-logger'
+import {
+  GTM_ID,
+  SITE_DESCRIPTION,
+  SITE_OG_IMAGE,
+  SITE_TITLE,
+  SITE_URL,
+} from '@/constants/config'
+import { ABTestProvider } from '@/context/ab-test'
+import { PickModalProvider } from '@/context/pick-modal'
+import { PickersModalProvider } from '@/context/pickers-modal'
+import { ToastProvider } from '@/context/toast'
+import { UserProvider } from '@/context/user'
+
+export const metadata: Metadata = {
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: 'website',
+    url: SITE_URL,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_TITLE,
+    locale: 'zh_TW',
+    images: {
+      url: SITE_OG_IMAGE,
+      width: 1200,
+      height: 630,
+    },
+  },
+}
+
+const notoSans = Noto_Sans_TC({
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+export default async function RootLayout({
+  children,
+  params: { lng },
+}: Readonly<{
+  children: React.ReactNode
+  params: { lng: string }
+}>) {
+  const user = await getCurrentUser()
+
+  return (
+    <html lang={lng} dir={dir(lng)} className={notoSans.className}>
+      <GoogleTagManager gtmId={GTM_ID} />
+      <AdsenseScript />
+      <AdManagerScript />
+      <MisoAiScript />
+      <body>
+        <UserProvider user={user}>
+          <ABTestProvider>
+            <ToastProvider>
+              <PickModalProvider>
+                <PickersModalProvider>
+                  <RootLayoutWrapper>
+                    <UserBehaviorLogger />
+                    {children}
+                  </RootLayoutWrapper>
+                </PickersModalProvider>
+              </PickModalProvider>
+            </ToastProvider>
+          </ABTestProvider>
+        </UserProvider>
+      </body>
+    </html>
+  )
+}

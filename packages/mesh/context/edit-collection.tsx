@@ -3,30 +3,30 @@
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
+import { maxSummaryLength } from '@/app/[lng]/collection/(mutate)/_components/edit-summary'
+import type {
+  BaseMutateCollectionContextValue,
+  Collection,
+} from '@/app/[lng]/collection/(mutate)/_types/collection'
+import {
+  type CollectionPickStory,
+  type PickOrBookmark,
+} from '@/app/[lng]/collection/(mutate)/_types/collection'
+import {
+  prepareUpdateCollectionPicks,
+  prepareUpdateCollectionTitle,
+  prepareUpdateeCollectionSummary,
+} from '@/app/[lng]/collection/(mutate)/_utils/prepare-update-collection'
+import {
+  DesktopEditCollectionType,
+  MobileEditCollectionType,
+} from '@/app/[lng]/collection/(mutate)/(edit)/_types/edit-collection'
 import {
   updateCollectionPicks as sendUpdateCollectionPicks,
   updateCollectionSummary as sendUpdateCollectionSummary,
   updateCollectionTitle as sendUpdateCollectionTitle,
   updateWholeCollection as sendUpdateWholeCollection,
 } from '@/app/actions/edit-collection'
-import { maxSummaryLength } from '@/app/collection/(mutate)/_components/edit-summary'
-import type {
-  BaseMutateCollectionContextValue,
-  Collection,
-} from '@/app/collection/(mutate)/_types/collection'
-import {
-  type CollectionPickStory,
-  type PickOrBookmark,
-} from '@/app/collection/(mutate)/_types/collection'
-import {
-  prepareUpdateCollectionPicks,
-  prepareUpdateCollectionTitle,
-  prepareUpdateeCollectionSummary,
-} from '@/app/collection/(mutate)/_utils/prepare-update-collection'
-import {
-  DesktopEditCollectionType,
-  MobileEditCollectionType,
-} from '@/app/collection/(mutate)/(edit)/_types/edit-collection'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -178,7 +178,13 @@ export default function EditCollectionProvider({
   }
 
   const redirectAfterUpdateCollection = () => {
-    router.push(`/collection/${initialCollection.id}`)
+    // Extract lng from URL path, fallback to zh-TW
+    const pathSegments = window.location.pathname.split('/')
+    const lngFromPath =
+      pathSegments[1] === 'en-US' || pathSegments[1] === 'zh-TW'
+        ? pathSegments[1]
+        : 'zh-TW'
+    router.push(`/${lngFromPath}/collection/${initialCollection.id}`)
   }
 
   const updateCollectionTitleAndHeroImage = async () => {

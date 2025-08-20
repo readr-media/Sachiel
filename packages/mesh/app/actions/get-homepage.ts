@@ -114,7 +114,7 @@ async function fetchMostLikedComment(): Promise<Comment[] | null> {
 
 async function fetchDailyHighlightGroup(): Promise<DailyStory[] | null> {
   const schema = z.array(rawDailyHighlightSchema)
-  const globalLogFields = getLogTraceObjectFromHeaders()
+  // const globalLogFields = getLogTraceObjectFromHeaders()
 
   try {
     const response = await fetchStatic<z.infer<typeof schema>>(
@@ -125,8 +125,8 @@ async function fetchDailyHighlightGroup(): Promise<DailyStory[] | null> {
   } catch (err) {
     logServerSideError(
       err,
-      'Error occurs while fetching daily highlight group on the homepage',
-      globalLogFields
+      'Error occurs while fetching daily highlight group on the homepage'
+      // globalLogFields
     )
     return null
   }

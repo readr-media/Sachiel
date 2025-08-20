@@ -2,9 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
-import { useNonMobileNavIcons } from '@/constants/layout'
+import { getNonMobileNavIcons } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import type { IconInfo } from '@/types/layout'
 import { TabCategory } from '@/types/profile'
@@ -18,7 +19,7 @@ const NonMobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const showAvatar = iconInfo.gtmName === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Image
@@ -44,7 +45,7 @@ const NonMobileNavIcon = ({
 
   return (
     <Link
-      key={iconInfo.text}
+      key={iconInfo.gtmName}
       href={iconInfo.href}
       className="group flex h-14 items-center gap-3 rounded-md pl-2 hover:bg-primary-100"
     >
@@ -69,7 +70,8 @@ const NonMobileNav = ({
 }) => {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
-  const nonMobileNavIcons = useNonMobileNavIcons()
+  const { t } = useT('components/layout')
+  const nonMobileNavIcons = getNonMobileNavIcons(t)
 
   return (
     <nav
@@ -91,7 +93,7 @@ const NonMobileNav = ({
           <div className="flex flex-col gap-2 border-b pb-5">
             {nonMobileNavIcons.first.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={path === iconInfo.href}
                 iconInfo={iconInfo}
               />
@@ -99,10 +101,10 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col gap-2 pt-5">
             {nonMobileNavIcons.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案') {
+              if (iconInfo.gtmName === 'profile') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={path.startsWith(iconInfo.href)}
                     iconInfo={{
                       ...iconInfo,
@@ -111,10 +113,10 @@ const NonMobileNav = ({
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === '書籤') {
+              } else if (iconInfo.gtmName === 'bookmark') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={path.startsWith(iconInfo.href)}
                     iconInfo={{
                       ...iconInfo,
@@ -128,7 +130,7 @@ const NonMobileNav = ({
               } else {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={path.startsWith(iconInfo.href)}
                     iconInfo={iconInfo}
                   />
@@ -142,7 +144,7 @@ const NonMobileNav = ({
           <div className="flex flex-col border-t py-6">
             {nonMobileNavIcons.third.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={path === iconInfo.href}
                 iconInfo={iconInfo}
               />

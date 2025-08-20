@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "meshPoints": "讀選點數",
+    "sponsorshipCount": "已贊助次數",
+    "subscribedArticles": "訂閱中文章",
+    "sponsored": "已贊助"
+  },
+  "emptyState": {
+    "noTransactionRecords": "沒有交易紀錄",
+    "noSponsorshipRecords": "目前還沒有贊助紀錄",
+    "noSubscribedArticles": "目前還沒有訂閱中的文章"
+  },
+  "record": {
+    "receivedAt": "在 {{time}} 收到",
+    "sentAt": "在 {{time}} 送出",
+    "name": "名稱",
+    "pointBalance": "讀選點數餘額"
+  }
+}

@@ -1,3 +1,5 @@
+'use client'
+import { useT } from '@/app/i18n/client'
 import { displayTimeFromNow } from '@/utils/story-display'
 
 import CommentCount from '../comment-count'
@@ -18,30 +20,32 @@ export default function StoryMeta({
   fullScreenAd: string
   storyType?: 'story' | 'podcast'
 }) {
+  const { t } = useT('components/story-card')
+
   return (
     <div className="flex items-center text-primary-500">
       <Icon iconName="icon-chat-bubble" size="s" />
       <CommentCount objectiveId={storyId} initialCommentCounts={commentCount} />
       <Icon iconName="icon-dot" size="s" />
       <div>
-        <span>{publishDate ? displayTimeFromNow(publishDate) : null}</span>
+        <span>{publishDate ? displayTimeFromNow(publishDate, t) : null}</span>
       </div>
       {paywall && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          付費文章
+          {t('payall', '付費文章')}
         </div>
       )}
       {fullScreenAd && fullScreenAd !== 'none' && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          蓋板廣告
+          {t('full-screen-ad', '蓋板廣告')}
         </div>
       )}
       {storyType === 'podcast' ? (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
-          Podcast
+          {t('podcast', 'Podcast')}
         </div>
       ) : null}
     </div>

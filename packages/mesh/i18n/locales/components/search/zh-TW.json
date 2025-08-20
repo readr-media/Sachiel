@@ -1,0 +1,13 @@
+{
+  "noResults": "找不到包含「{{query}}」的{{type}}，請換個關鍵字，再試一次。",
+  "types": {
+    "story": "新聞",
+    "collection": "集錦", 
+    "profile": "個人檔案"
+  },
+  "dataSource": "資料來源",
+  "searchResults": "搜尋結果",
+  "loading": "載入中...",
+  "totalResults": "共 {{count}} 個結果",
+  "allStories": "所有新聞"
+}

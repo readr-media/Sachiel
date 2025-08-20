@@ -1,4 +1,4 @@
-import type { CollectionPickStory } from '@/app/collection/(mutate)/_types/collection'
+import type { CollectionPickStory } from '@/app/[lng]/collection/(mutate)/_types/collection'
 import { MINUTE } from '@/constants/time-unit'
 
 type CreateCollectionStory = {

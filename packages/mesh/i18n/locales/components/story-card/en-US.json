@@ -1,0 +1,10 @@
+{
+  "pick": "Pick",
+  "already-picked": "Picked",
+  "paywall": "Paid story",
+  "podcast": "Podcast",
+  "full-screen-ad": "Full-screen ad",
+  "minutesAgo": "{{count}} minutes ago",
+  "hoursAgo": "{{count}} hours ago",
+  "daysAgo": "{{count}} days ago"
+}

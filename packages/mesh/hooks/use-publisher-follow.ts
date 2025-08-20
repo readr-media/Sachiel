@@ -3,12 +3,11 @@ import {
   addFollowPublisher,
   removeFollowPublisher,
 } from '@/app/actions/follow-publisher'
-import TOAST_MESSAGE from '@/constants/toast'
+import { useT } from '@/app/i18n/client'
 import { useToast } from '@/context/toast'
 import { useUser } from '@/context/user'
 import { debounce } from '@/utils/performance'
 
-import { useCustomTranslation } from './use-custom-translation'
 import useRedirectLogin from './use-redirect-login'
 
 type UseFollowPublisherProps = {
@@ -20,7 +19,7 @@ const useFollowPublisher = ({
   publisherId,
   publisherName,
 }: UseFollowPublisherProps) => {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/toast')
   const { user, setUser } = useUser()
   const { addToast } = useToast()
   const { detectIfShouldRedirectToLogin } = useRedirectLogin()
@@ -45,10 +44,7 @@ const useFollowPublisher = ({
       if (!response) {
         addToast({
           status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.unfollowMemberFailed}`,
-            '取消追蹤失敗，請重新嘗試'
-          ),
+          text: t('unfollow-member-failed', '取消追蹤失敗，請重新嘗試'),
         })
         throw new Error('Failed to unlike comment')
       }
@@ -65,10 +61,7 @@ const useFollowPublisher = ({
       if (!response) {
         addToast({
           status: 'fail',
-          text: t(
-            `Others.toast.${TOAST_MESSAGE.followMemberFailed}`,
-            '追蹤失敗，請重新嘗試'
-          ),
+          text: t('follow-member-failed', '追蹤失敗，請重新嘗試'),
         })
         throw new Error('Failed to unlike comment')
       }

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import {
   type ChangeEvent,
   type MouseEvent,
@@ -21,6 +21,8 @@ export default function useSearchSuggestion(
   inputRef: RefObject<HTMLInputElement>
 ) {
   const router = useRouter()
+  const params = useParams()
+  const lng = (params.lng as string) || 'zh-TW'
   const [searchText, setSearchText] = useState('')
   const [searchSuggestion, setSearchSuggestion] = useState<
     SearchResults['member'] | null
@@ -69,16 +71,16 @@ export default function useSearchSuggestion(
   const handleClickSearch = useCallback(
     (recentSearchText?: string) => {
       if (recentSearchText) {
-        router.push(getSearchUrl(recentSearchText))
+        router.push(getSearchUrl(recentSearchText, lng))
       } else {
         if (!searchText) return
         setRecentSearch((prev) =>
           updateRecentSearch('add', recentSearchMax, searchText, prev)
         )
-        router.push(getSearchUrl(searchText))
+        router.push(getSearchUrl(searchText, lng))
       }
     },
-    [router, searchText]
+    [router, searchText, lng]
   )
 
   const handleRemoveRecentSearch = useCallback(

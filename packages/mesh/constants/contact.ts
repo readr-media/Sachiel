@@ -1,22 +1,17 @@
-'use client'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
-
-export const useContactLinks = () => {
-  const { t } = useCustomTranslation()
-
+export const getContactLinks = (t: (key: string) => string) => {
   return [
     {
-      name: t('Constants.Contact.customer-email', '客服信箱'),
+      name: t('customer-email'),
       href: 'mailto:readr@readr.tw',
       text: 'readr@readr.tw',
     },
     {
-      name: t('Constants.Contact.customer-phone', '客服電話'),
+      name: t('customer-phone'),
       href: 'tel:+886(02)6633-3890',
       text: '(02) 6633-3890',
     },
     {
-      name: t('Constants.Contact.discord-community', 'Discord 社群'),
+      name: t('discord-community'),
       href: 'https://discord.gg/m7334TdYd3',
       text: 'https://discord.gg/m7334TdYd3',
     },

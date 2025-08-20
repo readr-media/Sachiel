@@ -1,7 +1,7 @@
 'use client'
 
+import { useT } from '@/app/i18n/client'
 import Button, { type ButtonSize } from '@/components/button'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useFollowPublisher from '@/hooks/use-publisher-follow'
 
 export default function FollowPublisherButton({
@@ -17,19 +17,17 @@ export default function FollowPublisherButton({
     publisherId,
     publisherName,
   })
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/follow-publisher-button')
 
   return (
     <div className="shrink-0">
       <Button
         size={size}
         color="transparent"
-        text={t('Components.FollowPublisherButton.follow', '追蹤')}
+        text={t('follow', '追蹤')}
         activeState={{
           isActive: isFollowing,
-          activeText:
-            t('Components.FollowPublisherButton.following', '追蹤中') ??
-            '追蹤中',
+          activeText: t('following', '追蹤中'),
         }}
         onClick={handleFollowOnClick}
       />

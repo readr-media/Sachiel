@@ -1,0 +1,12 @@
+{
+  "title": "點數",
+  "description": "管理您的點數餘額、查看交易紀錄、贊助媒體和訂閱內容",
+  "nav": {
+    "sponsorship": "已贊助媒體",
+    "subscribeStories": "訂閱中文章",
+    "record": "點數紀錄"
+  },
+  "wallet": {
+    "description": "您尚未新增/連結錢包。點擊下方按鈕，我們會將錢包的啟用連結寄送至您的 Email。"
+  }
+}

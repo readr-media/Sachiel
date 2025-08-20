@@ -1,0 +1,93 @@
+'use client'
+
+import { onAuthStateChanged } from 'firebase/auth'
+import Link from 'next/link'
+import { useParams } from 'next/navigation' // Add this import
+import { useEffect, useState } from 'react'
+
+import Icon from '@/components/icon'
+import InteractiveIcon from '@/components/interactive-icon'
+import { ICON_MAP, useActionNames } from '@/constants/setting'
+import { useUser } from '@/context/user'
+import { auth } from '@/firebase/client'
+import { logout } from '@/utils/logout'
+
+export default function MobileAccountActions() {
+  const [logInMethodName, setLogInMethodName] = useState('')
+  const { user } = useUser()
+  const { lng } = useParams() // Get language parameter
+  const actionNames = useActionNames()
+
+  // Update hrefs to be language-aware
+  const languageAwareActions = actionNames.map((action) => ({
+    ...action,
+    href: action.href ? `/${lng}${action.href}` : action.href,
+  }))
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLogInMethodName(user.providerData[0].providerId)
+      } else {
+        setLogInMethodName('')
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  const iconName = ICON_MAP[logInMethodName] || null
+
+  return (
+    <section className="body-2 flex flex-col gap-y-3 text-primary-700 sm:hidden">
+      <div className="border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 first:border-t-0">
+        <div className="flex justify-between">
+          <p>{user.email}</p>
+          {iconName && <Icon iconName={iconName} size="m" />}
+        </div>
+      </div>
+      <div className="flex cursor-pointer items-center justify-between border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4 hover-or-active:text-primary-500">
+        <Link href={languageAwareActions[0].href as string}>
+          {languageAwareActions[0].name}
+        </Link>
+        <InteractiveIcon
+          size={{ width: 20, height: 20 }}
+          icon={{
+            default: 'icon-arrow-forward',
+            hover: 'icon-arrow-forward',
+          }}
+        />
+      </div>
+      <div className="border-y-[0.5px] border-y-primary-800/10 bg-single-layer px-5 py-4">
+        <div className="group cursor-pointer">
+          <Link
+            href={languageAwareActions[3].href as string}
+            className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
+          >
+            {languageAwareActions[3].name}
+          </Link>
+        </div>
+
+        <hr className="my-4 border-t-[0.5px] border-t-primary-800/10" />
+
+        <div className="group cursor-pointer">
+          <button
+            onClick={logout}
+            className="flex w-full justify-start group-hover:text-primary-500 group-active:text-primary-500"
+          >
+            {languageAwareActions[1].name}
+          </button>
+        </div>
+
+        <hr className="my-4 border-t-[0.5px] border-t-primary-800/10" />
+
+        <Link
+          href={languageAwareActions[2].href as string}
+          className="text-custom-red-text hover-or-active:text-custom-red"
+        >
+          <div className="cursor-pointer"> {languageAwareActions[2].name}</div>
+        </Link>
+      </div>
+    </section>
+  )
+}

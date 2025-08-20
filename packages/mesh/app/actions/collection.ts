@@ -16,7 +16,7 @@ import queryGraphQL, { mutateGraphQL } from '@/utils/fetch-graphql'
 import { fetchRestfulPost } from '@/utils/fetch-restful'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
 
-import type { CollectionFormat } from '../collection/(mutate)/_types/collection'
+import type { CollectionFormat } from '../[lng]/collection/(mutate)/_types/collection'
 
 export async function getCollection({
   collectionId,
