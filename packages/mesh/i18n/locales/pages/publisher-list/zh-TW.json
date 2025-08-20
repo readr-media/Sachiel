@@ -1,0 +1,8 @@
+{
+  "title": "媒體列表",
+  "description": "瀏覽所有媒體出版商列表",
+  "status": {
+    "new": "新加入",
+    "followers": "{{count}}人追蹤"
+  }
+}

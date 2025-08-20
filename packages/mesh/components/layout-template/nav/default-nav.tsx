@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useParams, usePathname, useSearchParams } from 'next/navigation'
 
+import { useT } from '@/app/i18n/client'
 import type { IconName } from '@/components/icon'
 import Icon from '@/components/icon'
 import InteractiveIcon from '@/components/interactive-icon'
 import Avatar from '@/components/story-card/avatar'
-import { useMobileNavIcons, useNonMobileNavIcons } from '@/constants/layout'
+import { getMobileNavIcons, getNonMobileNavIcons } from '@/constants/layout'
 import { isUserLoggedIn, useUser } from '@/context/user'
 import { TabCategory } from '@/types/profile'
 import { matchPath } from '@/utils/nav-button'
@@ -25,6 +26,8 @@ type IconInfo = {
 export default function DefaultNav({ className = '' }: { className?: string }) {
   const path = usePathname()
   const { user } = useUser()
+  const params = useParams()
+  const lng = params.lng as string
 
   const avatarUrl = user.avatar
   const userCustomId = user.customId
@@ -36,12 +39,14 @@ export default function DefaultNav({ className = '' }: { className?: string }) {
         path={path}
         avatarUrl={avatarUrl}
         userCustomId={userCustomId}
+        lng={lng}
       />
       {/* fixed bottom nav bar shown on mobile only */}
       <MobileNav
         path={path}
         avatarUrl={avatarUrl}
         userCustomId={userCustomId}
+        lng={lng}
       />
     </div>
   )
@@ -51,15 +56,18 @@ const NonMobileNav = ({
   path,
   avatarUrl,
   userCustomId,
+  lng,
 }: {
   path: string
   avatarUrl: string
   userCustomId: string
+  lng: string
 }) => {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const searchParams = useSearchParams()
-  const nonMobileNavIcons = useNonMobileNavIcons()
+  const { t } = useT('components/layout')
+  const nonMobileNavIcons = getNonMobileNavIcons(t, lng)
 
   return (
     <nav className="hidden sm:fixed sm:bottom-0 sm:left-0 sm:top-[theme(height.header.sm)] sm:flex sm:w-[theme(width.nav.sm)] sm:justify-end sm:bg-white md:w-[theme(width.nav.md)] xl:w-[calc((100vw-theme(width.maxContent))/2+theme(width.nav.xl))]">
@@ -71,7 +79,7 @@ const NonMobileNav = ({
           <div className="flex flex-col border-b sm:gap-8 sm:pb-8 md:gap-2 md:pb-5">
             {nonMobileNavIcons.first.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />
@@ -79,10 +87,10 @@ const NonMobileNav = ({
           </div>
           <div className="flex flex-col sm:gap-8 sm:pt-8 md:gap-2 md:pt-5">
             {nonMobileNavIcons.second.map((iconInfo) => {
-              if (iconInfo.text === '個人檔案') {
+              if (iconInfo.gtmName === 'profile') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={
                       matchPath(iconInfo.href, path) &&
                       searchParams.get('tab') === TabCategory.PICKS
@@ -97,10 +105,10 @@ const NonMobileNav = ({
                     avatarUrl={avatarUrl}
                   />
                 )
-              } else if (iconInfo.text === '書籤') {
+              } else if (iconInfo.gtmName === 'bookmark') {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={
                       matchPath(iconInfo.href, path) &&
                       searchParams.get('tab') === TabCategory.BOOKMARKS
@@ -117,7 +125,7 @@ const NonMobileNav = ({
               } else {
                 return (
                   <NonMobileNavIcon
-                    key={iconInfo.text}
+                    key={iconInfo.gtmName}
                     isOn={matchPath(iconInfo.href, path)}
                     iconInfo={iconInfo}
                   />
@@ -131,7 +139,7 @@ const NonMobileNav = ({
           <div className="flex flex-col border-t py-6">
             {nonMobileNavIcons.third.map((iconInfo) => (
               <NonMobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />
@@ -152,7 +160,7 @@ const NonMobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const showAvatar = iconInfo.gtmName === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-8 items-center justify-center">
       <Avatar src={avatarUrl} size="s" />
@@ -174,7 +182,7 @@ const NonMobileNavIcon = ({
 
   return (
     <Link
-      key={iconInfo.text}
+      key={iconInfo.gtmName}
       href={iconInfo.href}
       className={`GTM-nav_click_${iconInfo.gtmName} group flex rounded-md md:h-14 md:items-center md:gap-3 md:pl-2 md:hover:bg-primary-100`}
     >
@@ -188,22 +196,25 @@ const MobileNav = ({
   path,
   avatarUrl,
   userCustomId,
+  lng,
 }: {
   path: string
   avatarUrl: string
   userCustomId: string
+  lng: string
 }) => {
   const searchParams = useSearchParams()
-  const mobileNavIcons = useMobileNavIcons()
+  const { t } = useT('components/layout')
+  const mobileNavIcons = getMobileNavIcons(t, lng)
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-layout h-[theme(height.nav.default)] border-t bg-white sm:hidden">
       <div className="flex h-full items-center">
         {mobileNavIcons.map((iconInfo) => {
-          if (iconInfo.text === '個人檔案') {
+          if (iconInfo.gtmName === 'profile') {
             return (
               <MobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={
                   matchPath(iconInfo.href, path) &&
                   searchParams.get('tab') === TabCategory.PICKS
@@ -221,7 +232,7 @@ const MobileNav = ({
           } else {
             return (
               <MobileNavIcon
-                key={iconInfo.text}
+                key={iconInfo.gtmName}
                 isOn={matchPath(iconInfo.href, path)}
                 iconInfo={iconInfo}
               />
@@ -242,7 +253,7 @@ const MobileNavIcon = ({
   iconInfo: IconInfo
   avatarUrl?: string
 }) => {
-  const showAvatar = iconInfo.text === '個人檔案' && avatarUrl
+  const showAvatar = iconInfo.gtmName === 'profile' && avatarUrl
   const iconJsx = showAvatar ? (
     <div className="flex size-6 items-center justify-center">
       <Image
@@ -266,7 +277,7 @@ const MobileNavIcon = ({
 
   return (
     <Link
-      key={iconInfo.icon.default}
+      key={iconInfo.gtmName}
       href={iconInfo.href}
       className={`GTM-nav_click_${iconInfo.gtmName} flex h-full flex-1 flex-col items-center justify-center`}
     >

@@ -1,7 +1,10 @@
 import { DAY, HOUR, MINUTE } from '@/constants/time-unit'
 import { type UserActionStoryFragment } from '@/graphql/__generated__/graphql'
 
-export const displayTimeFromNow = (date: string | Date) => {
+export const displayTimeFromNow = (
+  date: string | Date,
+  t?: (key: string, fallback: string) => string
+) => {
   const differenceInMilliseconds = Date.now() - new Date(date).getTime()
   const differenceInMinutes = differenceInMilliseconds / MINUTE
   const differenceInHours = differenceInMilliseconds / HOUR
@@ -24,11 +27,23 @@ export const displayTimeFromNow = (date: string | Date) => {
   if (differenceInMilliseconds < 0) {
     return fullDisplayTime(date)
   } else if (differenceInMilliseconds < HOUR) {
-    return Math.floor(differenceInMinutes) + ' 分鐘前'
+    const minutes = Math.floor(differenceInMinutes)
+    return t
+      ? t('minutesAgo', `${minutes} 分鐘前`).replace(
+          '{{count}}',
+          minutes.toString()
+        )
+      : `${minutes} 分鐘前`
   } else if (differenceInMilliseconds < 24 * HOUR) {
-    return Math.floor(differenceInHours) + ' 小時前'
+    const hours = Math.floor(differenceInHours)
+    return t
+      ? t('hoursAgo', `${hours} 小時前`).replace('{{count}}', hours.toString())
+      : `${hours} 小時前`
   } else if (differenceInMilliseconds < 7 * DAY) {
-    return Math.floor(differenceInDays) + ' 天前'
+    const days = Math.floor(differenceInDays)
+    return t
+      ? t('daysAgo', `${days} 天前`).replace('{{count}}', days.toString())
+      : `${days} 天前`
   } else {
     return fullDisplayTime(date)
   }

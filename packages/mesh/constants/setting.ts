@@ -1,21 +1,20 @@
 'use client'
+
+import { useT } from '@/app/i18n/client'
 import type { IconName } from '@/components/icon'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 
 export const useActionNames = () => {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/setting')
 
   return [
-    // { name: t('Constants.Setting.block-list', '封鎖名單'), href: '/' },
-    { name: t('Constants.Setting.contact-us', '聯絡我們'), href: '/contact' },
-    // { name: t('Constants.Setting.about', '關於'), href: '/' },
-    { name: t('Constants.Setting.logout', '登出') },
+    { name: t('contactUs', '聯絡我們'), href: '/contact' },
+    { name: t('logout', '登出') },
     {
-      name: t('Constants.Setting.delete-account', '刪除帳號'),
+      name: t('deleteAccount', '刪除帳號'),
       href: '/setting/account-deletion',
     },
     {
-      name: t('Constants.Setting.language', '語言'),
+      name: t('language', '語言'),
       href: '/setting/language',
     },
   ]

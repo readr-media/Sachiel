@@ -1,0 +1,17 @@
+{
+  "title": "最新",
+  "description": "追蹤你感興趣的媒體，查看他們最新發布的各類文章。",
+  "publisherCard": {
+    "sponsorCount1": "已獲得",
+    "sponsorCount2": "次贊助"
+  },
+  "publisherSuggestion": {
+    "title": "推薦追蹤",
+    "action": "查看全部", 
+    "hidden": "已隱藏",
+    "statusHidden": "您不會再收到此推薦",
+    "statusNew": "新加入",
+    "statusFollowers": "{{followerCount}}人追蹤",
+    "cancel": "取消"
+  }
+}

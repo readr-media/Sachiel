@@ -1,0 +1,18 @@
+{
+  "DailyHighlight-title": "今日焦點",
+  "FeaturedCard-readr-title": "READr 最新報導",
+  "FeaturedCard-non-readr-title": "最多人精選",
+  "EmptyMessage-title": "找不到新聞",
+  "EmptyMessage-description": "請查看其他分類，或重新整理頁面",
+  "TopCollectorSection-title": "本週精選最多文章",
+  "TopCollectorCard-pick-detail-1": "本週已精選",
+  "TopCollectorCard-pick-detail-2": "篇文章",
+  "MostLikedCommentSection-title": "本週獲得最多愛心的留言",
+  "MostLikedCommentCard-like-detail-1": "留言獲得",
+  "MostLikedCommentCard-like-detail-2": "個愛心",
+  "TopPublisherSection-title": "獲得最多次贊助",
+  "TopPublisherCard-sponsor-detail-1": "已獲得",
+  "TopPublisherCard-sponsor-detail-2": "贊助",
+  "TopPublisherCard-sponsor-count-unit": "次",
+  "Comment-show-more": "顯示更多"
+}

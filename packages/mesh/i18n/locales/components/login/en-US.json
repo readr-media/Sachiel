@@ -1,0 +1,29 @@
+{
+  "steps": {
+    "terms": "Terms of Service",
+    "email": "Email",
+    "emailConfirm": "Check Your Inbox",
+    "setName": "Name",
+    "setCategory": "News Categories",
+    "setFollowing": "Recommended Follows",
+    "setWallet": "Connect Wallet",
+    "webviewHint": "Sign Up / Sign In"
+  },
+  "buttons": {
+    "submit": "Submit",
+    "next": "Next",
+    "complete": "Complete",
+    "skip": "Skip",
+    "follow": "Follow",
+    "following": "Following",
+    "followAll": "Follow All",
+    "unfollowAll": "Unfollow All",
+    "openInBrowser": "Open in External Browser"
+  },
+  "validation": {
+    "selectMinCategories": "Select at least 3 categories",
+    "noSpecialChars": "No special characters allowed",
+    "noMediaDuplicate": "Name not duplicate with media outlets"
+  },
+  "categorySelection": "Please select the news categories you want to follow"
+}

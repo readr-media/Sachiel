@@ -1,0 +1,15 @@
+{
+  "title": "Settings",
+  "description": "Manage your account settings and preferences",
+  "deletion": {
+    "confirmTitle": "Are you sure you want to delete your account?",
+    "confirmDescription": "Reminder: After deleting your account, your account information will be permanently deleted and cannot be recovered.",
+    "reconsider": "Let me think again",
+    "confirmDelete": "Confirm deletion",
+    "successTitle": "Account deletion successful",
+    "successDescription": "Thank you for using our membership service. If you need it, welcome back anytime :)",
+    "errorTitle": "Oops, something went wrong...",
+    "errorDescription": "Account deletion failed. Please log in again, or contact customer service email readr@gmail.com for assistance.",
+    "backToHome": "Back to Home"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Latest",
+  "description": "Follow your favorite media outlets and discover their latest articles.",
+  "publisherCard": {
+    "sponsorCount1": "Sponsored",
+    "sponsorCount2": "times"
+  },
+  "publisherSuggestion": {
+    "title": "Suggested Follows",
+    "action": "View All",
+    "hidden": "Hidden", 
+    "statusHidden": "You won't receive this suggestion again",
+    "statusNew": "New",
+    "statusFollowers": "{{followerCount}} followers",
+    "cancel": "Cancel"
+  }
+}

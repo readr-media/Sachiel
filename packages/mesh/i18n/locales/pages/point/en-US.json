@@ -1,0 +1,12 @@
+{
+  "title": "Points",
+  "description": "Manage your point balance, view transaction history, sponsor media and subscribe to content",
+  "nav": {
+    "sponsorship": "Sponsored Media",
+    "subscribeStories": "Subscribed Articles", 
+    "record": "Point Records"
+  },
+  "wallet": {
+    "description": "You haven't added/linked a wallet yet. Click the button below to receive the wallet activation link via email."
+  }
+}

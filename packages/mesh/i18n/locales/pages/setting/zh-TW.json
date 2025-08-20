@@ -1,0 +1,15 @@
+{
+  "title": "設定",
+  "description": "管理您的帳戶設定和偏好",
+  "deletion": {
+    "confirmTitle": "真的要刪除帳號嗎？",
+    "confirmDescription": "提醒您：刪除帳號後，您的帳號資訊將永久刪除並無法復原。",
+    "reconsider": "那我再想想",
+    "confirmDelete": "確認刪除",
+    "successTitle": "刪除帳號成功",
+    "successDescription": "謝謝您使用我們的會員服務。如果您有需要，歡迎隨時回來 :)",
+    "errorTitle": "喔不，出錯了...",
+    "errorDescription": "刪除帳號失敗。請重新登入，或是聯繫客服信箱 readr@gmail.com 由專人為您服務。",
+    "backToHome": "回首頁"
+  }
+}

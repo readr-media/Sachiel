@@ -1,6 +1,6 @@
 'use client'
+import { useT } from '@/app/i18n/client'
 import { useComment } from '@/context/comment'
-import { useCustomTranslation } from '@/hooks/use-custom-translation'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { CommentObjective } from '@/types/objective'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -12,7 +12,7 @@ export default function ObjectiveCommentCount({
   commentsCount: number
   commentObjective?: CommentObjective
 }) {
-  const { t } = useCustomTranslation()
+  const { t } = useT('components/story-card')
   const { dispatch } = useComment()
   const { width } = useWindowDimensions()
   const openCommentBlock = () => {

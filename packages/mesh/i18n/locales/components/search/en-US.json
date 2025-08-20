@@ -1,0 +1,13 @@
+{
+  "noResults": "No {{type}} found containing \"{{query}}\", please try with different keywords.",
+  "types": {
+    "story": "stories",
+    "collection": "collections", 
+    "profile": "profiles"
+  },
+  "dataSource": "Source",
+  "searchResults": "Search Results",
+  "loading": "Loading...",
+  "totalResults": "{{count}} results in total",
+  "allStories": "All Stories"
+}
