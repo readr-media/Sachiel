@@ -10,6 +10,11 @@ import MisoPageView from '@/components/miso-page-view'
 import { GetStoriesDocument } from '@/graphql/__generated__/graphql'
 import queryGraphQL from '@/utils/fetch-graphql'
 import { getLogTraceObjectFromHeaders } from '@/utils/log'
+import {
+  getValidatedStoryType,
+  isPodcastType,
+  isStoryType,
+} from '@/utils/story-type'
 
 import { type ApiData } from './_components/api-data-renderer/renderer'
 import SideIndex from './_components/api-data-renderer/side-index'
@@ -79,7 +84,7 @@ export default async function Page({
   const { title, story_type, source, isMember, apiData, podcast, og_image } =
     storyData
 
-  const storyType = story_type === 'story' ? 'story' : 'podcast'
+  const storyType = getValidatedStoryType(story_type)
   const sourceCustomId = source?.customId ?? ''
   const isMemberStory = isMember ?? false
 
@@ -101,7 +106,7 @@ export default async function Page({
       <RelatedStories relatedStories={relatedStories} />
       <Comment targetId={storyId} />
       <aside className="hidden lg:fixed lg:right-[calc(((100vw-theme(width.articleMain))/2-theme(width.articleAside.lg))/2)] lg:top-[theme(height.header.sm)] lg:flex lg:w-[theme(width.articleAside.lg)] lg:flex-col xl:right-[calc((100vw-1440px)/2+((1440px-theme(width.articleMain))/2-theme(width.articleAside.xl))/2)] xl:w-[theme(width.articleAside.xl)]">
-        {!isMemberStory && storyType === 'story' && (
+        {!isMemberStory && isStoryType(storyType) && (
           <SideIndex
             apiData={apiData as ApiData}
             sourceCustomId={sourceCustomId}
@@ -110,7 +115,7 @@ export default async function Page({
         )}
       </aside>
       <AsideAd />
-      {storyType === 'podcast' && (
+      {isPodcastType(storyType) && (
         <AudioPlayer
           audioSrc={podcast?.url || ''}
           audioLogoSrc={og_image || ''}

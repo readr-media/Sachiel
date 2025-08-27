@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { metadata as rootMetadata } from '@/app/[lng]/layout'
 import { getStory } from '@/app/actions/story'
 import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from '@/constants/config'
+import { getValidatedStoryType } from '@/utils/story-type'
 
 import ClientLayout from './_components/client-layout'
 import CommentWrapper from './_components/comment-wrapper'
@@ -71,7 +72,7 @@ export default async function StoryLayout({
   const storyData = await getStory({ storyId })
   if (!storyData) notFound()
 
-  const storyType = storyData.story_type === 'story' ? 'story' : 'podcast'
+  const storyType = getValidatedStoryType(storyData.story_type)
   return (
     <StoryInteractionsWrapper storyId={storyId}>
       <CommentWrapper story={storyData}>

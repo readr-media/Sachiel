@@ -20,6 +20,7 @@ import {
   type PickListItem,
 } from '@/types/profile'
 import { logClickEvent } from '@/utils/event-logs'
+import { type StoryType, getValidatedStoryType } from '@/utils/story-type'
 
 type StoryDataTypes =
   | NonNullable<PickListItem>
@@ -113,8 +114,8 @@ const storyGetters = {
     collection: (data) => `/collection/${data.id}`,
     default: '',
   }),
-  storyType: createGetter<'story' | 'podcast'>({
-    story: (data) => data.story_type ?? 'story',
+  storyType: createGetter<StoryType>({
+    story: (data) => getValidatedStoryType(data.story_type),
     collection: () => 'story',
     default: 'story',
   }),
