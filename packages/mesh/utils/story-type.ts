@@ -30,8 +30,8 @@ export const isStoryType = (storyType: StoryType): boolean => {
 // Extract YouTube video ID from various URL formats
 export const extractYouTubeId = (url: string): string | null => {
   const patterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
-    /youtube\.com\/v\/([^&\n?#]+)/,
+    /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
   ]
 
   for (const pattern of patterns) {
