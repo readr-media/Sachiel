@@ -33,8 +33,11 @@ query GetCurrentUserMemberId($uid: String!) {
     }
     picks: pick(
       where: {
-        AND: [{ kind: { equals: "read" } }, { is_active: { equals: true } }]
+        kind: { equals: "read" }
+        is_active: { equals: true }
+        story: { id: { gt: 0 } }
       }
+      take: 20
     ) {
       objective
       collection {
@@ -46,7 +49,8 @@ query GetCurrentUserMemberId($uid: String!) {
     }
     bookmarks: pick(
       where: {
-        AND: [{ kind: { equals: "bookmark" } }, { is_active: { equals: true } }]
+        kind: { equals: "bookmark" }
+        is_active: { equals: true }
       }
     ) {
       objective
@@ -92,13 +96,21 @@ query GetMemberProfile($customId: String, $takes: Int!) {
     }
     intro
     picksCount: pickCount(
-      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      where: {
+        kind: { equals: "read" }
+        is_active: { equals: true }
+        story: { id: { gt: 0 } }
+      }
     )
     followingCount
     followerCount
 
     picks: pick(
-      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      where: {
+        kind: { equals: "read" }
+        is_active: { equals: true }
+        story: { id: { gt: 0 } }
+      }
       orderBy: { createdAt: desc }
       take: $takes
     ) {
@@ -174,13 +186,21 @@ query GetVisitorProfile($customId: String, $takes: Int!) {
     }
     intro
     picksCount: pickCount(
-      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      where: {
+        kind: { equals: "read" }
+        is_active: { equals: true }
+        story: { id: { gt: 0 } }
+      }
     )
     followingCount
     followerCount
 
     picks: pick(
-      where: { kind: { equals: "read" }, is_active: { equals: true } }
+      where: {
+        kind: { equals: "read" }
+        is_active: { equals: true }
+        story: { id: { gt: 0 } }
+      }
       orderBy: { createdAt: desc }
       take: $takes
     ) {

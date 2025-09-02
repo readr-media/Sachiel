@@ -1,6 +1,6 @@
 'use client'
 import InfiniteScrollList from '@readr-media/react-infinite-scroll-list'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import ArticleCard from '@/app/[lng]/profile/_components/article-card'
 import {
@@ -10,6 +10,11 @@ import {
 } from '@/app/actions/get-more-profile-data'
 import { useT } from '@/app/i18n/client'
 import AdManager from '@/components/ad/ad-manager-ad'
+import type {
+  GetMoreBookmarksQuery,
+  GetMoreCollectionsQuery,
+  GetMorePicksQuery,
+} from '@/graphql/__generated__/graphql'
 import { type ProfileTabKey } from '@/hooks/use-profile-tab'
 import type * as profile from '@/types/profile'
 import type { ProfileJSONType } from '@/utils/data-schema'
@@ -36,6 +41,12 @@ const PAGINATION_CONFIG = {
   MAX_ELEMENTS: 200,
 } as const
 
+type FetchMoreItemsReturnType = NonNullable<
+  | GetMorePicksQuery['picks']
+  | GetMoreBookmarksQuery['picks']
+  | GetMoreCollectionsQuery['picks']
+>
+
 export default function ArticleCardList({
   items,
   memberId,
@@ -46,6 +57,41 @@ export default function ArticleCardList({
   userType,
 }: ArticleCardListProps) {
   const { t } = useT('components/article-card-list')
+  // Track already fetched items to avoid duplicates in pagination
+  const fetchedStoryIds = useRef(new Set<string>())
+  const fetchedCollectionIds = useRef(new Set<string>())
+  const fetchedBookmarkIds = useRef(new Set<string>())
+
+  const getFilterIds = () => {
+    // Get IDs of items already displayed to exclude from next fetch
+    const currentItems = items
+      .map((item) => {
+        if (
+          activeTab === 'collection' &&
+          'collection' in item &&
+          item.collection
+        ) {
+          return item.collection.id
+        }
+        if ('story' in item && item.story) {
+          return item.story.id
+        }
+        if ('id' in item) {
+          return item.id
+        }
+        return null
+      })
+      .filter((id): id is string => typeof id === 'string')
+
+    // Combine with already fetched items
+    if (activeTab === 'bookmark') {
+      return new Set([...currentItems, ...fetchedBookmarkIds.current])
+    } else if (activeTab === 'collection') {
+      return new Set([...currentItems, ...fetchedCollectionIds.current])
+    } else {
+      return new Set([...currentItems, ...fetchedStoryIds.current])
+    }
+  }
   const [hasMoreData, setHasMoreData] = useState(true)
   const shouldShowComment = activeTab === 'pick'
   const isCollection = activeTab === 'collection'
@@ -53,8 +99,9 @@ export default function ArticleCardList({
   if (!items?.length) {
     return <EmptyTabState tabKey={activeTab} userType={userType} />
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const fetchMoreItemsInProfile = async (pageIndex: number): Promise<any[]> => {
+  const fetchMoreItemsInProfile = async (
+    _pageIndex: number
+  ): Promise<FetchMoreItemsReturnType> => {
     if (!customId) return []
     if (!hasMoreData) return []
 
@@ -62,10 +109,36 @@ export default function ArticleCardList({
     const moreItems = await fetchFunction({
       customId: customId,
       takes: PAGINATION_CONFIG.PAGE_SIZE,
-      start: PAGINATION_CONFIG.PAGE_SIZE * (pageIndex - 1),
+      start: 0,
+      filterIds: getFilterIds(),
     })
-
     if (moreItems.length) {
+      // Track fetched items to avoid duplicates in next fetch
+      if (activeTab === 'bookmark') {
+        const newIds = moreItems
+          .map((item) => item.story?.id ?? '')
+          .filter(Boolean)
+        fetchedBookmarkIds.current = new Set([
+          ...fetchedBookmarkIds.current,
+          ...newIds,
+        ])
+      } else if (activeTab === 'collection') {
+        const newIds = moreItems
+          .map((item) => ('collection' in item ? item.collection?.id : null))
+          .filter((id): id is string => typeof id === 'string')
+        fetchedCollectionIds.current = new Set([
+          ...fetchedCollectionIds.current,
+          ...newIds,
+        ])
+      } else {
+        const newIds = moreItems
+          .map((item) => item.story?.id ?? '')
+          .filter(Boolean)
+        fetchedStoryIds.current = new Set([
+          ...fetchedStoryIds.current,
+          ...newIds,
+        ])
+      }
       return moreItems
     } else {
       setHasMoreData(false)

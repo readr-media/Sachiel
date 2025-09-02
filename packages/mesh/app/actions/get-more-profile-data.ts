@@ -16,6 +16,7 @@ const getMoreMemberDataArgsSchema = z.object({
   customId: z.string(),
   takes: z.number().default(DEFAULT_TAKES),
   start: z.number().default(DEFAULT_START_INDEX),
+  filterIds: z.set(z.string()).nullable(),
 })
 
 async function getMoreMemberData(
@@ -33,12 +34,16 @@ async function getMoreMemberData(
     return []
   }
 
-  const { customId, takes, start } = parseResult.data
-
+  const { customId, takes, start, filterIds } = parseResult.data
   try {
     const response = await fetchGraphQL(
       document,
-      { customId, takes, start },
+      {
+        customId,
+        takes,
+        start,
+        filterIds: filterIds ? Array.from(filterIds) : undefined,
+      },
       globalLogFields,
       errorMessage
     )
@@ -60,7 +65,11 @@ export const getMoreMemberPicks = async (
     params,
     'Failed to get more member picks'
   )
-  return response.filter((item) => item.objective === 'story') ?? []
+  return (
+    response.filter(
+      (item) => item.objective === 'story' && item.story !== null
+    ) ?? []
+  )
 }
 
 /**
