@@ -4,6 +4,7 @@ import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import Comment from '@/app/[lng]/profile/_components/comment'
 import CollectionPickButton from '@/components/collection-card/collection-pick-button'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
@@ -20,7 +21,11 @@ import {
   type PickListItem,
 } from '@/types/profile'
 import { logClickEvent } from '@/utils/event-logs'
-import { type StoryType, getValidatedStoryType } from '@/utils/story-type'
+import {
+  type StoryType,
+  getValidatedStoryType,
+  isVideoType,
+} from '@/utils/story-type'
 
 type StoryDataTypes =
   | NonNullable<PickListItem>
@@ -206,6 +211,19 @@ const ArticleCard = ({
               fill
               className="size-full rounded-[inherit] object-cover"
             />
+            {isVideoType(
+              getValidatedStoryType(
+                (storyData as { story_type?: string })?.story_type
+              )
+            ) && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Icon
+                  iconName="icon-video-type"
+                  size="l"
+                  className="sm:size-11"
+                />
+              </div>
+            )}
           </section>
         </Link>
         <div
@@ -295,6 +313,19 @@ const ArticleCard = ({
                   fill
                   className="object-cover"
                 />
+                {isVideoType(
+                  getValidatedStoryType(
+                    (storyData as { story_type?: string })?.story_type
+                  )
+                ) && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Icon
+                      iconName="icon-video-type"
+                      size="l"
+                      className="sm:size-11"
+                    />
+                  </div>
+                )}
               </div>
             </section>
           </Link>
