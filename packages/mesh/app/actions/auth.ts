@@ -112,49 +112,98 @@ export async function getCurrentUser() {
       globalLogFields,
       'Failed to get current user member id'
     )
+
+    // Data processing with comprehensive error handling
     if (data?.member) {
-      return {
-        accessToken: accessToken,
-        memberId: data.member.id,
-        customId: data.member.customId ?? '',
-        name: data.member.name ?? '',
-        firebaseId: uid,
-        email: data.member.email ?? '',
-        avatar: data.member.avatar ?? '',
-        avatarImageId: data.member.avatar_image?.id ?? '',
-        intro: data.member.intro ?? '',
-        wallet: data.member.wallet ?? '',
-        followingMemberIds: new Set(
-          data.member.followingMembers?.map((member) => member.id) ?? []
-        ),
-        pickStoryIds: new Set(
-          data.member.picks
-            ?.filter((pick) => pick.objective === PickObjective.Story)
-            .map((pick) => pick.story?.id ?? '') ?? []
-        ),
-        pickCollectionIds: new Set(
-          data.member.picks
-            ?.filter((pick) => pick.objective === PickObjective.Collection)
-            .map((pick) => pick.collection?.id ?? '') ?? []
-        ),
-        bookmarkStoryIds: new Set(
-          data.member.bookmarks
-            ?.filter(
-              (bookmark) => bookmark.objective === BookmarkObjective.Story
-            )
-            .map((bookmark) => bookmark.story?.id ?? '') ?? []
-        ),
-        bookmarkCollectionIds: new Set(
-          data.member.bookmarks
-            ?.filter(
-              (bookmark) => bookmark.objective === BookmarkObjective.Collection
-            )
-            .map((bookmark) => bookmark.collection?.id ?? '') ?? []
-        ),
-        followingCategories: data.member.followingCategories ?? [],
-        followingPublishers: data.member.followingPublishers ?? [],
-        publishers: data.member.publishers ?? [],
-        language: data.member.language ?? 'zh_TW',
+      try {
+        const picks = Array.isArray(data.member.picks) ? data.member.picks : []
+        const bookmarks = Array.isArray(data.member.bookmarks)
+          ? data.member.bookmarks
+          : []
+
+        const filteredStoryPicks = picks.filter(
+          (pick) => pick?.objective === PickObjective.Story
+        )
+        const filteredCollectionPicks = picks.filter(
+          (pick) => pick?.objective === PickObjective.Collection
+        )
+
+        return {
+          accessToken: accessToken,
+          memberId: data.member.id,
+          customId: data.member.customId ?? '',
+          name: data.member.name ?? '',
+          firebaseId: uid,
+          email: data.member.email ?? '',
+          avatar: data.member.avatar ?? '',
+          avatarImageId: data.member.avatar_image?.id ?? '',
+          intro: data.member.intro ?? '',
+          wallet: data.member.wallet ?? '',
+          followingMemberIds: new Set(
+            (
+              data.member.followingMembers?.map((member) => member.id) ?? []
+            ).filter((id): id is string => Boolean(id))
+          ),
+          pickStoryIds: new Set(
+            filteredStoryPicks
+              .map((pick) => pick.story?.id)
+              .filter((id): id is string => Boolean(id))
+          ),
+          pickCollectionIds: new Set(
+            filteredCollectionPicks
+              .map((pick) => pick.collection?.id)
+              .filter((id): id is string => Boolean(id))
+          ),
+          bookmarkStoryIds: new Set(
+            bookmarks
+              .filter(
+                (bookmark) => bookmark.objective === BookmarkObjective.Story
+              )
+              .map((bookmark) => bookmark.story?.id)
+              .filter((id): id is string => Boolean(id))
+          ),
+          bookmarkCollectionIds: new Set(
+            bookmarks
+              .filter(
+                (bookmark) =>
+                  bookmark.objective === BookmarkObjective.Collection
+              )
+              .map((bookmark) => bookmark.collection?.id)
+              .filter((id): id is string => Boolean(id))
+          ),
+          followingCategories: data.member.followingCategories ?? [],
+          followingPublishers: data.member.followingPublishers ?? [],
+          publishers: data.member.publishers ?? [],
+          language: data.member.language ?? 'zh_TW',
+        }
+      } catch (processingError) {
+        logServerSideError(
+          processingError,
+          'Failed to process user pick data',
+          globalLogFields
+        )
+        // Return user with empty Sets if data processing fails
+        return {
+          accessToken: accessToken,
+          memberId: data.member.id,
+          customId: data.member.customId ?? '',
+          name: data.member.name ?? '',
+          firebaseId: uid,
+          email: data.member.email ?? '',
+          avatar: data.member.avatar ?? '',
+          avatarImageId: data.member.avatar_image?.id ?? '',
+          intro: data.member.intro ?? '',
+          wallet: data.member.wallet ?? '',
+          followingMemberIds: new Set<string>(),
+          pickStoryIds: new Set<string>(),
+          pickCollectionIds: new Set<string>(),
+          bookmarkStoryIds: new Set<string>(),
+          bookmarkCollectionIds: new Set<string>(),
+          followingCategories: data.member.followingCategories ?? [],
+          followingPublishers: data.member.followingPublishers ?? [],
+          publishers: data.member.publishers ?? [],
+          language: data.member.language ?? 'zh_TW',
+        }
       }
     } else {
       return undefined

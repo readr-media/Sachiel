@@ -54,10 +54,6 @@ export default function Page() {
           // Optional: Add staleness check here if desired for immediate rendering
           // For now, just load it if it exists
           if (cachedSocialData && cachedSocialData.feedData) {
-            console.log(
-              '[Social Page] Loaded data from localStorage cache for member:',
-              memberId
-            )
             setSocialData(cachedSocialData.feedData)
             // Set isLoading to false because we have something to show.
             // The fetch below will still run to get fresh data.
@@ -102,10 +98,6 @@ export default function Page() {
               localStorage.setItem(
                 memberCacheKey,
                 JSON.stringify(newCachedData)
-              )
-              console.log(
-                '[Social Page] Saved fresh data to localStorage for member:',
-                memberId
               )
             } catch (error) {
               console.error(
