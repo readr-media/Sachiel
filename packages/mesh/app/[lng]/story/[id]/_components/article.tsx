@@ -165,7 +165,7 @@ export default function Article({
             <div className="relative mb-6 aspect-[2/1]">
               <ImageWithFallback
                 src={story.og_image}
-                alt="hero image"
+                alt={`${story.title}'s OG Image`}
                 style={{ objectFit: 'cover' }}
                 fill
                 fallbackCategory={ImageCategory.STORY}
