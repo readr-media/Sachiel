@@ -6021,6 +6021,7 @@ export type StoryRelateToOneForUpdateInput = {
 export enum StoryStoryTypeType {
   Podcast = 'podcast',
   Story = 'story',
+  Video = 'video',
 }
 
 export type StoryStoryTypeTypeNullableFilter = {
