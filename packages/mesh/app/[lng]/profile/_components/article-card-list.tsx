@@ -123,8 +123,10 @@ export default function ArticleCardList({
           ...newIds,
         ])
       } else if (activeTab === 'collection') {
-        const newIds = moreItems
-          .map((item) => ('collection' in item ? item.collection?.id : null))
+        const newIds = (
+          moreItems as NonNullable<GetMoreCollectionsQuery['picks']>
+        )
+          .map((item) => item.collection?.id ?? null)
           .filter((id): id is string => typeof id === 'string')
         fetchedCollectionIds.current = new Set([
           ...fetchedCollectionIds.current,
