@@ -19,6 +19,7 @@ import { type GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { useDisplayCommentCount } from '@/hooks/use-display-commentcount'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { displayTime } from '@/utils/story-display'
+import { extractYouTubeId, isVideoType } from '@/utils/story-type'
 
 import type { PublisherPolicy } from '../page'
 import ApiDataRenderer, { type ApiData } from './api-data-renderer/renderer'
@@ -31,6 +32,27 @@ export type StoryInteractions = NonNullable<
 >
 
 const inHousePublisherCustomIds = ['mirrormedia', 'readr']
+
+const VideoHero = ({ videoUrl }: { videoUrl: string }) => {
+  const youtubeId = extractYouTubeId(videoUrl)
+
+  if (!youtubeId) {
+    console.warn('Could not extract YouTube ID from URL:', videoUrl)
+    return null
+  }
+
+  return (
+    <div className="relative mb-6 aspect-video">
+      <iframe
+        src={`https://www.youtube.com/embed/${youtubeId}`}
+        className="absolute inset-0 size-full"
+        loading="lazy"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  )
+}
 
 export default function Article({
   story,
@@ -125,7 +147,7 @@ export default function Article({
     } else {
       return (
         <article
-          className="story-renderer"
+          className="story-renderer *:break-words"
           dangerouslySetInnerHTML={{ __html: story?.content ?? '' }}
         />
       )
@@ -135,16 +157,21 @@ export default function Article({
   return (
     <div>
       <div>
-        {story?.og_image && (
-          <div className="relative mb-6 aspect-[2/1]">
-            <ImageWithFallback
-              src={story.og_image}
-              alt="hero image"
-              style={{ objectFit: 'cover' }}
-              fill
-              fallbackCategory={ImageCategory.STORY}
-            />
-          </div>
+        {/* Hero Section - Dynamic based on story type */}
+        {story && story.story_type && isVideoType(story.story_type) ? (
+          <VideoHero videoUrl={story.url || ''} />
+        ) : (
+          story?.og_image && (
+            <div className="relative mb-6 aspect-[2/1]">
+              <ImageWithFallback
+                src={story.og_image}
+                alt={`${story.title}'s OG Image`}
+                style={{ objectFit: 'cover' }}
+                fill
+                fallbackCategory={ImageCategory.STORY}
+              />
+            </div>
+          )
         )}
         <div className="px-5 sm:px-0">
           {/* article meta */}

@@ -6,6 +6,7 @@ import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
@@ -15,6 +16,7 @@ import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import type { CategoryStory, DailyStory, GtmTags } from '@/types/homepage'
 import { logClickEvent } from '@/utils/event-logs'
+import { getValidatedStoryType, isVideoType } from '@/utils/story-type'
 
 import ImageWithFallback from './image-with-fallback'
 
@@ -106,6 +108,19 @@ export default forwardRef(function StoryCard<
               className="object-cover"
               fallbackCategory={ImageCategory.STORY}
             />
+            {isVideoType(
+              getValidatedStoryType(
+                (story as { story_type?: string })?.story_type
+              )
+            ) && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Icon
+                  iconName="icon-video-type"
+                  size="l"
+                  className="sm:size-11"
+                />
+              </div>
+            )}
           </div>
         </NextLink>
       </div>

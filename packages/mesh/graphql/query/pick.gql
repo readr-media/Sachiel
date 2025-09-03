@@ -1,4 +1,9 @@
-query GetMorePicks($customId: String, $takes: Int = 20, $start: Int = 1) {
+query GetMorePicks(
+  $customId: String
+  $takes: Int = 20
+  $start: Int = 1
+  $filterIds: [ID!]
+) {
   picks(
     skip: $start
     take: $takes
@@ -7,6 +12,7 @@ query GetMorePicks($customId: String, $takes: Int = 20, $start: Int = 1) {
         objective: { equals: "story" }
         kind: { equals: "read" }
         member: { customId: { equals: $customId }, is_active: { equals: true } }
+        story: { id: { notIn: $filterIds } }
       }
     }
   ) {
@@ -55,7 +61,12 @@ query GetMoreBookmarks($customId: String, $takes: Int = 20, $start: Int = 1) {
   }
 }
 
-query GetMoreCollections($customId: String, $takes: Int = 20, $start: Int = 1) {
+query GetMoreCollections(
+  $customId: String
+  $takes: Int = 20
+  $start: Int = 1
+  $filterIds: [ID!]
+) {
   picks(
     skip: $start
     take: $takes
@@ -63,7 +74,7 @@ query GetMoreCollections($customId: String, $takes: Int = 20, $start: Int = 1) {
       AND: {
         objective: { equals: "story" }
         # filter out picks only left collections
-        collection: { id: { gt: 0 } }
+        collection: { id: { gt: 0, notIn: $filterIds } }
         kind: { equals: "read" }
         member: { customId: { equals: $customId }, is_active: { equals: true } }
       }

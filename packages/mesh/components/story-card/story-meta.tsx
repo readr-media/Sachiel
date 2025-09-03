@@ -1,6 +1,8 @@
 'use client'
+
 import { useT } from '@/app/i18n/client'
 import { displayTimeFromNow } from '@/utils/story-display'
+import { type StoryType, STORY_TYPES } from '@/utils/story-type'
 
 import CommentCount from '../comment-count'
 import Icon from '../icon'
@@ -18,7 +20,7 @@ export default function StoryMeta({
   publishDate: string
   paywall: boolean
   fullScreenAd: string
-  storyType?: 'story' | 'podcast'
+  storyType?: StoryType
 }) {
   const { t } = useT('components/story-card')
 
@@ -42,12 +44,18 @@ export default function StoryMeta({
           {t('full-screen-ad', '蓋板廣告')}
         </div>
       )}
-      {storyType === 'podcast' ? (
+      {storyType === STORY_TYPES.PODCAST && (
         <div className="flex items-center">
           <Icon iconName="icon-dot" size="s" />
           {t('podcast', 'Podcast')}
         </div>
-      ) : null}
+      )}
+      {storyType === STORY_TYPES.VIDEO && (
+        <div className="flex items-center">
+          <Icon iconName="icon-dot" size="s" />
+          {t('video', 'Video')}
+        </div>
+      )}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import ImageWithFallback from '@/app/[lng]/_components/image-with-fallback'
 import ObjectivePickInfo from '@/components/general-objective/objective-pick-info'
+import Icon from '@/components/icon'
 import StoryMeta from '@/components/story-card/story-meta'
 import StoryPickButton from '@/components/story-card/story-pick-button'
 import StoryMoreActionButton from '@/components/story-more-action-button'
@@ -11,6 +12,7 @@ import usePageName from '@/hooks/use-page-name'
 import useUserPayload from '@/hooks/use-user-payload'
 import { type MongoDBResponse } from '@/utils/data-schema'
 import { logClickEvent } from '@/utils/event-logs'
+import { getValidatedStoryType, isVideoType } from '@/utils/story-type'
 
 import FeedComment from './feed-comment'
 import FeedLatestAction from './feed-latest-action'
@@ -62,7 +64,7 @@ export default function Feed({
         <div className="aspect-[2/1] overflow-hidden bg-multi-layer-light">
           <Link
             href={`/story/${story.id}`}
-            className="GTM-soc_click_article size-full"
+            className="GTM-soc_click_article relative size-full"
           >
             <ImageWithFallback
               src={story.og_image}
@@ -77,6 +79,15 @@ export default function Feed({
               }}
               fallbackCategory={ImageCategory.STORY}
             />
+            {isVideoType(getValidatedStoryType(storyType)) && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Icon
+                  iconName="icon-video-type"
+                  size="l"
+                  className="sm:size-11"
+                />
+              </div>
+            )}
           </Link>
         </div>
       ) : null}
