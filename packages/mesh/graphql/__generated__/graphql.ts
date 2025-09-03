@@ -6021,6 +6021,7 @@ export type StoryRelateToOneForUpdateInput = {
 export enum StoryStoryTypeType {
   Podcast = 'podcast',
   Story = 'story',
+  Video = 'video',
 }
 
 export type StoryStoryTypeTypeNullableFilter = {
@@ -8237,6 +8238,7 @@ export type GetMorePicksQueryVariables = Exact<{
   customId?: InputMaybe<Scalars['String']['input']>
   takes?: InputMaybe<Scalars['Int']['input']>
   start?: InputMaybe<Scalars['Int']['input']>
+  filterIds?: InputMaybe<Array<Scalars['ID']['input']> | Scalars['ID']['input']>
 }>
 
 export type GetMorePicksQuery = {
@@ -8417,6 +8419,7 @@ export type GetMoreCollectionsQueryVariables = Exact<{
   customId?: InputMaybe<Scalars['String']['input']>
   takes?: InputMaybe<Scalars['Int']['input']>
   start?: InputMaybe<Scalars['Int']['input']>
+  filterIds?: InputMaybe<Array<Scalars['ID']['input']> | Scalars['ID']['input']>
 }>
 
 export type GetMoreCollectionsQuery = {
@@ -14762,69 +14765,66 @@ export const GetCurrentUserMemberIdDocument = {
                         fields: [
                           {
                             kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'AND' },
+                            name: { kind: 'Name', value: 'kind' },
                             value: {
-                              kind: 'ListValue',
-                              values: [
+                              kind: 'ObjectValue',
+                              fields: [
                                 {
-                                  kind: 'ObjectValue',
-                                  fields: [
-                                    {
-                                      kind: 'ObjectField',
-                                      name: { kind: 'Name', value: 'kind' },
-                                      value: {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'equals',
-                                            },
-                                            value: {
-                                              kind: 'StringValue',
-                                              value: 'read',
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'read',
+                                    block: false,
+                                  },
                                 },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
                                 {
-                                  kind: 'ObjectValue',
-                                  fields: [
-                                    {
-                                      kind: 'ObjectField',
-                                      name: {
-                                        kind: 'Name',
-                                        value: 'is_active',
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gt' },
+                                        value: { kind: 'IntValue', value: '0' },
                                       },
-                                      value: {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'equals',
-                                            },
-                                            value: {
-                                              kind: 'BooleanValue',
-                                              value: true,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
+                                    ],
+                                  },
                                 },
                               ],
                             },
                           },
                         ],
                       },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'take' },
+                      value: { kind: 'IntValue', value: '20' },
                     },
                   ],
                   selectionSet: {
@@ -14876,63 +14876,32 @@ export const GetCurrentUserMemberIdDocument = {
                         fields: [
                           {
                             kind: 'ObjectField',
-                            name: { kind: 'Name', value: 'AND' },
+                            name: { kind: 'Name', value: 'kind' },
                             value: {
-                              kind: 'ListValue',
-                              values: [
+                              kind: 'ObjectValue',
+                              fields: [
                                 {
-                                  kind: 'ObjectValue',
-                                  fields: [
-                                    {
-                                      kind: 'ObjectField',
-                                      name: { kind: 'Name', value: 'kind' },
-                                      value: {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'equals',
-                                            },
-                                            value: {
-                                              kind: 'StringValue',
-                                              value: 'bookmark',
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: {
+                                    kind: 'StringValue',
+                                    value: 'bookmark',
+                                    block: false,
+                                  },
                                 },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'is_active' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
                                 {
-                                  kind: 'ObjectValue',
-                                  fields: [
-                                    {
-                                      kind: 'ObjectField',
-                                      name: {
-                                        kind: 'Name',
-                                        value: 'is_active',
-                                      },
-                                      value: {
-                                        kind: 'ObjectValue',
-                                        fields: [
-                                          {
-                                            kind: 'ObjectField',
-                                            name: {
-                                              kind: 'Name',
-                                              value: 'equals',
-                                            },
-                                            value: {
-                                              kind: 'BooleanValue',
-                                              value: true,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'equals' },
+                                  value: { kind: 'BooleanValue', value: true },
                                 },
                               ],
                             },
@@ -15255,6 +15224,29 @@ export const GetMemberProfileDocument = {
                               ],
                             },
                           },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gt' },
+                                        value: { kind: 'IntValue', value: '0' },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
                         ],
                       },
                     },
@@ -15307,6 +15299,29 @@ export const GetMemberProfileDocument = {
                                   kind: 'ObjectField',
                                   name: { kind: 'Name', value: 'equals' },
                                   value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gt' },
+                                        value: { kind: 'IntValue', value: '0' },
+                                      },
+                                    ],
+                                  },
                                 },
                               ],
                             },
@@ -16421,6 +16436,29 @@ export const GetVisitorProfileDocument = {
                               ],
                             },
                           },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gt' },
+                                        value: { kind: 'IntValue', value: '0' },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
                         ],
                       },
                     },
@@ -16473,6 +16511,29 @@ export const GetVisitorProfileDocument = {
                                   kind: 'ObjectField',
                                   name: { kind: 'Name', value: 'equals' },
                                   value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'gt' },
+                                        value: { kind: 'IntValue', value: '0' },
+                                      },
+                                    ],
+                                  },
                                 },
                               ],
                             },
@@ -19902,6 +19963,20 @@ export const GetMorePicksDocument = {
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           defaultValue: { kind: 'IntValue', value: '1' },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'filterIds' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -20012,6 +20087,35 @@ export const GetMorePicksDocument = {
                                         value: {
                                           kind: 'BooleanValue',
                                           value: true,
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'story' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'id' },
+                                  value: {
+                                    kind: 'ObjectValue',
+                                    fields: [
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'notIn' },
+                                        value: {
+                                          kind: 'Variable',
+                                          name: {
+                                            kind: 'Name',
+                                            value: 'filterIds',
+                                          },
                                         },
                                       },
                                     ],
@@ -21046,6 +21150,20 @@ export const GetMoreCollectionsDocument = {
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           defaultValue: { kind: 'IntValue', value: '1' },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'filterIds' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+            },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -21116,6 +21234,17 @@ export const GetMoreCollectionsDocument = {
                                         kind: 'ObjectField',
                                         name: { kind: 'Name', value: 'gt' },
                                         value: { kind: 'IntValue', value: '0' },
+                                      },
+                                      {
+                                        kind: 'ObjectField',
+                                        name: { kind: 'Name', value: 'notIn' },
+                                        value: {
+                                          kind: 'Variable',
+                                          name: {
+                                            kind: 'Name',
+                                            value: 'filterIds',
+                                          },
+                                        },
                                       },
                                     ],
                                   },

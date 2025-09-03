@@ -16,6 +16,7 @@ import type { GetStoryQuery } from '@/graphql/__generated__/graphql'
 import { useDisplayPicks } from '@/hooks/use-display-picks'
 import { BookmarkObjective, PickObjective } from '@/types/objective'
 import { getStoryUrl } from '@/utils/get-url'
+import { type StoryType, STORY_TYPES } from '@/utils/story-type'
 
 import Loading from './loading'
 
@@ -27,7 +28,7 @@ export default function ClientLayout({
   children,
 }: {
   story: Story
-  storyType: 'story' | 'podcast'
+  storyType: StoryType
   children: React.ReactNode
 }) {
   const params = useParams()
@@ -39,7 +40,21 @@ export default function ClientLayout({
 
   const isSinglePickByCurrentUser =
     displayPicks.length === 1 && displayPicks[0].member.id === user.memberId
-  const navigationTitle = storyType === 'story' ? '新聞' : 'Podcast'
+
+  const getNavigationTitle = (type: StoryType): string => {
+    switch (type) {
+      case STORY_TYPES.STORY:
+        return '新聞'
+      case STORY_TYPES.PODCAST:
+        return 'Podcast'
+      case STORY_TYPES.VIDEO:
+        return 'Video'
+      default:
+        return '新聞'
+    }
+  }
+
+  const navigationTitle = getNavigationTitle(storyType)
 
   return (
     <LayoutTemplate

@@ -201,6 +201,7 @@ export type IconName =
   | 'icon-print-hover'
   | 'icon-mesh-ai'
   | 'icon-lock'
+  | 'icon-video-type'
 
 export type IconProps = {
   size: Size
