@@ -79,6 +79,7 @@ export const rawDailyHighlightSchema = storySchema
   })
   .extend({ source: sourceSchema })
   .extend({ category: categorySchema.optional() })
+  .extend({ story_type: z.enum(['story', 'podcast', 'video']).optional() })
 
 export const rawTopCollectorSchema = z.object({
   id: z.number(),
@@ -160,7 +161,7 @@ export const MongoDBResponseSchema = z.object({
         title: z.string(),
       }),
       published_date: z.string(),
-      story_type: z.enum(['story', 'podcast']),
+      story_type: z.enum(['story', 'podcast', 'video']),
       og_title: z.string(),
       og_image: z.string(),
       full_screen_ad: FullScreenAdEnum,
@@ -237,7 +238,7 @@ export const publisherProfileSchema = z.object({
       paywall: z.boolean(),
       full_screen_ad: FullScreenAdEnum,
       full_content: z.boolean(),
-      story_type: z.enum(['story', 'podcast']),
+      story_type: z.enum(['story', 'podcast', 'video']),
     })
   ),
   podcasts: z.array(
@@ -264,7 +265,7 @@ export const publisherProfileSchema = z.object({
       paywall: z.boolean(),
       full_screen_ad: FullScreenAdEnum,
       full_content: z.boolean(),
-      story_type: z.enum(['story', 'podcast']),
+      story_type: z.enum(['story', 'podcast', 'video']),
     })
   ),
 })

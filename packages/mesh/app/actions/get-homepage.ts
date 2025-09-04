@@ -140,8 +140,16 @@ async function fetchDailyHighlightNoGroup(): Promise<DailyStory[] | null> {
     const response = await fetchStatic<z.infer<typeof schema>>(
       STATIC_FILE_ENDPOINTS.dailyHighlightNoGroup
     )
-    const result = schema.parse(response)
-    return result
+    const parseResult = schema.safeParse(response)
+    if (!parseResult.success) {
+      logServerSideError(
+        parseResult.error,
+        'Failed to validate daily highlight data schema',
+        globalLogFields
+      )
+      return null
+    }
+    return parseResult.data
   } catch (err) {
     logServerSideError(
       err,
