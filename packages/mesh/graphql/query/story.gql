@@ -78,8 +78,8 @@ query GetStory($storyId: ID) {
   }
 }
 
-query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int) {
-  stories(where: { id: { in: $storyIds } }) {
+query GetStories($storyIds: [ID!], $picksTake: Int, $commentsTake: Int, $order: OrderDirection = desc) {
+  stories(where: { id: { in: $storyIds } }, orderBy: { published_date: $order }) {
     id
     title
     summary

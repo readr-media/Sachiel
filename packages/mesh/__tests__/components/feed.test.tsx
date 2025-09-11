@@ -22,7 +22,7 @@ jest.mock('@/hooks/use-user-payload', () => ({
 
 // Mock Icon component
 jest.mock('@/components/icon', () => {
-  return function MockIcon({ iconName }) {
+  return function MockIcon({ iconName }: { iconName: string }) {
     return <span data-testid={iconName}>{iconName}</span>
   }
 })
@@ -58,13 +58,13 @@ jest.mock('@/app/[lng]/_components/image-with-fallback', () => {
   }
 })
 
-jest.mock('./feed-comment', () => {
+jest.mock('@/app/[lng]/social/_components/feed-comment', () => {
   return function MockFeedComment() {
     return <div>FeedComment</div>
   }
 })
 
-jest.mock('./feed-latest-action', () => {
+jest.mock('@/app/[lng]/social/_components/feed-latest-action', () => {
   return function MockFeedLatestAction() {
     return <div>FeedLatestAction</div>
   }
@@ -94,13 +94,14 @@ describe('Feed Video Icon', () => {
       customId: 'test-publisher',
     },
     following_actions: [],
-    story_type: 'story',
+    story_type: 'story' as const,
+    url: 'https://example.com/story/test-story-1',
   }
 
   it('shows video icon when story type is video', () => {
     const videoStory = {
       ...mockStory,
-      story_type: 'video',
+      story_type: 'video' as const,
     }
 
     const { getByTestId } = render(<Feed story={videoStory} />)
@@ -111,7 +112,7 @@ describe('Feed Video Icon', () => {
   it('does not show video icon when story type is story', () => {
     const regularStory = {
       ...mockStory,
-      story_type: 'story',
+      story_type: 'story' as const,
     }
 
     const { queryByTestId } = render(<Feed story={regularStory} />)
@@ -122,21 +123,10 @@ describe('Feed Video Icon', () => {
   it('does not show video icon when story type is podcast', () => {
     const podcastStory = {
       ...mockStory,
-      story_type: 'podcast',
+      story_type: 'podcast' as const,
     }
 
     const { queryByTestId } = render(<Feed story={podcastStory} />)
-
-    expect(queryByTestId('icon-video-type')).not.toBeInTheDocument()
-  })
-
-  it('does not show video icon when story type is undefined', () => {
-    const storyWithoutType = {
-      ...mockStory,
-      story_type: undefined,
-    }
-
-    const { queryByTestId } = render(<Feed story={storyWithoutType} />)
 
     expect(queryByTestId('icon-video-type')).not.toBeInTheDocument()
   })

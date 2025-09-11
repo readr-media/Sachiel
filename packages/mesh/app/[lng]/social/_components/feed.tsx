@@ -160,6 +160,21 @@ export default function Feed({
 export type LatestAction = ReturnType<typeof processStoryActions>
 
 function processStoryActions(storyAction: StoryActions) {
+  if (storyAction.length === 0) {
+    return {
+      memberIds: [],
+      actionType: {
+        isPick: false,
+        isComment: false,
+        isPickAndComment: false,
+      },
+      picksNum: 0,
+      commentsNum: 0,
+      picksData: [],
+      commentsData: [],
+    }
+  }
+
   const latestAction = storyAction[0]
   const latestActionType = storyAction[0].kind
   let picksNum = storyAction.filter((action) => action.kind === 'read').length
