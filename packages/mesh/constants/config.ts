@@ -2,7 +2,7 @@ import { optimism, optimismSepolia } from '@alchemy/aa-core'
 import { type Chain, type Hex } from 'viem'
 
 const GCP_PROJECT_ID = 'mirrorlearning-161006'
-const ENV = process.env.NEXT_PUBLIC_ENV || 'local'
+const ENV = process.env.NEXT_PUBLIC_ENV || 'dev'
 const MISO_API_KEY = 'IHtn9b9tfPsO1EQpGV74OMf2syhELb6XVZe8u9FT'
 
 const FIREBASE_CLIENT_EMAIL =
