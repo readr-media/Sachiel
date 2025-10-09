@@ -8769,6 +8769,7 @@ export type GetStoriesQueryVariables = Exact<{
   storyIds?: InputMaybe<Array<Scalars['ID']['input']> | Scalars['ID']['input']>
   picksTake?: InputMaybe<Scalars['Int']['input']>
   commentsTake?: InputMaybe<Scalars['Int']['input']>
+  order?: InputMaybe<OrderDirection>
 }>
 
 export type GetStoriesQuery = {
@@ -23275,6 +23276,18 @@ export const GetStoriesDocument = {
           },
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'order' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'OrderDirection' },
+          },
+          defaultValue: { kind: 'EnumValue', value: 'desc' },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -23304,6 +23317,23 @@ export const GetStoriesDocument = {
                             },
                           },
                         ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'published_date' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'order' },
                       },
                     },
                   ],
