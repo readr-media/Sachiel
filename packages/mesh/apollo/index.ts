@@ -37,12 +37,13 @@ const uploadLink = createUploadLink({
   },
 }) as unknown as ApolloLink
 
+// no batch link in the previous stable version
+
 // reference: https://www.apollographql.com/blog/how-to-use-apollo-client-with-next-js-13
 // makes sure that we only instance the Apollo Client once per request,
 // since Apollo Client’s cache is designed with a single user in mind, we recommend that your Next.js server instantiates a new cache for each SSR request, rather than reusing the same long-lived instance for multiple users’ data.
 export const getClient = () => {
-  // create a new client if there's no existing one
-  // or if we are running on the server.
+  // previous stable version: simple link chain without batching or per-request cache wrapper
   return new ApolloClient({
     link: from([errorLink, authLink, uploadLink]),
     cache: new InMemoryCache(),
