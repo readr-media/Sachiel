@@ -118,7 +118,7 @@ switch (ENV) {
     API_ORIGIN =
       'https://mesh-proxy-server-prod-1075249966777.asia-east1.run.app'
     GO_PROXY_SERVER =
-      'https://mesh-proxy-server-prod-1075249966777.asia-east1.run.app'
+      'https://mesh-go-proxy-server-prod-1075249966777.asia-east1.run.app'
     SIGNED_COOKIE_API_ORIGIN = 'https://services-prod-lb.mmesh.news'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-prod'
