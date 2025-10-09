@@ -80,7 +80,9 @@ switch (ENV) {
     break
   case 'dev':
     SITE_HOST = 'dev.mmesh.news'
-    API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
+    //API_ORIGIN = 'https://mesh-proxy-server-dev-4g6paft7cq-de.a.run.app'
+    API_ORIGIN =
+      'https://mesh-go-proxy-server-dev-1075249966777.asia-east1.run.app/'
     SIGNED_COOKIE_API_ORIGIN = 'https://services-lb.mmesh.news'
     ADSENSE_CLIENT = 'ca-pub-9990785780499264'
     STATIC_FILE_ORIGIN = 'https://storage.googleapis.com/statics-mesh-tw-dev'
