@@ -162,7 +162,7 @@ const RESTFUL_ENDPOINTS = {
   paymentCreate: `${PAYMENT_ORIGIN}/v1/payment/create`,
   paymentAuth: `${PAYMENT_ORIGIN}/v1/payment/auth`,
   paymentFail: `${PAYMENT_ORIGIN}/v1/payment/failed`,
-  socialPage: `${GO_PROXY_SERVER}/socialpage`,
+  socialPage: `${GO_PROXY_SERVER}/socialpage?nocache=1&debug=1`,
   invitationCodes: `${GO_PROXY_SERVER}/invitation_codes`,
   notifications: `${GO_PROXY_SERVER}/notifications`,
   publisherSignedCookie: (publisherId: string) =>
