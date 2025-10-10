@@ -18,6 +18,8 @@ import {
 
 import SearchResult from '../_components/search-result'
 
+export const dynamic = 'force-dynamic'
+
 export default async function SearchResultPage({
   params,
   searchParams,
