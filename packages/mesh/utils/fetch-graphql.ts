@@ -15,6 +15,7 @@ export default async function queryGraphQL<
   errorMessage?: string
 ): Promise<TResult | null> {
   try {
+    const startedAt = Date.now()
     const { data, errors: gqlErrors } = await getClient().query({
       query,
       variables,
@@ -22,6 +23,14 @@ export default async function queryGraphQL<
 
     if (gqlErrors && gqlErrors.length > 0) {
       throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
+    }
+    const elapsedMs = Date.now() - startedAt
+    if (elapsedMs > 500) {
+      logServerSideError(
+        new Error('Slow GraphQL query'),
+        'GraphQL query slow',
+        { ...(traceObject ?? {}), elapsedMs }
+      )
     }
     return data
   } catch (error) {
@@ -43,12 +52,21 @@ export async function mutateGraphQL<
   errorMessage?: string
 ): Promise<TResult | null> {
   try {
+    const startedAt = Date.now()
     const { data, errors: gqlErrors } = await getClient().mutate({
       mutation,
       variables,
     })
     if (gqlErrors && gqlErrors.length > 0) {
       throw new Error(`[GraphQL error]: ${gqlErrors[0].message}`)
+    }
+    const elapsedMs = Date.now() - startedAt
+    if (elapsedMs > 500) {
+      logServerSideError(
+        new Error('Slow GraphQL mutation'),
+        'GraphQL mutation slow',
+        { ...(traceObject ?? {}), elapsedMs }
+      )
     }
     return data || null
   } catch (error) {

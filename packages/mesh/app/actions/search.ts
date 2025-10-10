@@ -27,7 +27,11 @@ export async function search(queryText: string, objectives: SearchOption[]) {
   } else {
     logServerSideError(
       result.error.errors,
-      'validate search result raw data errors'
+      'validate search result raw data errors',
+      {
+        queryText,
+        objectives,
+      }
     )
     return null
   }

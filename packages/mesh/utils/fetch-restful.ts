@@ -74,6 +74,7 @@ async function fetchRestful<T>({
   const idToken = cookies().get('token')?.value ?? ''
 
   try {
+    const startedAt = Date.now()
     const response = await fetch(url, {
       ...init,
       method,
@@ -86,6 +87,19 @@ async function fetchRestful<T>({
     })
 
     if (!response.ok) {
+      const traceObject = getLogTraceObjectFromHeaders()
+      logServerSideError(
+        new Error(`Failed to fetch: ${response.status} ${response.statusText}`),
+        'REST request failed',
+        {
+          ...traceObject,
+          url: typeof url === 'string' ? url : String(url),
+          method,
+          status: response.status,
+          statusText: response.statusText,
+          elapsedMs: Date.now() - startedAt,
+        }
+      )
       throw new Error(`Failed to fetch: ${response.statusText}`)
     }
 
@@ -108,6 +122,17 @@ async function fetchRestful<T>({
         data = (await response.json()) as T
     }
     // const data: T = await response.json()
+    const elapsedMs = Date.now() - startedAt
+    if (elapsedMs > 500) {
+      // slow log
+      const traceObject = getLogTraceObjectFromHeaders()
+      logServerSideError(new Error('Slow REST request'), 'REST request slow', {
+        ...traceObject,
+        url: typeof url === 'string' ? url : String(url),
+        method,
+        elapsedMs,
+      })
+    }
     return data
   } catch (error) {
     const traceObject = getLogTraceObjectFromHeaders()

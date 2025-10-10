@@ -34,7 +34,8 @@ export async function getCollection({
       picksTake,
       commentsTake,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to get collection'
   )
 }
 
@@ -49,7 +50,8 @@ export async function getCollections({
     {
       collectionIds,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to get collections'
   )
 }
 
@@ -67,7 +69,8 @@ export async function getCollectionStories({
       collectionId,
       creatorCustomId,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to get collection stories'
   )
 }
 
@@ -118,7 +121,8 @@ export async function createCollection({
       collectionpicks,
       memberId,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to create collection'
   )
   if (response?.createCollection?.id)
     await updateCollectinInMeilisearch(response.createCollection.id, memberId)
@@ -148,7 +152,8 @@ export async function addStoryToCollection({
       memberId,
       pickDate,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to add story to collection'
   )
   if (response) await updateCollectinInMeilisearch(collectionId, memberId)
   return response
@@ -170,7 +175,8 @@ export async function removeCollection({
       collectionId,
       heroImageId,
     },
-    globalLogFields
+    globalLogFields,
+    'Failed to remove collection'
   )
   if (response) await deleteCollectionInMeilisearch(collectionId, memberId)
   return response
