@@ -23,6 +23,7 @@ steps:
     id: Build Image
     env:
       - 'NEXT_PUBLIC_ENV=${BRANCH_NAME}'
+      - 'DOCKER_BUILDKIT=1'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -33,7 +34,8 @@ steps:
         docker build \
         -t gcr.io/$PROJECT_ID/$_IMAGE_NAME:${BRANCH_NAME}_${SHORT_SHA} \
         -t gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest \
-        --cache-from gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest .
+        --build-arg BUILDKIT_INLINE_CACHE=1 \
+        --cache-from=gcr.io/$PROJECT_ID/$_IMAGE_NAME:latest .
 
   # build docker image for target sub-package
   - name: gcr.io/cloud-builders/docker

@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { getCollection, getCollectionStories } from '@/app/actions/collection'
 import MisoPageView from '@/components/miso-page-view'
 
+export const dynamic = 'force-dynamic'
+
 import ArticleCardList from './_components/article-card-list'
 import CollectionCard from './_components/collection-card'
 import NotExist from './_components/not-exist'

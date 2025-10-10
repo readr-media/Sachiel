@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.5
 ARG NODE_VERSION=18.18.0
 
 # Install dependencies only when needed
@@ -10,7 +11,8 @@ RUN apk add --no-cache python3 make g++ \
 
 # Install dependencies based on the preferred package manager
 COPY ["package.json", "yarn.lock", "./"]
-RUN yarn install --frozen-lockfile
+RUN --mount=type=cache,target=/root/.cache/yarn \
+    yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM node:${NODE_VERSION} AS builder
@@ -18,7 +20,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn build
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN --mount=type=cache,target=/app/.next/cache \
+    yarn build
 
 # Production image, copy all the files and run next
 FROM node:${NODE_VERSION} AS runner
