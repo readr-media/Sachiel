@@ -67,10 +67,10 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 const LAST_MEMBER_ID_KEY = 'lastMemberId'
 function getGuestWithLocalPicks(): User {
   try {
-    const lastMemberId = getLocalStorage<string | null, null>(
-      LAST_MEMBER_ID_KEY,
-      null
-    )
+    const lastMemberId =
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem(`mesh.${LAST_MEMBER_ID_KEY}`)
+        : null
     if (!lastMemberId) return guest
 
     const cached = getLocalStorage<
