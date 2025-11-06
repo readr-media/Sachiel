@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import { useT } from '@/app/i18n/client'
 import Icon from '@/components/icon'
@@ -61,17 +61,19 @@ const NonMobileNav = ({
   closeNav,
   shouldShowNav,
   userCustomId,
+  lng,
 }: {
   path: string
   avatarUrl: string
   closeNav: () => void
   shouldShowNav: boolean
   userCustomId: string
+  lng: string
 }) => {
   const { user } = useUser()
   const isLoggedIn = isUserLoggedIn(user)
   const { t } = useT('components/layout')
-  const nonMobileNavIcons = getNonMobileNavIcons(t)
+  const nonMobileNavIcons = getNonMobileNavIcons(t, lng)
 
   return (
     <nav
@@ -165,6 +167,8 @@ export default function ArticleNav({
 }) {
   const path = usePathname()
   const { user } = useUser()
+  const params = useParams()
+  const lng = (params?.lng as string) || 'zh-TW'
 
   const avatarUrl = user?.avatar ?? ''
   const userCustomId = user.customId
@@ -178,6 +182,7 @@ export default function ArticleNav({
         shouldShowNav={shouldShowNav}
         closeNav={closeNav}
         userCustomId={userCustomId}
+        lng={lng}
       />
     </>
   )
