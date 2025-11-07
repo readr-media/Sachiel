@@ -81,6 +81,7 @@ export default function EditCollectionProvider({
   initialMobileEditType?: MobileEditCollectionType
   initialCollection: Collection
 }) {
+  const [hasInitialized, setHasInitialized] = useState(false)
   const [desktopEditType, setDesktopEditType] = useState(
     initialDesktopEditType ?? DesktopEditCollectionType.EditAll
   )
@@ -303,6 +304,19 @@ export default function EditCollectionProvider({
     }
     redirectAfterUpdateCollection()
   }
+
+  useEffect(() => {
+    if (!hasInitialized) {
+      setPickCandidates(initialStoryCandidate)
+      setBookmarkCandidates(initialStoryCandidate)
+      setHasInitialized(true)
+    }
+  }, [
+    hasInitialized,
+    setPickCandidates,
+    setBookmarkCandidates,
+    initialStoryCandidate,
+  ])
 
   // go back to collection page when mobile page render in desktop and vice versa change
   useEffect(() => {
