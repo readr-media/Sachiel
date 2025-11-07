@@ -27,6 +27,7 @@ import {
   updateCollectionTitle as sendUpdateCollectionTitle,
   updateWholeCollection as sendUpdateWholeCollection,
 } from '@/app/actions/edit-collection'
+import usePersistentState from '@/hooks/use-persistent-state'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -80,6 +81,7 @@ export default function EditCollectionProvider({
   initialMobileEditType?: MobileEditCollectionType
   initialCollection: Collection
 }) {
+  const [hasInitialized, setHasInitialized] = useState(false)
   const [desktopEditType, setDesktopEditType] = useState(
     initialDesktopEditType ?? DesktopEditCollectionType.EditAll
   )
@@ -91,12 +93,13 @@ export default function EditCollectionProvider({
   const [heroImage, setHeroImage] = useState<File | string | null>(
     initialCollection.heroImage?.resized?.original ?? null
   )
-  const [pickCandidates, setPickCandidates] = useState<StoryCandidates>(
-    initialStoryCandidate
-  )
-  const [bookmarkCandidates, setBookmarkCandidates] = useState<StoryCandidates>(
-    initialStoryCandidate
-  )
+  const [pickCandidates, setPickCandidates] =
+    usePersistentState<StoryCandidates>('pickCandidates', initialStoryCandidate)
+  const [bookmarkCandidates, setBookmarkCandidates] =
+    usePersistentState<StoryCandidates>(
+      'bookmarkCandidates',
+      initialStoryCandidate
+    )
 
   const [collectionPickStories, setCollectionPickStories] = useState<
     CollectionPickStory[]
@@ -301,6 +304,19 @@ export default function EditCollectionProvider({
     }
     redirectAfterUpdateCollection()
   }
+
+  useEffect(() => {
+    if (!hasInitialized) {
+      setPickCandidates(initialStoryCandidate)
+      setBookmarkCandidates(initialStoryCandidate)
+      setHasInitialized(true)
+    }
+  }, [
+    hasInitialized,
+    setPickCandidates,
+    setBookmarkCandidates,
+    initialStoryCandidate,
+  ])
 
   // go back to collection page when mobile page render in desktop and vice versa change
   useEffect(() => {

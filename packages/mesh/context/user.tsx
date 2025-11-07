@@ -19,6 +19,7 @@ import { auth } from '@/firebase/client'
 import type { GetMemberProfileQuery } from '@/graphql/__generated__/graphql'
 import { type GetCurrentUserMemberIdQuery } from '@/graphql/__generated__/graphql'
 import type { ProfileTypes } from '@/types/profile'
+import { getLocalStorage, setLocalStorage } from '@/utils/local-storage'
 
 type Member = NonNullable<NonNullable<GetCurrentUserMemberIdQuery>['member']>
 type Collections = NonNullable<
@@ -63,6 +64,31 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
+const LAST_MEMBER_ID_KEY = 'lastMemberId'
+function getGuestWithLocalPicks(): User {
+  try {
+    const lastMemberId =
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem(`mesh.${LAST_MEMBER_ID_KEY}`)
+        : null
+    if (!lastMemberId) return guest
+
+    const cached = getLocalStorage<
+      { pickStoryIds?: string[]; pickCollectionIds?: string[] } | null,
+      null
+    >(`userPicks.${lastMemberId}`, null)
+    if (!cached) return guest
+
+    return {
+      ...guest,
+      pickStoryIds: new Set(cached.pickStoryIds ?? []),
+      pickCollectionIds: new Set(cached.pickCollectionIds ?? []),
+    }
+  } catch {
+    return guest
+  }
+}
+
 export const guest: User = {
   accessToken: '',
   memberId: '',
@@ -97,7 +123,9 @@ export function UserProvider({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const [currentUser, setCurrentUser] = useState<User>(user ?? guest)
+  const [currentUser, setCurrentUser] = useState<User>(
+    user ?? getGuestWithLocalPicks()
+  )
 
   useEffect(() => {
     if (currentUser.memberId || pathname.endsWith('/login')) return
@@ -144,6 +172,24 @@ export function UserProvider({
       if (unsubscribe) unsubscribe()
     }
   }, [currentUser, pathname])
+
+  // Persist picks to localStorage for fast-first-paint UI
+  useEffect(() => {
+    try {
+      if (!currentUser.memberId) return
+      setLocalStorage(LAST_MEMBER_ID_KEY, currentUser.memberId)
+      setLocalStorage(`userPicks.${currentUser.memberId}`, {
+        pickStoryIds: Array.from(currentUser.pickStoryIds),
+        pickCollectionIds: Array.from(currentUser.pickCollectionIds),
+      })
+    } catch {
+      // ignore storage errors
+    }
+  }, [
+    currentUser.memberId,
+    currentUser.pickStoryIds,
+    currentUser.pickCollectionIds,
+  ])
 
   return (
     <UserContext.Provider
