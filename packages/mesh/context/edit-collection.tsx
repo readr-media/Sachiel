@@ -27,6 +27,7 @@ import {
   updateCollectionTitle as sendUpdateCollectionTitle,
   updateWholeCollection as sendUpdateWholeCollection,
 } from '@/app/actions/edit-collection'
+import usePersistentState from '@/hooks/use-persistent-state'
 import useWindowDimensions from '@/hooks/use-window-dimension'
 import { setCrossPageToast } from '@/utils/cross-page-toast'
 import { getTailwindConfigBreakpointNumber } from '@/utils/tailwind'
@@ -91,12 +92,13 @@ export default function EditCollectionProvider({
   const [heroImage, setHeroImage] = useState<File | string | null>(
     initialCollection.heroImage?.resized?.original ?? null
   )
-  const [pickCandidates, setPickCandidates] = useState<StoryCandidates>(
-    initialStoryCandidate
-  )
-  const [bookmarkCandidates, setBookmarkCandidates] = useState<StoryCandidates>(
-    initialStoryCandidate
-  )
+  const [pickCandidates, setPickCandidates] =
+    usePersistentState<StoryCandidates>('pickCandidates', initialStoryCandidate)
+  const [bookmarkCandidates, setBookmarkCandidates] =
+    usePersistentState<StoryCandidates>(
+      'bookmarkCandidates',
+      initialStoryCandidate
+    )
 
   const [collectionPickStories, setCollectionPickStories] = useState<
     CollectionPickStory[]
