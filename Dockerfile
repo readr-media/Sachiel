@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.5
-ARG NODE_VERSION=18.18.0
+# proc-log (node-gyp 依賴) 要求 ^20.17.0 || >=22.9.0
+ARG NODE_VERSION=20.18.0
 
 # Install dependencies only when needed
 FROM node:${NODE_VERSION}-alpine AS deps
