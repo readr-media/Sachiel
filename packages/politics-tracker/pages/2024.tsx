@@ -126,12 +126,7 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
   let comparisonJSON: PresidentComparisonJson[] = [] // 總統政見：差異比較
   let allCategories: CategoryOfJson[] = [] // 總統政見：背景事實查核 - 分類
   let posts: RelatedPost[] = [] // 相關報導
-  const defaultLegislators: LegislatorLists = {
-    regional: [],
-    party: [],
-    indigenous: { plain: [], mountain: [] },
-  }
-  let legislators: LegislatorLists = defaultLegislators
+  let legislators: LegislatorLists // 補坑進度：立委政見（區域/原住民/不分區立委）
 
   try {
     {
@@ -261,17 +256,10 @@ export const getServerSideProps: GetServerSideProps<Landing2024Props> = async ({
       }
     }
   } catch (err) {
-    // 資料來源失敗（如 env 未設、API 不可達）時改回傳預設 props，避免整頁 404
+    // 後端 500 / API 失敗時回傳 404，避免首頁出現 500
     console.error('[Landing2024] getServerSideProps data fetch failed:', err)
     return {
-      props: {
-        factCheckPartner,
-        factCheckJSON,
-        comparisonJSON,
-        allCategories,
-        posts,
-        legislators: defaultLegislators,
-      },
+      notFound: true,
     }
   }
 
