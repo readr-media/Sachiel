@@ -1,7 +1,9 @@
 # syntax=docker/dockerfile:1.5
 # proc-log / nopt (node-gyp 依賴) 要求 ^20.17.0 || >=22.9.0，不可用 18
-# 寫死版本避免 --cache-from 重用到舊的 Node 18 層
-FROM node:20.18.0-alpine AS deps
+# 固定版本避免 --cache-from 重用到舊的 Node 層；cloudbuild.yaml 會以 --build-arg 傳入同一版本
+ARG NODE_VERSION=24.22.1
+
+FROM node:${NODE_VERSION}-alpine AS deps
 WORKDIR /app
 
 # https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine 
@@ -14,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/yarn \
     yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM node:20.18.0 AS builder
+FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -24,7 +26,7 @@ RUN --mount=type=cache,target=/app/.next/cache \
     yarn build
 
 # Production image, copy all the files and run next
-FROM node:20.18.0-alpine AS runner
+FROM node:${NODE_VERSION}-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
