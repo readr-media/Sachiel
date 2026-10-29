@@ -62,7 +62,7 @@
     "@types/apollo-upload-client": "^18.0.0",
     "@types/jest": "^30.0.0",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "18.2.0",
     "@types/react-dom": "^18",
     "@types/react-gtm-module": "^2.0.4",
