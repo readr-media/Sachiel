@@ -5,9 +5,16 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     remotePatterns: [
+      { protocol: 'https', hostname: 'whoareyou-gcs.readr.tw' },
       {
-        hostname: '*',
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        pathname: '/whoareyou-gcs.readr.tw/**',
       },
+      // some stored photo URLs use a double slash before Images
+      { protocol: 'http', hostname: 'www.ly.gov.tw', pathname: '{/,//}Images/**' },
+      { protocol: 'https', hostname: 'www.ly.gov.tw', pathname: '{/,//}Images/**' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org' },
     ],
   },
   compiler: {
